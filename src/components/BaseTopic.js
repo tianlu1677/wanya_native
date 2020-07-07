@@ -28,7 +28,7 @@ class BaseTopic extends Component {
   }
 
   render() {
-    <View>xxxx</View>
+    <View><Text>sssss</Text></View>
   }
 }
 

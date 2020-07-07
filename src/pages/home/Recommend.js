@@ -16,18 +16,41 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import { getHotTopics } from '../../api/home_api'
+
 class Recommend extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
-      coin_data: [],
-      loading: false,
+
     };
   }
 
+  async componentDidMount() {
+
+  }
+
+
+  fetchData = async () => {
+    await getHotTopics()
+
+  }
+
+  componentDidUpdate() {
+
+  }
   render() {
-    return <View><Text>Recommend</Text></View>
+    return <View><Text>
+
+      Recommend11
+    </Text>
+      <Button
+        title={"点击"}
+        onPress={() => this.fetchData()}
+      >
+        ssss
+      </Button>
+    </View>
   }
 }
 
