@@ -16,7 +16,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-class Recommend extends Component {
+class Mine extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +27,17 @@ class Recommend extends Component {
   }
 
   render() {
-    return <View><Text>Recommend</Text></View>
+    return <View>
+      <Text>Mine</Text>
+      <Button title={"xxx"}
+              onPress={() => {this.props.navigation.navigate('NodeDetail')}}
+
+      >
+
+      </Button>
+
+    </View>
   }
 }
 
-export default Recommend;
+export default Mine;

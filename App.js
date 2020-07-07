@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {Component} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,8 +15,6 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
 
 import {
   Header,
@@ -26,28 +24,28 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { Image } from 'react-native';
-import { Card, ListItem, Icon, Button } from 'react-native-elements';
 
-const users = [
- {
-    name: 'brynn',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
- },
-]
+import Navigation from './src/navigator/index'
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <View>
-          <Text>xxx</Text>
-        </View>
-      </SafeAreaView>
-    </>
-  );
-};
+import {Image} from 'react-native';
+import {Card, ListItem, Icon, Button} from 'react-native-elements';
+
+
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <>
+        {/*<View><Text>xsssss222</Text></View>*/}
+        <Navigation />
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   scrollView: {

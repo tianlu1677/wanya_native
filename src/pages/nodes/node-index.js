@@ -16,7 +16,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-class Recommend extends Component {
+class NodeInex extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +27,8 @@ class Recommend extends Component {
   }
 
   render() {
-    return <View><Text>Recommend</Text></View>
+    return <View><Text>NodeInex</Text></View>
   }
 }
 
-export default Recommend;
+export default NodeInex;

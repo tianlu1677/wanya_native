@@ -5,7 +5,7 @@ import {
   ScrollView,
   View,
   Text,
-  Button,
+  StatusBar,
 } from 'react-native';
 
 import {
@@ -16,7 +16,10 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-class Recommend extends Component {
+import { Image } from 'react-native';
+import { Card, ListItem, Icon, Button } from 'react-native-elements';
+
+class VideoDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +30,10 @@ class Recommend extends Component {
   }
 
   render() {
-    return <View><Text>Recommend</Text></View>
+    return <View>
+      <Text>VideoDetail</Text>
+    </View>
   }
 }
 
-export default Recommend;
+export default VideoDetail;
