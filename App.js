@@ -24,6 +24,16 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import { Image } from 'react-native';
+import { Card, ListItem, Icon, Button } from 'react-native-elements';
+
+const users = [
+ {
+    name: 'brynn',
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+ },
+]
+
 const App: () => React$Node = () => {
   return (
     <>
@@ -38,6 +48,39 @@ const App: () => React$Node = () => {
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
           )}
+
+           <Button
+          title="Solid Button"
+        />
+
+          <Card title="CARD WITH DIVIDER">
+            {
+              users.map((u, i) => {
+                return (
+                  <View key={i} style={styles.user}>
+                    <Image
+                      style={styles.image}
+                      resizeMode="cover"
+                      source={{ uri: u.avatar }}
+                    />
+                    <Text style={styles.name}>{u.name}</Text>
+                  </View>
+                );
+              })
+            }
+          </Card>
+
+            <Button
+              icon={
+                <Icon
+                  name="arrow-right"
+                  size={15}
+                  color="white"
+                />
+              }
+              title="Button icon component"
+            />
+
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
@@ -67,6 +110,8 @@ const App: () => React$Node = () => {
             <LearnMoreLinks />
           </View>
         </ScrollView>
+
+       
       </SafeAreaView>
     </>
   );
