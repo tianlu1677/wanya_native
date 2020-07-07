@@ -15,6 +15,8 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
 
 import {
   Header,
@@ -39,77 +41,7 @@ const App: () => React$Node = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
 
-           <Button
-          title="Solid Button"
-        />
-
-          <Card title="CARD WITH DIVIDER">
-            {
-              users.map((u, i) => {
-                return (
-                  <View key={i} style={styles.user}>
-                    <Image
-                      style={styles.image}
-                      resizeMode="cover"
-                      source={{ uri: u.avatar }}
-                    />
-                    <Text style={styles.name}>{u.name}</Text>
-                  </View>
-                );
-              })
-            }
-          </Card>
-
-            <Button
-              icon={
-                <Icon
-                  name="arrow-right"
-                  size={15}
-                  color="white"
-                />
-              }
-              title="Button icon component"
-            />
-
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
 
        
       </SafeAreaView>
