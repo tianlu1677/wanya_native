@@ -40,7 +40,6 @@ class App extends Component {
   render() {
     return (
       <>
-        {/*<View><Text>xsssss222</Text></View>*/}
         <Navigation />
       </>
     );

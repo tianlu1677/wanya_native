@@ -29,7 +29,7 @@ class Mine extends Component {
   render() {
     return <View>
       <Text>Mine</Text>
-      <Button title={"xxx"}
+      <Button title={"跳转到节点页面"}
               onPress={() => {this.props.navigation.navigate('NodeDetail')}}
 
       >
