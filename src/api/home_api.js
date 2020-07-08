@@ -1,4 +1,5 @@
 import request from './request'
+import requestHttp from './request'
 
 // 推荐的分类
 export async function getRecommendCategories() {
@@ -69,9 +70,9 @@ export async function getDailyCourses() {
 
 // 首页排序的帖子
 export async function getHotTopics(params = {}) {
-  const res = await request({
+  const res =  await request({
     url: '/api/v1/home/hot_topics',
-    method: 'GET',
+    method: 'POST',
     params: params
   })
   return res
@@ -88,8 +89,8 @@ export async function getRecommendPosts(params = {}) {
   return res
 }
 
-export async function getFollowedPosts(params = {}) {
-  const res = await request({
+export  function getFollowedPosts(params = {}) {
+  const res = request({
     url: '/api/v1/recommend/followed_posts',
     method: 'GET',
     params: params

@@ -1,71 +1,68 @@
 import axios from 'axios';
 import qs from 'querystring';
+import { getData } from '../utils/storage'
 
-axios.interceptors.request.use(
-  async config => {
-    // 在发送请求之前做些什么
-    const {url} = config;
-    // if (url.indexOf('sign_in') < 0) {
-    //   let token = await AsyncStorage.getItem('rrs_token');
-    //   // console.log('请求url', url);
-    //   // console.log('请求token', token);
-    //   config.headers.common.Authorization = token;
-    //   config.headers.common.version = '1_0_0';
-    //   config.headers.common.app_name = 'rrs';
-    // }
-    return config;
-  },
-  function(error) {
-    // 对请求错误做些什么
-    return Promise.reject(error);
-  },
-);
-//
-axios.interceptors.response.use(
-  config => {
-    return config;
-  },
-  function(error) {
-    // 对请求错误做些什么
-    // switch (error.response.status) {
-    //   case 200:
-    //     storeData('lock_user', false);
-    //     break;
-    //   case 422:
-    //     Toast.show(Object.values(error.response.data)[0], {
-    //       containerStyle: {
-    //         width: 200,
-    //       },
-    //       duration: Toast.durations.SHORT,
-    //       position: 0,
-    //       shadow: false,
-    //       animation: true,
-    //       hideOnPress: true,
-    //       delay: 0,
-    //     });
-    //     break;
-    //   case 401:
-    //     if (error.response.data.error === 'Your account is locked.') {
-    //       storeData('lock_user', true);
-    //     }
-    //     break;
-    //   default:
-    //     break;
-    // }
-
-    return Promise.reject(error);
-  },
-);
-
+const VERSION = '1.0.0'
 const BASE_URL = 'https://xinxue.niubibeta.com'
 // const BASE_URL = 'https://meirixinxue.com'
 
+axios.defaults.baseURL = BASE_URL;
 
-export default async function request(options, url = null) {
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  config.headers.common.Token = getData('token')
+  config.headers.common.version = VERSION
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
+
+// Add a response interceptor
+axios.interceptors.response.use(function (response) {
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Do something with response data
+  console.log('response', response)
+  return response;
+}, function (error) {
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  console.log('request error', error)
+  switch (error) {
+    case 200:
+      // storeData('lock_user', false);
+      break;
+    case 422:
+      // Toast.show(Object.values(error.response.data)[0], {
+      //   containerStyle: {
+      //     width: 200,
+      //   },
+      //   duration: Toast.durations.SHORT,
+      //   position: 0,
+      //   shadow: false,
+      //   animation: true,
+      //   hideOnPress: true,
+      //   delay: 0,
+      // });
+      break;
+    case 401:
+      // if (error.response.data.error === 'Your account is locked.') {
+      //   storeData('lock_user', true);
+      // }
+      break;
+    default:
+      break;
+  }
+
+  return Promise.reject(error);
+});
+
+export default  function requestHttp(options, url = null) {
   let data = {}
-  const token = 'xxxx'
+  let params = {}
   if (options.method === 'GET') {
-    data = { ...options.data, ...options.params }
+    params = {...options.data, ...options.params}
   } else {
     data = options.data
   }
@@ -74,23 +71,15 @@ export default async function request(options, url = null) {
   url = url || options.url
   const request_options = {
     url: url,
-    baseURL: BASE_URL,
-    data: data,
+    data: qs.stringify(data),
+    params: params,
     method: options.method || 'GET',
     headers: {
       'content-type': contentType,
-      Token: token
     },
     responseType: 'json',
   }
   console.log(request_options)
-
-  return new Promise(async (resolve, reject) => {
-    const res = await axios(request_options);
-    resolve(res)
-  })
-
-
-  // return Taro.request(request_options)
+  return axios(request_options)
 }
 
