@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,7 +6,7 @@ import {
   View,
   Text,
   StatusBar,
-  Component,
+
 } from 'react-native';
 
 import {
@@ -20,16 +20,40 @@ import {
 class BaseTopic extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      modalVisible: false,
-      coin_data: [],
-      loading: false,
-    };
+  }
+
+  static propTypes = {
+    // baseTopic: PropTypes.object,
+  }
+
+  static defaultProps = {
+    topic: {account: {}, medias: []},
+    currentAccountId: '',
+    type: '',
+    showCourse: true,
   }
 
   render() {
-    <View><Text>sssss</Text></View>
+    const {post} = this.props
+    return <View style={styles.container}>
+      <Text>
+        {post.item.plain_content}
+      </Text>
+    </View>
   }
 }
+
+const styles = StyleSheet.create({
+  //底部默认样式
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 0,
+    height: 80,
+  },
+});
+
 
 export default BaseTopic;
