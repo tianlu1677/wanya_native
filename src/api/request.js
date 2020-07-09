@@ -15,6 +15,7 @@ axios.interceptors.request.use(function (config) {
   config.headers.common.version = VERSION
   return config;
 }, function (error) {
+  console.log('error', error)
   // Do something with request error
   return Promise.reject(error);
 });
@@ -23,7 +24,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data
-  console.log('response', response)
+  // console.log('response', response)
   return response;
 }, function (error) {
   // Any status codes that falls outside the range of 2xx cause this function to trigger
@@ -45,6 +46,9 @@ axios.interceptors.response.use(function (response) {
       //   hideOnPress: true,
       //   delay: 0,
       // });
+      break;
+    case 400:
+      console.log('error', error)
       break;
     case 401:
       // if (error.response.data.error === 'Your account is locked.') {
@@ -71,7 +75,7 @@ export default  function requestHttp(options, url = null) {
   url = url || options.url
   const request_options = {
     url: url,
-    data: qs.stringify(data),
+    data: (data),
     params: params,
     method: options.method || 'GET',
     headers: {
