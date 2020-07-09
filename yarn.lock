@@ -5277,10 +5277,22 @@ react-native-gesture-handler@^1.6.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-image-pan-zoom@^2.1.12:
+  version "2.1.12"
+  resolved "https://registry.npm.taobao.org/react-native-image-pan-zoom/download/react-native-image-pan-zoom-2.1.12.tgz#eb98bf56fb5610379bdbfdb63219cc1baca98fd2"
+  integrity sha1-65i/VvtWEDeb2/22MhnMG6ypj9I=
+
 react-native-image-picker@^2.3.2:
   version "2.3.2"
   resolved "https://registry.npm.taobao.org/react-native-image-picker/download/react-native-image-picker-2.3.2.tgz#ddfb257fd0cf2bf7f4b1887477a88265e0720c83"
   integrity sha1-3fslf9DPK/f0sYh0d6iCZeByDIM=
+
+react-native-image-zoom-viewer@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npm.taobao.org/react-native-image-zoom-viewer/download/react-native-image-zoom-viewer-3.0.1.tgz#a2bd5fb3bda15e0686ce88fcde8576726495d7fb"
+  integrity sha1-or1fs72hXgaGzoj83oV2cmSV1/s=
+  dependencies:
+    react-native-image-pan-zoom "^2.1.12"
 
 react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
