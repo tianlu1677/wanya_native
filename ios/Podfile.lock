@@ -340,6 +340,15 @@ PODS:
     - SDWebImageWebPCoder (~> 0.4.1)
   - RNGestureHandler (1.6.1):
     - React
+  - RNImageCropPicker (0.32.2):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.32.2)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.32.2):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNScreens (2.9.0):
     - React
   - RNShare (3.7.0):
@@ -352,6 +361,7 @@ PODS:
   - SDWebImageWebPCoder (0.4.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.5)
+  - TOCropViewController (2.5.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -419,6 +429,7 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -441,6 +452,7 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SDWebImage
     - SDWebImageWebPCoder
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -524,6 +536,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNShare:
@@ -587,11 +601,13 @@ SPEC CHECKSUMS:
   RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNImageCropPicker: f0557a908758c4a3f83978894ec7227651529b45
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   RNShare: a1d5064df7a0ebe778d001869b3f0a124bf0a491
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   SDWebImage: e3eae2eda88578db0685a0c88597fdadd9433f05
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
+  TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

@@ -59,7 +59,6 @@ class VideoDetail extends Component {
              reportBandwidth
       />
 
-      <Button title={'预览图片'} onPress={() => {this.setState({showPreview: true})} }/>
       <Modal visible={this.state.showPreview} transparent={true} onRequestClose={() => this.setState({ showPreview: false })}>
         <ImageViewer
           onShowModal={() => {console.log('xxx', 'onShowModal')}}
@@ -68,7 +67,7 @@ class VideoDetail extends Component {
         />
       </Modal>
 
-
+      <Button title={'预览图片'} onPress={() => {this.setState({showPreview: true})} }/>
     </View>
   }
 }

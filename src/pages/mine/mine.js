@@ -23,6 +23,7 @@ class Mine extends Component {
       <Text>Mine</Text>
       <Button title={'去登录'} onPress={() => { this.props.navigation.navigate('PhoneLogin') }} />
       <Button title={'视频页面'} onPress={() => { this.props.navigation.navigate('VideoDetail') }} />
+      <Button title={'去上传'} onPress={() => { this.props.navigation.navigate('NewTopic') }} />
 
     </View>
   }
