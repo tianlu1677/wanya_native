@@ -4,14 +4,12 @@ import { getData } from '../utils/storage'
 
 const VERSION = '1.0.0'
 const BASE_URL = 'https://xinxue.niubibeta.com'
-// const BASE_URL = 'https://meirixinxue.com'
 
 axios.defaults.baseURL = BASE_URL;
 
 // Add a request interceptor
-axios.interceptors.request.use(function (config) {
-  // Do something before request is sent
-  config.headers.common.Token = getData('token')
+axios.interceptors.request.use(async function (config) {
+  config.headers.common.Token = await getData('auth_token')
   config.headers.common.version = VERSION
   return config;
 }, function (error) {
@@ -73,15 +71,17 @@ export default  function requestHttp(options, url = null) {
   let contentType = 'application/json'
   contentType = options.contentType || contentType
   url = url || options.url
-  const request_options = {
+  let request_options = {
     url: url,
-    data: (data),
     params: params,
     method: options.method || 'GET',
     headers: {
       'content-type': contentType,
     },
     responseType: 'json',
+  }
+  if(options.method !== 'GET') {
+    request_options = {request_options, data: data}
   }
   console.log(request_options)
   return axios(request_options)

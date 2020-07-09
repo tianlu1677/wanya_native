@@ -31,6 +31,8 @@ import {Image} from 'react-native';
 import {Card, ListItem, Icon, Button} from 'react-native-elements';
 
 
+
+
 class App extends Component {
 
   constructor(props) {

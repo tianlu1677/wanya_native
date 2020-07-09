@@ -9,9 +9,10 @@ import {
   Button,
 } from 'react-native';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import Toast from 'react-native-root-toast';
+import {clearAllData, storeData} from "../../utils/storage"
 import { Input } from 'react-native-elements';
-import {storeData} from "../../utils/storage"
-import {phoneSignIn} from "../../api/sign_api"
+import { phoneSignIn } from "../../api/sign_api"
 
 class PhoneLogin extends Component {
   constructor(props) {
@@ -23,22 +24,42 @@ class PhoneLogin extends Component {
     };
   }
 
-  handleSubmit = (values) => {
-    console.log('values', values)
-    phoneSignIn({phone: values.phone, password: values.password}).then((res) => {
-      console.log('res', res)
+  handleSubmit = async (values) => {
+    // console.log('values', values)
+    // console.log(await React.$Store.getData('auth_token'))
+
+    phoneSignIn({phone: values.phone, password: values.password}).then(async (res) => {
+      // console.log('res', res)
       if(res.status === 200) {
         storeData('auth_token', res.token)
-        storeData('account_id', res.id)
+        storeData('account_id', res.id.toString())
         storeData('account_nickname', res.nickname)
-      } else {
+        let toast = Toast.show('登录成功', {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
 
+        });
+        let data = await getData('auth_token')
+        // console.log(data)
+      } else {
+        let toast = Toast.show('用户名或者密码错误', {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
       }
     })
   }
 
   render() {
-    return <View>
+    return <View style={{display: 'flex', justifyContent: 'center', paddingTop: 100 }}>
       <Formik
         initialValues={{ password: '123456789', phone: '18612341234' }}
         onSubmit={this.handleSubmit}

@@ -2,8 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 async function storeData(name, value) {
   try {
-    const result = await AsyncStorage.setItem(name, value);
-    return result;
+    await AsyncStorage.setItem(name, value);
   } catch (e) {
     return ''
   }
@@ -22,4 +21,8 @@ function removeData(name) {
   AsyncStorage.removeItem(name);
 }
 
-export {storeData, getData, removeData};
+function clearAllData() {
+  AsyncStorage.clear()
+}
+
+export {storeData, getData, removeData, clearAllData};

@@ -19,10 +19,9 @@ class TopicDetail extends Component {
   }
 
   componentWillMount() {
-    this.topic_id = this.props.route.params
+    this.topic_id = this.props.route.params.topic_id
   }
   componentDidMount() {
-    console.log('this.roiter', this.topic_id )
     getTopic(this.topic_id).then((res) => {
       this.setState({
         topicDetail: res.topic
@@ -31,8 +30,9 @@ class TopicDetail extends Component {
   }
 
   render() {
+    const { topicDetail } = this.state
     return <View>
-      <Text>TopicDetail</Text>
+      <Text>{topicDetail.plain_content}</Text>
     </View>
   }
 }
