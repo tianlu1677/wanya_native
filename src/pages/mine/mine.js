@@ -8,14 +8,6 @@ import {
   Button,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 class Mine extends Component {
   constructor(props) {
     super(props);
@@ -29,12 +21,7 @@ class Mine extends Component {
   render() {
     return <View>
       <Text>Mine</Text>
-      <Button title={"跳转到节点页面"}
-              onPress={() => {this.props.navigation.navigate('NodeDetail')}}
-
-      >
-
-      </Button>
+      <Button title={'去登录'} onPress={() => { this.props.navigation.navigate('PhoneLogin') }} />
 
     </View>
   }

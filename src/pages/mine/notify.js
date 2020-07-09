@@ -8,13 +8,6 @@ import {
   Button,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 class Notify extends Component {
   constructor(props) {
@@ -28,8 +21,8 @@ class Notify extends Component {
 
   render() {
     return <View>
-      <Text>Mine</Text>
-      <Button title={'去登录'} onPress={() => { this.props.navigation.navigate('PhoneLogin') }} />
+      <Text>消息</Text>
+
     </View>
   }
 }

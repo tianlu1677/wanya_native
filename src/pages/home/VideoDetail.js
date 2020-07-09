@@ -8,14 +8,6 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import { Image } from 'react-native';
 import { Card, ListItem, Icon, Button } from 'react-native-elements';
 
