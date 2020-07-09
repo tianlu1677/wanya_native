@@ -20,6 +20,8 @@ export const State = {
   NO_DATA: 5,//无数据情况
 };
 
+// https://github.com/liweijieok/ReactNativeDemo/blob/master/js/flatlist/FlatListDemoPage.js
+
 export function pagination (headers = {}){
   // console.log('xxxxxxx', headers)
   const currentPage = parseInt(headers['x-current-page']);

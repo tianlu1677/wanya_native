@@ -69,6 +69,15 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - libwebp (1.1.0):
+    - libwebp/demux (= 1.1.0)
+    - libwebp/mux (= 1.1.0)
+    - libwebp/webp (= 1.1.0)
+  - libwebp/demux (1.1.0):
+    - libwebp/webp
+  - libwebp/mux (1.1.0):
+    - libwebp/demux
+  - libwebp/webp (1.1.0)
   - lottie-ios (3.1.8)
   - lottie-react-native (3.4.0):
     - lottie-ios (~> 3.1.3)
@@ -325,6 +334,10 @@ PODS:
     - React
   - RNDeviceInfo (5.6.1):
     - React
+  - RNFastImage (8.1.5):
+    - React
+    - SDWebImage (~> 5.0)
+    - SDWebImageWebPCoder (~> 0.4.1)
   - RNGestureHandler (1.6.1):
     - React
   - RNScreens (2.9.0):
@@ -333,6 +346,12 @@ PODS:
     - React
   - RNVectorIcons (7.0.0):
     - React
+  - SDWebImage (5.8.1):
+    - SDWebImage/Core (= 5.8.1)
+  - SDWebImage/Core (5.8.1)
+  - SDWebImageWebPCoder (0.4.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.5)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -398,6 +417,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
@@ -416,8 +436,11 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - Flipper-RSocket
     - FlipperKit
+    - libwebp
     - lottie-ios
     - OpenSSL-Universal
+    - SDWebImage
+    - SDWebImageWebPCoder
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -497,6 +520,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNFastImage:
+    :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
@@ -525,6 +550,7 @@ SPEC CHECKSUMS:
   FlipperKit: 6dc9b8f4ef60d9e5ded7f0264db299c91f18832e
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: a664f59f1f298c2696dd0ae07b15cbdfc433cb02
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
@@ -559,10 +585,13 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
+  RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   RNShare: a1d5064df7a0ebe778d001869b3f0a124bf0a491
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
+  SDWebImage: e3eae2eda88578db0685a0c88597fdadd9433f05
+  SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

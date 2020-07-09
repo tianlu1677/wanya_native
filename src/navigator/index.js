@@ -13,6 +13,10 @@ import Mine from '../pages/mine/mine'
 import Notify from '../pages/mine/notify'
 import NodeDetail from '../pages/nodes/node-detail'
 import NodeIndex from '../pages/nodes/node-index'
+import TopicDetail from '../pages/topics/TopicDetail'
+import NewTopic from '../pages/topics/NewTopic'
+import PhoneLogin from '../pages/login/PhoneLogin'
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator()
@@ -47,6 +51,9 @@ export default function Navigation() {
         <Stack.Screen name="NodeDetail" component={NodeDetail} options={{ title: '圈子详情' }} />
         <Stack.Screen name="NodeIndex" component={NodeIndex} options={{ title: '圈子列表' }} />
         <Stack.Screen name="VideoDetail" component={VideoDetail} options={{ title: '视频' }} />
+        <Stack.Screen name="NewTopic" component={NewTopic} options={{ title: '创建帖子' }} />
+        <Stack.Screen name="TopicDetail" component={TopicDetail} options={{ title: '帖子详情' }} />
+        <Stack.Screen name="PhoneLogin" component={PhoneLogin} options={{ title: '手机登录' }} />
       </StackNavigator>
     </NavigationContainer>
   );

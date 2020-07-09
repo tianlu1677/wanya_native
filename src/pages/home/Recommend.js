@@ -71,7 +71,10 @@ class Recommend extends Component {
 
   _renderItem = ({item}) => {
     // console.log('xxxx',item)
-    return <BaseTopic topic={item} post={item}/>
+    return <BaseTopic topic={item}
+                      post={item}
+                      navigation={this.props.navigation}
+    />
   }
 
   render() {

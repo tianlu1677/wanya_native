@@ -9,13 +9,9 @@ import {
 
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// import { useNavigation } from '@react-navigation/native';
+import FastImgComponent from './FastImage'
+// const navigation = useNavigation();
 
 class BaseTopic extends Component {
   constructor(props) {
@@ -34,11 +30,19 @@ class BaseTopic extends Component {
   }
 
   render() {
+
     const {post} = this.props
     return <View style={styles.container}>
-      <Text>
+      <Text onPress={() => this.props.navigation.navigate('TopicDetail', {topic_id: post.item.id}) }>
         {post.item.plain_content}
       </Text>
+
+      <FastImgComponent
+        style={{height: 100, width: 200}}
+        source={{
+          uri: post.item.single_cover.cover_url
+        }}
+      />
     </View>
   }
 }
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 0,
-    height: 80,
+    // height: 80,
   },
 });
 
