@@ -11,9 +11,8 @@ import {
 } from 'react-native';
 
 import BaseTopic from '../../components/BaseTopic'
-import Scroll, {State} from '../../components/Scroll'
+import Scroll, {State, pagination} from '../../components/Scroll'
 import { getHotTopics, getRecommendPosts } from '../../api/home_api'
-import {pagination} from "../../utils/load_more"
 
 class Recommend extends Component {
   constructor(props) {
@@ -77,7 +76,6 @@ class Recommend extends Component {
 
   render() {
     return <View style={{flex: 1, paddingTop: 0}}>
-
       <Scroll
         ref={(flat_list) => {
           this.flat_list = flat_list;

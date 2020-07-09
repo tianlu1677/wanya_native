@@ -11,14 +11,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 export const State = {
   NORMAL: 0,//正常状态
   REFRESHING: 1,//刷新中
@@ -27,6 +19,16 @@ export const State = {
   ERROR: 4,//上拉加载发生错误
   NO_DATA: 5,//无数据情况
 };
+
+export function pagination (headers = {}){
+  // console.log('xxxxxxx', headers)
+  const currentPage = parseInt(headers['x-current-page']);
+  const perPage = parseInt(headers['x-per-page'] || headers['X-Page-Items']);
+  const total = parseInt(headers['x-total']);
+  const hasMore = currentPage * perPage < total;
+  const nextPage = hasMore ? currentPage + 1 : currentPage;
+  return { hasMore: hasMore, nextPage: nextPage, page: currentPage, total: total}
+}
 
 import EmptyData from './Empty'
 
@@ -59,21 +61,21 @@ class Scroll extends Component {
    * 不会显示顶部可以刷新的UI
    * @param enableLoad
    */
-  // setEnableLoad(enableLoad) {
-  //   this.setState({
-  //     enableLoad: enableLoad,
-  //   });
-  // }
-  //
-  // /**
-  //  * 他是不会显示底部刷新的UI的
-  //  * @param enableRefresh
-  //  */
-  // setEnableRefresh(enableRefresh) {
-  //   this.setState({
-  //     enableRefresh: enableRefresh,
-  //   });
-  // }
+  setEnableLoad(enableLoadMore) {
+    this.setState({
+      enableLoadMore: enableLoadMore,
+    });
+  }
+
+  /**
+   * 他是不会显示底部刷新的UI的
+   * @param enableRefresh
+   */
+  setEnableRefresh(enableRefresh) {
+    this.setState({
+      enableRefresh: enableRefresh,
+    });
+  }
 
 
   /**
