@@ -7,6 +7,8 @@ import {
   Text,
   StatusBar,
   FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
@@ -57,21 +59,21 @@ class Scroll extends Component {
    * 不会显示顶部可以刷新的UI
    * @param enableLoad
    */
-  setEnableLoad(enableLoad) {
-    this.setState({
-      enableLoad: enableLoad,
-    });
-  }
-
-  /**
-   * 他是不会显示底部刷新的UI的
-   * @param enableRefresh
-   */
-  setEnableRefresh(enableRefresh) {
-    this.setState({
-      enableRefresh: enableRefresh,
-    });
-  }
+  // setEnableLoad(enableLoad) {
+  //   this.setState({
+  //     enableLoad: enableLoad,
+  //   });
+  // }
+  //
+  // /**
+  //  * 他是不会显示底部刷新的UI的
+  //  * @param enableRefresh
+  //  */
+  // setEnableRefresh(enableRefresh) {
+  //   this.setState({
+  //     enableRefresh: enableRefresh,
+  //   });
+  // }
 
 
   /**
@@ -204,7 +206,7 @@ class Scroll extends Component {
         onEndReached={this._onEndReached}
         onRefresh={this.state.enableRefresh ? this._onRefresh : null}
         refreshing={this.state.enableRefresh && (this.props.requestState === State.REFRESHING)}
-        ListFooterComponent={this.state.enableLoad ? this._renderFooter : null}
+        ListFooterComponent={this.state.enableLoadMore ? this._renderFooter : null}
         onEndReachedThreshold={0.1}
         renderItem={renderItem}
         {...this.props}
@@ -227,7 +229,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: "#555555"
+    color: "red"
   }
 });
 

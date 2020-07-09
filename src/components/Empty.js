@@ -6,6 +6,7 @@ import {
   View,
   Text,
   StatusBar,
+  TouchableOpacity,
 
 } from 'react-native';
 
@@ -36,19 +37,13 @@ class EmptyData extends Component {
           alignItems: "center",
           justifyContent: "center"
         }}>
-          <Image
-            style={{
-              marginTop: 10,
-              marginBottom: 10,
-              width: 120,
-              height: 120,
-              resizeMode: "contain"
-            }}
-            // source={require("../../img/pic_empty_data.png")}
-          />
+          <Text>ssss</Text>
           <Text>{this.props.tips}</Text>
         </View>
       </TouchableOpacity>
     );
   }
 }
+
+
+export default EmptyData;
