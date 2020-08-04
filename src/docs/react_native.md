@@ -16,3 +16,55 @@ components/Scroll.js
 
 7. 抖音中的滑动效果实现 [抖音滑动效果](#https://juejin.im/post/5ec8ed8d6fb9a0480067bb1f)
 可以参考 react-native-swiper 
+
+
+
+- icon
+ [npm](https://github.com/iconfont-cli/react-native-iconfont-cli)
+ 每次更新后 symbol 地址后
+ 重新运行 
+`npx iconfont-rn`
+
+- 设置绝对路径
+ [网址](https://blog.csdn.net/xukongjing1/article/details/97629696)
+ `yarn add babel-plugin-root-import --dev`
+
+  修改 babel.config.js 文件
+
+```
+module.exports = {
+  presets: ['module:metro-react-native-babel-preset'],
+  plugins: [
+    ["babel-plugin-root-import",{
+      "rootPathSuffix": "./src/",
+      "rootPathPrefix": "@/"
+    }]
+  ]
+};
+```
+
+重新运行 `yarn start --reset-cache`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

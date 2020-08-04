@@ -8,6 +8,7 @@ import {
   Button,
 } from 'react-native';
 
+import IconFont from '@/iconfont';
 
 class Notify extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class Notify extends Component {
   render() {
     return <View>
       <Text>消息</Text>
-
+      <IconFont name="huati" size={30} color="green" />
     </View>
   }
 }
