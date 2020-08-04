@@ -39,7 +39,7 @@ class Recommend extends Component {
 
   }
   _request = async (isRefresh) => {
-    this.currentPage = isRefresh ? 0 : this.currentPage + 1;
+    this.currentPage = isRefresh ? 1 : this.currentPage + 1;
     this.setState({ requestState: isRefresh ? State.REFRESHING : State.LOADING });
     const { recommendPostList, recommendPaginate } = this.state
     if (!recommendPaginate.hasMore) {
