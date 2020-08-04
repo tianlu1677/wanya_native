@@ -25,7 +25,7 @@ class Notify extends Component {
     this.setState({
       status: 'good'
     })
-    console.log(React.Helper.getStore('xxxx'))
+    // console.log(React.Helper.getStore('xxxx'))
   }
   render() {
     return <View>
