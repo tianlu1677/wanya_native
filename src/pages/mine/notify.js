@@ -27,7 +27,7 @@ class Notify extends Component {
       status: 'good'
     })
 
-    console.log(lodash.chunk(['a', 'b', 'c', 'd'], 2))
+    console.log(React.$lodash.chunk(['a', 'b', 'c', 'd'], 2))
     // console.log(React.Helper.getStore('xxxx'))
   }
   render() {

@@ -18,6 +18,6 @@ AppRegistry.registerComponent(appName, () => App);
 import Store from './src/utils/export_storage'
 import Helper from './src/utils/helper'
 React.$Store = Store
-React.Helper = Helper
+React.$Helper = Helper
 
-const lodash = require('lodash');
+React.$lodash = require('lodash');
