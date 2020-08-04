@@ -11,6 +11,7 @@ import {
 import Toast from 'react-native-root-toast';
 import Share from "react-native-share";
 import { WebView } from 'react-native-webview';
+import Modal from 'react-native-modal';
 
 
 import Helper from "@/utils/helper";
@@ -19,7 +20,7 @@ class LabIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
+      isVisible: false
     };
   }
 
@@ -48,6 +49,13 @@ class LabIndex extends Component {
     });
   }
 
+ 
+  showModal = () => {
+    console.log('xxxx')
+    this.setState({
+      isVisible: !this.state.isVisible
+    })
+  }
 
   showShare = () => {
 
@@ -113,13 +121,23 @@ class LabIndex extends Component {
 
     return <View>
       <Text>实验室主页</Text>
+      {/*'https://12factor.net/zh_cn/'*/}
 
       <Text>{Helper.fromToNow('1596524875')}</Text>
       <Button onPress={this.showToast} title="toast"></Button>
+      <Button onPress={this.showModal} title="show modal"></Button>
       <Button onPress={this.showShare} title="分享"></Button>
       <Button title={'tabindex'} onPress={() => { this.props.navigation.navigate('LabTabIndex') }} />      
       <Button title={'webview'} onPress={() => { this.props.navigation.navigate('LabWebview') }} />      
 
+      <View>
+        <Modal isVisible={this.state.isVisible}>
+          <View style={{ flex: 1, color: 'red' }}>
+            <Text>I am the modal content!</Text>
+          </View>
+          <Button title="Hide modal" onPress={this.showModal} />
+        </Modal>
+      </View>
     </View>
   }
 }
