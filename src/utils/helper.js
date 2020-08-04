@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
+import dayjs from 'dayjs';
+
 export default class Helper {
   static async storeData(name, value) {
     try {
@@ -31,7 +33,12 @@ export default class Helper {
   }
 
   static async multiGet(data = []) {
-    
+
+  }
+
+  static fromToNow(time) {
+    console.log('time', time)
+    return dayjs(time).locale('zh-cn').format()
   }
 
   static isNotNullAndUndefined(obj, props = []) {

@@ -19,6 +19,7 @@ import PhoneLogin from '../pages/login/PhoneLogin'
 
 import LabIndex from '@/pages/labs/index'
 import LabTabIndex from '@/pages/labs/tabindex'
+import LabWebview from '@/pages/labs/webview'
 
 
 const Tab = createBottomTabNavigator();
@@ -87,6 +88,7 @@ export default function Navigation() {
 
         <Stack.Screen name="LabIndex" component={LabIndex} options={{ title: '实验室主页' }} />
         <Stack.Screen name="LabTabIndex" component={LabTabIndex} options={{ title: '实验室标签页' }} />
+        <Stack.Screen name="LabWebview" component={LabWebview} options={{ title: '' }} />
       </StackNavigator>
     </NavigationContainer>
   );
