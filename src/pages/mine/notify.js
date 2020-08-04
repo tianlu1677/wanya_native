@@ -8,6 +8,7 @@ import {
   Button,
 } from 'react-native';
 
+
 import IconFont from '@/iconfont';
 
 class Notify extends Component {
@@ -25,6 +26,8 @@ class Notify extends Component {
     this.setState({
       status: 'good'
     })
+
+    console.log(lodash.chunk(['a', 'b', 'c', 'd'], 2))
     // console.log(React.Helper.getStore('xxxx'))
   }
   render() {

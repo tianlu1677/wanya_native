@@ -17,6 +17,9 @@ import TopicDetail from '../pages/topics/TopicDetail'
 import NewTopic from '../pages/topics/NewTopic'
 import PhoneLogin from '../pages/login/PhoneLogin'
 
+import LabIndex from '@/pages/labs/index'
+import LabTabIndex from '@/pages/labs/tabindex'
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator()
@@ -81,6 +84,9 @@ export default function Navigation() {
         <Stack.Screen name="NewTopic" component={NewTopic} options={{ title: '创建帖子' }} />
         <Stack.Screen name="TopicDetail" component={TopicDetail} options={{ title: '帖子详情' }} />
         <Stack.Screen name="PhoneLogin" component={PhoneLogin} options={{ title: '手机登录' }} />
+
+        <Stack.Screen name="LabIndex" component={LabIndex} options={{ title: '实验室主页' }} />
+        <Stack.Screen name="LabTabIndex" component={LabTabIndex} options={{ title: '实验室标签页' }} />
       </StackNavigator>
     </NavigationContainer>
   );

@@ -25,6 +25,9 @@ class Mine extends Component {
       <Button title={'视频页面'} onPress={() => { this.props.navigation.navigate('VideoDetail') }} />
       <Button title={'去上传'} onPress={() => { this.props.navigation.navigate('NewTopic') }} />
 
+      <Button title={'去实验室页面'} onPress={() => { this.props.navigation.navigate('LabIndex') }} />
+      
+
     </View>
   }
 }
