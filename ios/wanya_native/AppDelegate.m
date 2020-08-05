@@ -12,6 +12,10 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
+#ifdef DEBUG
+#import <DoraemonKit/DoraemonManager.h>
+#endif
+
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
   SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
@@ -30,6 +34,10 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG
   InitializeFlipper(application);
 #endif
+
+  #ifdef DEBUG
+  [[DoraemonManager shareInstance] installWithPid:@"21db7e76df6393f424c222f22efec014"];//productId为在“平台端操作指南”中申请的产品id
+  #endif
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge

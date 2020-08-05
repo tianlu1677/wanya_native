@@ -17,14 +17,45 @@ import TopicDetail from '../pages/topics/TopicDetail'
 import NewTopic from '../pages/topics/NewTopic'
 import PhoneLogin from '../pages/login/PhoneLogin'
 
+import LabIndex from '@/pages/labs/index'
+import LabTabIndex from '@/pages/labs/tabindex'
+import LabWebview from '@/pages/labs/webview'
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator()
+const MainStack = createStackNavigator()
 const StackNavigator = Stack.Navigator
 
 function HomeTabList() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName = 'logo-react';
+
+          if (route.name === 'Search') {
+            iconName = 'ios-search';
+          } else if (route.name === 'Fav') {
+            iconName = focused ? 'ios-heart' : 'ios-heart-empty';
+          }
+
+          // You can return any component that you like here!
+          return (<Text></Text>);
+        }
+      })}
+        tabBarOptions={{
+          activeTintColor: 'white',
+          inactiveTintColor: 'gray',
+          activeBackgroundColor: '#219bd9',
+          inactiveBackgroundColor: '#d6f9ff',
+          safeAreaInsets: {bottom: 0},
+          style: {height: 70},
+          tabStyle: {paddingBottom: 15}
+        }}
+    >
+
       <Tab.Screen name="Recommend" component={Recommend} options={{ title: '推荐' }} />
       <Tab.Screen name="Notify" component={Notify} options={{ title: '消息' }}  />
       <Tab.Screen name="Mine" component={Mine} options={{ title: '我的' }}  />
@@ -32,14 +63,14 @@ function HomeTabList() {
   )
 }
 
-// function MainStackList() {
-//   return (
-//     <MainStack.Navigator>
-//       <MainStack.Scrreen name="NodeDetail" component={NodeDetail} />
-//       <MainStack.Scrreen name="NodeIndex" component={NodeIndex} />
-//     </MainStack.Navigator>
-//   )
-// }
+function MainStackList() {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Scrreen name="NodeDetail" component={NodeDetail} />
+      <MainStack.Scrreen name="NodeIndex" component={NodeIndex} />
+    </MainStack.Navigator>
+  )
+}
 
 
 export default function Navigation() {
@@ -54,6 +85,10 @@ export default function Navigation() {
         <Stack.Screen name="NewTopic" component={NewTopic} options={{ title: '创建帖子' }} />
         <Stack.Screen name="TopicDetail" component={TopicDetail} options={{ title: '帖子详情' }} />
         <Stack.Screen name="PhoneLogin" component={PhoneLogin} options={{ title: '手机登录' }} />
+
+        <Stack.Screen name="LabIndex" component={LabIndex} options={{ title: '实验室主页' }} />
+        <Stack.Screen name="LabTabIndex" component={LabTabIndex} options={{ title: '实验室标签页' }} />
+        <Stack.Screen name="LabWebview" component={LabWebview} options={{ title: '' }} />
       </StackNavigator>
     </NavigationContainer>
   );

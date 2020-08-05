@@ -33,6 +33,15 @@ def add_flipper_pods!(versions = {})
   pod 'FlipperKit/FlipperKitHighlightOverlay', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitLayoutTextSearchable', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitNetworkPlugin', versions['Flipper'], :configuration => 'Debug'
+
+  # http://xingyun.xiaojukeji.com/docs/dokit/#/iosGuide
+    pod 'DoraemonKit/Core', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #必选
+    pod 'DoraemonKit/WithLogger', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #可选
+    # pod 'DoraemonKit/WithGPS', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #可选
+    # pod 'DoraemonKit/WithLoad', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #可选
+    # pod 'DoraemonKit/WithDatabase', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #可选
+    # pod 'DoraemonKit/WithMLeaksFinder', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #可选
+    # pod 'DoraemonKit/WithWeex', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #可选
 end
 
 # Post Install processing for Flipper
