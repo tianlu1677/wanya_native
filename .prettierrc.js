@@ -3,5 +3,9 @@ module.exports = {
   jsxBracketSameLine: true,
   singleQuote: true,
   printWidth: 100,
-  semi: true
+  semi: false,
+  arrowParens: 'avoid'
 };
+
+
+// https://prettier.io/docs/en/options.html
