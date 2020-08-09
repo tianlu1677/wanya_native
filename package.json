@@ -22,6 +22,7 @@
     "formik": "^2.1.4",
     "lodash": "^4.17.19",
     "lottie-react-native": "^3.4.0",
+    "md5": "^2.3.0",
     "querystring": "^0.2.0",
     "react": "16.11.0",
     "react-native": "0.62.2",

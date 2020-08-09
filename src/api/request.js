@@ -3,9 +3,9 @@ import qs from 'querystring';
 import {getData} from '../utils/storage';
 
 const VERSION = '1.0.0';
-const BASE_URL = 'https://xinxue.niubibeta.com';
+const BASE_URL = 'https://xinxue.meirixinxue.com';
 
-axios.defaults.baseURL = `${BASE_URL}/api/v1`;
+axios.defaults.baseURL = `${BASE_URL}`;
 
 // Add a request interceptor
 axios.interceptors.request.use(
@@ -87,7 +87,7 @@ export default function requestHttp(options, url = null) {
     responseType: 'json'
   };
   if (options.method !== 'GET') {
-    request_options = {request_options, data: data};
+    request_options = {...request_options, data: data};
   }
   return axios(request_options);
 }
