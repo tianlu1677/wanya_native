@@ -81,10 +81,8 @@ setTimeout(function () {
 
 ```
 
-
-
-
-
+# 750 设计稿转化
+- https://github.com/bingoootang/react-native-adaptive-stylesheet
 
 
 
