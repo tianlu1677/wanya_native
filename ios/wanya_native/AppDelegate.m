@@ -4,7 +4,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-#if DEBUG
+#ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
 #import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
@@ -12,9 +12,9 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
-#ifdef DEBUG
-#import <DoraemonKit/DoraemonManager.h>
-#endif
+// #ifdef DEBUG
+// #import <DoraemonKit/DoraemonManager.h>
+// #endif
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -31,13 +31,13 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#if DEBUG
+#ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
 
-  #ifdef DEBUG
-  [[DoraemonManager shareInstance] installWithPid:@"21db7e76df6393f424c222f22efec014"];//productId为在“平台端操作指南”中申请的产品id
-  #endif
+  // #ifdef DEBUG
+  // [[DoraemonManager shareInstance] installWithPid:@"21db7e76df6393f424c222f22efec014"];//productId为在“平台端操作指南”中申请的产品id
+  // #endif
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge

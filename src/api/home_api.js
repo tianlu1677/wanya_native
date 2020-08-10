@@ -1,21 +1,38 @@
-import request from './request'
-import requestHttp from './request'
+import request from './request';
+
+//推荐
+// export async function getRecommendPosts(params = {}) {
+//   const res = await request({
+//     url: '/api/v1/recommend/recommend_posts',
+//     method: 'GET',
+//     params: params
+//   })
+//   return res
+// }
+export const getRecommendPosts = async (params = {}) => {
+  const res = await request({
+    url: '/recommend/recommend_posts',
+    method: 'GET',
+    params: params
+  });
+  return res.data;
+};
 
 // 推荐的分类
 export async function getRecommendCategories() {
   const res = await request({
-    url: "/api/v1/home/recommend_categories",
+    url: '/api/v1/home/recommend_categories',
     method: 'GET'
-  })
-  return res.data
+  });
+  return res.data;
 }
 
 //首页设置课程
 export async function getCategoryRanks(category_id) {
   const res = await request({
-    url: "/api/v1/home/recommend_ranks",
-    method: "GET",
-    params: { category_id: category_id }
+    url: '/api/v1/home/recommend_ranks',
+    method: 'GET',
+    params: {category_id: category_id}
   });
   return res.data;
 }
@@ -23,8 +40,8 @@ export async function getCategoryRanks(category_id) {
 // 分类下推荐的课程
 export async function getRecommendCourses(category_id, params = {}) {
   const res = await request({
-    url: "/api/v1/home/recommend_courses?category_id=" + category_id,
-    method: "GET",
+    url: '/api/v1/home/recommend_courses?category_id=' + category_id,
+    method: 'GET',
     params: params
   });
   return res;
@@ -33,17 +50,16 @@ export async function getRecommendCourses(category_id, params = {}) {
 //首页推荐课程
 export async function getFollowCategories() {
   const res = await request({
-    url: "/api/v1/home/follow_categories",
-    method: "GET"
+    url: '/api/v1/home/follow_categories',
+    method: 'GET'
   });
   return res.data;
 }
 
-
 export async function getDailyCourses() {
   const res = await request({
-    url: "/api/v1/home/daily_courses",
-    method: "GET"
+    url: '/api/v1/home/daily_courses',
+    method: 'GET'
   });
   return res.data;
 }
@@ -70,32 +86,21 @@ export async function getDailyCourses() {
 
 // 首页排序的帖子
 export async function getHotTopics(params = {}) {
-  const res =  await request({
+  const res = await request({
     url: '/api/v1/home/hot_topics',
     method: 'POST',
     params: params
-  })
-  return res
+  });
+  return res;
 }
 
-
-//推荐
-export async function getRecommendPosts(params = {}) {
-  const res = await request({
-    url: '/api/v1/recommend/recommend_posts',
-    method: 'GET',
-    params: params
-  })
-  return res
-}
-
-export  function getFollowedPosts(params = {}) {
+export function getFollowedPosts(params = {}) {
   const res = request({
     url: '/api/v1/recommend/followed_posts',
     method: 'GET',
     params: params
-  })
-  return res
+  });
+  return res;
 }
 
 export async function getUnLoginHotPosts(params = {}) {
@@ -103,8 +108,8 @@ export async function getUnLoginHotPosts(params = {}) {
     url: '/api/v1/recommend/hot_posts',
     method: 'GET',
     params: params
-  })
-  return res
+  });
+  return res;
 }
 
 // 随机推荐的帖子
@@ -114,8 +119,8 @@ export async function getRecommendVideoListPosts(params = {}) {
     url: '/api/v1/recommend/video_list',
     method: 'GET',
     params: params
-  })
-  return res
+  });
+  return res;
 }
 
 // 置顶的帖子
@@ -124,6 +129,6 @@ export async function getRecommendTopPosts(params = {}) {
     url: '/api/v1/recommend/top_posts',
     method: 'GET',
     params: params
-  })
-  return res
+  });
+  return res;
 }
