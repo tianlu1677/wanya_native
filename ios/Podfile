@@ -110,11 +110,11 @@ target 'wanya_native' do
   end
 end
 
-# target 'wanya_native-tvOS' do
-#   # Pods for wanya_native-tvOS
+target 'wanya_native-tvOS' do
+  # Pods for wanya_native-tvOS
 
-#   target 'wanya_native-tvOSTests' do
-#     inherit! :search_paths
-#     # Pods for testing
-#   end
-# end
+  target 'wanya_native-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+end
