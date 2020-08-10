@@ -11,11 +11,11 @@ import request from './request';
 // }
 export const getRecommendPosts = async (params = {}) => {
   const res = await request({
-    url: '/recommend/recommend_posts',
+    url: '/api/v1/recommend/recommend_posts',
     method: 'GET',
-    params: params
+    params
   });
-  return res.data;
+  return res;
 };
 
 // 推荐的分类

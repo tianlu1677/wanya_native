@@ -1,33 +1,33 @@
-import React, {Component} from 'react'
-import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Text, Button} from 'react-native'
+import React, {Component} from 'react';
+import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Text, Button} from 'react-native';
 
-import {verifyInviteCode} from '../../api/phone_sign_api'
-import Toast from 'react-native-root-toast'
-import Helper from '@/utils/helper'
+import {verifyInviteCode} from '../../api/phone_sign_api';
+import Toast from 'react-native-root-toast';
+import Helper from '@/utils/helper';
 
 class InviteLogin extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       inviteCode: ''
-    }
+    };
   }
 
   changeInviteCode = text => {
-    console.log('event', text)
+    console.log('event', text);
     this.setState({
       inviteCode: text
-    })
-  }
+    });
+  };
 
   onVerifyInviteCode = () => {
-    const {invite_code} = this.state
-    const token = Helper.getData('login_token')
-    let data = {invite_code: invite_code, token: token}
+    const {invite_code} = this.state;
+    const token = Helper.getData('login_token');
+    let data = {invite_code: invite_code, token: token};
     verifyInviteCode(data).then(res => {
-      console.log('res', res)
-    })
-  }
+      console.log('res', res);
+    });
+  };
 
   render() {
     return (
@@ -57,7 +57,7 @@ class InviteLogin extends Component {
           </View>
         </View>
       </SafeAreaView>
-    )
+    );
   }
 }
 
@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     // color: 'white',
     fontWeight: '600'
   }
-})
+});
 
-export default InviteLogin
+export default InviteLogin;
