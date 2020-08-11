@@ -7,6 +7,23 @@ import {
   ImageBackground
 } from 'react-native';
 import {Button} from 'react-native-elements';
+import styled from 'styled-components/native'
+
+const StyledText = styled(View)
+`
+  color: red;
+`
+
+ const WechatButton = styled.Text`
+    color: #BDBDBD;
+    ${'' /* background-color: white; */}
+    font-size: 28px;
+    ${'' /* flex: 1; */}
+    height:40px;
+    justify-content: center;
+    border: ${StyleSheet.hairlineWidth}px solid green;
+    ${StyledText}
+  `
 
 class SocialLogin extends Component {
   constructor(props) {
@@ -23,6 +40,8 @@ class SocialLogin extends Component {
     this.props.navigation.navigate('PhoneLogin')
   };
 
+ 
+
   render() {
     return (
       <View>
@@ -30,6 +49,10 @@ class SocialLogin extends Component {
           <ImageBackground
             source={require('../../assets/images/social-login.png')}
             style={{width: '100%', height: '100%'}}>
+            
+            <WechatButton title = "xxx" >
+                hhh
+            </WechatButton>
             <Button
               containerStyle={styles.loginContainer}
               buttonStyle={styles.loginButton}

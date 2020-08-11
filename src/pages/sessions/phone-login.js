@@ -92,7 +92,7 @@ class PhoneLogin extends Component {
   render() {
     return (
       <SafeAreaView>
-        <View>
+        <View style={{fontSize: 100}}>
           <View style={styles.phoneContainer}>
             <Text style={styles.phoneTitle}>绑定手机号</Text>
             <Text onPress={this.onVerifyPhoneCode}>确认11</Text>
