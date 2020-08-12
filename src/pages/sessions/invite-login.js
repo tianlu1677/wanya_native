@@ -10,14 +10,14 @@ class InviteLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inviteCode: ''
+      inviteCode: '',
     };
   }
 
   changeInviteCode = text => {
     console.log('event', text);
     this.setState({
-      inviteCode: text
+      inviteCode: text,
     });
   };
 
@@ -56,17 +56,22 @@ class InviteLogin extends Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   //底部默认样式
   phoneContainer: {
     marginLeft: 25,
     marginRight: 25,
     paddingTop: 30,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
   inviteCode: {
     color: 'white',
+    paddingBottom: 6,
     letterSpacing: 2,
+    borderBottomWidth: 1,
+    fontWeight: '600',
+    borderBottomColor: '#353535',
   },
   inviteCodeDesc: {
     letterSpacing: 1,
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#BDBDBD',
     marginTop: 12,
-    lineHeight: 20
+    lineHeight: 20,
   },
 });
 
