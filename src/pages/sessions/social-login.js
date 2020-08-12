@@ -40,7 +40,6 @@ class SocialLogin extends Component {
     this.props.navigation.navigate('PhoneLogin')
   };
 
- 
 
   render() {
     return (
@@ -48,11 +47,7 @@ class SocialLogin extends Component {
         <SafeAreaView>
           <ImageBackground
             source={require('../../assets/images/social-login.png')}
-            style={{width: '100%', height: '100%'}}>
-            
-            <WechatButton title = "xxx" >
-                hhh
-            </WechatButton>
+            style={{width: '100%', height: '100%'}}>          
             <Button
               containerStyle={styles.loginContainer}
               buttonStyle={styles.loginButton}

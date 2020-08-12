@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
-import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Text, Button} from 'react-native'
+import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Text, Button, StatusBar} from 'react-native'
 
 import {sendPhoneCode, verifyPhoneCode} from '../../api/phone_sign_api'
 import Toast from 'react-native-root-toast'
-
+import styled from 'styled-components/native'
 var md5 = require('md5')
+
+
 
 class PhoneLogin extends Component {
   constructor(props) {
@@ -91,21 +93,33 @@ class PhoneLogin extends Component {
 
   render() {
     return (
-      <SafeAreaView>
-        <View style={{fontSize: 100}}>
+      <>
+      <StatusBar></StatusBar>
+      <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
+        <View>
           <View style={styles.phoneContainer}>
-            <Text style={styles.phoneTitle}>绑定手机号</Text>
-            <Text onPress={this.onVerifyPhoneCode}>确认11</Text>
+            <PhoneTitleText>绑定手机号</PhoneTitleText>
+            <Text style={{color: 'white'}} onPress={this.onVerifyPhoneCode}>确认11</Text>
             <Text
+              style={{color: 'white'}}
               onPress={() => {
                 this.props.navigation.navigate('InviteLogin')
               }}>
               进入下一个页面
             </Text>
 
-            <View style={styles.inputWrapContainer}>
-              <View style={styles.inputContainer}>
-                <Text style={{fontSize: 15, fontWeight: '600', lineHeight: 27, marginRight: 15}}>
+            <InputWrapView>
+              <InputView>
+                <Text style = {
+                  {
+                    fontSize: 15,
+                    fontWeight: '600',
+                    width: 40,
+                    padding: 0,
+                    marginRight: 15,
+                    color: 'white'
+                  }
+                }>
                   + 86
                 </Text>
                 <TextInput
@@ -116,13 +130,18 @@ class PhoneLogin extends Component {
                   maxLength={11}
                   onChangeText={this.changePhone}
                   placeholder={'输入手机号'}
-                  placeholderTextColor={'#353535'}
-                  textAlignVertical="top"
-                  style={{}}
+                  placeholderTextColor={'red'}
+                  // textAlignVertical="top"
+                  value={'198271'}
+                  style={{color: 'white', paddingLeft: 5}}
                 />
-              </View>
+              </InputView>
 
-              <View style={[styles.inputContainer, styles.verifyCode]}>
+              <InputView style = {
+                {
+                  justifyContent: 'space-between'
+                }
+              }>
                 <TextInput
                   autoComplete="tel"
                   caretHidden
@@ -133,38 +152,29 @@ class PhoneLogin extends Component {
                   }}
                   placeholder={'输入验证码'}
                   placeholderTextColor={'#353535'}
+                  style = {
+                    {
+                      color: 'white',            
+                    }
+                  }
                 />
                 {this.state.firstVerify ? (
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      letterSpacing: 1,
-                      fontWeight: '600',
-                      marginRight: 15,
-                      lineHeight: 27
-                    }}
+                  <VerifyCodeText
                     onPress={this.onSendPhoneCode}>
                     {this.state.verifyText}
-                  </Text>
+                  </VerifyCodeText>
                 ) : (
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      letterSpacing: 1,
-                      fontWeight: '600',
-                      marginRight: 15,
-                      lineHeight: 27,
-                      color: this.state.downTime > 0 ? 'red' : 'black'
-                    }}
+                  <VerifyCodeText                    
                     onPress={this.state.downTime > 0 ? () => {} : this.onSendPhoneCode}>
                     {this.state.verifyText}
-                  </Text>
+                  </VerifyCodeText>
                 )}
-              </View>
-            </View>
+              </InputView>
+            </InputWrapView>
           </View>
         </View>
       </SafeAreaView>
+    </>
     )
   }
 }
@@ -175,34 +185,41 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25,
     paddingTop: 30,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
 
-  inputWrapContainer: {
-    marginTop: 60
-  },
-
-  inputContainer: {
-    paddingTop: 18,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    fontSize: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: '#353535',
-    height: 50,
-    lineHeight: 27
-  },
-
-  verifyCode: {
-    justifyContent: 'space-between',
-    lineHeight: 27,
-    height: 50
-  },
-  phoneTitle: {
-    fontSize: 27,
-    // color: 'white',
-    fontWeight: '600'
-  }
+  // verifyCode: {
+  //   justifyContent: 'space-between',
+  //   lineHeight: 27,
+  //   height: 50
+  // },
 })
 
+const PhoneTitleText = styled(Text)
+` letter-spacing: 1;
+  font-size: 27px;
+  color: white;
+  font-weight: 600;
+`
+const InputWrapView = styled(View)`
+  padding-top: 18px;
+  font-size: 30px;
+`
+const InputView = styled(View)`
+  margin-top: 24px;  
+  padding-bottom: 12px;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 30px; 
+  border-bottom-width: 1px;
+  border-bottom-color: red;
+`
+
+const VerifyCodeText = styled(Text)`
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-right: 15;
+  color: props.color;
+`
 export default PhoneLogin
