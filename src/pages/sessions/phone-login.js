@@ -168,10 +168,10 @@ class PhoneLogin extends Component {
                     maxLength={11}
                     onChangeText={this.changePhone}
                     placeholder={'输入手机号'}
-                    placeholderTextColor={'red'}
+                    placeholderTextColor={'#353535'}
                     // textAlignVertical="top"
                     // value={'198271'}
-                    style={{color: 'white'}}
+                    style={{color: 'white', fontWeight: '600'}}
                   />
                 </InputView>
 
@@ -190,7 +190,7 @@ class PhoneLogin extends Component {
                     placeholder={'输入验证码'}
                     placeholderTextColor={'#353535'}
                     style={{
-                      color: 'white',
+                      color: 'white', fontWeight: '600'
                     }}
                   />
                   {this.state.firstVerify ? (
@@ -199,7 +199,7 @@ class PhoneLogin extends Component {
                     </VerifyCodeText>
                   ) : (
                     <VerifyCodeText
-                      color="#353535"
+                      color={this.state.downTime ? '#353535' : 'white'}
                       onPress={this.state.downTime > 0 ? () => {} : this.onSendPhoneCode}>
                       {this.state.verifyText}
                     </VerifyCodeText>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25,
     paddingTop: 30,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
 
   // verifyCode: {
@@ -247,7 +247,7 @@ const InputView = styled(View)`
   justify-content: flex-start;
   font-size: 30px;
   border-bottom-width: 1px;
-  border-bottom-color: red;
+  border-bottom-color: #353535;
 `;
 
 const VerifyCodeText = styled(Text)`
