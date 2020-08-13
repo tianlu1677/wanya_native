@@ -88,13 +88,13 @@ const ScrollList = props => {
 };
 
 ScrollList.propTypes = {
-  enableLoadMore: PropTypes.boolean, //是否可以加载更多，默认true
-  enableRefresh: PropTypes.boolean, //是否可以下拉刷新，默认true
-  data: PropTypes.Array, //List接收的数据
-  itemKey: PropTypes.string, // list 渲染唯一key
-  renderItem: PropTypes.object, // Item 组建
+  data: PropTypes.array.isRequired, //List接收的数据
+  itemKey: PropTypes.string.isRequired, // list 渲染唯一key
+  renderItem: PropTypes.func.isRequired, // Item 组建
   headers: PropTypes.object, // 分页
-  onRefresh: PropTypes.object // 下拉刷新，加载更多，执行方法
+  enableLoadMore: PropTypes.bool, //是否可以加载更多，默认true
+  enableRefresh: PropTypes.bool, //是否可以下拉刷新，默认true
+  onRefresh: PropTypes.func // 下拉刷新，加载更多，执行方法
 };
 
 export default ScrollList;

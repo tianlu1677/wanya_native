@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native';
 import {getRecommendPosts} from '@/api/home_api';
 import ScrollList from '@/components/ScrollList';
+import TabList from '@/components/TabList';
 
 const Index = () => {
   const [headers, setHeaders] = useState();
@@ -44,6 +45,7 @@ const Index = () => {
   return (
     <SafeAreaView style={styles.containter}>
       <Text>top</Text>
+      <TabList />
       <ScrollList
         data={listData}
         renderItem={renderItem}
