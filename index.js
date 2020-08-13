@@ -3,7 +3,7 @@
  */
 
 
-import './logbox'
+// import './logbox'
 
 import 'react-native-gesture-handler';
 

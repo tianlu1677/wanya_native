@@ -16,6 +16,7 @@ import NodeIndex from '../pages/nodes/node-index';
 import TopicDetail from '../pages/topics/TopicDetail';
 import NewTopic from '../pages/topics/NewTopic';
 // import PhoneLogin from '../pages/login/PhoneLogin'
+import InviteDetail from '../pages/mine/invite-detail'
 
 import LabIndex from '@/pages/labs/index';
 import LabTabIndex from '@/pages/labs/tabindex';
@@ -88,6 +89,8 @@ export default function Navigation() {
         <Stack.Screen name="PhoneLogin" component={PhoneLogin} options={{title: '手机登录'}} />
         <Stack.Screen name="SocialLogin" component={SocialLogin} options={{title: '微信登录'}} />
         <Stack.Screen name="InviteLogin" component={InviteLogin} options={{title: '输入邀请码'}} />
+
+        <Stack.Screen name="InviteDetail" component={InviteDetail} options={{title: '我的邀请'}} />
 
         <Stack.Screen name="LabIndex" component={LabIndex} options={{title: '实验室主页'}} />
         <Stack.Screen
