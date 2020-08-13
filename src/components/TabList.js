@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {ScrollView, TouchableOpacity, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
-
 const deviceWidth = Dimensions.get('window').width;
 
 const TablList = props => {
@@ -14,7 +13,8 @@ const TablList = props => {
 
   const scrollRef = useRef(null);
 
-  const setIndex = index => {
+  const setIndex = (item, index) => {
+    props.tabChange(item);
     setCurrentIndex(index);
     setContentWidth(0);
     if (!scrollEnabled) {
@@ -44,10 +44,6 @@ const TablList = props => {
     }
   }, [contentWidth]);
 
-  useEffect(() => {
-    console.log(props.data);
-  }, []);
-
   return (
     <View style={[tabBarStyle.tab, props.bottomLine && tabBarStyle.bottomLine]}>
       <ScrollView
@@ -60,21 +56,21 @@ const TablList = props => {
           props.data.map((item, index) => {
             return (
               <TouchableOpacity
-                onPress={() => setIndex(index)}
+                onPress={() => setIndex(item, index)}
                 onLayout={e => setLaout(e.nativeEvent.layout, index)}
                 key={item.key}
                 style={tabBarStyle.tabItem}>
                 <Text
                   style={[
                     tabBarStyle.tabItemText,
-                    currentIndex === index && tabBarStyle.textActive
+                    currentIndex === index && tabBarStyle.textActive,
                   ]}>
                   {item.value}
                 </Text>
                 <View
                   style={[
                     tabBarStyle.tabItemLine,
-                    currentIndex === index && tabBarStyle.lineActive
+                    currentIndex === index && tabBarStyle.lineActive,
                   ]}
                 />
               </TouchableOpacity>
@@ -91,42 +87,43 @@ const tabBarStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60
+    height: 60,
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
   },
   tabItem: {
     paddingHorizontal: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   tabItemText: {
     fontSize: 15,
     color: '#7F7F81',
-    fontWeight: '500'
+    fontWeight: '500',
   },
   tabItemLine: {
     width: 22,
     height: 2,
     backgroundColor: 'transparent',
-    marginTop: 10
+    marginTop: 10,
   },
   textActive: {
     fontSize: 18,
-    color: '#000'
+    color: '#000',
   },
   lineActive: {
-    backgroundColor: '#000'
-  }
+    backgroundColor: '#000',
+  },
 });
 
 TablList.propTypes = {
   data: PropTypes.array.isRequired, //tabList接收的数据
+  tabChange: PropTypes.func.isRequired, //onChange 返回item
   current: PropTypes.string, // 默认高亮第几项key
   center: PropTypes.bool, // 是否居中显示
-  bottomLine: PropTypes.bool //是否显示底部分界线
+  bottomLine: PropTypes.bool, //是否显示底部分界线
 };
 
 export default TablList;
