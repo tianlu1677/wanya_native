@@ -10,6 +10,7 @@ import {
   StatusBar,
 } from 'react-native';
 
+
 import {sendPhoneCode, verifyPhoneCode} from '../../api/phone_sign_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
