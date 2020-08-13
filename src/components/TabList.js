@@ -4,37 +4,6 @@ import PropTypes from 'prop-types';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const data = [
-  {
-    key: '1',
-    value: '分类'
-  },
-  {
-    key: '2',
-    value: '分类二'
-  },
-  {
-    key: '3',
-    value: '分类三三'
-  },
-  {
-    key: '4',
-    value: '分类4'
-  },
-  {
-    key: '5',
-    value: '分类5'
-  },
-  {
-    key: '6',
-    value: '分类6'
-  },
-  {
-    key: '7',
-    value: '分类7'
-  }
-];
-
 const TablList = props => {
   const current = props.current ? props.data.findIndex(v => v.key === props.current) : null;
   const [currentIndex, setCurrentIndex] = useState(current || 0);
@@ -75,6 +44,10 @@ const TablList = props => {
     }
   }, [contentWidth]);
 
+  useEffect(() => {
+    console.log(props.data);
+  }, []);
+
   return (
     <View style={[tabBarStyle.tab, props.bottomLine && tabBarStyle.bottomLine]}>
       <ScrollView
@@ -83,23 +56,30 @@ const TablList = props => {
         ref={scrollRef}
         centerContent={center}
         scrollEnabled={scrollEnabled}>
-        {data.map((item, index) => {
-          return (
-            <TouchableOpacity
-              onPress={() => setIndex(index)}
-              onLayout={e => setLaout(e.nativeEvent.layout, index)}
-              key={item.key}
-              style={tabBarStyle.tabItem}>
-              <Text
-                style={[tabBarStyle.tabItemText, currentIndex === index && tabBarStyle.textActive]}>
-                {item.value}
-              </Text>
-              <View
-                style={[tabBarStyle.tabItemLine, currentIndex === index && tabBarStyle.lineActive]}
-              />
-            </TouchableOpacity>
-          );
-        })}
+        {props.data.length > 0 &&
+          props.data.map((item, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => setIndex(index)}
+                onLayout={e => setLaout(e.nativeEvent.layout, index)}
+                key={item.key}
+                style={tabBarStyle.tabItem}>
+                <Text
+                  style={[
+                    tabBarStyle.tabItemText,
+                    currentIndex === index && tabBarStyle.textActive
+                  ]}>
+                  {item.value}
+                </Text>
+                <View
+                  style={[
+                    tabBarStyle.tabItemLine,
+                    currentIndex === index && tabBarStyle.lineActive
+                  ]}
+                />
+              </TouchableOpacity>
+            );
+          })}
       </ScrollView>
     </View>
   );
@@ -124,7 +104,8 @@ const tabBarStyle = StyleSheet.create({
   },
   tabItemText: {
     fontSize: 15,
-    color: '#7F7F81'
+    color: '#7F7F81',
+    fontWeight: '500'
   },
   tabItemLine: {
     width: 22,
@@ -142,8 +123,8 @@ const tabBarStyle = StyleSheet.create({
 });
 
 TablList.propTypes = {
+  data: PropTypes.array.isRequired, //tabList接收的数据
   current: PropTypes.string, // 默认高亮第几项key
-  data: PropTypes.array, //List接收的数据
   center: PropTypes.bool, // 是否居中显示
   bottomLine: PropTypes.bool //是否显示底部分界线
 };

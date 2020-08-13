@@ -67,6 +67,10 @@ const ScrollList = props => {
     return footer;
   };
 
+  const renderEmpty = () => {
+    return <Text>暂无数据</Text>;
+  };
+
   useEffect(() => {
     setRefreshing(false);
     setState(loadState.SUCCESS);
@@ -83,6 +87,7 @@ const ScrollList = props => {
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.1}
+      ListEmptyComponent={renderEmpty}
     />
   );
 };

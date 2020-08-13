@@ -4,6 +4,21 @@ import {getRecommendPosts} from '@/api/home_api';
 import ScrollList from '@/components/ScrollList';
 import TabList from '@/components/TabList';
 
+const tabData = [
+  {
+    key: 'recommend',
+    value: '推荐'
+  },
+  {
+    key: 'follow',
+    value: '关注'
+  },
+  {
+    key: 'lasted',
+    value: '最新'
+  }
+];
+
 const Index = () => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -44,8 +59,7 @@ const Index = () => {
 
   return (
     <SafeAreaView style={styles.containter}>
-      <Text>top</Text>
-      <TabList />
+      <TabList data={tabData} />
       <ScrollList
         data={listData}
         renderItem={renderItem}
