@@ -48,32 +48,32 @@ class InviteDetail extends Component {
           <AccountCardView>
             <Image
               source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18, marginBottom: 18}}
             />
             <Image
               source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
             />
             <Image
               source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
             />
             <Image
               source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
             />
             <Image
               source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
             />
 
             <Image
               source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
             />
             <Image
               source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
             />
             <Image
               source={require('../../assets/images/social-login.jpg')}

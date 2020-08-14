@@ -8,7 +8,7 @@ import {
   Button,
 } from 'react-native';
 
-class NodeInex extends Component {
+class NodeIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,4 +23,4 @@ class NodeInex extends Component {
   }
 }
 
-export default NodeInex;
+export default NodeIndex;
