@@ -40,11 +40,14 @@ class NotifyContent extends Component {
         <Image source={{uri: CommentNoticeImg}} style={{width: 40, height: 40, borderRadius: 40}} />
         <CardDescView>
           <View style={{display: 'flex', flexDirection: 'row', width: '80%'}}>
-            <AccountNameTitle>喜洋洋喜洋洋喜洋洋喜喜洋洋喜洋洋喜洋洋喜</AccountNameTitle>
+            <AccountNameTitle>喜洋洋喜洋洋</AccountNameTitle>
             <AccountActionDesc>评论了你</AccountActionDesc>
           </View>
           <ActionTime>1小时前</ActionTime>
-          <ContentText> 很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你</ContentText>
+          <ContentText>
+            {' '}
+            很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你
+          </ContentText>
         </CardDescView>
         <RightWrapView>
           <RightText>春天到了春天到了春天到了春天到了春天到了</RightText>
@@ -73,6 +76,7 @@ const CardDescView = styled(View)`
   font-size: 14px;
   font-weight: 400;
   width: 65%;
+  margin-top: 5px;
 `;
 const AccountNameTitle = styled(Text)`
   padding-right: 6px;
