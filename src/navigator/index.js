@@ -10,12 +10,12 @@ import Recommend from '../pages/home/Recommend';
 import VideoDetail from '../pages/home/VideoDetail';
 
 import Mine from '../pages/mine/mine';
-import Notify from '../pages/mine/notify';
+
 import NodeDetail from '../pages/nodes/node-detail';
 import NodeIndex from '../pages/nodes/node-index';
 import TopicDetail from '../pages/topics/TopicDetail';
 import NewTopic from '../pages/topics/NewTopic';
-// import PhoneLogin from '../pages/login/PhoneLogin'
+import AdminPhoneLogin from '../pages/login/AdminPhoneLogin'
 import InviteDetail from '../pages/mine/invite-detail'
 
 import LabIndex from '@/pages/labs/index';
@@ -26,6 +26,13 @@ import LabWebview from '@/pages/labs/webview';
 import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
+
+// 消息通知页面
+import NotifyIndex from '../pages/notify/notify-index';
+import CommentNotify from "../pages/notify/comment-notify"
+import PraiseNotify from "../pages/notify/praise-notify"
+import SystemNotify from "../pages/notify/system-notify"
+import FollowNotify from "../pages/notify/follow-notify"
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -58,7 +65,8 @@ function HomeTabList() {
         style: {height: 70},
         tabStyle: {paddingBottom: 15}
       }}>
-      <Tab.Screen name="Notify" component={Notify} options={{title: '消息'}} />
+
+      <Tab.Screen name="CommentNotify" component={CommentNotify} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />
     </Tab.Navigator>
@@ -99,6 +107,14 @@ export default function Navigation() {
           options={{title: '实验室标签页'}}
         />
         <Stack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />
+        <Stack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />
+
+
+        {/*  消息通知*/}
+        <Stack.Screen name="CommentNotify" component={CommentNotify} options={{title: '消息通知'}} />
+        <Stack.Screen name="PraiseNotify" component={PraiseNotify} options={{title: '消息通知'}} />
+        <Stack.Screen name="SystemNotify" component={SystemNotify} options={{title: '消息通知'}} />
+        <Stack.Screen name="FollowNotify" component={FollowNotify} options={{title: '消息通知'}} />
       </StackNavigator>
     </NavigationContainer>
   );
