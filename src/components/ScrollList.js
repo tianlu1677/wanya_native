@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {Text, FlatList, ActivityIndicator} from 'react-native';
+import {View, Text, FlatList, ActivityIndicator, StyleSheet, Image} from 'react-native';
 import PropTypes from 'prop-types';
+import {EmptyImg} from '@/utils/default-image';
+import {Props} from 'react-native-image-zoom-viewer/built/image-viewer.type';
 
 export const pagination = (headers = {}) => {
   const currentPage = Number(headers['x-current-page']);
@@ -16,10 +18,11 @@ const loadState = {
   LOADING: 1, // 加载中
   SUCCESS: 2, //加载完成
   EMPTY: 3, //数据为空
-  ERROR: 4 //加载失败
+  ERROR: 4, //加载失败
 };
 
 const ScrollList = props => {
+  const [height, setHeight] = useState(null);
   const [enableLoadMore] = useState(props.enableLoadMore || true);
   const [enableRefresh] = useState(props.enableRefresh || true);
   const [state, setState] = useState(loadState.NORMAL);
@@ -68,7 +71,12 @@ const ScrollList = props => {
   };
 
   const renderEmpty = () => {
-    return <Text>暂无数据</Text>;
+    return (
+      <View style={[scrollStyle.footer, {height: height}]}>
+        <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
+        <Text>{props.emptyTitle || '还没有内容哦'}</Text>
+      </View>
+    );
   };
 
   useEffect(() => {
@@ -80,6 +88,7 @@ const ScrollList = props => {
   return (
     <FlatList
       data={data}
+      onLayout={e => setHeight(e.nativeEvent.layout.height)}
       renderItem={renderItem}
       keyExtractor={item => String(item[itemKey])}
       refreshing={refreshing}
@@ -88,9 +97,22 @@ const ScrollList = props => {
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.1}
       ListEmptyComponent={renderEmpty}
+      style={scrollStyle.containter}
     />
   );
 };
+
+const scrollStyle = StyleSheet.create({
+  footer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyImg: {
+    width: 128,
+    height: 128,
+    marginBottom: 10,
+  },
+});
 
 ScrollList.propTypes = {
   data: PropTypes.array.isRequired, //List接收的数据
@@ -99,7 +121,8 @@ ScrollList.propTypes = {
   headers: PropTypes.object, // 分页
   enableLoadMore: PropTypes.bool, //是否可以加载更多，默认true
   enableRefresh: PropTypes.bool, //是否可以下拉刷新，默认true
-  onRefresh: PropTypes.func // 下拉刷新，加载更多，执行方法
+  onRefresh: PropTypes.func, // 下拉刷新，加载更多，执行方法
+  emptyTitle: Props.string, //数据为空时提示
 };
 
 export default ScrollList;

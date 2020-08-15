@@ -7,16 +7,16 @@ import TabList from '@/components/TabList';
 const tabData = [
   {
     key: 'recommend',
-    value: '推荐'
+    value: '推荐',
   },
   {
     key: 'follow',
-    value: '关注'
+    value: '关注',
   },
   {
     key: 'lasted',
-    value: '最新'
-  }
+    value: '最新',
+  },
 ];
 
 const Index = () => {
@@ -24,6 +24,7 @@ const Index = () => {
   const [listData, setListData] = useState([]);
   const [height, setHeight] = useState(10);
   const [selectedId, setSelectedId] = useState(null);
+  const [currentKey, setCurrentKey] = useState('follow');
 
   const onPress = id => {
     setSelectedId(id);
@@ -53,29 +54,44 @@ const Index = () => {
     setHeaders(res.headers);
   };
 
+  const tabChange = item => {
+    console.log(item);
+    setCurrentKey(item.key);
+  };
+
   useEffect(() => {
     loadData();
   }, []);
 
   return (
     <SafeAreaView style={styles.containter}>
-      <TabList data={tabData} />
-      <ScrollList
-        data={listData}
-        renderItem={renderItem}
-        itemKey={'id'}
-        onRefresh={onRefresh}
-        headers={headers}
-        style={[styles.containter, styles.pageContainter]}
-      />
+      <TabList data={tabData} tabChange={tabChange} />
+
+      {/* 推荐 */}
+      {currentKey === 'recommend' && <Text>推荐</Text>}
+
+      {/* 关注 */}
+      {currentKey === 'follow' && (
+        <ScrollList
+          data={listData}
+          renderItem={renderItem}
+          itemKey={'id'}
+          onRefresh={onRefresh}
+          headers={headers}
+          style={[styles.containter, styles.pageContainter]}
+        />
+      )}
+
+      {/* 最新 */}
+      {currentKey === 'lasted' && <Text>最新</Text>}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   containter: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default Index;
