@@ -66,7 +66,7 @@ function HomeTabList() {
         tabStyle: {paddingBottom: 15}
       }}>
 
-      <Tab.Screen name="FollowNotify" component={FollowNotify} options={{title: '消息'}} />
+      <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />
     </Tab.Navigator>
