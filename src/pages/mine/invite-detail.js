@@ -4,6 +4,7 @@ import {Button} from 'react-native-elements';
 
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
+import InvitePoster from './components/invite-poster'
 
 class InviteDetail extends Component {
   constructor(props) {
