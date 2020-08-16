@@ -1,4 +1,3 @@
-
 export const DefaultLog =
   'http://file.meirixinxue.com/assets/201912011557Pa2e6104d78898fa8f3d99a2af0d0863c.png';
 export const EmptyImg =
@@ -68,5 +67,3 @@ export const brandlImg =
   'http://xinxuefile.meirixinxue.com/assets/2020/e27bf9b6-0666-4238-9919-7406f515c75d.png';
 export const FollowImg =
   'http://xinxuefile.meirixinxue.com/assets/2020/d4fba193-3848-4ae1-8298-46607492a356.png';
-
-

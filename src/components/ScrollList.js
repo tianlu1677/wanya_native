@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList, ActivityIndicator, StyleSheet, Image} from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
-import {Props} from 'react-native-image-zoom-viewer/built/image-viewer.type';
 
 export const pagination = (headers = {}) => {
   const currentPage = Number(headers['x-current-page']);
@@ -23,12 +22,11 @@ const loadState = {
 
 const ScrollList = props => {
   const [height, setHeight] = useState(null);
-  const [enableLoadMore] = useState(props.enableLoadMore || true);
-  const [enableRefresh] = useState(props.enableRefresh || true);
+  const [enableLoadMore, setEnableLoadMore] = useState(true);
+  const [enableRefresh, setEnableRefresh] = useState(true);
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-  const {data, renderItem, itemKey, headers} = props;
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -72,32 +70,50 @@ const ScrollList = props => {
 
   const renderEmpty = () => {
     return (
-      <View style={[scrollStyle.footer, {height: height}]}>
-        <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
-        <Text>{props.emptyTitle || '还没有内容哦'}</Text>
-      </View>
+      !refreshing && (
+        <View style={[scrollStyle.footer, {height: height}]}>
+          <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
+          <Text>{props.emptyTitle || '还没有内容哦'}</Text>
+        </View>
+      )
     );
   };
 
+  const renderSeparator = () => {
+    return <View style={scrollStyle.separator} />;
+  };
+
   useEffect(() => {
-    setRefreshing(false);
+    setEnableLoadMore(props.enableLoadMore === false ? false : true);
+    setEnableRefresh(props.enableRefresh === false ? false : true);
+    setRefreshing(props.loading || false);
+  });
+
+  useEffect(() => {
     setState(loadState.SUCCESS);
-    setPagin(pagination(headers));
-  }, [headers]);
+    setPagin(pagination(props.headers));
+  }, [props.headers]);
+
+  useEffect(() => {
+    setRefreshing(props.loading);
+  }, [props.loading]);
 
   return (
     <FlatList
-      data={data}
+      data={props.data}
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
-      renderItem={renderItem}
-      keyExtractor={item => String(item[itemKey])}
-      refreshing={refreshing}
+      renderItem={props.renderItem}
+      keyExtractor={item => String(item['id' || props.itemKey])}
+      refreshing={refreshing ? refreshing : false}
       onRefresh={enableLoadMore ? onRefresh : null}
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.1}
       ListEmptyComponent={renderEmpty}
+      ItemSeparatorComponent={renderSeparator}
       style={scrollStyle.containter}
+      numColumns={props.numColumns || 1}
+      horizontal={false}
     />
   );
 };
@@ -112,17 +128,22 @@ const scrollStyle = StyleSheet.create({
     height: 128,
     marginBottom: 10,
   },
+  separator: {
+    backgroundColor: '#FAFAFA',
+    height: 9,
+  },
 });
 
 ScrollList.propTypes = {
   data: PropTypes.array.isRequired, //List接收的数据
-  itemKey: PropTypes.string.isRequired, // list 渲染唯一key
+  loading: PropTypes.bool, // loading 状态
   renderItem: PropTypes.func.isRequired, // Item 组建
+  itemKey: PropTypes.string, // list 渲染唯一key 默认id
   headers: PropTypes.object, // 分页
   enableLoadMore: PropTypes.bool, //是否可以加载更多，默认true
   enableRefresh: PropTypes.bool, //是否可以下拉刷新，默认true
   onRefresh: PropTypes.func, // 下拉刷新，加载更多，执行方法
-  emptyTitle: Props.string, //数据为空时提示
+  emptyTitle: PropTypes.string, //数据为空时提示
 };
 
 export default ScrollList;
