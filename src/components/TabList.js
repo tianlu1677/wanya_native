@@ -13,7 +13,7 @@ const TablList = props => {
   const scrollRef = useRef(null);
 
   const setIndex = (item, index) => {
-    props.tabChange(item);
+    props.tabChange(item, index);
     setCurrentIndex(index);
     setContentWidth(0);
     if (!scrollEnabled) {

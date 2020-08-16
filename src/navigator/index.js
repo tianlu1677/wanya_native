@@ -107,7 +107,7 @@ export default function Navigation() {
           options={{title: '实验室标签页'}}
         />
         <Stack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />
-        <Stack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />
+        {/* <Stack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} /> */}
 
         {/*  消息通知*/}
         <Stack.Screen
