@@ -16,7 +16,7 @@ import NodeDetail from '../pages/nodes/node-detail';
 import NodeIndex from '../pages/nodes/node-index';
 import TopicDetail from '../pages/topics/TopicDetail';
 import NewTopic from '../pages/topics/NewTopic';
-// import PhoneLogin from '../pages/login/PhoneLogin'
+import AdminPhoneLogin from '../pages/login/PhoneLogin'
 import InviteDetail from '../pages/mine/invite-detail';
 
 import LabIndex from '@/pages/labs/index';
