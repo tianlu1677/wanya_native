@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 const deviceWidth = Dimensions.get('window').width;
 
 const TablList = props => {
-  const current = props.current ? props.data.findIndex(v => v.key === props.current) : null;
-  const [currentIndex, setCurrentIndex] = useState(current || 0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [center] = useState(true || props.center);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
@@ -39,6 +38,13 @@ const TablList = props => {
   };
 
   useEffect(() => {
+    if (props.current) {
+      const index = props.data.findIndex(v => v.key === props.current);
+      setCurrentIndex(index);
+    }
+  }, []);
+
+  useEffect(() => {
     if (contentWidth > deviceWidth) {
       setScrollEnabled(true);
     }
@@ -65,7 +71,7 @@ const TablList = props => {
                     tabBarStyle.tabItemText,
                     currentIndex === index && tabBarStyle.textActive,
                   ]}>
-                  {item.value}
+                  {item.title}
                 </Text>
                 <View
                   style={[

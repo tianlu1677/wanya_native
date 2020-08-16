@@ -1,19 +1,40 @@
 import request from './request';
 
-//推荐
-// export async function getRecommendPosts(params = {}) {
-//   const res = await request({
-//     url: '/api/v1/recommend/recommend_posts',
-//     method: 'GET',
-//     params: params
-//   })
-//   return res
-// }
+// 未登录热门推荐
+export const getUnLoginHotPosts = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/recommend/hot_posts',
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
+// 推荐帖子
 export const getRecommendPosts = async (params = {}) => {
   const res = await request({
     url: '/api/v1/recommend/recommend_posts',
     method: 'GET',
-    params
+    params,
+  });
+  return res;
+};
+
+// 关注的帖子
+export const getFollowedTopics = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/home/followed_topics',
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
+// 帖子详情
+export const getTopic = async id => {
+  const res = await request({
+    url: `/api/v1/topics/${id}`,
+    method: 'GET',
   });
   return res;
 };
@@ -22,7 +43,7 @@ export const getRecommendPosts = async (params = {}) => {
 export async function getRecommendCategories() {
   const res = await request({
     url: '/api/v1/home/recommend_categories',
-    method: 'GET'
+    method: 'GET',
   });
   return res.data;
 }
@@ -32,7 +53,7 @@ export async function getCategoryRanks(category_id) {
   const res = await request({
     url: '/api/v1/home/recommend_ranks',
     method: 'GET',
-    params: {category_id: category_id}
+    params: {category_id: category_id},
   });
   return res.data;
 }
@@ -42,7 +63,7 @@ export async function getRecommendCourses(category_id, params = {}) {
   const res = await request({
     url: '/api/v1/home/recommend_courses?category_id=' + category_id,
     method: 'GET',
-    params: params
+    params: params,
   });
   return res;
 }
@@ -51,7 +72,7 @@ export async function getRecommendCourses(category_id, params = {}) {
 export async function getFollowCategories() {
   const res = await request({
     url: '/api/v1/home/follow_categories',
-    method: 'GET'
+    method: 'GET',
   });
   return res.data;
 }
@@ -59,7 +80,7 @@ export async function getFollowCategories() {
 export async function getDailyCourses() {
   const res = await request({
     url: '/api/v1/home/daily_courses',
-    method: 'GET'
+    method: 'GET',
   });
   return res.data;
 }
@@ -89,7 +110,7 @@ export async function getHotTopics(params = {}) {
   const res = await request({
     url: '/api/v1/home/hot_topics',
     method: 'POST',
-    params: params
+    params: params,
   });
   return res;
 }
@@ -98,19 +119,19 @@ export function getFollowedPosts(params = {}) {
   const res = request({
     url: '/api/v1/recommend/followed_posts',
     method: 'GET',
-    params: params
+    params: params,
   });
   return res;
 }
 
-export async function getUnLoginHotPosts(params = {}) {
-  const res = await request({
-    url: '/api/v1/recommend/hot_posts',
-    method: 'GET',
-    params: params
-  });
-  return res;
-}
+// export async function getUnLoginHotPosts(params = {}) {
+//   const res = await request({
+//     url: '/api/v1/recommend/hot_posts',
+//     method: 'GET',
+//     params: params,
+//   });
+//   return res;
+// }
 
 // 随机推荐的帖子
 
@@ -118,7 +139,7 @@ export async function getRecommendVideoListPosts(params = {}) {
   const res = await request({
     url: '/api/v1/recommend/video_list',
     method: 'GET',
-    params: params
+    params: params,
   });
   return res;
 }
@@ -128,7 +149,7 @@ export async function getRecommendTopPosts(params = {}) {
   const res = await request({
     url: '/api/v1/recommend/top_posts',
     method: 'GET',
-    params: params
+    params: params,
   });
   return res;
 }

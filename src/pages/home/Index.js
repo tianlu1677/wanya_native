@@ -1,62 +1,58 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native';
-import {getRecommendPosts} from '@/api/home_api';
-import ScrollList from '@/components/ScrollList';
+import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabList from '@/components/TabList';
+import PostList from '@/components/List/PostList';
+import DoubleList from '@/components/List/DoubleList';
 
 const tabData = [
   {
     key: 'recommend',
-    value: '推荐',
+    title: '推荐',
   },
   {
     key: 'follow',
-    value: '关注',
+    title: '关注',
   },
   {
     key: 'lasted',
-    value: '最新',
+    title: '最新',
   },
 ];
 
 const Index = () => {
+  const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const [height, setHeight] = useState(10);
-  const [selectedId, setSelectedId] = useState(null);
-  const [currentKey, setCurrentKey] = useState('follow');
-
-  const onPress = id => {
-    setSelectedId(id);
-  };
-
-  const renderItem = ({item}) => {
-    const defaultUrl = 'https://reactnative.dev/img/tiny_logo.png';
-    return (
-      <View onPress={() => onPress(item.id)} style={styles.slide}>
-        <Image
-          style={{width: 100, height: 200}}
-          source={{uri: item.item.single_cover.cover_url || defaultUrl}}
-        />
-        <Text>{item.item.node_name}</Text>
-      </View>
-    );
-  };
+  const [currentKey, setCurrentKey] = useState('recommend');
 
   const onRefresh = current => {
     loadData(current);
   };
 
   const loadData = async (page = 1) => {
-    const res = await getRecommendPosts({page, per_page: 4});
-    const data = page === 1 ? res.data.posts : [...listData, ...res.data.posts];
-    setListData(data);
-    setHeaders(res.headers);
+    setLoading(true);
+    let data = null;
+    switch (currentKey) {
+      case 'recommend':
+        const post = await getRecommendPosts({page, per_page: 10});
+        setHeaders(post.headers);
+        data = post.data.posts;
+        break;
+      case 'follow':
+        const res = await getRecommendPosts({page});
+        setHeaders(res.headers);
+        data = res.data.posts;
+        break;
+    }
+    setLoading(false);
+    setListData(page === 1 ? data : [...listData, ...data]);
   };
 
   const tabChange = item => {
-    console.log(item);
     setCurrentKey(item.key);
+    loadData();
+    setListData([]);
   };
 
   useEffect(() => {
@@ -65,25 +61,22 @@ const Index = () => {
 
   return (
     <SafeAreaView style={styles.containter}>
-      <TabList data={tabData} tabChange={tabChange} />
+      <TabList data={tabData} tabChange={tabChange} current={currentKey} />
 
       {/* 推荐 */}
-      {currentKey === 'recommend' && <Text>推荐</Text>}
+      {currentKey === 'recommend' && (
+        <DoubleList data={listData} loading={loading} onRefresh={onRefresh} headers={headers} />
+      )}
 
       {/* 关注 */}
       {currentKey === 'follow' && (
-        <ScrollList
-          data={listData}
-          renderItem={renderItem}
-          itemKey={'id'}
-          onRefresh={onRefresh}
-          headers={headers}
-          style={[styles.containter, styles.pageContainter]}
-        />
+        <PostList data={listData} loading={loading} onRefresh={onRefresh} headers={headers} />
       )}
 
       {/* 最新 */}
-      {currentKey === 'lasted' && <Text>最新</Text>}
+      {currentKey === 'lasted' && (
+        <PostList data={listData} loading={loading} onRefresh={onRefresh} headers={headers} />
+      )}
     </SafeAreaView>
   );
 };
