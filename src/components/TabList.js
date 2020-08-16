@@ -3,7 +3,7 @@ import {ScrollView, TouchableOpacity, View, Text, StyleSheet, Dimensions} from '
 import PropTypes from 'prop-types';
 const deviceWidth = Dimensions.get('window').width;
 
-const TablList = props => {
+const TabList = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [center] = useState(true || props.center);
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -29,7 +29,7 @@ const TablList = props => {
     sx >= contentWidth - deviceWidth && scrollRef.current.scrollToEnd({animated: true});
   };
 
-  const setLaout = (layout, index) => {
+  const setLayout = (layout, index) => {
     const totalWidth = contentWidth + layout.width;
     setContentWidth(totalWidth);
     layoutList[index] = layout;
@@ -63,7 +63,7 @@ const TablList = props => {
             return (
               <TouchableOpacity
                 onPress={() => setIndex(item, index)}
-                onLayout={e => setLaout(e.nativeEvent.layout, index)}
+                onLayout={e => setLayout(e.nativeEvent.layout, index)}
                 key={item.key}
                 style={tabBarStyle.tabItem}>
                 <Text
@@ -124,7 +124,7 @@ const tabBarStyle = StyleSheet.create({
   },
 });
 
-TablList.propTypes = {
+TabList.propTypes = {
   data: PropTypes.array.isRequired, //tabList接收的数据
   tabChange: PropTypes.func.isRequired, //onChange 返回item
   current: PropTypes.string, // 默认高亮第几项key
@@ -132,4 +132,4 @@ TablList.propTypes = {
   bottomLine: PropTypes.bool, //是否显示底部分界线
 };
 
-export default TablList;
+export default TabList;
