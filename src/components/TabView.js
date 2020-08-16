@@ -48,7 +48,7 @@ class TabViewIndex extends Component {
     const renderScene = SceneMap(this.props.scenes);
     return (
       <TabView
-        renderTabBar={() => <TablList data={routes} current={index} />}
+        renderTabBar={() => <TablList data={routes} current={routes[index].key} tabChange={this.onChange} />}
         navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={this.onChange}
