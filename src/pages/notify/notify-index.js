@@ -3,8 +3,7 @@ import {SafeAreaView, StyleSheet, ScrollView, View, Text, Image, Button} from 'r
 import {syncAccountInfo} from '@/api/mine_api';
 import goPage from '../../utils/page_path';
 import styled from 'styled-components/native';
-
-import IconFont from '@/iconfont';
+import BadgeMessage from '../../components/NodeComponents/BadgeMessage';
 
 import {
   CommentNoticeImg,
@@ -12,7 +11,6 @@ import {
   PraiseNoticeImg,
   SystemNoticeImg,
   MineMentionNoticeUserImg,
-  brandlImg,
 } from '../../utils/default-image';
 
 class NotifyIndex extends Component {
@@ -66,20 +64,18 @@ class NotifyIndex extends Component {
 
   unreadMessageCount = message_count => {
     if (message_count <= 0) {
-      return 0;
+      return '0';
     } else if (message_count > 99) {
       return '99+';
     } else {
-      return message_count;
+      return message_count.toString();
     }
   };
 
   render() {
     const {currentAccount} = this.props;
     const account = currentAccount;
-    const unread_message_count = this.currentAccountId
-      ? currentAccount.unread_insite_notifies_count + currentAccount.unread_comments_notifies_count
-      : 0;
+
     const unread_inside_notifies_count = this.currentAccountId
       ? currentAccount.unread_insite_notifies_count
       : 0;
@@ -105,8 +101,14 @@ class NotifyIndex extends Component {
                 <Image
                   source={{uri: PraiseNoticeImg}}
                   style={{width: 45, height: 45}}
-                  className="cover-img"
-                />
+                  />
+                {unread_inside_notifies_count > 0 && (
+                  <BadgeMessage
+                    value={this.unreadMessageCount(unread_inside_notifies_count)}
+                    status={'error'}
+                    containerStyle={styles.badgeContainer}
+                  />
+                )}
               </CoverWrapView>
 
               <NotifyContentView>
@@ -123,6 +125,13 @@ class NotifyIndex extends Component {
             <ItemView onPress={this.goPageMethod.bind(this, 'notify_comment')}>
               <CoverWrapView>
                 <Image source={{uri: CommentNoticeImg}} style={{width: 45, height: 45}} />
+                {unread_comments_notifies_count > 0 && (
+                  <BadgeMessage
+                    value={this.unreadMessageCount(unread_comments_notifies_count)}
+                    status={'error'}
+                    containerStyle={styles.badgeContainer}
+                  />
+                )}
               </CoverWrapView>
 
               <NotifyContentView>
@@ -139,6 +148,13 @@ class NotifyIndex extends Component {
             <ItemView onPress={this.goPageMethod.bind(this, 'mention_account_notice')}>
               <CoverWrapView>
                 <Image source={{uri: MineMentionNoticeUserImg}} style={{width: 45, height: 45}} />
+                {unread_mentions_notifies_count > 0 && (
+                  <BadgeMessage
+                    value={this.unreadMessageCount(unread_mentions_notifies_count)}
+                    status={'error'}
+                    containerStyle={styles.badgeContainer}
+                  />
+                )}
               </CoverWrapView>
 
               <NotifyContentView>
@@ -155,6 +171,13 @@ class NotifyIndex extends Component {
             <ItemView onPress={this.goPageMethod.bind(this, 'notify_follow')}>
               <CoverWrapView>
                 <Image source={{uri: FollowNoticeImg}} style={{width: 45, height: 45}} />
+                {unread_follow_messages_count > 0 && (
+                  <BadgeMessage
+                    value={this.unreadMessageCount(unread_follow_messages_count)}
+                    status={'error'}
+                    containerStyle={styles.badgeContainer}
+                  />
+                )}
               </CoverWrapView>
 
               <NotifyContentView>
@@ -171,7 +194,17 @@ class NotifyIndex extends Component {
             <ItemView onPress={this.goPageMethod.bind(this, 'notify_system')}>
               <CoverWrapView>
                 <View>
-                  <Image source={{uri: SystemNoticeImg}} style={{width: 45, height: 45}} />
+                  <Image
+                    source={{uri: SystemNoticeImg}}
+                    style={{width: 45, height: 45, borderRadius: 22.5}}
+                  />
+                  {unread_system_messages_count > 0 && (
+                    <BadgeMessage
+                      value={this.unreadMessageCount(unread_system_messages_count)}
+                      status={'error'}
+                      containerStyle={styles.badgeContainer}
+                    />
+                  )}
                 </View>
               </CoverWrapView>
 
@@ -193,7 +226,13 @@ class NotifyIndex extends Component {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  badgeContainer: {
+    position: 'absolute',
+    right: -7,
+    top: -3,
+  },
+});
 
 const WrapView = styled(View)`
   background-color: white;

@@ -26,7 +26,7 @@ class AdminPhoneLogin extends Component {
         storeData('auth_token', res.token);
         storeData('account_id', res.id.toString());
         storeData('account_nickname', res.nickname);
-        storeData('account_avatar_url', res.avatar_url)
+        storeData('account_avatar_url', res.avatar_url);
         let toast = Toast.show('登录成功', {
           duration: Toast.durations.LONG,
           position: Toast.positions.TOP,

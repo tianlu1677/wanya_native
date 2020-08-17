@@ -69,6 +69,7 @@ function HomeTabList() {
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />
+      <Tab.Screen name="NotifyIndex" component={NotifyIndex} options={{title: '消息'}} />
     </Tab.Navigator>
   );
 }
