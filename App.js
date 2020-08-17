@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar} from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { store, persistor } from './src/redux/stores/store';
 
-import {
-  Header,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions
-} from 'react-native/Libraries/NewAppScreen';
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar} from 'react-native';
 
 import Navigation from './src/navigator/index';
 
 import {Image} from 'react-native';
-import {Card, ListItem, Icon, Button} from 'react-native-elements';
 import NetInfo from '@react-native-community/netinfo';
 
 import Config from 'react-native-config';
@@ -59,7 +55,12 @@ class App extends Component {
   render() {
     return (
       <>
-        <Navigation />
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Navigation />
+          </PersistGate>
+        </Provider>
+
       </>
     );
   }

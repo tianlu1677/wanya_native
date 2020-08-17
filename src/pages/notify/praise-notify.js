@@ -1,7 +1,19 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import {connect} from 'react-redux';
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
+import {
+  dispathCurrentAccount,
+  dispathBaseCurrentAccount,
+  dispathEmptyAccountDetail,
+} from '@/redux/actions';
+
+// @connect(state => state.account, {
+//   dispathCurrentAccount,
+//   dispathBaseCurrentAccount,
+//   dispathEmptyAccountDetail,
+// })
 
 class PraiseNotify extends Component {
   constructor(props) {
@@ -12,7 +24,7 @@ class PraiseNotify extends Component {
   }
 
   componentDidMount() {
-
+    this.props.dispathCurrentAccount()
   }
 
   componentDidUpdate() {}
@@ -24,7 +36,9 @@ class PraiseNotify extends Component {
   render() {
     return (
       <View>
-        <SafeAreaView><Text>sss</Text></SafeAreaView>
+        <SafeAreaView>
+          <Text>sss</Text>
+        </SafeAreaView>
       </View>
     );
   }
