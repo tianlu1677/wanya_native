@@ -11,7 +11,9 @@ class PraiseNotify extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+
+  }
 
   componentDidUpdate() {}
 
@@ -22,7 +24,7 @@ class PraiseNotify extends Component {
   render() {
     return (
       <View>
-        <SafeAreaView>CommentNotify</SafeAreaView>
+        <SafeAreaView><Text>sss</Text></SafeAreaView>
       </View>
     );
   }

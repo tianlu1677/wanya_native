@@ -4,7 +4,7 @@ export default class goPage {
   }
 
   static goLogin() {
-    this.props.navigation.navigate('PhoneLogin');
+    // this.props.navigation.navigate('PhoneLogin');
   }
 
   // 个人中心 mine

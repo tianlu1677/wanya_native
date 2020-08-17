@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Image, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, Image,Pressable, Button} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import goPage from '../../utils/page_path';
 import styled from 'styled-components/native';
@@ -27,7 +27,9 @@ class NotifyIndex extends Component {
   }
 
   goPageMethod = (type = '', event) => {
-    event.stopPropagation();
+    console.log('wwww')
+    // event.stopPropagation();
+
     if (!this.currentAccountId) {
       goPage.goLogin();
       return;
@@ -35,6 +37,7 @@ class NotifyIndex extends Component {
     const {currentAccount} = this.props;
     switch (type) {
       case 'notify_praise':
+        this.props.navigation.navigate('PraiseNotify')
         break;
       case 'notify_comment':
         break;
@@ -241,7 +244,7 @@ const WrapView = styled(View)`
   display: flex;
   flex-direction: column;
 `;
-const ItemView = styled(View)`
+const ItemView = styled(Pressable)`
   margin-top: 18px;
   display: flex;
   flex-direction: row;
