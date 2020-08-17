@@ -35,7 +35,7 @@ class AdminPhoneLogin extends Component {
           hideOnPress: true,
           delay: 0,
         });
-        let data = await getData('auth_token');
+        // let data = await getData('auth_token');
         // console.log(data)
       } else {
         let toast = Toast.show('用户名或者密码错误', {

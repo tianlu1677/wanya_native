@@ -10,7 +10,7 @@ import {
   Button,
 } from 'react-native';
 import styled from 'styled-components/native';
-
+import Avator from '../../../components/NodeComponents/Avator';
 import {CommentNoticeImg, LogoImg} from '@/utils/default-image';
 
 class NotifyContent extends Component {
@@ -37,7 +37,7 @@ class NotifyContent extends Component {
   render() {
     return (
       <CardView>
-        <Image source={{uri: CommentNoticeImg}} style={{width: 40, height: 40, borderRadius: 40}} />
+        {/*<Avator size={40} />*/}
         <CardDescView>
           <View style={{display: 'flex', flexDirection: 'row', width: '80%'}}>
             <AccountNameTitle>喜洋洋喜洋洋</AccountNameTitle>

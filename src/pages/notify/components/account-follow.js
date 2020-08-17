@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, Image, Button} from 'react-native';
 import styled from 'styled-components/native';
 import {CommentNoticeImg, LogoImg} from '@/utils/default-image';
-import Avator from "../../../components/NodeComponents/Avator"
+import Avator from '../../../components/NodeComponents/Avator';
 
 class AccountFollow extends Component {
   constructor(props) {
@@ -28,11 +28,7 @@ class AccountFollow extends Component {
   render() {
     return (
       <CardView>
-        <Avator
-          account={this.props.account}
-          width={40}
-        >
-        </Avator>
+        {/*<Avator account={this.props.account} size={40}></Avator>*/}
         <CardDescView>
           <View style={{display: 'flex', flexDirection: 'row', width: '80%'}}>
             <AccountNameTitle>sss</AccountNameTitle>

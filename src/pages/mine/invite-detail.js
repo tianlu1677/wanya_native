@@ -54,7 +54,7 @@ class InviteDetail extends Component {
         <SafeAreaView>
           <CardView>
             <View style={{flexDirection: 'row'}}>
-              <Avatar width={20} account={{account: { avatar_url: Helper.getData('avatar_url')}}} />
+              <Avatar size={20} account={{account: { avatar_url: Helper.getData('avatar_url')}}} />
               <CardTitleText>我的邀请码</CardTitleText>
             </View>
 
