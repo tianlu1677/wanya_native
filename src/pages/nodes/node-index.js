@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
+import {useSelector, useDispatch} from 'react-redux';
 
 const NodeIndex = () => {
   const [categories, setCategories] = useState(null);
@@ -11,6 +12,9 @@ const NodeIndex = () => {
   const [layoutList, setLayoutList] = useState([]);
 
   const scrollRef = useRef(null);
+
+  const state = useSelector(state => state);
+  console.log(state);
 
   const loadData = async () => {
     const category = await getCategoryList();
@@ -31,7 +35,7 @@ const NodeIndex = () => {
 
   useEffect(() => {
     loadData();
-  });
+  }, []);
 
   return categories && nodes ? (
     <NodeView>

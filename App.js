@@ -5,7 +5,7 @@ import {
   Header,
   Colors,
   DebugInstructions,
-  ReloadInstructions
+  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 import Navigation from './src/navigator/index';
@@ -21,7 +21,9 @@ import Config from 'react-native-config';
 //
 // https://github.com/react-native-community/react-native-device-info#installation
 import DeviceInfo from 'react-native-device-info';
-
+import {Provider} from 'react-redux';
+import store from './src/store';
+console.log(store);
 class App extends Component {
   constructor(props) {
     super(props);
@@ -58,9 +60,9 @@ class App extends Component {
 
   render() {
     return (
-      <>
+      <Provider store={store}>
         <Navigation />
-      </>
+      </Provider>
     );
   }
 }
