@@ -31,7 +31,7 @@ const Header = props => {
 
   return (
     <HeaderView>
-      <Avator account={content.account} />
+      <Avator account={content.account} size={40} />
       <Content />
       <JoinButtonText>进入圈子</JoinButtonText>
     </HeaderView>

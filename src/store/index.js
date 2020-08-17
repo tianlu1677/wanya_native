@@ -23,9 +23,6 @@ const reducer = combineReducers({
   home: homeReducer,
 });
 
-const reduxDevtools = window.devToolsExtension();
-const store = createStore(reducer, reduxDevtools);
-
-// const store = createStore(reducer, devToolsEnhancer());
+const store = createStore(reducer);
 
 export default store;

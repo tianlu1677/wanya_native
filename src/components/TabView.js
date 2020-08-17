@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import TabList from './TabList'
+import TabList from './TabList';
 
 const initialLayout = {
   width: Dimensions.get('window').width,
@@ -29,7 +29,7 @@ class TabViewIndex extends Component {
   onChange = index => {
     let tab = this.props.routes[index];
     this.props.onChange(index, tab);
-    console.log('routes[index].key', tab.key)
+    console.log('routes[index].key', tab.key);
   };
 
   tabChange = (item, index) => {
@@ -53,7 +53,9 @@ class TabViewIndex extends Component {
     const renderScene = SceneMap(this.props.scenes);
     return (
       <TabView
-        renderTabBar={() => <TabList data={routes} current={routes[index].key} tabChange={this.tabChange} />}
+        renderTabBar={() => (
+          <TabList data={routes} current={routes[index].key} tabChange={this.tabChange} />
+        )}
         navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={this.onChange}

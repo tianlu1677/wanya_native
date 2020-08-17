@@ -14,7 +14,6 @@ const NodeIndex = () => {
   const scrollRef = useRef(null);
 
   const state = useSelector(state => state);
-  console.log(state);
 
   const loadData = async () => {
     const category = await getCategoryList();

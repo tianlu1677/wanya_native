@@ -59,7 +59,7 @@ const DoubleSingle = props => {
             )}
             <MultiLineText numberOfLines={2}>{v.item.plain_content}</MultiLineText>
             <SingleBottom>
-              <Avator account={v.item.account} width={16} />
+              <Avator account={v.item.account} size={16} />
               <SingleName>{v.item.account.nickname}</SingleName>
               <IconFont name="praise-solid" size={20} color={'#bdbdbd'} />
               <Text style={{marginLeft: 5, color: '#bdbdbd'}}>{v.item.praises_count}</Text>
