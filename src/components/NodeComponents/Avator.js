@@ -5,19 +5,19 @@ import {personalImg, brandlImg} from '@/utils/default-image';
 
 const Avator = props => {
   const imagestyle = {
-    width: props.width,
-    height: props.width,
+    width: props.size,
+    height: props.size,
   };
 
   const iconStyle = {
-    width: Number(props.width / 3),
-    height: Number(props.width / 3),
+    width: Number(props.size / 3),
+    height: Number(props.size / 3),
   };
 
   return (
     <View style={{...imagestyle, position: 'relative'}}>
       <Image
-        style={{...imagestyle, borderRadius: Number(props.width / 2), display: 'flex'}}
+        style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
       />
       {props.account.settled_type !== 'single' && (
@@ -31,7 +31,7 @@ const Avator = props => {
 };
 
 Avator.propTypes = {
-  width: PropTypes.number.isRequired, //宽高尺寸
+  size: PropTypes.number.isRequired, //宽高尺寸
 };
 
 export default Avator;

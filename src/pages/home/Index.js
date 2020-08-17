@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabList from '@/components/TabList';
 import PostList from '@/components/List/PostList';
@@ -32,15 +32,21 @@ const Index = () => {
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    let data = null;
+    let data = [];
+    let res = null;
     switch (currentKey) {
       case 'recommend':
-        const post = await getRecommendPosts({page, per_page: 10});
-        setHeaders(post.headers);
-        data = post.data.posts;
+        res = await getRecommendPosts({page, per_page: 10});
+        setHeaders(res.headers);
+        data = res.data.posts;
         break;
       case 'follow':
-        const res = await getRecommendPosts({page});
+        res = await getRecommendPosts({page});
+        setHeaders(res.headers);
+        data = res.data.posts;
+        break;
+      case 'lasted':
+        res = await getRecommendPosts({page});
         setHeaders(res.headers);
         data = res.data.posts;
         break;
@@ -50,14 +56,19 @@ const Index = () => {
   };
 
   const tabChange = item => {
-    setCurrentKey(item.key);
-    loadData();
     setListData([]);
+    setCurrentKey(item.key);
   };
+
+  // didmount update willMount
 
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [currentKey]);
 
   return (
     <SafeAreaView style={styles.containter}>

@@ -23,7 +23,6 @@ import Config from 'react-native-config';
 import DeviceInfo from 'react-native-device-info';
 import {Provider} from 'react-redux';
 import store from './src/store';
-console.log(store);
 class App extends Component {
   constructor(props) {
     super(props);

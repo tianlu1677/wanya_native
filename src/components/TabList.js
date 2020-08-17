@@ -46,6 +46,11 @@ const TabList = props => {
   }, []);
 
   useEffect(() => {
+    const index = props.data.findIndex(v => v.key === props.current);
+    setCurrentIndex(index);
+  }, [props.current]);
+
+  useEffect(() => {
     if (contentWidth > deviceWidth) {
       setScrollEnabled(true);
     }
