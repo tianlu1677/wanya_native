@@ -1,22 +1,44 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Image} from 'react-native';
 import {Button} from 'react-native-elements';
-
 import styled from 'styled-components/native';
+import Helper from '../../utils/helper';
+import Avatar from '../../components/NodeComponents/Avator';
 import Modal from 'react-native-modal';
-import InvitePoster from './components/invite-poster'
+import InvitePoster from './components/invite-poster';
+
+import {getInviteCode, getAccountInviteList} from '../../api/account_api';
 
 class InviteDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       shareModelVisible: false,
+      inviteCode: '',
+      accountList: [],
     };
   }
 
+  componentDidMount() {
+    this.loadInitInfo();
+  }
+
+  loadInitInfo = async () => {
+    const codeRes = await getInviteCode();
+    this.setState({
+      inviteCode: codeRes.invite_code,
+    });
+    getAccountInviteList().then(res => {
+      console.log('res', res);
+      this.setState({
+        accountList: res.invites,
+      });
+    });
+  };
+
   onCopy = () => {
-    console.log('copy1');
-    console.log('copy');
+    let message = `我的顽鸦邀请码是 ${this.state.inviteCode}`;
+    Helper.setClipboard(message);
   };
 
   onShare = () => {
@@ -25,19 +47,18 @@ class InviteDetail extends Component {
   };
 
   render() {
+    const {inviteCode, accountList} = this.state;
+    console.log('sta', this.state);
     return (
       <View style={{flex: 1}}>
         <SafeAreaView>
           <CardView>
             <View style={{flexDirection: 'row'}}>
-              <Image
-                source={require('../../assets/images/social-login.jpg')}
-                style={{width: 21, height: 21, borderRadius: 21, marginRight: 10}}
-              />
+              <Avatar width={20} account={{account: { avatar_url: Helper.getData('avatar_url')}}} />
               <CardTitleText>我的邀请码</CardTitleText>
             </View>
 
-            <CardCodeText>9HHHKKL</CardCodeText>
+            <CardCodeText>{inviteCode}</CardCodeText>
             <CardCopyText onPress={this.onCopy}>复制</CardCopyText>
           </CardView>
 
@@ -47,44 +68,18 @@ class InviteDetail extends Component {
           </DescView>
 
           <AccountCardView>
+            {accountList.map(invite => {
+              return <Avatar width={40} key={invite.id} account={invite.account} />;
+            })}
             <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18, marginBottom: 18}}
-            />
-            <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
-            />
-            <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
-            />
-            <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
-            />
-            <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
-            />
-
-            <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
-            />
-            <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 18}}
-            />
-            <Image
-              source={require('../../assets/images/social-login.jpg')}
-              style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}
+              source={require('../../assets/images/add-invite.png')}
+              style={{width: 40, height: 40, borderRadius: 20}}
+              onPress={this.onShare}
             />
           </AccountCardView>
           <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请6位</Text>
+            <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
           </View>
-
         </SafeAreaView>
         <Button
           title="微信分享"
@@ -131,7 +126,6 @@ const CardView = styled(View)`
   margin: 21px 25px 31px 25px;
   padding-top: 20px;
   height: 145px;
-  border-radius: 3px;
   background: black;
   border-radius: 6px;
 `;
@@ -150,7 +144,7 @@ const CardCodeText = styled(Text)`
   line-height: 28px;
   letter-spacing: 1px;
   margin-top: 26px;
-  margin-left: 24px;
+  margin-left: 8px;
 `;
 
 const CardCopyText = styled(Text)`
@@ -192,6 +186,6 @@ const ShareCardView = styled(View)`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-`
+`;
 
 export default InviteDetail;

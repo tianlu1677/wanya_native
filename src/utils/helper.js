@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import Clipboard from "@react-native-community/clipboard";
 
 import dayjs from 'dayjs';
 
@@ -34,6 +35,14 @@ export default class Helper {
 
   static async multiGet(data = []) {
 
+  }
+
+  // 获取粘贴板信息
+  static setClipboard(content) {
+    Clipboard.setString(content)
+  }
+  static async getClipboard() {
+    await Clipboard.getString()
   }
 
   static fromToNow(time) {
