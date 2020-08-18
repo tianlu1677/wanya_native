@@ -1,23 +1,21 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
-import {
-  connect,
-  useSelector
-} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
 import {
   dispathCurrentAccount,
   dispathBaseCurrentAccount,
   dispathEmptyAccountDetail,
+  dispathGetList,
 } from '@/redux/actions';
 
-@connect(state => state.account, {
+@connect(state => state.home, {
   dispathCurrentAccount,
   dispathBaseCurrentAccount,
   dispathEmptyAccountDetail,
+  dispathGetList,
 })
-
 class PraiseNotify extends Component {
   constructor(props) {
     super(props);
@@ -27,10 +25,13 @@ class PraiseNotify extends Component {
   }
 
   componentDidMount() {
-    this.props.dispathCurrentAccount()
+    this.props.dispathGetList(310);
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    // 接收新的state
+    console.log(this.props.listData);
+  }
 
   componentWillUnmount() {}
 
