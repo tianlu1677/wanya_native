@@ -13,9 +13,9 @@ const persistConfig = {
   // Storage Method (React Native)
   storage: AsyncStorage,
   // Whitelist (Save Specific Reducers)
-  whitelist: [
-    'account',
-  ],
+  // whitelist: [
+  //   'account',
+  // ],
   // Blacklist (Don't Save Specific Reducers)
   blacklist: [
     'counterReducer',
@@ -27,7 +27,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = createStore(
   persistedReducer,
   applyMiddleware(
-    createLogger(),
+    // createLogger(), // 使用时可以手动打开
     thunk
   ),
 );

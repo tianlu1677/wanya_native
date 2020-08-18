@@ -10,6 +10,7 @@ import {
 
 // 当前用户
 export const dispathCurrentAccount = () => {
+  console.log('dispathCurrentAccount')
   return {
     type: CURRENT_ACCOUNT_REQUEST,
   };

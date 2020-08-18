@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
-import {connect} from 'react-redux';
+import {
+  connect,
+  useSelector
+} from 'react-redux';
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
 import {
@@ -9,11 +12,11 @@ import {
   dispathEmptyAccountDetail,
 } from '@/redux/actions';
 
-// @connect(state => state.account, {
-//   dispathCurrentAccount,
-//   dispathBaseCurrentAccount,
-//   dispathEmptyAccountDetail,
-// })
+@connect(state => state.account, {
+  dispathCurrentAccount,
+  dispathBaseCurrentAccount,
+  dispathEmptyAccountDetail,
+})
 
 class PraiseNotify extends Component {
   constructor(props) {
