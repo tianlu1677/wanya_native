@@ -1,10 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import styled from 'styled-components/native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import {useSelector} from 'react-redux';
+import {white} from 'ansi-colors';
+
+const defaultCoverUrl =
+  'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
 
 const NodeIndex = () => {
   const [categories, setCategories] = useState(null);
@@ -21,6 +25,7 @@ const NodeIndex = () => {
     const node = await getNodeIndex();
     setCategories(category);
     setNodes(node);
+    console.log(node);
   };
 
   const setLayout = (layout, index) => {
@@ -40,12 +45,12 @@ const NodeIndex = () => {
 
   return categories && nodes ? (
     <NodeView>
-      <View style={styles.nodeWrap}>
+      <View style={styles.cateWrap}>
         {categories.map((categorie, index) => (
           <TouchableOpacity
             key={index}
             onPress={() => onChange(index)}
-            style={[styles.nodeName, active === index && styles.nodeNameActive]}>
+            style={[styles.cateName, active === index && styles.cateNameActive]}>
             <Text>{categorie.name}</Text>
             {active === index && <Text style={styles.active} />}
           </TouchableOpacity>
@@ -53,15 +58,28 @@ const NodeIndex = () => {
       </View>
       <ScrollView ref={scrollRef}>
         {categories.map((categorie, index) => (
-          <View key={categorie.id} onLayout={e => setLayout(e.nativeEvent.layout, index)}>
-            <Text style={{padding: 20, marginBottom: 10}}>标题是：：：：：{categorie.name}</Text>
-            <View style={{backgroundColor: 'pink'}}>
+          <View
+            style={styles.nodeContent}
+            key={categorie.id}
+            onLayout={e => setLayout(e.nativeEvent.layout, index)}>
+            <Text style={styles.cateTitle}>{categorie.name}</Text>
+            <View style={{flex: 1}}>
               {nodes
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
-                  <Text key={node.id} style={{backgroundColor: 'pink', padding: 10}}>
-                    {node.name}
-                  </Text>
+                  <View key={node.id} style={styles.nodeItem}>
+                    <Image
+                      style={styles.nodeImg}
+                      source={{uri: node.cover_url}}
+                      defaultSource={defaultCoverUrl}
+                    />
+                    <View style={styles.nodeInfo}>
+                      <Text style={styles.nodeName}>{node.name}</Text>
+                      <Text style={styles.nodeDesc}>
+                        {node.topics_count}篇帖子 · {node.accounts_count}位{node.nickname || '圈友'}
+                      </Text>
+                    </View>
+                  </View>
                 ))}
             </View>
           </View>
@@ -74,8 +92,8 @@ const NodeIndex = () => {
 };
 
 const styles = StyleSheet.create({
-  nodeWrap: {},
-  nodeName: {
+  cateWrap: {},
+  cateName: {
     width: 75,
     height: 50,
     alignItems: 'center',
@@ -84,7 +102,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 10,
   },
-  nodeNameActive: {
+  cateNameActive: {
     backgroundColor: 'white',
   },
   active: {
@@ -95,6 +113,46 @@ const styles = StyleSheet.create({
     top: '50%',
     marginTop: -5,
     backgroundColor: '#ffff00',
+  },
+  nodeContent: {
+    paddingLeft: 18,
+    backgroundColor: 'white',
+  },
+  nodeItem: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
+  nodeImg: {
+    width: 49,
+    height: 49,
+    borderRadius: 5,
+    borderStyle: 'solid',
+    borderWidth: 3,
+    borderColor: '#ffff00',
+    marginRight: 10,
+  },
+  cateTitle: {
+    paddingBottom: 13,
+    color: '#7f7f81',
+  },
+  nodeInfo: {
+    paddingBottom: 18,
+    paddingTop: 5,
+    borderBottomColor: '#EBEBEB',
+    borderBottomWidth: 1,
+    flex: 1,
+  },
+  nodeName: {
+    height: 20,
+    lineHeight: 20,
+    fontSize: 15,
+  },
+  nodeDesc: {
+    height: 20,
+    lineHeight: 20,
+    fontSize: 11,
+    color: '#bdbdbd',
   },
 });
 

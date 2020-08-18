@@ -66,7 +66,7 @@ function HomeTabList() {
         style: {height: 70},
         tabStyle: {paddingBottom: 15},
       }}>
-      <Tab.Screen name="Node" component={PraiseNotify} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={NodeIndex} options={{title: '圈子'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />
