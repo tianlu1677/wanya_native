@@ -16,9 +16,6 @@ import {CommentNoticeImg, LogoImg} from '@/utils/default-image';
 class NotifyContent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false,
-    };
   }
 
   static defaultProps = {
@@ -35,15 +32,19 @@ class NotifyContent extends Component {
   componentDidCatch(error, info) {}
 
   render() {
+    const {
+      account,
+      item
+    } = this.props
     return (
       <CardView>
-        {/*<Avator size={40} />*/}
+        <Avator size={40} account={this.props.account} />
         <CardDescView>
           <View style={{display: 'flex', flexDirection: 'row', width: '80%'}}>
-            <AccountNameTitle>喜洋洋喜洋洋</AccountNameTitle>
-            <AccountActionDesc>评论了你</AccountActionDesc>
+            <AccountNameTitle>{account.nickname}</AccountNameTitle>
+            <AccountActionDesc>{item.message_detail}</AccountActionDesc>
           </View>
-          <ActionTime>1小时前</ActionTime>
+          <ActionTime>{item.created_at_text}</ActionTime>
           <ContentText>
             {' '}
             很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你
@@ -51,7 +52,6 @@ class NotifyContent extends Component {
         </CardDescView>
         <RightWrapView>
           <RightText>春天到了春天到了春天到了春天到了春天到了</RightText>
-
           {/*<ImageBackground source={{uri: CommentNoticeImg}} style={{width: 60, height: 60}} />*/}
           {/*<VideoPlayImage source={{url: LogoImg}} />*/}
         </RightWrapView>

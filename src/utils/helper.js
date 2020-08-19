@@ -14,7 +14,9 @@ export default class Helper {
 
   static async getData(name) {
     try {
-      const value = await AsyncStorage.getItem(name);
+      let value = await AsyncStorage.getItem(name);
+      value = (value === null || value === undefined) ? value : ''
+      console.log('value', value)
       return value;
     } catch (e) {
       return ''

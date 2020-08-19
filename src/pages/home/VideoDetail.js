@@ -13,6 +13,7 @@ import {Image} from 'react-native';
 import {Card, ListItem, Icon, Button} from 'react-native-elements';
 import Video from 'react-native-video'
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Helper from '../../utils/helper';
 
 const images = [{
   // Simplest usage.
@@ -42,9 +43,15 @@ class VideoDetail extends Component {
     };
   }
 
+  async componentDidMount() {
+    this.auth_token = await Helper.getData('auth_token')
+    console.log('xxxxx', this.auth_token)
+  }
+
   render() {
     let videoUrl = 'http://file.meirixinxue.com/assets/a3c6644d8280330ca8724aed3832db78.mp4'
     return <View>
+      
       {/*<Text>VideoDetail</Text>*/}
       <Video source={{uri: videoUrl}}
              ref={(ref) => {
@@ -58,7 +65,6 @@ class VideoDetail extends Component {
              controls
              reportBandwidth
       />
-
       <Modal visible={this.state.showPreview} transparent={true} onRequestClose={() => this.setState({ showPreview: false })}>
         <ImageViewer
           onShowModal={() => {console.log('xxx', 'onShowModal')}}
@@ -67,7 +73,8 @@ class VideoDetail extends Component {
         />
       </Modal>
 
-      <Button title={'预览图片'} onPress={() => {this.setState({showPreview: true})} }/>
+      <Button title={'预览图片' + this.auth_token} onPress={() => {this.setState({showPreview: true})} }/>
+      <Text>{this.auth_token}</Text>  
     </View>
   }
 }

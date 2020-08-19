@@ -21,7 +21,7 @@ class AdminPhoneLogin extends Component {
     // console.log(await React.$Store.getData('auth_token'))
 
     phoneSignIn({phone: values.phone, password: values.password}).then(async res => {
-      // console.log('res', res)
+      console.log('res', res)
       if (res.status === 200) {
         storeData('auth_token', res.token);
         storeData('account_id', res.id.toString());

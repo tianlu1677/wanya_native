@@ -2,11 +2,10 @@ import React, {Component} from 'react';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { store, persistor } from './src/redux/stores/store';
-
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar} from 'react-native';
 
 import Navigation from './src/navigator/index';
-
+import Helper from './src/utils/helper'
 import {Image} from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
@@ -26,6 +25,23 @@ class App extends Component {
   componentDidMount() {
     this.loadNetworkInfo();
     this.loadDeviceInfo();
+    this.loginAdmin()
+  }
+
+
+  loginAdmin = () => {
+    Helper.clearAllData()
+    if (!Helper.getData('auth_token')) {
+      setTimeout(() => {
+        this.props.navigation.navigate('AdminPhoneLogin');
+      }, 1000)   
+      
+    }
+
+    
+    // if (React.$Store.getStore('auth_token')) {
+    //   this.props.navigation.navigate('AdminPhoneLogin')
+    // }
   }
 
   loadNetworkInfo = () => {

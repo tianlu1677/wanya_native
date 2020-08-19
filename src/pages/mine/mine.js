@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import Helper from '../../utils/helper';
 
 class Mine extends Component {
   constructor(props) {
@@ -9,16 +10,32 @@ class Mine extends Component {
       coin_data: [],
       loading: false,
     };
+    this.auth_token = ''
+  }
+
+  componentDidMount() {
+    this.auth_token = Helper.getData('auth_token')
+  }
+
+  componentDidUpdate() {
+    this.auth_token = Helper.getData('auth_token')
   }
 
   render() {
     return (
       <View>
+        <Text>{this.auth_token}</Text>
         <Text>Mine</Text>
         <Button
           title={'去登录'}
           onPress={() => {
             this.props.navigation.navigate('AdminPhoneLogin');
+          }}
+        />
+        <Button
+          title={'清除所有缓存'}
+          onPress={() => {
+            Helper.clearAllData()
           }}
         />
         <Button
