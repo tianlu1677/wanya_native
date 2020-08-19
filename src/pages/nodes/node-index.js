@@ -1,11 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import styled from 'styled-components/native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
-import {useSelector} from 'react-redux';
-import {white} from 'ansi-colors';
+import IconFont from '@/iconfont';
 
 const defaultCoverUrl =
   'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
@@ -15,17 +13,13 @@ const NodeIndex = () => {
   const [nodes, setNodes] = useState(null);
   const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(0);
-
   const scrollRef = useRef(null);
-
-  const state = useSelector(state => state);
 
   const loadData = async () => {
     const category = await getCategoryList();
     const node = await getNodeIndex();
     setCategories(category);
     setNodes(node);
-    console.log(node);
   };
 
   const setLayout = (layout, index) => {
@@ -44,7 +38,7 @@ const NodeIndex = () => {
   }, []);
 
   return categories && nodes ? (
-    <NodeView>
+    <View style={styles.wrapper}>
       <View style={styles.cateWrap}>
         {categories.map((categorie, index) => (
           <TouchableOpacity
@@ -74,10 +68,15 @@ const NodeIndex = () => {
                       defaultSource={defaultCoverUrl}
                     />
                     <View style={styles.nodeInfo}>
-                      <Text style={styles.nodeName}>{node.name}</Text>
-                      <Text style={styles.nodeDesc}>
-                        {node.topics_count}篇帖子 · {node.accounts_count}位{node.nickname || '圈友'}
-                      </Text>
+                      <View>
+                        <Text style={styles.nodeName}>{node.name}</Text>
+                        <Text style={styles.nodeDesc}>
+                          {node.topics_count}篇帖子 · {node.accounts_count}位
+                          {node.nickname || '圈友'}
+                        </Text>
+                      </View>
+                      <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
+                      {/* <IconFont name="duigou1" size={16} color={'#000'} style={styles.icon} /> */}
                     </View>
                   </View>
                 ))}
@@ -85,14 +84,17 @@ const NodeIndex = () => {
           </View>
         ))}
       </ScrollView>
-    </NodeView>
+    </View>
   ) : (
     <Loading />
   );
 };
 
 const styles = StyleSheet.create({
-  cateWrap: {},
+  wrapper: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   cateName: {
     width: 75,
     height: 50,
@@ -134,9 +136,12 @@ const styles = StyleSheet.create({
   },
   cateTitle: {
     paddingBottom: 13,
+    paddingTop: 15,
     color: '#7f7f81',
   },
   nodeInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingBottom: 18,
     paddingTop: 5,
     borderBottomColor: '#EBEBEB',
@@ -154,21 +159,10 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#bdbdbd',
   },
+  icon: {
+    marginLeft: 'auto',
+    marginRight: 22,
+  },
 });
-
-const NodeView = styled(View)`
-  flex: 1;
-  flex-direction: row;
-`;
-
-const NodeNameView = styled(View)`
-  // width: 100px;
-  background: pink;
-`;
-
-const NodeContent = styled(View)`
-  width: 100px;
-  background: pink;
-`;
 
 export default NodeIndex;

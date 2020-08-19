@@ -11,6 +11,7 @@ import Recommend from '../pages/home/Recommend';
 import VideoDetail from '../pages/home/VideoDetail';
 
 import Mine from '../pages/mine/mine';
+import AccountDetail from '@/pages/mine/account-detail';
 
 import NodeDetail from '../pages/nodes/node-detail';
 import NodeIndex from '../pages/nodes/node-index';
@@ -66,7 +67,7 @@ function HomeTabList() {
         style: {height: 70},
         tabStyle: {paddingBottom: 15},
       }}>
-      <Tab.Screen name="Node" component={NodeIndex} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={AccountDetail} options={{title: '圈子'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />

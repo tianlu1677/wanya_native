@@ -15,7 +15,7 @@ const Avator = props => {
   };
 
   function goAccountDetail() {
-    console.log('goAccountDetail')
+    console.log('goAccountDetail');
     if (props.account) {
       console.log('this.props', props.account.id);
     }
@@ -23,7 +23,7 @@ const Avator = props => {
   }
 
   return (
-    <View style={{...props.constStyle, position: 'relative'}} >
+    <View style={{...imagestyle, position: 'relative'}}>
       <Image
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
@@ -34,8 +34,7 @@ const Avator = props => {
           style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
           source={{uri: props.account.settled_type === 'personal' ? personalImg : brandlImg}}
         />
-      )
-      }
+      )}
     </View>
   );
 };

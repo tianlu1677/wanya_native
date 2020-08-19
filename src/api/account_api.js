@@ -62,13 +62,13 @@ export async function updateAccountInfo(
 }
 
 //用户的详情页
-export async function getAccount(id) {
+export const getAccount = async id => {
   const res = await request({
     url: `/api/v1/accounts/${id}`,
     method: 'GET',
   });
-  return res.data;
-}
+  return res;
+};
 
 //用户的基本信息
 export async function getAccountBaseInfo(nickname) {
