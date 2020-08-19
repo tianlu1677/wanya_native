@@ -6,11 +6,12 @@ import {
   ACCOUNT_UN_FOLLOW_REQUEST,
   ACCOUNT_EMPTY_SUCCESS,
   CHANGE_PROGRESS,
-} from '../constants';
+  GET_LIST,
+} from '../constants/index';
+import {getCategoryList} from '@/api/category_api';
 
 // 当前用户
 export const dispathCurrentAccount = () => {
-  console.log('dispathCurrentAccount')
   return {
     type: CURRENT_ACCOUNT_REQUEST,
   };
@@ -61,4 +62,10 @@ export const changeProgress = value => {
     type: CHANGE_PROGRESS,
     value,
   };
+};
+
+export const dispathGetList = res => async dispatch => {
+  console.log(res); // 传参数
+  const list = await getCategoryList();
+  dispatch({type: GET_LIST, value: list});
 };
