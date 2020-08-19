@@ -1,40 +1,18 @@
-// import React, {Component} from 'react';
-// import {
-//   SafeAreaView,
-//   StyleSheet,
-//   ScrollView,
-//   View,
-//   Text,
-//   Button,
-// } from 'react-native';
-// import ImagePicker from 'react-native-image-crop-picker';
-//
-//
-// class NewTopic extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       modalVisible: false,
-//       coin_data: [],
-//       loading: false,
-//     };
-//   }
-//
-//   render() {
-//     return <View>
-//       <Text>NewTopic</Text>
-//       <Text>上传图片以及视频</Text>
-//
-//     </View>
-//   }
-// }
-//
-// export default NewTopic;
-
-
-import React, { Component } from 'react';
-import { Alert, Image, NativeModules, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, {Component} from 'react';
+import {
+  Alert,
+  Image,
+  NativeModules,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Video from 'react-native-video';
+import Uploader from '../../utils/uploader';
+import {createAsset} from '@/api/asset_api';
+import Helper from '../../utils/helper';
 
 var ImagePicker = NativeModules.ImageCropPicker;
 
@@ -72,7 +50,7 @@ export default class App extends Component {
       includeExif: true,
       mediaType,
     })
-      .then((image) => {
+      .then(image => {
         console.log('received image', image);
         this.setState({
           image: {
@@ -84,7 +62,7 @@ export default class App extends Component {
           images: null,
         });
       })
-      .catch((e) => alert(e));
+      .catch(e => alert(e));
   }
 
   pickSingleBase64(cropit) {
@@ -95,7 +73,7 @@ export default class App extends Component {
       includeBase64: true,
       includeExif: true,
     })
-      .then((image) => {
+      .then(image => {
         console.log('received base64 image');
         this.setState({
           image: {
@@ -106,7 +84,7 @@ export default class App extends Component {
           images: null,
         });
       })
-      .catch((e) => alert(e));
+      .catch(e => alert(e));
   }
 
   cleanupImages() {
@@ -114,7 +92,7 @@ export default class App extends Component {
       .then(() => {
         console.log('removed tmp images from tmp directory');
       })
-      .catch((e) => {
+      .catch(e => {
         alert(e);
       });
   }
@@ -122,26 +100,21 @@ export default class App extends Component {
   cleanupSingleImage() {
     let image =
       this.state.image ||
-      (this.state.images && this.state.images.length
-        ? this.state.images[0]
-        : null);
+      (this.state.images && this.state.images.length ? this.state.images[0] : null);
     console.log('will cleanup image', image);
 
     ImagePicker.cleanSingle(image ? image.uri : null)
       .then(() => {
         console.log(`removed tmp image ${image.uri} from tmp directory`);
       })
-      .catch((e) => {
+      .catch(e => {
         alert(e);
       });
   }
 
   cropLast() {
     if (!this.state.image) {
-      return Alert.alert(
-        'No image',
-        'Before open cropping only, please select image'
-      );
+      return Alert.alert('No image', 'Before open cropping only, please select image');
     }
 
     ImagePicker.openCropper({
@@ -149,7 +122,7 @@ export default class App extends Component {
       width: 200,
       height: 200,
     })
-      .then((image) => {
+      .then(image => {
         console.log('received cropped image', image);
         this.setState({
           image: {
@@ -161,7 +134,7 @@ export default class App extends Component {
           images: null,
         });
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
         Alert.alert(e.message ? e.message : e);
       });
@@ -184,7 +157,19 @@ export default class App extends Component {
       cropperActiveWidgetColor: 'white',
       cropperToolbarWidgetColor: '#3498DB',
     })
-      .then((image) => {
+      .then(image => {
+        let uploadOptions = {
+          url: 'https://xinxue.meirixinxue.com/api/v1/assets',
+          path: image.path,
+          method: 'POST',
+          type: image.mime,
+          maxRetries: 1,
+          headers: {
+            'content-type': 'application/octet-stream', // Customize content-type
+          },
+        };
+
+        Uploader.upload(uploadOptions);
         console.log('received image', image);
         this.setState({
           image: {
@@ -196,7 +181,7 @@ export default class App extends Component {
           images: null,
         });
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
         Alert.alert(e.message ? e.message : e);
       });
@@ -210,10 +195,10 @@ export default class App extends Component {
       includeExif: true,
       forceJpg: true,
     })
-      .then((images) => {
+      .then(images => {
         this.setState({
           image: null,
-          images: images.map((i) => {
+          images: images.map(i => {
             console.log('received image', i);
             return {
               uri: i.path,
@@ -224,7 +209,7 @@ export default class App extends Component {
           }),
         });
       })
-      .catch((e) => alert(e));
+      .catch(e => alert(e));
   }
 
   scaledHeight(oldW, oldH, newW) {
@@ -234,17 +219,17 @@ export default class App extends Component {
   renderVideo(video) {
     console.log('rendering video');
     return (
-      <View style={{ height: 300, width: 300 }}>
+      <View style={{height: 300, width: 300}}>
         <Video
-          source={{ uri: video.uri, type: video.mime }}
-          style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0 }}
+          source={{uri: video.uri, type: video.mime}}
+          style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}}
           rate={1}
           paused={false}
           volume={1}
           muted={false}
           resizeMode={'cover'}
-          onError={(e) => console.log(e)}
-          onLoad={(load) => console.log(load)}
+          onError={e => console.log(e)}
+          onLoad={load => console.log(load)}
           repeat={true}
         />
       </View>
@@ -252,12 +237,7 @@ export default class App extends Component {
   }
 
   renderImage(image) {
-    return (
-      <Image
-        style={{ width: 300, height: 300, resizeMode: 'contain' }}
-        source={image}
-      />
-    );
+    return <Image style={{width: 300, height: 300, resizeMode: 'contain'}} source={image} />;
   }
 
   renderAsset(image) {
@@ -270,9 +250,9 @@ export default class App extends Component {
 
   pickVideo = () => {
     ImagePicker.openPicker({
-      mediaType: "video",
-      cropping: false
-    }).then((image) => {
+      mediaType: 'video',
+      cropping: false,
+    }).then(image => {
       console.log(image);
       console.log('received image', image);
       this.setState({
@@ -284,9 +264,8 @@ export default class App extends Component {
         },
         images: null,
       });
-
     });
-  }
+  };
 
   render() {
     return (
@@ -294,88 +273,51 @@ export default class App extends Component {
         <ScrollView>
           {this.state.image ? this.renderAsset(this.state.image) : null}
           {this.state.images
-            ? this.state.images.map((i) => (
-              <View key={i.uri}>{this.renderAsset(i)}</View>
-            ))
+            ? this.state.images.map(i => <View key={i.uri}>{this.renderAsset(i)}</View>)
             : null}
         </ScrollView>
-
-        <TouchableOpacity
-          onPress={() => this.pickSingleWithCamera(false)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Select Single Image With Camera</Text>
+        <TouchableOpacity onPress={() => this.pickSingle(false)} style={styles.button}>
+          <Text style={styles.text}>上传单张图片1</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.pickSingleWithCamera(false)} style={styles.button}>
+          <Text style={styles.text}>照相机拍照</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() =>
-            this.pickSingleWithCamera(false, (mediaType = 'video'))
-          }
-          style={styles.button}
-        >
-          <Text style={styles.text}>Select Single Video With Camera</Text>
+          onPress={() => this.pickSingleWithCamera(false, (mediaType = 'video'))}
+          style={styles.button}>
+          <Text style={styles.text}>照相机拍视频</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            this.pickVideo(false, (mediaType = 'video'))
-          }
-          style={styles.button}
-        >
+          onPress={() => this.pickVideo(false, (mediaType = 'video'))}
+          style={styles.button}>
           <Text style={styles.text}>上传视频</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => this.pickSingleWithCamera(true)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>
-            Select Single With Camera With Cropping
-          </Text>
+        <TouchableOpacity onPress={() => this.pickSingleWithCamera(true)} style={styles.button}>
+          <Text style={styles.text}>拍完后裁剪</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.pickSingle(false)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Select Single</Text>
-        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => this.cropLast()} style={styles.button}>
-          <Text style={styles.text}>Crop Last Selected Image</Text>
+          <Text style={styles.text}>裁剪最后一张图片</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.pickSingleBase64(false)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Select Single Returning Base64</Text>
+        <TouchableOpacity onPress={() => this.pickSingleBase64(false)} style={styles.button}>
+          <Text style={styles.text}>返回64位的图片</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.pickSingle(true)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Select Single With Cropping</Text>
+        <TouchableOpacity onPress={() => this.pickSingle(true)} style={styles.button}>
+          <Text style={styles.text}>裁剪单张图片</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.pickSingle(true, true)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Select Single With Circular Cropping</Text>
+        <TouchableOpacity onPress={() => this.pickSingle(true, true)} style={styles.button}>
+          <Text style={styles.text}>圆形裁剪</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={this.pickMultiple.bind(this)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Select Multiple</Text>
+        <TouchableOpacity onPress={this.pickMultiple.bind(this)} style={styles.button}>
+          <Text style={styles.text}>选择多张</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={this.cleanupImages.bind(this)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Cleanup All Images</Text>
+        <TouchableOpacity onPress={this.cleanupImages.bind(this)} style={styles.button}>
+          <Text style={styles.text}>清除多张图片</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={this.cleanupSingleImage.bind(this)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Cleanup Single Image</Text>
+        <TouchableOpacity onPress={this.cleanupSingleImage.bind(this)} style={styles.button}>
+          <Text style={styles.text}>清除单张图片</Text>
         </TouchableOpacity>
       </View>
     );
