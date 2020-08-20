@@ -72,6 +72,10 @@ export const BaseTopicStyle = {
     margin-left: -15px;
     margin-top: -15px;
   `,
+  HashtagText: styled(Text)`
+    color: #ff8d00;
+    margin-right: 3px;
+  `,
 };
 
 export const BaseArticleStyle = {

@@ -56,7 +56,7 @@ const Bottom = props => {
   );
 };
 
-const {MultiLineText, VideoPlayImage} = BaseTopicStyle;
+const {MultiLineText, VideoPlayImage, HashtagText} = BaseTopicStyle;
 
 export const BaseTopic = props => {
   const {item} = props;
@@ -87,7 +87,18 @@ export const BaseTopic = props => {
           </View>
         )}
       </View>
-      <MultiLineText numberOfLines={2}>{content.plain_content}</MultiLineText>
+      <MultiLineText numberOfLines={2}>
+        {content.hashtag_content_json &&
+          content.hashtag_content_json.map((v, index) => {
+            return (
+              <Text key={index}>
+                {v.is_hashtag && <HashtagText>{v.content}</HashtagText>}
+                {v.is_mention && <HashtagText>{v.content}</HashtagText>}
+                {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content}</Text>}
+              </Text>
+            );
+          })}
+      </MultiLineText>
       <View>{content.content_style === 'link' && <Text>外链</Text>}</View>
       <View>{content.content_style === 'text' && <Text>文字</Text>}</View>
       <Bottom item={item} />

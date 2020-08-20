@@ -24,7 +24,7 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const [currentKey, setCurrentKey] = useState('recommend');
+  const [currentKey, setCurrentKey] = useState('follow');
 
   const onRefresh = current => {
     loadData(current);
