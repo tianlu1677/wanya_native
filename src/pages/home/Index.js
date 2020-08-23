@@ -1,93 +1,104 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView, View} from 'react-native';
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabList from '@/components/TabList';
 import PostList from '@/components/List/PostList';
 import DoubleList from '@/components/List/DoubleList';
+import TabViewList from '@/components/TabView';
 
-const tabData = [
-  {
-    key: 'recommend',
-    title: '推荐',
-  },
-  {
-    key: 'follow',
-    title: '关注',
-  },
-  {
-    key: 'lasted',
-    title: '最新',
-  },
-];
-
-const Index = () => {
+const DoubleListPage = () => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const [currentKey, setCurrentKey] = useState('follow');
-
-  const onRefresh = current => {
-    loadData(current);
-  };
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    let data = [];
-    let res = null;
-    switch (currentKey) {
-      case 'recommend':
-        res = await getRecommendPosts({page, per_page: 10});
-        setHeaders(res.headers);
-        data = res.data.posts;
-        break;
-      case 'follow':
-        res = await getRecommendPosts({page});
-        setHeaders(res.headers);
-        data = res.data.posts;
-        break;
-      case 'lasted':
-        res = await getRecommendPosts({page});
-        setHeaders(res.headers);
-        data = res.data.posts;
-        break;
-    }
+    const res = await getRecommendPosts({page});
+    const data = res.data.posts;
     setLoading(false);
+    setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
   };
-
-  const tabChange = item => {
-    setListData([]);
-    setCurrentKey(item.key);
-  };
-
-  // didmount update willMount
 
   useEffect(() => {
     loadData();
   }, []);
 
+  return <DoubleList data={listData} loading={loading} onRefresh={loadData} headers={headers} />;
+};
+
+const PostListPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [headers, setHeaders] = useState();
+  const [listData, setListData] = useState([]);
+
+  const loadData = async (page = 1) => {
+    setLoading(true);
+    const res = await getRecommendPosts({page});
+    const data = res.data.posts;
+    setLoading(false);
+    setHeaders(res.headers);
+    setListData(page === 1 ? data : [...listData, ...data]);
+  };
+
   useEffect(() => {
     loadData();
-  }, [currentKey]);
+  }, []);
+
+  return <PostList data={listData} loading={loading} onRefresh={loadData} headers={headers} />;
+};
+
+const LastedListPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [headers, setHeaders] = useState();
+  const [listData, setListData] = useState([]);
+
+  const loadData = async (page = 1) => {
+    setLoading(true);
+    const res = await getRecommendPosts({page});
+    const data = res.data.posts;
+    setLoading(false);
+    setHeaders(res.headers);
+    setListData(page === 1 ? data : [...listData, ...data]);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  return <PostList data={listData} loading={loading} onRefresh={loadData} headers={headers} />;
+};
+
+const Index = () => {
+  const [currentKey, setCurrentKey] = useState('follow');
+
+  const onChangeTab = key => {
+    setCurrentKey(key);
+  };
 
   return (
     <SafeAreaView style={styles.containter}>
-      <TabList data={tabData} tabChange={tabChange} current={currentKey} />
-
-      {/* 推荐 */}
-      {currentKey === 'recommend' && (
-        <DoubleList data={listData} loading={loading} onRefresh={onRefresh} headers={headers} />
-      )}
-
-      {/* 关注 */}
-      {currentKey === 'follow' && (
-        <PostList data={listData} loading={loading} onRefresh={onRefresh} headers={headers} />
-      )}
-
-      {/* 最新 */}
-      {currentKey === 'lasted' && (
-        <PostList data={listData} loading={loading} onRefresh={onRefresh} headers={headers} />
-      )}
+      <TabViewList
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'recommend',
+            title: '推荐',
+            component: DoubleListPage,
+          },
+          {
+            key: 'follow',
+            title: '关注',
+            component: PostListPage,
+          },
+          {
+            key: 'lasted',
+            title: '最新',
+            component: LastedListPage,
+          },
+        ]}
+        onChange={onChangeTab}
+      />
     </SafeAreaView>
   );
 };

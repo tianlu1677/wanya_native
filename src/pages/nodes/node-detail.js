@@ -4,7 +4,6 @@ import {getNodeDetail} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import JoinAccounts from '@/components/NodeComponents/JoinAccounts';
 import {JoinButton} from '@/components/NodeComponents/Button';
-
 const defaultCoverUrl =
   'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
 
