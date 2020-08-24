@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import Avator from '@/components/NodeComponents/Avator';
+import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import {HeaderStyle, BottomStyle, BaseTopicStyle, BaseArticleStyle} from '@/components/Item/style';
 

@@ -1,7 +1,5 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import PropTypes from 'prop-types';
-import Avator from '@/components/NodeComponents/Avator';
 
 const JoinStyles = StyleSheet.create({
   btn: {
@@ -21,7 +19,7 @@ const JoinStyles = StyleSheet.create({
   },
 });
 
-export const JoinButton = props => {
+export const JoinBtn = props => {
   return (
     <Text style={[JoinStyles.btn, props.joined ? JoinStyles.joined : JoinStyles.join]}>
       {props.text}

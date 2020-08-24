@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import {getNodeDetail} from '@/api/node_api';
 import Loading from '@/components/Loading';
-import JoinAccounts from '@/components/NodeComponents/JoinAccounts';
-import {JoinButton} from '@/components/NodeComponents/Button';
+import {JoinButton, JoinAccounts} from '@/components/NodeComponents';
 const defaultCoverUrl =
   'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
 

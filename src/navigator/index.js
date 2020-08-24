@@ -18,6 +18,7 @@ import AccountsIndex from '@/pages/accounts/accounts-index';
 
 // 场地
 import SpaceIndex from '@/pages/space/space-index';
+import SpaceDetail from '@/pages/space/space-detail';
 
 // 圈子
 import NodeIndex from '../pages/nodes/node-index';
@@ -78,7 +79,7 @@ function HomeTabList() {
         style: {height: 70},
         tabStyle: {paddingBottom: 15},
       }}>
-      <Tab.Screen name="Node" component={NewTopic} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={SpaceDetail} options={{title: '圈子'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />

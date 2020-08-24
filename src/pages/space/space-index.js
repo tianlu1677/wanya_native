@@ -4,7 +4,7 @@ import ScrollList from '@/components/ScrollList';
 import {getSpacesList} from '@/api/space_api';
 import {getAccountFollowers} from '@/api/account_api';
 import IconFont from '@/iconfont';
-import Search from '@/components/NodeComponents/Search';
+import {Search} from '@/components/NodeComponents';
 
 const SpaceIndex = () => {
   const [loading, setLoading] = useState(true);

@@ -10,7 +10,7 @@ import {
   Button,
 } from 'react-native';
 import styled from 'styled-components/native';
-import Avator from '../../../components/NodeComponents/Avator';
+import {Avator} from '../../../components/NodeComponents';
 import {CommentNoticeImg, LogoImg} from '@/utils/default-image';
 
 class NotifyContent extends Component {

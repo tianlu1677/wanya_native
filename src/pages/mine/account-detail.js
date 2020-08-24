@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import Avator from '@/components/NodeComponents/Avator';
+import {Avator} from '@/components/NodeComponents';
 import {getAccount} from '@/api/account_api';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import ScrollList from '@/components/ScrollList';
-import Avator from '@/components/NodeComponents/Avator';
+import {Avator} from '@/components/NodeComponents';
 import {getAccountFollowers} from '@/api/account_api';
 
 export const AccountsIndex = () => {

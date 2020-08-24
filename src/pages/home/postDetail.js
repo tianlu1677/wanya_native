@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import Loading from '@/components/Loading';
-import Avator from '@/components/NodeComponents/Avator';
+import {Avator} from '@/components/NodeComponents';
 import {getTopic, getTopicCommentList, createComment} from '@/api/home_api';
 import {Header, BaseTopicContent} from '@/components/Item/PostListItem';
 import IconFont from '@/iconfont';

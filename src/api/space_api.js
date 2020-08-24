@@ -10,6 +10,15 @@ export const getSpacesList = async (params = {}) => {
   return res;
 };
 
+// 场地详情
+export const getSpaceDetail = async id => {
+  const res = await request({
+    url: `/api/v1/spaces/${id}`,
+    method: 'GET',
+  });
+  return res;
+};
+
 //获取位置
 export async function getLocation(params) {
   const res = await request({
@@ -63,15 +72,6 @@ export async function getCities(data = {}) {
     url: '/api/v1/general/cities',
     method: 'GET',
     data,
-  });
-  return res.data;
-}
-
-// 场地详情
-export async function getSpaceDetail(params = {}) {
-  const res = await request({
-    url: `/api/v1/spaces/${params.id}`,
-    method: 'GET',
   });
   return res.data;
 }

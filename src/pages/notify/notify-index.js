@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Image,Pressable, Button} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  Image,
+  Pressable,
+  Button,
+} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import goPage from '../../utils/page_path';
 import styled from 'styled-components/native';
-import BadgeMessage from '../../components/NodeComponents/BadgeMessage';
+import {BadgeMessage} from '../../components/NodeComponents';
 
 import {
   CommentNoticeImg,
@@ -27,7 +36,7 @@ class NotifyIndex extends Component {
   }
 
   goPageMethod = (type = '', event) => {
-    console.log('wwww')
+    console.log('wwww');
     // event.stopPropagation();
 
     if (!this.currentAccountId) {
@@ -37,7 +46,7 @@ class NotifyIndex extends Component {
     const {currentAccount} = this.props;
     switch (type) {
       case 'notify_praise':
-        this.props.navigation.navigate('PraiseNotify')
+        this.props.navigation.navigate('PraiseNotify');
         break;
       case 'notify_comment':
         break;
@@ -101,10 +110,7 @@ class NotifyIndex extends Component {
           <WrapView>
             <ItemView onPress={this.goPageMethod.bind(this, 'notify_praise')}>
               <CoverWrapView>
-                <Image
-                  source={{uri: PraiseNoticeImg}}
-                  style={{width: 45, height: 45}}
-                  />
+                <Image source={{uri: PraiseNoticeImg}} style={{width: 45, height: 45}} />
                 {unread_inside_notifies_count > 0 && (
                   <BadgeMessage
                     value={this.unreadMessageCount(unread_inside_notifies_count)}
