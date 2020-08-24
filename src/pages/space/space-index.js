@@ -13,11 +13,13 @@ const SpaceIndex = () => {
 
   const renderItem = ({item}) => {
     return (
-      <View style={styles.follow}>
-        <Text style={styles.nickname}>{item.nickname}</Text>
+      <View style={styles.spaceWrapper}>
+        <Text style={styles.name}>国家体育馆</Text>
+        <Text style={styles.address}>北京市朝阳区国家体育场南路1号</Text>
       </View>
     );
   };
+
   const renderSeparator = () => {
     return <View style={styles.separator} />;
   };
@@ -44,27 +46,27 @@ const SpaceIndex = () => {
         renderItem={renderItem}
         onRefresh={loadData}
         renderSeparator={renderSeparator}
+        style={{backgroundColor: '#fff'}}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  follow: {
-    flexDirection: 'row',
-    paddingLeft: 14,
-    paddingRight: 14,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 14,
-    paddingBottom: 14,
+  spaceWrapper: {
+    justifyContent: 'flex-start',
+    paddingTop: 12,
+    paddingBottom: 12,
+    marginLeft: 15,
   },
-  nickname: {
-    fontSize: 14,
-    marginLeft: 10,
+  name: {
+    fontSize: 15,
+    lineHeight: 20,
   },
-  btn: {
-    marginLeft: 'auto',
+  address: {
+    fontSize: 11,
+    lineHeight: 20,
+    color: '#bdbdbd',
   },
   separator: {
     backgroundColor: '#FAFAFA',

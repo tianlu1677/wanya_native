@@ -111,7 +111,7 @@ const ScrollList = props => {
       onEndReachedThreshold={0.1}
       ListEmptyComponent={renderEmpty}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
-      style={scrollStyle.containter}
+      style={[scrollStyle.containter, props.style]}
       numColumns={props.numColumns || 1}
       horizontal={false}
     />
