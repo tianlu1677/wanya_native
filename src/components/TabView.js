@@ -1,75 +1,65 @@
-import React, {Component} from 'react';
-import {Dimensions, StyleSheet, View, Text} from 'react-native';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import React, {useEffect, useState} from 'react';
+import {Dimensions} from 'react-native';
+import {TabView, SceneMap} from 'react-native-tab-view';
+import PropTypes from 'prop-types';
 import TabList from './TabList';
 
 const initialLayout = {
   width: Dimensions.get('window').width,
 };
 
-class TabViewIndex extends Component {
-  constructor(props) {
-    super(props);
-  }
+const TabViewIndex = props => {
+  const [routes, setRoutes] = useState([]);
+  const [scenes, setScenes] = useState([]);
+  const [index, setIndex] = useState(0);
 
-  static defaultProps = {
-    routes: [],
-    index: 0,
-    onChange: () => {},
-    scenes: {},
-    tabBarPosition: 'top',
-    lazy: false,
-    lazyPreloadDistance: 0,
-    removeClippedSubviews: false,
-    keyboardDismissMode: 'auto',
-    swipeEnabled: true,
-    renderTabBar: <TabBar />,
+  const onIndexChange = i => {
+    const key = routes[i].key;
+    props.onChange(key);
   };
 
-  onChange = index => {
-    let tab = this.props.routes[index];
-    this.props.onChange(index, tab);
-    console.log('routes[index].key', tab.key);
+  const tabChange = item => {
+    props.onChange(item.key);
   };
 
-  tabChange = (item, index) => {
-    this.props.onChange(index);
-  };
+  useEffect(() => {
+    const route = props.tabData.map(v => ({key: v.key, title: v.title}));
+    const scene = Object.assign({}, ...props.tabData.map(v => ({[v.key]: v.component})));
+    setScenes(scene);
+    setRoutes(route);
+  }, []);
 
-  render() {
-    const {
-      renderTabBar,
-      index,
-      routes,
-      swipeEnabled,
-      renderLazyPlaceholder,
-      tabBarPosition,
-      lazy,
-      lazyPreloadDistance,
-      removeClippedSubviews,
-      keyboardDismissMode,
-    } = this.props;
+  useEffect(() => {
+    const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);
+    const i = findIndex > -1 ? findIndex : 0;
+    setIndex(i);
+  }, [props.currentKey]);
 
-    const renderScene = SceneMap(this.props.scenes);
-    return (
+  return (
+    routes.length > 0 && (
       <TabView
         renderTabBar={() => (
-          <TabList data={routes} current={routes[index].key} tabChange={this.tabChange} />
+          <TabList data={routes} current={props.currentKey} tabChange={tabChange} />
         )}
         navigationState={{index, routes}}
-        renderScene={renderScene}
-        onIndexChange={this.onChange}
+        renderScene={SceneMap(scenes)}
+        onIndexChange={onIndexChange}
         initialLayout={initialLayout}
-        tabBarPosition={tabBarPosition}
-        lazy={lazy}
-        swipeEnabled={swipeEnabled}
-        lazyPreloadDistance={lazyPreloadDistance}
-        removeClippedSubviews={removeClippedSubviews}
-        keyboardDismissMode={keyboardDismissMode}
+        tabBarPosition={props.tabBarPosition || 'top'}
+        lazy={props.lazy || false}
+        swipeEnabled={props.swipeEnabled || true}
+        lazyPreloadDistance={props.lazyPreloadDistance || 0}
+        removeClippedSubviews={props.removeClippedSubviews || false}
+        keyboardDismissMode={props.keyboardDismissMode || 'auto'}
       />
-    );
-  }
-}
+    )
+  );
+};
 
-const styles = StyleSheet.create({});
+TabViewIndex.propTypes = {
+  tabData: PropTypes.array.isRequired, //tabList接收的数据[{key, value, component: () => <View />}]
+  onChange: PropTypes.func.isRequired, //onChange 返回key
+  currentKey: PropTypes.string, // 需要高亮第几项key 默认0
+};
+
 export default TabViewIndex;

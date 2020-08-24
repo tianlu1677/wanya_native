@@ -3,7 +3,7 @@ import {SafeAreaView, StyleSheet, ScrollView, View, Text, Image} from 'react-nat
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
-import Avatar from '../../components/NodeComponents/Avator';
+import {Avatar} from '../../components/NodeComponents';
 import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
 
@@ -54,7 +54,7 @@ class InviteDetail extends Component {
         <SafeAreaView>
           <CardView>
             <View style={{flexDirection: 'row'}}>
-              <Avatar size={20} account={{account: { avatar_url: Helper.getData('avatar_url')}}} />
+              <Avatar size={20} account={{account: {avatar_url: Helper.getData('avatar_url')}}} />
               <CardTitleText>我的邀请码</CardTitleText>
             </View>
 

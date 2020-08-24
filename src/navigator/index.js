@@ -11,11 +11,24 @@ import Recommend from '../pages/home/Recommend';
 import VideoDetail from '../pages/home/VideoDetail';
 
 import Mine from '../pages/mine/mine';
+import AccountDetail from '@/pages/mine/account-detail';
 
-import NodeDetail from '../pages/nodes/node-detail';
+// 用户
+import AccountsIndex from '@/pages/accounts/accounts-index';
+
+// 场地
+import SpaceIndex from '@/pages/space/space-index';
+import SpaceDetail from '@/pages/space/space-detail';
+
+// 圈子
 import NodeIndex from '../pages/nodes/node-index';
+import NodeDetail from '../pages/nodes/node-detail';
+
+// 发布
+import NewTopic from '@/pages/home/newtopic';
+
 import TopicDetail from '../pages/topics/TopicDetail';
-import NewTopic from '../pages/topics/NewTopic';
+// import NewTopic from '../pages/topics/NewTopic';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
 import InviteDetail from '../pages/mine/invite-detail';
 
@@ -66,7 +79,7 @@ function HomeTabList() {
         style: {height: 70},
         tabStyle: {paddingBottom: 15},
       }}>
-      <Tab.Screen name="Node" component={NodeIndex} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={SpaceIndex} options={{title: '圈子'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />

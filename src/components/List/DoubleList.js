@@ -3,7 +3,7 @@ import {View, Text, Image} from 'react-native';
 import styled from 'styled-components/native';
 import IconFont from '@/iconfont';
 import ScrollList from '@/components/ScrollList';
-import Avator from '@/components/NodeComponents/Avator';
+import {Avator} from '@/components/NodeComponents';
 
 export const DoubleSingleStyle = {
   SingleWrap: styled(View)`

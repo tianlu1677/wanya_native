@@ -62,18 +62,18 @@ export async function updateAccountInfo(
 }
 
 //用户的详情页
-export async function getAccount(id) {
+export const getAccount = async id => {
   const res = await request({
     url: `/api/v1/accounts/${id}`,
     method: 'GET',
   });
-  return res.data;
-}
+  return res;
+};
 
 //用户的基本信息
 export async function getAccountBaseInfo(nickname) {
   const res = await request({
-    url: `/api/v1/accounts/base_info`,
+    url: '/api/v1/accounts/base_info',
     method: 'GET',
     params: {name: nickname},
   });
@@ -184,7 +184,7 @@ export async function unfollowAccount(id) {
 // 我的评论
 export async function getReplyComments(params = {}) {
   const res = await request({
-    url: `/api/v1/mine/comments`,
+    url: '/api/v1/mine/comments',
     method: 'GET',
     params: params,
   });
@@ -195,7 +195,7 @@ export async function getReplyComments(params = {}) {
 // 我的赞
 export async function getInsideNotifies(params = {}) {
   const res = await request({
-    url: `/api/v1/mine/inside_notifies`,
+    url: '/api/v1/mine/inside_notifies',
     method: 'GET',
     params: params,
   });
@@ -205,7 +205,7 @@ export async function getInsideNotifies(params = {}) {
 
 export async function getPraiseNotifies(params = {}) {
   const res = await request({
-    url: `/api/v1/mine/inside_notifies/praise_notices`,
+    url: '/api/v1/mine/inside_notifies/praise_notices',
     method: 'GET',
     params: params,
   });
@@ -215,7 +215,7 @@ export async function getPraiseNotifies(params = {}) {
 
 export async function getMentionAccountNotifies(params = {}) {
   const res = await request({
-    url: `/api/v1/mine/inside_notifies/mention_account_notices`,
+    url: '/api/v1/mine/inside_notifies/mention_account_notices',
     method: 'GET',
     params: params,
   });
@@ -225,7 +225,7 @@ export async function getMentionAccountNotifies(params = {}) {
 
 export async function getSystemNotifies(params = {}) {
   const res = await request({
-    url: `/api/v1/mine/inside_notifies/system_notices`,
+    url: '/api/v1/mine/inside_notifies/system_notices',
     method: 'GET',
     params: params,
   });
@@ -236,7 +236,7 @@ export async function getSystemNotifies(params = {}) {
 // 阅读信息
 export async function readMessages() {
   const res = await request({
-    url: `/api/v1/mine/accounts/read_messages`,
+    url: '/api/v1/mine/accounts/read_messages',
     method: 'POST',
   });
 
@@ -254,16 +254,16 @@ export async function isLearnCourse(account_id) {
   return res.data;
 }
 
-// 用户的粉丝列表
-export async function getAccountFollowers(account_id, params = {}) {
-  const res = await request({
-    url: `/api/v1/accounts/${account_id}/followers`,
-    method: 'GET',
-    params: params,
-  });
+// // 用户的粉丝列表
+// export async function getAccountFollowers(account_id, params = {}) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${account_id}/followers`,
+//     method: 'GET',
+//     params: params,
+//   });
 
-  return res;
-}
+//   return res;
+// }
 
 // 用户的粉丝列表
 
@@ -289,7 +289,7 @@ export async function getAccountRecentFollowers(account_id, params = {}) {
 
 export async function createAccountSystemInfo(data = {}) {
   const res = await request({
-    url: `/api/v1/records/record_system_info`,
+    url: '/api/v1/records/record_system_info',
     method: 'POST',
     data: data,
   });
@@ -299,7 +299,7 @@ export async function createAccountSystemInfo(data = {}) {
 
 export async function createAccountRecordWatchVideoPost(data = {}) {
   const res = await request({
-    url: `/api/v1/records/record_watched_video_post_ids`,
+    url: '/api/v1/records/record_watched_video_post_ids',
     method: 'POST',
     data: data,
   });
@@ -340,7 +340,7 @@ export async function getAccountSpaces(account_id, params = {}) {
 //用户填写邀请码
 export async function writeInviteCode(invite_code = '') {
   const res = await request({
-    url: `/api/v1/invites`,
+    url: '/api/v1/invites',
     method: 'POST',
     data: {invite_code: invite_code},
   });
@@ -350,7 +350,7 @@ export async function writeInviteCode(invite_code = '') {
 // 用户自己的邀请码以及邀请页面
 export async function getInviteCode() {
   const res = await request({
-    url: `/api/v1/invites/generate_code`,
+    url: '/api/v1/invites/generate_code',
     method: 'POST',
   });
   return res.data;
@@ -358,9 +358,19 @@ export async function getInviteCode() {
 
 export async function getAccountInviteList(data = {}) {
   const res = await request({
-    url: `/api/v1/invites/invite_accounts`,
+    url: '/api/v1/invites/invite_accounts',
     method: 'GET',
     params: {},
   });
   return res.data;
 }
+
+// 用户的粉丝列表
+export const getAccountFollowers = async (accountId, params = {}) => {
+  const res = await request({
+    url: `/api/v1/accounts/${accountId}/followers`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};

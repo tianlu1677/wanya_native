@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, Image, Button} from 'react-native';
 import styled from 'styled-components/native';
 import {CommentNoticeImg, LogoImg} from '@/utils/default-image';
-import Avator from '../../../components/NodeComponents/Avator';
+import {Avator} from '../../../components/NodeComponents';
 
 class AccountFollow extends Component {
   constructor(props) {

@@ -110,8 +110,8 @@ const ScrollList = props => {
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.1}
       ListEmptyComponent={renderEmpty}
-      ItemSeparatorComponent={renderSeparator}
-      style={scrollStyle.containter}
+      ItemSeparatorComponent={props.renderSeparator || renderSeparator}
+      style={[scrollStyle.containter, props.style]}
       numColumns={props.numColumns || 1}
       horizontal={false}
     />
@@ -119,6 +119,9 @@ const ScrollList = props => {
 };
 
 const scrollStyle = StyleSheet.create({
+  containter: {
+    // backgroundColor: 'pink',
+  },
   footer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -144,6 +147,7 @@ ScrollList.propTypes = {
   enableRefresh: PropTypes.bool, //是否可以下拉刷新，默认true
   onRefresh: PropTypes.func, // 下拉刷新，加载更多，执行方法
   emptyTitle: PropTypes.string, //数据为空时提示
+  renderSeparator: PropTypes.func, // 分割线
 };
 
 export default ScrollList;

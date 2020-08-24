@@ -39,6 +39,35 @@ export const getTopic = async id => {
   return res;
 };
 
+// 帖子评论
+export const getTopicCommentList = async id => {
+  const res = await request({
+    url: `/api/v1/topics/${id}/comments`,
+    method: 'GET',
+  });
+  return res;
+};
+
+// 创建评论
+export const createComment = async (data = {}) => {
+  const res = await request({
+    url: '/api/v1/comments',
+    method: 'POST',
+    data,
+  });
+  return res;
+};
+
+// export async function createComment(data = {}) {
+//   const res = await request({
+//     url: `/api/v1/comments`,
+//     method: 'POST',
+//     data: data
+//   })
+
+//   return res.data
+// }
+
 // 推荐的分类
 export async function getRecommendCategories() {
   const res = await request({

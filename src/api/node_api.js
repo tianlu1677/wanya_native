@@ -10,6 +10,15 @@ export const getNodeIndex = async (params = {}) => {
   return res.data.nodes;
 };
 
+// 圈子详情
+export const getNodeDetail = async nodeId => {
+  const res = await request({
+    url: `/api/v1/nodes/${nodeId}`,
+    method: 'GET',
+  });
+  return res.data;
+};
+
 // 圈子列表
 // export async function getNodeIndex(params = {}) {
 //   const res = await request({
@@ -42,14 +51,14 @@ export async function getFollowNodeIndex(params = {account_id: ''}) {
 
 // 圈子详情
 
-export async function getNodeDetail(node_id, params = {}) {
-  const res = await request({
-    url: '/api/v1/nodes/' + node_id,
-    method: 'GET',
-    params: params,
-  });
-  return res.data;
-}
+// export async function getNodeDetail(node_id, params = {}) {
+//   const res = await request({
+//     url: '/api/v1/nodes/' + node_id,
+//     method: 'GET',
+//     params: params,
+//   });
+//   return res.data;
+// }
 
 // 动态
 // 圈子动态
