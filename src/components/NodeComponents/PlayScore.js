@@ -1,6 +1,6 @@
-import React from './node_modules/react';
+import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import PropTypes from './node_modules/prop-types';
+import PropTypes from 'prop-types';
 
 const PlayScore = props => {
   const filter = value => {
@@ -14,10 +14,7 @@ const PlayScore = props => {
 
   return (
     <View style={playStyles.wrapper}>
-      <Image
-        style={playStyles.image}
-        source={require('./node_modules/@/assets/images/play-score.png')}
-      />
+      <Image style={playStyles.image} source={require('@/assets/images/play-score.png')} />
       <Text style={playStyles.scoreText}>{filter(props.score)}</Text>
     </View>
   );

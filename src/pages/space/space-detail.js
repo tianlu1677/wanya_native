@@ -43,8 +43,10 @@ const SpaceDetail = () => {
         </View>
         <View style={styles.descWrap}>
           <View style={styles.tagsWrap}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 8, 9].map(v => (
-              <Text style={styles.tags}>免费</Text>
+            {detail.tag_list.map((v, index) => (
+              <Text key={index} style={styles.tags}>
+                {v}
+              </Text>
             ))}
           </View>
           <PlayScore score={detail.play_score} />
