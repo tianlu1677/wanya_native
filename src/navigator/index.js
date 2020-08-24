@@ -23,8 +23,11 @@ import SpaceIndex from '@/pages/space/space-index';
 import NodeIndex from '../pages/nodes/node-index';
 import NodeDetail from '../pages/nodes/node-detail';
 
+// 发布
+import NewTopic from '@/pages/home/newtopic';
+
 import TopicDetail from '../pages/topics/TopicDetail';
-import NewTopic from '../pages/topics/NewTopic';
+// import NewTopic from '../pages/topics/NewTopic';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
 import InviteDetail from '../pages/mine/invite-detail';
 
@@ -75,7 +78,7 @@ function HomeTabList() {
         style: {height: 70},
         tabStyle: {paddingBottom: 15},
       }}>
-      <Tab.Screen name="Node" component={Index} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={NewTopic} options={{title: '圈子'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen name="Recommend" component={Index} options={{title: '推荐'}} />
       <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />
