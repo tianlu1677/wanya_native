@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, TextInput, Button} from 'react-native';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import Toast from 'react-native-root-toast';
-import {clearAllData, storeData} from '../../utils/storage';
+import {clearAllData, storeData, getData} from '../../utils/storage';
 import {Input} from 'react-native-elements';
 import {phoneSignIn} from '../../api/sign_api';
 
@@ -35,8 +35,8 @@ class AdminPhoneLogin extends Component {
           hideOnPress: true,
           delay: 0,
         });
-        // let data = await getData('auth_token');
-        // console.log(data)
+        let data = await getData('auth_token');
+        console.log('auth_token', data)
       } else {
         let toast = Toast.show('用户名或者密码错误', {
           duration: Toast.durations.LONG,

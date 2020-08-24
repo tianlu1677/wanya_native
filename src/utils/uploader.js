@@ -3,7 +3,7 @@ import Helper from './helper';
 
 export default class Uploader {
   static async upload(options = {}) {
-    const token = await Helper.getData('user_token');
+    // const token = await Helper.getData('auth_token');
     let defaultOptions = {
       url: 'https://myservice.com/path/to/post',
       path: 'file://path/to/file/on/device',
@@ -11,8 +11,7 @@ export default class Uploader {
       type: 'raw',
       maxRetries: 2, // set retry count (Android only). Default 2
       headers: {
-        'content-type': 'application/octet-stream', // Customize content-type
-        token: token,
+        'content-type': 'application/octet-stream', // Customize content-type        
       },
 
       // Below are options only supported on Android
@@ -28,7 +27,7 @@ export default class Uploader {
       .then(uploadId => {
         console.log('Upload started');
         Upload.addListener('progress', uploadId, data => {
-          console.log(`Progress: ${data.progress}%`);
+          // console.log(`Progress: ${data.progress}%`);
         });
         Upload.addListener('error', uploadId, data => {
           console.log(`Error: ${data.error}%`);

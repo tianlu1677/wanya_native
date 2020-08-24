@@ -15,8 +15,9 @@ export default class Helper {
   static async getData(name) {
     try {
       let value = await AsyncStorage.getItem(name);
-      value = (value === null || value === undefined) ? value : ''
-      console.log('value', value)
+      console.log('store preve value', value)
+      value = (value === null || value === undefined) ? '' : value
+      console.log('store value', value)
       return value;
     } catch (e) {
       return ''

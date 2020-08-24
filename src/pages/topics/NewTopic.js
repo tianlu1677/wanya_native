@@ -140,7 +140,9 @@ export default class App extends Component {
       });
   }
 
-  pickSingle(cropit, circular = false, mediaType) {
+  async pickSingle(cropit, circular = false, mediaType) {
+    const token = await Helper.getData('auth_token');
+    console.log('auth_token', token)
     ImagePicker.openPicker({
       width: 500,
       height: 500,
@@ -164,8 +166,11 @@ export default class App extends Component {
           method: 'POST',
           type: image.mime,
           maxRetries: 1,
+          field: 'file',
+          type: 'multipart',
           headers: {
             'content-type': 'application/octet-stream', // Customize content-type
+            token: token,
           },
         };
 
