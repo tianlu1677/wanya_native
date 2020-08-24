@@ -4,6 +4,10 @@ import {View, Text, Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  connect,
+  useSelector
+} from 'react-redux';
 
 import Index from '../pages/home/Index';
 import PostDetail from '../pages/home/postDetail';
@@ -52,6 +56,13 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
 const StackNavigator = Stack.Navigator;
+const AuthStack = createStackNavigator();
+
+// @connect(state => state.login, {
+// })
+
+
+
 
 function HomeTabList() {
   return (
@@ -88,52 +99,95 @@ function HomeTabList() {
   );
 }
 
+function AuthStackList() {
+  return (
+    <MainStack.Navigator initialRouteName="Recommend">
+      <MainStack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: '手机登录'}} />
+    </MainStack.Navigator>
+  )
+}
+
 function MainStackList() {
   return (
-    <MainStack.Navigator>
-      <MainStack.Scrreen name="NodeDetail" component={NodeDetail} />
-      <MainStack.Scrreen name="NodeIndex" component={NodeIndex} />
+    <MainStack.Navigator initialRouteName="Recommend">
+      <MainStack.Screen name="Recommend" component={HomeTabList} options={{title: '推荐'}} />
+
+      <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
+      <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
+      <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
+      <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子'}} />
+      <MainStack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />
+
+      <MainStack.Screen name="PhoneLogin" component={PhoneLogin} options={{title: '手机登录'}} />
+      <MainStack.Screen name="SocialLogin" component={SocialLogin} options={{title: '微信登录'}} />
+      <MainStack.Screen name="InviteLogin" component={InviteLogin} options={{title: '输入邀请码'}} />
+
+      <MainStack.Screen name="InviteDetail" component={InviteDetail} options={{title: '我的邀请'}} />
+
+      <MainStack.Screen name="LabIndex" component={LabIndex} options={{title: '实验室主页'}} />
+      <MainStack.Screen
+        name="LabTabIndex"
+        component={LabTabIndex}
+        options={{title: '实验室标签页'}}
+      />
+      <MainStack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />
+      <MainStack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />
+
+      {/*  消息通知*/}
+      <MainStack.Screen
+        name="CommentNotify"
+        component={CommentNotify}
+        options={{title: '消息通知'}}
+      />
+      <MainStack.Screen name="PraiseNotify" component={PraiseNotify} options={{title: '消息通知'}} />
+      <MainStack.Screen name="SystemNotify" component={SystemNotify} options={{title: '消息通知'}} />
+      <MainStack.Screen name="FollowNotify" component={FollowNotify} options={{title: '消息通知'}} />
     </MainStack.Navigator>
   );
 }
 
 export default function Navigation() {
+  const login = useSelector(state => state.login)
+  console.log('login', login)
   return (
     <NavigationContainer>
-      <StackNavigator initialRouteName="Recommend">
-        <Stack.Screen name="Recommend" component={HomeTabList} options={{title: '推荐'}} />
+      {
+        !login.auth_token ? AuthStackList() : MainStackList()
+      }
+      {/*<StackNavigator initialRouteName="Recommend">*/}
+      {/*  <Stack.Screen name="Recommend" component={HomeTabList} options={{title: '推荐'}} />*/}
 
-        <Stack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
-        <Stack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
-        <Stack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
-        <Stack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子'}} />
-        <Stack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />
+      {/*  <Stack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />*/}
+      {/*  <Stack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />*/}
+      {/*  <Stack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />*/}
+      {/*  <Stack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子'}} />*/}
+      {/*  <Stack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />*/}
 
-        <Stack.Screen name="PhoneLogin" component={PhoneLogin} options={{title: '手机登录'}} />
-        <Stack.Screen name="SocialLogin" component={SocialLogin} options={{title: '微信登录'}} />
-        <Stack.Screen name="InviteLogin" component={InviteLogin} options={{title: '输入邀请码'}} />
+      {/*  <Stack.Screen name="PhoneLogin" component={PhoneLogin} options={{title: '手机登录'}} />*/}
+      {/*  <Stack.Screen name="SocialLogin" component={SocialLogin} options={{title: '微信登录'}} />*/}
+      {/*  <Stack.Screen name="InviteLogin" component={InviteLogin} options={{title: '输入邀请码'}} />*/}
 
-        <Stack.Screen name="InviteDetail" component={InviteDetail} options={{title: '我的邀请'}} />
+      {/*  <Stack.Screen name="InviteDetail" component={InviteDetail} options={{title: '我的邀请'}} />*/}
 
-        <Stack.Screen name="LabIndex" component={LabIndex} options={{title: '实验室主页'}} />
-        <Stack.Screen
-          name="LabTabIndex"
-          component={LabTabIndex}
-          options={{title: '实验室标签页'}}
-        />
-        <Stack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />
-        <Stack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />
+      {/*  <Stack.Screen name="LabIndex" component={LabIndex} options={{title: '实验室主页'}} />*/}
+      {/*  <Stack.Screen*/}
+      {/*    name="LabTabIndex"*/}
+      {/*    component={LabTabIndex}*/}
+      {/*    options={{title: '实验室标签页'}}*/}
+      {/*  />*/}
+      {/*  <Stack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />*/}
+      {/*  <Stack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />*/}
 
-        {/*  消息通知*/}
-        <Stack.Screen
-          name="CommentNotify"
-          component={CommentNotify}
-          options={{title: '消息通知'}}
-        />
-        <Stack.Screen name="PraiseNotify" component={PraiseNotify} options={{title: '消息通知'}} />
-        <Stack.Screen name="SystemNotify" component={SystemNotify} options={{title: '消息通知'}} />
-        <Stack.Screen name="FollowNotify" component={FollowNotify} options={{title: '消息通知'}} />
-      </StackNavigator>
+      {/*  /!*  消息通知*!/*/}
+      {/*  <Stack.Screen*/}
+      {/*    name="CommentNotify"*/}
+      {/*    component={CommentNotify}*/}
+      {/*    options={{title: '消息通知'}}*/}
+      {/*  />*/}
+      {/*  <Stack.Screen name="PraiseNotify" component={PraiseNotify} options={{title: '消息通知'}} />*/}
+      {/*  <Stack.Screen name="SystemNotify" component={SystemNotify} options={{title: '消息通知'}} />*/}
+      {/*  <Stack.Screen name="FollowNotify" component={FollowNotify} options={{title: '消息通知'}} />*/}
+      {/*</StackNavigator>*/}
     </NavigationContainer>
   );
 }

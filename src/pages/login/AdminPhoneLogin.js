@@ -6,6 +6,19 @@ import {clearAllData, storeData, getData} from '../../utils/storage';
 import {Input} from 'react-native-elements';
 import {phoneSignIn} from '../../api/sign_api';
 
+import {
+  connect,
+  useSelector
+} from 'react-redux';
+
+import {
+  dispathAdminLogin
+} from '@/redux/actions';
+
+@connect(state => state.login, {
+  dispathAdminLogin
+})
+
 class AdminPhoneLogin extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +40,7 @@ class AdminPhoneLogin extends Component {
         storeData('account_id', res.id.toString());
         storeData('account_nickname', res.nickname);
         storeData('account_avatar_url', res.avatar_url);
+        this.props.dispathAdminLogin(res.token)
         let toast = Toast.show('登录成功', {
           duration: Toast.durations.LONG,
           position: Toast.positions.TOP,

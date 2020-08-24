@@ -7,6 +7,7 @@ import {
   ACCOUNT_EMPTY_SUCCESS,
   CHANGE_PROGRESS,
   GET_LIST,
+  ADMIN_SIGN_SUCCESS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 
@@ -69,3 +70,11 @@ export const dispathGetList = res => async dispatch => {
   const list = await getCategoryList();
   dispatch({type: GET_LIST, value: list});
 };
+
+// 管理员登录
+export const dispathAdminLogin = (auth_token) => async (dispath) => {
+  dispath({
+    type: ADMIN_SIGN_SUCCESS,
+    auth_token: auth_token
+  })
+}
