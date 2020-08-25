@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SafeAreaPlus from '../../components/safe_area_plus'
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabList from '@/components/TabList';
 import PostList from '@/components/List/PostList';
@@ -77,7 +79,7 @@ const Index = () => {
   };
 
   return (
-    <SafeAreaView style={styles.containter}>
+    <SafeAreaPlus>
       <TabViewList
         currentKey={currentKey}
         tabData={[
@@ -99,13 +101,14 @@ const Index = () => {
         ]}
         onChange={onChangeTab}
       />
-    </SafeAreaView>
+    </SafeAreaPlus>
   );
 };
 
 const styles = StyleSheet.create({
   containter: {
     flex: 1,
+    backgroundColor: 'white'
   },
 });
 

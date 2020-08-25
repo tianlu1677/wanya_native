@@ -142,7 +142,14 @@ function MainStackList() {
           fontWeight: 'bold',
         },
       })}>
-      <MainStack.Screen name="Recommend" component={HomeTabList} options={{title: '推荐'}} />
+      <MainStack.Screen
+        name="Recommend"
+        component={HomeTabList}
+        options={{
+          headerShown: false,
+          title: '推荐',
+        }}
+      />
 
       <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
       <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
@@ -154,19 +161,23 @@ function MainStackList() {
         name="PhoneLogin"
         component={PhoneLogin}
         options={{
-          headerLeft: null,
           headerStyle: {
             backgroundColor: 'black',
             elevation: 0,
             shadowOpacity: 0,
             borderBottomWidth: 0,
+            color: 'white',
           },
-          headerRight: () => (
-            <Button onPress={() => alert('This is a button!')} title="确定" color="white" />
-          ),
         }}
       />
-      <MainStack.Screen name="SocialLogin" component={SocialLogin} options={{title: '微信登录'}} />
+      <MainStack.Screen
+        name="SocialLogin"
+        component={SocialLogin}
+        options={{
+          title: '微信登录',
+          headerShown: false,
+        }}
+      />
       <MainStack.Screen
         name="InviteLogin"
         component={InviteLogin}

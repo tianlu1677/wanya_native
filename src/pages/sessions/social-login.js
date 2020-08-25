@@ -14,9 +14,17 @@ class SocialLogin extends Component {
   }
 
   wechatLogin = () => {
-    console.log('wechatLogin');
+    console.log('wechatLogi11n');
     this.props.navigation.navigate('PhoneLogin');
+
   };
+
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      headerShown: false
+      // header: null
+    })
+  }
 
   render() {
     return (

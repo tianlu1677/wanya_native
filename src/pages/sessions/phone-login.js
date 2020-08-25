@@ -31,7 +31,8 @@ class PhoneLogin extends Component {
 
   componentDidMount() {
     this.props.navigation.setOptions({
-      title: 'yy',
+      title: '',
+      headerTintColor: 'white',
       headerStyle: {
         backgroundColor: 'black',
         elevation: 0,
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
 });
 
 const TitleText = styled(Text)`
-  letter-spacing: 1;
+  letter-spacing: 1px;
   font-size: 27px;
   color: white;
   font-weight: 600;
