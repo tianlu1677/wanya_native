@@ -6,19 +6,13 @@ import {clearAllData, storeData, getData} from '../../utils/storage';
 import {Input} from 'react-native-elements';
 import {phoneSignIn} from '../../api/sign_api';
 
-import {
-  connect,
-  useSelector
-} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 
-import {
-  dispathAdminLogin
-} from '@/redux/actions';
+import {dispathAdminLogin} from '@/redux/actions';
 
 @connect(state => state.login, {
-  dispathAdminLogin
+  dispathAdminLogin,
 })
-
 class AdminPhoneLogin extends Component {
   constructor(props) {
     super(props);
@@ -34,13 +28,14 @@ class AdminPhoneLogin extends Component {
     // console.log(await React.$Store.getData('auth_token'))
 
     phoneSignIn({phone: values.phone, password: values.password}).then(async res => {
-      console.log('res', res)
+      console.log('res', res);
       if (res.status === 200) {
         storeData('auth_token', res.token);
         storeData('account_id', res.id.toString());
         storeData('account_nickname', res.nickname);
         storeData('account_avatar_url', res.avatar_url);
-        this.props.dispathAdminLogin(res.token)
+        this.props.dispathAdminLogin(res.token);
+
         let toast = Toast.show('登录成功', {
           duration: Toast.durations.LONG,
           position: Toast.positions.TOP,
@@ -50,7 +45,11 @@ class AdminPhoneLogin extends Component {
           delay: 0,
         });
         let data = await getData('auth_token');
-        console.log('auth_token', data)
+        console.log('auth_token', data);
+        this.props.navigation.reset({
+          index: 0,
+          routes: [{name: 'Recommend'}],
+        });
       } else {
         let toast = Toast.show('用户名或者密码错误', {
           duration: Toast.durations.LONG,

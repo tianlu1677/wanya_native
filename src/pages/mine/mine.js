@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
 import Helper from '../../utils/helper';
 
+import {connect} from 'react-redux';
+
+import {dispathAdminLogin} from '@/redux/actions';
+
+@connect(state => state.login, {
+  dispathAdminLogin,
+})
 class Mine extends Component {
   constructor(props) {
     super(props);
@@ -10,16 +17,25 @@ class Mine extends Component {
       coin_data: [],
       loading: false,
     };
-    this.auth_token = ''
+    this.auth_token = '';
   }
 
   componentDidMount() {
-    this.auth_token = Helper.getData('auth_token')
+    this.auth_token = Helper.getData('auth_token');
   }
 
   componentDidUpdate() {
-    this.auth_token = Helper.getData('auth_token')
+    this.auth_token = Helper.getData('auth_token');
   }
+
+  clearAllCatch = async () => {
+    Helper.clearAllData();
+    this.props.dispathAdminLogin('');
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{name: 'AdminPhoneLogin'}],
+    });
+  };
 
   render() {
     return (
@@ -32,12 +48,7 @@ class Mine extends Component {
             this.props.navigation.navigate('AdminPhoneLogin');
           }}
         />
-        <Button
-          title={'清除所有缓存'}
-          onPress={() => {
-            Helper.clearAllData()
-          }}
-        />
+        <Button title={'清除所有缓存'} onPress={this.clearAllCatch} />
         <Button
           title={'视频页面'}
           onPress={() => {

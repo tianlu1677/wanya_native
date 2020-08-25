@@ -10,7 +10,6 @@ import {
   StatusBar,
 } from 'react-native';
 
-
 import {sendPhoneCode, verifyPhoneCode} from '../../api/phone_sign_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
@@ -28,6 +27,25 @@ class PhoneLogin extends Component {
       verifyText: '获取验证码',
       firstVerify: true,
     };
+  }
+
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      title: 'yy',
+      headerStyle: {
+        backgroundColor: 'black',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+      },
+      headerRight: () => (
+        <Button
+          onPress={() => alert('This is a button!')}
+          title="确定"
+          color="white"
+        />
+      ),
+    });
   }
 
   handleSubmit = () => {
@@ -133,6 +151,7 @@ class PhoneLogin extends Component {
   };
 
   render() {
+
     return (
       <>
         <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
@@ -255,7 +274,7 @@ const VerifyCodeText = styled(Text)`
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 600;
-  margin-right: 15;
+  margin-right: 15px;
   color: ${props => props.color};
 `;
 export default PhoneLogin;
