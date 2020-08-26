@@ -1,45 +1,10 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
-import styled from 'styled-components/native';
+import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
 import ScrollList from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
-
-export const DoubleSingleStyle = {
-  SingleWrap: styled(View)`
-    flex: 1;
-    margin: 0 5px;
-  `,
-  VideoPlayImage: styled(Image)`
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    right: 8px;
-    top: 8px;
-  `,
-  MultiLineText: styled(Text)`
-    font-size: 12px;
-    line-height: 17px;
-    color: #1f1f1f;
-    margin-left: 5px;
-    margin-right: 10px;
-    margin-top: 7px;
-  `,
-  SingleBottom: styled(View)`
-    flex: 1;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 15px;
-    margin-top: 8px;
-    padding-left: 5px;
-    height: 17px;
-  `,
-  SingleName: styled(Text)`
-    margin-right: auto;
-    margin-left: 5px;
-    color: #bdbdbd;
-  `,
-};
+import {DoubleSingleStyle} from './styles';
 
 const {VideoPlayImage, SingleWrap, MultiLineText, SingleBottom, SingleName} = DoubleSingleStyle;
 
@@ -71,16 +36,47 @@ const DoubleSingle = props => {
   );
 };
 
-// List 属性继承scrollList
 const DoubleList = props => {
-  const leftPostList = props.data.filter((v, index) => index % 2 === 0);
-  const rightPostLIst = props.data.filter((v, index) => index % 2 !== 0);
+  const [loading, setLoading] = useState(true);
+  const [headers, setHeaders] = useState();
+  const [listData, setListData] = useState([]);
 
   const renderItem = ({item, index}) => {
+    const leftPostList = listData.filter((v, index) => index % 2 === 0);
+    const rightPostLIst = listData.filter((v, index) => index % 2 !== 0);
     return <DoubleSingle data={index === 0 ? leftPostList : rightPostLIst} />;
   };
 
-  return <ScrollList {...props} data={[1, 2]} renderItem={renderItem} numColumns={2} />;
+  const loadData = async (page = 1) => {
+    setLoading(true);
+    const {api, params} = props.request;
+    const res = await api({...params, page});
+    const data = res.data.posts;
+    setLoading(false);
+    setHeaders(res.headers);
+    setListData(page === 1 ? data : [...listData, ...data]);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  return (
+    <ScrollList
+      data={[1, 2]}
+      loading={loading}
+      onRefresh={loadData}
+      headers={headers}
+      renderItem={renderItem}
+      numColumns={2}
+      {...props}
+    />
+  );
+};
+
+// List 属性继承scrollList 默认可下拉加载刷新
+DoubleList.propTypes = {
+  request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
 };
 
 export default DoubleList;

@@ -19,6 +19,16 @@ export const getSpaceDetail = async id => {
   return res;
 };
 
+// 场地动态(最新+热门)
+export const getSpacePosts = async params => {
+  const res = await request({
+    url: `/api/v1/spaces/${params.id}/posts`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
 //获取位置
 export async function getLocation(params) {
   const res = await request({
@@ -74,16 +84,6 @@ export async function getCities(data = {}) {
     data,
   });
   return res.data;
-}
-
-// 场地动态
-export async function getPosts(id, params = {}) {
-  const res = await request({
-    url: `/api/v1/spaces/${id}/posts`,
-    method: 'GET',
-    params,
-  });
-  return res;
 }
 
 export async function getSpaces(params, paginate) {
