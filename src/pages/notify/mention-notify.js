@@ -18,7 +18,7 @@ import {
   dispatchBaseCurrentAccount,
   dispatchEmptyAccountDetail,
 })
-class PraiseNotify extends Component {
+class MentionNotify extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,6 +56,16 @@ class PraiseNotify extends Component {
     );
   };
 
+  readAllMessages = () => {
+    const {currentAccount} = this.props;
+    syncAccountInfo({
+      id: currentAccount.id,
+      profile_attributes: {
+        unread_system_messages_count: 0,
+      },
+    });
+  };
+
   componentDidUpdate() {}
 
   componentWillUnmount() {}
@@ -65,25 +75,23 @@ class PraiseNotify extends Component {
   render() {
     const {headers, loading, data} = this.state;
     const renderItem = ({item}) => {
-      item = {...item, itemKey: `${item.target_type}_${item.id}`}
-      return (
-        <NotifyContent account={item.actor} item={item} />
-      );
+      return <NotifyContent account={item.actor} item={item} />;
     };
 
     return (
-      <SafeAreaPlus>
-        <ScrollList
-          onRefresh={this.loadInfo}
-          headers={headers}
-          data={data}
-          loading={loading}
-          renderItem={renderItem}
-          height={800}
-        />
-      </SafeAreaPlus>
+      <View>
+        <SafeAreaPlus>
+          <ScrollList
+            onRefresh={this.loadInfo}
+            headers={headers}
+            data={data}
+            loading={loading}
+            renderItem={renderItem}
+            height={1000}></ScrollList>
+        </SafeAreaPlus>
+      </View>
     );
   }
 }
 
-export default PraiseNotify;
+export default MentionNotify;

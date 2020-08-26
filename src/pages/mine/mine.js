@@ -4,11 +4,11 @@ import Helper from '../../utils/helper';
 
 import {connect} from 'react-redux';
 
-import {dispathAdminLogin} from '@/redux/actions';
-
-@connect(state => state.login, {
-  dispathAdminLogin,
-})
+// import {dispatchSetAuthToken} from '@/redux/actions';
+//
+// @connect(state => state.login, {
+//   dispatchSetAuthToken,
+// })
 class Mine extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +30,7 @@ class Mine extends Component {
 
   clearAllCatch = async () => {
     Helper.clearAllData();
-    this.props.dispathAdminLogin('');
+    // this.props.dispatchSetAuthToken('');
     this.props.navigation.reset({
       index: 0,
       routes: [{name: 'AdminPhoneLogin'}],
@@ -48,7 +48,7 @@ class Mine extends Component {
             this.props.navigation.navigate('AdminPhoneLogin');
           }}
         />
-        <Button title={'清除所有缓存'} onPress={this.clearAllCatch} />
+        <Button title={'清除所有缓存'} onPress={() => { this.clearAllCatch} } />
         <Button
           title={'视频页面'}
           onPress={() => {

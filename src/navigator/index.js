@@ -48,6 +48,7 @@ import CommentNotify from '../pages/notify/comment-notify';
 import PraiseNotify from '../pages/notify/praise-notify';
 import SystemNotify from '../pages/notify/system-notify';
 import FollowNotify from '../pages/notify/follow-notify';
+import MentionNotify from '../pages/notify/mention-notify';
 
 // 网页显示
 import WebView from '../pages/webview/webview';
@@ -95,7 +96,6 @@ function HomeTabList() {
         },
       }}>
       <Tab.Screen name="Node" component={SpaceIndex} options={{title: '圈子'}} />
-      <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen
         name="Recommend"
         component={Index}
@@ -204,26 +204,37 @@ function MainStackList() {
 
       {/*  消息通知*/}
       <MainStack.Screen
+        name="NotifyIndex"
+        component={NotifyIndex}
+        options={{title: '消息',
+          headerShown: true
+        }}
+      />
+      <MainStack.Screen
         name="CommentNotify"
         component={CommentNotify}
-        options={{title: '消息通知'}}
+        options={{title: '评论通知'}}
       />
       <MainStack.Screen
         name="PraiseNotify"
         component={PraiseNotify}
-        options={{title: '消息通知'}}
+        options={{title: '点赞通知'}}
       />
       <MainStack.Screen
         name="SystemNotify"
         component={SystemNotify}
-        options={{title: '消息通知'}}
+        options={{title: '系统通知'}}
       />
       <MainStack.Screen
         name="FollowNotify"
         component={FollowNotify}
-        options={{title: '消息通知'}}
+        options={{title: '关注通知'}}
       />
-
+      <MainStack.Screen
+        name="MentionNotify"
+        component={MentionNotify}
+        options={{title: '@我的'}}
+      />
       <MainStack.Screen name="WebView" component={WebView} options={{title: ''}} />
     </MainStack.Navigator>
   );

@@ -103,7 +103,7 @@ const ScrollList = props => {
       data={props.data}
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
       renderItem={props.renderItem}
-      keyExtractor={item => String(item['id' || props.itemKey])}
+      keyExtractor={item => String(item[props.itemKey || 'id'])}
       refreshing={refreshing ? refreshing : false}
       onRefresh={enableLoadMore ? onRefresh : null}
       onEndReached={enableRefresh ? onEndReached : null}

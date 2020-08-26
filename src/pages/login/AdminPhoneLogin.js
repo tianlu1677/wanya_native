@@ -8,17 +8,19 @@ import {phoneSignIn} from '../../api/sign_api';
 
 import {connect, useSelector} from 'react-redux';
 
-import {dispathAdminLogin} from '@/redux/actions';
+import {
+  dispatchSetAuthToken,
+  dispatchCurrentAccount
+} from '@/redux/actions';
 
 @connect(state => state.login, {
-  dispathAdminLogin,
+  dispatchSetAuthToken,
+  dispatchCurrentAccount
 })
 class AdminPhoneLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
-      coin_data: [],
       loading: false,
     };
   }
@@ -30,12 +32,12 @@ class AdminPhoneLogin extends Component {
     phoneSignIn({phone: values.phone, password: values.password}).then(async res => {
       console.log('res', res);
       if (res.status === 200) {
-        storeData('auth_token', res.token);
-        storeData('account_id', res.id.toString());
+        await storeData('auth_token', res.token);
+        await storeData('account_id', res.id.toString());
         storeData('account_nickname', res.nickname);
         storeData('account_avatar_url', res.avatar_url);
-        this.props.dispathAdminLogin(res.token);
-
+        this.props.dispatchSetAuthToken(res.token);
+        this.props.dispatchCurrentAccount()
         let toast = Toast.show('登录成功', {
           duration: Toast.durations.LONG,
           position: Toast.positions.TOP,
@@ -44,8 +46,8 @@ class AdminPhoneLogin extends Component {
           hideOnPress: true,
           delay: 0,
         });
-        let data = await getData('auth_token');
-        console.log('auth_token', data);
+        // let data = await getData('auth_token');
+        // console.log('auth_token', data);
         this.props.navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],
