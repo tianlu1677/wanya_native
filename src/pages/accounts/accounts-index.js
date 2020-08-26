@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
 import {getAccountFollowers} from '@/api/account_api';
+
+import {AccountsIndexStyles as styles} from './style';
 
 export const AccountsIndex = () => {
   const [loading, setLoading] = useState(true);
@@ -53,28 +55,5 @@ export const AccountsIndex = () => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  follow: {
-    flexDirection: 'row',
-    paddingLeft: 14,
-    paddingRight: 14,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 14,
-    paddingBottom: 14,
-  },
-  nickname: {
-    fontSize: 14,
-    marginLeft: 10,
-  },
-  btn: {
-    marginLeft: 'auto',
-  },
-  separator: {
-    backgroundColor: '#FAFAFA',
-    height: 2,
-  },
-});
 
 export default AccountsIndex;

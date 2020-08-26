@@ -19,6 +19,25 @@ export const getNodeDetail = async nodeId => {
   return res.data;
 };
 
+// 圈子动态
+export const getPosts = async params => {
+  const res = await request({
+    url: `/api/v1/posts?${params.id}`,
+    method: 'GET',
+    params,
+  });
+  return res.data;
+};
+
+// export async function getPosts(params = {}, queryUrl = '') {
+//   const res = await request({
+//     url: `/api/v1/posts?${queryUrl}`,
+//     method: 'GET',
+//     data: params,
+//   });
+//   return res;
+// }
+
 // 圈子列表
 // export async function getNodeIndex(params = {}) {
 //   const res = await request({
@@ -63,14 +82,14 @@ export async function getFollowNodeIndex(params = {account_id: ''}) {
 // 动态
 // 圈子动态
 // 个人中心发布的内容
-export async function getPosts(params = {}, queryUrl = '') {
-  const res = await request({
-    url: `/api/v1/posts?${queryUrl}`,
-    method: 'GET',
-    data: params,
-  });
-  return res;
-}
+// export async function getPosts(params = {}, queryUrl = '') {
+//   const res = await request({
+//     url: `/api/v1/posts?${queryUrl}`,
+//     method: 'GET',
+//     data: params,
+//   });
+//   return res;
+// }
 
 // 圈子用户
 export async function getRecentAccounts(node_id, params = {}) {

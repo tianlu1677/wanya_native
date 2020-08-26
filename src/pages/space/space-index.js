@@ -6,6 +6,8 @@ import {getAccountFollowers} from '@/api/account_api';
 import IconFont from '@/iconfont';
 import {Search} from '@/components/NodeComponents';
 
+import {SpaceIndexStyles as styles} from './styles';
+
 const SpaceIndex = () => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
@@ -51,27 +53,5 @@ const SpaceIndex = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  spaceWrapper: {
-    justifyContent: 'flex-start',
-    paddingTop: 12,
-    paddingBottom: 12,
-    marginLeft: 15,
-  },
-  name: {
-    fontSize: 15,
-    lineHeight: 20,
-  },
-  address: {
-    fontSize: 11,
-    lineHeight: 20,
-    color: '#bdbdbd',
-  },
-  separator: {
-    backgroundColor: '#FAFAFA',
-    height: 2,
-  },
-});
 
 export default SpaceIndex;

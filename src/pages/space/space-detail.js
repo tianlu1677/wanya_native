@@ -4,7 +4,7 @@ import {getSpaceDetail} from '@/api/space_api';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {PlayScore, Avator} from '@/components/NodeComponents';
-import PostList from '@/components/List/PostList';
+import SingleList from '@/components/List/SingleList';
 import DoubleList from '@/components/List/DoubleList';
 import TabViewList from '@/components/TabView';
 import {getSpacePosts} from '@/api/space_api';
@@ -20,11 +20,11 @@ const SpaceDetail = () => {
     setDetail(res.data.space);
   };
 
-  const LastedListPage = () => {
-    return <PostList request={{api: getSpacePosts, params: {id: 2, type: 'published_order'}}} />;
+  const LastedList = () => {
+    return <SingleList request={{api: getSpacePosts, params: {id: 2, type: 'published_order'}}} />;
   };
 
-  const HotListPage = () => {
+  const HotList = () => {
     return <DoubleList request={{api: getSpacePosts, params: {id: 2, type: 'hot_order'}}} />;
   };
 
@@ -72,12 +72,12 @@ const SpaceDetail = () => {
           {
             key: 'lasted',
             title: '最新',
-            component: LastedListPage,
+            component: LastedList,
           },
           {
             key: 'hot',
             title: '热门',
-            component: HotListPage,
+            component: HotList,
           },
         ]}
         onChange={key => setCurrentKey(key)}

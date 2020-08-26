@@ -13,10 +13,10 @@ import Recommend from '../pages/home/Recommend';
 import VideoDetail from '../pages/home/VideoDetail';
 
 import Mine from '../pages/mine/mine';
-import AccountDetail from '@/pages/mine/account-detail';
 
 // 用户
 import AccountsIndex from '@/pages/accounts/accounts-index';
+import AccountsDetail from '@/pages/accounts/accounts-detail';
 
 // 场地
 import SpaceIndex from '@/pages/space/space-index';
@@ -92,7 +92,7 @@ function HomeTabList() {
           height: 50,
         },
       }}>
-      <Tab.Screen name="Node" component={SpaceDetail} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={NodeDetail} options={{title: '圈子'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen
         name="Recommend"

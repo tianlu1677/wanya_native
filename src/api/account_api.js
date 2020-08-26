@@ -96,17 +96,17 @@ export async function getAccountTopics(id, type, params = {}) {
 
 // 收藏，喜欢的动态
 // type= publish, praise, star
-export async function getAccountPosts(id, type, params = {}) {
-  const res = await request({
-    url: `/api/v1/accounts/${id}/posts`,
-    method: 'GET',
-    params: {
-      type: type,
-      ...params,
-    },
-  });
-  return res;
-}
+// export async function getAccountPosts(id, type, params = {}) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${id}/posts`,
+//     method: 'GET',
+//     params: {
+//       type: type,
+//       ...params,
+//     },
+//   });
+//   return res;
+// }
 
 // 发布的帖子 收藏，喜欢的帖子
 // type= publish, praise, star
@@ -369,6 +369,16 @@ export async function getAccountInviteList(data = {}) {
 export const getAccountFollowers = async (accountId, params = {}) => {
   const res = await request({
     url: `/api/v1/accounts/${accountId}/followers`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
+// 主页 动态publish 喜欢praise 视频publish_video
+export const getAccountPosts = async params => {
+  const res = await request({
+    url: `/api/v1/accounts/${params.id}/posts`,
     method: 'GET',
     params,
   });

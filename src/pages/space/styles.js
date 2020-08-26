@@ -1,5 +1,27 @@
 import {StyleSheet} from 'react-native';
 
+export const SpaceIndexStyles = StyleSheet.create({
+  spaceWrapper: {
+    justifyContent: 'flex-start',
+    paddingTop: 12,
+    paddingBottom: 12,
+    marginLeft: 15,
+  },
+  name: {
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  address: {
+    fontSize: 11,
+    lineHeight: 20,
+    color: '#bdbdbd',
+  },
+  separator: {
+    backgroundColor: '#FAFAFA',
+    height: 2,
+  },
+});
+
 export const SpaceDetailStyles = StyleSheet.create({
   wrapper: {
     flex: 1,

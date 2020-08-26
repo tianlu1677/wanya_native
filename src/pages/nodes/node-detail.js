@@ -1,18 +1,46 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
-import {getNodeDetail} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import {JoinButton, JoinAccounts} from '@/components/NodeComponents';
+import {getNodeDetail, getPosts} from '@/api/node_api';
+import {getTopicList} from '@/api/topic_api';
+
+import PostList from '@/components/List/PostList';
+import DoubleList from '@/components/List/DoubleList';
+import TabViewList from '@/components/TabView';
+
+import {NodeDetailStyles as styles} from './styles';
+
 const defaultCoverUrl =
   'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
 
+const id = 2;
 const NodeDetail = () => {
   const [detail, setDetail] = useState(null);
+  const [currentKey, setCurrentKey] = useState('publish');
 
   const loadData = async () => {
-    const res = await getNodeDetail(2);
+    const res = await getNodeDetail(id);
     setDetail(res.node);
   };
+
+  // const PublishList = () => {
+  //   const queryUrl = `q[node_id_eq]=${id}&q[s]=published_at desc&show_followed=on`;
+  //   return <PostList request={{api: getPosts, params: {id: queryUrl}}} />;
+  // };
+
+  // const PostsList = () => {
+  //   const queryUrl = `q[node_id_eq]=${id}&q[s]=praises_count desc&show_followed=on`;
+  //   return <DoubleList request={{api: getTopicList, params: {id: queryUrl}}} />;
+  // };
+
+  // const ArticleList = () => {
+  //   return <PostList request={{api: getAccountPosts, params: {id: id, type: 'praise'}}} />;
+  // };
+
+  // const TopicList = () => {
+  //   return <PostList request={{api: getAccountPosts, params: {id: id, type: 'praise'}}} />;
+  // };
 
   useEffect(() => {
     loadData();
@@ -50,92 +78,36 @@ const NodeDetail = () => {
           <JoinButton join={detail.followed} text={detail.followed ? '已加入' : '加入'} />
         </View>
       </View>
+      {/* <TabViewList
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'publish',
+            title: '动态',
+            component: PublishList,
+          },
+          {
+            key: 'posts',
+            title: '帖子',
+            component: PostsList,
+          },
+          {
+            key: 'article',
+            title: '文章',
+            component: ArticleList,
+          },
+          {
+            key: 'topic',
+            title: '话题',
+            component: TopicList,
+          },
+        ]}
+        onChange={key => setCurrentKey(key)}
+      /> */}
     </View>
   ) : (
     <Loading />
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  header: {
-    flex: 1,
-    paddingLeft: 16,
-    paddingRight: 16,
-    position: 'relative',
-    height: 242,
-    paddingTop: 20,
-  },
-  bgcover: {
-    height: 242,
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    bottom: 0,
-    top: 0,
-  },
-  nodeContent: {
-    flexDirection: 'row',
-  },
-  nodeInfo: {
-    flexDirection: 'row',
-    marginRight: 'auto',
-  },
-  cover: {
-    width: 70,
-    height: 70,
-    borderRadius: 2,
-    marginRight: 16,
-  },
-  nodewrap: {
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  nodeName: {
-    fontSize: 24,
-    color: '#fff',
-  },
-  nodeNum: {
-    fontSize: 12,
-    color: '#fff',
-    lineHeight: 27,
-    marginBottom: 8,
-  },
-  nodeCreator: {
-    flexDirection: 'row',
-  },
-  nodeDesc: {
-    width: 250,
-    color: '#fff',
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  accountInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    zIndex: 2,
-  },
-  accountOpacity: {
-    backgroundColor: '#fff',
-    opacity: 0.12,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-  },
-  count: {
-    color: '#bdbdbd',
-    marginRight: 'auto',
-    marginLeft: 7,
-  },
-});
 
 export default NodeDetail;

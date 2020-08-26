@@ -1,19 +1,38 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Image} from 'react-native';
 import {Avator} from '@/components/NodeComponents';
-import {getAccount} from '@/api/account_api';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
+import {getAccount} from '@/api/account_api';
+import {getAccountPosts} from '@/api/account_api';
+import SingleList from '@/components/List/SingleList';
+import DoubleList from '@/components/List/DoubleList';
+import TabViewList from '@/components/TabView';
+
+import {AccountsDetailStyles as styles} from './style';
+
+const id = 1106;
 
 const AccountDetail = () => {
   const [account, setAccount] = useState(null);
+  const [currentKey, setCurrentKey] = useState('publish');
 
   const loadData = async () => {
-    const res = await getAccount(1106);
-    console.log(res.data.account);
-
+    const res = await getAccount(id);
     setAccount(res.data.account);
+  };
+
+  const PublishList = () => {
+    return <SingleList request={{api: getAccountPosts, params: {id: id, type: 'publish'}}} />;
+  };
+
+  const VideoList = () => {
+    return <DoubleList request={{api: getAccountPosts, params: {id: id, type: 'publish_video'}}} />;
+  };
+
+  const PraiseList = () => {
+    return <SingleList request={{api: getAccountPosts, params: {id: id, type: 'praise'}}} />;
   };
 
   useEffect(() => {
@@ -59,90 +78,31 @@ const AccountDetail = () => {
           </View>
         </View>
       </View>
+      <TabViewList
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'publish',
+            title: '动态',
+            component: PublishList,
+          },
+          {
+            key: 'video',
+            title: '视频',
+            component: VideoList,
+          },
+          {
+            key: 'praise',
+            title: '喜欢',
+            component: PraiseList,
+          },
+        ]}
+        onChange={key => setCurrentKey(key)}
+      />
     </View>
   ) : (
     <Loading />
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
-  header: {
-    paddingLeft: 16,
-    paddingRight: 16,
-    position: 'relative',
-  },
-  bgcover: {
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    bottom: 0,
-    top: 0,
-  },
-  nickname: {
-    height: 27,
-    fontSize: 16,
-    lineHeight: 27,
-    color: '#fff',
-  },
-  uid: {
-    height: 20,
-    fontSize: 10,
-    lineHeight: 20,
-    color: '#fff',
-  },
-  invite: {
-    width: 70,
-    height: 28,
-    lineHeight: 28,
-    textAlign: 'center',
-    fontSize: 13,
-    borderRadius: 1,
-    backgroundColor: '#fff',
-    marginTop: 5,
-    marginLeft: 'auto',
-  },
-  settled: {
-    marginTop: 16,
-    marginBottom: 19,
-    lineHeight: 20,
-    color: '#fff',
-    fontSize: 12,
-  },
-  tag: {
-    lineHeight: 18,
-    textAlign: 'center',
-    paddingLeft: 6,
-    paddingRight: 6,
-    marginLeft: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
-  },
-  intro: {
-    lineHeight: 20,
-    marginBottom: 17,
-    color: '#fff',
-  },
-  number: {
-    flexDirection: 'row',
-    marginBottom: 16,
-  },
-  numberItem: {
-    width: 45,
-    marginRight: 25,
-  },
-  numberCount: {
-    lineHeight: 20,
-    height: 20,
-    fontSize: 16,
-    color: '#fff',
-    marginBottom: 5,
-  },
-  numberTitle: {
-    fontSize: 10,
-    color: '#fff',
-  },
-});
 
 export default AccountDetail;
