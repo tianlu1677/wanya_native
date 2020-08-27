@@ -27,10 +27,10 @@ import NodeIndex from '../pages/nodes/node-index';
 import NodeDetail from '../pages/nodes/node-detail';
 
 // 发布
-import NewTopic from '@/pages/home/newtopic';
+// import NewTopic from '@/pages/home/newtopic';
 
 import TopicDetail from '../pages/topics/TopicDetail';
-// import NewTopic from '../pages/topics/NewTopic';
+import NewTopic from '../pages/topics/NewTopic';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
 import InviteDetail from '../pages/mine/invite-detail';
 
@@ -49,6 +49,10 @@ import CommentNotify from '../pages/notify/comment-notify';
 import PraiseNotify from '../pages/notify/praise-notify';
 import SystemNotify from '../pages/notify/system-notify';
 import FollowNotify from '../pages/notify/follow-notify';
+import MentionNotify from '../pages/notify/mention-notify';
+
+// 网页显示
+import WebView from '../pages/webview/webview';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -92,8 +96,7 @@ function HomeTabList() {
           height: 50,
         },
       }}>
-      <Tab.Screen name="Node" component={NodeDetail} options={{title: '圈子'}} />
-      <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
+      <Tab.Screen name="Node" component={SpaceIndex} options={{title: '圈子'}} />
       <Tab.Screen
         name="Recommend"
         component={Index}
@@ -131,10 +134,44 @@ function AuthStackList() {
 
 function MainStackList() {
   return (
+<<<<<<< HEAD
     <SafeAreaPlus>
       <MainStack.Navigator
         initialRouteName="Recommend"
         screenOptions={({route}) => ({
+=======
+    <MainStack.Navigator
+      initialRouteName="Recommend"
+      screenOptions={({route}) => ({
+        headerStyle: {
+          backgroundColor: 'white',
+        },
+        headerBackTitleVisible: false,
+        headerTintColor: 'black',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      })}>
+      <MainStack.Screen
+        name="Recommend"
+        component={HomeTabList}
+        options={{
+          headerShown: false,
+          title: '推荐',
+        }}
+      />
+
+      <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
+      <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
+      <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
+      <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子11'}} />
+      <MainStack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />
+
+      <MainStack.Screen
+        name="PhoneLogin"
+        component={PhoneLogin}
+        options={{
+>>>>>>> develop
           headerStyle: {
             backgroundColor: 'white',
           },
@@ -190,6 +227,7 @@ function MainStackList() {
           options={{title: '输入邀请码'}}
         />
 
+<<<<<<< HEAD
         <MainStack.Screen
           name="InviteDetail"
           component={InviteDetail}
@@ -233,6 +271,43 @@ function MainStackList() {
         {/* </SafeAreaPlus> */}
       </MainStack.Navigator>
     </SafeAreaPlus>
+=======
+      {/*  消息通知*/}
+      <MainStack.Screen
+        name="NotifyIndex"
+        component={NotifyIndex}
+        options={{title: '消息',
+          headerShown: true
+        }}
+      />
+      <MainStack.Screen
+        name="CommentNotify"
+        component={CommentNotify}
+        options={{title: '评论通知'}}
+      />
+      <MainStack.Screen
+        name="PraiseNotify"
+        component={PraiseNotify}
+        options={{title: '点赞通知'}}
+      />
+      <MainStack.Screen
+        name="SystemNotify"
+        component={SystemNotify}
+        options={{title: '系统通知'}}
+      />
+      <MainStack.Screen
+        name="FollowNotify"
+        component={FollowNotify}
+        options={{title: '关注通知'}}
+      />
+      <MainStack.Screen
+        name="MentionNotify"
+        component={MentionNotify}
+        options={{title: '@我的'}}
+      />
+      <MainStack.Screen name="WebView" component={WebView} options={{title: ''}} />
+    </MainStack.Navigator>
+>>>>>>> develop
   );
 }
 
@@ -242,40 +317,6 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       {!login.auth_token ? AuthStackList() : MainStackList()}
-      {/*<StackNavigator initialRouteName="Recommend">*/}
-      {/*  <Stack.Screen name="Recommend" component={HomeTabList} options={{title: '推荐'}} />*/}
-
-      {/*  <Stack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />*/}
-      {/*  <Stack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />*/}
-      {/*  <Stack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />*/}
-      {/*  <Stack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子'}} />*/}
-      {/*  <Stack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />*/}
-
-      {/*  <Stack.Screen name="PhoneLogin" component={PhoneLogin} options={{title: '手机登录'}} />*/}
-      {/*  <Stack.Screen name="SocialLogin" component={SocialLogin} options={{title: '微信登录'}} />*/}
-      {/*  <Stack.Screen name="InviteLogin" component={InviteLogin} options={{title: '输入邀请码'}} />*/}
-
-      {/*  <Stack.Screen name="InviteDetail" component={InviteDetail} options={{title: '我的邀请'}} />*/}
-
-      {/*  <Stack.Screen name="LabIndex" component={LabIndex} options={{title: '实验室主页'}} />*/}
-      {/*  <Stack.Screen*/}
-      {/*    name="LabTabIndex"*/}
-      {/*    component={LabTabIndex}*/}
-      {/*    options={{title: '实验室标签页'}}*/}
-      {/*  />*/}
-      {/*  <Stack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />*/}
-      {/*  <Stack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />*/}
-
-      {/*  /!*  消息通知*!/*/}
-      {/*  <Stack.Screen*/}
-      {/*    name="CommentNotify"*/}
-      {/*    component={CommentNotify}*/}
-      {/*    options={{title: '消息通知'}}*/}
-      {/*  />*/}
-      {/*  <Stack.Screen name="PraiseNotify" component={PraiseNotify} options={{title: '消息通知'}} />*/}
-      {/*  <Stack.Screen name="SystemNotify" component={SystemNotify} options={{title: '消息通知'}} />*/}
-      {/*  <Stack.Screen name="FollowNotify" component={FollowNotify} options={{title: '消息通知'}} />*/}
-      {/*</StackNavigator>*/}
     </NavigationContainer>
   );
 }

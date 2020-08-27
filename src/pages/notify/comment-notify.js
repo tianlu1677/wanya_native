@@ -6,7 +6,7 @@ import {getReplyComments} from '@/api/account_api';
 import {syncAccountInfo} from '@/api/mine_api';
 import {pagination} from '@/utils/load_more';
 import NotifyContent from './components/notify-content';
-
+import SafeAreaPlus from '../../components/safe_area_plus';
 class CommentNotify extends Component {
   constructor(props) {
     super(props);
@@ -115,13 +115,11 @@ class CommentNotify extends Component {
   render() {
     const {itemList, isLoading} = this.state;
     return (
-      <View>
-        <SafeAreaView style={{backgroundColor: 'white', height: '100%'}}>
-          {[1, 2, 3, 4].map(item => {
-            return <NotifyContent item={item} key={item.id}></NotifyContent>;
-          })}
-        </SafeAreaView>
-      </View>
+      <SafeAreaPlus style={{backgroundColor: 'white', height: '100%'}}>
+        {[1, 2, 3, 4].map(item => {
+          return <NotifyContent item={item} key={item.id}></NotifyContent>;
+        })}
+      </SafeAreaPlus>
     );
   }
 }

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
 import styled from 'styled-components/native';
 // import goPage from '../../utils/page_path';
-
+import SafeAreaPlus from '../../components/safe_area_plus';
 class SystemNotify extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +22,9 @@ class SystemNotify extends Component {
   render() {
     return (
       <View>
-        <SafeAreaView>SystemNotify</SafeAreaView>
+        <SafeAreaView>
+
+        </SafeAreaView>
       </View>
     );
   }

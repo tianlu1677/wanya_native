@@ -5,9 +5,6 @@ export async function getCurrentAccount(token = '') {
   const res = await request({
     url: '/api/v1/mine/accounts/info',
     method: 'GET',
-    params: {
-      token: token,
-    },
   });
   return res.data;
 }
