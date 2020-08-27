@@ -10,6 +10,7 @@ import {Image} from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
 import Config from 'react-native-config';
+import RNBootSplash from "react-native-bootsplash";
 
 // Config.API_URL; // 'https://myapi.com'
 // Config.GOOGLE_MAPS_API_KEY; // 'abcdefgh'
@@ -23,6 +24,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    RNBootSplash.hide({ duration: 50 });
     this.loadNetworkInfo();
     this.loadDeviceInfo();
     this.loginAdmin()

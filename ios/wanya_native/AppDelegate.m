@@ -11,6 +11,7 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+#import "RNBootSplash.h" // <- add the header import
 
 // #ifdef DEBUG
 // #import <DoraemonKit/DoraemonManager.h>
@@ -51,6 +52,8 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // <- initialization using the storyboard file name
+
   return YES;
 }
 
