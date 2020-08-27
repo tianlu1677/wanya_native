@@ -27,9 +27,9 @@ import NodeDetail from '../pages/nodes/node-detail';
 
 // 发布
 import NewTopic from '@/pages/home/newtopic';
+// import NewTopic from '../pages/topics/NewTopic';
 
 import TopicDetail from '../pages/topics/TopicDetail';
-// import NewTopic from '../pages/topics/NewTopic';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
 import InviteDetail from '../pages/mine/invite-detail';
 
@@ -96,6 +96,7 @@ function HomeTabList() {
         },
       }}>
       <Tab.Screen name="Node" component={NewTopic} options={{title: '圈子'}} />
+      <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen
         name="Recommend"
         component={Index}

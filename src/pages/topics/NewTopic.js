@@ -142,7 +142,7 @@ export default class App extends Component {
 
   async pickSingle(cropit, circular = false, mediaType) {
     const token = await Helper.getData('auth_token');
-    console.log('auth_token', token)
+    console.log('auth_token', token);
     ImagePicker.openPicker({
       width: 500,
       height: 500,
@@ -160,11 +160,12 @@ export default class App extends Component {
       cropperToolbarWidgetColor: '#3498DB',
     })
       .then(image => {
-        console.log('image111111', image)
+        console.log('image111111', image);
         let uploadOptions = {
           url: 'https://xinxue.meirixinxue.com/api/v1/assets',
           path: image.path,
           method: 'POST',
+          // type: image.mime,
           maxRetries: 1,
           field: 'file',
           type: 'multipart',
