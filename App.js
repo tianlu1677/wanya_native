@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // RNBootSplash.hide({ duration: 50 });
+    RNBootSplash.hide({ duration: 200 });
     this.loadNetworkInfo();
     this.loadDeviceInfo();
     this.loginAdmin()

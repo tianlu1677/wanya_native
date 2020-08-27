@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {SafeAreaView, Dimensions, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
 // import ViewPager from '@react-native-community/viewpager';
-import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
+// import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import TabViewList from '../../components/TabView';

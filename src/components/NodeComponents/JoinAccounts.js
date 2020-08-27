@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 // import {Avator} from '@/components/NodeComponents';
-import Avator as mod from "./Avator";
+import Avator from "./Avator";
 
 const JoinAccounts = props => {
   const sizeStyle = {width: props.size, height: props.size, borderRadius: Number(props.size / 2)};
