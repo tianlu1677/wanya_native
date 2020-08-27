@@ -4,6 +4,11 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import "RNUMConfigure.h"
+#import "UMAnalyticsModule.h"
+#import "UMPushModule.h"
+#import <UMAnalytics/MobClick.h>
+
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -54,6 +59,10 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // <- initialization using the storyboard file name
 
+  [UMConfigure setLogEnabled:YES];
+  [RNUMConfigure initWithAppkey:@"5d898ec9570df3adff00089a" channel:@"App Store"];
+  [MobClick setScenarioType:E_UM_NORMAL];
+  
   return YES;
 }
 

@@ -17,6 +17,9 @@
 		2DCD954D1E0B4F2C00145EB5 /* wanya_nativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wanya_nativeTests.m */; };
 		56FA6E3A7936808AE07A5A5D /* libPods-wanya_native.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9834DD02964AA7A776B84138 /* libPods-wanya_native.a */; };
 		6DAE6F5624F6A9C900149152 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 6DAE6F5524F6A9C900149152 /* index.ios.jsbundle */; };
+		6DAE6F6724F7C27700149152 /* UMPushModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6124F7C27500149152 /* UMPushModule.m */; };
+		6DAE6F6824F7C27700149152 /* UMAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */; };
+		6DAE6F6924F7C27700149152 /* RNUMConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6424F7C27600149152 /* RNUMConfigure.m */; };
 		6DD198BE24E0F54900728256 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */; };
 		8C40103C406F0505CD70EF21 /* libPods-wanya_native-wanya_nativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043254F79EF21522414A986B /* libPods-wanya_native-wanya_nativeTests.a */; };
 		99301F3D8BA3C82148D60326 /* libPods-wanya_native-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13228FEB59A22B676FBD01BE /* libPods-wanya_native-tvOS.a */; };
@@ -63,6 +66,12 @@
 		6DAE6F5424F6A6A100149152 /* wanya_nativeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeRelease.entitlements; path = wanya_native/wanya_nativeRelease.entitlements; sourceTree = "<group>"; };
 		6DAE6F5524F6A9C900149152 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
 		6DAE6F5724F6C83400149152 /* wanya_nativeDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeDebug.entitlements; path = wanya_native/wanya_nativeDebug.entitlements; sourceTree = "<group>"; };
+		6DAE6F6124F7C27500149152 /* UMPushModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMPushModule.m; path = wanya_native/UMPushModule.m; sourceTree = "<group>"; };
+		6DAE6F6224F7C27500149152 /* RNUMConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNUMConfigure.h; path = wanya_native/RNUMConfigure.h; sourceTree = "<group>"; };
+		6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMAnalyticsModule.m; path = wanya_native/UMAnalyticsModule.m; sourceTree = "<group>"; };
+		6DAE6F6424F7C27600149152 /* RNUMConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNUMConfigure.m; path = wanya_native/RNUMConfigure.m; sourceTree = "<group>"; };
+		6DAE6F6524F7C27600149152 /* UMAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMAnalyticsModule.h; path = wanya_native/UMAnalyticsModule.h; sourceTree = "<group>"; };
+		6DAE6F6624F7C27700149152 /* UMPushModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMPushModule.h; path = wanya_native/UMPushModule.h; sourceTree = "<group>"; };
 		6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wanya_native/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9834DD02964AA7A776B84138 /* libPods-wanya_native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD6AD6AAF03AE427C5A77409 /* Pods-wanya_native-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOS.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOS/Pods-wanya_native-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,6 +138,12 @@
 		13B07FAE1A68108700A75B9A /* wanya_native */ = {
 			isa = PBXGroup;
 			children = (
+				6DAE6F6224F7C27500149152 /* RNUMConfigure.h */,
+				6DAE6F6424F7C27600149152 /* RNUMConfigure.m */,
+				6DAE6F6524F7C27600149152 /* UMAnalyticsModule.h */,
+				6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */,
+				6DAE6F6624F7C27700149152 /* UMPushModule.h */,
+				6DAE6F6124F7C27500149152 /* UMPushModule.m */,
 				6DAE6F5724F6C83400149152 /* wanya_nativeDebug.entitlements */,
 				6DAE6F5524F6A9C900149152 /* index.ios.jsbundle */,
 				6DAE6F5424F6A6A100149152 /* wanya_nativeRelease.entitlements */,
@@ -648,7 +663,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DAE6F6724F7C27700149152 /* UMPushModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				6DAE6F6924F7C27700149152 /* RNUMConfigure.m in Sources */,
+				6DAE6F6824F7C27700149152 /* UMAnalyticsModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

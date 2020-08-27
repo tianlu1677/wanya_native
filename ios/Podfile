@@ -61,6 +61,11 @@ target 'wanya_native' do
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'UMCCommon', '~> 2.1.4'
+  pod 'UMCAnalytics'
+  pod 'UMCPush'
+  pod 'UMCSecurityPlugins'
+
   # Pods for wanya_native
   # pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   # pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
