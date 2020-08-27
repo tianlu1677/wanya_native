@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "wanya_native.app"
+               BuildableName = "&#x987d;&#x9e26;.app"
                BlueprintName = "wanya_native"
                ReferencedContainer = "container:wanya_native.xcodeproj">
             </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "wanya_native.app"
+            BuildableName = "&#x987d;&#x9e26;.app"
             BlueprintName = "wanya_native"
             ReferencedContainer = "container:wanya_native.xcodeproj">
          </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "wanya_native.app"
+            BuildableName = "&#x987d;&#x9e26;.app"
             BlueprintName = "wanya_native"
             ReferencedContainer = "container:wanya_native.xcodeproj">
          </BuildableReference>

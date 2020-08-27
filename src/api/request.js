@@ -1,6 +1,7 @@
+import React, {Component} from 'react';
 import axios from 'axios';
 import qs from 'querystring';
-import {getData} from '../utils/storage';
+import Helper from '../utils/helper';
 
 const VERSION = '1.0.0';
 const BASE_URL = 'https://xinxue.meirixinxue.com';
@@ -9,12 +10,11 @@ axios.defaults.baseURL = `${BASE_URL}`;
 
 // Add a request interceptor
 axios.interceptors.request.use(
-  async function(config) {
-    config.headers.common.Token = await getData('auth_token');
+  async function (config) {
     config.headers.common.version = VERSION;
     return config;
   },
-  function(error) {
+  function (error) {
     console.log('error', error);
     // Do something with request error
     return Promise.reject(error);
@@ -23,13 +23,13 @@ axios.interceptors.request.use(
 
 // Add a response interceptor
 axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     // console.log('response', response)
     return response;
   },
-  function(error) {
+  function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     console.log('request error', error);
@@ -66,9 +66,11 @@ axios.interceptors.response.use(
   }
 );
 
-export default function requestHttp(options, url = null) {
+export default async function requestHttp(options, url = null) {
   let data = {};
   let params = {};
+  const auth_token = await Helper.getData('auth_token');
+  console.log('requestHttp token', auth_token)
   if (options.method === 'GET') {
     params = {...options.data, ...options.params};
   } else {
@@ -82,9 +84,10 @@ export default function requestHttp(options, url = null) {
     params: params,
     method: options.method || 'GET',
     headers: {
-      'content-type': contentType
+      'content-type': contentType,
+      Token: auth_token,
     },
-    responseType: 'json'
+    responseType: 'json',
   };
   if (options.method !== 'GET') {
     request_options = {...request_options, data: data};

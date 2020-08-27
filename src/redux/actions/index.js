@@ -8,50 +8,51 @@ import {
   CHANGE_PROGRESS,
   GET_LIST,
   ADMIN_SIGN_SUCCESS,
+  CURRENT_ACCOUNT_SUCCESS
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
+import {getCurrentAccount} from '../../api/mine_api';
 
 // 当前用户
-export const dispathCurrentAccount = () => {
-  return {
-    type: CURRENT_ACCOUNT_REQUEST,
-  };
+export const dispatchCurrentAccount = () => async dispatch => {
+  const res = await getCurrentAccount();
+  dispatch({type: CURRENT_ACCOUNT_SUCCESS, account: res.account});
 };
 
-export const dispathBaseCurrentAccount = () => {
+export const dispatchBaseCurrentAccount = () => {
   return {
     type: BASE_CURRENT_ACCOUNT_REQUEST,
   };
 };
 
-export const dispathAccountDetail = account_id => {
+export const dispatchAccountDetail = account_id => {
   return {
     type: ACCOUNT_DETAIL_REQUEST,
     account_id: account_id,
   };
 };
 
-export const dispathEmptyAccountDetail = (account_id = '') => {
+export const dispatchEmptyAccountDetail = (account_id = '') => {
   return {
     type: ACCOUNT_EMPTY_SUCCESS,
     account_id: account_id,
   };
 };
 
-export const dispathFollowAccount = account_id => {
+export const dispatchFollowAccount = account_id => {
   return {
     type: ACCOUNT_FOLLOW_REQUEST,
     account_id: account_id,
   };
 };
-export const dispathUnFollowAccount = account_id => {
+export const dispatchUnFollowAccount = account_id => {
   return {
     type: ACCOUNT_UN_FOLLOW_REQUEST,
     account_id: account_id,
   };
 };
 
-export const dispathEmptyCurrentAccount = account_id => {
+export const dispatchEmptyCurrentAccount = account_id => {
   return {
     type: ACCOUNT_EMPTY_SUCCESS,
     account_id: account_id,
@@ -72,9 +73,13 @@ export const dispathGetList = res => async dispatch => {
 };
 
 // 管理员登录
-export const dispathAdminLogin = (auth_token) => async (dispath) => {
-  dispath({
-    type: ADMIN_SIGN_SUCCESS,
-    auth_token: auth_token
-  })
-}
+export const dispatchSetAuthToken = (token = '') => async dispatch => {
+  console.log('xxxx', token);
+  // return
+  // return {
+  //   type: ADMIN_SIGN_SUCCESS,
+  //   auth_token: auth_token
+  // }
+
+  dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
+};

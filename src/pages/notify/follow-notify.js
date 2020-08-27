@@ -3,7 +3,7 @@ import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-na
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
 import AccountFollow from './components/account-follow';
-
+import SafeAreaPlus from '../../components/safe_area_plus';
 class FollowNotify extends Component {
   constructor(props) {
     super(props);
@@ -22,13 +22,11 @@ class FollowNotify extends Component {
 
   render() {
     return (
-      <View>
-        <SafeAreaView style={{backgroundColor: 'white', height: '100%'}}>
-          {[1, 2, 3].map(item => {
-            return <AccountFollow account={{}} actionText={'你好'} time={'1小时前'} key={item} />;
-          })}
-        </SafeAreaView>
-      </View>
+      <SafeAreaPlus style={{backgroundColor: 'white', height: '100%'}}>
+        {[1, 2, 3].map(item => {
+          return <AccountFollow account={{}} actionText={'你好'} time={'1小时前'} key={item} />;
+        })}
+      </SafeAreaPlus>
     );
   }
 }

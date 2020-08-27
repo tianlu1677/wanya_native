@@ -7,6 +7,8 @@ import Modal from 'react-native-modal';
 
 import Helper from '@/utils/helper';
 
+const types = {toast: 'toast', webview: '网页'};
+
 class LabIndex extends Component {
   constructor(props) {
     super(props);
@@ -112,16 +114,36 @@ class LabIndex extends Component {
       });
   };
 
+  handleClick = type => {
+    console.log('type', type);
+    switch (type) {
+      case 'webview':
+        this.props.navigation.navigate('WebView', {sourceUrl: 'https://baidu.com', title: '顽鸦1'});
+        break;
+      default:
+    }
+  };
+
   render() {
     return (
       <View>
         <Text>实验室主页</Text>
-        {/*'https://12factor.net/zh_cn/'*/}
 
-        <Text>{Helper.fromToNow('1596524875')}</Text>
         <Button onPress={this.showToast} title="toast"></Button>
         <Button onPress={this.showModal} title="show modal"></Button>
         <Button onPress={this.showShare} title="分享"></Button>
+
+        {Object.keys(types).map(type => {
+          return (
+            <Button
+              title={types[type]}
+              key={type}
+              onPress={() => {
+                this.handleClick(type);
+              }}
+            />
+          );
+        })}
         <Button
           title={'tabindex'}
           onPress={() => {
