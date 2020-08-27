@@ -134,12 +134,6 @@ function AuthStackList() {
 
 function MainStackList() {
   return (
-<<<<<<< HEAD
-    <SafeAreaPlus>
-      <MainStack.Navigator
-        initialRouteName="Recommend"
-        screenOptions={({route}) => ({
-=======
     <MainStack.Navigator
       initialRouteName="Recommend"
       screenOptions={({route}) => ({
@@ -171,7 +165,6 @@ function MainStackList() {
         name="PhoneLogin"
         component={PhoneLogin}
         options={{
->>>>>>> develop
           headerStyle: {
             backgroundColor: 'white',
           },
