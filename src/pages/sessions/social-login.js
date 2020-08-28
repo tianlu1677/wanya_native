@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, View, Text, ImageBackground} from 'react-native';
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
+import * as WeChat from 'react-native-wechat-lib';
+
 
 class SocialLogin extends Component {
   constructor(props) {
@@ -19,11 +21,13 @@ class SocialLogin extends Component {
 
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.navigation.setOptions({
       headerShown: false
       // header: null
     })
+
+    console.log('WeChat', await WeChat.openWXApp())
   }
 
   render() {

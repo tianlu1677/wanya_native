@@ -3,6 +3,8 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
+
 
 #import "RNUMConfigure.h"
 #import "UMAnalyticsModule.h"
@@ -64,6 +66,29 @@ static void InitializeFlipper(UIApplication *application) {
   [MobClick setScenarioType:E_UM_NORMAL];
   
   return YES;
+}
+
+
+
+- (BOOL)application:(UIApplication *)application
+  continueUserActivity:(NSUserActivity *)userActivity
+  restorationHandler:(void(^)(NSArray<id<UIUserActivityRestoring>> * __nullable
+  restorableObjects))restorationHandler {
+  // 触发回调方法
+  [RCTLinkingManager application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+  return [WXApi handleOpenUniversalLink:userActivity
+  delegate:self];
+}
+
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+//  return [RCTLinkingManager application:application openURL:url options:options];
+  // Triggers a callback event.
+  // 触发回调事件
+  [RCTLinkingManager application:application openURL:url options:options];
+  return [WXApi handleOpenURL:url delegate:self];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

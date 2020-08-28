@@ -20,6 +20,12 @@
 		6DAE6F6724F7C27700149152 /* UMPushModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6124F7C27500149152 /* UMPushModule.m */; };
 		6DAE6F6824F7C27700149152 /* UMAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */; };
 		6DAE6F6924F7C27700149152 /* RNUMConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6424F7C27600149152 /* RNUMConfigure.m */; };
+		6DAE6F6F24F8024800149152 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F6E24F8024800149152 /* WebKit.framework */; };
+		6DAE6F7124F8025200149152 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7024F8025200149152 /* SystemConfiguration.framework */; };
+		6DAE6F7324F8025A00149152 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7224F8025A00149152 /* CoreTelephony.framework */; };
+		6DAE6F7524F8026200149152 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7424F8026200149152 /* libsqlite3.0.tbd */; };
+		6DAE6F7724F8027300149152 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7624F8027300149152 /* libc++.tbd */; };
+		6DAE6F7924F8027E00149152 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7824F8027D00149152 /* libz.tbd */; };
 		6DD198BE24E0F54900728256 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */; };
 		8C40103C406F0505CD70EF21 /* libPods-wanya_native-wanya_nativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043254F79EF21522414A986B /* libPods-wanya_native-wanya_nativeTests.a */; };
 		99301F3D8BA3C82148D60326 /* libPods-wanya_native-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13228FEB59A22B676FBD01BE /* libPods-wanya_native-tvOS.a */; };
@@ -72,6 +78,12 @@
 		6DAE6F6424F7C27600149152 /* RNUMConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNUMConfigure.m; path = wanya_native/RNUMConfigure.m; sourceTree = "<group>"; };
 		6DAE6F6524F7C27600149152 /* UMAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMAnalyticsModule.h; path = wanya_native/UMAnalyticsModule.h; sourceTree = "<group>"; };
 		6DAE6F6624F7C27700149152 /* UMPushModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMPushModule.h; path = wanya_native/UMPushModule.h; sourceTree = "<group>"; };
+		6DAE6F6E24F8024800149152 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6DAE6F7024F8025200149152 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6DAE6F7224F8025A00149152 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		6DAE6F7424F8026200149152 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		6DAE6F7624F8027300149152 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		6DAE6F7824F8027D00149152 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wanya_native/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9834DD02964AA7A776B84138 /* libPods-wanya_native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD6AD6AAF03AE427C5A77409 /* Pods-wanya_native-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOS.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOS/Pods-wanya_native-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -95,6 +107,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DAE6F7924F8027E00149152 /* libz.tbd in Frameworks */,
+				6DAE6F7724F8027300149152 /* libc++.tbd in Frameworks */,
+				6DAE6F7524F8026200149152 /* libsqlite3.0.tbd in Frameworks */,
+				6DAE6F7324F8025A00149152 /* CoreTelephony.framework in Frameworks */,
+				6DAE6F7124F8025200149152 /* SystemConfiguration.framework in Frameworks */,
+				6DAE6F6F24F8024800149152 /* WebKit.framework in Frameworks */,
 				56FA6E3A7936808AE07A5A5D /* libPods-wanya_native.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -161,6 +179,12 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6DAE6F7824F8027D00149152 /* libz.tbd */,
+				6DAE6F7624F8027300149152 /* libc++.tbd */,
+				6DAE6F7424F8026200149152 /* libsqlite3.0.tbd */,
+				6DAE6F7224F8025A00149152 /* CoreTelephony.framework */,
+				6DAE6F7024F8025200149152 /* SystemConfiguration.framework */,
+				6DAE6F6E24F8024800149152 /* WebKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				9834DD02964AA7A776B84138 /* libPods-wanya_native.a */,

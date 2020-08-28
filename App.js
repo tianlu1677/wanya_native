@@ -12,6 +12,9 @@ import NetInfo from '@react-native-community/netinfo';
 import Config from 'react-native-config';
 import RNBootSplash from "react-native-bootsplash";
 
+import * as WeChat from 'react-native-wechat-lib';
+WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
+
 // Config.API_URL; // 'https://myapi.com'
 // Config.GOOGLE_MAPS_API_KEY; // 'abcdefgh'
 //
