@@ -5,6 +5,9 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 platform :ios, '10.0'
 inhibit_all_warnings!
+
+install! 'cocoapods', :deterministic_uuids => false
+
 # def add_flipper_pods!(versions = {})
 #   versions['Flipper'] ||= '~> 0.33.1'
 #   versions['DoublpeConversion'] ||= '1.1.7'

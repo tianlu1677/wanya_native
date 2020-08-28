@@ -3,7 +3,7 @@ import {SafeAreaView, StyleSheet, View, Text, ImageBackground} from 'react-nativ
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
 import * as WeChat from 'react-native-wechat-lib';
-
+import {appWechatSignIn} from "@/api/sign_api";
 
 class SocialLogin extends Component {
   constructor(props) {
@@ -15,9 +15,54 @@ class SocialLogin extends Component {
     };
   }
 
-  wechatLogin = () => {
+  wechatLogin = async () => {
     console.log('wechatLogi11n');
-    this.props.navigation.navigate('PhoneLogin');
+        
+    try {
+      // WeChat.registerApp('wx2404415c6c678e5d', 'https://rrs.ce04.com/app/');
+      WeChat.sendAuthRequest('snsapi_userinfo')
+        .then(data => {
+          console.log('code', data);
+          let signData = {
+            code: data.code,
+            app_id: data.appid,
+            // source: 'vanyah_app'
+          };
+          appWechatSignIn(signData).then(res => {
+            console.log('appWechatSignIn', res);
+          })
+          // getOpenId(params).then(res => {
+          //   console.log('getOpenId', res);
+          //   let {head_img_url, nick_name, openid} = res.data;
+          //   let params = {
+          //     wx_open_id: openid,
+          //   };
+          //   // console.log('openid', openid);
+          //   putBindWx(params).then(res => {
+          //     console.log('绑定微信', res);
+          //     if (res.data.msg === '成功') {
+          //       this.props.saveWxInfo({
+          //         head_img_url,
+          //         nick_name,
+          //         openid,
+          //       });
+          //       this.props.navigation.goBack();
+          //     } else if (res.data.msg === '绑定失败') {
+          //       // console.log('绑定失败', res);
+          //       this.setState({
+          //         modalVisible: true,
+          //         openid,
+          //       });
+          //     }
+          //   });
+          // });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } catch (e) {
+      console.error(e);
+    }
 
   };
 
@@ -27,8 +72,10 @@ class SocialLogin extends Component {
       // header: null
     })
 
-    console.log('WeChat', await WeChat.openWXApp())
+    // console.log('WeChat', await WeChat.openWXApp())
   }
+
+
 
   render() {
     return (
@@ -68,7 +115,7 @@ const styles = StyleSheet.create({
     color: 'red',
     width: 180,
     height: 40,
-    backgroundColor: 'white',
+    backgroundColor: 'white',    
     borderRadius: 2,
   },
 
