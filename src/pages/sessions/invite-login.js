@@ -6,36 +6,94 @@ import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 
+
 class InviteLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inviteCode: '',
+      inviteCode: '222222',
+      validCode: false
     };
+  }
+
+  componentDidMount() {
+    let that = this;
+    this.props.navigation.setOptions({
+      // headerShown: true,
+      // headerTintColor: 'white',
+      headerBackTitleVisible: false,
+      title: '',
+      headerStyle: {
+        backgroundColor: 'black',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        // color: 'white',
+      },
+      headerRight: () => (
+        <Button
+          onPress={this.onVerifyInviteCode}
+          title="确定"
+          // style={{color: this.state.validCode ? 'white' : '#353535'}}
+          color={that.state.validCode ? 'red' : '#353535'}
+        />
+      ),
+      // header: null
+    });
   }
 
   changeInviteCode = text => {
     console.log('event', text);
     this.setState({
-      inviteCode: text,
+      inviteCode: text.toUpperCase(),
+      validCode: text.length >= 4
     });
+    console.log('xxxx', this.state)
   };
 
-  onVerifyInviteCode = () => {
-    const {invite_code} = this.state;
-    const token = Helper.getData('login_token');
+  onVerifyInviteCode = async () => {
+    console.log('x onVerifyInviteCode')
+    const {invite_code, inviteCode} = this.state;
+    if (!inviteCode) {
+      return
+    }
+
+    const token = await Helper.getData('socialToken');
     let data = {invite_code: invite_code, token: token};
     verifyInviteCode(data).then(res => {
       console.log('res', res);
-    });
-  };
+      if (res.error) {
+        Toast.show(res.error, {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          backgroundColor: 'white',
+          textColor: 'black',
+          delay: 10,
+        })
+      } else {
+        Toast.show("已注册成功", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          backgroundColor: 'white',
+          textColor: 'black',
+          delay: 10,
+        })
+      }
+    })
+  }
 
   render() {
     return (
       <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
         <View style={styles.phoneContainer}>
           <TitleText>内测邀请</TitleText>
-          <Text onPress={this.onVerifyInviteCode}>完成</Text>
+          {/*<Text style={{color:  '#353535'}} onPress={this.onVerifyInviteCode}>完成</Text>*/}
 
           <InputWrapView>
             <TextInput
@@ -47,6 +105,7 @@ class InviteLogin extends Component {
               placeholder={'请输入邀请码'}
               placeholderTextColor={'#353535'}
               textAlignVertical="top"
+              // value={this.state.value}
               style={styles.inviteCode}
             />
             <Text style={styles.inviteCodeDesc}>顽鸦社区尚处于内测阶段，登录需邀请码</Text>
@@ -84,7 +143,7 @@ const styles = StyleSheet.create({
 });
 
 const TitleText = styled(Text)`
-  letter-spacing: 1;
+  letter-spacing: 1px;
   font-size: 27px;
   color: white;
   font-weight: 600;

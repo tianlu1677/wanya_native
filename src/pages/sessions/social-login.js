@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, View, Text, ImageBackground} from 'react-native';
+import {StyleSheet, View, Text, ImageBackground} from 'react-native';
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
+import Helper from '../../utils/helper';
 import * as WeChat from 'react-native-wechat-lib';
-import {appWechatSignIn} from "@/api/sign_api";
+import {appWechatSignIn} from '@/api/sign_api';
 
 class SocialLogin extends Component {
   constructor(props) {
@@ -17,65 +18,51 @@ class SocialLogin extends Component {
 
   wechatLogin = async () => {
     console.log('wechatLogi11n');
-        
     try {
-      // WeChat.registerApp('wx2404415c6c678e5d', 'https://rrs.ce04.com/app/');
-      WeChat.sendAuthRequest('snsapi_userinfo')
-        .then(data => {
-          console.log('code', data);
-          let signData = {
-            code: data.code,
-            app_id: data.appid,
-            // source: 'vanyah_app'
-          };
-          appWechatSignIn(signData).then(res => {
-            console.log('appWechatSignIn', res);
-          })
-          // getOpenId(params).then(res => {
-          //   console.log('getOpenId', res);
-          //   let {head_img_url, nick_name, openid} = res.data;
-          //   let params = {
-          //     wx_open_id: openid,
-          //   };
-          //   // console.log('openid', openid);
-          //   putBindWx(params).then(res => {
-          //     console.log('绑定微信', res);
-          //     if (res.data.msg === '成功') {
-          //       this.props.saveWxInfo({
-          //         head_img_url,
-          //         nick_name,
-          //         openid,
-          //       });
-          //       this.props.navigation.goBack();
-          //     } else if (res.data.msg === '绑定失败') {
-          //       // console.log('绑定失败', res);
-          //       this.setState({
-          //         modalVisible: true,
-          //         openid,
-          //       });
-          //     }
-          //   });
-          // });
-        })
-        .catch(e => {
-          console.log(e);
+      const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
+      let signData = {
+        code: codeRes.code,
+        app_id: codeRes.appid,
+        // source: 'vanyah_app'
+      };
+      const userInfoRes = await appWechatSignIn(signData);
+      console.log('userInfoRes', userInfoRes);
+      if (userInfoRes.error) {
+        console.log('error', userInfoRes.error);
+        return;
+      }
+      let accountInfo = userInfoRes.account;
+      Helper.setData('socialToken', accountInfo.token);
+      // 有手机且已验证码，跳转到首页
+      if (accountInfo.had_phone && accountInfo.had_invited) {
+        this.props.navigation.reset({
+          index: 0,
+          routes: [{name: 'Recommend'}],
         });
+      }
+      // 没有手机跳转到手机
+      if (!accountInfo.had_phone) {
+        this.props.navigation.navigate('PhoneLogin');
+        return;
+      }
+      // 有手机，没有验证码跳转到验证码
+      if (accountInfo.had_phone && !accountInfo.had_invited) {
+        this.props.navigation.navigate('InviteLogin');
+        return;
+      }
     } catch (e) {
       console.error(e);
     }
-
   };
 
   async componentDidMount() {
     this.props.navigation.setOptions({
-      headerShown: false
+      headerShown: false,
       // header: null
-    })
+    });
 
     // console.log('WeChat', await WeChat.openWXApp())
   }
-
-
 
   render() {
     return (
@@ -115,7 +102,7 @@ const styles = StyleSheet.create({
     color: 'red',
     width: 180,
     height: 40,
-    backgroundColor: 'white',    
+    backgroundColor: 'white',
     borderRadius: 2,
   },
 

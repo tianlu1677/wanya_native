@@ -4,7 +4,7 @@ import Clipboard from "@react-native-community/clipboard";
 import dayjs from 'dayjs';
 
 export default class Helper {
-  static async storeData(name, value) {
+  static async setData(name, value) {
     try {
       await AsyncStorage.setItem(name, value);
     } catch (e) {

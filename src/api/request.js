@@ -54,6 +54,7 @@ axios.interceptors.response.use(
         console.log('error', error);
         break;
       case 401:
+        console.log('401, 未登录')
         // if (error.response.data.error === 'Your account is locked.') {
         //   storeData('lock_user', true);
         // }
