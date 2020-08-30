@@ -8,9 +8,11 @@ import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {dispatchSetAuthToken} from '@/redux/actions';
+import {CityList} from '@/components/NodeComponents'
 
 const StorageIndex = ({navigation, route}) => {
   const [data, setData] = useState([]);
+  const [selectedCity, setselectedCity] = useState('');
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -54,6 +56,12 @@ const StorageIndex = ({navigation, route}) => {
         }}>
         点击显示全部
       </Text>
+
+      <CityList
+        selectCity={(item) => {setselectedCity(item.name)}}
+        cancelCity={() => {}}
+        selectedName={selectedCity}
+      />
       {data.map(r => {
         return (
           <View>
