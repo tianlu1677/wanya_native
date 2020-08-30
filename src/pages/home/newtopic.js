@@ -30,8 +30,8 @@ const NewTopic = props => {
 
   const onImagePicker = async () => {
     const res = await props.imagePick();
-    setSource([...source, res]);
-    console.log([...source, res]);
+    // setSource([...source, res]);
+    // console.log([...source, res]);
   };
 
   const onSubmit = () => {

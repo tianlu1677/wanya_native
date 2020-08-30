@@ -2,12 +2,14 @@ import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View, TextInput, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 import SafeAreaPlus from '@/components/safe_area_plus';
+import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
+import {dispatchSetAuthToken} from '@/redux/actions';
 
-const Settings = ({navigation, route}) => {
+const Feedback = ({navigation, route}) => {
   const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
 
@@ -37,7 +39,7 @@ const Settings = ({navigation, route}) => {
 
   return (
     <SafeAreaPlus>
-      <Text>sss</Text>
+      <Text>Feedback</Text>
     </SafeAreaPlus>
   );
 };
@@ -59,4 +61,4 @@ const TitleText = styled(Text)`
   font-weight: 600;
 `;
 
-export default Settings;
+export default Feedback;
