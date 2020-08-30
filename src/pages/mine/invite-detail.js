@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Image} from 'react-native';
-import {Button} from 'react-native-elements';
+import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
+import {SafeAreaView, StyleSheet, View, TextInput, Image, Text, Button} from 'react-native';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {Avatar} from '../../components/NodeComponents';
@@ -8,116 +8,122 @@ import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
 
 import {getInviteCode, getAccountInviteList} from '../../api/account_api';
+import SafeAreaPlus from '@/components/safe_area_plus';
+import {getCurrentAccount} from '@/api/mine_api';
+import Toast from 'react-native-root-toast';
 
-class InviteDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      shareModelVisible: false,
-      inviteCode: '',
-      accountList: [],
-    };
-  }
+const InviteDetail = ({navigation, route}) => {
+  const [inviteCode, setInviteCode] = useState('');
+  const [accountList, setAccountList] = useState([]);
+  const [shareModelVisible, setShareModelVisible] = useState([]);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
-    this.loadInitInfo();
-  }
-
-  loadInitInfo = async () => {
-    const codeRes = await getInviteCode();
-    this.setState({
-      inviteCode: codeRes.invite_code,
+  useLayoutEffect(() => {
+    navigation.setOptions({
     });
+  }, [navigation]);
+
+  useEffect(() => {
+    loadInitInfo()
+  }, [])
+
+  const loadInitInfo = async () => {
+    const codeRes = await getInviteCode();
+    setInviteCode(codeRes.invite_code);
+
     getAccountInviteList().then(res => {
       console.log('res', res);
-      this.setState({
-        accountList: res.invites,
-      });
+      setAccountList(res.invites);
     });
   };
 
-  onCopy = () => {
-    let message = `我的顽鸦邀请码是 ${this.state.inviteCode}`;
+  const onCopy = () => {
+    let message = `我的顽鸦邀请码是 ${inviteCode}`;
     Helper.setClipboard(message);
+    Toast.show("已复制", { position: Toast.positions.TOP })
   };
 
-  onShare = () => {
-    console.log('xxxxxxx');
-    this.setState({shareModelVisible: true});
+  const onShare = () => {
+    // console.log('xxxxxxx');
+    // this.setState({shareModelVisible: true});
   };
 
-  render() {
-    const {inviteCode, accountList} = this.state;
-    console.log('sta', this.state);
-    return (
-      <View style={{flex: 1}}>
-        <SafeAreaView>
-          <CardView>
-            <View style={{flexDirection: 'row'}}>
-              <Avatar size={20} account={{account: {avatar_url: Helper.getData('avatar_url')}}} />
-              <CardTitleText>我的邀请码</CardTitleText>
-            </View>
+  return (
+    <SafeAreaView>
+      <CardView>
+        <View style={{flexDirection: 'row'}}>
+          {/*<Avatar size={20} account={{account: {avatar_url: Helper.getData('avatar_url')}}} />*/}
+          <CardTitleText>我的邀请码</CardTitleText>
+        </View>
 
-            <CardCodeText>{inviteCode}</CardCodeText>
-            <CardCopyText onPress={this.onCopy}>复制</CardCopyText>
-          </CardView>
+        <CardCodeText>{inviteCode}</CardCodeText>
+        <CardCopyText
+          onPress={() => {
+            onCopy();
+          }}>
+          复制
+        </CardCopyText>
+      </CardView>
 
-          <DescView>
-            <DescText>向朋友发送社区体验邀请，</DescText>
-            <DescText>与朋友共建青年社区文化。</DescText>
-          </DescView>
+      <DescView>
+        <DescText>向朋友发送社区体验邀请，</DescText>
+        <DescText>与朋友共建青年社区文化。</DescText>
+      </DescView>
 
-          <AccountCardView>
-            {accountList.map(invite => {
-              return <Avatar width={40} key={invite.id} account={invite.account} />;
-            })}
-            <Image
-              source={require('../../assets/images/add-invite.png')}
-              style={{width: 40, height: 40, borderRadius: 20}}
-              onPress={this.onShare}
-            />
-          </AccountCardView>
-          <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
-          </View>
-        </SafeAreaView>
-        <Button
-          title="微信分享"
-          titleStyle={{fontSize: 16, fontWeight: '500'}}
-          buttonStyle={{height: 50, backgroundColor: 'black'}}
-          onPress={this.onShare}
-          containerStyle={{
-            position: 'absolute',
-            bottom: 20,
-            left: 0,
-            right: 0,
+      <AccountCardView>
+        {accountList.map(invite => {
+          return <Avatar width={40} key={invite.id} account={invite.account} />;
+        })}
+        <Image
+          source={require('../../assets/images/add-invite.png')}
+          style={{width: 40, height: 40, borderRadius: 20}}
+          onPress={() => {
+            onCopy();
           }}
         />
-        {/*<Modal*/}
-        {/*  isVisible={this.state.shareModelVisible}*/}
-        {/*>*/}
-        {/*  <ShareCardView>*/}
-        {/*    <Image*/}
-        {/*      source={require('../../assets/images/social-login.jpg')}*/}
-        {/*      style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}*/}
-        {/*    />*/}
-        {/*    <Text>*/}
-        {/*      微信好友*/}
-        {/*    </Text>*/}
-
-        {/*    <Image*/}
-        {/*      source={require('../../assets/images/social-login.jpg')}*/}
-        {/*      style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}*/}
-        {/*    />*/}
-        {/*    <Text>*/}
-        {/*      分享朋友圈*/}
-        {/*    </Text>*/}
-        {/*  </ShareCardView>*/}
-        {/*</Modal>*/}
+      </AccountCardView>
+      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
       </View>
-    );
-  }
-}
+      <Button
+        title="微信分享"
+        titleStyle={{fontSize: 16, fontWeight: '500'}}
+        buttonStyle={{height: 50, backgroundColor: 'black'}}
+        onPress={() => {
+          onShare();
+        }}
+        containerStyle={{
+          position: 'absolute',
+          bottom: 20,
+          left: 0,
+          right: 0,
+        }}
+      />
+
+      {/*<Modal*/}
+      {/*  isVisible={this.state.shareModelVisible}*/}
+      {/*>*/}
+      {/*  <ShareCardView>*/}
+      {/*    <Image*/}
+      {/*      source={require('../../assets/images/social-login.jpg')}*/}
+      {/*      style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}*/}
+      {/*    />*/}
+      {/*    <Text>*/}
+      {/*      微信好友*/}
+      {/*    </Text>*/}
+
+      {/*    <Image*/}
+      {/*      source={require('../../assets/images/social-login.jpg')}*/}
+      {/*      style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}*/}
+      {/*    />*/}
+      {/*    <Text>*/}
+      {/*      分享朋友圈*/}
+      {/*    </Text>*/}
+      {/*  </ShareCardView>*/}
+      {/*</Modal>*/}
+    </SafeAreaView>
+  );
+};
 
 const CardView = styled(View)`
   display: flex;

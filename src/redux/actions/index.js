@@ -68,7 +68,7 @@ export const changeProgress = value => {
 
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
-  console.log('xxxx', token);
+  console.log('dispatchSetAuthToken', token);
   // return
   // return {
   //   type: ADMIN_SIGN_SUCCESS,
