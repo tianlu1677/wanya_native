@@ -48,10 +48,10 @@ class AdminPhoneLogin extends Component {
         });
         // let data = await getData('auth_token');
         // console.log('auth_token', data);
-        this.props.navigation.reset({
-          index: 0,
-          routes: [{name: 'Recommend'}],
-        });
+          this.props.navigation.reset({
+            index: 0,
+            routes: [{name: 'Recommend'}],
+          });
       } else {
         let toast = Toast.show('用户名或者密码错误', {
           duration: Toast.durations.LONG,

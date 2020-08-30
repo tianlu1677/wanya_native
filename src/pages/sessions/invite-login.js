@@ -1,65 +1,48 @@
-import React, {Component} from 'react';
+import React, {Component, useState, useLayoutEffect, useReducer} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Text, Button} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import {verifyInviteCode} from '../../api/phone_sign_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
+import {dispatchSetAuthToken} from '@/redux/actions';
 
+const InviteLogin = ({navigation, route}) => {
+  const [inviteCode, setInviteCode] = useState('');
+  const [isValidCode, setIsValidCode] = useState(false);
+  const dispatch = useDispatch();
 
-class InviteLogin extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inviteCode: '222222',
-      validCode: false
-    };
-  }
-
-  componentDidMount() {
-    let that = this;
-    this.props.navigation.setOptions({
-      // headerShown: true,
-      // headerTintColor: 'white',
+  useLayoutEffect(() => {
+    navigation.setOptions({
       headerBackTitleVisible: false,
       title: '',
+      headerTintColor: 'white',
       headerStyle: {
         backgroundColor: 'black',
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        // color: 'white',
+        color: 'white',
       },
       headerRight: () => (
         <Button
-          onPress={this.onVerifyInviteCode}
+          onPress={onVerifyInviteCode}
           title="确定"
-          // style={{color: this.state.validCode ? 'white' : '#353535'}}
-          color={that.state.validCode ? 'red' : '#353535'}
+          color={isValidCode ? 'white' : '#353535'}
         />
       ),
-      // header: null
     });
-  }
+  }, [navigation, isValidCode]);
 
-  changeInviteCode = text => {
-    console.log('event', text);
-    this.setState({
-      inviteCode: text.toUpperCase(),
-      validCode: text.length >= 4
-    });
-    console.log('xxxx', this.state)
-  };
-
-  onVerifyInviteCode = async () => {
-    console.log('x onVerifyInviteCode')
-    const {invite_code, inviteCode} = this.state;
-    if (!inviteCode) {
-      return
+  const onVerifyInviteCode = async () => {
+    console.log('x onVerifyInviteCode');
+    if (!isValidCode) {
+      return;
     }
 
     const token = await Helper.getData('socialToken');
-    let data = {invite_code: invite_code, token: token};
+    let data = {invite_code: inviteCode, token: token};
     verifyInviteCode(data).then(res => {
       console.log('res', res);
       if (res.error) {
@@ -72,9 +55,14 @@ class InviteLogin extends Component {
           backgroundColor: 'white',
           textColor: 'black',
           delay: 10,
-        })
+        });
       } else {
-        Toast.show("已注册成功", {
+        dispatch(dispatchSetAuthToken(token));
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Recommend'}],
+        });
+        Toast.show('已注册成功', {
           duration: Toast.durations.SHORT,
           position: Toast.positions.TOP,
           shadow: true,
@@ -83,38 +71,44 @@ class InviteLogin extends Component {
           backgroundColor: 'white',
           textColor: 'black',
           delay: 10,
-        })
+        });
       }
-    })
-  }
+    });
+  };
 
-  render() {
-    return (
-      <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
-        <View style={styles.phoneContainer}>
-          <TitleText>内测邀请</TitleText>
-          {/*<Text style={{color:  '#353535'}} onPress={this.onVerifyInviteCode}>完成</Text>*/}
+  const onChangeText = text => {
+    setInviteCode(text.toUpperCase());
+    setIsValidCode(text.length >= 6);
+    console.log(inviteCode, isValidCode);
+  };
 
-          <InputWrapView>
-            <TextInput
-              autoFocus
-              caretHidden
-              autoCapitalize={'characters'}
-              maxLength={6}
-              onChangeText={this.changeInviteCode}
-              placeholder={'请输入邀请码'}
-              placeholderTextColor={'#353535'}
-              textAlignVertical="top"
-              // value={this.state.value}
-              style={styles.inviteCode}
-            />
-            <Text style={styles.inviteCodeDesc}>顽鸦社区尚处于内测阶段，登录需邀请码</Text>
-          </InputWrapView>
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
+  return (
+    <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
+      <View style={styles.phoneContainer}>
+        <TitleText>内测邀请</TitleText>
+
+        <InputWrapView>
+          <TextInput
+            autoFocus
+            caretHidden={false}
+            selectionColor={'white'}
+            autoCapitalize={'characters'}
+            maxLength={6}
+            onChangeText={text => {
+              onChangeText(text);
+            }}
+            placeholder={'请输入邀请码'}
+            placeholderTextColor={'#353535'}
+            textAlignVertical="top"
+            value={inviteCode}
+            style={styles.inviteCode}
+          />
+          <Text style={styles.inviteCodeDesc}>顽鸦社区尚处于内测阶段，登录需邀请码</Text>
+        </InputWrapView>
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   //底部默认样式
