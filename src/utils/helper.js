@@ -17,7 +17,7 @@ export default class Helper {
       let value = await AsyncStorage.getItem(name);
       console.log('store preve value', value)
       value = (value === null || value === undefined) ? '' : value
-      console.log('store value', value)
+      // console.log('store value', value)
       return value;
     } catch (e) {
       return ''
