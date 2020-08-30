@@ -1,14 +1,28 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
+import * as action from '@/redux/constants';
 
 const defaultCoverUrl =
   'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
 
 const NodeIndex = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const home = useSelector(state => state.home);
   const [categories, setCategories] = useState(null);
   const [nodes, setNodes] = useState(null);
   const [layoutList, setLayoutList] = useState([]);
@@ -33,9 +47,19 @@ const NodeIndex = () => {
     scrollRef.current.scrollTo({y: layoutList[index].y, animated: true});
   };
 
+  const chooseNode = node => {
+    const topics = {...home.savetopic, node: node};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.goBack();
+  };
+
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    // console.log(home);
+  }, [home]);
 
   return categories && nodes ? (
     <View style={styles.wrapper}>
@@ -61,24 +85,28 @@ const NodeIndex = () => {
               {nodes
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
-                  <View key={node.id} style={styles.nodeItem}>
-                    <Image
-                      style={styles.nodeImg}
-                      source={{uri: node.cover_url}}
-                      defaultSource={defaultCoverUrl}
-                    />
-                    <View style={styles.nodeInfo}>
-                      <View>
-                        <Text style={styles.nodeName}>{node.name}</Text>
-                        <Text style={styles.nodeDesc}>
-                          {node.topics_count}篇帖子 · {node.accounts_count}位
-                          {node.nickname || '圈友'}
-                        </Text>
+                  <TouchableWithoutFeedback key={node.id} onPress={() => chooseNode(node)}>
+                    <View style={styles.nodeItem}>
+                      <Image
+                        style={styles.nodeImg}
+                        source={{uri: node.cover_url || defaultCoverUrl}}
+                      />
+                      <View style={styles.nodeInfo}>
+                        <View>
+                          <Text style={styles.nodeName}>{node.name}</Text>
+                          <Text style={styles.nodeDesc}>
+                            {node.topics_count}篇帖子 · {node.accounts_count}位
+                            {node.nickname || '圈友'}
+                          </Text>
+                        </View>
+                        {home.savetopic.node && home.savetopic.node.id === node.id ? (
+                          <IconFont name="duigou1" size={16} color={'#000'} style={styles.icon} />
+                        ) : (
+                          <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
+                        )}
                       </View>
-                      <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
-                      {/* <IconFont name="duigou1" size={16} color={'#000'} style={styles.icon} /> */}
                     </View>
-                  </View>
+                  </TouchableWithoutFeedback>
                 ))}
             </View>
           </View>
@@ -129,7 +157,7 @@ const styles = StyleSheet.create({
     width: 49,
     height: 49,
     borderRadius: 5,
-    borderStyle: 'solid',
+    // borderStyle: 'solid',
     borderWidth: 3,
     borderColor: '#ffff00',
     marginRight: 10,

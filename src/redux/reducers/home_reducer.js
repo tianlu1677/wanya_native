@@ -1,16 +1,20 @@
+import {SAVE_NEW_TOPIC} from '../constants';
+
 const defaultState = {
-  listData: [],
+  savetopic: {
+    plan_content: '',
+    mention: [],
+  },
 };
 
-import {GET_LIST} from '../constants';
-
 export const homeReducer = (state = defaultState, action) => {
+  console.log(action);
   switch (action.type) {
-    case GET_LIST:
-      return (state = {
+    case SAVE_NEW_TOPIC:
+      return {
         ...state,
-        listData: action.value,
-      });
+        savetopic: action.value,
+      };
     default:
       return state;
   }

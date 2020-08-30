@@ -1,32 +1,39 @@
-import request from './request'
+import request from './request';
 
-export async function getHashtagList(hashtag = "") {
+// 发布帖子话题列表
+export const getHashtagList = async () => {
   const res = await request({
-    url: `/api/v1/hashtags`,
+    url: '/api/v1/hashtags',
     method: 'get',
-  })
-  return res.data
-}
+  });
+  return res;
+};
 
-export async function hashTagDetail(hashtag = "") {
+// export async function getHashtagList(hashtag = "") {
+//   const res = await request({
+//     url: `/api/v1/hashtags`,
+//     method: 'get',
+//   })
+//   return res.data
+// }
+
+export async function hashTagDetail(hashtag = '') {
   const res = await request({
     url: `/api/v1/hashtags/${hashtag}`,
     method: 'get',
-  })
-  return res.data
+  });
+  return res.data;
 }
-
 
 export async function getHashtagPosts(hashtag = '', type = 'published', params) {
   const res = await request({
-    url: `/api/v1/hashtags/posts`,
+    url: '/api/v1/hashtags/posts',
     method: 'get',
     data: {
       hashtag_name: hashtag,
       type: type,
-      ...params
-    }
-  })
-  return res
-
+      ...params,
+    },
+  });
+  return res;
 }

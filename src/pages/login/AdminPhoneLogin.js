@@ -8,14 +8,11 @@ import {phoneSignIn} from '../../api/sign_api';
 
 import {connect, useSelector} from 'react-redux';
 
-import {
-  dispatchSetAuthToken,
-  dispatchCurrentAccount
-} from '@/redux/actions';
+import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 
 @connect(state => state.login, {
   dispatchSetAuthToken,
-  dispatchCurrentAccount
+  dispatchCurrentAccount,
 })
 class AdminPhoneLogin extends Component {
   constructor(props) {
@@ -37,7 +34,7 @@ class AdminPhoneLogin extends Component {
         storeData('account_nickname', res.nickname);
         storeData('account_avatar_url', res.avatar_url);
         this.props.dispatchSetAuthToken(res.token);
-        this.props.dispatchCurrentAccount()
+        this.props.dispatchCurrentAccount();
         let toast = Toast.show('登录成功', {
           duration: Toast.durations.LONG,
           position: Toast.positions.TOP,

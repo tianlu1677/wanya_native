@@ -1,24 +1,20 @@
 import {StyleSheet} from 'react-native';
 
 export const SpaceIndexStyles = StyleSheet.create({
-  spaceWrapper: {
-    justifyContent: 'flex-start',
-    paddingTop: 12,
-    paddingBottom: 12,
-    marginLeft: 15,
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  name: {
-    fontSize: 15,
-    lineHeight: 20,
+  search: {
+    marginLeft: 14,
+    marginBottom: 6,
   },
-  address: {
-    fontSize: 11,
-    lineHeight: 20,
+  title: {
+    height: 40,
+    lineHeight: 40,
+    paddingLeft: 14,
     color: '#bdbdbd',
-  },
-  separator: {
-    backgroundColor: '#FAFAFA',
-    height: 2,
+    backgroundColor: '#fafafa',
   },
 });
 

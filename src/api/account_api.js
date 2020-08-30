@@ -366,9 +366,10 @@ export async function getAccountInviteList(data = {}) {
 }
 
 // 用户的粉丝列表
-export const getAccountFollowers = async (accountId, params = {}) => {
+export const getAccountFollowers = async params => {
+  console.log(params);
   const res = await request({
-    url: `/api/v1/accounts/${accountId}/followers`,
+    url: `/api/v1/accounts/${params.id}/followers`,
     method: 'GET',
     params,
   });

@@ -1,54 +1,44 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
-import ScrollList from '@/components/ScrollList';
+import {View, Text} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {getSpacesList} from '@/api/space_api';
-import {getAccountFollowers} from '@/api/account_api';
-import IconFont from '@/iconfont';
+import * as action from '@/redux/constants';
+import SpaceList from '@/components/List/SpaceList';
 import {Search} from '@/components/NodeComponents';
 
 import {SpaceIndexStyles as styles} from './styles';
 
 const SpaceIndex = () => {
-  const [loading, setLoading] = useState(true);
-  const [headers, setHeaders] = useState();
-  const [spaces, getSpaces] = useState([]);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const home = useSelector(state => state.home);
 
-  const renderItem = ({item}) => {
-    return (
-      <View style={styles.spaceWrapper}>
-        <Text style={styles.name}>国家体育馆</Text>
-        <Text style={styles.address}>北京市朝阳区国家体育场南路1号</Text>
-      </View>
-    );
-  };
+  const [searchKey, setSearchKey] = useState(null);
 
-  const renderSeparator = () => {
-    return <View style={styles.separator} />;
-  };
-
-  const loadData = async (page = 1) => {
-    setLoading(true);
-    const res = await getAccountFollowers(310, {page});
-    setLoading(false);
-    setHeaders(res.headers);
-    getSpaces(res.data.accounts);
+  const onPress = item => {
+    const topics = {...home.savetopic, space: item};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.goBack();
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    console.log(searchKey);
+  }, [searchKey]);
 
   return (
-    <View>
-      <Search placeholder="搜索更多场地" />
-      <ScrollList
-        data={spaces}
-        loading={loading}
-        headers={headers}
-        renderItem={renderItem}
-        onRefresh={loadData}
-        renderSeparator={renderSeparator}
-        style={{backgroundColor: '#fff'}}
+    <View style={styles.wrapper}>
+      <Search
+        style={styles.search}
+        placeholder="搜索更多场地"
+        onChangeText={text => setSearchKey(text)}
+      />
+      <Text style={styles.title}>热门场地</Text>
+      <SpaceList
+        request={{api: getSpacesList, params: {type: 'recommend', name_cont: searchKey}}}
+        onPress={onPress}
+        enableLoadMore={false}
+        enableRefresh={false}
       />
     </View>
   );

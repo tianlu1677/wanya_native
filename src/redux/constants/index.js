@@ -169,5 +169,5 @@ export const ARTICLE_UN_STAR_SUCCESS = 'ARTICLE_UN_STAR_SUCCESS'; // 帖子取�
 export const LEARNING_RECORDS_REQUEST = 'LEARNING_RECORDS';
 export const LEARNING_RECORDS_SUCCESS = 'LEARNING_RECORDS_SUCCESS';
 
-// LSIT
-export const GET_LIST = 'GET_LIST';
+// new topic
+export const SAVE_NEW_TOPIC = 'SAVE_NEW_TOPIC';
