@@ -12,7 +12,7 @@ import Recommend from '../pages/home/Recommend';
 import VideoDetail from '../pages/home/VideoDetail';
 
 import Mine from '../pages/mine/mine';
-import AccountDetail from '@/pages/mine/account-detail';
+// import AccountDetail from '@/pages/mine/account-detail';
 
 // 用户
 import AccountsIndex from '@/pages/accounts/accounts-index';
@@ -26,10 +26,13 @@ import NodeIndex from '../pages/nodes/node-index';
 import NodeDetail from '../pages/nodes/node-detail';
 
 // 发布
-// import NewTopic from '@/pages/home/newtopic';
+import NewTopic from '@/pages/home/newtopic';
+import TopicIndex from '@/pages/home/topicIndex';
+import MentionAccounts from '@/pages/home/MentionAccounts';
+
+// import NewTopic from '../pages/topics/NewTopic';
 
 import TopicDetail from '../pages/topics/TopicDetail';
-import NewTopic from '../pages/topics/NewTopic';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
 import InviteDetail from '../pages/mine/invite-detail';
 
@@ -96,7 +99,9 @@ function HomeTabList() {
           height: 50,
         },
       }}>
-      <Tab.Screen name="Node" component={SpaceIndex} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={NewTopic} options={{title: '圈子'}} />
+      <Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />
+      <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen
         name="Recommend"
         component={Index}
@@ -154,6 +159,14 @@ function MainStackList() {
           title: '推荐',
         }}
       />
+      <MainStack.Screen name="TopicIndex" component={TopicIndex} options={{title: '话题'}} />
+      <MainStack.Screen name="AccountsIndex" component={AccountsIndex} options={{title: '用户'}} />
+      <MainStack.Screen name="SpaceIndex" component={SpaceIndex} options={{title: '场地列表'}} />
+      <MainStack.Screen
+        name="MentionAccounts"
+        component={MentionAccounts}
+        options={{title: '顽友'}}
+      />
 
       <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
       <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
@@ -208,9 +221,7 @@ function MainStackList() {
       <MainStack.Screen
         name="NotifyIndex"
         component={NotifyIndex}
-        options={{title: '消息',
-          headerShown: true
-        }}
+        options={{title: '消息', headerShown: true}}
       />
       <MainStack.Screen
         name="CommentNotify"
@@ -232,11 +243,7 @@ function MainStackList() {
         component={FollowNotify}
         options={{title: '关注通知'}}
       />
-      <MainStack.Screen
-        name="MentionNotify"
-        component={MentionNotify}
-        options={{title: '@我的'}}
-      />
+      <MainStack.Screen name="MentionNotify" component={MentionNotify} options={{title: '@我的'}} />
       <MainStack.Screen name="WebView" component={WebView} options={{title: ''}} />
     </MainStack.Navigator>
   );
@@ -247,7 +254,8 @@ export default function Navigation() {
   console.log('login', login);
   return (
     <NavigationContainer>
-      {!login.auth_token ? AuthStackList() : MainStackList()}
+      {/* {!login.auth_token ? AuthStackList() : MainStackList()} */}
+      {MainStackList()}
     </NavigationContainer>
   );
 }

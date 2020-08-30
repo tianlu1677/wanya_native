@@ -60,7 +60,6 @@ const {MultiLineText, VideoPlayImage, HashtagText} = BaseTopicStyle;
 
 export const BaseTopicContent = props => {
   const {data} = props;
-  console.log(data.hashtag_content_json);
   return (
     <>
       <MultiLineText numberOfLines={2}>

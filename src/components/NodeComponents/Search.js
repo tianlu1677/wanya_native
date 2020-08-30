@@ -5,10 +5,14 @@ import IconFont from '@/iconfont';
 
 const Search = props => {
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, props.style]}>
       <View style={styles.inputContent}>
-        <IconFont name="black-dot" size={10} color={'#7f7f81'} style={styles.icon} />
-        <TextInput style={styles.textInput} placeholder={props.placeholder} />
+        <IconFont name="sousuo" size={10} color={'#7f7f81'} style={styles.icon} />
+        <TextInput
+          style={styles.textInput}
+          placeholder={props.placeholder}
+          onChangeText={props.onChangeText}
+        />
       </View>
       <Text style={styles.cancel}>取消</Text>
     </View>

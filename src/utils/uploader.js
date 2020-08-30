@@ -11,7 +11,7 @@ export default class Uploader {
       type: 'raw',
       maxRetries: 2, // set retry count (Android only). Default 2
       headers: {
-        'content-type': 'application/octet-stream', // Customize content-type        
+        'content-type': 'application/octet-stream', // Customize content-type
       },
 
       // Below are options only supported on Android
@@ -33,11 +33,12 @@ export default class Uploader {
           console.log(`Error: ${data.error}%`);
         });
         Upload.addListener('cancelled', uploadId, data => {
-          console.log(`Cancelled!`);
+          console.log('Cancelled!');
         });
         Upload.addListener('completed', uploadId, data => {
           // data includes responseCode: number and responseBody: Object
           console.log('Completed!');
+          console.log(data);
         });
       })
       .catch(err => {

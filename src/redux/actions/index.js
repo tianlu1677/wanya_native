@@ -6,9 +6,9 @@ import {
   ACCOUNT_UN_FOLLOW_REQUEST,
   ACCOUNT_EMPTY_SUCCESS,
   CHANGE_PROGRESS,
-  GET_LIST,
+  SAVE_NEW_TOPIC,
   ADMIN_SIGN_SUCCESS,
-  CURRENT_ACCOUNT_SUCCESS
+  CURRENT_ACCOUNT_SUCCESS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount} from '../../api/mine_api';
@@ -66,12 +66,6 @@ export const changeProgress = value => {
   };
 };
 
-export const dispathGetList = res => async dispatch => {
-  console.log(res); // 传参数
-  const list = await getCategoryList();
-  dispatch({type: GET_LIST, value: list});
-};
-
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
   console.log('dispatchSetAuthToken', token);
@@ -83,3 +77,11 @@ export const dispatchSetAuthToken = (token = '') => async dispatch => {
 
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
 };
+
+// // new topic
+// export const dispathSaveNewTopic = value => {
+//   return {
+//     type: SAVE_NEW_TOPIC,
+//     value,
+//   };
+// };

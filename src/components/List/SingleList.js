@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import {BaseTopic, BaseArticle} from '@/components/Item/PostListItem';
 
-const PostList = props => {
+const SingleList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -46,8 +46,8 @@ const PostList = props => {
 };
 
 // List 属性继承scrollList 默认可下拉加载刷新
-PostList.propTypes = {
+SingleList.propTypes = {
   request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
 };
 
-export default PostList;
+export default SingleList;
