@@ -28,8 +28,13 @@ export default class Helper {
     await AsyncStorage.removeItem(name);
   }
 
-  static  async clearAllData() {
-    await AsyncStorage.clear()
+  static async clearAllData() {
+    return await AsyncStorage.clear()
+  }
+
+  static async getAllKeys() {
+    const keys =  await AsyncStorage.getAllKeys()
+    return keys
   }
 
   static async multiSet(data = []) {
@@ -37,7 +42,8 @@ export default class Helper {
   }
 
   static async multiGet(data = []) {
-
+    const res = await AsyncStorage.multiGet(data)
+    return res
   }
 
   // 获取粘贴板信息

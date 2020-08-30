@@ -11,7 +11,7 @@ import Helper from '@/utils/helper';
 
 const types = {toast: 'toast', webview: '网页'};
 
-const LabIndex = () => {
+const LabIndex = ({navigation, route}) => {
   const [isVisible, setIsVisible] = useState(false);
   const renderContent = () => (
     <View
@@ -30,6 +30,15 @@ const LabIndex = () => {
     <View style={{flex: 1}}>
       <Text>实验室主页</Text>
 
+      <View>
+        <Button title={"退出登录"}>
+
+        </Button>
+
+        <Button title={"显示所有本地缓存"} onPress={() => {navigation.navigate('LabStorageIndex')}}>
+
+        </Button>
+      </View>
       <View
         style={{
           flex: 1,

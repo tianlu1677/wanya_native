@@ -9,8 +9,8 @@ import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {dispatchSetAuthToken} from '@/redux/actions';
 
-const Temp = ({navigation, route}) => {
-  const [phone, setPhone] = useState('');
+const StorageIndex = ({navigation, route}) => {
+  const [data, setData] = useState([]);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -37,9 +37,32 @@ const Temp = ({navigation, route}) => {
     });
   }, [navigation]);
 
+  const listAllStorage = async () => {
+    const keys = await Helper.getAllKeys();
+    const result = await Helper.multiGet(keys);
+    console.log('keys', keys);
+    console.log('result', result);
+    setData(result);
+    // return result.map(req => JSON.parse(req)).forEach((x) =>console.log(x));
+  };
+
   return (
     <SafeAreaPlus>
-      <Text>xxxx</Text>
+      <Text
+        onPress={() => {
+          listAllStorage();
+        }}>
+        点击显示全部
+      </Text>
+      {data.map(r => {
+        return (
+          <View>
+            <Text>
+              {r[0]} => {r[1]}
+            </Text>
+          </View>
+        );
+      })}
     </SafeAreaPlus>
   );
 };
@@ -61,4 +84,4 @@ const TitleText = styled(Text)`
   font-weight: 600;
 `;
 
-export default Temp;
+export default StorageIndex;

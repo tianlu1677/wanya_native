@@ -36,6 +36,7 @@ import InviteDetail from '../pages/mine/invite-detail';
 import LabIndex from '@/pages/labs/index';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabWebview from '@/pages/labs/webview';
+import LabStorageIndex from '@/pages/labs/storageindex'
 
 //登录页面
 import SocialLogin from '@/pages/sessions/social-login';
@@ -200,6 +201,7 @@ function MainStackList() {
         options={{title: '实验室标签页'}}
       />
       <MainStack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />
+      <MainStack.Screen name="LabStorageIndex" component={LabStorageIndex} options={{title: ''}} />
       <MainStack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />
 
       {/*  消息通知*/}
