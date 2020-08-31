@@ -34,6 +34,11 @@ const Settings = ({navigation, route}) => {
         break;
       case 'logout':
         console.log('logout');
+        Helper.clearAllData()
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'SocialLogin'}],
+        })
         break;
       default:
         console.log('others');

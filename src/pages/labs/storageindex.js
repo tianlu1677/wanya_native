@@ -45,6 +45,8 @@ const StorageIndex = ({navigation, route}) => {
     console.log('keys', keys);
     console.log('result', result);
     setData(result);
+
+    console.log(await Helper.getData('auth_token'))
     // return result.map(req => JSON.parse(req)).forEach((x) =>console.log(x));
   };
 
@@ -57,14 +59,14 @@ const StorageIndex = ({navigation, route}) => {
         点击显示全部
       </Text>
 
-      <CityList
-        selectCity={(item) => {setselectedCity(item.name)}}
-        cancelCity={() => {}}
-        selectedName={selectedCity}
-      />
+      {/*<CityList*/}
+      {/*  selectCity={(item) => {setselectedCity(item.name)}}*/}
+      {/*  cancelCity={() => {}}*/}
+      {/*  selectedName={selectedCity}*/}
+      {/*/>*/}
       {data.map(r => {
         return (
-          <View>
+          <View key={r[0]}>
             <Text>
               {r[0]} => {r[1]}
             </Text>
