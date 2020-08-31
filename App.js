@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Provider } from 'react-redux';
-import { store, persistor } from './src/redux/stores/store';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar} from 'react-native';
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider} from 'react-redux';
+import {store, persistor} from './src/redux/stores/store';
+import {Text} from 'react-native';
+// const emitter = emitt()
 
 import Navigation from './src/navigator/index';
-import Helper from './src/utils/helper'
-import {Image} from 'react-native';
+import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
-
 import Config from 'react-native-config';
-import RNBootSplash from "react-native-bootsplash";
-
+import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
+
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
 // Config.API_URL; // 'https://myapi.com'
@@ -27,27 +26,24 @@ class App extends Component {
   }
 
   componentDidMount() {
-    RNBootSplash.hide({ duration: 200 });
+    RNBootSplash.hide({duration: 200});
     this.loadNetworkInfo();
     this.loadDeviceInfo();
-    this.loginAdmin()
+    this.loginAdmin();
   }
 
-
   loginAdmin = () => {
-    Helper.clearAllData()
+    Helper.clearAllData();
     if (!Helper.getData('auth_token')) {
       setTimeout(() => {
         this.props.navigation.navigate('AdminPhoneLogin');
-      }, 1000)   
-      
+      }, 1000);
     }
 
-    
     // if (React.$Store.getStore('auth_token')) {
     //   this.props.navigation.navigate('AdminPhoneLogin')
     // }
-  }
+  };
 
   loadNetworkInfo = () => {
     // const unsubscribe = NetInfo.addEventListener(state => {
@@ -81,7 +77,6 @@ class App extends Component {
             <Navigation />
           </PersistGate>
         </Provider>
-
       </>
     );
   }

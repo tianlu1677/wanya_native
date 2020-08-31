@@ -6,7 +6,7 @@ import {getReplyComments} from '@/api/account_api';
 import {syncAccountInfo} from '@/api/mine_api';
 import {pagination} from '@/utils/load_more';
 import NotifyContent from './components/notify-content';
-import SafeAreaPlus from '../../components/safe_area_plus';
+import SafeAreaPlus from '../../components/SafeAreaPlus';
 class CommentNotify extends Component {
   constructor(props) {
     super(props);

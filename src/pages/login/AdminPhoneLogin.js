@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, TextInput, Button} from 'react-native';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import Toast from 'react-native-root-toast';
-import {clearAllData, storeData, getData} from '../../utils/storage';
+import Helper from '../../utils/helper';
 import {Input} from 'react-native-elements';
 import {phoneSignIn} from '../../api/sign_api';
 
@@ -29,10 +29,10 @@ class AdminPhoneLogin extends Component {
     phoneSignIn({phone: values.phone, password: values.password}).then(async res => {
       console.log('res', res);
       if (res.status === 200) {
-        await storeData('auth_token', res.token);
-        await storeData('account_id', res.id.toString());
-        storeData('account_nickname', res.nickname);
-        storeData('account_avatar_url', res.avatar_url);
+        await Helper.setData('auth_token', res.token);
+        await Helper.setData('account_id', res.id.toString());
+        Helper.setData('account_nickname', res.nickname);
+        Helper.setData('account_avatar_url', res.avatar_url);
         this.props.dispatchSetAuthToken(res.token);
         this.props.dispatchCurrentAccount();
         let toast = Toast.show('登录成功', {
@@ -43,12 +43,11 @@ class AdminPhoneLogin extends Component {
           hideOnPress: true,
           delay: 0,
         });
-        // let data = await getData('auth_token');
-        // console.log('auth_token', data);
-          this.props.navigation.reset({
-            index: 0,
-            routes: [{name: 'Recommend'}],
-          });
+
+        this.props.navigation.reset({
+          index: 0,
+          routes: [{name: 'Recommend'}],
+        });
       } else {
         let toast = Toast.show('用户名或者密码错误', {
           duration: Toast.durations.LONG,

@@ -4,7 +4,7 @@ import {syncAccountInfo} from '@/api/mine_api';
 import styled from 'styled-components/native';
 import {BadgeMessage} from '../../components/NodeComponents';
 import {connect} from 'react-redux';
-import SafeAreaPlus from '../../components/safe_area_plus';
+import SafeAreaPlus from '../../components/SafeAreaPlus';
 import {dispatchCurrentAccount} from '../../redux/actions';
 
 import {
