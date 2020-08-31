@@ -29,23 +29,26 @@ const NewTopic = props => {
   };
 
   const onImagePicker = async () => {
-
-    const res = await props.imagePick();
-    // setSource([...source, res]);
-    console.log([...source, res]);
-
-    // const res = await props.imagePick();
-
-    // console.log([...source, res]);
-    props.imagePick(res => {
-      console.log(res);
-      setSource([...source, res]);
+    props.imagePick((err, res) => {
+      if (err) {
+        return;
+      }
+      setSource([...source, ...res]);
     });
+  };
 
+  const onVideoPicker = async () => {
+    props.videoPick((err, res) => {
+      if (err) {
+        return;
+      }
+      console.log(res);
+
+      // setSource([...source, ...res]);
+    });
   };
 
   const onSubmit = () => {
-    console.log(savetopic);
     // 先上传资源
     const params = {
       type: 'single',
@@ -64,13 +67,17 @@ const NewTopic = props => {
   }, []);
 
   useEffect(() => {
-    console.log(savetopic);
+    // console.log(savetopic);
     setContent(savetopic.plan_content);
   }, [savetopic]);
 
   useEffect(() => {
-    console.log(content);
+    // console.log(content);
   }, [content]);
+
+  useEffect(() => {
+    console.log(source);
+  }, [source]);
 
   return (
     <View style={styles.wrapper}>
@@ -78,10 +85,12 @@ const NewTopic = props => {
         <TouchableOpacity onPress={onImagePicker}>
           <Image style={styles.media} source={require('@/assets/images/add-photo.png')} />
         </TouchableOpacity>
-        {source.map(v => (
-          <Image key={v.uri} style={styles.media} source={v} />
+        {source.map((v, index) => (
+          <Image key={index} style={styles.media} source={v} />
         ))}
-        <Image style={styles.media} source={require('@/assets/images/add-video.png')} />
+        <TouchableOpacity onPress={onVideoPicker}>
+          <Image style={styles.media} source={require('@/assets/images/add-video.png')} />
+        </TouchableOpacity>
       </View>
       <TextInput
         style={styles.content}

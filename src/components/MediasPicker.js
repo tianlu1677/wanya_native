@@ -2,23 +2,24 @@ import React from 'react';
 import ImagePicker from 'react-native-image-picker';
 import Upload from 'react-native-background-upload';
 import Helper from '@/utils/helper';
+import SyanImagePicker from 'react-native-syan-image-picker';
 
 const baseUrl =
   process.env.NODE_ENV === 'development' ? 'https://xinxue.meirixinxue.com' : 'https://xinxue.com';
 
 const MediasPicker = WrapperComponent => {
   return props => {
-    const options = {
-      title: '请选择',
-      cancelButtonTitle: '取消',
-      takePhotoButtonTitle: '拍照',
-      chooseFromLibraryButtonTitle: '从手机相册选择',
-      storageOptions: {
-        skipBackup: false,
-        path: 'images',
-      },
-      quality: 1,
-    };
+    // const options = {
+    //   title: '请选择',
+    //   cancelButtonTitle: '取消',
+    //   takePhotoButtonTitle: '拍照',
+    //   chooseFromLibraryButtonTitle: '从手机相册选择',
+    //   storageOptions: {
+    //     skipBackup: false,
+    //     path: 'images',
+    //   },
+    //   quality: 1,
+    // };
 
     const upload = async image => {
       const token = await Helper.getData('auth_token');
@@ -59,21 +60,19 @@ const MediasPicker = WrapperComponent => {
     };
 
     const imagePick = callback => {
-      // ImagePicker.showImagePicker(options, response => {
-      //   // loading
-      //   // let res = await upload(response);
-      //   // console.log(res);
-      //   // cancel
-      //   // console.log(res);
-      //   return response;
-      // });
-
-      // return new Promise((resolve, reject) => {
-      ImagePicker.showImagePicker(options, callback);
-      // });
+      const options = {
+        imageCount: 6,
+        isCamera: true,
+      };
+      SyanImagePicker.showImagePicker(options, callback);
     };
 
-    return <WrapperComponent {...props} imagePick={imagePick} />;
+    const videoPick = callback => {
+      const options = {};
+      SyanImagePicker.openVideoPicker(options, callback);
+    };
+
+    return <WrapperComponent {...props} imagePick={imagePick} videoPick={videoPick} />;
   };
 };
 
