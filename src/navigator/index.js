@@ -30,7 +30,7 @@ import NewTopic from '@/pages/home/newtopic';
 import TopicIndex from '@/pages/home/topicIndex';
 import MentionAccounts from '@/pages/home/MentionAccounts';
 
-// import NewTopic from '../pages/topics/NewTopic';
+import NewTopics from '../pages/topics/NewTopic';
 
 import TopicDetail from '../pages/topics/TopicDetail';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
@@ -98,7 +98,7 @@ function HomeTabList() {
           height: 50,
         },
       }}>
-      <Tab.Screen name="Node" component={NewTopic} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={NewTopics} options={{title: '圈子'}} />
       <Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen
