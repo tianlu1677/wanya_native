@@ -8,7 +8,7 @@ import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
 
 import {getInviteCode, getAccountInviteList} from '../../api/account_api';
-import SafeAreaPlus from '@/components/safe_area_plus';
+import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from 'react-native-root-toast';
 

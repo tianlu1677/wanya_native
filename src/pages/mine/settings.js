@@ -1,7 +1,7 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View, TextInput, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
-import SafeAreaPlus from '@/components/safe_area_plus';
+import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';

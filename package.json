@@ -54,6 +54,7 @@
     "react-native-svg": "^12.1.0",
     "react-native-swipe-list-view": "^3.2.3",
     "react-native-swiper": "^1.6.0-rc.3",
+    "react-native-syan-image-picker": "^0.4.9",
     "react-native-tab-view": "^2.15.0",
     "react-native-vector-icons": "^7.0.0",
     "react-native-video": "^4.4.5",
@@ -65,7 +66,8 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "yarn": "^1.22.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SafeAreaPlus from '../../components/safe_area_plus'
+import SafeAreaPlus from '../../components/SafeAreaPlus'
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabList from '@/components/TabList';
 import PostList from '@/components/List/PostList';

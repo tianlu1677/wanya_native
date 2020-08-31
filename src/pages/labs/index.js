@@ -1,11 +1,13 @@
 import React, {Component, useState} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Platform} from 'react-native';
+import { View, Text, Button} from 'react-native';
 import Toast from 'react-native-root-toast';
 import Share from 'react-native-share';
 import {WebView} from 'react-native-webview';
 import Modal from 'react-native-modal';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
+import SyanImagePicker from 'react-native-syan-image-picker';
+
 
 import Helper from '@/utils/helper';
 
@@ -24,6 +26,45 @@ const LabIndex = ({navigation, route}) => {
     </View>
   );
 
+  const choseImage = () => {
+    let options = {
+
+    }
+    SyanImagePicker.showImagePicker(options, (err, selectedPhotos) => {
+      if (err) {
+        // 取消选择
+        return;
+      }
+      // 选择成功，渲染图片
+      // ...
+    })
+  }
+
+  const showToast = () => {
+    console.log('showToast')
+    // Add a Toast on screen.
+    let toast = Toast.show('This is a message', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      delay: 0,
+      onShow: () => {
+        // calls on toast\`s appear animation start
+      },
+      onShown: () => {
+        // calls on toast\`s appear animation end.
+      },
+      onHide: () => {
+        // calls on toast\`s hide animation start.
+      },
+      onHidden: () => {
+        // calls on toast\`s hide animation end.
+      }
+    });
+
+  }
   const sheetRef = React.useRef(null);
 
   return (
@@ -31,11 +72,17 @@ const LabIndex = ({navigation, route}) => {
       <Text>实验室主页</Text>
 
       <View>
-        <Button title={"退出登录"}>
+        <Button title={"显示"}
+                onPress={() => showToast()}
+        >
 
         </Button>
 
         <Button title={"显示所有本地缓存"} onPress={() => {navigation.navigate('LabStorageIndex')}}>
+
+        </Button>
+
+        <Button title={"选择图片"} onPress={() => { choseImage() } }>
 
         </Button>
       </View>
@@ -48,6 +95,7 @@ const LabIndex = ({navigation, route}) => {
         }}>
         <Button title="Open Bottom Sheet" onPress={() => sheetRef.current.snapTo(0)} />
       </View>
+
       <BottomSheet
         renderHeader={() => (<Text>ssss</Text>)}
         ref={sheetRef}

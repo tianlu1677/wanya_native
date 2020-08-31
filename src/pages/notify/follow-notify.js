@@ -3,7 +3,7 @@ import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-na
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
 import AccountFollow from './components/account-follow';
-import SafeAreaPlus from '../../components/safe_area_plus';
+import SafeAreaPlus from '../../components/SafeAreaPlus';
 class FollowNotify extends Component {
   constructor(props) {
     super(props);
