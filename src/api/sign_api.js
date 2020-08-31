@@ -9,3 +9,13 @@ export async function phoneSignIn(data = { phone: "", password: "" }) {
   })
   return res.data
 }
+
+
+export async function appWechatSignIn(data = {code: '', app_id: '', source: ''}) {
+  const res = await request({
+    url: '/api/sessions/app_wechat_login.json',
+    method: 'POST',
+    data: data
+  })
+  return res.data
+}

@@ -3,6 +3,13 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
+
+
+#import "RNUMConfigure.h"
+#import "UMAnalyticsModule.h"
+#import "UMPushModule.h"
+#import <UMAnalytics/MobClick.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -54,7 +61,34 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // <- initialization using the storyboard file name
 
+  [UMConfigure setLogEnabled:YES];
+  [RNUMConfigure initWithAppkey:@"5d898ec9570df3adff00089a" channel:@"App Store"];
+  [MobClick setScenarioType:E_UM_NORMAL];
+  
   return YES;
+}
+
+
+
+- (BOOL)application:(UIApplication *)application
+  continueUserActivity:(NSUserActivity *)userActivity
+  restorationHandler:(void(^)(NSArray<id<UIUserActivityRestoring>> * __nullable
+  restorableObjects))restorationHandler {
+  // 触发回调方法
+  [RCTLinkingManager application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+  return [WXApi handleOpenUniversalLink:userActivity
+  delegate:self];
+}
+
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+//  return [RCTLinkingManager application:application openURL:url options:options];
+  // Triggers a callback event.
+  // 触发回调事件
+  [RCTLinkingManager application:application openURL:url options:options];
+  return [WXApi handleOpenURL:url delegate:self];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

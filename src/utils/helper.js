@@ -4,7 +4,7 @@ import Clipboard from "@react-native-community/clipboard";
 import dayjs from 'dayjs';
 
 export default class Helper {
-  static async storeData(name, value) {
+  static async setData(name, value) {
     try {
       await AsyncStorage.setItem(name, value);
     } catch (e) {
@@ -17,7 +17,7 @@ export default class Helper {
       let value = await AsyncStorage.getItem(name);
       console.log('store preve value', value)
       value = (value === null || value === undefined) ? '' : value
-      console.log('store value', value)
+      // console.log('store value', value)
       return value;
     } catch (e) {
       return ''
@@ -28,8 +28,13 @@ export default class Helper {
     await AsyncStorage.removeItem(name);
   }
 
-  static  async clearAllData() {
-    await AsyncStorage.clear()
+  static async clearAllData() {
+    return await AsyncStorage.clear()
+  }
+
+  static async getAllKeys() {
+    const keys =  await AsyncStorage.getAllKeys()
+    return keys
   }
 
   static async multiSet(data = []) {
@@ -37,7 +42,8 @@ export default class Helper {
   }
 
   static async multiGet(data = []) {
-
+    const res = await AsyncStorage.multiGet(data)
+    return res
   }
 
   // 获取粘贴板信息
