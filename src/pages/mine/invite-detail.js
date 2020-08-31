@@ -1,31 +1,33 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, TextInput, Image, Text, Button} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {SafeAreaView, Modal, StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
-import {Avatar} from '../../components/NodeComponents';
-import Modal from 'react-native-modal';
+import {Avator} from '../../components/NodeComponents';
+// import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
 
 import {getInviteCode, getAccountInviteList} from '../../api/account_api';
-import SafeAreaPlus from '@/components/safe_area_plus';
+import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from 'react-native-root-toast';
+import {Button} from 'react-native-elements';
+import * as WeChat from 'react-native-wechat-lib';
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
   const [accountList, setAccountList] = useState([]);
-  const [shareModelVisible, setShareModelVisible] = useState([]);
+  const [shareModelVisible, setShareModelVisible] = useState(false);
   const dispatch = useDispatch();
+  const currentAccount = useSelector(state => state.account.currentAccount)
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-    });
+    navigation.setOptions({});
   }, [navigation]);
 
   useEffect(() => {
-    loadInitInfo()
-  }, [])
+    loadInitInfo();
+  }, []);
 
   const loadInitInfo = async () => {
     const codeRes = await getInviteCode();
@@ -40,19 +42,36 @@ const InviteDetail = ({navigation, route}) => {
   const onCopy = () => {
     let message = `我的顽鸦邀请码是 ${inviteCode}`;
     Helper.setClipboard(message);
-    Toast.show("已复制", { position: Toast.positions.TOP })
+    Toast.show('已复制', {position: Toast.positions.TOP});
   };
 
-  const onShare = () => {
-    // console.log('xxxxxxx');
-    // this.setState({shareModelVisible: true});
+  //https://github.com/little-snow-fox/react-native-wechat-lib
+  const shareFriend = (e) => {
+    e.stopPropagation();
+    WeChat.shareImage({
+      imageUrl: 'https://google.com/1.jpg',
+      scene: 0,
+    });
+  };
+  const shareTimeline = (e) => {
+    e.stopPropagation();
+    console.log('xxxxxxxxxxx')
+    WeChat.shareImage(
+      {
+        imageUrl: 'https://google.com/1.jpg',
+        scene: 1,
+      },
+      error => {
+        console.log('xxx', error);
+      }
+    );
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <CardView>
-        <View style={{flexDirection: 'row'}}>
-          {/*<Avatar size={20} account={{account: {avatar_url: Helper.getData('avatar_url')}}} />*/}
+        <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
+          <Avator size={20} account={{avatar_url: currentAccount.avatar_url}}  />
           <CardTitleText>我的邀请码</CardTitleText>
         </View>
 
@@ -72,7 +91,7 @@ const InviteDetail = ({navigation, route}) => {
 
       <AccountCardView>
         {accountList.map(invite => {
-          return <Avatar width={40} key={invite.id} account={invite.account} />;
+          return <Avator width={40} key={invite.id} account={invite.account} />;
         })}
         <Image
           source={require('../../assets/images/add-invite.png')}
@@ -88,39 +107,57 @@ const InviteDetail = ({navigation, route}) => {
       <Button
         title="微信分享"
         titleStyle={{fontSize: 16, fontWeight: '500'}}
-        buttonStyle={{height: 50, backgroundColor: 'black'}}
+        buttonStyle={{height: 50, backgroundColor: 'black', borderRadius: 0}}
         onPress={() => {
-          onShare();
+          setShareModelVisible(true);
         }}
         containerStyle={{
+          flex: 1,
           position: 'absolute',
-          bottom: 20,
+          bottom: 0,
           left: 0,
           right: 0,
+          borderRadius: 0,
         }}
       />
 
-      {/*<Modal*/}
-      {/*  isVisible={this.state.shareModelVisible}*/}
-      {/*>*/}
-      {/*  <ShareCardView>*/}
-      {/*    <Image*/}
-      {/*      source={require('../../assets/images/social-login.jpg')}*/}
-      {/*      style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}*/}
-      {/*    />*/}
-      {/*    <Text>*/}
-      {/*      微信好友*/}
-      {/*    </Text>*/}
-
-      {/*    <Image*/}
-      {/*      source={require('../../assets/images/social-login.jpg')}*/}
-      {/*      style={{width: 40, height: 40, borderRadius: 21, marginRight: 10}}*/}
-      {/*    />*/}
-      {/*    <Text>*/}
-      {/*      分享朋友圈*/}
-      {/*    </Text>*/}
-      {/*  </ShareCardView>*/}
-      {/*</Modal>*/}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={shareModelVisible}
+        onRequestClose={() => {
+          alert('Modal has been closed.');
+        }}>
+        <ModelWrap
+          onPress={() => {
+            setShareModelVisible(false);
+          }}>
+          <ShareCardView>
+            <TouchableOpacity
+              style={{display: 'flex', alignItems: 'center'}}
+              onPress={(e) => {
+                shareFriend(e);
+              }}>
+              <Image
+                source={require('../../assets/images/add-invite.png')}
+                style={{width: 20, height: 20, borderRadius: 20}}
+              />
+              <ShareText>微信好友</ShareText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{display: 'flex', alignItems: 'center'}}
+              onPress={(e) => {
+                shareTimeline(e);
+              }}>
+              <Image
+                source={require('../../assets/images/add-invite.png')}
+                style={{width: 20, height: 20, borderRadius: 20}}
+              />
+              <ShareText>分享朋友圈</ShareText>
+            </TouchableOpacity>
+          </ShareCardView>
+        </ModelWrap>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -141,6 +178,8 @@ const CardTitleText = styled(Text)`
   font-weight: 400;
   color: rgba(189, 189, 189, 1);
   letter-spacing: 1px;
+  line-height: 20px;
+  margin-left: 10px;
 `;
 
 const CardCodeText = styled(Text)`
@@ -183,15 +222,31 @@ const AccountCardView = styled(View)`
   margin-bottom: 23px;
 `;
 
+const ModelWrap = styled(TouchableOpacity)`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
 const ShareCardView = styled(View)`
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
   height: 90px;
   background-color: black;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 110px;
+`;
+
+const ShareText = styled(Text)`
+  color: #24db5a;
+  font-size: 12px;
+  margin-top: 10px;
 `;
 
 export default InviteDetail;

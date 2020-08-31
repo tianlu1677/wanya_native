@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
 import styled from 'styled-components/native';
 // import goPage from '../../utils/page_path';
-import SafeAreaPlus from '../../components/safe_area_plus';
+import SafeAreaPlus from '../../components/SafeAreaPlus';
 class SystemNotify extends Component {
   constructor(props) {
     super(props);

@@ -11,7 +11,13 @@ import PostDetail from '../pages/home/postDetail';
 import Recommend from '../pages/home/Recommend';
 import VideoDetail from '../pages/home/VideoDetail';
 
+// 我的页面
 import Mine from '../pages/mine/mine';
+import Settings from '../pages/mine/settings';
+import About from '../pages/mine/settings/about';
+import AccountContent from '../pages/mine/settings/account-content';
+import EditAccountContent from '../pages/mine/settings/edit-account-content';
+import Feedback from '../pages/mine/settings/feedback';
 // import AccountDetail from '@/pages/mine/account-detail';
 
 // 用户
@@ -246,6 +252,21 @@ function MainStackList() {
       />
       <MainStack.Screen name="MentionNotify" component={MentionNotify} options={{title: '@我的'}} />
       <MainStack.Screen name="WebView" component={WebView} options={{title: ''}} />
+
+      {/* 我的页面 */}
+      <MainStack.Screen name="Settings" component={Settings} options={{title: '设置'}} />
+      <MainStack.Screen name="Feedback" component={Feedback} options={{title: '反馈'}} />
+      <MainStack.Screen name="About" component={About} options={{title: '关于顽鸦'}} />
+      <MainStack.Screen
+        name="AccountContent"
+        component={AccountContent}
+        options={{title: '编辑信息'}}
+      />
+      <MainStack.Screen
+        name="EditAccountContent"
+        component={EditAccountContent}
+        options={{title: '编辑信息'}}
+      />
     </MainStack.Navigator>
   );
 }

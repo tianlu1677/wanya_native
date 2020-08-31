@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import SafeAreaPlus from '../../components/safe_area_plus';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/SingleList';

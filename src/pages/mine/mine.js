@@ -85,6 +85,12 @@ class Mine extends Component {
             this.props.navigation.navigate('InviteDetail');
           }}
         />
+        <Button
+          title={'去我的设置'}
+          onPress={() => {
+            this.props.navigation.navigate('Settings');
+          }}
+        />
       </View>
     );
   }

@@ -6,7 +6,7 @@ import goPage from '../../utils/page_path';
 import {getInsideNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
-import SafeAreaPlus from '../../components/safe_area_plus';
+import SafeAreaPlus from '../../components/SafeAreaPlus';
 import {
   dispatchCurrentAccount,
   dispatchBaseCurrentAccount,

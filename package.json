@@ -54,6 +54,7 @@
     "react-native-svg": "^12.1.0",
     "react-native-swipe-list-view": "^3.2.3",
     "react-native-swiper": "^1.6.0-rc.3",
+    "react-native-syan-image-picker": "^0.4.9",
     "react-native-tab-view": "^2.15.0",
     "react-native-vector-icons": "^7.0.0",
     "react-native-video": "^4.4.5",
