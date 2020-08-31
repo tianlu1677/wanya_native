@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import {HeaderStyle, BottomStyle, BaseTopicStyle, BaseArticleStyle} from '@/components/Item/style';
@@ -61,7 +63,7 @@ const {MultiLineText, VideoPlayImage, HashtagText} = BaseTopicStyle;
 export const BaseTopicContent = props => {
   const {data} = props;
   return (
-    <>
+    <View style={props.style}>
       <MultiLineText numberOfLines={2}>
         {data.hashtag_content_json ? (
           data.hashtag_content_json.map((v, index) => {
@@ -79,37 +81,41 @@ export const BaseTopicContent = props => {
       </MultiLineText>
       <View>{data.content_style === 'link' && <Text>外链</Text>}</View>
       <View>{data.content_style === 'text' && <Text>文字</Text>}</View>
-    </>
+    </View>
   );
 };
 
 export const BaseTopic = props => {
+  const navigation = useNavigation();
   const {data} = props;
+  // console.log(data);
   return (
-    <View style={styles.postSlide}>
-      <Header data={data} />
-      <View style={{marginTop: 13, marginBottom: 13}}>
-        {data.content_style === 'img' && (
-          <View>
-            {data.medias.map((v, index) => (
-              <Image
-                key={index}
-                source={{uri: v}}
-                style={{width: 167, height: 167, marginRight: 5}}
-              />
-            ))}
-          </View>
-        )}
-        {data.content_style === 'video' && (
-          <View style={{width: 167, height: 167}}>
-            <Image source={{uri: data.single_cover.link_url}} style={{width: 167, height: 167}} />
-            <VideoPlayImage source={require('@/assets/images/video-play.png')} />
-          </View>
-        )}
+    <TouchableWithoutFeedback onPress={() => navigation.navigate('TopicIndex', {id: data.id})}>
+      <View style={styles.postSlide}>
+        <Header data={data} />
+        <View style={{marginTop: 13, marginBottom: 13}}>
+          {data.content_style === 'img' && (
+            <View>
+              {data.medias.map((v, index) => (
+                <Image
+                  key={index}
+                  source={{uri: v}}
+                  style={{width: 167, height: 167, marginRight: 5}}
+                />
+              ))}
+            </View>
+          )}
+          {data.content_style === 'video' && (
+            <View style={{width: 167, height: 167}}>
+              <Image source={{uri: data.single_cover.link_url}} style={{width: 167, height: 167}} />
+              <VideoPlayImage source={require('@/assets/images/video-play.png')} />
+            </View>
+          )}
+        </View>
+        <BaseTopicContent data={data} />
+        <Bottom data={data} />
       </View>
-      <BaseTopicContent data={data} />
-      <Bottom data={data} />
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

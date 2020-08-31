@@ -39,7 +39,7 @@ import InviteDetail from '../pages/mine/invite-detail';
 import LabIndex from '@/pages/labs/index';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabWebview from '@/pages/labs/webview';
-import LabStorageIndex from '@/pages/labs/storageindex'
+import LabStorageIndex from '@/pages/labs/storageindex';
 
 //登录页面
 import SocialLogin from '@/pages/sessions/social-login';
@@ -99,7 +99,7 @@ function HomeTabList() {
           height: 50,
         },
       }}>
-      <Tab.Screen name="Node" component={NewTopics} options={{title: '圈子'}} />
+      <Tab.Screen name="Node" component={Index} options={{title: '圈子'}} />
       <Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />
       <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
       <Tab.Screen
@@ -159,7 +159,7 @@ function MainStackList() {
           title: '推荐',
         }}
       />
-      <MainStack.Screen name="TopicIndex" component={TopicIndex} options={{title: '话题'}} />
+      <MainStack.Screen name="TopicIndex" component={PostDetail} options={{title: '话题'}} />
       <MainStack.Screen name="AccountsIndex" component={AccountsIndex} options={{title: '用户'}} />
       <MainStack.Screen name="SpaceIndex" component={SpaceIndex} options={{title: '场地列表'}} />
       <MainStack.Screen
@@ -167,6 +167,7 @@ function MainStackList() {
         component={MentionAccounts}
         options={{title: '顽友'}}
       />
+      <MainStack.Screen name="PostDetail" component={PostDetail} options={{title: '话题详情'}} />
 
       <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
       <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
