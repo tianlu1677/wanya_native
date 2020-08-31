@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const commonStyles = StyleSheet.create({
   loading: {
@@ -20,6 +20,13 @@ const commonStyles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10
   },
+
+  contentBlank: {
+    height: 9,
+    width: '100%',
+    lineHeight: 9,
+    backgroundColor: '#FAFAFA'
+  }
 });
 
 export default commonStyles;

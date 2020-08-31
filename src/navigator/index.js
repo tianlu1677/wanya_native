@@ -14,10 +14,10 @@ import VideoDetail from '../pages/home/VideoDetail';
 // 我的页面
 import Mine from '../pages/mine/mine';
 import Settings from '../pages/mine/settings';
-import About from "../pages/mine/settings/about"
-import AccountContent from "../pages/mine/settings/account-content"
-import EditAccountContent from "../pages/mine/settings/edit-account-content"
-import Feedback from "../pages/mine/settings/feedback"
+import About from '../pages/mine/settings/about';
+import AccountContent from '../pages/mine/settings/account-content';
+import EditAccountContent from '../pages/mine/settings/edit-account-content';
+import Feedback from '../pages/mine/settings/feedback';
 // import AccountDetail from '@/pages/mine/account-detail';
 
 // 用户
@@ -45,7 +45,7 @@ import InviteDetail from '../pages/mine/invite-detail';
 import LabIndex from '@/pages/labs/index';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabWebview from '@/pages/labs/webview';
-import LabStorageIndex from '@/pages/labs/storageindex'
+import LabStorageIndex from '@/pages/labs/storageindex';
 
 //登录页面
 import SocialLogin from '@/pages/sessions/social-login';
@@ -256,8 +256,16 @@ function MainStackList() {
       <MainStack.Screen name="Settings" component={Settings} options={{title: '设置'}} />
       <MainStack.Screen name="Feedback" component={Feedback} options={{title: '反馈'}} />
       <MainStack.Screen name="About" component={About} options={{title: '关于顽鸦'}} />
-      <MainStack.Screen name="AccountContent" component={AccountContent} options={{title: '编辑信息'}} />
-      <MainStack.Screen name="EditAccountContent" component={EditAccountContent} options={{title: '编辑信息'}} />
+      <MainStack.Screen
+        name="AccountContent"
+        component={AccountContent}
+        options={{title: '编辑信息'}}
+      />
+      <MainStack.Screen
+        name="EditAccountContent"
+        component={EditAccountContent}
+        options={{title: '编辑信息'}}
+      />
     </MainStack.Navigator>
   );
 }
