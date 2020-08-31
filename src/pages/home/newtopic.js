@@ -33,7 +33,6 @@ const NewTopic = props => {
     const res = await props.imagePick();
     // setSource([...source, res]);
     console.log([...source, res]);
-
     // const res = await props.imagePick();
 
     // console.log([...source, res]);
