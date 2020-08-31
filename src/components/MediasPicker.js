@@ -14,9 +14,10 @@ const MediasPicker = WrapperComponent => {
       takePhotoButtonTitle: '拍照',
       chooseFromLibraryButtonTitle: '从手机相册选择',
       storageOptions: {
-        skipBackup: true,
+        skipBackup: false,
         path: 'images',
       },
+      quality: 1,
     };
 
     const upload = async image => {
@@ -57,7 +58,7 @@ const MediasPicker = WrapperComponent => {
       });
     };
 
-    const imagePick = () => {
+    const imagePick = callback => {
       // ImagePicker.showImagePicker(options, response => {
       //   // loading
       //   // let res = await upload(response);
@@ -67,16 +68,9 @@ const MediasPicker = WrapperComponent => {
       //   return response;
       // });
 
-      return new Promise((resolve, reject) => {
-        ImagePicker.showImagePicker(options, async response => {
-          // loading
-          // let res = await upload(response);
-          // console.log(res);
-          // cancel
-          // console.log(res);
-          resolve(response);
-        });
-      });
+      // return new Promise((resolve, reject) => {
+      ImagePicker.showImagePicker(options, callback);
+      // });
     };
 
     return <WrapperComponent {...props} imagePick={imagePick} />;

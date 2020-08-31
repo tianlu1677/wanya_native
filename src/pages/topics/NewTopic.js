@@ -151,7 +151,7 @@ export default class App extends Component {
       sortOrder: 'none',
       compressImageMaxWidth: 1000,
       compressImageMaxHeight: 1000,
-      compressImageQuality: 1,
+      compressImageQuality: 0,
       compressVideoPreset: 'MediumQuality',
       includeExif: true,
       cropperStatusBarColor: 'white',
