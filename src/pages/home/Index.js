@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Button} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabViewList from '@/components/TabView';
@@ -7,6 +8,7 @@ import SingleList from '@/components/List/SingleList';
 import DoubleList from '@/components/List/DoubleList';
 
 const Index = () => {
+  const navigation = useNavigation();
   const [currentKey, setCurrentKey] = useState('follow');
 
   const RecommendList = () => {
@@ -22,27 +24,30 @@ const Index = () => {
   };
 
   return (
-    <TabViewList
-      currentKey={currentKey}
-      tabData={[
-        {
-          key: 'recommend',
-          title: '推荐',
-          component: RecommendList,
-        },
-        {
-          key: 'follow',
-          title: '关注',
-          component: FllowList,
-        },
-        {
-          key: 'lasted',
-          title: '最新',
-          component: LastedList,
-        },
-      ]}
-      onChange={key => setCurrentKey(key)}
-    />
+    <View style={{flex: 1, paddingTop: 100}}>
+      <Button title="去上传" onPress={() => navigation.navigate('NewTopic')} />
+      <TabViewList
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'recommend',
+            title: '推荐',
+            component: RecommendList,
+          },
+          {
+            key: 'follow',
+            title: '关注',
+            component: FllowList,
+          },
+          {
+            key: 'lasted',
+            title: '最新',
+            component: LastedList,
+          },
+        ]}
+        onChange={key => setCurrentKey(key)}
+      />
+    </View>
   );
 };
 

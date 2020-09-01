@@ -36,7 +36,7 @@ import NewTopic from '@/pages/home/newtopic';
 import TopicIndex from '@/pages/home/topicIndex';
 import MentionAccounts from '@/pages/home/MentionAccounts';
 
-import NewTopics from '../pages/topics/NewTopic';
+// import NewTopic from '../pages/topics/NewTopic';
 
 import TopicDetail from '../pages/topics/TopicDetail';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
@@ -165,7 +165,7 @@ function MainStackList() {
           title: '推荐',
         }}
       />
-      <MainStack.Screen name="TopicIndex" component={PostDetail} options={{title: '话题'}} />
+      <MainStack.Screen name="TopicIndex" component={TopicIndex} options={{title: '话题'}} />
       <MainStack.Screen name="AccountsIndex" component={AccountsIndex} options={{title: '用户'}} />
       <MainStack.Screen name="SpaceIndex" component={SpaceIndex} options={{title: '场地列表'}} />
       <MainStack.Screen
@@ -178,7 +178,7 @@ function MainStackList() {
       <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
       <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
       <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
-      <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子11'}} />
+      <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子'}} />
       <MainStack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />
 
       <MainStack.Screen
@@ -276,8 +276,8 @@ export default function Navigation() {
   console.log('login', login);
   return (
     <NavigationContainer>
-      {/* {!login.auth_token ? AuthStackList() : MainStackList()} */}
-      {MainStackList()}
+      {!login.auth_token ? AuthStackList() : MainStackList()}
+      {/* {MainStackList()} */}
     </NavigationContainer>
   );
 }

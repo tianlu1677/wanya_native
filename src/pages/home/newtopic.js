@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Image, Text, TextInput, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import Video from 'react-native-video';
 import Toast from 'react-native-root-toast';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
@@ -16,15 +17,10 @@ const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
-  const [source, setSource] = useState([]);
+  const [imageSource, setImageSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
-
+  const [videoSource, setVideoSource] = useState(null);
   const [isModalVisible, setModalVisible] = useState(true);
-  const choose = async () => {
-    const res = await props.chooseImage();
-    setSource([...source, res]);
-    // const res = await uploadMultiImage(img);
-  };
 
   const onChangeContent = text => {
     setContent(text);
@@ -34,38 +30,46 @@ const NewTopic = props => {
 
   const onImagePicker = async () => {
     const options = {
-      imageCount: 9 - source.length,
+      imageCount: 9 - imageSource.length,
     };
     props.imagePick(options, (err, res) => {
       if (err) {
         return;
       }
-      setSource([...source, ...res]);
+      setImageSource([...imageSource, ...res]);
     });
   };
 
   const onVideoPicker = async () => {
-    props.videoPick((err, res) => {
+    props.videoPick({}, (err, res) => {
       if (err) {
         return;
       }
-      console.log(res);
+      console.log(res[0]);
 
-      // setSource([...source, ...res]);
+      setVideoSource(res[0]);
     });
   };
 
   const onSubmit = async () => {
     let mediasImg = [];
-    await Promise.all(
-      source.map(async file => {
-        const res = await props.upload(file);
-        console.log(res);
-        mediasImg = [...mediasImg, res.asset];
-      })
-    );
-    console.log(mediasImg);
-    console.log(mediasImg.map(v => v.url));
+
+    if (imageSource.length > 0) {
+      await Promise.all(
+        imageSource.map(async file => {
+          const res = await props.upload({uploadType: 'multipart', ...file});
+          mediasImg = [...mediasImg, res.asset];
+        })
+      );
+    }
+
+    let video_content = '';
+    if (videoSource) {
+      const res = await props.upload({uploadType: 'raw', ...videoSource});
+      console.log(res);
+      video_content = res.asset;
+    }
+    console.log(video_content);
 
     // 先上传资源
     const data = {
@@ -76,41 +80,12 @@ const NewTopic = props => {
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.node ? savetopic.space.id : '',
     };
-    console.log(data);
-
     const res = await createTopic(data);
     console.log(res);
   };
 
   useEffect(() => {
     console.log(props);
-    let toast = Toast.show('This is a message', {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.CENTER,
-      backgroundColor: 'pink',
-      shadowColor: true,
-      shadow: true,
-      animation: true,
-      hideOnPress: true,
-      delay: 0,
-      onShow: () => {
-        // calls on toast\`s appear animation start
-      },
-      onShown: () => {
-        // calls on toast\`s appear animation end.
-      },
-      onHide: () => {
-        // calls on toast\`s hide animation start.
-      },
-      onHidden: () => {
-        // calls on toast\`s hide animation end.
-      },
-    });
-
-    // You can manually hide the Toast, or it will automatically disappear after a `duration` ms timeout.
-    // setTimeout(function () {
-    //   Toast.hide(toast);
-    // }, 500);
 
     return () => {
       // cleanup
@@ -118,30 +93,50 @@ const NewTopic = props => {
   }, []);
 
   useEffect(() => {
-    // console.log(savetopic);
+    console.log(videoSource);
+  }, [videoSource]);
+
+  useEffect(() => {
     setContent(savetopic.plan_content);
   }, [savetopic]);
 
-  useEffect(() => {
-    // console.log(content);
-  }, [content]);
-
-  useEffect(() => {
-    console.log(source);
-  }, [source]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: null,
+      headerLeft: () => <Button onPress={() => navigation.back()} title="关闭" color="#000" />,
+      headerRight: () => <Button onPress={onSubmit} title="发布" color="#000" />,
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.mediaCon}>
-        <TouchableOpacity onPress={onImagePicker}>
-          <Image style={styles.media} source={require('@/assets/images/add-photo.png')} />
-        </TouchableOpacity>
-        {source.map((v, index) => (
+        {/* picture */}
+        {!videoSource && (
+          <TouchableOpacity onPress={onImagePicker}>
+            <Image style={styles.media} source={require('@/assets/images/add-photo.png')} />
+          </TouchableOpacity>
+        )}
+        {imageSource.map((v, index) => (
           <Image key={index} style={styles.media} source={v} />
         ))}
-        <TouchableOpacity onPress={onVideoPicker}>
-          <Image style={styles.media} source={require('@/assets/images/add-video.png')} />
-        </TouchableOpacity>
+
+        {/* video */}
+        {imageSource.length === 0 && !videoSource && (
+          <TouchableOpacity onPress={onVideoPicker}>
+            <Image style={styles.media} source={require('@/assets/images/add-video.png')} />
+          </TouchableOpacity>
+        )}
+        {videoSource && (
+          <Video
+            style={styles.media}
+            source={videoSource}
+            posterResizeMode={'center'}
+            controls
+            reportBandwidth
+            repeat
+          />
+        )}
       </View>
       <TextInput
         style={styles.content}
@@ -175,7 +170,7 @@ const NewTopic = props => {
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
       </View>
-
+      {/*
       <Text
         onPress={onSubmit}
         style={{
@@ -186,13 +181,7 @@ const NewTopic = props => {
           lineHeight: 50,
         }}>
         发布
-      </Text>
-      {/* <Modal isVisible={isModalVisible}>
-        <View style={{flex: 1}}>
-          <Text style={{color: '#fff'}}>Hello!3232324343534543534534534543534</Text>
-          <Button title="Hide modal" onPress={() => setModalVisible(false)} />
-        </View>
-      </Modal> */}
+      </Text> */}
     </View>
   );
 };
@@ -202,8 +191,8 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     backgroundColor: '#fff',
-    flex: 1,
-    paddingTop: 80,
+    // flex: 1,
+    paddingTop: 20,
   },
   mediaCon: {
     flexDirection: 'row',
@@ -217,7 +206,6 @@ const styles = StyleSheet.create({
   },
   content: {
     minHeight: 90,
-    // backgroundColor: 'pink',
   },
   addTextName: {
     width: 63,
@@ -251,6 +239,9 @@ const styles = StyleSheet.create({
   },
   backarrow: {
     marginLeft: 'auto',
+  },
+  submitBtn: {
+    fontWeight: '500',
   },
 });
 

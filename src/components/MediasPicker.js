@@ -10,25 +10,26 @@ const baseUrl =
 
 const MediasPicker = WrapperComponent => {
   return props => {
-    const upload = async image => {
+    const upload = async file => {
       const token = await Helper.getData('auth_token');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
         maxRetries: 1,
-        type: 'multipart',
+        type: file.uploadType,
         field: 'file',
         headers: {
           'content-type': 'application/octet-stream',
           token: token,
         },
-        path: image.uri,
+        path: file.uri,
       };
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {
               // store proress
+              console.log(data.progress);
             });
             Upload.addListener('error', uploadId, data => {
               console.log(`Error: ${data.error}%`);
@@ -38,6 +39,8 @@ const MediasPicker = WrapperComponent => {
               console.log('Cancelled!');
             });
             Upload.addListener('completed', uploadId, data => {
+              console.log(data);
+
               resolve(JSON.parse(data.responseBody));
             });
           })
@@ -48,7 +51,7 @@ const MediasPicker = WrapperComponent => {
       });
     };
 
-    const imagePick = (option, callback) => {
+    const imagePick = (option = {}, callback) => {
       const options = {
         imageCount: 1,
         isCamera: true,
@@ -58,8 +61,8 @@ const MediasPicker = WrapperComponent => {
       SyanImagePicker.showImagePicker(options, callback);
     };
 
-    const videoPick = callback => {
-      const options = {};
+    const videoPick = (option = {}, callback) => {
+      const options = {...option};
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
