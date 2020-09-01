@@ -32,13 +32,12 @@ class App extends Component {
     this.loginAdmin();
   }
 
-  loginAdmin = () => {
-    Helper.clearAllData();
-    if (!Helper.getData('auth_token')) {
-      setTimeout(() => {
-        this.props.navigation.navigate('AdminPhoneLogin');
-      }, 1000);
-    }
+  loginAdmin = () => {    
+    // if (!Helper.getData('auth_token')) {
+    //   setTimeout(() => {
+    //     this.props.navigation.navigate('AdminPhoneLogin');
+    //   }, 1000);
+    // }
 
     // if (React.$Store.getStore('auth_token')) {
     //   this.props.navigation.navigate('AdminPhoneLogin')

@@ -12,6 +12,8 @@ axios.defaults.baseURL = `${BASE_URL}`;
 axios.interceptors.request.use(
   async function (config) {
     config.headers.common.version = VERSION;
+    // let token = await Helper.getData('auth_token');
+    // config.headers.common.Token = token
     return config;
   },
   function (error) {
@@ -57,7 +59,7 @@ axios.interceptors.response.use(
         break;
       case 401:
         Toast.show('未登录')
-        console.log('401, 未登录')
+        // console.log('401, 未登录')
         // if (error.response.data.error === 'Your account is locked.') {
         //   storeData('lock_user', true);
         // }
@@ -66,7 +68,7 @@ axios.interceptors.response.use(
         break;
     }
 
-    return Promise.reject(error.response);
+    return Promise.reject(error);
   }
 );
 
