@@ -10,6 +10,16 @@ export const getTopicList = async params => {
   return res.data;
 };
 
+// 创建帖子
+export const createTopic = async data => {
+  const res = await request({
+    url: '/api/v1/topics',
+    method: 'POST',
+    data,
+  });
+  return res.data;
+};
+
 // 获取帖子详情
 export async function getTopic(id) {
   const res = await request({
@@ -78,14 +88,14 @@ export async function getTopicTags(params) {
 }
 
 // 创建帖子
-export async function createTopic(data = {}) {
-  const res = await request({
-    url: '/api/v1/topics',
-    method: 'POST',
-    data: data,
-  });
-  return res.data;
-}
+// export async function createTopic(data = {}) {
+//   const res = await request({
+//     url: '/api/v1/topics',
+//     method: 'POST',
+//     data: data,
+//   });
+//   return res.data;
+// }
 
 // 修改帖子
 export async function updateTopic(id, data = {}) {

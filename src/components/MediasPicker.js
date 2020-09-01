@@ -1,4 +1,5 @@
 import React from 'react';
+import {View} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Upload from 'react-native-background-upload';
 import Helper from '@/utils/helper';
@@ -9,18 +10,6 @@ const baseUrl =
 
 const MediasPicker = WrapperComponent => {
   return props => {
-    // const options = {
-    //   title: '请选择',
-    //   cancelButtonTitle: '取消',
-    //   takePhotoButtonTitle: '拍照',
-    //   chooseFromLibraryButtonTitle: '从手机相册选择',
-    //   storageOptions: {
-    //     skipBackup: false,
-    //     path: 'images',
-    //   },
-    //   quality: 1,
-    // };
-
     const upload = async image => {
       const token = await Helper.getData('auth_token');
       const uploadOptions = {
@@ -59,10 +48,12 @@ const MediasPicker = WrapperComponent => {
       });
     };
 
-    const imagePick = callback => {
+    const imagePick = (option, callback) => {
       const options = {
-        imageCount: 6,
+        imageCount: 1,
         isCamera: true,
+        isRecordSelected: true,
+        ...option,
       };
       SyanImagePicker.showImagePicker(options, callback);
     };
@@ -72,7 +63,11 @@ const MediasPicker = WrapperComponent => {
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
-    return <WrapperComponent {...props} imagePick={imagePick} videoPick={videoPick} />;
+    return (
+      <View>
+        <WrapperComponent {...props} imagePick={imagePick} videoPick={videoPick} upload={upload} />
+      </View>
+    );
   };
 };
 

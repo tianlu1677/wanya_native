@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Image, Text, TextInput, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-root-toast';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
+import {createTopic} from '@/api/topic_api';
+import Modal from 'react-native-modal';
 
 const loadingImg =
   'http://file.meirixinxue.com/assets/2020/76272587-9bd6-48e9-b182-692b9ca73e89.gif';
@@ -16,6 +19,7 @@ const NewTopic = props => {
   const [source, setSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
 
+  const [isModalVisible, setModalVisible] = useState(true);
   const choose = async () => {
     const res = await props.chooseImage();
     setSource([...source, res]);
@@ -29,7 +33,10 @@ const NewTopic = props => {
   };
 
   const onImagePicker = async () => {
-    props.imagePick((err, res) => {
+    const options = {
+      imageCount: 9 - source.length,
+    };
+    props.imagePick(options, (err, res) => {
       if (err) {
         return;
       }
@@ -48,19 +55,63 @@ const NewTopic = props => {
     });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    let mediasImg = [];
+    await Promise.all(
+      source.map(async file => {
+        const res = await props.upload(file);
+        console.log(res);
+        mediasImg = [...mediasImg, res.asset];
+      })
+    );
+    console.log(mediasImg);
+    console.log(mediasImg.map(v => v.url));
+
     // 先上传资源
-    const params = {
+    const data = {
       type: 'single',
-      plan_content: savetopic.plan_content,
-      mention_ids: savetopic.mention.map(v => v.id),
-      node_id: savetopic.node.id,
-      space_id: savetopic.space.id,
+      medias: mediasImg.map(v => v.url),
+      plain_content: savetopic.plan_content,
+      mention_ids: savetopic.mention.map(v => v.id).join(),
+      node_id: savetopic.node ? savetopic.node.id : '',
+      space_id: savetopic.node ? savetopic.space.id : '',
     };
-    console.log(params);
+    console.log(data);
+
+    const res = await createTopic(data);
+    console.log(res);
   };
 
   useEffect(() => {
+    console.log(props);
+    let toast = Toast.show('This is a message', {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+      backgroundColor: 'pink',
+      shadowColor: true,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      delay: 0,
+      onShow: () => {
+        // calls on toast\`s appear animation start
+      },
+      onShown: () => {
+        // calls on toast\`s appear animation end.
+      },
+      onHide: () => {
+        // calls on toast\`s hide animation start.
+      },
+      onHidden: () => {
+        // calls on toast\`s hide animation end.
+      },
+    });
+
+    // You can manually hide the Toast, or it will automatically disappear after a `duration` ms timeout.
+    // setTimeout(function () {
+    //   Toast.hide(toast);
+    // }, 500);
+
     return () => {
       // cleanup
     };
@@ -136,6 +187,12 @@ const NewTopic = props => {
         }}>
         发布
       </Text>
+      {/* <Modal isVisible={isModalVisible}>
+        <View style={{flex: 1}}>
+          <Text style={{color: '#fff'}}>Hello!3232324343534543534534534543534</Text>
+          <Button title="Hide modal" onPress={() => setModalVisible(false)} />
+        </View>
+      </Modal> */}
     </View>
   );
 };
