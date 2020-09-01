@@ -67,10 +67,12 @@ export const BaseTopicStyle = {
     width: 30px;
     height: 30px;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -15px;
-    margin-top: -15px;
+    top: 40%;
+    left: 25%;
+    right: 25%;
+    bottom: 50%;
+    margin: auto;
+    
   `,
   HashtagText: styled(Text)`
     color: #ff8d00;
@@ -79,7 +81,7 @@ export const BaseTopicStyle = {
 };
 
 export const BaseArticleStyle = {
-  ArtitleTitleText: styled(Text)`
+  ArticleTitleText: styled(Text)`
     position: absolute;
     top: 7px;
     left: 11px;

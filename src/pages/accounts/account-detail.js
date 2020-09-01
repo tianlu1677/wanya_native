@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect, useReducer} from 'react';
 import {View, Text, Image} from 'react-native';
 import {Avator} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
@@ -14,12 +14,18 @@ import {AccountsDetailStyles as styles} from './style';
 
 const id = 1106;
 
-const AccountDetail = () => {
-  const [account, setAccount] = useState(null);
+const AccountDetail = ({navigation, route}) => {
+  const [account, setAccount] = useState({});
+  const [accountId, setAccountId] = useState('');
   const [currentKey, setCurrentKey] = useState('publish');
 
+  useLayoutEffect(() => {
+    navigation.setOptions({});
+    setAccountId(route.params.accountId)
+  }, [navigation]);
+
   const loadData = async () => {
-    const res = await getAccount(id);
+    const res = await getAccount(accountId);
     setAccount(res.data.account);
   };
 
@@ -37,7 +43,7 @@ const AccountDetail = () => {
 
   useEffect(() => {
     loadData();
-  });
+  }, [accountId]);
 
   return account ? (
     <View style={styles.wrapper}>

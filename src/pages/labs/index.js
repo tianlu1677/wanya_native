@@ -43,7 +43,7 @@ const LabIndex = ({navigation, route}) => {
 
   //https://github.com/react-native-community/react-native-permissions
   const checkPermission = () => {
-    check(PERMISSIONS.IOS.MEDIA_LIBRARY)
+    check(PERMISSIONS.IOS.CAMERA)
       .then((result) => {
         switch (result) {
           case RESULTS.UNAVAILABLE:

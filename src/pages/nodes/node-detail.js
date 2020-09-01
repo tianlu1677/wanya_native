@@ -17,6 +17,7 @@ const defaultCoverUrl =
 const id = 2;
 const NodeDetail = () => {
   const [detail, setDetail] = useState(null);
+  const [nodeId, setNodeId] = useState('');
   const [currentKey, setCurrentKey] = useState('publish');
 
   const loadData = async () => {

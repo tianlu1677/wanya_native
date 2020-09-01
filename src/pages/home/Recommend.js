@@ -1,100 +1,115 @@
-import React, {Component} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Button,
-  FlatList,
-  ScorllView
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, SafeAreaView, View} from 'react-native';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+import SafeAreaPlus from '@/components/SafeAreaPlus'
+import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
+import TabList from '@/components/TabList';
+import PostList from '@/components/List/PostList';
+import DoubleList from '@/components/List/DoubleList';
+import TabViewList from '@/components/TabView';
 
-import BaseTopic from '../../components/BaseTopic'
-import Scroll, {State, pagination} from '../../components/Scroll'
-import { getHotTopics, getRecommendPosts } from '../../api/home_api'
+const DoubleListPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [headers, setHeaders] = useState();
+  const [listData, setListData] = useState([]);
 
-class Recommend extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      requestState: State.LOADING,
-      isLoading: true,
-      recommendPostList: [],
-      recommendPaginate: {hasMore: true, nextPage: 1},
-    };
-    this.currentPage = 1;
-  }
+  const loadData = async (page = 1) => {
+    setLoading(true);
+    const res = await getRecommendPosts({page});
+    const data = res.data.posts;
+    setLoading(false);
+    setHeaders(res.headers);
+    setListData(page === 1 ? data : [...listData, ...data]);
+  };
 
-  async componentDidMount() {
-    this._request(true)
-  }
+  useEffect(() => {
+    loadData();
+  }, []);
 
-
-  fetchData = async () => {
-
-  }
-
-  componentDidUpdate() {
-
-  }
-  _request = async (isRefresh) => {
-    this.currentPage = isRefresh ? 1 : this.currentPage + 1;
-    this.setState({ requestState: isRefresh ? State.REFRESHING : State.LOADING });
-    const { recommendPostList, recommendPaginate } = this.state
-    if (!recommendPaginate.hasMore) {
-      this.setState({
-        requestState: State.LOAD_END,
-      })
-      return
-    }
-    let params = {page: this.currentPage, per_page: 20}
-    let res = await getRecommendPosts(params)
-    let itemList = res.data.posts
-    let headers = res.headers
-    let paginate = pagination(headers);
-    // console.log('xxxx', headers)
-    itemList = isRefresh ? itemList : recommendPostList.concat(itemList)
-
-    itemList = itemList.filter((post, post_index) => {
-      return itemList.indexOf(post, 0) === post_index
-    })
-    this.setState({
-      recommendPostList: itemList,
-      recommendPaginate: paginate,
-    }, () => {
-      this.setState({
-        requestState: State.NORMAL,
-      })
-    })
-  }
-
-  _renderItem = ({item}) => {
-    // console.log('xxxx',item)
-    return <BaseTopic topic={item}
-                      post={item}
-                      navigation={this.props.navigation}
-    />
-  }
-
-  render() {
-    return <View style={{flex: 1, paddingTop: 0}}>
-      <Scroll
-        ref={(flat_list) => {
-          this.flat_list = flat_list;
-        }}
-        onRequest={this._request}
-        data={this.state.recommendPostList}
-        requestState={this.state.requestState}
-        renderItem={this._renderItem}
-      >
-      </Scroll>
-    </View>
-  }
-}
-
-Recommend.navigationOptions = {
-  headerTitle: "Noticias en 111"
+  return <DoubleList data={listData} loading={loading} onRefresh={loadData} headers={headers} />;
 };
+
+const PostListPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [headers, setHeaders] = useState();
+  const [listData, setListData] = useState([]);
+
+  const loadData = async (page = 1) => {
+    setLoading(true);
+    const res = await getRecommendPosts({page});
+    const data = res.data.posts;
+    setLoading(false);
+    setHeaders(res.headers);
+    setListData(page === 1 ? data : [...listData, ...data]);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  return <PostList data={listData} loading={loading} onRefresh={loadData} headers={headers} />;
+};
+
+const LastedListPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [headers, setHeaders] = useState();
+  const [listData, setListData] = useState([]);
+
+  const loadData = async (page = 1) => {
+    setLoading(true);
+    const res = await getRecommendPosts({page});
+    const data = res.data.posts;
+    setLoading(false);
+    setHeaders(res.headers);
+    setListData(page === 1 ? data : [...listData, ...data]);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  return <PostList data={listData} loading={loading} onRefresh={loadData} headers={headers} />;
+};
+
+const Recommend = () => {
+  const [currentKey, setCurrentKey] = useState('follow');
+
+  const onChangeTab = key => {
+    setCurrentKey(key);
+  };
+
+  return (
+    <SafeAreaPlus>
+      <TabViewList
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'recommend',
+            title: '推荐',
+            component: DoubleListPage,
+          },
+          {
+            key: 'follow',
+            title: '关注',
+            component: PostListPage,
+          },
+          {
+            key: 'lasted',
+            title: '最新',
+            component: LastedListPage,
+          },
+        ]}
+        onChange={onChangeTab}
+      />
+    </SafeAreaPlus>
+  );
+};
+
+const styles = StyleSheet.create({
+  containter: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+});
 
 export default Recommend;

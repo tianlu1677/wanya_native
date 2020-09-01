@@ -6,9 +6,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {connect, useSelector} from 'react-redux';
 
-import Index from '../pages/home/Index';
-import PostDetail from '../pages/home/postDetail';
 import Recommend from '../pages/home/Recommend';
+import PostDetail from '../pages/home/postDetail';
 import VideoDetail from '../pages/home/VideoDetail';
 
 // 我的页面
@@ -18,7 +17,7 @@ import About from '../pages/mine/settings/about';
 import AccountContent from '../pages/mine/settings/account-content';
 import EditAccountContent from '../pages/mine/settings/edit-account-content';
 import Feedback from '../pages/mine/settings/feedback';
-// import AccountDetail from '@/pages/mine/account-detail';
+import AccountDetail from '../pages/accounts/account-detail';
 
 // 用户
 import AccountsIndex from '@/pages/accounts/accounts-index';
@@ -42,6 +41,9 @@ import TopicDetail from '../pages/topics/TopicDetail';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
 import InviteDetail from '../pages/mine/invite-detail';
 
+// 文章
+import ArticleDetail from '../pages/articles/article-detail';
+// 实验室页面
 import LabIndex from '@/pages/labs/index';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabWebview from '@/pages/labs/webview';
@@ -66,7 +68,6 @@ import WebView from '../pages/webview/webview';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
-const StackNavigator = Stack.Navigator;
 const AuthStack = createStackNavigator();
 
 function HomeTabList() {
@@ -105,12 +106,12 @@ function HomeTabList() {
           height: 50,
         },
       }}>
-      <Tab.Screen name="Node" component={NewTopics} options={{title: '圈子'}} />
-      <Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />
-      <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
+      {/*<Tab.Screen name="Node" component={NewTopics} options={{title: '圈子'}} />*/}
+      {/*<Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />*/}
+      {/*<Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />*/}
       <Tab.Screen
         name="Recommend"
-        component={Index}
+        component={Recommend}
         options={{
           title: '推荐',
         }}
@@ -165,6 +166,12 @@ function MainStackList() {
           title: '推荐',
         }}
       />
+      {/*用户相关*/}
+      <MainStack.Screen
+        name="AccountDetail"
+        component={AccountDetail}
+        options={{title: '用户详情'}}
+      />
       <MainStack.Screen name="TopicIndex" component={TopicIndex} options={{title: '话题'}} />
       <MainStack.Screen name="AccountsIndex" component={AccountsIndex} options={{title: '用户'}} />
       <MainStack.Screen name="SpaceIndex" component={SpaceIndex} options={{title: '场地列表'}} />
@@ -179,6 +186,11 @@ function MainStackList() {
       <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
       <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子11'}} />
       <MainStack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />
+      <MainStack.Screen
+        name="ArticleDetail"
+        component={ArticleDetail}
+        options={{title: '文章详情'}}
+      />
 
       <MainStack.Screen
         name="PhoneLogin"
@@ -272,11 +284,11 @@ function MainStackList() {
 
 export default function Navigation() {
   const login = useSelector(state => state.login);
-  console.log('login', login);
+  // console.log('login', login);
   return (
     <NavigationContainer>
-      {/* {!login.auth_token ? AuthStackList() : MainStackList()} */}
-      {MainStackList()}
+      {!login.auth_token ? AuthStackList() : MainStackList()}
+      {/*{MainStackList()}*/}
     </NavigationContainer>
   );
 }

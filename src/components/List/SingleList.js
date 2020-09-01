@@ -3,11 +3,15 @@ import {Text} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import {BaseTopic, BaseArticle} from '@/components/Item/PostListItem';
+import {useDispatch} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const SingleList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
+
+  const navigation = useNavigation();
 
   const renderItem = ({item}) => {
     if (item.item_type === 'Topic') {
