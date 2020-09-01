@@ -1,25 +1,26 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, Modal, StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {Avator} from '../../components/NodeComponents';
 // import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
+import ViewShot from 'react-native-view-shot';
 
 import {getInviteCode, getAccountInviteList} from '../../api/account_api';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from 'react-native-root-toast';
 import {Button} from 'react-native-elements';
-import * as WeChat from 'react-native-wechat-lib';
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
   const [accountList, setAccountList] = useState([]);
   const [shareModelVisible, setShareModelVisible] = useState(false);
   const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentAccount)
+  const currentAccount = useSelector(state => state.account.currentAccount);
 
   useLayoutEffect(() => {
     navigation.setOptions({});
@@ -46,32 +47,56 @@ const InviteDetail = ({navigation, route}) => {
   };
 
   //https://github.com/little-snow-fox/react-native-wechat-lib
-  const shareFriend = (e) => {
-    e.stopPropagation();
-    WeChat.shareImage({
-      imageUrl: 'https://google.com/1.jpg',
-      scene: 0,
-    });
-  };
-  const shareTimeline = (e) => {
-    e.stopPropagation();
-    console.log('xxxxxxxxxxx')
+  const shareFriend = e => {
+    // e.stopPropagation();
     WeChat.shareImage(
       {
         imageUrl: 'https://google.com/1.jpg',
-        scene: 1,
+        scene: 0,
       },
       error => {
-        console.log('xxx', error);
+        console.log('error', error);
       }
     );
+  };
+  const shareTimeline = () => {
+    // WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
+    console.log('xxxxxxxxxxx');
+    try{
+      WeChat.shareImage(
+        {
+          imageUrl:
+            'https://ohiostorage.oss-cn-beijing.aliyuncs.com/uploads/20200901e0de3fda2fbfec49c220.jpeg',
+          scene: 0,
+        },
+        error => {
+          console.log('error', error);
+        }
+      );
+    } catch (e) {
+      console.log('e', e)
+    }
+
+    // WeChat.shareImage(
+    //   {
+    //     imageUrl: 'https://google.com/1.jpg',
+    //     scene: 1,
+    //   },
+    //   error => {
+    //     console.log('xxx', error);
+    //   }
+    // );
+  };
+
+  const onCapture1 = uri => {
+    console.log('do something with ', uri);
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <CardView>
         <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
-          <Avator size={20} account={{avatar_url: currentAccount.avatar_url}}  />
+          <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
           <CardTitleText>我的邀请码</CardTitleText>
         </View>
 
@@ -121,6 +146,9 @@ const InviteDetail = ({navigation, route}) => {
         }}
       />
 
+      {/*<ViewShot onCapture={() => { onCapture1() } } captureMode="mount">*/}
+      {/*  <Text style={{height: 100}}>...Something to rasterize...</Text>*/}
+      {/*</ViewShot>*/}
       <Modal
         animationType="slide"
         transparent={true}
@@ -135,8 +163,8 @@ const InviteDetail = ({navigation, route}) => {
           <ShareCardView>
             <TouchableOpacity
               style={{display: 'flex', alignItems: 'center'}}
-              onPress={(e) => {
-                shareFriend(e);
+              onPress={() => {
+                shareFriend();
               }}>
               <Image
                 source={require('../../assets/images/add-invite.png')}
@@ -146,7 +174,7 @@ const InviteDetail = ({navigation, route}) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{display: 'flex', alignItems: 'center'}}
-              onPress={(e) => {
+              onPress={e => {
                 shareTimeline(e);
               }}>
               <Image

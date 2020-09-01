@@ -76,7 +76,7 @@ export default async function requestHttp(options, url = null) {
   let data = {};
   let params = {};
   const auth_token = await Helper.getData('auth_token');
-  console.log('requestHttp token', auth_token)
+  // console.log('requestHttp token', auth_token)
   if (options.method === 'GET') {
     params = {...options.data, ...options.params};
   } else {
