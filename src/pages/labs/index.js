@@ -7,6 +7,7 @@ import Modal from 'react-native-modal';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import SyanImagePicker from 'react-native-syan-image-picker';
+import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
 
 
 import Helper from '@/utils/helper';
@@ -38,6 +39,41 @@ const LabIndex = ({navigation, route}) => {
       // 选择成功，渲染图片
       // ...
     })
+  }
+
+  //https://github.com/react-native-community/react-native-permissions
+  const checkPermission = () => {
+    check(PERMISSIONS.IOS.MEDIA_LIBRARY)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            // 请求过一次就不能再请求了
+
+            console.log(
+              'The permission has not been requested / is denied but requestable',
+            );
+            request(PERMISSIONS.IOS.MEDIA_LIBRARY).then((result) => {
+              console.log('result', result)
+            });
+
+            break;
+          case RESULTS.GRANTED:
+            console.log('The permission is granted');
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            openSettings().catch(() => console.warn('cannot open settings'));
+            break;
+        }
+      })
+      .catch((error) => {
+        // …
+      });
   }
 
   const showToast = () => {
@@ -80,7 +116,9 @@ const LabIndex = ({navigation, route}) => {
 
         <Button title={"显示所有本地缓存"} onPress={() => {navigation.navigate('LabStorageIndex')}}>
 
+
         </Button>
+        <Button title={"请求权限"} onPress={() => { checkPermission() }} />
 
         <Button title={"选择图片"} onPress={() => { choseImage() } }>
 

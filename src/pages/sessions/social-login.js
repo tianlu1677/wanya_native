@@ -59,6 +59,22 @@ const SocialLogin = ({navigation, route}) => {
     }
   };
 
+  const goPages = type => {
+    if (type === 'private') {
+      navigation.navigate('WebView', {
+        sourceUrl: 'https://xinxue.meirixinxue.com/home/private_policy',
+        title: '顽鸦隐私政策',
+        bgColor: 'black'
+      })
+    }
+    if (type === 'user') {
+      navigation.navigate('WebView', {
+        sourceUrl: 'https://xinxue.meirixinxue.com/home/user_agreement',
+        title: '顽鸦用户协议',
+        bgColor: 'black'
+      })
+    }
+  };
   return (
     <View>
       <ImageBackground
@@ -75,6 +91,11 @@ const SocialLogin = ({navigation, route}) => {
             wechatLogin();
           }}
         />
+
+        <Text style={styles.privateText}>
+          我已阅读并同意 <Text onPress={() => {goPages('user')}}>《用户协议》</Text> 和{' '}
+          <Text onPress={() => {goPages('private')}}>《隐私政策》</Text>{' '}
+        </Text>
       </ImageBackground>
     </View>
   );
@@ -104,6 +125,21 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
     letterSpacing: 1,
+  },
+
+  privateText: {
+    display: 'flex',
+    // flex: 1,
+    // flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
+    fontSize: 12,
+    color: 'white',
   },
 });
 
