@@ -1,79 +1,25 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {View, Text, Button} from 'react-native';
+import {Text, SafeAreaView} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {connect, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import GlobalNavigator from '@/components/GlobalNavigator';
 
-import Recommend from '../pages/home/Recommend';
-import PostDetail from '../pages/home/postDetail';
-import VideoDetail from '../pages/home/VideoDetail';
+import {routers, tabRouters} from './config'; //router 配置
 
-// 我的页面
-import Mine from '../pages/mine/mine';
-import Settings from '../pages/mine/settings';
-import About from '../pages/mine/settings/about';
-import AccountContent from '../pages/mine/settings/account-content';
-import EditAccountContent from '../pages/mine/settings/edit-account-content';
-import Feedback from '../pages/mine/settings/feedback';
-import AccountDetail from '../pages/accounts/account-detail';
-
-// 用户
-import AccountsIndex from '@/pages/accounts/accounts-index';
-
-// 场地
-import SpaceIndex from '@/pages/space/space-index';
-import SpaceDetail from '@/pages/space/space-detail';
-
-// 圈子
-import NodeIndex from '../pages/nodes/node-index';
-import NodeDetail from '../pages/nodes/node-detail';
-
-// 发布
-import NewTopic from '@/pages/home/newtopic';
-import TopicIndex from '@/pages/home/topicIndex';
-import MentionAccounts from '@/pages/home/MentionAccounts';
-
-// import NewTopic from '../pages/topics/NewTopic';
-
-// import TopicDetail from '../pages/topics/TopicDetail';
-import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
-import InviteDetail from '../pages/mine/invite-detail';
-
-// 文章
-import ArticleDetail from '../pages/articles/article-detail';
-// 实验室页面
-import LabIndex from '@/pages/labs/index';
-import LabTabIndex from '@/pages/labs/tabindex';
-import LabWebview from '@/pages/labs/webview';
-import LabStorageIndex from '@/pages/labs/storageindex';
-
-//登录页面
-import SocialLogin from '@/pages/sessions/social-login';
-import PhoneLogin from '@/pages/sessions/phone-login';
-import InviteLogin from '@/pages/sessions/invite-login';
-
-// 消息通知页面
-import NotifyIndex from '../pages/notify/notify-index';
-import CommentNotify from '../pages/notify/comment-notify';
-import PraiseNotify from '../pages/notify/praise-notify';
-import SystemNotify from '../pages/notify/system-notify';
-import FollowNotify from '../pages/notify/follow-notify';
-import MentionNotify from '../pages/notify/mention-notify';
-
-// 网页显示
-import WebView from '../pages/webview/webview';
+import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-function HomeTabList() {
+function HomeTabList(props) {
   return (
     <Tab.Navigator
-      initialRouteName="Node"
+      initialRouteName={'newtopic'}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName = 'logo-react';
@@ -83,7 +29,6 @@ function HomeTabList() {
           } else if (route.name === 'Fav') {
             iconName = focused ? 'ios-heart' : 'ios-heart-empty';
           }
-
           // You can return any component that you like here!
           return <Text />;
         },
@@ -94,7 +39,6 @@ function HomeTabList() {
         activeBackgroundColor: '#219bd9',
         inactiveBackgroundColor: '#d6f9ff',
         safeAreaInsets: {bottom: 0},
-        // style: {height: 70},
         tabStyle: {paddingBottom: 15},
         style: {
           backgroundColor: 'transparent',
@@ -106,18 +50,27 @@ function HomeTabList() {
           height: 50,
         },
       }}>
-      {/*<Tab.Screen name="Node" component={NewTopics} options={{title: '圈子'}} />*/}
-      {/*<Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />*/}
-      {/*<Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />*/}
-      <Tab.Screen
-        name="Recommend"
-        component={Recommend}
-        options={{
-          title: '推荐',
-        }}
-      />
-      <Tab.Screen name="Mine" component={Mine} options={{title: '我的'}} />
-      <Tab.Screen name="NotifyIndex" component={NotifyIndex} options={{title: '消息'}} />
+      {/* <Tab.Screen name="NewTopic" component={NewTopic} options={{title: '上传'}} /> */}
+      {tabRouters.map(route => {
+        const render = () => {
+          const Components = route.component;
+          return route.safeArea === false ? (
+            <Components {...props} />
+          ) : (
+            <SafeAreaView style={{flex: 1}}>
+              <Components {...props} />
+            </SafeAreaView>
+          );
+        };
+        return (
+          <Tab.Screen
+            key={route.name}
+            name={route.name}
+            component={render}
+            options={route.options}
+          />
+        );
+      })}
     </Tab.Navigator>
   );
 }
@@ -144,7 +97,11 @@ function AuthStackList() {
   );
 }
 
-function MainStackList() {
+function MainStackList(props) {
+  const Render = prop => {
+    return <HomeTabList {...prop} />;
+  };
+
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
@@ -158,138 +115,40 @@ function MainStackList() {
           fontWeight: 'bold',
         },
       })}>
-      <MainStack.Screen
-        name="Recommend"
-        component={HomeTabList}
-        options={{
-          headerShown: false,
-          title: '推荐',
-        }}
-      />
-      {/*用户相关*/}
-      <MainStack.Screen
-        name="AccountDetail"
-        component={AccountDetail}
-        options={{title: '用户详情'}}
-      />
-      <MainStack.Screen name="TopicIndex" component={TopicIndex} options={{title: '话题'}} />
-      <MainStack.Screen name="AccountsIndex" component={AccountsIndex} options={{title: '用户'}} />
-      <MainStack.Screen name="SpaceIndex" component={SpaceIndex} options={{title: '场地列表'}} />
-      <MainStack.Screen
-        name="MentionAccounts"
-        component={MentionAccounts}
-        options={{title: '顽友'}}
-      />
-      <MainStack.Screen name="PostDetail" component={PostDetail} options={{title: '话题详情'}} />
+      <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
 
-      <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
-      <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
-      <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
-      <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子11'}} />
-      <MainStack.Screen name="TopicDetail" component={PostDetail} options={{title: '帖子详情'}} />
-      <MainStack.Screen
-        name="ArticleDetail"
-        component={ArticleDetail}
-        options={{title: '文章详情'}}
-      />
+      {routers.map(route => {
+        const render = () => {
+          const Components = route.component;
+          return route.safeArea === false ? (
+            <Components {...props} />
+          ) : (
+            <SafeAreaView style={{flex: 1}}>
+              <Components {...props} />
+            </SafeAreaView>
+          );
+        };
 
-      <MainStack.Screen
-        name="PhoneLogin"
-        component={PhoneLogin}
-        options={{
-          headerStyle: {
-            backgroundColor: 'black',
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-            color: 'white',
-          },
-        }}
-      />
-      <MainStack.Screen
-        name="SocialLogin"
-        component={SocialLogin}
-        options={{
-          title: '微信登录',
-          headerShown: false,
-        }}
-      />
-      <MainStack.Screen
-        name="InviteLogin"
-        component={InviteLogin}
-        options={{title: '输入邀请码'}}
-      />
-
-      <MainStack.Screen
-        name="InviteDetail"
-        component={InviteDetail}
-        options={{title: '我的邀请'}}
-      />
-
-      <MainStack.Screen name="LabIndex" component={LabIndex} options={{title: '实验室主页'}} />
-      <MainStack.Screen
-        name="LabTabIndex"
-        component={LabTabIndex}
-        options={{title: '实验室标签页'}}
-      />
-      <MainStack.Screen name="LabWebview" component={LabWebview} options={{title: ''}} />
-      <MainStack.Screen name="LabStorageIndex" component={LabStorageIndex} options={{title: ''}} />
-      <MainStack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} options={{title: ''}} />
-
-      {/*  消息通知*/}
-      <MainStack.Screen
-        name="NotifyIndex"
-        component={NotifyIndex}
-        options={{title: '消息', headerShown: true}}
-      />
-      <MainStack.Screen
-        name="CommentNotify"
-        component={CommentNotify}
-        options={{title: '评论通知'}}
-      />
-      <MainStack.Screen
-        name="PraiseNotify"
-        component={PraiseNotify}
-        options={{title: '点赞通知'}}
-      />
-      <MainStack.Screen
-        name="SystemNotify"
-        component={SystemNotify}
-        options={{title: '系统通知'}}
-      />
-      <MainStack.Screen
-        name="FollowNotify"
-        component={FollowNotify}
-        options={{title: '关注通知'}}
-      />
-      <MainStack.Screen name="MentionNotify" component={MentionNotify} options={{title: '@我的'}} />
-      <MainStack.Screen name="WebView" component={WebView} options={{title: ''}} />
-
-      {/* 我的页面 */}
-      <MainStack.Screen name="Settings" component={Settings} options={{title: '设置'}} />
-      <MainStack.Screen name="Feedback" component={Feedback} options={{title: '反馈'}} />
-      <MainStack.Screen name="About" component={About} options={{title: '关于顽鸦'}} />
-      <MainStack.Screen
-        name="AccountContent"
-        component={AccountContent}
-        options={{title: '编辑信息'}}
-      />
-      <MainStack.Screen
-        name="EditAccountContent"
-        component={EditAccountContent}
-        options={{title: '编辑信息'}}
-      />
+        return (
+          <MainStack.Screen
+            key={route.name}
+            name={route.name}
+            component={render}
+            options={route.options}
+          />
+        );
+      })}
     </MainStack.Navigator>
   );
 }
 
-export default function Navigation() {
+const Navigation = props => {
   const login = useSelector(state => state.login);
-  // console.log('login', login);
   return (
     <NavigationContainer>
-      {!login.auth_token ? AuthStackList() : MainStackList()}
-      {/*{MainStackList()}*/}
+      {!login.auth_token ? AuthStackList() : MainStackList(props)}
     </NavigationContainer>
   );
-}
+};
+
+export default GlobalNavigator(Navigation);

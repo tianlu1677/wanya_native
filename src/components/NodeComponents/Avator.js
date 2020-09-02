@@ -1,8 +1,7 @@
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
-import {personalImg, brandlImg} from '@/utils/default-image';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Avator = props => {
   const navigation = useNavigation();
@@ -22,7 +21,7 @@ const Avator = props => {
 
     if (props.account && props.account.id) {
       console.log('this.props', props.account.id);
-      navigation.navigate('AccountDetail', { accountId: props.account.id })
+      navigation.navigate('AccountDetail', {accountId: props.account.id});
     }
   }
 
@@ -31,12 +30,15 @@ const Avator = props => {
       <Image
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
-
       />
       {props.account && props.account.settled_type && props.account.settled_type !== 'single' && (
         <Image
           style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
-          source={{uri: props.account.settled_type === 'personal' ? personalImg : brandlImg}}
+          source={
+            props.account.settled_type === 'personal'
+              ? require('@/assets/images/personal.png')
+              : require('@/assets/images/brand.png')
+          }
         />
       )}
     </TouchableOpacity>

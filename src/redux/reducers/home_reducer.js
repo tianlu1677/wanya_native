@@ -8,7 +8,6 @@ const defaultState = {
 };
 
 export const homeReducer = (state = defaultState, action) => {
-  console.log(action);
   switch (action.type) {
     case SAVE_NEW_TOPIC:
       return {

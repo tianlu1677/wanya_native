@@ -94,6 +94,7 @@ const NewTopic = props => {
 
   useEffect(() => {
     console.log(videoSource);
+    console.log(props);
   }, [videoSource]);
 
   useEffect(() => {
@@ -170,9 +171,9 @@ const NewTopic = props => {
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
       </View>
-      {/*
+
       <Text
-        onPress={onSubmit}
+        onPress={() => props.showModal()}
         style={{
           height: 50,
           width: 100,
@@ -181,7 +182,7 @@ const NewTopic = props => {
           lineHeight: 50,
         }}>
         发布
-      </Text> */}
+      </Text>
     </View>
   );
 };
