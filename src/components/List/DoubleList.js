@@ -76,7 +76,7 @@ const DoubleList = props => {
 
 // List 属性继承scrollList 默认可下拉加载刷新
 DoubleList.propTypes = {
-  request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
+  // request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
 };
 
 export default DoubleList;

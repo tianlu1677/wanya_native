@@ -7,7 +7,9 @@ import Toast from 'react-native-root-toast';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
+import {getUploadFileToken, saveToAsset} from "@/api/settings_api"
 import {createTopic} from '@/api/topic_api';
+import Upload from 'react-native-background-upload';
 import Modal from 'react-native-modal';
 
 const loadingImg =
@@ -41,10 +43,60 @@ const NewTopic = props => {
   };
 
   const onVideoPicker = async () => {
+    const token_res = await getUploadFileToken({ftype: 'mp4'})
+    let upload_token = token_res.token
     props.videoPick({}, (err, res) => {
+      console.log('res', res)
       if (err) {
         return;
       }
+      let filePath = res[0].uri
+      let defaultOptions = {
+        url: token_res.qiniu_region,
+        path: filePath,
+        method: 'POST',
+        type: 'multipart',
+        field: 'file',
+        parameters: {
+          token: upload_token, key: token_res.file_key,
+          name: 'file'
+        },
+        maxRetries: 2, // set retry count (Android only). Default 2
+        headers: {
+          'content-type': 'application/octet-stream',
+        },
+
+        // Below are options only supported on Android
+        notification: {
+          enabled: true,
+        },
+        useUtf8Charset: true,
+      };
+      let uploadOptions = {...defaultOptions};
+
+      console.log('uploadOptions', uploadOptions);
+      Upload.startUpload(uploadOptions)
+        .then(uploadId => {
+          console.log('Upload started');
+          Upload.addListener('progress', uploadId, data => {
+            // console.log(`Progress: ${data.progress}%`);
+          });
+          Upload.addListener('error', uploadId, data => {
+            console.log(`Error: ${data.error}%`);
+          });
+          Upload.addListener('cancelled', uploadId, data => {
+            console.log('Cancelled!');
+          });
+          Upload.addListener('completed', uploadId, data => {
+            // data includes responseCode: number and responseBody: Object
+            console.log('Completed!');
+            console.log(data);
+          });
+        })
+        .catch(err => {
+          console.log('Upload error!', err);
+        });
+
       console.log(res[0]);
 
       setVideoSource(res[0]);
@@ -103,7 +155,7 @@ const NewTopic = props => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: null,
-      headerLeft: () => <Button onPress={() => navigation.back()} title="关闭" color="#000" />,
+      headerLeft: () => <Button onPress={() => navigation.goBack()} title="关闭" color="#000" />,
       headerRight: () => <Button onPress={onSubmit} title="发布" color="#000" />,
     });
   }, [navigation]);
