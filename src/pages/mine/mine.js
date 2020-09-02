@@ -73,6 +73,12 @@ class Mine extends Component {
             this.props.navigation.navigate('HashtagDetail', {hashtag: '滑板'});
           }}
         />
+        <Button
+          title={'去场地详情页'}
+          onPress={() => {
+            this.props.navigation.navigate('SpaceDetail', {spaceId: 2});
+          }}
+        />
 
         <Button
           title={'去实验室页面'}

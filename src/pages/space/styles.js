@@ -38,7 +38,7 @@ export const SpaceDetailStyles = StyleSheet.create({
     bottom: 0,
     top: 0,
     zIndex: -1,
-    backgroundColor: 'green',
+    backgroundColor: 'white',
   },
   info: {
     flexDirection: 'row',

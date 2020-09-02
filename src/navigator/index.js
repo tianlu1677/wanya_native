@@ -178,6 +178,7 @@ function MainStackList() {
       <MainStack.Screen name="TopicIndex" component={TopicIndex} options={{title: '话题'}} />
       <MainStack.Screen name="AccountsIndex" component={AccountsIndex} options={{title: '用户'}} />
       <MainStack.Screen name="SpaceIndex" component={SpaceIndex} options={{title: '场地列表'}} />
+      <MainStack.Screen name="SpaceDetail" component={SpaceDetail} options={{title: '场地列表'}} />
       <MainStack.Screen
         name="MentionAccounts"
         component={MentionAccounts}
