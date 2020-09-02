@@ -67,9 +67,7 @@ const MediasPicker = WrapperComponent => {
     };
 
     return (
-      <View>
-        <WrapperComponent {...props} imagePick={imagePick} videoPick={videoPick} upload={upload} />
-      </View>
+      <WrapperComponent {...props} imagePick={imagePick} videoPick={videoPick} upload={upload} />
     );
   };
 };

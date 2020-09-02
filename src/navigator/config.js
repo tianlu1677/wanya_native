@@ -5,7 +5,7 @@ import VideoDetail from '@/pages/home/VideoDetail';
 import ArticleDetail from '@/pages/articles/article-detail';
 
 // 发布
-import NewTopic from '@/pages/home/newtopic';
+import NewTopic from '@/pages/home/Newtopic';
 import TopicIndex from '@/pages/home/topicIndex';
 import MentionAccounts from '@/pages/home/MentionAccounts';
 
@@ -52,6 +52,11 @@ import InviteLogin from '@/pages/sessions/invite-login';
 import WebView from '@/pages/webview/webview';
 
 export const tabRouters = [
+  // {
+  //   name: 'NewTopic',
+  //   component: NewTopic,
+  //   options: {title: '发布'},
+  // },
   {
     name: 'Recommend',
     component: Recommend,

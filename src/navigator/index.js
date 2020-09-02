@@ -5,7 +5,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSelector} from 'react-redux';
-import GlobalNavigator from '@/components/GlobalNavigator';
 
 import {routers, tabRouters} from './config'; //router 配置
 
@@ -16,10 +15,10 @@ const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
-function HomeTabList(props) {
+function HomeTabList() {
   return (
     <Tab.Navigator
-      initialRouteName={'newtopic'}
+      initialRouteName={'NewTopic'}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName = 'logo-react';
@@ -50,9 +49,8 @@ function HomeTabList(props) {
           height: 50,
         },
       }}>
-      {/* <Tab.Screen name="NewTopic" component={NewTopic} options={{title: '上传'}} /> */}
       {tabRouters.map(route => {
-        const render = () => {
+        const render = props => {
           const Components = route.component;
           return route.safeArea === false ? (
             <Components {...props} />
@@ -97,9 +95,9 @@ function AuthStackList() {
   );
 }
 
-function MainStackList(props) {
-  const Render = prop => {
-    return <HomeTabList {...prop} />;
+function MainStackList() {
+  const Render = props => {
+    return <HomeTabList {...props} />;
   };
 
   return (
@@ -115,10 +113,9 @@ function MainStackList(props) {
           fontWeight: 'bold',
         },
       })}>
-      <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
-
+      <MainStack.Screen name="Newtopic" component={Render} options={{headerShown: false}} />
       {routers.map(route => {
-        const render = () => {
+        const render = props => {
           const Components = route.component;
           return route.safeArea === false ? (
             <Components {...props} />
@@ -142,13 +139,13 @@ function MainStackList(props) {
   );
 }
 
-const Navigation = props => {
+const Navigation = () => {
   const login = useSelector(state => state.login);
   return (
     <NavigationContainer>
-      {!login.auth_token ? AuthStackList() : MainStackList(props)}
+      {!login.auth_token ? AuthStackList() : MainStackList()}
     </NavigationContainer>
   );
 };
 
-export default GlobalNavigator(Navigation);
+export default Navigation;

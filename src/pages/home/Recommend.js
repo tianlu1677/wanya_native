@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabViewList from '@/components/TabView';
 import PostList from '@/components/List/PostList';
 import DoubleList from '@/components/List/DoubleList';
 
-const Recommend = () => {
+const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('follow');
 
   const RecommendList = () => {

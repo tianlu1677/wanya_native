@@ -8,19 +8,16 @@ import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
-import Modal from 'react-native-modal';
-
-const loadingImg =
-  'http://file.meirixinxue.com/assets/2020/76272587-9bd6-48e9-b182-692b9ca73e89.gif';
+import {ModalLoading} from '@/components/NodeComponents';
 
 const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
+  const [loading, setLoading] = useState(false);
   const [imageSource, setImageSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
   const [videoSource, setVideoSource] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(true);
 
   const onChangeContent = text => {
     setContent(text);
@@ -54,6 +51,7 @@ const NewTopic = props => {
   const onSubmit = async () => {
     let mediasImg = [];
 
+    setLoading(true);
     if (imageSource.length > 0) {
       await Promise.all(
         imageSource.map(async file => {
@@ -81,21 +79,13 @@ const NewTopic = props => {
       space_id: savetopic.node ? savetopic.space.id : '',
     };
     const res = await createTopic(data);
+    setLoading(false);
     console.log(res);
   };
 
   useEffect(() => {
     console.log(props);
-
-    return () => {
-      // cleanup
-    };
   }, []);
-
-  useEffect(() => {
-    console.log(videoSource);
-    console.log(props);
-  }, [videoSource]);
 
   useEffect(() => {
     setContent(savetopic.plan_content);
@@ -111,6 +101,8 @@ const NewTopic = props => {
 
   return (
     <View style={styles.wrapper}>
+      {loading && <ModalLoading />}
+
       <View style={styles.mediaCon}>
         {/* picture */}
         {!videoSource && (
@@ -171,18 +163,6 @@ const NewTopic = props => {
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
       </View>
-
-      <Text
-        onPress={() => props.showModal()}
-        style={{
-          height: 50,
-          width: 100,
-          backgroundColor: 'pink',
-          textAlign: 'center',
-          lineHeight: 50,
-        }}>
-        发布
-      </Text>
     </View>
   );
 };
@@ -192,7 +172,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     backgroundColor: '#fff',
-    // flex: 1,
+    flex: 1,
     paddingTop: 20,
   },
   mediaCon: {

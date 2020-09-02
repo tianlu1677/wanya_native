@@ -4,7 +4,8 @@ import JoinAccountsNode from './JoinAccounts';
 import SearchNode from './Search';
 import BadgeMessageNode from './BadgeMessage';
 import {JoinBtn} from './Button';
-import CityListNode from './CityList'
+import CityListNode from './CityList';
+import {Loading} from './Modal';
 
 export const PlayScore = PlayScoreNode;
 export const Avator = AvatorNode;
@@ -13,3 +14,4 @@ export const Search = SearchNode;
 export const BadgeMessage = BadgeMessageNode;
 export const JoinButton = JoinBtn;
 export const CityList = CityListNode;
+export const ModalLoading = Loading;
