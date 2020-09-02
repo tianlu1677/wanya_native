@@ -2,9 +2,11 @@ import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View, Image, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
+import TabViewList from '@/components/TabView';
 
 const HashtagDetail = ({navigation, route}) => {
   const [hashtag, setHashtag] = useState('');
+  const [currentKey, setCurrentKey] = useState('published_order');
   const dispatch = useDispatch();
   const rightLogo =
     'http://file.meirixinxue.com/assets/2020/77963058-7b42-46ea-bc6b-f969e81bbdfd.png';
@@ -28,6 +30,25 @@ const HashtagDetail = ({navigation, route}) => {
         <RightCoverImage source={{uri: rightLogo}} />
         <HashtagText># {hashtag}</HashtagText>
       </HeadView>
+
+
+      <TabViewList
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'published_order',
+            title: '最新',
+            component: (<View>1最新</View>),
+          },
+          {
+            key: 'hot_order',
+            title: '帖子',
+            component: (<View>热门</View>),
+          },
+
+        ]}
+        onChange={key => setCurrentKey(key)}
+      />
     </SafeAreaView>
   );
 };

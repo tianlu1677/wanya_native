@@ -35,8 +35,9 @@ axios.interceptors.response.use(
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    console.log('response error', error);
-    switch (error.code) {
+    // console.log('response error', error);
+    console.log('errrocode', error.response.status)
+    switch (error.response.status) {
       case 200:
         // storeData('lock_user', false);
         break;
@@ -58,17 +59,27 @@ axios.interceptors.response.use(
         console.log('error', error);
         break;
       case 401:
-        Toast.show('未登录')
-        // console.log('401, 未登录')
+        Toast.show('请重新登录', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          backgroundColor: 'white',
+          textColor: 'black',
+          delay: 0,
+        });
+        console.log('401, 未登录')
+
         // if (error.response.data.error === 'Your account is locked.') {
         //   storeData('lock_user', true);
         // }
+        Promise.resolve(error);
         break;
       default:
-        break;
-    }
+        return Promise.reject(error);
 
-    return Promise.reject(error);
+    }
   }
 );
 
