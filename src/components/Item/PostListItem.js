@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -55,11 +55,21 @@ export const Header = props => {
 const {BottomView, BottomContentView, BottomContentNum} = BottomStyle;
 
 const Bottom = props => {
+  const [praise, setPraise] = useState(false)
+
+  useEffect(() => {
+    setPraise(props.praise)
+  }, [props.praise])
+
+  const onPraise = (status) => {
+    setPraise(status)
+  }
+
   const {data} = props;
   return (
     <BottomView>
-      <BottomContentView>
-        <IconFont name="praise-solid" size={20} color={'#bdbdbd'} />
+      <BottomContentView onPress={() => {onPraise(!praise)}}>
+        <IconFont name={ praise ? "praise-solid" : "praise" } size={20} color={'#bdbdbd'} />
         <BottomContentNum>{data.praises_count || ''}</BottomContentNum>
       </BottomContentView>
       <BottomContentView>
@@ -188,6 +198,7 @@ export const TopicImageCenterContent = props => {
 };
 
 export const BaseTopic = props => {
+
   const {data} = props;
   const navigation = useNavigation();
   const goTopicDetail = () => {

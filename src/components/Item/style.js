@@ -1,4 +1,4 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 
 export const HeaderStyle = {
@@ -46,7 +46,7 @@ export const BottomStyle = {
     height: 54px;
     align-items: center;
   `,
-  BottomContentView: styled(View)`
+  BottomContentView: styled(TouchableOpacity)`
     flex-direction: row;
     align-items: center;
   `,

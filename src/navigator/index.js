@@ -37,7 +37,7 @@ import MentionAccounts from '@/pages/home/MentionAccounts';
 
 import NewTopics from '../pages/topics/NewTopic';
 
-import TopicDetail from '../pages/topics/TopicDetail';
+// import TopicDetail from '../pages/topics/TopicDetail';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
 import InviteDetail from '../pages/mine/invite-detail';
 
@@ -185,7 +185,7 @@ function MainStackList() {
       <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
       <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
       <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子11'}} />
-      <MainStack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />
+      <MainStack.Screen name="TopicDetail" component={PostDetail} options={{title: '帖子详情'}} />
       <MainStack.Screen
         name="ArticleDetail"
         component={ArticleDetail}

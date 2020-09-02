@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import Loading from '@/components/Loading';
 import {Avator} from '@/components/NodeComponents';
@@ -9,18 +9,23 @@ import {PostDetailStyle, CommentStyle, CommentActionStyle} from './styles';
 import Video from 'react-native-video';
 
 const TopicContent = props => {
-  const {medias, video_content, video_content_m3u8} = props.data;
+  const {medias, video_content, video_content_m3u8, content_style} = props.data;
+
+  // console.log('medias', medias)
+
   return (
     <View>
-      {medias.length > 0 && <Image style={{height: 300}} source={{uri: medias[0]}} />}
+      {
+          content_style === 'img' && <Image source={{uri: medias[0]}} style={{height: 300}} />
+      }
 
-      {video_content && (
+      {content_style === 'video' && (
         <Video
           style={{height: 300}}
           source={{uri: video_content_m3u8}}
           posterResizeMode={'center'}
-          onBuffer={this.onBuffer}
-          onError={this.videoError}
+          // onBuffer={this.onBuffer}
+          // onError={this.videoError}
           controls
           reportBandwidth
           repeat
@@ -75,7 +80,8 @@ const CommentList = props => {
   );
 };
 
-const PostDetail = () => {
+const PostDetail = ({navigation, route}) => {
+  const [topicId, setTopicId] = useState('');
   const [detail, setDetail] = useState(null);
   const [commentList, setCommentList] = useState([]);
   const [actionVisible, setActionVisible] = useState(false);
@@ -88,8 +94,19 @@ const PostDetail = () => {
     placeholder: '写点评论吧',
   });
 
+  useEffect(() => {
+    setTopicId(route.params.topicId)
+  }, [])
+
+  useLayoutEffect(() => {
+    // setTopicId(route.params.topicId)
+    navigation.setOptions({
+      headerShown: true,
+    });
+  }, [navigation]);
+
   const loadData = async () => {
-    const res = await getTopic(897);
+    const res = await getTopic(topicId);
     setDetail(res.data.topic);
   };
 
@@ -134,7 +151,7 @@ const PostDetail = () => {
   useEffect(() => {
     loadData();
     loadComments();
-  }, []);
+  }, [topicId]);
 
   return detail ? (
     <DetailWrapper>
