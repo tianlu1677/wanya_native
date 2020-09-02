@@ -36,8 +36,8 @@ axios.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     // console.log('response error', error);
-    console.log('errrocode', error.response.status)
-    switch (error.response.status) {
+    // console.log('errrocode', error)
+    switch (error && error.response && error.response.status) {
       case 200:
         // storeData('lock_user', false);
         break;
@@ -74,12 +74,13 @@ axios.interceptors.response.use(
         // if (error.response.data.error === 'Your account is locked.') {
         //   storeData('lock_user', true);
         // }
-        Promise.resolve(error);
+        // Promise.resolve(error);
         break;
       default:
         return Promise.reject(error);
 
     }
+    return Promise.reject(error);
   }
 );
 
@@ -87,12 +88,13 @@ export default async function requestHttp(options, url = null) {
   let data = {};
   let params = {};
   const auth_token = await Helper.getData('auth_token');
-  // console.log('requestHttp token', auth_token)
-  if (options.method === 'GET') {
+  // console.log('options', options)
+  if (options.method !== 'POST') {
     params = {...options.data, ...options.params};
   } else {
     data = options.data;
   }
+
   let contentType = 'application/json';
   contentType = options.contentType || contentType;
   url = url || options.url;
@@ -109,5 +111,7 @@ export default async function requestHttp(options, url = null) {
   if (options.method !== 'GET') {
     request_options = {...request_options, data: data};
   }
+
+  // console.log('request_options request_options', request_options)
   return axios(request_options);
 }

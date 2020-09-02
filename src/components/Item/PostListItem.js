@@ -142,7 +142,7 @@ export const BaseTopicContent = props => {
 
 // 帖子的图片样式
 export const TopicVideoCenterContent = props => {
-  console.log('props', props);
+  // console.log('props', props);
   // const {baseTopic} = props;
   const {id, single_cover} = props.data;
   const videoAttr = calculateImg(single_cover.width, single_cover.height);
@@ -183,7 +183,7 @@ export const TopicImageCenterContent = props => {
             {medias.map((media, media_index) => {
               return (
                 <Image
-                  src={media}
+                  source={{uri: media}}
                   mode="widthFix"
                   key={media_index}
                   style={{width: 167, height: 167, marginRight: 5, borderRadius: 2}}
