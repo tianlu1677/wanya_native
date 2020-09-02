@@ -145,6 +145,9 @@ export const TopicVideoCenterContent = props => {
   // console.log('props', props);
   // const {baseTopic} = props;
   const {id, single_cover} = props.data;
+  if(!single_cover || !single_cover.width) {
+    return <View />
+  }
   const videoAttr = calculateImg(single_cover.width, single_cover.height);
   return (
     <View>
@@ -159,6 +162,9 @@ export const TopicVideoCenterContent = props => {
 
 export const TopicImageCenterContent = props => {
   const {single_cover, medias} = props.data;
+  if (medias.length === 0 || !single_cover){
+    return <View />
+  }
   const imgStyle = medias.length === 1 ? 'single' : 'multi';
   const imgAttr =
     medias.length === 1
@@ -167,7 +173,6 @@ export const TopicImageCenterContent = props => {
           width: 500,
           height: 300,
         };
-
   return (
     <View>
       {imgStyle === 'single' && (
