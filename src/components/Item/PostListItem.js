@@ -1,12 +1,5 @@
-<<<<<<< HEAD
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-=======
-import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableWithoutFeedback} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-
->>>>>>> feature/topic
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import {HeaderStyle, BottomStyle, BaseTopicStyle, BaseArticleStyle} from '@/components/Item/style';
@@ -62,21 +55,24 @@ export const Header = props => {
 const {BottomView, BottomContentView, BottomContentNum} = BottomStyle;
 
 const Bottom = props => {
-  const [praise, setPraise] = useState(false)
+  const [praise, setPraise] = useState(false);
 
   useEffect(() => {
-    setPraise(props.praise)
-  }, [props.praise])
+    setPraise(props.praise);
+  }, [props.praise]);
 
-  const onPraise = (status) => {
-    setPraise(status)
-  }
+  const onPraise = status => {
+    setPraise(status);
+  };
 
   const {data} = props;
   return (
     <BottomView>
-      <BottomContentView onPress={() => {onPraise(!praise)}}>
-        <IconFont name={ praise ? "praise-solid" : "praise" } size={20} color={'#bdbdbd'} />
+      <BottomContentView
+        onPress={() => {
+          onPraise(!praise);
+        }}>
+        <IconFont name={praise ? 'praise-solid' : 'praise'} size={20} color={'#bdbdbd'} />
         <BottomContentNum>{data.praises_count || ''}</BottomContentNum>
       </BottomContentView>
       <BottomContentView>
@@ -89,7 +85,6 @@ const Bottom = props => {
 };
 
 const {MultiLineText, VideoPlayImage, HashtagText} = BaseTopicStyle;
-
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -147,7 +142,7 @@ export const BaseTopicContent = props => {
 
 // 帖子的图片样式
 export const TopicVideoCenterContent = props => {
-  console.log('props', props)
+  console.log('props', props);
   // const {baseTopic} = props;
   const {id, single_cover} = props.data;
   const videoAttr = calculateImg(single_cover.width, single_cover.height);
@@ -155,11 +150,9 @@ export const TopicVideoCenterContent = props => {
     <View>
       <Image
         source={{uri: single_cover.link_url}}
-        style={{width: videoAttr.width/2, height: videoAttr.height/2}}
+        style={{width: videoAttr.width / 2, height: videoAttr.height / 2}}
       />
-      <VideoPlayImage
-        source={require('@/assets/images/video-play.png')}
-      />
+      <VideoPlayImage source={require('@/assets/images/video-play.png')} />
     </View>
   );
 };
@@ -180,7 +173,7 @@ export const TopicImageCenterContent = props => {
       {imgStyle === 'single' && (
         <Image
           source={{uri: single_cover.cover_url}}
-          style={{height: imgAttr.height/2.0, width: imgAttr.width/2.0}}
+          style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
         />
       )}
 
@@ -205,55 +198,25 @@ export const TopicImageCenterContent = props => {
 };
 
 export const BaseTopic = props => {
-<<<<<<< HEAD
-
   const {data} = props;
   const navigation = useNavigation();
   const goTopicDetail = () => {
-    navigation.navigate('TopicDetail', {topicId: data.id, from: 'list'})
-  }
+    navigation.navigate('TopicDetail', {topicId: data.id, from: 'list'});
+  };
   return (
-    <TouchableOpacity style={styles.postSlide} onPress={() => {goTopicDetail()}}>
+    <TouchableOpacity
+      style={styles.postSlide}
+      onPress={() => {
+        goTopicDetail();
+      }}>
       <Header data={data} />
       <View style={{marginTop: 13, marginBottom: 13}}>
-        { data.content_style === 'img' && <TopicImageCenterContent data={data}/> }
-        { data.content_style === 'video' && <TopicVideoCenterContent data={data} /> }
+        {data.content_style === 'img' && <TopicImageCenterContent data={data} />}
+        {data.content_style === 'video' && <TopicVideoCenterContent data={data} />}
       </View>
       <BaseTopicContent data={data} />
       <Bottom data={data} />
     </TouchableOpacity>
-=======
-  const navigation = useNavigation();
-  const {data} = props;
-  // console.log(data);
-  return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate('TopicIndex', {id: data.id})}>
-      <View style={styles.postSlide}>
-        <Header data={data} />
-        <View style={{marginTop: 13, marginBottom: 13}}>
-          {data.content_style === 'img' && (
-            <View>
-              {data.medias.map((v, index) => (
-                <Image
-                  key={index}
-                  source={{uri: v}}
-                  style={{width: 167, height: 167, marginRight: 5}}
-                />
-              ))}
-            </View>
-          )}
-          {data.content_style === 'video' && (
-            <View style={{width: 167, height: 167}}>
-              <Image source={{uri: data.single_cover.link_url}} style={{width: 167, height: 167}} />
-              <VideoPlayImage source={require('@/assets/images/video-play.png')} />
-            </View>
-          )}
-        </View>
-        <BaseTopicContent data={data} />
-        <Bottom data={data} />
-      </View>
-    </TouchableWithoutFeedback>
->>>>>>> feature/topic
   );
 };
 

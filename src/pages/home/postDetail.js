@@ -16,9 +16,7 @@ const TopicContent = props => {
 
   return (
     <View>
-      {
-          content_style === 'img' && <Image source={{uri: medias[0]}} style={{height: 300}} />
-      }
+      {content_style === 'img' && <Image source={{uri: medias[0]}} style={{height: 300}} />}
 
       {content_style === 'video' && (
         <Video
@@ -81,13 +79,8 @@ const CommentList = props => {
   );
 };
 
-<<<<<<< HEAD
 const PostDetail = ({navigation, route}) => {
   const [topicId, setTopicId] = useState('');
-=======
-const PostDetail = () => {
-  const route = useRoute();
->>>>>>> feature/topic
   const [detail, setDetail] = useState(null);
   const [commentList, setCommentList] = useState([]);
   const [actionVisible, setActionVisible] = useState(false);
@@ -103,8 +96,8 @@ const PostDetail = () => {
   });
 
   useEffect(() => {
-    setTopicId(route.params.topicId)
-  }, [])
+    setTopicId(route.params.topicId);
+  }, []);
 
   useLayoutEffect(() => {
     // setTopicId(route.params.topicId)
@@ -114,11 +107,7 @@ const PostDetail = () => {
   }, [navigation]);
 
   const loadData = async () => {
-<<<<<<< HEAD
     const res = await getTopic(topicId);
-=======
-    const res = await getTopic(891);
->>>>>>> feature/topic
     setDetail(res.data.topic);
   };
 
