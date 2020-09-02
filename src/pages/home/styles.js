@@ -5,8 +5,6 @@ export const PostDetailStyle = {
   DetailWrapper: styled(View)`
     flex: 1;
     background-color: #fff;
-    position: relative;
-    padding-bottom: 70px;
   `,
   SpaceWrapper: styled(View)`
     flex-direction: row;
@@ -89,21 +87,21 @@ export const CommentStyle = {
   `,
 };
 
+// padding-bottom: 11px;
+// padding-top: 11px;
+// padding-left: 14px;
+// padding-right: 14px;
+
 export const CommentActionStyle = {
   ActionWrapper: styled(View)`
-    flex: 1;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    height: 57px;
     z-index: 2;
-    padding-bottom: 11px;
-    padding-top: 11px;
-    padding-left: 14px;
-    padding-right: 14px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border-top-color: #ebebeb;
+    border-top-width: 1px;
+    background-color: pink;
   `,
   ActionText: styled(Text)`
     width: 174px;

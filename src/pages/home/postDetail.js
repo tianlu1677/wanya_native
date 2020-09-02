@@ -1,5 +1,14 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  KeyboardAwareScrollView,
+  Platform,
+} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import Loading from '@/components/Loading';
 import {Avator} from '@/components/NodeComponents';
@@ -135,6 +144,8 @@ const PostDetail = ({navigation, route}) => {
         commentable_id: detail.id,
         content: '',
       });
+      console.log(23232);
+
       setActionVisible(true);
     }
     setChangeValue(null);
@@ -155,61 +166,62 @@ const PostDetail = ({navigation, route}) => {
   }, [topicId]);
 
   return detail ? (
-    <DetailWrapper>
-      <ScrollView>
-        <TopicContent data={detail} />
-        <SpaceWrapper>
-          <IconFont name="changdiweizhi" size={16} color={'#45ea6a'} />
-          <SpaceText>中国</SpaceText>
-        </SpaceWrapper>
-        <TagsWrapper>
-          {['滑板', '基础', '长伴'].map(v => (
-            <TagsText key={v}>{v}</TagsText>
-          ))}
-        </TagsWrapper>
-        <FromWrapper>
-          <View>
-            <FromTitle>来自{detail.node.name}</FromTitle>
-            <Text>
-              {detail.node.topics_count}篇帖子 · {detail.node.accounts_count}位
-              {detail.node.nickname || '圈友'}
-            </Text>
-          </View>
-          <FromImage source={{uri: detail.node.cover_url}} />
-        </FromWrapper>
-        {/* 评论列表 */}
-        <CommentList list={commentList} onReplyComment={onReplyComment} />
-      </ScrollView>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+      <DetailWrapper>
+        <ScrollView style={{flex: 1}}>
+          <TopicContent data={detail} />
+          <SpaceWrapper>
+            <IconFont name="changdiweizhi" size={16} color={'#45ea6a'} />
+            <SpaceText>中国</SpaceText>
+          </SpaceWrapper>
+          <TagsWrapper>
+            {['滑板', '基础', '长伴'].map(v => (
+              <TagsText key={v}>{v}</TagsText>
+            ))}
+          </TagsWrapper>
+          <FromWrapper>
+            <View>
+              <FromTitle>来自{detail.node.name}</FromTitle>
+              <Text>
+                {detail.node.topics_count}篇帖子 · {detail.node.accounts_count}位
+                {detail.node.nickname || '圈友'}
+              </Text>
+            </View>
+            <FromImage source={{uri: detail.node.cover_url}} />
+          </FromWrapper>
+          <CommentList list={commentList} onReplyComment={onReplyComment} />
+        </ScrollView>
+        {/* 评论按钮 */}
 
-      {/* 评论按钮 */}
-      <ActionWrapper>
-        {!actionVisible && (
-          <>
-            <ActionText onPress={onReplyComment}>快来评论吧</ActionText>
-            <ActionBtn>
-              <IconFont name="xihuan" size={16} />
-              <Text style={{marginLeft: 5}}>{detail.praises_count}</Text>
-            </ActionBtn>
-            <ActionBtn>
-              <IconFont name="xihuan" size={16} />
-              <Text style={{marginLeft: 5}}>{detail.stars_count}</Text>
-            </ActionBtn>
-          </>
-        )}
-        {actionVisible && (
-          <>
-            <ActionInput
-              placeholder={comment.placeholder}
-              onChangeText={text => setChangeValue(text)}
-              value={value}
-              autoFocus
-              onBlur={() => setActionVisible(false)}
-            />
-            <ActionSendBtn onPress={publishComment}>发送</ActionSendBtn>
-          </>
-        )}
-      </ActionWrapper>
-    </DetailWrapper>
+        <ActionWrapper>
+          {!actionVisible && (
+            <>
+              <ActionText onPress={onReplyComment}>快来评论吧</ActionText>
+              <ActionBtn>
+                <IconFont name="xihuan" size={16} />
+                <Text style={{marginLeft: 5}}>{detail.praises_count}</Text>
+              </ActionBtn>
+              <ActionBtn>
+                <IconFont name="xihuan" size={16} />
+                <Text style={{marginLeft: 5}}>{detail.stars_count}</Text>
+              </ActionBtn>
+            </>
+          )}
+          {actionVisible && (
+            <>
+              <ActionInput
+                placeholder={comment.placeholder}
+                onChangeText={text => setChangeValue(text)}
+                value={value}
+                autoFocus
+                onBlur={() => setActionVisible(false)}
+              />
+              <ActionSendBtn onPress={publishComment}>发送</ActionSendBtn>
+            </>
+          )}
+        </ActionWrapper>
+      </DetailWrapper>
+    </KeyboardAvoidingView>
   ) : (
     <Loading />
   );
