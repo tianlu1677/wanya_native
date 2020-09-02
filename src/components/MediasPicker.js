@@ -1,44 +1,35 @@
 import React from 'react';
+import {View} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Upload from 'react-native-background-upload';
 import Helper from '@/utils/helper';
+import SyanImagePicker from 'react-native-syan-image-picker';
 
 const baseUrl =
   process.env.NODE_ENV === 'development' ? 'https://xinxue.meirixinxue.com' : 'https://xinxue.com';
 
 const MediasPicker = WrapperComponent => {
   return props => {
-    const options = {
-      title: '请选择',
-      cancelButtonTitle: '取消',
-      takePhotoButtonTitle: '拍照',
-      chooseFromLibraryButtonTitle: '从手机相册选择',
-      storageOptions: {
-        skipBackup: false,
-        path: 'images',
-      },
-      quality: 1,
-    };
-
-    const upload = async image => {
+    const upload = async file => {
       const token = await Helper.getData('auth_token');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
         maxRetries: 1,
-        type: 'multipart',
+        type: file.uploadType,
         field: 'file',
         headers: {
           'content-type': 'application/octet-stream',
           token: token,
         },
-        path: image.uri,
+        path: file.uri,
       };
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {
               // store proress
+              console.log(data.progress);
             });
             Upload.addListener('error', uploadId, data => {
               console.log(`Error: ${data.error}%`);
@@ -48,6 +39,8 @@ const MediasPicker = WrapperComponent => {
               console.log('Cancelled!');
             });
             Upload.addListener('completed', uploadId, data => {
+              console.log(data);
+
               resolve(JSON.parse(data.responseBody));
             });
           })
@@ -58,22 +51,26 @@ const MediasPicker = WrapperComponent => {
       });
     };
 
-    const imagePick = callback => {
-      // ImagePicker.showImagePicker(options, response => {
-      //   // loading
-      //   // let res = await upload(response);
-      //   // console.log(res);
-      //   // cancel
-      //   // console.log(res);
-      //   return response;
-      // });
-
-      // return new Promise((resolve, reject) => {
-      ImagePicker.showImagePicker(options, callback);
-      // });
+    const imagePick = (option = {}, callback) => {
+      const options = {
+        imageCount: 1,
+        isCamera: true,
+        isRecordSelected: true,
+        ...option,
+      };
+      SyanImagePicker.showImagePicker(options, callback);
     };
 
-    return <WrapperComponent {...props} imagePick={imagePick} />;
+    const videoPick = (option = {}, callback) => {
+      const options = {...option};
+      SyanImagePicker.openVideoPicker(options, callback);
+    };
+
+    return (
+      <View>
+        <WrapperComponent {...props} imagePick={imagePick} videoPick={videoPick} upload={upload} />
+      </View>
+    );
   };
 };
 

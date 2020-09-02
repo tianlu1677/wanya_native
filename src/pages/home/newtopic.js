@@ -1,10 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
+import {View, Image, Text, TextInput, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import Video from 'react-native-video';
+import Toast from 'react-native-root-toast';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
+import {createTopic} from '@/api/topic_api';
+import Modal from 'react-native-modal';
 
 const loadingImg =
   'http://file.meirixinxue.com/assets/2020/76272587-9bd6-48e9-b182-692b9ca73e89.gif';
@@ -13,14 +17,10 @@ const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
-  const [source, setSource] = useState([]);
+  const [imageSource, setImageSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
-
-  const choose = async () => {
-    const res = await props.chooseImage();
-    setSource([...source, res]);
-    // const res = await uploadMultiImage(img);
-  };
+  const [videoSource, setVideoSource] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(true);
 
   const onChangeContent = text => {
     setContent(text);
@@ -29,58 +29,114 @@ const NewTopic = props => {
   };
 
   const onImagePicker = async () => {
-
-    const res = await props.imagePick();
-    // setSource([...source, res]);
-    console.log([...source, res]);
-    // const res = await props.imagePick();
-
-    // console.log([...source, res]);
-    props.imagePick(res => {
-      console.log(res);
-      setSource([...source, res]);
+    const options = {
+      imageCount: 9 - imageSource.length,
+    };
+    props.imagePick(options, (err, res) => {
+      if (err) {
+        return;
+      }
+      setImageSource([...imageSource, ...res]);
     });
-
   };
 
-  const onSubmit = () => {
-    console.log(savetopic);
+  const onVideoPicker = async () => {
+    props.videoPick({}, (err, res) => {
+      if (err) {
+        return;
+      }
+      console.log(res[0]);
+
+      setVideoSource(res[0]);
+    });
+  };
+
+  const onSubmit = async () => {
+    let mediasImg = [];
+
+    if (imageSource.length > 0) {
+      await Promise.all(
+        imageSource.map(async file => {
+          const res = await props.upload({uploadType: 'multipart', ...file});
+          mediasImg = [...mediasImg, res.asset];
+        })
+      );
+    }
+
+    let video_content = '';
+    if (videoSource) {
+      const res = await props.upload({uploadType: 'raw', ...videoSource});
+      console.log(res);
+      video_content = res.asset;
+    }
+    console.log(video_content);
+
     // 先上传资源
-    const params = {
+    const data = {
       type: 'single',
-      plan_content: savetopic.plan_content,
-      mention_ids: savetopic.mention.map(v => v.id),
-      node_id: savetopic.node.id,
-      space_id: savetopic.space.id,
+      medias: mediasImg.map(v => v.url),
+      plain_content: savetopic.plan_content,
+      mention_ids: savetopic.mention.map(v => v.id).join(),
+      node_id: savetopic.node ? savetopic.node.id : '',
+      space_id: savetopic.node ? savetopic.space.id : '',
     };
-    console.log(params);
+    const res = await createTopic(data);
+    console.log(res);
   };
 
   useEffect(() => {
+    console.log(props);
+
     return () => {
       // cleanup
     };
   }, []);
 
   useEffect(() => {
-    console.log(savetopic);
+    console.log(videoSource);
+  }, [videoSource]);
+
+  useEffect(() => {
     setContent(savetopic.plan_content);
   }, [savetopic]);
 
-  useEffect(() => {
-    console.log(content);
-  }, [content]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: null,
+      headerLeft: () => <Button onPress={() => navigation.back()} title="关闭" color="#000" />,
+      headerRight: () => <Button onPress={onSubmit} title="发布" color="#000" />,
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.mediaCon}>
-        <TouchableOpacity onPress={onImagePicker}>
-          <Image style={styles.media} source={require('@/assets/images/add-photo.png')} />
-        </TouchableOpacity>
-        {source.map(v => (
-          <Image key={v.uri} style={styles.media} source={v} />
+        {/* picture */}
+        {!videoSource && (
+          <TouchableOpacity onPress={onImagePicker}>
+            <Image style={styles.media} source={require('@/assets/images/add-photo.png')} />
+          </TouchableOpacity>
+        )}
+        {imageSource.map((v, index) => (
+          <Image key={index} style={styles.media} source={v} />
         ))}
-        <Image style={styles.media} source={require('@/assets/images/add-video.png')} />
+
+        {/* video */}
+        {imageSource.length === 0 && !videoSource && (
+          <TouchableOpacity onPress={onVideoPicker}>
+            <Image style={styles.media} source={require('@/assets/images/add-video.png')} />
+          </TouchableOpacity>
+        )}
+        {videoSource && (
+          <Video
+            style={styles.media}
+            source={videoSource}
+            posterResizeMode={'center'}
+            controls
+            reportBandwidth
+            repeat
+          />
+        )}
       </View>
       <TextInput
         style={styles.content}
@@ -114,7 +170,7 @@ const NewTopic = props => {
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
       </View>
-
+      {/*
       <Text
         onPress={onSubmit}
         style={{
@@ -125,7 +181,7 @@ const NewTopic = props => {
           lineHeight: 50,
         }}>
         发布
-      </Text>
+      </Text> */}
     </View>
   );
 };
@@ -135,8 +191,8 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     backgroundColor: '#fff',
-    flex: 1,
-    paddingTop: 80,
+    // flex: 1,
+    paddingTop: 20,
   },
   mediaCon: {
     flexDirection: 'row',
@@ -150,7 +206,6 @@ const styles = StyleSheet.create({
   },
   content: {
     minHeight: 90,
-    // backgroundColor: 'pink',
   },
   addTextName: {
     width: 63,
@@ -184,6 +239,9 @@ const styles = StyleSheet.create({
   },
   backarrow: {
     marginLeft: 'auto',
+  },
+  submitBtn: {
+    fontWeight: '500',
   },
 });
 

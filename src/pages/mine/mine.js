@@ -39,7 +39,7 @@ class Mine extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{paddingTop: 100}}>
         <Text>{this.auth_token}</Text>
         <Text>Mine</Text>
         <Button
@@ -48,7 +48,12 @@ class Mine extends Component {
             this.props.navigation.navigate('AdminPhoneLogin');
           }}
         />
-        <Button title={'清除所有缓存'} onPress={() => { this.clearAllCatch} } />
+        <Button
+          title={'清除所有缓存'}
+          onPress={() => {
+            this.clearAllCatch;
+          }}
+        />
         <Button
           title={'视频页面'}
           onPress={() => {

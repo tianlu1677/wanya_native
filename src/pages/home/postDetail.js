@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 import Loading from '@/components/Loading';
 import {Avator} from '@/components/NodeComponents';
 import {getTopic, getTopicCommentList, createComment} from '@/api/home_api';
@@ -34,7 +35,7 @@ const TopicContent = props => {
 
       <View style={{paddingLeft: 16, paddingRight: 16, marginTop: 20}}>
         <Header data={props.data} />
-        <BaseTopicContent data={props.data} />
+        <BaseTopicContent data={props.data} style={{marginBottom: 16}} />
       </View>
     </View>
   );
@@ -80,12 +81,19 @@ const CommentList = props => {
   );
 };
 
+<<<<<<< HEAD
 const PostDetail = ({navigation, route}) => {
   const [topicId, setTopicId] = useState('');
+=======
+const PostDetail = () => {
+  const route = useRoute();
+>>>>>>> feature/topic
   const [detail, setDetail] = useState(null);
   const [commentList, setCommentList] = useState([]);
   const [actionVisible, setActionVisible] = useState(false);
   const [value, setChangeValue] = useState(null);
+  // const [id] = useState(route.params.id);
+
   const [comment, setComment] = useState({
     commentable_type: '',
     commentable_id: '',
@@ -106,12 +114,16 @@ const PostDetail = ({navigation, route}) => {
   }, [navigation]);
 
   const loadData = async () => {
+<<<<<<< HEAD
     const res = await getTopic(topicId);
+=======
+    const res = await getTopic(891);
+>>>>>>> feature/topic
     setDetail(res.data.topic);
   };
 
   const loadComments = async () => {
-    const ret = await getTopicCommentList(897);
+    const ret = await getTopicCommentList(891);
     setCommentList(ret.data.comments);
   };
 

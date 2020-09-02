@@ -35,7 +35,7 @@ import NewTopic from '@/pages/home/newtopic';
 import TopicIndex from '@/pages/home/topicIndex';
 import MentionAccounts from '@/pages/home/MentionAccounts';
 
-import NewTopics from '../pages/topics/NewTopic';
+// import NewTopic from '../pages/topics/NewTopic';
 
 // import TopicDetail from '../pages/topics/TopicDetail';
 import AdminPhoneLogin from '../pages/login/AdminPhoneLogin';
@@ -106,9 +106,15 @@ function HomeTabList() {
           height: 50,
         },
       }}>
+<<<<<<< HEAD
       {/*<Tab.Screen name="Node" component={NewTopics} options={{title: '圈子'}} />*/}
       {/*<Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />*/}
       {/*<Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />*/}
+=======
+      <Tab.Screen name="Node" component={Index} options={{title: '圈子'}} />
+      <Tab.Screen name="newtopic" component={NewTopic} options={{title: '上传'}} />
+      <Tab.Screen name="LabTabIndex" component={LabTabIndex} options={{title: '消息'}} />
+>>>>>>> feature/topic
       <Tab.Screen
         name="Recommend"
         component={Recommend}
@@ -180,10 +186,12 @@ function MainStackList() {
         component={MentionAccounts}
         options={{title: '顽友'}}
       />
+      <MainStack.Screen name="PostDetail" component={PostDetail} options={{title: '话题详情'}} />
 
       <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
       <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
       <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
+<<<<<<< HEAD
       <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子11'}} />
       <MainStack.Screen name="TopicDetail" component={PostDetail} options={{title: '帖子详情'}} />
       <MainStack.Screen
@@ -191,6 +199,10 @@ function MainStackList() {
         component={ArticleDetail}
         options={{title: '文章详情'}}
       />
+=======
+      <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子'}} />
+      <MainStack.Screen name="TopicDetail" component={TopicDetail} options={{title: '帖子详情'}} />
+>>>>>>> feature/topic
 
       <MainStack.Screen
         name="PhoneLogin"
@@ -288,7 +300,11 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       {!login.auth_token ? AuthStackList() : MainStackList()}
+<<<<<<< HEAD
       {/*{MainStackList()}*/}
+=======
+      {/* {MainStackList()} */}
+>>>>>>> feature/topic
     </NavigationContainer>
   );
 }
