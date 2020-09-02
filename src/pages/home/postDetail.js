@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react';
+import React, {useEffect, useState, useLayoutEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -94,8 +94,7 @@ const PostDetail = ({navigation, route}) => {
   const [commentList, setCommentList] = useState([]);
   const [actionVisible, setActionVisible] = useState(false);
   const [value, setChangeValue] = useState(null);
-  // const [id] = useState(route.params.id);
-
+  const scrollRef = useRef(null);
   const [comment, setComment] = useState({
     commentable_type: '',
     commentable_id: '',
@@ -150,6 +149,7 @@ const PostDetail = ({navigation, route}) => {
     }
     setChangeValue(null);
     setActionVisible(true);
+    scrollRef.current.scrollTo({y: 23});
   };
 
   const publishComment = async () => {
@@ -166,9 +166,12 @@ const PostDetail = ({navigation, route}) => {
   }, [topicId]);
 
   return detail ? (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+      keyboardVerticalOffset={85}>
       <DetailWrapper>
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{flex: 1}} ref={scrollRef}>
           <TopicContent data={detail} />
           <SpaceWrapper>
             <IconFont name="changdiweizhi" size={16} color={'#45ea6a'} />

@@ -101,7 +101,7 @@ export const CommentActionStyle = {
     align-items: center;
     border-top-color: #ebebeb;
     border-top-width: 1px;
-    background-color: pink;
+    background-color: #fff;
   `,
   ActionText: styled(Text)`
     width: 174px;
