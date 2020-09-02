@@ -26,6 +26,9 @@ import AccountsIndex from '@/pages/accounts/accounts-index';
 import SpaceIndex from '@/pages/space/space-index';
 import SpaceDetail from '@/pages/space/space-detail';
 
+// 话题页
+import HashtagDetail from '../pages/hashtags/hashtag-detail'
+
 // 圈子
 import NodeIndex from '../pages/nodes/node-index';
 import NodeDetail from '../pages/nodes/node-detail';
@@ -185,6 +188,7 @@ function MainStackList() {
       <MainStack.Screen name="NodeDetail" component={NodeDetail} options={{title: '圈子详情'}} />
       <MainStack.Screen name="NodeIndex" component={NodeIndex} options={{title: '圈子列表'}} />
       <MainStack.Screen name="VideoDetail" component={VideoDetail} options={{title: '视频'}} />
+      <MainStack.Screen name="HashtagDetail" component={HashtagDetail} options={{title: 'HashtagDetail'}} />
       <MainStack.Screen name="NewTopic" component={NewTopic} options={{title: '创建帖子11'}} />
       <MainStack.Screen name="TopicDetail" component={PostDetail} options={{title: '帖子详情'}} />
       <MainStack.Screen
