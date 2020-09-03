@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import {HeaderStyle, BottomStyle, BaseTopicStyle, BaseArticleStyle} from '@/components/Item/style';
-
+import FastImg from "@/components/FastImg"
 const {
   HeaderView,
   ContentView,
@@ -147,7 +147,7 @@ export const TopicVideoCenterContent = props => {
   const videoAttr = calculateImg(single_cover.width, single_cover.height);
   return (
     <View>
-      <Image
+      <FastImg
         source={{uri: single_cover.link_url}}
         style={{width: videoAttr.width / 2, height: videoAttr.height / 2}}
       />

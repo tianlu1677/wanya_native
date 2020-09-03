@@ -8,6 +8,7 @@ import {Header, BaseTopicContent} from '@/components/Item/PostListItem';
 import IconFont from '@/iconfont';
 import {PostDetailStyle, CommentStyle, CommentActionStyle} from './styles';
 import Video from 'react-native-video';
+import FastImg from '@/components/FastImg';
 
 const TopicContent = props => {
   const {medias, video_content, video_content_m3u8, content_style} = props.data;
@@ -16,7 +17,7 @@ const TopicContent = props => {
 
   return (
     <View>
-      {content_style === 'img' && <Image source={{uri: medias[0]}} style={{height: 300}} />}
+      {content_style === 'img' && <FastImg source={{uri: medias[0]}} style={{height: 300}} />}
 
       {content_style === 'video' && (
         <Video
