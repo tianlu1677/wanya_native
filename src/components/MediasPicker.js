@@ -10,7 +10,7 @@ const baseUrl =
 
 const MediasPicker = WrapperComponent => {
   return props => {
-    const upload = async file => {
+    const uploadImage = async file => {
       const token = await Helper.getData('auth_token');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
@@ -61,13 +61,23 @@ const MediasPicker = WrapperComponent => {
       SyanImagePicker.showImagePicker(options, callback);
     };
 
+    const removeImage = index => {
+      SyanImagePicker.removePhotoAtIndex(index);
+    };
+
     const videoPick = (option = {}, callback) => {
       const options = {...option};
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
     return (
-      <WrapperComponent {...props} imagePick={imagePick} videoPick={videoPick} upload={upload} />
+      <WrapperComponent
+        {...props}
+        imagePick={imagePick}
+        removeImage={removeImage}
+        videoPick={videoPick}
+        uploadImage={uploadImage}
+      />
     );
   };
 };
