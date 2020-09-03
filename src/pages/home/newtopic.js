@@ -1,5 +1,14 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  ImageStore,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -7,10 +16,12 @@ import Toast from 'react-native-root-toast';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
-import {getUploadFileToken, saveToAsset} from "@/api/settings_api";
+import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import {createTopic} from '@/api/topic_api';
 import Upload from 'react-native-background-upload';
 import Modal from 'react-native-modal';
+
+import {ModalLoading} from '@/components/NodeComponents';
 
 const loadingImg =
   'http://file.meirixinxue.com/assets/2020/76272587-9bd6-48e9-b182-692b9ca73e89.gif';
@@ -21,8 +32,8 @@ const NewTopic = props => {
   const savetopic = useSelector(state => state.home.savetopic);
   const [imageSource, setImageSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
-  const [videoSource, setVideoSource] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(true);
+  const [videoSource, setVideoSource] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const onChangeContent = text => {
     setContent(text);
@@ -38,19 +49,19 @@ const NewTopic = props => {
       if (err) {
         return;
       }
-      setImageSource([...imageSource, ...res]);
+      setImageSource(res);
     });
   };
 
   const onVideoPicker = async () => {
-    const token_res = await getUploadFileToken({ftype: 'mp4'})
-    let upload_token = token_res.token
+    const token_res = await getUploadFileToken({ftype: 'mp4'});
+    let upload_token = token_res.token;
     props.videoPick({}, (err, res) => {
-      console.log('res', res)
+      setVideoSource(res);
       if (err) {
         return;
       }
-      let filePath = res[0].uri
+      let filePath = res[0].uri;
       let defaultOptions = {
         url: token_res.qiniu_region,
         path: filePath,
@@ -58,8 +69,9 @@ const NewTopic = props => {
         type: 'multipart',
         field: 'file',
         parameters: {
-          token: upload_token, key: token_res.file_key,
-          name: 'file'
+          token: upload_token,
+          key: token_res.file_key,
+          name: 'file',
         },
         maxRetries: 2, // set retry count (Android only). Default 2
         headers: {
@@ -91,9 +103,9 @@ const NewTopic = props => {
             // data includes responseCode: number and responseBody: Object
             console.log('Completed!');
             console.log(data);
-            let upload_res = JSON.parse(data.responseBody)
-            if(upload_res.key) {
-              let video_m3u8 = upload_res.key.replace('mp4', 'm3u8')
+            let upload_res = JSON.parse(data.responseBody);
+            if (upload_res.key) {
+              let video_m3u8 = upload_res.key.replace('mp4', 'm3u8');
               let body = {
                 asset: {
                   file_key: upload_res.key,
@@ -104,7 +116,7 @@ const NewTopic = props => {
                   // fsize: videoRes.size,
                   // seconds: videoRes.duration,
                   category: 'video',
-                  video_m3u8: video_m3u8
+                  video_m3u8: video_m3u8,
 
                   // seconds: videoRes.duration
                   // errMsg: "chooseVideo:ok"
@@ -113,29 +125,36 @@ const NewTopic = props => {
                   // tempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.kQ9QwnJr20ry3adb3207a9a3a9d7f6b95e9ee7777e94.mp4"
                   // thumbTempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.jxUlqGJ7Pgww849b80f49b079e0b6a0792f1ae4f7602.jpg"
                   // width: 544
-                }
-              }
-              saveToAsset(body)
+                },
+              };
+              saveToAsset(body).then(res => {
+                console.log(res);
+              });
             }
           });
         })
         .catch(err => {
           console.log('Upload error!', err);
         });
-
-      console.log(res[0]);
-
-      setVideoSource(res[0]);
     });
   };
 
-  const onSubmit = async () => {
-    let mediasImg = [];
+  const deleteMedia = index => {
+    props.removeImage(index);
+    const image = imageSource.filter((v, i) => i !== index);
+    const video = videoSource.filter((v, i) => i !== index);
 
+    setImageSource(image);
+    setVideoSource(video);
+  };
+
+  const onSubmit = async () => {
+    setLoading(true);
+    let mediasImg = [];
     if (imageSource.length > 0) {
       await Promise.all(
         imageSource.map(async file => {
-          const res = await props.upload({uploadType: 'multipart', ...file});
+          const res = await props.uploadImage({uploadType: 'multipart', ...file});
           mediasImg = [...mediasImg, res.asset];
         })
       );
@@ -143,7 +162,7 @@ const NewTopic = props => {
 
     let video_content = '';
     if (videoSource) {
-      const res = await props.upload({uploadType: 'raw', ...videoSource});
+      const res = await props.uploadImage({uploadType: 'raw', ...videoSource});
       console.log(res);
       video_content = res.asset;
     }
@@ -160,19 +179,8 @@ const NewTopic = props => {
     };
     const res = await createTopic(data);
     console.log(res);
+    setLoading(false);
   };
-
-  useEffect(() => {
-    console.log(props);
-
-    return () => {
-      // cleanup
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log(videoSource);
-  }, [videoSource]);
 
   useEffect(() => {
     setContent(savetopic.plan_content);
@@ -188,33 +196,46 @@ const NewTopic = props => {
 
   return (
     <View style={styles.wrapper}>
+      {loading && <ModalLoading title="正在发布中" />}
       <View style={styles.mediaCon}>
         {/* picture */}
-        {!videoSource && (
+        {videoSource.length === 0 && (
           <TouchableOpacity onPress={onImagePicker}>
-            <Image style={styles.media} source={require('@/assets/images/add-photo.png')} />
+            <Image style={styles.mediaWrap} source={require('@/assets/images/add-photo.png')} />
           </TouchableOpacity>
         )}
+
         {imageSource.map((v, index) => (
-          <Image key={index} style={styles.media} source={v} />
+          <View style={styles.mediaWrap} key={index}>
+            <Image key={index} style={styles.media} source={v} />
+            <TouchableOpacity onPress={() => deleteMedia(index)} style={styles.mediaClose}>
+              <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+            </TouchableOpacity>
+          </View>
         ))}
 
         {/* video */}
-        {imageSource.length === 0 && !videoSource && (
+        {imageSource.length === 0 && videoSource.length === 0 && (
           <TouchableOpacity onPress={onVideoPicker}>
-            <Image style={styles.media} source={require('@/assets/images/add-video.png')} />
+            <Image style={styles.mediaWrap} source={require('@/assets/images/add-video.png')} />
           </TouchableOpacity>
         )}
-        {videoSource && (
-          <Video
-            style={styles.media}
-            source={videoSource}
-            posterResizeMode={'center'}
-            controls
-            reportBandwidth
-            repeat
-          />
-        )}
+
+        {videoSource.map((v, index) => (
+          <View style={styles.mediaWrap} key={index}>
+            <Video
+              style={styles.media}
+              source={v}
+              posterResizeMode={'center'}
+              controls
+              reportBandwidth
+              repeat
+            />
+            <TouchableOpacity onPress={() => deleteMedia(0)} style={styles.mediaClose}>
+              <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+            </TouchableOpacity>
+          </View>
+        ))}
       </View>
       <TextInput
         style={styles.content}
@@ -248,18 +269,6 @@ const NewTopic = props => {
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
       </View>
-      {/*
-      <Text
-        onPress={onSubmit}
-        style={{
-          height: 50,
-          width: 100,
-          backgroundColor: 'pink',
-          textAlign: 'center',
-          lineHeight: 50,
-        }}>
-        发布
-      </Text> */}
     </View>
   );
 };
@@ -269,18 +278,30 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     backgroundColor: '#fff',
-    // flex: 1,
+    flex: 1,
     paddingTop: 20,
   },
   mediaCon: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  media: {
+  mediaWrap: {
+    position: 'relative',
     width: 71,
     height: 71,
     marginRight: 10,
     marginBottom: 10,
+  },
+  media: {
+    width: 71,
+    height: 71,
+  },
+  mediaClose: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 15,
+    height: 15,
   },
   content: {
     minHeight: 90,
