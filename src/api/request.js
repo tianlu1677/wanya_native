@@ -32,7 +32,6 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     console.log('response error', error);
@@ -58,7 +57,7 @@ axios.interceptors.response.use(
         console.log('error', error);
         break;
       case 401:
-        Toast.show('未登录')
+        Toast.show('未登录');
         // console.log('401, 未登录')
         // if (error.response.data.error === 'Your account is locked.') {
         //   storeData('lock_user', true);
