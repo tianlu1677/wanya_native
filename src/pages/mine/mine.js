@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
 import Helper from '../../utils/helper';
 import Geolocation from 'react-native-geolocation-service';
-import GetLocation from "@/components/GetLocation"
+import GetLocation from '@/components/GetLocation';
 import {connect} from 'react-redux';
+import ViewShot from 'react-native-view-shot';
 
 // import {dispatchSetAuthToken} from '@/redux/actions';
 //
@@ -17,6 +18,7 @@ class Mine extends Component {
       modalVisible: false,
       coin_data: [],
       loading: false,
+      showCap: false,
     };
     this.auth_token = '';
   }
@@ -42,10 +44,23 @@ class Mine extends Component {
     });
   };
 
+  makeImage = () => {
+    let that = this
+    this.setState({showCap: true});
+
+    setTimeout(() => {
+      this.refs.viewShot.capture().then(uri => {
+        console.log('do something with ', uri);
+      });
+    }, 300)
+
+
+  };
+
   render() {
     return (
       <View style={{paddingTop: 100}}>
-        <Text>{this.auth_token}</Text>
+        {/*<Text>{this.auth_token}</Text>*/}
         <Text>Mine</Text>
         <Button
           title={'去登录'}
@@ -137,6 +152,14 @@ class Mine extends Component {
             this.props.navigation.navigate('Settings');
           }}
         />
+
+        <Button title={'去截图'} onPress={this.makeImage} />
+        {
+          this.state.showCap &&  <ViewShot ref="viewShot" options={{format: 'jpg', quality: 0.9}}>
+            <Text>...Something to rasterize...</Text>
+          </ViewShot>
+        }
+
 
         <GetLocation>
           <Text>获取城市信息</Text>
