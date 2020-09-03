@@ -200,7 +200,7 @@ export const BaseTopic = props => {
   const {data} = props;
   const navigation = useNavigation();
   const goTopicDetail = () => {
-    navigation.navigate('TopicDetail', {topicId: data.id, from: 'list'});
+    navigation.navigate('PostDetail', {topicId: data.id, from: 'list'});
   };
   return (
     <TouchableOpacity

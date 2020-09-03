@@ -5,7 +5,7 @@ import VideoDetail from '@/pages/home/VideoDetail';
 import ArticleDetail from '@/pages/articles/article-detail';
 
 // 发布
-import NewTopic from '@/pages/home/Newtopic';
+import NewTopic from '@/pages/home/newtopic';
 import TopicIndex from '@/pages/home/topicIndex';
 import MentionAccounts from '@/pages/home/MentionAccounts';
 
@@ -79,6 +79,7 @@ const homeRouter = [
     name: 'PostDetail',
     component: PostDetail,
     options: {title: '帖子详情'},
+    safeArea: false,
   },
 ];
 
