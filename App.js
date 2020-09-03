@@ -19,6 +19,7 @@ WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 //
 // https://github.com/react-native-community/react-native-device-info#installation
 import DeviceInfo from 'react-native-device-info';
+import ImagePreview from "@/components/ImagePreview";
 
 class App extends Component {
   constructor(props) {
@@ -74,6 +75,7 @@ class App extends Component {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Navigation />
+            <ImagePreview />
           </PersistGate>
         </Provider>
       </>

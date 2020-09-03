@@ -4,7 +4,7 @@ import request from './request';
 export const getHashtagList = async () => {
   const res = await request({
     url: '/api/v1/hashtags',
-    method: 'get',
+    method: 'GET',
   });
   return res;
 };
@@ -20,20 +20,17 @@ export const getHashtagList = async () => {
 export async function hashTagDetail(hashtag = '') {
   const res = await request({
     url: `/api/v1/hashtags/${hashtag}`,
-    method: 'get',
+    method: 'GET',
   });
   return res.data;
 }
 
-export async function getHashtagPosts(hashtag = '', type = 'published', params) {
+export async function getHashtagPosts(params) {
   const res = await request({
     url: '/api/v1/hashtags/posts',
-    method: 'get',
-    data: {
-      hashtag_name: hashtag,
-      type: type,
-      ...params,
-    },
+    method: 'GET',
+    params: params
   });
+  console.log('api params', params)
   return res;
 }

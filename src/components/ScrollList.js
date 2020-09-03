@@ -29,8 +29,12 @@ const ScrollList = props => {
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
+    if (refreshing || state === loadState.LOADING) {
+      return;
+    }
     setRefreshing(true);
     setState(loadState.LOADING);
+    console.log('onRefresh =============', state, refreshing);
     try {
       props.onRefresh();
     } catch {
@@ -43,6 +47,11 @@ const ScrollList = props => {
       setState(loadState.EMPTY);
       return;
     }
+
+    if (refreshing || state === loadState.LOADING) {
+      return;
+    }
+    console.log('onEndReached ===============', state, refreshing);
     setRefreshing(true);
     setState(loadState.LOADING);
     try {

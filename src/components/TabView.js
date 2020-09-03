@@ -46,7 +46,7 @@ const TabViewIndex = props => {
         onIndexChange={onIndexChange}
         initialLayout={initialLayout}
         tabBarPosition={props.tabBarPosition || 'top'}
-        lazy={props.lazy || false}
+        lazy={props.lazy || true}
         swipeEnabled={props.swipeEnabled || true}
         lazyPreloadDistance={props.lazyPreloadDistance || 0}
         removeClippedSubviews={props.removeClippedSubviews || false}

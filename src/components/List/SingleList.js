@@ -14,6 +14,7 @@ const SingleList = props => {
   const navigation = useNavigation();
 
   const renderItem = ({item}) => {
+    // console.log('xxxxx', item)
     if (item.item_type === 'Topic') {
       return <BaseTopic data={item.item} />;
     } else if (item.item_type === 'Article') {
@@ -26,6 +27,7 @@ const SingleList = props => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params} = props.request;
+    // console.log('params', {...params, page})
     const res = await api({...params, page});
     const data = res.data.posts;
     setLoading(false);

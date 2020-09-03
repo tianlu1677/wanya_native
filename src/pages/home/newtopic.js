@@ -7,17 +7,22 @@ import Toast from 'react-native-root-toast';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
+import {getUploadFileToken, saveToAsset} from "@/api/settings_api";
 import {createTopic} from '@/api/topic_api';
-import {ModalLoading} from '@/components/NodeComponents';
+import Upload from 'react-native-background-upload';
+import Modal from 'react-native-modal';
+
+const loadingImg =
+  'http://file.meirixinxue.com/assets/2020/76272587-9bd6-48e9-b182-692b9ca73e89.gif';
 
 const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
-  const [loading, setLoading] = useState(false);
   const [imageSource, setImageSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
   const [videoSource, setVideoSource] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(true);
 
   const onChangeContent = text => {
     setContent(text);
@@ -38,10 +43,86 @@ const NewTopic = props => {
   };
 
   const onVideoPicker = async () => {
+    const token_res = await getUploadFileToken({ftype: 'mp4'})
+    let upload_token = token_res.token
     props.videoPick({}, (err, res) => {
+      console.log('res', res)
       if (err) {
         return;
       }
+      let filePath = res[0].uri
+      let defaultOptions = {
+        url: token_res.qiniu_region,
+        path: filePath,
+        method: 'POST',
+        type: 'multipart',
+        field: 'file',
+        parameters: {
+          token: upload_token, key: token_res.file_key,
+          name: 'file'
+        },
+        maxRetries: 2, // set retry count (Android only). Default 2
+        headers: {
+          'content-type': 'application/octet-stream',
+        },
+
+        // Below are options only supported on Android
+        notification: {
+          enabled: true,
+        },
+        useUtf8Charset: true,
+      };
+      let uploadOptions = {...defaultOptions};
+
+      console.log('uploadOptions', uploadOptions);
+      Upload.startUpload(uploadOptions)
+        .then(uploadId => {
+          console.log('Upload started');
+          Upload.addListener('progress', uploadId, data => {
+            // console.log(`Progress: ${data.progress}%`);
+          });
+          Upload.addListener('error', uploadId, data => {
+            console.log(`Error: ${data.error}%`);
+          });
+          Upload.addListener('cancelled', uploadId, data => {
+            console.log('Cancelled!');
+          });
+          Upload.addListener('completed', uploadId, data => {
+            // data includes responseCode: number and responseBody: Object
+            console.log('Completed!');
+            console.log(data);
+            let upload_res = JSON.parse(data.responseBody)
+            if(upload_res.key) {
+              let video_m3u8 = upload_res.key.replace('mp4', 'm3u8')
+              let body = {
+                asset: {
+                  file_key: upload_res.key,
+                  fname: upload_res.key,
+                  // 获取到这些填写宽高以及尺寸
+                  // width: videoRes.width,
+                  // height: videoRes.height,
+                  // fsize: videoRes.size,
+                  // seconds: videoRes.duration,
+                  category: 'video',
+                  video_m3u8: video_m3u8
+
+                  // seconds: videoRes.duration
+                  // errMsg: "chooseVideo:ok"
+                  // height: 960
+                  // size: 1382371
+                  // tempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.kQ9QwnJr20ry3adb3207a9a3a9d7f6b95e9ee7777e94.mp4"
+                  // thumbTempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.jxUlqGJ7Pgww849b80f49b079e0b6a0792f1ae4f7602.jpg"
+                  // width: 544
+                }
+              }
+              saveToAsset(body)
+            }
+          });
+        })
+        .catch(err => {
+          console.log('Upload error!', err);
+        });
+
       console.log(res[0]);
 
       setVideoSource(res[0]);
@@ -51,7 +132,6 @@ const NewTopic = props => {
   const onSubmit = async () => {
     let mediasImg = [];
 
-    setLoading(true);
     if (imageSource.length > 0) {
       await Promise.all(
         imageSource.map(async file => {
@@ -79,13 +159,20 @@ const NewTopic = props => {
       space_id: savetopic.node ? savetopic.space.id : '',
     };
     const res = await createTopic(data);
-    setLoading(false);
     console.log(res);
   };
 
   useEffect(() => {
     console.log(props);
+
+    return () => {
+      // cleanup
+    };
   }, []);
+
+  useEffect(() => {
+    console.log(videoSource);
+  }, [videoSource]);
 
   useEffect(() => {
     setContent(savetopic.plan_content);
@@ -94,15 +181,13 @@ const NewTopic = props => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: null,
-      headerLeft: () => <Button onPress={() => navigation.back()} title="关闭" color="#000" />,
+      headerLeft: () => <Button onPress={() => navigation.goBack()} title="关闭" color="#000" />,
       headerRight: () => <Button onPress={onSubmit} title="发布" color="#000" />,
     });
   }, [navigation]);
 
   return (
     <View style={styles.wrapper}>
-      {loading && <ModalLoading />}
-
       <View style={styles.mediaCon}>
         {/* picture */}
         {!videoSource && (
@@ -163,6 +248,18 @@ const NewTopic = props => {
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
       </View>
+      {/*
+      <Text
+        onPress={onSubmit}
+        style={{
+          height: 50,
+          width: 100,
+          backgroundColor: 'pink',
+          textAlign: 'center',
+          lineHeight: 50,
+        }}>
+        发布
+      </Text> */}
     </View>
   );
 };
@@ -172,7 +269,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     backgroundColor: '#fff',
-    flex: 1,
+    // flex: 1,
     paddingTop: 20,
   },
   mediaCon: {

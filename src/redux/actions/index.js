@@ -9,6 +9,7 @@ import {
   SAVE_NEW_TOPIC,
   ADMIN_SIGN_SUCCESS,
   CURRENT_ACCOUNT_SUCCESS,
+  PREVIEW_IMAGES
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount} from '../../api/mine_api';
@@ -77,6 +78,15 @@ export const dispatchSetAuthToken = (token = '') => async dispatch => {
 
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
 };
+// 预览图片
+export const dispatchPreviewImage = (previewImageData = {}) => async dispatch => {
+  dispatch({
+    type: PREVIEW_IMAGES,
+    previewImageData: previewImageData
+  });
+};
+
+
 
 // // new topic
 // export const dispathSaveNewTopic = value => {
