@@ -1,81 +1,78 @@
 import React, {Component} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Modal
-} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, Modal} from 'react-native';
 
 import {Image} from 'react-native';
 import {Card, ListItem, Icon, Button} from 'react-native-elements';
-import Video from 'react-native-video'
-import ImageViewer from 'react-native-image-zoom-viewer';
+import Video from 'react-native-video';
+
 import Helper from '../../utils/helper';
+import ImagePreview from "@/components/ImagePreview"
 
-const images = [{
-  // Simplest usage.
-  url: 'http://file.meirixinxue.com/assets/2020/15bf8a6a-0429-4122-8107-0d0d3b724d61.jpeg',
+const images = [
+  {
+    // Simplest usage.
+    url: 'http://file.meirixinxue.com/assets/2020/15bf8a6a-0429-4122-8107-0d0d3b724d61.jpeg',
 
-  // width: number
-  // height: number
-  // Optional, if you know the image size, you can set the optimization performance
+    // width: number
+    // height: number
+    // Optional, if you know the image size, you can set the optimization performance
 
-  // You can pass props to <Image />.
-  props: {
-    // headers: ...
-  }
-}, {
-  url: 'http://file.meirixinxue.com/assets/2020/852febda-3dcd-46ee-ab8e-a6cc1322b7c5.jpg',
-  props: {
-    // Or you can set source directory.
-    // source: require('../background.png')
-  }
-}]
+    // You can pass props to <Image />.
+    props: {
+      // headers: ...
+    },
+  },
+  {
+    url: 'http://file.meirixinxue.com/assets/2020/852febda-3dcd-46ee-ab8e-a6cc1322b7c5.jpg',
+    props: {
+      // Or you can set source directory.
+      // source: require('../background.png')
+    },
+  },
+];
 
 class VideoDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPreview: false
+      showPreview: false,
     };
   }
 
   async componentDidMount() {
-    this.auth_token = await Helper.getData('auth_token')
-    console.log('xxxxx', this.auth_token)
+    this.auth_token = await Helper.getData('auth_token');
+    console.log('xxxxx', this.auth_token);
   }
 
   render() {
-    let videoUrl = 'http://file.meirixinxue.com/assets/a3c6644d8280330ca8724aed3832db78.mp4'
-    return <View>
-      
-      {/*<Text>VideoDetail</Text>*/}
-      <Video source={{uri: videoUrl}}
-             ref={(ref) => {
-               this.player = ref
-             }}
-             poster={videoUrl + '?vframe/jpg/offset/0'}
-             posterResizeMode={'center'}
-             onBuffer={this.onBuffer}
-             onError={this.videoError}
-             style={styles.backgroundVideo}
-             controls
-             reportBandwidth
-      />
-      <Modal visible={this.state.showPreview} transparent={true} onRequestClose={() => this.setState({ showPreview: false })}>
-        <ImageViewer
-          onShowModal={() => {console.log('xxx', 'onShowModal')}}
-          imageUrls={images}
-          enableSwipeDown
-        />
-      </Modal>
+    let videoUrl = 'http://file.meirixinxue.com/assets/a3c6644d8280330ca8724aed3832db78.mp4';
+    return (
+      <View>
+        {/*<Text>VideoDetail</Text>*/}
+        {/*<Video*/}
+        {/*  source={{uri: videoUrl}}*/}
+        {/*  ref={ref => {*/}
+        {/*    this.player = ref;*/}
+        {/*  }}*/}
+        {/*  poster={videoUrl + '?vframe/jpg/offset/0'}*/}
+        {/*  posterResizeMode={'center'}*/}
+        {/*  onBuffer={this.onBuffer}*/}
+        {/*  onError={this.videoError}*/}
+        {/*  style={styles.backgroundVideo}*/}
+        {/*  controls*/}
+        {/*  reportBandwidth*/}
+        {/*/>*/}
 
-      <Button title={'预览图片' + this.auth_token} onPress={() => {this.setState({showPreview: true})} }/>
-      <Text>{this.auth_token}</Text>  
-    </View>
+        {/*<Text>{this.auth_token}</Text>*/}
+        <Button title={"显示图"} onPress={() => {this.setState({showPreview: true})  }}></Button>
+        {/*<ImagePreview*/}
+        {/*  images={images}*/}
+        {/*  visible={this.state.showPreview}*/}
+        {/*  changeVisible={(state) => {this.setState({showPreview: !state})}}*/}
+        {/*>*/}
+        {/*</ImagePreview>*/}
+      </View>
+    );
   }
 }
 
@@ -87,8 +84,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     height: 300,
-    width: '100%'
-
+    width: '100%',
   },
 });
 

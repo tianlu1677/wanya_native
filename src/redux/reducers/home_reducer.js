@@ -1,10 +1,15 @@
-import {SAVE_NEW_TOPIC} from '../constants';
+import {SAVE_NEW_TOPIC, PREVIEW_IMAGES} from '../constants';
 
 const defaultState = {
   savetopic: {
     plan_content: '',
     mention: [],
   },
+  previewImageData: {
+    images: [],
+    index: 0,
+    visible: false
+  }
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -15,6 +20,11 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         savetopic: action.value,
       };
+    case PREVIEW_IMAGES:
+      return {
+        ...state,
+        previewImageData: action.previewImageData
+      }
     default:
       return state;
   }

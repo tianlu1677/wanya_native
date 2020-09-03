@@ -7,15 +7,18 @@ import Modal from 'react-native-modal';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import SyanImagePicker from 'react-native-syan-image-picker';
+import {useDispatch, useSelector} from 'react-redux';
 import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
-
-
+import ImagePreview from "@/components/ImagePreview"
+import { DefaultLog, EmptyImg, MineSystemNoticeUserImg, MineNodeImg} from "@/utils/default-image"
 import Helper from '@/utils/helper';
-
+import { dispatchPreviewImage } from '@/redux/actions'
 const types = {toast: 'toast', webview: '网页'};
 
 const LabIndex = ({navigation, route}) => {
   const [isVisible, setIsVisible] = useState(false);
+  const dispatch = useDispatch();
+  const imageSource = [DefaultLog]
   const renderContent = () => (
     <View
       style={{
@@ -27,19 +30,19 @@ const LabIndex = ({navigation, route}) => {
     </View>
   );
 
-  const choseImage = () => {
-    let options = {
-
-    }
-    SyanImagePicker.showImagePicker(options, (err, selectedPhotos) => {
-      if (err) {
-        // 取消选择
-        return;
-      }
-      // 选择成功，渲染图片
-      // ...
-    })
-  }
+  // const choseImage = () => {
+  //   let options = {
+  //
+  //   }
+  //   SyanImagePicker.showImagePicker(options, (err, selectedPhotos) => {
+  //     if (err) {
+  //       // 取消选择
+  //       return;
+  //     }
+  //     // 选择成功，渲染图片
+  //     // ...
+  //   })
+  // }
 
   //https://github.com/react-native-community/react-native-permissions
   const checkPermission = () => {
@@ -103,6 +106,37 @@ const LabIndex = ({navigation, route}) => {
   }
   const sheetRef = React.useRef(null);
 
+  const previewImg = () => {
+    console.log('previewImg')
+
+    const images = [
+      {
+        // Simplest usage.
+        url: 'http://file.meirixinxue.com/assets/2020/15bf8a6a-0429-4122-8107-0d0d3b724d61.jpeg',
+
+        // width: number
+        // height: number
+        // Optional, if you know the image size, you can set the optimization performance
+
+        // You can pass props to <Image />.
+        props: {
+          // headers: ...
+        },
+      },
+      {
+        url: 'http://file.meirixinxue.com/assets/2020/852febda-3dcd-46ee-ab8e-a6cc1322b7c5.jpg',
+        props: {
+          // Or you can set source directory.
+          // source: require('../background.png')
+        },
+      },
+    ];
+
+    const data = {images: images, visible: true, index: 1}
+    dispatch(dispatchPreviewImage(data))
+
+  }
+
   return (
     <View style={{flex: 1}}>
       <Text>实验室主页</Text>
@@ -118,29 +152,41 @@ const LabIndex = ({navigation, route}) => {
 
 
         </Button>
+
+        <ImagePreview
+          data={imageSource}
+          selectedPreviewImageContainerStyle={{}}
+          mainImageStyle={{ backgroundColor: '#F2F2F2', flex: 1}}
+          previewFlatListProps={{}}
+          />
+      </View>
+
+      <Button title={"预览图片"} onPress={() => { previewImg() }} />
+
         <Button title={"请求权限"} onPress={() => { checkPermission() }} />
 
-        <Button title={"选择图片"} onPress={() => { choseImage() } }>
+        {/*<Button title={"选择图片"} onPress={() => { choseImage() } }>*/}
 
-        </Button>
-      </View>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: 'papayawhip',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Button title="Open Bottom Sheet" onPress={() => sheetRef.current.snapTo(0)} />
-      </View>
+        {/*</Button>*/}
 
-      <BottomSheet
-        renderHeader={() => (<Text>ssss</Text>)}
-        ref={sheetRef}
-        snapPoints={[450, 100, 0]}
-        borderRadius={10}
-        renderContent={renderContent}
-      />
+
+      {/*<View*/}
+      {/*  style={{*/}
+      {/*    flex: 1,*/}
+      {/*    backgroundColor: 'papayawhip',*/}
+      {/*    alignItems: 'center',*/}
+      {/*    justifyContent: 'center',*/}
+      {/*  }}>*/}
+      {/*  <Button title="Open Bottom Sheet" onPress={() => sheetRef.current.snapTo(0)} />*/}
+      {/*</View>*/}
+
+      {/*<BottomSheet*/}
+      {/*  renderHeader={() => (<Text>ssss</Text>)}*/}
+      {/*  ref={sheetRef}*/}
+      {/*  snapPoints={[450, 100, 0]}*/}
+      {/*  borderRadius={10}*/}
+      {/*  renderContent={renderContent}*/}
+      {/*/>*/}
     </View>
   );
 };
