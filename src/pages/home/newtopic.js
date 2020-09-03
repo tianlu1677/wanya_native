@@ -7,7 +7,7 @@ import Toast from 'react-native-root-toast';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
-import {getUploadFileToken, saveToAsset} from "@/api/settings_api"
+import {getUploadFileToken, saveToAsset} from "@/api/settings_api";
 import {createTopic} from '@/api/topic_api';
 import Upload from 'react-native-background-upload';
 import Modal from 'react-native-modal';
@@ -91,6 +91,32 @@ const NewTopic = props => {
             // data includes responseCode: number and responseBody: Object
             console.log('Completed!');
             console.log(data);
+            let upload_res = JSON.parse(data.responseBody)
+            if(upload_res.key) {
+              let video_m3u8 = upload_res.key.replace('mp4', 'm3u8')
+              let body = {
+                asset: {
+                  file_key: upload_res.key,
+                  fname: upload_res.key,
+                  // 获取到这些填写宽高以及尺寸
+                  // width: videoRes.width,
+                  // height: videoRes.height,
+                  // fsize: videoRes.size,
+                  // seconds: videoRes.duration,
+                  category: 'video',
+                  video_m3u8: video_m3u8
+
+                  // seconds: videoRes.duration
+                  // errMsg: "chooseVideo:ok"
+                  // height: 960
+                  // size: 1382371
+                  // tempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.kQ9QwnJr20ry3adb3207a9a3a9d7f6b95e9ee7777e94.mp4"
+                  // thumbTempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.jxUlqGJ7Pgww849b80f49b079e0b6a0792f1ae4f7602.jpg"
+                  // width: 544
+                }
+              }
+              saveToAsset(body)
+            }
           });
         })
         .catch(err => {
