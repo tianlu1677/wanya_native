@@ -66,16 +66,16 @@ SwiperImage
 
 ## 首页
 
-- home/recommend.js (HomeRecommend 首页模式)
+- home/recommend.js (HomeRecommend 首页模式) 
 - home/visitor_recommend.js (VisitorRecommend 游客模式随便看看)
 
 ## 创建帖子
 
-- topics/new-topic.js (NewTopic)
-- topics/add-mention-account.json(AddMentionAccount 提及某人)
-- topics/add-hashtag.json(AddHashtag 话题页面)
-- topics/add-space.json(AddSpace 场地)
-- topics/add-node.json(AddNode 圈子页面)
+- topics/new-topic.js (NewTopic) x
+- topics/add-mention-account.json(AddMentionAccount 提及某人) x
+- topics/add-hashtag.json(AddHashtag 话题页面) x
+- topics/add-space.json(AddSpace 场地) x
+- topics/add-node.json(AddNode 圈子页面) x
 
 - topics/topic-detail.json (TopicDetail 帖子详情页)
 
@@ -86,26 +86,27 @@ SwiperImage
 ## 圈子(node)
 
 - nodes/node-detail(NodeDetail 圈子详情页)
-- nodes/node-index (用户关注的圈子列表)
+- nodes/node-index (所有圈子) x
 
 ## 用户详情页(account)
 
 - accounts/account-detail( AccountDetail 用户详情页)
-- accounts/account-index (用户的关注人的列表)
+- accounts/follow-nodes x
+- accounts/account-list (用户的关注人的列表) x
 
 ## 话题
 
-- hashtags/hashtag-detail (HashtagDetail 话题详情页)
+- hashtags/hashtag-detail (HashtagDetail 话题详情页) 
 
 ## 场地
 
-- spaces/space-detail (SpaceDetail 场地详情页)
-- spaces/choose-city (ChooseCity 选择城市)
+- spaces/space-detail (SpaceDetail 场地详情页) x
+- spaces/choose-city (ChooseCity 选择城市) x
 
 ## 我的页面(mine)
 
-- mine/account-detail ( MineDetail 我的页面 )
-- mine/invite-detail (InviteDetail 我的邀请详情页)
+- mine/account-detail ( MineDetail 我的页面 ) x
+- mine/invite-detail (InviteDetail 我的邀请详情页) 
 - mine/setting-index (SettingIndex 设置详情页)
 - mine/settings/edit-account (SettingsEditAccount 设置编辑我的页面)
 - mine/settings/feedback (SettingsFeedback 反馈页面)
@@ -127,6 +128,11 @@ SwiperImage
 
 ## 海报
 
-- 邀请码海报
-- 帖子详情海报
-- 文章海报
+- 邀请码海报 
+- 帖子详情海报 x
+- 文章海报 x
+
+
+
+accounts/account-nodes
+accounts/account-list
