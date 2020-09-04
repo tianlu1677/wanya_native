@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Image, Text, Button} from 'react-native';
 import Helper from '../../utils/helper';
 import Geolocation from 'react-native-geolocation-service';
 import GetLocation from '@/components/GetLocation';
@@ -174,6 +174,11 @@ class Mine extends Component {
           </ViewShot>
         }
 
+        <Image
+          source={require('../../assets/images/invite-poster.jpg')}
+          style={{width: 200, height: 200}}
+          blurRadius={20}
+        />
 
         <GetLocation handleClick={(msg) => {console.log('mgs', msg)}}>
           <Text style={{height: 50, fontSize: 20}}>获取城市信息</Text>

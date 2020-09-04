@@ -1,45 +1,28 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ImageBackground,
-} from 'react-native';
+import {View, Text, Image, ImageBackground} from 'react-native';
 
 import styled from 'styled-components/native';
-import InvitePosterImg from '../../../assets/images/invite-poster.jpg';
+import InvitePosterImg from '@/assets/images/invite-poster.jpg';
 
-class InvitePoster extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      shareModelVisible: false,
-    };
-  }
-
-  render() {
-    return (
-      <View style={{flex: 1}}>
-        <ImageBackground
-          // source={{uri: InvitePosterImg}}
-          source={require('../../../assets/images/invite-poster.jpg')}
-          style={{width: '100%', height: '100%'}}
-          resizeMode={'cover'}>
-          <CardView>
-            <VerifyCodeText>UUUUUU</VerifyCodeText>
-          </CardView>
-        </ImageBackground>
-      </View>
-    );
-  }
-}
-
+const InvitePoster = props => {
+  return (
+    <View style={{flex: 1, height: 300, width: 400, position: 'relative'}}>
+      <Image
+        source={require('../../../assets/images/invite-poster.jpg')}
+        style={{height: 650, width: 400, paddingTop: 10, marginLeft: 5, marginRight: 5}}
+        resizeMode={'cover'} />
+      <CardView>
+        <VerifyCodeText>{props.inviteCode || 'UUUUUU'}</VerifyCodeText>
+      </CardView>
+    </View>
+  );
+};
 const CardView = styled(View)`
   display: flex;
   align-items: center;
   flex-direction: column;
   position: absolute;
-  top: 430px;
+  top: 320;
   left: 0;
   right: 0;
 `;
