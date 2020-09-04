@@ -51,42 +51,6 @@ export const PostDetailStyle = {
   `,
 };
 
-export const CommentStyle = {
-  CommentWrapper: styled(View)`
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 20px;
-  `,
-  CommentTitle: styled(Text)`
-    font-size: 15px;
-    font-weight: 500;
-  `,
-  CommentInfo: styled(View)`
-    flex-direction: row;
-    align-items: center;
-  `,
-  CommentContent: styled(View)`
-    border-bottom-color: #ebebeb;
-    border-bottom-width: 1px;
-    padding-bottom: 10px;
-  `,
-  CommentText: styled(Text)`
-    font-size: 13px;
-    margin-top: 11px;
-    margin-bottom: 11px;
-  `,
-  CommentMore: styled(Text)`
-    padding-left: 14px;
-    padding-right: 14px;
-    padding-top: 11px;
-    padding-bottom: 11px;
-    background-color: #f2f3f5;
-    color: #bdbdbd;
-    margin-bottom: 11px;
-    font-size: 12px;
-  `,
-};
-
 // padding-bottom: 11px;
 // padding-top: 11px;
 // padding-left: 14px;
@@ -143,5 +107,41 @@ export const CommentActionStyle = {
     font-size: 13px;
     margin-left: 10px;
     margin-right: 10px;
+  `,
+};
+
+export const CommentStyle = {
+  CommentWrapper: styled(View)`
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 20px;
+  `,
+  CommentTitle: styled(Text)`
+    font-size: 15px;
+    font-weight: 500;
+  `,
+  CommentInfo: styled(View)`
+    flex-direction: row;
+    align-items: center;
+  `,
+  CommentContent: styled(View)`
+    border-bottom-color: #ebebeb;
+    border-bottom-width: 1px;
+    padding-bottom: 10px;
+  `,
+  CommentText: styled(Text)`
+    font-size: 13px;
+    margin-top: 11px;
+    margin-bottom: 11px;
+  `,
+  CommentMore: styled(Text)`
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    background-color: #f2f3f5;
+    color: #bdbdbd;
+    margin-bottom: 11px;
+    font-size: 12px;
   `,
 };

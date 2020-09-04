@@ -3,7 +3,8 @@ import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import {HeaderStyle, BottomStyle, BaseTopicStyle, BaseArticleStyle} from '@/components/Item/style';
-import FastImg from "@/components/FastImg"
+import FastImg from '@/components/FastImg';
+
 const {
   HeaderView,
   ContentView,
@@ -200,7 +201,7 @@ export const BaseTopic = props => {
   const {data} = props;
   const navigation = useNavigation();
   const goTopicDetail = () => {
-    navigation.navigate('PostDetail', {topicId: data.id, from: 'list'});
+    navigation.navigate('ArticleDetail', {topicId: data.id, from: 'list'});
   };
   return (
     <TouchableOpacity

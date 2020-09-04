@@ -20,15 +20,33 @@ export const createTopic = async data => {
   return res.data;
 };
 
-// 获取帖子详情
-export async function getTopic(id) {
+export const getTopic = async id => {
   const res = await request({
     url: `/api/v1/topics/${id}`,
     method: 'GET',
   });
+  return res;
+};
 
-  return res.data;
-}
+// 获取帖子详情
+// export async function getTopic(id) {
+//   const res = await request({
+//     url: `/api/v1/topics/${id}`,
+//     method: 'GET'
+//   })
+
+//   return res.data
+// }
+
+// 获取帖子详情
+// export async function getTopic(id) {
+//   const res = await request({
+//     url: `/api/v1/topics/${id}`,
+//     method: 'GET',
+//   });
+
+//   return res.data;
+// }
 
 //帖子列表
 // export async function getTopicList(params, queryUrl = '') {
