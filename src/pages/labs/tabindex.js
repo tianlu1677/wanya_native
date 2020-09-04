@@ -1,72 +1,186 @@
 import React, {Component} from 'react';
-import {SafeAreaView, Dimensions, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
-// import ViewPager from '@react-native-community/viewpager';
-// import ScrollableTabView, {ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {TabView, SceneMap} from 'react-native-tab-view';
-import TabViewList from '../../components/TabView';
-
-const FirstRoute = () => <View style={[styles.scene, {backgroundColor: '#ff4081'}]} />;
-
-const SecondRoute = () => <View style={[styles.scene, {backgroundColor: '#673ab7'}]} />;
-
-const initialLayout = {width: Dimensions.get('window').width};
-// import SkeletonContent from 'react-native-skeleton-content';
-
-
-class TabIndex extends Component {
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import Helper from '../../utils/helper';
+import Geolocation from 'react-native-geolocation-service';
+import GetLocation from '@/components/GetLocation';
+import {connect} from 'react-redux';
+import ViewShot from 'react-native-view-shot';
+import Toast from '@/components/Toast';
+// import {dispatchSetAuthToken} from '@/redux/actions';
+//
+// @connect(state => state.login, {
+//   dispatchSetAuthToken,
+// })
+class Mine extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      index: 0,
-      routes: [
-        {key: 'first', title: 'First'},
-        {key: 'second', title: 'Second'},
-      ],
+      modalVisible: false,
+      coin_data: [],
+      loading: false,
+      showCap: false,
     };
+    this.auth_token = '';
   }
 
-  onChangeTab = (index, tab) => {
-    console.log('index', index, tab);
-    this.setState({index: index});
+  componentDidMount() {
+    this.auth_token = Helper.getData('auth_token');
+  }
+
+  componentDidUpdate() {
+    this.auth_token = Helper.getData('auth_token');
+  }
+
+  clearAllCatch = async () => {
+    try {
+      Helper.clearAllData();
+    } catch (e) {
+      console.log('e', e);
+    }
+    this.props.dispatchSetAuthToken('');
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{name: 'AdminPhoneLogin'}],
+    });
   };
 
+  makeImage = () => {
+    let that = this
+    this.setState({showCap: true});
+
+    setTimeout(() => {
+      this.refs.viewShot.capture().then(uri => {
+        console.log('do something with ', uri);
+      });
+    }, 300)
+
+
+  };
+
+  showToast = () => {
+    Toast.showLoading('This is a default toast', {
+      maskColor: 'red'
+    })
+    setTimeout(() => {
+      Toast.hide()
+    }, 1000)
+  }
+
+  getPosition = () => {
+    console.log('xxxx')
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+
+        // {"coords": {"accuracy": 65, "altitude": 84.75999954223632, "altitudeAccuracy": 6.223368346853014, "heading": -1, "latitude": 39.907174015590265, "longitude": 116.46947545239904, "speed": -1}, "timestamp": 1599201969161.0908}
+      },
+      error => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
+    );
+    // navigator.geolocation.getCurrentPosition(
+    //   position => {
+    //     const location = JSON.stringify(position);
+    //
+    //     this.setState({ location });
+    //   },
+    //   error => alert(error.message),
+    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    // );
+    // this.props.navigation.navigate('HashtagDetail', {hashtag: '滑板'});
+  }
   render() {
     return (
-      <View style={{flex: 1}}>
-        {/*<SkeletonContent*/}
-        {/*  containerStyle={{ flex: 1, width: 300 }}*/}
-        {/*  isLoading={false}*/}
-        {/*  layout={[*/}
-        {/*    { key: 'someId', width: 220, height: 20, marginBottom: 6 },*/}
-        {/*    { key: 'someOtherId', width: 180, height: 20, marginBottom: 6 }*/}
-        {/*  ]}*/}
-        {/*>*/}
-        {/*  <Text style={styles.normalText}>Your content</Text>*/}
-        {/*  <Text style={styles.bigText}>Other content</Text>*/}
-        {/*</SkeletonContent>*/}
+      <View style={{paddingTop: 100}}>
+        {/*<Text>{this.auth_token}</Text>*/}
+        <Text>Mine</Text>
+        <Button
+          title={'去登录'}
+          onPress={() => {
+            this.props.navigation.navigate('AdminPhoneLogin');
+          }}
+        />
+        <Button title={'显示自己的toast'} onPress={this.showToast} />
+        <Button title={'清除所有缓存'} onPress={this.clearAllCatch} />
+        <Button
+          title={'视频页面'}
+          onPress={() => {
+            this.props.navigation.navigate('VideoDetail');
+          }}
+        />
+        {/*https://github.com/Agontuk/react-native-geolocation-service*/}
+        <Button
+          title={'获取当前地理位置'}
+          onPress={this.getPosition}
+        />
+
+        <Button
+          title={'去发布帖子'}
+          onPress={() => {
+            this.props.navigation.navigate('NewTopic');
+          }}
+        />
+
+        <Button
+          title={'去话题页'}
+          onPress={() => {
+            this.props.navigation.navigate('HashtagDetail', {hashtag: '滑板'});
+          }}
+        />
+        <Button
+          title={'去VideoDetail'}
+          onPress={() => {
+            this.props.navigation.navigate('VideoDetail', {hashtag: '滑板'});
+          }}
+        />
+        <Button
+          title={'去场地详情页'}
+          onPress={() => {
+            this.props.navigation.navigate('SpaceDetail', {spaceId: 2});
+          }}
+        />
+
+        <Button
+          title={'去实验室页面'}
+          onPress={() => {
+            this.props.navigation.navigate('LabIndex');
+          }}
+        />
+        <Button
+          title={'微信登录'}
+          onPress={() => {
+            this.props.navigation.navigate('SocialLogin');
+          }}
+        />
+        <Button
+          title={'去我的邀请'}
+          onPress={() => {
+            this.props.navigation.navigate('InviteDetail');
+          }}
+        />
+        <Button
+          title={'去我的设置'}
+          onPress={() => {
+            this.props.navigation.navigate('Settings');
+          }}
+        />
+
+        <Button title={'去截图'} onPress={this.makeImage} />
+        {
+          this.state.showCap &&  <ViewShot ref="viewShot" options={{format: 'jpg', quality: 0.9}}>
+            <Text>...Something to rasterize...</Text>
+          </ViewShot>
+        }
+
+
+        <GetLocation handleClick={(msg) => {console.log('mgs', msg)}}>
+          <Text style={{height: 50, fontSize: 20}}>获取城市信息</Text>
+        </GetLocation>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    // marginTop: 0,
-  },
-  icon: {
-    width: 300,
-    height: 300,
-    alignSelf: 'center',
-  },
-  normalText: {
-    fontSize: 400,
-  },
-  bigText: {
-    fontSize: 300
-  },
-  scene: {
-    flex: 1,
-  },
-});
-export default TabIndex;
+export default Mine;
