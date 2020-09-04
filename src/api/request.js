@@ -67,10 +67,10 @@ axios.interceptors.response.use(
           hideOnPress: true,
           delay: 0,
         });
-        RootNavigation.reset({
-          index: 0,
-          routes: [{name: 'Recommend'}],
-        });
+        // RootNavigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'Recommend'}],
+        // });
         return Promise.reject(error);;
       // console.log('401, 未登录')
       // if (error.response.data.error === 'Your account is locked.') {
