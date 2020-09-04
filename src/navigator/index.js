@@ -5,10 +5,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSelector} from 'react-redux';
-
+import { navigationRef } from "@/navigator/root-navigation"
 import {routers, tabRouters} from './config'; //router 配置
 
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+
+import Recommend from '@/pages/home/Recommend';
+import Mine from '@/pages/mine/mine'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -113,7 +116,7 @@ function MainStackList() {
           fontWeight: 'bold',
         },
       })}>
-      <MainStack.Screen name="Newtopic" component={Render} options={{headerShown: false}} />
+      <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
       {routers.map(route => {
         const render = props => {
           const Components = route.component;
@@ -142,8 +145,8 @@ function MainStackList() {
 const Navigation = () => {
   const login = useSelector(state => state.login);
   return (
-    <NavigationContainer>
-      {!login.auth_token ? AuthStackList() : MainStackList()}
+    <NavigationContainer ref={navigationRef}>
+      <>{!login.auth_token ? AuthStackList() : MainStackList() }</>
     </NavigationContainer>
   );
 };

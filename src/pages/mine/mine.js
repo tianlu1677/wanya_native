@@ -5,7 +5,7 @@ import Geolocation from 'react-native-geolocation-service';
 import GetLocation from '@/components/GetLocation';
 import {connect} from 'react-redux';
 import ViewShot from 'react-native-view-shot';
-
+import Toast from '@/components/Toast';
 // import {dispatchSetAuthToken} from '@/redux/actions';
 //
 // @connect(state => state.login, {
@@ -57,6 +57,14 @@ class Mine extends Component {
 
   };
 
+  showToast = () => {
+    Toast.showLoading('This is a default toast', {
+      maskColor: 'red'
+    })
+    setTimeout(() => {
+      Toast.hide()
+    }, 1000)
+  }
   render() {
     return (
       <View style={{paddingTop: 100}}>
@@ -68,6 +76,7 @@ class Mine extends Component {
             this.props.navigation.navigate('AdminPhoneLogin');
           }}
         />
+        <Button title={'显示自己的toast'} onPress={this.showToast} />
         <Button title={'清除所有缓存'} onPress={this.clearAllCatch} />
         <Button
           title={'视频页面'}

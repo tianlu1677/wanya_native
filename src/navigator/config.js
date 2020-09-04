@@ -52,11 +52,11 @@ import InviteLogin from '@/pages/sessions/invite-login';
 import WebView from '@/pages/webview/webview';
 
 export const tabRouters = [
-  // {
-  //   name: 'NewTopic',
-  //   component: NewTopic,
-  //   options: {title: '发布'},
-  // },
+  {
+    name: 'NewTopic',
+    component: NewTopic,
+    options: {title: '发布'},
+  },
   {
     name: 'Recommend',
     component: Recommend,
@@ -81,6 +81,12 @@ const homeRouter = [
     options: {title: '帖子详情'},
     safeArea: false,
   },
+  // {
+  //   name: 'Recommend',
+  //   component: Recommend,
+  //   options: {title: '推荐'},
+  //   safeArea: false,
+  // },
 ];
 
 const newTopicRouter = [
