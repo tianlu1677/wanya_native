@@ -1,7 +1,6 @@
 // 首页
-import Recommend from '@/pages/home/Recommend';
-import PostDetail from '@/pages/home/postDetail';
-import VideoDetail from '@/pages/home/VideoDetail';
+import Recommend from '@/pages/home/recommend';
+import VideoDetail from '@/pages/home/videoDetail';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
@@ -15,9 +14,6 @@ import TopicDetail from '@/pages/topics/topic-detail';
 import ArticleDetail from '@/pages/articles/article-detail';
 
 // 发布
-// import NewTopic from '@/pages/home/newtopic';
-import TopicIndex from '@/pages/home/topicIndex';
-import MentionAccounts from '@/pages/home/MentionAccounts';
 
 // 圈子
 import NodeIndex from '@/pages/nodes/node-index';
@@ -79,16 +75,12 @@ export const tabRouters = [
   },
 ];
 
-const homeRouter = [
-  {
-    name: 'PostDetail',
-    component: PostDetail,
-    options: {title: '帖子详情'},
-    safeArea: false,
-  },
-];
-
 const topicRouter = [
+  {
+    name: 'TopicDetail',
+    component: TopicDetail,
+    options: {title: '帖子详情'},
+  },
   {
     name: 'NewTopic',
     component: NewTopic,
@@ -115,6 +107,7 @@ const topicRouter = [
     options: {title: '添加圈子'},
   },
 ];
+
 const articleRouter = [
   {
     name: 'ArticleDetail',
@@ -150,7 +143,6 @@ const nodeRouter = [
 ];
 
 export const routers = [
-  ...homeRouter,
   ...topicRouter,
   ...articleRouter,
   ...spaceRouter,

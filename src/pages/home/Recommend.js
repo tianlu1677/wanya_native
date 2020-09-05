@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
 import TabViewList from '@/components/TabView';
-import PostList from '@/components/List/PostList';
-import DoubleList from '@/components/List/DoubleList';
+import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('follow');
@@ -13,11 +13,11 @@ const Recommend = props => {
   };
 
   const FollowList = () => {
-    return <PostList request={{api: getRecommendPosts}} />;
+    return <SingleList request={{api: getRecommendPosts}} />;
   };
 
   const LastedList = () => {
-    return <PostList request={{api: getRecommendPosts}} />;
+    return <SingleList request={{api: getRecommendPosts}} />;
   };
 
   return (

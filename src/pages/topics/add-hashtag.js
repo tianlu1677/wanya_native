@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {getHashtagList} from '@/api/hashtag_api';
 import * as action from '@/redux/constants';
-import TopicList from '@/components/List/TopicList';
+import TopicList from '@/components/List/topic-list';
 import {Search} from '@/components/NodeComponents';
 
 const AddHashTag = () => {

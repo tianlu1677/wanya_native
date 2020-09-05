@@ -26,13 +26,9 @@ Bottom(Like, Comment, Share)
 
 # 页面组件
 
-1. 首页（index）
+1. 首页（recommend）
 
-- 推荐（doubleList）
-- 关注 (postList)
-- 最新 (postLIst)
-
-2. 帖子详情页（postDetail）
+2) 帖子详情页（postDetail）
 
 - 中间文本封装成组件(文本中显示，纯文本 + @我 + #话题 ) \*
 - 评论列表(组件)
@@ -66,7 +62,7 @@ SwiperImage
 
 ## 首页
 
-- home/recommend.js (HomeRecommend 首页模式) 
+- home/recommend.js (HomeRecommend 首页模式)
 - home/visitor_recommend.js (VisitorRecommend 游客模式随便看看)
 
 ## 创建帖子
@@ -96,7 +92,7 @@ SwiperImage
 
 ## 话题
 
-- hashtags/hashtag-detail (HashtagDetail 话题详情页) 
+- hashtags/hashtag-detail (HashtagDetail 话题详情页)
 
 ## 场地
 
@@ -106,7 +102,7 @@ SwiperImage
 ## 我的页面(mine)
 
 - mine/account-detail ( MineDetail 我的页面 ) x
-- mine/invite-detail (InviteDetail 我的邀请详情页) 
+- mine/invite-detail (InviteDetail 我的邀请详情页)
 - mine/setting-index (SettingIndex 设置详情页)
 - mine/settings/edit-account (SettingsEditAccount 设置编辑我的页面)
 - mine/settings/feedback (SettingsFeedback 反馈页面)
@@ -128,11 +124,9 @@ SwiperImage
 
 ## 海报
 
-- 邀请码海报 
+- 邀请码海报
 - 帖子详情海报 x
 - 文章海报 x
-
-
 
 accounts/account-nodes
 accounts/account-list

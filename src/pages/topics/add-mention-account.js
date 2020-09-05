@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getAccountFollowers} from '@/api/account_api';
 import {searchApi} from '@/api/search_api';
 import * as action from '@/redux/constants';
-import {MentiosAccountList} from '@/components/List/AccountList';
+import {MentiosAccountList} from '@/components/List/account-list';
 import {Search} from '@/components/NodeComponents';
 
 import {BaseSearchText as styles} from '@/styles/baseCommon';

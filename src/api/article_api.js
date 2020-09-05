@@ -9,6 +9,26 @@ export const getArticle = async id => {
   return res;
 };
 
+//文章点赞
+export const createArticleAction = async params => {
+  const res = await request({
+    url: `/api/v1/articles/${params.id}/create_actions`,
+    method: 'POST',
+    data: {type: params.type},
+  });
+  return res;
+};
+
+//取消点赞
+export const destroyArticleAction = async params => {
+  const res = await request({
+    url: `/api/v1/articles/${params.id}/destroy_actions`,
+    method: 'POST',
+    data: {type: params.type},
+  });
+  return res;
+};
+
 // export async function getArticle(id) {
 //   const res = await request({
 //     url: `/api/v1/articles/${id}`,
@@ -30,25 +50,25 @@ export async function getArticleList(params, queryUrl = '') {
 
 // 点赞，收藏, 分享, 查看
 // action_type(praise, star, share, view)
-export async function createArticleAction(id, type) {
-  const res = await request({
-    url: `/api/v1/articles/${id}/create_actions`,
-    method: 'POST',
-    data: {
-      type: type,
-    },
-  });
-  return res.data;
-}
+// export async function createArticleAction(id, type) {
+//   const res = await request({
+//     url: `/api/v1/articles/${id}/create_actions`,
+//     method: 'POST',
+//     data: {
+//       type: type,
+//     },
+//   });
+//   return res.data;
+// }
 
 // 取消点赞,收藏
-export async function destroyArticleAction(id, type) {
-  const res = await request({
-    url: `/api/v1/articles/${id}/destroy_actions`,
-    method: 'POST',
-    data: {
-      type: type,
-    },
-  });
-  return res.data;
-}
+// export async function destroyArticleAction(id, type) {
+//   const res = await request({
+//     url: `/api/v1/articles/${id}/destroy_actions`,
+//     method: 'POST',
+//     data: {
+//       type: type,
+//     },
+//   });
+//   return res.data;
+// }

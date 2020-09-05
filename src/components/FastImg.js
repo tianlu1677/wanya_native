@@ -30,5 +30,4 @@ const FastImg = props => {
   );
 };
 
-
 export default FastImg;

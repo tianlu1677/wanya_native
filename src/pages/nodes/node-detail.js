@@ -4,8 +4,7 @@ import Loading from '@/components/Loading';
 import {JoinButton, JoinAccounts} from '@/components/NodeComponents';
 import {getNodeDetail, getPosts} from '@/api/node_api';
 import {getTopicList} from '@/api/topic_api';
-import PostList from '@/components/List/PostList';
-import DoubleList from '@/components/List/DoubleList';
+import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 
 import {NodeDetailStyles as styles} from './styles';
@@ -15,16 +14,16 @@ const defaultCoverUrl =
 
 const NodeDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
-  const [nodeId, setNodeId] = useState('');
+  const [nodeId] = useState(route.params.nodeId);
   const [currentKey, setCurrentKey] = useState('publish');
   // const navigation = useNavigation();
 
-  useLayoutEffect(async () => {
-    setNodeId(route.params.nodeId)
-    navigation.setOptions({
-      headerShown: true,
-    });
-  }, [navigation]);
+  // useLayoutEffect(async () => {
+  //   // setNodeId(route.params.nodeId)
+  //   navigation.setOptions({
+  //     headerShown: true,
+  //   });
+  // }, [navigation]);
 
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
@@ -33,35 +32,18 @@ const NodeDetail = ({navigation, route}) => {
 
   const onFollowNode = () => {
     if (detail.followed) {
-      setDetail({...detail, followed: false})
+      setDetail({...detail, followed: false});
     } else {
-      setDetail({...detail, followed: true})
+      setDetail({...detail, followed: true});
     }
-    loadData()
-  }
-
-  // const PublishList = () => {
-  //   const queryUrl = `q[node_id_eq]=${id}&q[s]=published_at desc&show_followed=on`;
-  //   return <PostList request={{api: getPosts, params: {id: queryUrl}}} />;
-  // };
-
-  // const PostsList = () => {
-  //   const queryUrl = `q[node_id_eq]=${id}&q[s]=praises_count desc&show_followed=on`;
-  //   return <DoubleList request={{api: getTopicList, params: {id: queryUrl}}} />;
-  // };
-
-  // const ArticleList = () => {
-  //   return <PostList request={{api: getAccountPosts, params: {id: id, type: 'praise'}}} />;
-  // };
-
-  // const TopicList = () => {
-  //   return <PostList request={{api: getAccountPosts, params: {id: id, type: 'praise'}}} />;
-  // };
+    loadData();
+  };
 
   useEffect(() => {
     loadData();
-  }, [nodeId]);
+  }, []);
 
+  // return <Text>3232</Text>;
   return detail ? (
     <View style={styles.wrapper}>
       <View style={styles.header}>
@@ -102,28 +84,30 @@ const NodeDetail = ({navigation, route}) => {
       </View>
       <TabViewList
         currentKey={currentKey}
-        tabData={[
-          // {
-          //   key: 'publish',
-          //   title: '动态',
-          //   component: PublishList,
-          // },
-          // {
-          //   key: 'posts',
-          //   title: '帖子',
-          //   component: PostsList,
-          // },
-          // {
-          //   key: 'article',
-          //   title: '文章',
-          //   component: ArticleList,
-          // },
-          // {
-          //   key: 'topic',
-          //   title: '话题',
-          //   component: TopicList,
-          // },
-        ]}
+        tabData={
+          [
+            // {
+            //   key: 'publish',
+            //   title: '动态',
+            //   component: PublishList,
+            // },
+            // {
+            //   key: 'posts',
+            //   title: '帖子',
+            //   component: PostsList,
+            // },
+            // {
+            //   key: 'article',
+            //   title: '文章',
+            //   component: ArticleList,
+            // },
+            // {
+            //   key: 'topic',
+            //   title: '话题',
+            //   component: TopicList,
+            // },
+          ]
+        }
         onChange={key => setCurrentKey(key)}
       />
     </View>

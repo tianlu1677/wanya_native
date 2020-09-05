@@ -18,7 +18,7 @@ const AuthStack = createStackNavigator();
 function HomeTabList() {
   return (
     <Tab.Navigator
-      initialRouteName={'NewTopic'}
+      initialRouteName={'Recommend'}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName = 'logo-react';
@@ -113,7 +113,8 @@ function MainStackList() {
           fontWeight: 'bold',
         },
       })}>
-      <MainStack.Screen name="Newtopic" component={Render} options={{headerShown: false}} />
+      <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
+
       {routers.map(route => {
         const render = props => {
           const Components = route.component;

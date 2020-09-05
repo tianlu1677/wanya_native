@@ -31,6 +31,33 @@ export const createComment = async (data = {}) => {
   return res;
 };
 
+//点赞
+export const praiseComment = async id => {
+  const res = await request({
+    url: `/api/v1/comments/${id}/praise`,
+    method: 'POST',
+  });
+  return res;
+};
+
+//取消点赞
+export const unpraiseComment = async id => {
+  const res = await request({
+    url: `/api/v1/comments/${id}/unpraise`,
+    method: 'POST',
+  });
+  return res;
+};
+
+// export async function praiseComment(comment_id) {
+//   const res = await request({
+//     url: `/api/v1/comments/${comment_id}/praise`,
+//     method: 'POST'
+//   })
+
+//   return res.data
+// }
+
 // export async function getTopicCommentList(topic_id, params = {}) {
 //   const res = await request({
 //     url: `/api/v1/topics/${topic_id}/comments`,
@@ -84,21 +111,21 @@ export async function deleteComment(comment_id) {
 }
 
 // 点赞
-export async function praiseComment(comment_id) {
-  const res = await request({
-    url: `/api/v1/comments/${comment_id}/praise`,
-    method: 'POST',
-  });
+// export async function praiseComment(comment_id) {
+//   const res = await request({
+//     url: `/api/v1/comments/${comment_id}/praise`,
+//     method: 'POST',
+//   });
 
-  return res.data;
-}
+//   return res.data;
+// }
 
 // 取消点赞
-export async function unpraiseComment(comment_id) {
-  const res = await request({
-    url: `/api/v1/comments/${comment_id}/unpraise`,
-    method: 'POST',
-  });
+// export async function unpraiseComment(comment_id) {
+//   const res = await request({
+//     url: `/api/v1/comments/${comment_id}/unpraise`,
+//     method: 'POST',
+//   });
 
-  return res.data;
-}
+//   return res.data;
+// }

@@ -4,27 +4,21 @@ import {getSpaceDetail} from '@/api/space_api';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {PlayScore, Avator} from '@/components/NodeComponents';
-import SingleList from '@/components/List/SingleList';
-import DoubleList from '@/components/List/DoubleList';
+import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import {getSpacePosts} from '@/api/space_api';
 
 import {SpaceDetailStyles as styles} from './styles';
 
 const SpaceDetail = ({navigation, route}) => {
-  const [spaceId, setSpaceId] = useState('');
+  const [spaceId] = useState(route.params.spaceId);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('lasted');
 
   useLayoutEffect(() => {
-    let spaceId = route.params.spaceId;
-
-    setSpaceId(spaceId);
-    navigation.setOptions({
-
-    });
+    navigation.setOptions({});
   }, [navigation]);
-
 
   const loadData = async () => {
     const space = await getSpaceDetail(spaceId);
@@ -35,11 +29,19 @@ const SpaceDetail = ({navigation, route}) => {
   };
 
   const LastedList = () => {
-    return <SingleList request={{api: getSpacePosts, params: {id: route.params.spaceId, type: 'published_order'}}} />;
+    return (
+      <SingleList
+        request={{api: getSpacePosts, params: {id: route.params.spaceId, type: 'published_order'}}}
+      />
+    );
   };
 
   const HotList = () => {
-    return <DoubleList request={{api: getSpacePosts, params: {id: route.params.spaceId, type: 'hot_order'}}} />;
+    return (
+      <DoubleList
+        request={{api: getSpacePosts, params: {id: route.params.spaceId, type: 'hot_order'}}}
+      />
+    );
   };
 
   useEffect(() => {
