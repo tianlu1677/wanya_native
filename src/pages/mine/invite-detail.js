@@ -1,10 +1,10 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {SafeAreaView, Modal, StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native';
+import React, {Component, useState, useLayoutEffect, useEffect, useRef} from 'react';
+import {SafeAreaView, Modal, StyleSheet, View, TouchableOpacity, Image, Text, BackgroudImage} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
-import Helper from '../../utils/helper';
-import {Avator} from '../../components/NodeComponents';
+import Helper from '@/utils/helper';
+import {Avator} from '@/components/NodeComponents';
 // import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
 import ViewShot from 'react-native-view-shot';
@@ -12,16 +12,18 @@ import ViewShot from 'react-native-view-shot';
 import {getInviteCode, getAccountInviteList} from '../../api/account_api';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {getCurrentAccount} from '@/api/mine_api';
-import Toast from 'react-native-root-toast';
+import Toast from '@/components/Toast';
 import {Button} from 'react-native-elements';
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
   const [accountList, setAccountList] = useState([]);
   const [shareModelVisible, setShareModelVisible] = useState(false);
+  const [shareUri, setshareUri] = useState('');
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
 
+  const refShot = useRef(null)
   useLayoutEffect(() => {
     navigation.setOptions({});
   }, [navigation]);
@@ -43,7 +45,7 @@ const InviteDetail = ({navigation, route}) => {
   const onCopy = () => {
     let message = `我的顽鸦邀请码是 ${inviteCode}`;
     Helper.setClipboard(message);
-    Toast.show('已复制', {position: Toast.positions.TOP});
+    Toast.show('已复制');
   };
 
   //https://github.com/little-snow-fox/react-native-wechat-lib
@@ -61,7 +63,7 @@ const InviteDetail = ({navigation, route}) => {
   };
   const shareTimeline = () => {
     // WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
-    console.log('xxxxxxxxxxx');
+    // console.log('xxxxxxxxxxx');
     try{
       WeChat.shareImage(
         {
@@ -88,9 +90,10 @@ const InviteDetail = ({navigation, route}) => {
     // );
   };
 
-  const onCapture1 = uri => {
-    console.log('do something with ', uri);
-  };
+  const onCapture = (uri) => {
+    console.log('uri', uri)
+  }
+
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -146,16 +149,16 @@ const InviteDetail = ({navigation, route}) => {
         }}
       />
 
-      {/*<ViewShot onCapture={() => { onCapture1() } } captureMode="mount">*/}
-      {/*  <Text style={{height: 100}}>...Something to rasterize...</Text>*/}
-      {/*</ViewShot>*/}
       <Modal
         animationType="slide"
         transparent={true}
         visible={shareModelVisible}
-        onRequestClose={() => {
-          alert('Modal has been closed.');
-        }}>
+        onRequestClose={() => {}}>
+        {
+          <ViewShot onCapture={() => { onCapture() } } options={{ format: "jpg", quality: 0.9 }}>
+            <InvitePoster inviteCode={inviteCode} />
+          </ViewShot>
+        }
         <ModelWrap
           onPress={() => {
             setShareModelVisible(false);

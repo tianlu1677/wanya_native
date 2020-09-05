@@ -1,6 +1,6 @@
-app_identifier("org.reactjs.native.example.wanya-native") # The bundle identifier of your app
-apple_id("") # Your Apple email address
+app_identifier("com.vanyah.ios") # The bundle identifier of your app
+apple_id("tianlu1677@gmail.com") # Your Apple email address
 
-
+team_id "K7KF6RDWDW"
 # For more information about the Appfile, see:
 #     https://docs.fastlane.tools/advanced/#appfile

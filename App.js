@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
+import CodePush from "react-native-code-push";
+import checkHotUpdate from '@/utils/codepush';
 import {Text} from 'react-native';
 // const emitter = emitt()
 
@@ -13,6 +15,14 @@ import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
 
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
+
+const codePushOptions = {
+  // 设置检查更新的频率
+  // ON_APP_RESUME APP恢复到前台的时候
+  // ON_APP_START APP开启的时候
+  // MANUAL 手动检查
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+};
 
 // Config.API_URL; // 'https://myapi.com'
 // Config.GOOGLE_MAPS_API_KEY; // 'abcdefgh'
@@ -31,6 +41,9 @@ class App extends Component {
     this.loadNetworkInfo();
     this.loadDeviceInfo();
     this.loginAdmin();
+
+    CodePush.disallowRestart(); // 禁止重启
+    checkHotUpdate(CodePush); // 开始检查更新
   }
 
   loginAdmin = () => {    
@@ -83,4 +96,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default CodePush(codePushOptions)(App);

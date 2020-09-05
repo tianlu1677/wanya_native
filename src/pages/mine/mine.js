@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Image, Text, Button} from 'react-native';
 import Helper from '../../utils/helper';
 import Geolocation from 'react-native-geolocation-service';
 import GetLocation from '@/components/GetLocation';
 import {connect} from 'react-redux';
 import ViewShot from 'react-native-view-shot';
-
+import Toast from '@/components/Toast';
 // import {dispatchSetAuthToken} from '@/redux/actions';
 //
 // @connect(state => state.login, {
@@ -57,6 +57,40 @@ class Mine extends Component {
 
   };
 
+  showToast = () => {
+    Toast.showLoading('This is a default toast', {
+      maskColor: 'red'
+    })
+    setTimeout(() => {
+      Toast.hide()
+    }, 1000)
+  }
+
+  getPosition = () => {
+    console.log('xxxx')
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+
+        // {"coords": {"accuracy": 65, "altitude": 84.75999954223632, "altitudeAccuracy": 6.223368346853014, "heading": -1, "latitude": 39.907174015590265, "longitude": 116.46947545239904, "speed": -1}, "timestamp": 1599201969161.0908}
+      },
+      error => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
+    );
+    // navigator.geolocation.getCurrentPosition(
+    //   position => {
+    //     const location = JSON.stringify(position);
+    //
+    //     this.setState({ location });
+    //   },
+    //   error => alert(error.message),
+    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    // );
+    // this.props.navigation.navigate('HashtagDetail', {hashtag: '滑板'});
+  }
   render() {
     return (
       <View style={{paddingTop: 100}}>
@@ -68,6 +102,7 @@ class Mine extends Component {
             this.props.navigation.navigate('AdminPhoneLogin');
           }}
         />
+        <Button title={'显示自己的toast'} onPress={this.showToast} />
         <Button title={'清除所有缓存'} onPress={this.clearAllCatch} />
         <Button
           title={'视频页面'}
@@ -78,32 +113,11 @@ class Mine extends Component {
         {/*https://github.com/Agontuk/react-native-geolocation-service*/}
         <Button
           title={'获取当前地理位置'}
-          onPress={() => {
-            Geolocation.getCurrentPosition(
-              position => {
-                console.log(position);
-              },
-              error => {
-                // See error code charts below.
-                console.log(error.code, error.message);
-              },
-              {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
-            );
-            // navigator.geolocation.getCurrentPosition(
-            //   position => {
-            //     const location = JSON.stringify(position);
-            //
-            //     this.setState({ location });
-            //   },
-            //   error => alert(error.message),
-            //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-            // );
-            // this.props.navigation.navigate('HashtagDetail', {hashtag: '滑板'});
-          }}
+          onPress={this.getPosition}
         />
 
         <Button
-          title={'去发布帖子'}
+          title={'去发布帖子ok'}
           onPress={() => {
             this.props.navigation.navigate('NewTopic');
           }}
@@ -141,7 +155,13 @@ class Mine extends Component {
           }}
         />
         <Button
-          title={'去我的邀请'}
+          title={'去我的邀请yes,,,,,,,,,,,,,,,,,,,'}
+          onPress={() => {
+            this.props.navigation.navigate('InviteDetail');
+          }}
+        />
+        <Button
+          title={'去我的邀请yes,,,,,,,,,,,,,,,,,,,'}
           onPress={() => {
             this.props.navigation.navigate('InviteDetail');
           }}
@@ -160,9 +180,14 @@ class Mine extends Component {
           </ViewShot>
         }
 
+        <Image
+          source={require('../../assets/images/invite-poster.jpg')}
+          style={{width: 200, height: 200}}
+          blurRadius={20}
+        />
 
-        <GetLocation>
-          <Text>获取城市信息</Text>
+        <GetLocation handleClick={(msg) => {console.log('mgs', msg)}}>
+          <Text style={{height: 50, fontSize: 20}}>获取城市信息</Text>
         </GetLocation>
       </View>
     );

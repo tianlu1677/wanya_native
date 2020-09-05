@@ -62,3 +62,6 @@ ios/bundle/
 ios/Podfile.lock
 
 
+*.zip
+
+wanya_apps/*

@@ -3,6 +3,8 @@ import axios from 'axios';
 import qs from 'querystring';
 import Helper from '../utils/helper';
 import Toast from 'react-native-root-toast';
+import * as RootNavigation from '@/navigator/root-navigation';
+
 const VERSION = '1.0.0';
 const BASE_URL = 'https://xinxue.meirixinxue.com';
 
@@ -35,34 +37,46 @@ axios.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     console.log('response error', error);
-    switch (error.code) {
+
+    switch (error.response.status) {
       case 200:
-        // storeData('lock_user', false);
+
         break;
       case 422:
-        // Toast.show(Object.values(error.response.data)[0], {
-        //   containerStyle: {
-        //     width: 200,
-        //   },
-        //   duration: Toast.durations.SHORT,
-        //   position: 0,
-        //   shadow: false,
-        //   animation: true,
-        //   hideOnPress: true,
-        //   delay: 0,
-        // });
-
+        Toast.show(Object.values(error.response.data)[0], {
+          containerStyle: {
+            width: 200,
+          },
+          duration: Toast.durations.SHORT,
+          position: 0,
+          shadow: false,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         break;
       case 400:
         console.log('error', error);
         break;
       case 401:
-        Toast.show('未登录');
-        // console.log('401, 未登录')
-        // if (error.response.data.error === 'Your account is locked.') {
-        //   storeData('lock_user', true);
-        // }
-        break;
+        Toast.show('请重新登录', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.CENTER,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
+        // RootNavigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'Recommend'}],
+        // });
+        return Promise.reject(error);;
+      // console.log('401, 未登录')
+      // if (error.response.data.error === 'Your account is locked.') {
+      //   storeData('lock_user', true);
+      // }
+
       default:
         break;
     }
