@@ -22,6 +22,7 @@ platform :ios do
     gym(
         scheme: "wanya_native",
         export_method: "ad-hoc",
+        clean: true,
         output_directory: "./build"
        )
 

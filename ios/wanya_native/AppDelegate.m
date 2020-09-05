@@ -10,6 +10,8 @@
 #import "UMAnalyticsModule.h"
 #import "UMPushModule.h"
 #import <UMAnalytics/MobClick.h>
+#import "RNBootSplash.h" // <- add the header import
+#import <CodePush/CodePush.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -18,8 +20,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-#import "RNBootSplash.h" // <- add the header import
-#import <CodePush/CodePush.h>
 
 
 // #ifdef DEBUG
