@@ -21,7 +21,7 @@ const AuthStack = createStackNavigator();
 function HomeTabList() {
   return (
     <Tab.Navigator
-      initialRouteName={'NewTopic'}
+      initialRouteName={'Recommend'}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName = 'logo-react';

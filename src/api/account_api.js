@@ -164,22 +164,22 @@ export async function getAccountCounts(id, opts = {types: ''}) {
 }
 
 // 关注用户
-export async function followAccount(id) {
-  const res = await request({
-    url: `/api/v1/accounts/${id}/follow`,
-    method: 'POST',
-  });
-  return res.data;
-}
+// export async function followAccount(id) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${id}/follow`,
+//     method: 'POST',
+//   });
+//   return res.data;
+// }
 
-// 取消关注用户
-export async function unfollowAccount(id) {
-  const res = await request({
-    url: `/api/v1/accounts/${id}/unfollow`,
-    method: 'POST',
-  });
-  return res.data;
-}
+// // 取消关注用户
+// export async function unfollowAccount(id) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${id}/unfollow`,
+//     method: 'POST',
+//   });
+//   return res.data;
+// }
 
 // 我的评论
 export async function getReplyComments(params = {}) {
@@ -382,6 +382,24 @@ export const getAccountPosts = async params => {
     url: `/api/v1/accounts/${params.id}/posts`,
     method: 'GET',
     params,
+  });
+  return res;
+};
+
+// 关注用户
+export const followAccount = async id => {
+  const res = await request({
+    url: `/api/v1/accounts/${id}/follow`,
+    method: 'POST',
+  });
+  return res;
+};
+
+// 取消关注用户
+export const unfollowAccount = async id => {
+  const res = await request({
+    url: `/api/v1/accounts/${id}/unfollow`,
+    method: 'POST',
   });
   return res;
 };

@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {getSpacesList} from '@/api/space_api';
 import * as action from '@/redux/constants';
-import SpaceList from '@/components/List/SpaceList';
+import SpaceList from '@/components/List/space-list';
 import {Search} from '@/components/NodeComponents';
 
 import {SpaceIndexStyles as styles} from './styles';

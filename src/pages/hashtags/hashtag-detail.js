@@ -3,7 +3,7 @@ import {SafeAreaView, StyleSheet, View, Image, Text, Button} from 'react-native'
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import TabViewList from '@/components/TabView';
-import SingleList from '@/components/List/SingleList';
+import SingleList from '@/components/List/single-list';
 import {getHashtagPosts} from '@/api/hashtag_api';
 
 const HashtagDetail = ({navigation, route}) => {

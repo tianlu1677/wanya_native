@@ -1,13 +1,19 @@
 // 首页
-import Recommend from '@/pages/home/Recommend';
-import PostDetail from '@/pages/home/postDetail';
-import VideoDetail from '@/pages/home/VideoDetail';
+import Recommend from '@/pages/home/recommend';
+import VideoDetail from '@/pages/home/videoDetail';
+
+// Topic
+import NewTopic from '@/pages/topics/new-topic';
+import AddMentionAccount from '@/pages/topics/add-mention-account';
+import AddHashTag from '@/pages/topics/add-hashtag';
+import AddSpace from '@/pages/topics/add-space';
+import AddNode from '@/pages/topics/add-node';
+import TopicDetail from '@/pages/topics/topic-detail';
+
+// article
 import ArticleDetail from '@/pages/articles/article-detail';
 
 // 发布
-import NewTopic from '@/pages/home/newtopic';
-import TopicIndex from '@/pages/home/topicIndex';
-import MentionAccounts from '@/pages/home/MentionAccounts';
 
 // 圈子
 import NodeIndex from '@/pages/nodes/node-index';
@@ -53,11 +59,6 @@ import WebView from '@/pages/webview/webview';
 
 export const tabRouters = [
   {
-    name: 'NewTopic',
-    component: NewTopic,
-    options: {title: '发布'},
-  },
-  {
     name: 'Recommend',
     component: Recommend,
     options: {title: '发布'},
@@ -74,36 +75,44 @@ export const tabRouters = [
   },
 ];
 
-const homeRouter = [
+const topicRouter = [
   {
-    name: 'PostDetail',
-    component: PostDetail,
+    name: 'TopicDetail',
+    component: TopicDetail,
     options: {title: '帖子详情'},
-    safeArea: false,
   },
-  // {
-  //   name: 'Recommend',
-  //   component: Recommend,
-  //   options: {title: '推荐'},
-  //   safeArea: false,
-  // },
-];
-
-const newTopicRouter = [
   {
     name: 'NewTopic',
     component: NewTopic,
-    options: {title: '发布'},
+    options: {title: '发布帖子'},
   },
   {
-    name: 'TopicIndex',
-    component: TopicIndex,
-    options: {title: '话题'},
+    name: 'AddHashTag',
+    component: AddHashTag,
+    options: {title: '@话题'},
   },
   {
-    name: 'MentionAccounts',
-    component: MentionAccounts,
+    name: 'AddMentionAccount',
+    component: AddMentionAccount,
     options: {title: '提及人列表'},
+  },
+  {
+    name: 'AddSpace',
+    component: AddSpace,
+    options: {title: '场地列表'},
+  },
+  {
+    name: 'AddNode',
+    component: AddNode,
+    options: {title: '添加圈子'},
+  },
+];
+
+const articleRouter = [
+  {
+    name: 'ArticleDetail',
+    component: ArticleDetail,
+    options: {title: '文章详情'},
   },
 ];
 
@@ -134,8 +143,8 @@ const nodeRouter = [
 ];
 
 export const routers = [
-  ...homeRouter,
-  ...newTopicRouter,
+  ...topicRouter,
+  ...articleRouter,
   ...spaceRouter,
   ...nodeRouter,
   {

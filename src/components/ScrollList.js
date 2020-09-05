@@ -123,6 +123,7 @@ const ScrollList = props => {
       style={[scrollStyle.containter, props.style]}
       numColumns={props.numColumns || 1}
       horizontal={false}
+      ListHeaderComponent={props.ListHeaderComponent || null}
     />
   );
 };
@@ -157,6 +158,7 @@ ScrollList.propTypes = {
   onRefresh: PropTypes.func, // 下拉刷新，加载更多，执行方法
   emptyTitle: PropTypes.string, //数据为空时提示
   renderSeparator: PropTypes.func, // 分割线
+  ListHeaderComponent: PropTypes.func, //
 };
 
 export default ScrollList;

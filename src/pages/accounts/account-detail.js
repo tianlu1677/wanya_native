@@ -6,8 +6,8 @@ import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import {getAccount} from '@/api/account_api';
 import {getAccountPosts} from '@/api/account_api';
-import SingleList from '@/components/List/SingleList';
-import DoubleList from '@/components/List/DoubleList';
+import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 
 import {AccountsDetailStyles as styles} from './style';
@@ -21,7 +21,7 @@ const AccountDetail = ({navigation, route}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({});
-    setAccountId(route.params.accountId)
+    setAccountId(route.params.accountId);
   }, [navigation]);
 
   const loadData = async () => {
