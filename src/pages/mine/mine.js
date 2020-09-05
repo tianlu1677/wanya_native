@@ -117,7 +117,7 @@ class Mine extends Component {
         />
 
         <Button
-          title={'去发布帖子'}
+          title={'去发布帖子ok'}
           onPress={() => {
             this.props.navigation.navigate('NewTopic');
           }}
