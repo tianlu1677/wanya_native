@@ -155,7 +155,13 @@ class Mine extends Component {
           }}
         />
         <Button
-          title={'去我的邀请'}
+          title={'去我的邀请yes,,,,,,,,,,,,,,,,,,,'}
+          onPress={() => {
+            this.props.navigation.navigate('InviteDetail');
+          }}
+        />
+        <Button
+          title={'去我的邀请yes,,,,,,,,,,,,,,,,,,,'}
           onPress={() => {
             this.props.navigation.navigate('InviteDetail');
           }}
