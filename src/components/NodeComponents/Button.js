@@ -9,19 +9,22 @@ const JoinStyles = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 1,
     fontSize: 13,
-    backgroundColor: '#fff',
   },
   joined: {
     color: '#bdbdbd',
+    backgroundColor: '#efefef',
   },
   join: {
-    color: '#000',
+    color: '#fff',
+    backgroundColor: '#000',
   },
 });
 
 export const JoinBtn = props => {
   return (
-    <Text style={[JoinStyles.btn, props.joined ? JoinStyles.joined : JoinStyles.join]}>
+    <Text
+      style={[JoinStyles.btn, props.join ? JoinStyles.joined : JoinStyles.join]}
+      onPress={props.onPress}>
       {props.text}
     </Text>
   );

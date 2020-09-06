@@ -13,6 +13,9 @@ import {useNavigation} from '@react-navigation/native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
+import NodeItem from '@/components/Item/node-item';
+import ScrollList from '@/components/ScrollList';
+
 import IconFont from '@/iconfont';
 import * as action from '@/redux/constants';
 
@@ -53,6 +56,14 @@ const NodeIndex = () => {
     navigation.goBack();
   };
 
+  const renderItem = ({item}) => {
+    return <NodeItem node={item} />;
+  };
+
+  const renderSeparator = () => {
+    return <Text style={styles.separator} />;
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -81,34 +92,21 @@ const NodeIndex = () => {
             key={categorie.id}
             onLayout={e => setLayout(e.nativeEvent.layout, index)}>
             <Text style={styles.cateTitle}>{categorie.name}</Text>
-            <View style={{flex: 1}}>
+            {/* <View></View> */}
+            <ScrollList
+              data={nodes.filter(v => v.category_id === categorie.id)}
+              renderItem={renderItem}
+              renderSeparator={renderSeparator}
+              // style={styles.wrapper}
+            />
+            {/* <View style={{flex: 1}}>
               {nodes
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
-                  <TouchableWithoutFeedback key={node.id} onPress={() => chooseNode(node)}>
-                    <View style={styles.nodeItem}>
-                      <Image
-                        style={styles.nodeImg}
-                        source={{uri: node.cover_url || defaultCoverUrl}}
-                      />
-                      <View style={styles.nodeInfo}>
-                        <View>
-                          <Text style={styles.nodeName}>{node.name}</Text>
-                          <Text style={styles.nodeDesc}>
-                            {node.topics_count}篇帖子 · {node.accounts_count}位
-                            {node.nickname || '圈友'}
-                          </Text>
-                        </View>
-                        {home.savetopic.node && home.savetopic.node.id === node.id ? (
-                          <IconFont name="duigou1" size={16} color={'#000'} style={styles.icon} />
-                        ) : (
-                          <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
-                        )}
-                      </View>
-                    </View>
-                  </TouchableWithoutFeedback>
+                  // <NodeItem node={node} />
+                  <Text>23232</Text>
                 ))}
-            </View>
+            </View> */}
           </View>
         ))}
       </ScrollView>
