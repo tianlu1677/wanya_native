@@ -71,7 +71,20 @@ const MineDetail = ({navigation, route}) => {
             <Text style={styles.nickname}>{account.nickname}</Text>
             <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
           </View>
-          <Text style={styles.invite}>邀请好友</Text>
+          <Text
+            style={styles.invite}
+            onPress={() => {
+              navigation.navigate('InviteDetail');
+            }}>
+            邀请好友
+          </Text>
+          <Text
+            style={styles.invite}
+            onPress={() => {
+              navigation.navigate('Settings');
+            }}>
+            设置
+          </Text>
         </View>
         <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>

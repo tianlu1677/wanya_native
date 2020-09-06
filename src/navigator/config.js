@@ -175,6 +175,21 @@ const accountRouter = [
     component: FollowerAccounts,
     options: {title: '粉丝列表'},
   },
+  {
+    name: 'Settings',
+    component: Settings,
+    options: {title: '设置'},
+  },
+  {
+    name: 'About',
+    component: About,
+    options: {title: '关于顽鸦'},
+  },
+  {
+    name: 'Feedback',
+    component: Feedback,
+    options: {title: '反馈'},
+  },
 ];
 
 export const routers = [
