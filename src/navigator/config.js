@@ -34,6 +34,9 @@ import AccountContent from '@/pages/mine/settings/account-content';
 import EditAccountContent from '@/pages/mine/settings/edit-account-content';
 import Feedback from '@/pages/mine/settings/feedback';
 import AccountDetail from '@/pages/accounts/account-detail';
+import FollowNodes from '@/pages/accounts/follow-nodes';
+import FollowAccounts from '@/pages/accounts/follow-accounts';
+import FollowerAccounts from '@/pages/accounts/follower-accounts';
 
 // 消息通知页面
 import NotifyIndex from '@/pages/notify/notify-index';
@@ -142,16 +145,35 @@ const nodeRouter = [
   },
 ];
 
-export const routers = [
-  ...topicRouter,
-  ...articleRouter,
-  ...spaceRouter,
-  ...nodeRouter,
+const accountRouter = [
   {
     name: 'AccountDetail',
     component: AccountDetail,
     options: {title: '用户详情'},
   },
+  {
+    name: 'FollowNodes',
+    component: FollowNodes,
+    options: {title: '用户圈子'},
+  },
+  {
+    name: 'FollowAccounts',
+    component: FollowAccounts,
+    options: {title: '关注列表'},
+  },
+  {
+    name: 'FollowerAccounts',
+    component: FollowerAccounts,
+    options: {title: '粉丝列表'},
+  },
+];
+
+export const routers = [
+  ...topicRouter,
+  ...articleRouter,
+  ...spaceRouter,
+  ...nodeRouter,
+  ...accountRouter,
   {
     name: 'PhoneLogin',
     component: PhoneLogin,

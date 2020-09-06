@@ -267,15 +267,15 @@ export async function isLearnCourse(account_id) {
 
 // 用户的粉丝列表
 
-export async function getAccountFollowings(account_id, params = {}) {
-  const res = await request({
-    url: `/api/v1/accounts/${account_id}/followings`,
-    method: 'GET',
-    params: params,
-  });
+// export async function getAccountFollowings(account_id, params = {}) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${account_id}/followings`,
+//     method: 'GET',
+//     params: params,
+//   });
 
-  return res;
-}
+//   return res;
+// }
 
 export async function getAccountRecentFollowers(account_id, params = {}) {
   const res = await request({
@@ -366,15 +366,15 @@ export async function getAccountInviteList(data = {}) {
 }
 
 // 用户的粉丝列表
-export const getAccountFollowers = async params => {
-  console.log(params);
-  const res = await request({
-    url: `/api/v1/accounts/${params.id}/followers`,
-    method: 'GET',
-    params,
-  });
-  return res;
-};
+// export const getAccountFollowers = async params => {
+//   console.log(params);
+//   const res = await request({
+//     url: `/api/v1/accounts/${params.id}/followers`,
+//     method: 'GET',
+//     params,
+//   });
+//   return res;
+// };
 
 // 主页 动态publish 喜欢praise 视频publish_video
 export const getAccountPosts = async params => {
@@ -403,3 +403,41 @@ export const unfollowAccount = async id => {
   });
   return res;
 };
+
+// 用户关注列表
+export const getAccountFollowings = async params => {
+  const res = await request({
+    url: `/api/v1/accounts/${params.id}/followings`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
+// 用户粉丝列表
+export const getAccountFollowers = async params => {
+  const res = await request({
+    url: `/api/v1/accounts/${params.id}/followers`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
+// export async function getAccountFollowers(params) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${account_id}/followers`,
+//     method: 'GET',
+//     params
+//   })
+//   return res
+// }
+// export async function getAccountFollowings(account_id, params = {}) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${account_id}/followings`,
+//     method: 'GET',
+//     params: params,
+//   });
+
+//   return res;
+// }

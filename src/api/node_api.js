@@ -29,6 +29,24 @@ export const getPosts = async params => {
   return res.data;
 };
 
+// 我关注的圈子列表
+export const getFollowNodeIndex = async params => {
+  const res = await request({
+    url: '/api/v1/nodes/followed',
+    method: 'GET',
+    data: params,
+  });
+  return res;
+};
+
+// export async function getFollowNodeIndex(params = {account_id: ''}) {
+//   const res = await request({
+//     url: '/api/v1/nodes/followed',
+//     method: 'GET',
+//     data: params,
+//   });
+//   return res.data.nodes;
+// }
 // export async function getPosts(params = {}, queryUrl = '') {
 //   const res = await request({
 //     url: `/api/v1/posts?${queryUrl}`,
@@ -58,15 +76,15 @@ export async function getRecommendNodeList(params = {}) {
   return res.data.nodes;
 }
 
-// 我关注的圈子列表
-export async function getFollowNodeIndex(params = {account_id: ''}) {
-  const res = await request({
-    url: '/api/v1/nodes/followed',
-    method: 'GET',
-    data: params,
-  });
-  return res.data.nodes;
-}
+// // 我关注的圈子列表
+// export async function getFollowNodeIndex(params = {account_id: ''}) {
+//   const res = await request({
+//     url: '/api/v1/nodes/followed',
+//     method: 'GET',
+//     data: params,
+//   });
+//   return res.data.nodes;
+// }
 
 // 圈子详情
 
