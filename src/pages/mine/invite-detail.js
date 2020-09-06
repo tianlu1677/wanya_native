@@ -24,16 +24,37 @@ import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
+import { captureRef } from "react-native-view-shot";
+//
+// function useCapture() {
+//   const captureViewRef = useRef();
+//
+//   function onCapture() {
+//     captureRef(captureViewRef, {
+//       format: "jpg",
+//       quality: 0.9
+//     }).then(
+//       uri => console.log('uri,', uri),
+//       error => alert("Oops, snapshot failed", error));
+//   }
+//
+//   return {
+//     captureViewRef,
+//     onCapture
+//   };
+// }
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
   const [accountList, setAccountList] = useState([]);
   const [shareModelVisible, setShareModelVisible] = useState(false);
-  const [shareUri, setshareUri] = useState('');
+  const [shareUri, setShareUri] = useState('');
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
 
-  const refShot = useRef(null);
+  // const refShot = useRef(null);
+  // const { captureViewRef, onCapture } = useCapture();
+
   useLayoutEffect(() => {
     navigation.setOptions({});
   }, [navigation]);
@@ -45,12 +66,14 @@ const InviteDetail = ({navigation, route}) => {
   const loadInitInfo = async () => {
     const codeRes = await getInviteCode();
     setInviteCode(codeRes.invite_code);
+    setShareUri(codeRes.shareimg_url)
 
     getAccountInviteList().then(res => {
       console.log('res', res);
       setAccountList(res.invites);
     });
   };
+
 
   const onCopy = () => {
     let message = `我的顽鸦邀请码是 ${inviteCode}`;
@@ -63,7 +86,7 @@ const InviteDetail = ({navigation, route}) => {
     // e.stopPropagation();
     WeChat.shareImage(
       {
-        imageUrl: 'https://google.com/1.jpg',
+        imageUrl: shareUri,
         scene: 0,
       },
       error => {
@@ -72,14 +95,11 @@ const InviteDetail = ({navigation, route}) => {
     );
   };
   const shareTimeline = () => {
-    // WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
-    // console.log('xxxxxxxxxxx');
     try {
       WeChat.shareImage(
         {
-          imageUrl:
-            'https://ohiostorage.oss-cn-beijing.aliyuncs.com/uploads/20200901e0de3fda2fbfec49c220.jpeg',
-          scene: 0,
+          imageUrl: shareUri,
+          scene: 1,
         },
         error => {
           console.log('error', error);
@@ -88,20 +108,6 @@ const InviteDetail = ({navigation, route}) => {
     } catch (e) {
       console.log('e', e);
     }
-
-    // WeChat.shareImage(
-    //   {
-    //     imageUrl: 'https://google.com/1.jpg',
-    //     scene: 1,
-    //   },
-    //   error => {
-    //     console.log('xxx', error);
-    //   }
-    // );
-  };
-
-  const onCapture = uri => {
-    console.log('uri', uri);
   };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -163,15 +169,6 @@ const InviteDetail = ({navigation, route}) => {
         transparent={true}
         visible={shareModelVisible}
         onRequestClose={() => {}}>
-        {/*{*/}
-        {/*  <ViewShot*/}
-        {/*    onCapture={() => {*/}
-        {/*      onCapture();*/}
-        {/*    }}*/}
-        {/*    options={{format: 'jpg', quality: 0.9}}>*/}
-        {/*    <InvitePoster inviteCode={inviteCode} />*/}
-        {/*  </ViewShot>*/}
-        {/*}*/}
         <ModelWrap
           onPress={() => {
             setShareModelVisible(false);
@@ -191,8 +188,8 @@ const InviteDetail = ({navigation, route}) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{display: 'flex', alignItems: 'center'}}
-              onPress={e => {
-                shareTimeline(e);
+              onPress={() => {
+                shareTimeline();
               }}>
               <Image
                 source={require('../../assets/images/sharewechattimeline.png')}
