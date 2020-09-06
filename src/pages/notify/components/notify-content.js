@@ -8,6 +8,8 @@ import {
   Image,
   ImageBackground,
   Button,
+  TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import styled from 'styled-components/native';
 import {Avator} from '../../../components/NodeComponents';
@@ -19,8 +21,16 @@ class NotifyContent extends Component {
   }
 
   static defaultProps = {
-    account: {},
-    item: {},
+    account: {
+      avatar_url:
+        'http://xinxuefile.meirixinxue.com/assets/2020/706739ac-7af0-4486-90f6-13ea83e63f09.jpeg',
+    },
+    notify_type: '',
+    time: '',
+    notify_content: '',
+    currentAccount: {},
+    showRight: true,
+    item: {image_url: '', has_video: '', content: ''},
   };
 
   componentDidMount() {}
@@ -29,32 +39,43 @@ class NotifyContent extends Component {
 
   componentWillUnmount() {}
 
+  handleRight = () => {
+    this.props.handleClickRight();
+  };
+
   componentDidCatch(error, info) {}
 
   render() {
-    const {
-      account,
-      item
-    } = this.props
+    const {account, notify_type, notify_content, item, showRight, time} = this.props;
     return (
       <CardView>
         <Avator size={40} account={this.props.account} />
         <CardDescView>
           <View style={{display: 'flex', flexDirection: 'row', width: '80%'}}>
             <AccountNameTitle>{account.nickname}</AccountNameTitle>
-            <AccountActionDesc>{item.message_detail}</AccountActionDesc>
+            <AccountActionDesc>{notify_type}</AccountActionDesc>
           </View>
-          <ActionTime>{item.created_at_text}</ActionTime>
-          <ContentText>
-            {' '}
-            很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你很多人都喜欢你
-          </ContentText>
+          <ActionTime>{time}</ActionTime>
+          {notify_content.length > 0 && <ContentText>{notify_content}</ContentText>}
         </CardDescView>
-        <RightWrapView>
-          <RightText>春天到了春天到了春天到了春天到了春天到了</RightText>
-          {/*<ImageBackground source={{uri: CommentNoticeImg}} style={{width: 60, height: 60}} />*/}
-          {/*<VideoPlayImage source={{url: LogoImg}} />*/}
-        </RightWrapView>
+
+        {showRight === true && (
+          <RightWrapView onPress={this.handleRight}>
+            {item.image_url.length > 0 && item.has_video === true && (
+              <>
+                <Image source={{uri: item.image_url}} />
+                <Image source={require('../../../assets/images/play-video.png')} />
+              </>
+            )}
+            {item.image_url.length > 0 && !item.has_video === false && (
+              <View>
+                <Image source={{uri: item.image_url}} />
+              </View>
+            )}
+
+            {item.image_url.length <= 0 && <RightText>{item.content}</RightText>}
+          </RightWrapView>
+        )}
       </CardView>
     );
   }
@@ -65,7 +86,7 @@ const CardView = styled(View)`
   padding: 14px 15px 10px 0;
   border-bottom-width: 1px;
   border-bottom-color: #ebebeb;
-  min-height: 64px;
+  min-height: 90px;
   letter-spacing: 1px;
   display: flex;
   flex-direction: row;
@@ -104,7 +125,7 @@ const ContentText = styled(Text)`
   margin-top: 7px;
 `;
 
-const RightWrapView = styled(View)`
+const RightWrapView = styled(TouchableOpacity)`
   position: absolute;
   top: 14px;
   right: 14px;
@@ -140,3 +161,15 @@ const VideoPlayImage = styled(Image)`
   right: 0;
 `;
 export default NotifyContent;
+// {/*{item.image_url && item.has_video && (*/}
+// {/*  <View style={{fontSize: 0}}>*/}
+// {/*    <Image source={{uri: item.image_url}} />*/}
+// {/*    <Image source={require('../../../assets/images/play-video.png')} />*/}
+// {/*  </View>*/}
+// {/*)}*/}
+// {item.image_url && !item.has_video && (
+//   <Image source={{uri: item.image_url}} />
+// )}
+// {/*{!item.image_url && <View>/!*<Text>{item.content}</Text>*!/</View>}*/}
+// {/*<ImageBackground source={{uri: CommentNoticeImg}} style={{width: 60, height: 60}} />*/}
+// {/*<VideoPlayImage source={{url: LogoImg}} />*/}

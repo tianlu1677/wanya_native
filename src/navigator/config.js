@@ -238,22 +238,22 @@ export const routers = [
   {
     name: 'CommentNotify',
     component: CommentNotify,
-    options: {title: '评论通知'},
+    options: {title: '评论及回复'},
   },
   {
     name: 'PraiseNotify',
     component: PraiseNotify,
-    options: {title: '点赞通知'},
+    options: {title: '赞与收藏'},
   },
   {
     name: 'SystemNotify',
     component: SystemNotify,
-    options: {title: '系统通知'},
+    options: {title: '顽鸦小助手'},
   },
   {
     name: 'FollowNotify',
     component: FollowNotify,
-    options: {title: '关注通知'},
+    options: {title: '新增粉丝'},
   },
   {
     name: 'MentionNotify',

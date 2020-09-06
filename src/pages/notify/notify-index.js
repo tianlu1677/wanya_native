@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text, Image, Pressable, Button} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import styled from 'styled-components/native';
-import {BadgeMessage} from '../../components/NodeComponents';
+import {BadgeMessage} from '@/components/NodeComponents';
 import {connect} from 'react-redux';
-import SafeAreaPlus from '../../components/SafeAreaPlus';
-import {dispatchCurrentAccount} from '../../redux/actions';
+import SafeAreaPlus from '@/components/SafeAreaPlus';
+import {dispatchCurrentAccount} from '@/redux/actions';
 
 import {
   CommentNoticeImg,
@@ -13,7 +13,7 @@ import {
   PraiseNoticeImg,
   SystemNoticeImg,
   MineMentionNoticeUserImg,
-} from '../../utils/default-image';
+} from '@/utils/default-image';
 
 @connect(
   state => ({currentAccount: state.account.currentAccount, auth_token: state.login.auth_token}),

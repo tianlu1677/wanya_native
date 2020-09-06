@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Pressable} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
@@ -42,6 +42,10 @@ class PraiseNotify extends Component {
       params.page === 1
         ? res.data.inside_notifies
         : this.state.data.concat(res.data.inside_notifies);
+
+    data = data.map(notify => {
+      return this.formatNotify(notify);
+    });
     headers = res.headers;
     this.setState(
       {
@@ -56,32 +60,81 @@ class PraiseNotify extends Component {
     );
   };
 
+  formatNotify = notify => {
+    let image_url = '';
+    let has_video = false;
+    let content = '';
+    if (notify.target_type === 'Comment') {
+      content = notify.comment ? notify.comment.content : '评论已删除';
+    } else if (notify.target_type === 'Topic') {
+      let topic = notify.topic;
+      image_url = topic.single_cover.cover_url;
+      has_video = !!topic.video_content_thumb;
+      content = topic.plain_content;
+    } else if (notify.target_type === 'Article') {
+      image_url = notify.article.cover_url;
+      content = notify.article.title;
+    } else {
+      content = '已删除';
+    }
+
+    return {...notify, item: {image_url: image_url, content: content, has_video: has_video}};
+  };
+
   componentDidUpdate() {}
 
   componentWillUnmount() {}
 
   componentDidCatch(error, info) {}
 
+  goInsideNotify = notify => {
+    const comment = notify.comment;
+    if (notify.target_type === 'Comment' && comment && comment.commentable_id) {
+      if (comment.commentable_type === 'Topic') {
+        this.props.navigation.navigate('TopicDetail', {topicId: comment.commentable_id})
+        return;
+      }
+      if (comment.commentable_type === 'Article') {
+        this.props.navigation.navigate('ArticleDetail', {articleId: comment.commentable_id})
+
+      }
+    } else if (notify.topic) {
+      console.log('topic, topic');
+      this.props.navigation.navigate('TopicDetail', {topicId: notify.topic.id})
+    } else if (notify.article) {
+      console.log('article, article');
+      this.props.navigation.navigate('ArticleDetail', {articleId: notify.article.id})
+    }
+  };
+
   render() {
     const {headers, loading, data} = this.state;
     const renderItem = ({item}) => {
-      item = {...item, itemKey: `${item.target_type}_${item.id}`}
+      let notify = item
+      // console.log('notify', notify)
       return (
-        <NotifyContent account={item.actor} item={item} />
+        <NotifyContent
+          account={notify.actor}
+          notify_type={notify.message_detail}
+          time={notify.created_at_text}
+          item={notify.item}
+          handleClickRight={this.goInsideNotify.bind(this, notify)}
+        />
       );
     };
 
     return (
-      <SafeAreaPlus>
+      <SafeAreaView style={{backgroundColor: 'white'}}>
         <ScrollList
           onRefresh={this.loadInfo}
           headers={headers}
           data={data}
           loading={loading}
           renderItem={renderItem}
-          height={800}
+          height={1200}
+          renderSeparator={() => <View />}
         />
-      </SafeAreaPlus>
+      </SafeAreaView>
     );
   }
 }
