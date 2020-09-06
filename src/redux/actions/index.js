@@ -76,6 +76,7 @@ export const dispatchSetAuthToken = (token = '') => async dispatch => {
   //   type: ADMIN_SIGN_SUCCESS,
   //   auth_token: auth_token
   // }
+  dispatchCurrentAccount()
   Helper.setData('auth_token', token)
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
 };
