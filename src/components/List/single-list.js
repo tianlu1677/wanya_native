@@ -15,14 +15,11 @@ const SingleList = props => {
     } else if (item.item_type === 'Article') {
       return <BaseArticle data={item.item} />;
     }
-
-    // return <Text>其他</Text>;
   };
 
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params} = props.request;
-    // console.log('params', {...params, page})
     const res = await api({...params, page});
     const data = res.data.posts;
     setLoading(false);

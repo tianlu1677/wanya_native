@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
-import {View, Text, StyleSheet, Image, TouchableWithoutFeedback} from 'react-native';
+import * as action from '@/redux/constants';
 import {JoinButton} from '@/components/NodeComponents';
 import {followItem, unfollowItem} from '@/api/mine_api';
 
@@ -11,6 +13,7 @@ const defaultCoverUrl =
 
 const NodeItem = props => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const home = useSelector(state => state.home);
   const [followed, setFollowed] = useState(props.node.followed);
 
@@ -25,12 +28,22 @@ const NodeItem = props => {
     setFollowed(!followed);
   };
 
+  const chooseNode = node => {
+    console.log(node);
+    const topics = {...home.savetopic, node: node};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.goBack();
+  };
+
   const goNodeDetail = () => {
+    if (props.type === 'add-node') {
+      return false;
+    }
     navigation.navigate('NodeDetail', {nodeId: node.id});
   };
 
   return (
-    <TouchableWithoutFeedback onPress={goNodeDetail}>
+    <TouchableOpacity onPress={goNodeDetail}>
       <View style={[styles.nodeItem, props.style]}>
         <Image style={styles.nodeImg} source={{uri: node.cover_url || defaultCoverUrl}} />
         <View style={styles.nodeInfo}>
@@ -52,17 +65,17 @@ const NodeItem = props => {
 
           {/* addnode */}
           {props.type === 'add-node' && (
-            <>
+            <TouchableOpacity onPress={() => chooseNode(node)}>
               {home.savetopic.node && home.savetopic.node.id === node.id ? (
                 <IconFont name="duigou1" size={16} color={'#000'} style={styles.icon} />
               ) : (
                 <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
               )}
-            </>
+            </TouchableOpacity>
           )}
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 

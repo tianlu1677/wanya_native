@@ -1,24 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {View, Text, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
-import * as action from '@/redux/constants';
 
 const NodeIndex = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const home = useSelector(state => state.home);
   const [categories, setCategories] = useState(null);
   const [nodes, setNodes] = useState(null);
   const [layoutList, setLayoutList] = useState([]);
@@ -43,19 +30,9 @@ const NodeIndex = () => {
     scrollRef.current.scrollTo({y: layoutList[index].y, animated: true});
   };
 
-  const chooseNode = node => {
-    const topics = {...home.savetopic, node: node};
-    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.goBack();
-  };
-
   useEffect(() => {
     loadData();
   }, []);
-
-  useEffect(() => {
-    // console.log(home);
-  }, [home]);
 
   return categories && nodes ? (
     <View style={styles.wrapper}>
@@ -81,12 +58,10 @@ const NodeIndex = () => {
               {nodes
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
-                  <TouchableWithoutFeedback key={node.id} onPress={() => chooseNode(node)}>
-                    <View>
-                      <NodeItem node={node} key={node.id} type="add-node" />
-                      <Text style={styles.separator} />
-                    </View>
-                  </TouchableWithoutFeedback>
+                  <View>
+                    <NodeItem node={node} key={node.id} type="add-node" />
+                    <Text style={styles.separator} />
+                  </View>
                 ))}
             </View>
           </View>

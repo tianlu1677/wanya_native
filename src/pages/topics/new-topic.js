@@ -12,7 +12,6 @@ import Upload from 'react-native-background-upload';
 import {ModalLoading} from '@/components/NodeComponents';
 
 const NewTopic = props => {
-  console.log(props);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
@@ -241,14 +240,14 @@ const NewTopic = props => {
       </View>
       <View style={styles.addWrapper}>
         <TouchableOpacity style={styles.addSlide} onPress={() => navigation.navigate('AddNode')}>
-          <IconFont name="quanzi1" color={savetopic.node ? '#000' : '#c2c2c2'} />
+          <IconFont name="node-solid" color={savetopic.node ? '#000' : '#c2c2c2'} />
           <Text style={[styles.addText, savetopic.node && styles.selectText]}>
             {savetopic.node ? savetopic.node.name : '选择圈子（必选）'}
           </Text>
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.addSlide} onPress={() => navigation.navigate('AddSpace')}>
-          <IconFont name="changdiweizhi" color={savetopic.space ? '#000' : '#c2c2c2'} />
+          <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} />
           <Text style={[styles.addText, savetopic.space && styles.selectText]}>
             {savetopic.space ? savetopic.space.name : '选择场地'}
           </Text>

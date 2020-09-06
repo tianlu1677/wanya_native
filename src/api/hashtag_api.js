@@ -1,10 +1,11 @@
 import request from './request';
 
 // 发布帖子话题列表
-export const getHashtagList = async () => {
+export const getHashtagList = async params => {
   const res = await request({
     url: '/api/v1/hashtags',
     method: 'GET',
+    params,
   });
   return res;
 };
@@ -29,8 +30,8 @@ export async function getHashtagPosts(params) {
   const res = await request({
     url: '/api/v1/hashtags/posts',
     method: 'GET',
-    params: params
+    params: params,
   });
-  console.log('api params', params)
+  console.log('api params', params);
   return res;
 }

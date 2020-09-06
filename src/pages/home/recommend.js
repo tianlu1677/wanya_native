@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
 import {
   getUnLoginHotPosts,
   getRecommendPosts,
@@ -12,7 +11,7 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 
 const Recommend = props => {
-  const [currentKey, setCurrentKey] = useState('lasted');
+  const [currentKey, setCurrentKey] = useState('recommend');
 
   const RecommendList = () => {
     return <DoubleList request={{api: getUnLoginHotPosts}} />;

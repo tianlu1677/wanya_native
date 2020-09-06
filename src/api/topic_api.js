@@ -2,12 +2,14 @@ import request from './request';
 
 // 帖子列表
 export const getTopicList = async params => {
+  console.log(params);
+
   const res = await request({
-    url: `/api/v1/topics?${params.id}`,
+    url: `/api/v1/topics?${params.queryUrl}`,
     method: 'GET',
     params,
   });
-  return res.data;
+  return res;
 };
 
 // 创建帖子
@@ -69,6 +71,25 @@ export const createComment = async (data = {}) => {
   return res;
 };
 
+//话题列表
+export async function getNodeTopicList(params) {
+  const res = await request({
+    url: `/api/v1/nodes/${params.id}/hashtags`,
+    method: 'GET',
+    params,
+  });
+  return res;
+}
+
+// export const getNodeTopicList = async (data = {}) => {
+//   const res = await request({
+//     url: '/api/v1/comments',
+//     method: 'POST',
+//     data,
+//   });
+//   return res;
+// };
+
 // 取消点赞,收藏
 // export async function destroyTopicAction(id, type) {
 //   const res = await request({
@@ -122,15 +143,15 @@ export const createComment = async (data = {}) => {
 // }
 
 //话题列表
-export async function getNodeTopicList(params, queryUrl = '') {
-  const res = await request({
-    url: `/api/v1/nodes/${queryUrl}/hashtags`,
-    method: 'GET',
-    params: params,
-  });
+// export async function getNodeTopicList(params, queryUrl = '') {
+//   const res = await request({
+//     url: `/api/v1/nodes/${queryUrl}/hashtags`,
+//     method: 'GET',
+//     params: params,
+//   });
 
-  return res;
-}
+//   return res;
+// }
 
 // 点赞，收藏, 分享, 查看
 // action_type(praise, star, share, view)
