@@ -13,6 +13,7 @@ import {
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount} from '../../api/mine_api';
+import Helper from "@/utils/helper"
 
 // 当前用户
 export const dispatchCurrentAccount = () => async dispatch => {
@@ -75,7 +76,7 @@ export const dispatchSetAuthToken = (token = '') => async dispatch => {
   //   type: ADMIN_SIGN_SUCCESS,
   //   auth_token: auth_token
   // }
-
+  Helper.setData('auth_token', token)
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
 };
 // 预览图片
