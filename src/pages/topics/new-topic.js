@@ -171,10 +171,16 @@ const NewTopic = props => {
     setContent(savetopic.plan_content);
   }, [savetopic]);
 
+  const closeBut = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Recommend'}],
+    })
+  }
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: null,
-      headerLeft: () => <Button onPress={() => navigation.goBack()} title="关闭" color="#000" />,
+      headerLeft: () => <Button onPress={() => closeBut()} title="关闭" color="#000" />,
       headerRight: () => <Button onPress={onSubmit} title="发布" color="#000" />,
     });
   }, [navigation]);

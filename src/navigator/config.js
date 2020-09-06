@@ -4,6 +4,7 @@ import VideoDetail from '@/pages/home/videoDetail';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
+import GoNewTopic from '@/pages/topics/go-new-topic';
 import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
@@ -70,8 +71,8 @@ export const tabRouters = [
     options: {title: '首页'},
   },
   {
-    name: 'NewTopic',
-    component: NewTopic,
+    name: 'GoNewTopic',
+    component: GoNewTopic,
     options: {title: '发布'},
   },
   {

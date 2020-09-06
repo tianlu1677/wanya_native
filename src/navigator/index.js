@@ -8,6 +8,10 @@ import {useSelector} from 'react-redux';
 import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+//登录页面
+import SocialLogin from '@/pages/sessions/social-login';
+import PhoneLogin from '@/pages/sessions/phone-login';
+import InviteLogin from '@/pages/sessions/invite-login';
 
 const Tab = createBottomTabNavigator();
 const MainStack = createStackNavigator();
@@ -74,18 +78,33 @@ function AuthStackList() {
   return (
     <AuthStack.Navigator
       screenOptions={({route}) => ({
-        title: '管理员手机登录',
-        headerStyle: {
-          backgroundColor: '#f4511e',
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
+        // title: '管理员手机登录',
+        // headerStyle: {
+        //   backgroundColor: '#f4511e',
+        // },
+        // headerTintColor: 'white',
+        // headerTitleStyle: {
+        //   fontWeight: 'bold',
+        // },
       })}>
+      {/*<AuthStack.Screen*/}
+      {/*  name="AdminPhoneLogin"*/}
+      {/*  component={AdminPhoneLogin}*/}
+      {/*  options={({route}) => ({})}*/}
+      {/*/>*/}
       <AuthStack.Screen
-        name="AdminPhoneLogin"
-        component={AdminPhoneLogin}
+        name="SocialLogin"
+        component={SocialLogin}
+        options={({route}) => ({})}
+      />
+      <AuthStack.Screen
+        name="PhoneLogin"
+        component={PhoneLogin}
+        options={({route}) => ({})}
+      />
+      <AuthStack.Screen
+        name="InviteLogin"
+        component={InviteLogin}
         options={({route}) => ({})}
       />
     </AuthStack.Navigator>
