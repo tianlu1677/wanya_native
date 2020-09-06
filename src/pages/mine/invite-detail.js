@@ -1,5 +1,14 @@
 import React, {Component, useState, useLayoutEffect, useEffect, useRef} from 'react';
-import {SafeAreaView, Modal, StyleSheet, View, TouchableOpacity, Image, Text, BackgroudImage} from 'react-native';
+import {
+  SafeAreaView,
+  Modal,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  BackgroudImage,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
@@ -14,16 +23,38 @@ import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
 import {Button} from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
+import { captureRef } from "react-native-view-shot";
+//
+// function useCapture() {
+//   const captureViewRef = useRef();
+//
+//   function onCapture() {
+//     captureRef(captureViewRef, {
+//       format: "jpg",
+//       quality: 0.9
+//     }).then(
+//       uri => console.log('uri,', uri),
+//       error => alert("Oops, snapshot failed", error));
+//   }
+//
+//   return {
+//     captureViewRef,
+//     onCapture
+//   };
+// }
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
   const [accountList, setAccountList] = useState([]);
   const [shareModelVisible, setShareModelVisible] = useState(false);
-  const [shareUri, setshareUri] = useState('');
+  const [shareUri, setShareUri] = useState('');
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
 
-  const refShot = useRef(null)
+  // const refShot = useRef(null);
+  // const { captureViewRef, onCapture } = useCapture();
+
   useLayoutEffect(() => {
     navigation.setOptions({});
   }, [navigation]);
@@ -35,12 +66,14 @@ const InviteDetail = ({navigation, route}) => {
   const loadInitInfo = async () => {
     const codeRes = await getInviteCode();
     setInviteCode(codeRes.invite_code);
+    setShareUri(codeRes.shareimg_url)
 
     getAccountInviteList().then(res => {
       console.log('res', res);
       setAccountList(res.invites);
     });
   };
+
 
   const onCopy = () => {
     let message = `我的顽鸦邀请码是 ${inviteCode}`;
@@ -53,7 +86,7 @@ const InviteDetail = ({navigation, route}) => {
     // e.stopPropagation();
     WeChat.shareImage(
       {
-        imageUrl: 'https://google.com/1.jpg',
+        imageUrl: shareUri,
         scene: 0,
       },
       error => {
@@ -62,47 +95,27 @@ const InviteDetail = ({navigation, route}) => {
     );
   };
   const shareTimeline = () => {
-    // WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
-    // console.log('xxxxxxxxxxx');
-    try{
+    try {
       WeChat.shareImage(
         {
-          imageUrl:
-            'https://ohiostorage.oss-cn-beijing.aliyuncs.com/uploads/20200901e0de3fda2fbfec49c220.jpeg',
-          scene: 0,
+          imageUrl: shareUri,
+          scene: 1,
         },
         error => {
           console.log('error', error);
         }
       );
     } catch (e) {
-      console.log('e', e)
+      console.log('e', e);
     }
-
-    // WeChat.shareImage(
-    //   {
-    //     imageUrl: 'https://google.com/1.jpg',
-    //     scene: 1,
-    //   },
-    //   error => {
-    //     console.log('xxx', error);
-    //   }
-    // );
   };
-
-  const onCapture = (uri) => {
-    console.log('uri', uri)
-  }
-
-
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <CardView>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <CardView colors={['#4e4e4e', '#181818']}>
         <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
           <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
           <CardTitleText>我的邀请码</CardTitleText>
         </View>
-
         <CardCodeText>{inviteCode}</CardCodeText>
         <CardCopyText
           onPress={() => {
@@ -119,15 +132,17 @@ const InviteDetail = ({navigation, route}) => {
 
       <AccountCardView>
         {accountList.map(invite => {
-          return <Avator width={40} key={invite.id} account={invite.account} />;
+          return <Avator size={40} key={invite.id} account={invite.account} />;
         })}
-        <Image
-          source={require('../../assets/images/add-invite.png')}
-          style={{width: 40, height: 40, borderRadius: 20}}
+        <TouchableOpacity
           onPress={() => {
-            onCopy();
-          }}
-        />
+            setShareModelVisible(true);
+          }}>
+          <Image
+            source={require('../../assets/images/add-invite.png')}
+            style={{width: 40, height: 40, borderRadius: 20}}
+          />
+        </TouchableOpacity>
       </AccountCardView>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
@@ -154,11 +169,6 @@ const InviteDetail = ({navigation, route}) => {
         transparent={true}
         visible={shareModelVisible}
         onRequestClose={() => {}}>
-        {
-          <ViewShot onCapture={() => { onCapture() } } options={{ format: "jpg", quality: 0.9 }}>
-            <InvitePoster inviteCode={inviteCode} />
-          </ViewShot>
-        }
         <ModelWrap
           onPress={() => {
             setShareModelVisible(false);
@@ -170,19 +180,20 @@ const InviteDetail = ({navigation, route}) => {
                 shareFriend();
               }}>
               <Image
-                source={require('../../assets/images/add-invite.png')}
-                style={{width: 20, height: 20, borderRadius: 20}}
+                source={require('../../assets/images/sharewchatfrient.png')}
+                style={{width: 28, height: 22}}
+                resizeMode={'contain'}
               />
               <ShareText>微信好友</ShareText>
             </TouchableOpacity>
             <TouchableOpacity
               style={{display: 'flex', alignItems: 'center'}}
-              onPress={e => {
-                shareTimeline(e);
+              onPress={() => {
+                shareTimeline();
               }}>
               <Image
-                source={require('../../assets/images/add-invite.png')}
-                style={{width: 20, height: 20, borderRadius: 20}}
+                source={require('../../assets/images/sharewechattimeline.png')}
+                style={{width: 20, height: 20}}
               />
               <ShareText>分享朋友圈</ShareText>
             </TouchableOpacity>
@@ -193,7 +204,7 @@ const InviteDetail = ({navigation, route}) => {
   );
 };
 
-const CardView = styled(View)`
+const CardView = styled(LinearGradient)`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -207,7 +218,7 @@ const CardView = styled(View)`
 const CardTitleText = styled(Text)`
   font-size: 14px;
   font-weight: 400;
-  color: rgba(189, 189, 189, 1);
+  color: white;
   letter-spacing: 1px;
   line-height: 20px;
   margin-left: 10px;
