@@ -28,8 +28,6 @@ const HashtagList = props => {
   };
 
   const renderItem = ({item, index}) => {
-    console.log(item.name);
-
     return (
       <TouchableOpacity
         style={styles.hashtagWrap}
@@ -48,6 +46,8 @@ const HashtagList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
+    console.log(res);
+
     const data = res.data.hashtags;
     setLoading(false);
     setHeaders(res.headers);
