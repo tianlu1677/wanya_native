@@ -1,61 +1,57 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
-import styled from 'styled-components/native';
-import goPage from '../../utils/page_path';
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Pressable} from 'react-native';
+import {connect, useSelector} from 'react-redux';
 import {getReplyComments} from '@/api/account_api';
-import {syncAccountInfo} from '@/api/mine_api';
-import {pagination} from '@/utils/load_more';
+import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
-import SafeAreaPlus from '../../components/SafeAreaPlus';
+import {
+  dispatchCurrentAccount,
+  dispatchBaseCurrentAccount,
+  dispatchEmptyAccountDetail,
+} from '@/redux/actions';
+
+@connect(state => state.account, {
+  dispatchCurrentAccount,
+  dispatchBaseCurrentAccount,
+  dispatchEmptyAccountDetail,
+})
 class CommentNotify extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemList: [],
-      isLoading: true,
-      paginate: {
-        hasMore: true,
-        nextPage: 1,
-      },
+      loading: false,
+      data: [],
+      headers: {},
     };
   }
 
-  readAllMessages = () => {
-    const {currentAccount} = this.props;
-    syncAccountInfo({
-      id: currentAccount.id,
-      profile_attributes: {unread_comments_notifies_count: 0},
-    });
-  };
+  componentDidMount() {
+    this.props.dispatchCurrentAccount();
+    this.loadInfo();
+  }
 
-  getItemList = async (params = {}, opts = {}) => {
-    let res = [];
-    if (opts.refresh) {
-      this.setState({
-        isLoading: false,
-        paginate: {
-          hasMore: true,
-          nextPage: 1,
-        },
-      });
-    }
-    if (!opts.refresh && !this.state.paginate.hasMore) {
-      return;
-    }
-    res = await getReplyComments(params);
-    let comments = res.data.comments;
-    comments = comments.map(comment => {
+  loadInfo = async (page = 1) => {
+    let params = {page: page, per_page: 10};
+    let data = [];
+    let headers = {};
+    const res = await getReplyComments(params);
+    data = params.page === 1 ? res.data.comments : this.state.data.concat(res.data.comments);
+
+    data = data.map(comment => {
       return this.formatComment(comment);
     });
-    // comments = comments.filter((comment) => !comment.commentable)
-    this.setState({
-      itemList: opts.refresh ? comments : this.state.itemList.concat(comments),
-    });
-    let paginate = pagination(res.header);
-    this.setState({
-      isLoading: false,
-      paginate: paginate,
-    });
+    headers = res.headers;
+    this.setState(
+      {
+        data: data,
+        headers: headers,
+      },
+      () => {
+        this.setState({
+          loading: false,
+        });
+      }
+    );
   };
 
   formatComment = comment => {
@@ -93,33 +89,52 @@ class CommentNotify extends Component {
     }
   };
 
-  goInsideNotify = comment => {
-    // console.log('xxxxxxxx')
-    if (comment.commentable_type === 'Topic' && comment.commentable) {
-      goPage.goTopicDetailUrl(comment.commentable_id);
-      return;
-    }
-    if (comment.commentable_type === 'Article' && comment.commentable) {
-      goPage.goArticleDetailUrl(comment.commentable_id);
-    }
-  };
-
-  componentDidMount() {}
-
   componentDidUpdate() {}
 
   componentWillUnmount() {}
 
   componentDidCatch(error, info) {}
 
+  goInsideNotify = comment => {
+    // console.log('xxxxxxxx')
+    if (comment.commentable_type === 'Topic' && comment.commentable) {
+      // goPage.goTopicDetailUrl(comment.commentable_id)
+      return;
+    }
+    if (comment.commentable_type === 'Article' && comment.commentable) {
+      // goPage.goArticleDetailUrl(comment.commentable_id)
+    }
+  };
+
   render() {
-    const {itemList, isLoading} = this.state;
+    const {headers, loading, data} = this.state;
+    const renderItem = ({item}) => {
+      let comment = item;
+      console.log('comment', comment)
+      return (
+        <NotifyContent
+          account={comment.account}
+          notify_type={comment.comment_type === 'comment' ? '回复了你' : '评论了你'}
+          time={comment.created_at_text}
+          notify_content={comment.content}
+          item={comment.item}
+          handleClickRight={this.goInsideNotify.bind(this, comment)}
+        />
+      );
+    };
+
     return (
-      <SafeAreaPlus style={{backgroundColor: 'white', height: '100%'}}>
-        {[1, 2, 3, 4].map(item => {
-          return <NotifyContent item={item} key={item.id}></NotifyContent>;
-        })}
-      </SafeAreaPlus>
+      <SafeAreaView style={{backgroundColor: 'white'}}>
+        <ScrollList
+          onRefresh={this.loadInfo}
+          headers={headers}
+          data={data}
+          loading={loading}
+          renderItem={renderItem}
+          height={1200}
+          renderSeparator={() => <View />}
+        />
+      </SafeAreaView>
     );
   }
 }

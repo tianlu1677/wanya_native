@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Pressable} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
-import {getInsideNotifies} from '@/api/account_api';
+import {getMentionAccountNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
 import SafeAreaPlus from '../../components/SafeAreaPlus';
@@ -37,11 +37,15 @@ class MentionNotify extends Component {
     let params = {page: page, per_page: 10};
     let data = [];
     let headers = {};
-    const res = await getInsideNotifies(params);
+    const res = await getMentionAccountNotifies(params);
     data =
       params.page === 1
         ? res.data.inside_notifies
         : this.state.data.concat(res.data.inside_notifies);
+
+    data = data.map(notify => {
+      return this.formatNotify(notify);
+    });
     headers = res.headers;
     this.setState(
       {
@@ -56,14 +60,25 @@ class MentionNotify extends Component {
     );
   };
 
-  readAllMessages = () => {
-    const {currentAccount} = this.props;
-    syncAccountInfo({
-      id: currentAccount.id,
-      profile_attributes: {
-        unread_system_messages_count: 0,
-      },
-    });
+  formatNotify = notify => {
+    let image_url = '';
+    let has_video = false;
+    let content = '';
+    if (notify.target_type === 'Comment') {
+      content = notify.comment ? notify.comment.content : '评论已删除';
+    } else if (notify.target_type === 'Topic') {
+      let topic = notify.topic;
+      image_url = topic.single_cover.cover_url;
+      has_video = !!topic.video_content_thumb;
+      content = topic.plain_content;
+    } else if (notify.target_type === 'Article') {
+      image_url = notify.article.cover_url;
+      content = notify.article.title;
+    } else {
+      content = '已删除';
+    }
+
+    return {...notify, item: {image_url: image_url, content: content, has_video: has_video}};
   };
 
   componentDidUpdate() {}
@@ -72,24 +87,55 @@ class MentionNotify extends Component {
 
   componentDidCatch(error, info) {}
 
+  goInsideNotify = notify => {
+    const comment = notify.comment;
+    if (notify.target_type === 'Comment' && comment && comment.commentable_id) {
+      if (comment.commentable_type === 'Topic') {
+        this.props.navigation.navigate('TopicDetail', {topicId: comment.commentable_id})
+        return;
+      }
+      if (comment.commentable_type === 'Article') {
+        this.props.navigation.navigate('ArticleDetail', {articleId: comment.commentable_id})
+
+      }
+    } else if (notify.topic) {
+      console.log('topic, topic');
+      this.props.navigation.navigate('TopicDetail', {topicId: notify.topic.id})
+    } else if (notify.article) {
+      console.log('article, article');
+      this.props.navigation.navigate('ArticleDetail', {articleId: notify.article.id})
+    }
+  };
+
   render() {
     const {headers, loading, data} = this.state;
     const renderItem = ({item}) => {
-      return <NotifyContent account={item.actor} item={item} />;
+      let notify = item
+      // console.log('notify', notify)
+      return (
+        <NotifyContent
+          account={notify.actor}
+          notify_type={notify.message}
+          time={notify.created_at_text}
+          notify_content={''}
+          item={notify.item}
+          handleClickRight={this.goInsideNotify.bind(this, notify)}
+        />
+      );
     };
 
     return (
-      <View>
-        <SafeAreaPlus>
-          <ScrollList
-            onRefresh={this.loadInfo}
-            headers={headers}
-            data={data}
-            loading={loading}
-            renderItem={renderItem}
-            height={1000}></ScrollList>
-        </SafeAreaPlus>
-      </View>
+      <SafeAreaView style={{backgroundColor: 'white'}}>
+        <ScrollList
+          onRefresh={this.loadInfo}
+          headers={headers}
+          data={data}
+          loading={loading}
+          renderItem={renderItem}
+          height={1200}
+          renderSeparator={() => <View />}
+        />
+      </SafeAreaView>
     );
   }
 }

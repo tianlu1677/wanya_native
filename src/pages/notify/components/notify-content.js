@@ -73,7 +73,7 @@ class NotifyContent extends Component {
               </View>
             )}
 
-            {item.image_url.length <= 0 && <RightText>{item.content}</RightText>}
+            {item.content.length > 0 && <RightText>{item.content}</RightText>}
           </RightWrapView>
         )}
       </CardView>
