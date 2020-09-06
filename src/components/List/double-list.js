@@ -13,12 +13,18 @@ const DoubleSingle = props => {
   return (
     <SingleWrap>
       {data.map(v => {
-        const Height = v.item.single_cover
-          ? (v.item.single_cover.height * 180) / v.item.single_cover.width
-          : 500;
+        let Height = 200;
+        if (v.item.single_cover.height) {
+          Height = v.item.single_cover
+            ? (v.item.single_cover.height * 180) / v.item.single_cover.width
+            : 500;
+        }
         return (
           <View key={v.item.id}>
-            <Image source={{uri: v.item.single_cover.link_url}} style={{height: Height}} />
+            {v.item.single_cover.link_url && (
+              <Image source={{uri: v.item.single_cover.link_url}} style={{height: Height}} />
+            )}
+
             {v.item.has_video && (
               <VideoPlayImage source={require('@/assets/images/video-play.png')} />
             )}
@@ -76,7 +82,7 @@ const DoubleList = props => {
 
 // List 属性继承scrollList 默认可下拉加载刷新
 DoubleList.propTypes = {
-  // request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
+  request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
 };
 
 export default DoubleList;

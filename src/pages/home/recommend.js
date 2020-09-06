@@ -1,15 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import {getUnLoginHotPosts, getRecommendPosts, getFollowedTopics} from '@/api/home_api';
+import {
+  getUnLoginHotPosts,
+  getRecommendPosts,
+  getFollowedTopics,
+  getRecommendVideoListPosts,
+  getRecommendLatestPosts,
+} from '@/api/home_api';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 
 const Recommend = props => {
-  const [currentKey, setCurrentKey] = useState('follow');
+  const [currentKey, setCurrentKey] = useState('lasted');
 
   const RecommendList = () => {
-    return <DoubleList request={{api: getRecommendPosts}} />;
+    return <DoubleList request={{api: getUnLoginHotPosts}} />;
   };
 
   const FollowList = () => {
@@ -17,7 +23,7 @@ const Recommend = props => {
   };
 
   const LastedList = () => {
-    return <SingleList request={{api: getRecommendPosts}} />;
+    return <SingleList request={{api: getRecommendLatestPosts}} />;
   };
 
   return (
@@ -44,12 +50,5 @@ const Recommend = props => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  containter: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});
 
 export default Recommend;

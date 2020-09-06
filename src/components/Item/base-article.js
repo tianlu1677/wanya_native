@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Header, Bottom} from '@/components/Item/single-list-item';
 
@@ -7,15 +7,19 @@ const BaseTopic = props => {
   const {data} = props;
   const navigation = useNavigation();
 
+  const goArticleDetail = () => {
+    navigation.navigate('ArticleDetail', {topicId: data.id});
+  };
+
   return (
-    <View style={styles.postSlide}>
+    <TouchableOpacity style={styles.postSlide} onPress={goArticleDetail}>
       <Header data={data} type="article" />
       <View style={{marginTop: 13, position: 'relative'}}>
         <Image source={{uri: data.cover_url}} style={{width: '100%', height: 167}} />
         <Text style={styles.titleText}>{data.title}</Text>
       </View>
       <Bottom data={data} type="article" />
-    </View>
+    </TouchableOpacity>
   );
 };
 
