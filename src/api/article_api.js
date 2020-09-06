@@ -29,7 +29,25 @@ export const destroyArticleAction = async params => {
   return res;
 };
 
-// export async function getArticle(id) {
+//文章列表
+export const getArticleList = async params => {
+  console.log(`/api/v1/articles?${params.queryUrl}`);
+  const res = await request({
+    url: `/api/v1/articles?${params.queryUrl}`,
+    method: 'GET',
+    params: params,
+  });
+  return res;
+};
+// export async function getArticleList(params, queryUrl = '') {
+//   const res = await request({
+//     url: `/api/v1/articles?${queryUrl}`,
+//     method: 'GET',
+//     params: params,
+//   });
+//   return res;
+// }
+// // export async function getArticle(id) {
 //   const res = await request({
 //     url: `/api/v1/articles/${id}`,
 //     method: 'GET'
@@ -38,15 +56,15 @@ export const destroyArticleAction = async params => {
 //   return res.data
 // }
 
-//文章列表
-export async function getArticleList(params, queryUrl = '') {
-  const res = await request({
-    url: `/api/v1/articles?${queryUrl}`,
-    method: 'GET',
-    params: params,
-  });
-  return res;
-}
+// //文章列表
+// export async function getArticleList(params, queryUrl = '') {
+//   const res = await request({
+//     url: `/api/v1/articles?${queryUrl}`,
+//     method: 'GET',
+//     params: params,
+//   });
+//   return res;
+// }
 
 // 点赞，收藏, 分享, 查看
 // action_type(praise, star, share, view)

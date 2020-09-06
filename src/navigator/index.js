@@ -7,13 +7,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSelector} from 'react-redux';
 import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters} from './config'; //router 配置
-
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 
-import Mine from '@/pages/mine/mine';
-
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
@@ -24,7 +20,6 @@ function HomeTabList() {
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName = 'logo-react';
-
           if (route.name === 'Search') {
             iconName = 'ios-search';
           } else if (route.name === 'Fav') {

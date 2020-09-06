@@ -35,7 +35,7 @@ const ArticeDetail = ({navigation, route}) => {
         detail={detail}
         enableLoadMore={false}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
-        ListHeaderComponent={() => (
+        ListHeaderComponent={
           <>
             <Text style={styles.title}>{detail.title}</Text>
             <PublishAccount data={detail} />
@@ -50,7 +50,7 @@ const ArticeDetail = ({navigation, route}) => {
 
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
-        )}
+        }
       />
       <ActionComment
         detail={detail}

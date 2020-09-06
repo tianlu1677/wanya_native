@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useLayoutEffect, useReducer} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
+import {useSelector} from 'react-redux';
 import {Avator, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -11,9 +12,10 @@ import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const AccountDetail = ({navigation, route}) => {
+const MineDetail = ({navigation, route}) => {
+  const id = useSelector(state => state.account.currentAccount.id);
+  const [accountId] = useState(id);
   const [account, setAccount] = useState({});
-  const [accountId] = useState(route.params.accountId);
   const [currentKey, setCurrentKey] = useState('publish');
 
   useLayoutEffect(() => {
@@ -69,6 +71,7 @@ const AccountDetail = ({navigation, route}) => {
             <Text style={styles.nickname}>{account.nickname}</Text>
             <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
           </View>
+          <Text style={styles.invite}>邀请好友</Text>
         </View>
         <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
@@ -211,4 +214,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AccountDetail;
+export default MineDetail;

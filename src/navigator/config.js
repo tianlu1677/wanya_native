@@ -27,12 +27,15 @@ import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
 // 我的页面
+import MineDetail from '@/pages/mine/mine-detail';
 import Mine from '@/pages/mine/mine';
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
 import EditAccountContent from '@/pages/mine/settings/edit-account-content';
 import Feedback from '@/pages/mine/settings/feedback';
+
+// accounts
 import AccountDetail from '@/pages/accounts/account-detail';
 import FollowNodes from '@/pages/accounts/follow-nodes';
 import FollowAccounts from '@/pages/accounts/follow-accounts';
@@ -64,18 +67,23 @@ export const tabRouters = [
   {
     name: 'Recommend',
     component: Recommend,
+    options: {title: '首页'},
+  },
+  {
+    name: 'NewTopic',
+    component: NewTopic,
     options: {title: '发布'},
   },
   {
-    name: 'Mine',
-    component: Mine,
+    name: 'MindDetail',
+    component: MineDetail,
     options: {title: '我的'},
   },
-  {
-    name: 'NotifyIndex',
-    component: NotifyIndex,
-    options: {title: '消息'},
-  },
+  // {
+  //   name: 'Mine',
+  //   component: Mine,
+  //   options: {title: '实验室'},
+  // },
 ];
 
 const topicRouter = [

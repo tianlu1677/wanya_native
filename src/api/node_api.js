@@ -22,11 +22,11 @@ export const getNodeDetail = async nodeId => {
 // 圈子动态
 export const getPosts = async params => {
   const res = await request({
-    url: `/api/v1/posts?${params.id}`,
+    url: `/api/v1/posts?${params.queryUrl}`,
     method: 'GET',
     params,
   });
-  return res.data;
+  return res;
 };
 
 // 我关注的圈子列表

@@ -158,7 +158,7 @@ ScrollList.propTypes = {
   onRefresh: PropTypes.func, // 下拉刷新，加载更多，执行方法
   emptyTitle: PropTypes.string, //数据为空时提示
   renderSeparator: PropTypes.func, // 分割线
-  ListHeaderComponent: PropTypes.func, //
+  ListHeaderComponent: PropTypes.object, //
 };
 
 export default ScrollList;

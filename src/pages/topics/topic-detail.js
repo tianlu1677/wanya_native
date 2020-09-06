@@ -53,7 +53,7 @@ const TopicDetail = ({navigation, route}) => {
         detail={detail}
         enableLoadMore={false}
         request={{api: getTopicCommentList, params: {id: detail.id}}}
-        ListHeaderComponent={() => (
+        ListHeaderComponent={
           <>
             {detail.content_style === 'img' && renderImg()}
             {detail.content_style === 'video' && renderVideo()}
@@ -66,7 +66,7 @@ const TopicDetail = ({navigation, route}) => {
             </View>
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
-        )}
+        }
       />
       <ActionComment
         detail={detail}
