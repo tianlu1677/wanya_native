@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
-import {Avator} from '@/components/NodeComponents';
+import NodeItem from '@/components/Item/node-item';
 
 const NodeList = props => {
   const [loading, setLoading] = useState(true);
@@ -10,25 +10,18 @@ const NodeList = props => {
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return (
-      <TouchableWithoutFeedback onPress={() => props.onPress(item)}>
-        <View style={styles.follow}>
-          <Avator account={item} size={40} />
-          <Text style={styles.nickname}>{item.nickname}</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
+    return <NodeItem node={item} type="list" key={item.id} />;
   };
 
   const renderSeparator = () => {
-    return <View style={styles.separator} />;
+    return <Text style={styles.separator} />;
   };
 
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.accounts;
+    const data = res.data.nodes;
     setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
@@ -37,10 +30,6 @@ const NodeList = props => {
   useEffect(() => {
     loadData();
   }, []);
-
-  useEffect(() => {
-    loadData();
-  }, [props.request]);
 
   return (
     <ScrollList
@@ -51,11 +40,18 @@ const NodeList = props => {
       renderItem={renderItem}
       renderSeparator={renderSeparator}
       {...props}
+      style={styles.wrapper}
     />
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
   follow: {
     flexDirection: 'row',
     paddingLeft: 14,
@@ -73,8 +69,9 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   separator: {
-    backgroundColor: '#FAFAFA',
-    height: 2,
+    backgroundColor: '#ebebeb',
+    height: 1,
+    marginLeft: 60,
   },
 });
 

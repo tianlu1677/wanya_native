@@ -4,6 +4,7 @@ import Loading from '@/components/Loading';
 import {JoinButton, JoinAccounts} from '@/components/NodeComponents';
 import {getNodeDetail, getPosts} from '@/api/node_api';
 import {getTopicList} from '@/api/topic_api';
+import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 
@@ -16,14 +17,14 @@ const NodeDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
   const [currentKey, setCurrentKey] = useState('publish');
-  // const navigation = useNavigation();
 
-  // useLayoutEffect(async () => {
-  //   // setNodeId(route.params.nodeId)
-  //   navigation.setOptions({
-  //     headerShown: true,
-  //   });
-  // }, [navigation]);
+  const PublishList = () => <SingleList request={{api: getPosts, params: {id: detail.id}}} />;
+
+  const PostsList = () => <SingleList request={{api: getPosts, params: {id: detail.id}}} />;
+
+  const ArticleList = () => <SingleList request={{api: getPosts, params: {id: detail.id}}} />;
+
+  const TopicList = () => <SingleList request={{api: getPosts, params: {id: detail.id}}} />;
 
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
@@ -43,7 +44,6 @@ const NodeDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  // return <Text>3232</Text>;
   return detail ? (
     <View style={styles.wrapper}>
       <View style={styles.header}>
@@ -84,30 +84,28 @@ const NodeDetail = ({navigation, route}) => {
       </View>
       <TabViewList
         currentKey={currentKey}
-        tabData={
-          [
-            // {
-            //   key: 'publish',
-            //   title: '动态',
-            //   component: PublishList,
-            // },
-            // {
-            //   key: 'posts',
-            //   title: '帖子',
-            //   component: PostsList,
-            // },
-            // {
-            //   key: 'article',
-            //   title: '文章',
-            //   component: ArticleList,
-            // },
-            // {
-            //   key: 'topic',
-            //   title: '话题',
-            //   component: TopicList,
-            // },
-          ]
-        }
+        tabData={[
+          {
+            key: 'publish',
+            title: '动态',
+            component: PublishList,
+          },
+          {
+            key: 'posts',
+            title: '帖子',
+            component: PostsList,
+          },
+          {
+            key: 'article',
+            title: '文章',
+            component: ArticleList,
+          },
+          {
+            key: 'topic',
+            title: '话题',
+            component: TopicList,
+          },
+        ]}
         onChange={key => setCurrentKey(key)}
       />
     </View>

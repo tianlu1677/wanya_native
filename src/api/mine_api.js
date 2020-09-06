@@ -5,7 +5,7 @@ export async function getCurrentAccount(params = {}) {
   const res = await request({
     url: '/api/v1/mine/accounts/info',
     method: 'GET',
-    params: params
+    params: params,
   });
   return res.data;
 }
@@ -32,30 +32,30 @@ export async function verifyInviteCode(data = {code: ''}) {
 }
 
 //关注任意东西
-export async function followItem(followable_type, followable_id) {
-  const res = await request({
-    url: `/api/v1/mine/accounts/follow`,
-    method: 'POST',
-    data: {
-      followable_type: followable_type,
-      followable_id: followable_id,
-    },
-  });
-  return res.data;
-}
+// export async function followItem(followable_type, followable_id) {
+//   const res = await request({
+//     url: `/api/v1/mine/accounts/follow`,
+//     method: 'POST',
+//     data: {
+//       followable_type: followable_type,
+//       followable_id: followable_id,
+//     },
+//   });
+//   return res.data;
+// }
 
-//取消关注任意东西
-export async function unfollowItem(followable_type, followable_id) {
-  const res = await request({
-    url: `/api/v1/mine/accounts/unfollow`,
-    method: 'POST',
-    data: {
-      followable_type: followable_type,
-      followable_id: followable_id,
-    },
-  });
-  return res.data;
-}
+// //取消关注任意东西
+// export async function unfollowItem(followable_type, followable_id) {
+//   const res = await request({
+//     url: `/api/v1/mine/accounts/unfollow`,
+//     method: 'POST',
+//     data: {
+//       followable_type: followable_type,
+//       followable_id: followable_id,
+//     },
+//   });
+//   return res.data;
+// }
 
 // 已坚持打卡多少天
 export async function learningRecords() {
@@ -94,3 +94,48 @@ export async function accountsPermissions() {
   });
   return res.data;
 }
+
+//关注任意东西
+export const followItem = async (params = {}) => {
+  const res = await request({
+    url: `/api/v1/mine/accounts/follow`,
+    method: 'POST',
+    data: params,
+  });
+  return res;
+};
+
+//取消关注任意东西
+export const unfollowItem = async (params = {}) => {
+  const res = await request({
+    url: `/api/v1/mine/accounts/unfollow`,
+    method: 'POST',
+    data: params,
+  });
+  return res;
+};
+
+// export async function followItem(followable_type, followable_id) {
+//   const res = await request({
+//     url: `/api/v1/mine/accounts/follow`,
+//     method: 'POST',
+//     data: {
+//       followable_type: params.followable_type,
+//       followable_id: params.followable_id,
+//     },
+//   });
+//   return res.data;
+// }
+
+//取消关注任意东西
+// export async function unfollowItem(followable_type, followable_id) {
+//   const res = await request({
+//     url: `/api/v1/mine/accounts/unfollow`,
+//     method: 'POST',
+//     data: {
+//       followable_type: followable_type,
+//       followable_id: followable_id,
+//     },
+//   });
+//   return res.data;
+// }

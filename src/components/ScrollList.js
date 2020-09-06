@@ -68,7 +68,7 @@ const ScrollList = props => {
         footer = <ActivityIndicator />;
         break;
       case loadState.EMPTY:
-        footer = <Text>数据已全部完成</Text>;
+        // footer = <Text>数据已全部完成</Text>;
         break;
       case loadState.ERROR:
         footer = <Text onPress={onRefresh}>点击重新加载</Text>;
@@ -80,7 +80,7 @@ const ScrollList = props => {
   const renderEmpty = () => {
     return (
       !refreshing && (
-        <View style={[scrollStyle.footer, {height: height}]}>
+        <View style={[scrollStyle.footer, {maxHeight: height}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
           <Text>{props.emptyTitle || '还没有内容哦'}</Text>
         </View>
@@ -129,16 +129,16 @@ const ScrollList = props => {
 };
 
 const scrollStyle = StyleSheet.create({
-  containter: {
-    // backgroundColor: 'pink',
-  },
+  containter: {},
   footer: {
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   emptyImg: {
-    width: 128,
-    height: 128,
+    width: 64,
+    height: 64,
     marginBottom: 10,
   },
   separator: {

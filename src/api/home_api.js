@@ -20,10 +20,30 @@ export const getRecommendPosts = async (params = {}) => {
   return res;
 };
 
+// 随机推荐帖子
+export const getRecommendVideoListPosts = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/recommend/video_list',
+    method: 'GET',
+    params: params,
+  });
+  return res;
+};
+
 // 关注的帖子
 export const getFollowedTopics = async (params = {}) => {
   const res = await request({
     url: '/api/v1/home/followed_topics',
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
+// 最新的帖子
+export const getRecommendLatestPosts = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/recommend/latest_posts',
     method: 'GET',
     params,
   });
@@ -164,14 +184,14 @@ export function getFollowedPosts(params = {}) {
 
 // 随机推荐的帖子
 
-export async function getRecommendVideoListPosts(params = {}) {
-  const res = await request({
-    url: '/api/v1/recommend/video_list',
-    method: 'GET',
-    params: params,
-  });
-  return res;
-}
+// export async function getRecommendVideoListPosts(params = {}) {
+//   const res = await request({
+//     url: '/api/v1/recommend/video_list',
+//     method: 'GET',
+//     params: params,
+//   });
+//   return res;
+// }
 
 // 置顶的帖子
 export async function getRecommendTopPosts(params = {}) {

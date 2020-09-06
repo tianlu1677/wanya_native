@@ -16,11 +16,8 @@ const Avator = props => {
   };
 
   function goAccountDetail() {
-    console.log('goAccountDetail');
     props.handleClick && props.handleClick();
-
     if (props.account && props.account.id) {
-      console.log('this.props', props.account.id);
       navigation.navigate('AccountDetail', {accountId: props.account.id});
     }
   }

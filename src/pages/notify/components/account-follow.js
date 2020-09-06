@@ -3,7 +3,7 @@ import {View, Text, Image, Button} from 'react-native';
 import styled from 'styled-components/native';
 import {CommentNoticeImg, LogoImg} from '@/utils/default-image';
 import {Avator} from '../../../components/NodeComponents';
-
+import {getFollowNodeIndex} from '@/api/node_api';
 class AccountFollow extends Component {
   constructor(props) {
     super(props);

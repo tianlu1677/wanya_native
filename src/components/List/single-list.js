@@ -13,7 +13,6 @@ const SingleList = props => {
     if (item.item_type === 'Topic') {
       return <BaseTopic data={item.item} />;
     } else if (item.item_type === 'Article') {
-      console.log('xxxxx', item);
       return <BaseArticle data={item.item} />;
     }
 

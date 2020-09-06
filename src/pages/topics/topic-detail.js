@@ -81,10 +81,7 @@ const TopicDetail = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // backgroundColor: '#fff',
-    // flex: 1,
-  },
+  wrapper: {},
   title: {
     fontSize: 20,
     paddingTop: 8,

@@ -88,7 +88,7 @@ SwiperImage
 
 - accounts/account-detail( AccountDetail 用户详情页)
 - accounts/follow-nodes x
-- accounts/account-list (用户的关注人的列表) x
+- accounts/follow-account (用户的关注人的列表) x
 
 ## 话题
 

@@ -1,47 +1,64 @@
-import React from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import * as action from '@/redux/constants';
+import {View, Text, StyleSheet, Image, TouchableWithoutFeedback} from 'react-native';
+import {JoinButton} from '@/components/NodeComponents';
+import {followItem, unfollowItem} from '@/api/mine_api';
+
 const defaultCoverUrl =
   'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
 
 const NodeItem = props => {
-  const home = useSelector(state => state.home);
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-
-  const chooseNode = node => {
-    const topics = {...home.savetopic, node: node};
-    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.goBack();
-  };
+  const home = useSelector(state => state.home);
+  const [followed, setFollowed] = useState(props.node.followed);
 
   const {node} = props;
+
+  const onFollowNode = async () => {
+    if (node.followed) {
+      await unfollowItem({followable_type: 'Node', followable_id: node.id});
+    } else {
+      await followItem({followable_type: 'Node', followable_id: node.id});
+    }
+    setFollowed(!followed);
+  };
+
+  const goNodeDetail = () => {
+    navigation.navigate('NodeDetail', {nodeId: node.id});
+  };
+
   return (
-    <TouchableWithoutFeedback key={node.id} onPress={() => chooseNode(node)}>
-      <View style={styles.nodeItem}>
+    <TouchableWithoutFeedback onPress={goNodeDetail}>
+      <View style={[styles.nodeItem, props.style]}>
         <Image style={styles.nodeImg} source={{uri: node.cover_url || defaultCoverUrl}} />
         <View style={styles.nodeInfo}>
-          <View>
+          <View style={{marginRight: 'auto'}}>
             <Text style={styles.nodeName}>{node.name}</Text>
             <Text style={styles.nodeDesc}>
               {node.topics_count}篇帖子 · {node.accounts_count}位{node.nickname || '圈友'}
             </Text>
           </View>
-          {home.savetopic.node && home.savetopic.node.id === node.id ? (
-            <IconFont name="duigou1" size={16} color={'#000'} style={styles.icon} />
-          ) : (
-            <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
+
+          {/* list */}
+          {props.type === 'list' && (
+            <JoinButton
+              join={followed}
+              text={followed ? '已加入' : '加入'}
+              onPress={onFollowNode}
+            />
+          )}
+
+          {/* addnode */}
+          {props.type === 'add-node' && (
+            <>
+              {home.savetopic.node && home.savetopic.node.id === node.id ? (
+                <IconFont name="duigou1" size={16} color={'#000'} style={styles.icon} />
+              ) : (
+                <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
+              )}
+            </>
           )}
         </View>
       </View>
@@ -53,11 +70,13 @@ const styles = StyleSheet.create({
   nodeItem: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 15,
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: '#fff',
   },
   nodeImg: {
-    width: 49,
-    height: 49,
+    width: 50,
+    height: 50,
     borderRadius: 5,
     borderWidth: 3,
     borderColor: '#ffff00',
@@ -71,10 +90,7 @@ const styles = StyleSheet.create({
   nodeInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 18,
     paddingTop: 5,
-    borderBottomColor: '#EBEBEB',
-    borderBottomWidth: 1,
     flex: 1,
   },
   nodeName: {
