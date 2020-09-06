@@ -64,15 +64,15 @@ const SocialLogin = ({navigation, route}) => {
       navigation.navigate('WebView', {
         sourceUrl: 'https://xinxue.meirixinxue.com/home/private_policy',
         title: '顽鸦隐私政策',
-        bgColor: 'black'
-      })
+        bgColor: 'black',
+      });
     }
     if (type === 'user') {
       navigation.navigate('WebView', {
         sourceUrl: 'https://xinxue.meirixinxue.com/home/user_agreement',
         title: '顽鸦用户协议',
-        bgColor: 'black'
-      })
+        bgColor: 'black',
+      });
     }
   };
   return (
@@ -93,8 +93,27 @@ const SocialLogin = ({navigation, route}) => {
         />
 
         <Text style={styles.privateText}>
-          我已阅读并同意 <Text onPress={() => {goPages('user')}}>《用户协议》</Text> 和{' '}
-          <Text onPress={() => {goPages('private')}}>《隐私政策》</Text>{' '}
+          我已阅读并同意{' '}
+          <Text
+            onPress={() => {
+              goPages('user');
+            }}>
+            《用户协议》
+          </Text>{' '}
+          和{' '}
+          <Text
+            onPress={() => {
+              goPages('private');
+            }}>
+            《隐私政策》
+          </Text>{' '}
+          <Text
+            onPress={() => {
+              navigation.navigate('AdminPhoneLogin');
+            }}>
+
+            --
+          </Text>
         </Text>
       </ImageBackground>
     </View>
