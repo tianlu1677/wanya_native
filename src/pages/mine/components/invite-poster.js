@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {View, Text, Image, ImageBackground} from 'react-native';
 
 import styled from 'styled-components/native';
-import InvitePosterImg from '@/assets/images/invite-poster.jpg';
 
 const InvitePoster = props => {
   return (
@@ -22,7 +21,7 @@ const CardView = styled(View)`
   align-items: center;
   flex-direction: column;
   position: absolute;
-  top: 320;
+  top: 320px;
   left: 0;
   right: 0;
 `;
