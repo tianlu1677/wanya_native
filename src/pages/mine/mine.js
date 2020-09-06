@@ -130,12 +130,6 @@ class Mine extends Component {
           }}
         />
         <Button
-          title={'去VideoDetail'}
-          onPress={() => {
-            this.props.navigation.navigate('VideoDetail', {hashtag: '滑板'});
-          }}
-        />
-        <Button
           title={'去场地详情页'}
           onPress={() => {
             this.props.navigation.navigate('SpaceDetail', {spaceId: 2});
@@ -155,17 +149,12 @@ class Mine extends Component {
           }}
         />
         <Button
-          title={'去我的邀请yes,,,,,,,,,,,,,,,,,,,'}
+          title={'去我的邀请'}
           onPress={() => {
             this.props.navigation.navigate('InviteDetail');
           }}
         />
-        <Button
-          title={'去我的邀请yes,,,,,,,,,,,,,,,,,,,'}
-          onPress={() => {
-            this.props.navigation.navigate('InviteDetail');
-          }}
-        />
+
         <Button
           title={'去我的设置'}
           onPress={() => {
