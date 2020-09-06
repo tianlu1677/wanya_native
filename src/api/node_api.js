@@ -16,7 +16,7 @@ export const getNodeDetail = async nodeId => {
     url: `/api/v1/nodes/${nodeId}`,
     method: 'GET',
   });
-  return res.data;
+  return res;
 };
 
 // 圈子动态

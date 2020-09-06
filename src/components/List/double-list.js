@@ -130,7 +130,7 @@ const DoubleList = props => {
 
   return (
     <ScrollList
-      data={[1, 2]}
+      data={listData.length === 0 ? [] : [1, 2]}
       loading={loading}
       onRefresh={loadData}
       headers={headers}

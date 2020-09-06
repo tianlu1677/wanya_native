@@ -6,6 +6,7 @@ import {JoinButton, JoinAccounts} from '@/components/NodeComponents';
 import {getNodeDetail, getPosts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
 import {getArticleList} from '@/api/article_api';
+import {followItem, unfollowItem} from '@/api/mine_api';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
@@ -40,14 +41,14 @@ const NodeDetail = ({navigation, route}) => {
 
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
-    setDetail(res.node);
+    setDetail(res.data.node);
   };
 
-  const onFollowNode = () => {
+  const onFollowNode = async () => {
     if (detail.followed) {
-      setDetail({...detail, followed: false});
+      await unfollowItem({followable_type: 'Node', followable_id: detail.id});
     } else {
-      setDetail({...detail, followed: true});
+      await followItem({followable_type: 'Node', followable_id: detail.id});
     }
     loadData();
   };
@@ -70,10 +71,10 @@ const NodeDetail = ({navigation, route}) => {
           </View>
           <View style={styles.nodeCreator}>
             <Image style={styles.creator} source={{uri: detail.cover_url || defaultCoverUrl}} />
-            <View>
+            {/* <View>
               <Text>名称</Text>
               <Text>创建者</Text>
-            </View>
+            </View> */}
           </View>
         </View>
         <Text style={styles.nodeDesc} numberOfLines={2}>
