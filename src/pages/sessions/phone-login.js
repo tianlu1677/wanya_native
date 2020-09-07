@@ -6,7 +6,7 @@ import {getCurrentAccount} from '@/api/mine_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
-import {dispatchSetAuthToken} from '@/redux/actions';
+import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 var md5 = require('md5');
 
 const PhoneLogin = ({navigation, route}) => {
@@ -124,7 +124,10 @@ const PhoneLogin = ({navigation, route}) => {
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
       } else {
-        dispatch(dispatchSetAuthToken(token));
+
+        await Helper.setData('auth_token', accountInfo.token)
+        dispatch(dispatchSetAuthToken(accountInfo.token));
+        dispatch(dispatchCurrentAccount());
         navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],

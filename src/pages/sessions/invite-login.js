@@ -6,7 +6,7 @@ import {verifyInviteCode} from '../../api/phone_sign_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
-import {dispatchSetAuthToken} from '@/redux/actions';
+import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 
 const InviteLogin = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
@@ -43,7 +43,7 @@ const InviteLogin = ({navigation, route}) => {
 
     const token = await Helper.getData('socialToken');
     let data = {invite_code: inviteCode, token: token};
-    verifyInviteCode(data).then(res => {
+    verifyInviteCode(data).then(async (res) => {
       console.log('res', res);
       if (res.error) {
         Toast.show(res.error, {
@@ -57,7 +57,9 @@ const InviteLogin = ({navigation, route}) => {
           delay: 10,
         });
       } else {
+        await Helper.setData('auth_token', token)
         dispatch(dispatchSetAuthToken(token));
+        dispatch(dispatchCurrentAccount());
         navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],

@@ -71,11 +71,6 @@ export const changeProgress = value => {
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
   console.log('dispatchSetAuthToken', token);
-  // return
-  // return {
-  //   type: ADMIN_SIGN_SUCCESS,
-  //   auth_token: auth_token
-  // }
   dispatchCurrentAccount()
   Helper.setData('auth_token', token)
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});

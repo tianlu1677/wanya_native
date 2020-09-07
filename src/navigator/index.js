@@ -87,11 +87,11 @@ function AuthStackList() {
         //   fontWeight: 'bold',
         // },
       })}>
-      {/*<AuthStack.Screen*/}
-      {/*  name="AdminPhoneLogin"*/}
-      {/*  component={AdminPhoneLogin}*/}
-      {/*  options={({route}) => ({})}*/}
-      {/*/>*/}
+      <AuthStack.Screen
+        name="AdminPhoneLogin"
+        component={AdminPhoneLogin}
+        options={({route}) => ({})}
+      />
       <AuthStack.Screen
         name="SocialLogin"
         component={SocialLogin}

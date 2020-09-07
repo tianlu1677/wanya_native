@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 import Helper from '../../utils/helper';
 import * as WeChat from 'react-native-wechat-lib';
 import {appWechatSignIn} from '@/api/sign_api';
-import {dispatchSetAuthToken} from '@/redux/actions';
+import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -38,7 +38,10 @@ const SocialLogin = ({navigation, route}) => {
       Helper.setData('socialToken', accountInfo.token);
       // 有手机且已验证码，跳转到首页
       if (accountInfo.had_phone && accountInfo.had_invited) {
+        await Helper.setData('auth_token', accountInfo.token)
         dispatch(dispatchSetAuthToken(accountInfo.token));
+        dispatch(dispatchCurrentAccount());
+
         navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],
