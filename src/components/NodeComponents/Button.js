@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 
 const JoinStyles = StyleSheet.create({
   btn: {
@@ -7,8 +7,9 @@ const JoinStyles = StyleSheet.create({
     height: 27,
     lineHeight: 27,
     textAlign: 'center',
-    borderRadius: 1,
     fontSize: 13,
+    borderRadius: 1,
+    fontWeight: '500',
   },
   joined: {
     color: '#bdbdbd',

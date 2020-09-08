@@ -41,6 +41,7 @@ import AccountDetail from '@/pages/accounts/account-detail';
 import FollowNodes from '@/pages/accounts/follow-nodes';
 import FollowAccounts from '@/pages/accounts/follow-accounts';
 import FollowerAccounts from '@/pages/accounts/follower-accounts';
+import JoinAccountsList from '@/components/List/join-accounts-list';
 
 // 消息通知页面
 import NotifyIndex from '@/pages/notify/notify-index';
@@ -169,6 +170,11 @@ const accountRouter = [
     name: 'FollowAccounts',
     component: FollowAccounts,
     options: {title: '关注列表'},
+  },
+  {
+    name: 'JoinAccountsList',
+    component: JoinAccountsList,
+    options: {title: '最近加入列表'},
   },
   {
     name: 'FollowerAccounts',

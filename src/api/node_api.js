@@ -39,6 +39,16 @@ export const getFollowNodeIndex = async params => {
   return res;
 };
 
+// 圈子加入用户
+export const getRecentAccounts = async params => {
+  const res = await request({
+    url: `/api/v1/nodes/${params.id}/recent_accounts`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
 // export async function getFollowNodeIndex(params = {account_id: ''}) {
 //   const res = await request({
 //     url: '/api/v1/nodes/followed',
@@ -110,11 +120,11 @@ export async function getRecommendNodeList(params = {}) {
 // }
 
 // 圈子用户
-export async function getRecentAccounts(node_id, params = {}) {
-  const res = await request({
-    url: `/api/v1/nodes/${node_id}/recent_accounts`,
-    method: 'GET',
-    params: params,
-  });
-  return res;
-}
+// export async function getRecentAccounts(node_id, params = {}) {
+//   const res = await request({
+//     url: `/api/v1/nodes/${node_id}/recent_accounts`,
+//     method: 'GET',
+//     params: params,
+//   });
+//   return res;
+// }

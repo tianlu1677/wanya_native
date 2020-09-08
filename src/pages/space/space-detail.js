@@ -51,9 +51,18 @@ const SpaceDetail = ({navigation, route}) => {
       <ImageBackground source={{uri: detail.cover_url}} style={styles.header}>
         <View style={styles.info}>
           <View>
-            <Text style={styles.name}>{detail.name}</Text>
+            <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
+              {detail.name}
+            </Text>
             <Text style={styles.intro}>
-              <Text>{detail.intro}</Text> | <Text>{detail.medias.length}张图片</Text>
+              <Text>
+                {detail.intro
+                  ? detail.intro.length > 20
+                    ? `${detail.intro.substring(0, 20)}...`
+                    : detail.intro
+                  : '暂无简介'}
+              </Text>{' '}
+              | <Text>{detail.medias.length}张图片</Text>
             </Text>
           </View>
           <TouchableOpacity style={styles.creatorWrap} onPress={goAccountDetail}>
