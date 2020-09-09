@@ -10,6 +10,7 @@ import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import {createTopic} from '@/api/topic_api';
 import Upload from 'react-native-background-upload';
 import {ModalLoading} from '@/components/NodeComponents';
+import Toast from '@/components/Toast';
 
 const NewTopic = props => {
   const navigation = useNavigation();
@@ -34,7 +35,9 @@ const NewTopic = props => {
       if (err) {
         return;
       }
-      setImageSource(res);
+      console.log(res);
+
+      setImageSource([...res]);
     });
   };
 
@@ -129,11 +132,18 @@ const NewTopic = props => {
     const image = imageSource.filter((v, i) => i !== index);
     const video = videoSource.filter((v, i) => i !== index);
 
-    setImageSource(image);
+    setImageSource([...image]);
     setVideoSource(video);
   };
 
   const onSubmit = async () => {
+    console.log(imageSource);
+    // if (imageSource.length === 0 || videoSource.length === 0) {
+    //   return Toast.show('图片/视频不能为空哦~');
+    // }
+    // if (savetopic.node && !savetopic.node.id) {
+    //   navigation.navigate('AddNode');
+    // }
     setLoading(true);
     let mediasImg = [];
     if (imageSource.length > 0) {
@@ -171,12 +181,16 @@ const NewTopic = props => {
     setContent(savetopic.plan_content);
   }, [savetopic]);
 
+  useEffect(() => {
+    console.log(3333333);
+  }, []);
+
   const closeBut = () => {
     navigation.reset({
       index: 0,
       routes: [{name: 'Recommend'}],
-    })
-  }
+    });
+  };
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: null,

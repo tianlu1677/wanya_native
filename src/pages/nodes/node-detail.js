@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import Loading from '@/components/Loading';
 import TabViewList from '@/components/TabView';
-import {JoinButton, JoinAccounts} from '@/components/NodeComponents';
-import {getNodeDetail, getPosts} from '@/api/node_api';
+import {JoinButton, JoinAccounts, PlayScore} from '@/components/NodeComponents';
+import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
 import {getArticleList} from '@/api/article_api';
 import {followItem, unfollowItem} from '@/api/mine_api';
@@ -11,9 +11,6 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
-
-const defaultCoverUrl =
-  'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
 
 const NodeDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
@@ -53,34 +50,38 @@ const NodeDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const goJoinAccounts = () => {
+    navigation.navigate('JoinAccountsList', {
+      title: detail.name,
+      request: {api: getRecentAccounts, params: {id: detail.id}},
+    });
+  };
+
+  const onPlay = () => {};
+
   useEffect(() => {
     loadData();
   }, []);
 
   return detail ? (
     <View style={styles.wrapper}>
-      <View style={styles.header}>
-        <Image style={styles.bgcover} source={{uri: detail.backgroud_cover_url}} />
+      <ImageBackground source={{uri: detail.backgroud_cover_url}} style={styles.header}>
         <View style={styles.nodeContent}>
           <View style={styles.nodeInfo}>
-            <Image style={styles.cover} source={{uri: detail.cover_url || defaultCoverUrl}} />
+            <Image style={styles.cover} source={{uri: detail.cover_url}} />
             <View style={styles.nodewrap}>
               <Text style={styles.nodeName}>{detail.name}</Text>
               <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
             </View>
           </View>
-          <View style={styles.nodeCreator}>
-            <Image style={styles.creator} source={{uri: detail.cover_url || defaultCoverUrl}} />
-            {/* <View>
-              <Text>名称</Text>
-              <Text>创建者</Text>
-            </View> */}
-          </View>
         </View>
-        <Text style={styles.nodeDesc} numberOfLines={2}>
-          {detail.desc}
-        </Text>
-        <View style={styles.accountInfo}>
+        <View style={styles.descWrap}>
+          <Text style={styles.nodeDesc} numberOfLines={2}>
+            {detail.desc}
+          </Text>
+          <PlayScore score={detail.play_score} onPress={onPlay} />
+        </View>
+        <TouchableOpacity style={styles.accountInfo} onPress={goJoinAccounts}>
           <Text style={styles.accountOpacity} />
           <JoinAccounts accounts={detail.accounts} size={25} />
           <Text style={styles.count}>
@@ -89,12 +90,10 @@ const NodeDetail = ({navigation, route}) => {
           <JoinButton
             join={detail.followed}
             text={detail.followed ? '已加入' : '加入'}
-            onPress={() => {
-              onFollowNode();
-            }}
+            onPress={onFollowNode}
           />
-        </View>
-      </View>
+        </TouchableOpacity>
+      </ImageBackground>
       <TabViewList
         currentKey={currentKey}
         tabData={[
@@ -134,17 +133,8 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 16,
-    position: 'relative',
-    height: 242,
-    paddingTop: 20,
-  },
-  bgcover: {
-    height: 242,
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    bottom: 0,
-    top: 0,
+    minHeight: 283,
+    paddingTop: 67,
   },
   nodeContent: {
     flexDirection: 'row',
@@ -168,28 +158,35 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   nodeNum: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#fff',
-    lineHeight: 27,
-    marginBottom: 8,
+    lineHeight: 20,
+    marginTop: 8,
   },
   nodeCreator: {
     flexDirection: 'row',
   },
+  descWrap: {
+    marginTop: 22,
+    flexDirection: 'row',
+  },
   nodeDesc: {
-    width: 250,
+    width: 270,
     color: '#fff',
-    marginTop: 20,
     marginBottom: 20,
+    lineHeight: 19,
+    fontSize: 11,
+    marginRight: 'auto',
   },
   accountInfo: {
+    height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
     zIndex: 2,
+    borderRadius: 2,
+    position: 'relative',
   },
   accountOpacity: {
     backgroundColor: '#fff',
@@ -201,7 +198,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   count: {
-    color: '#bdbdbd',
+    color: '#fff',
     marginRight: 'auto',
     marginLeft: 7,
   },

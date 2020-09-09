@@ -4,12 +4,13 @@ const defaultState = {
   savetopic: {
     plan_content: '',
     mention: [],
+    node: '',
   },
   previewImageData: {
     images: [],
     index: 0,
-    visible: false
-  }
+    visible: false,
+  },
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -22,8 +23,8 @@ export const homeReducer = (state = defaultState, action) => {
     case PREVIEW_IMAGES:
       return {
         ...state,
-        previewImageData: action.previewImageData
-      }
+        previewImageData: action.previewImageData,
+      };
     default:
       return state;
   }

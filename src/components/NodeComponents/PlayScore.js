@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 
 const PlayScore = props => {
+  console.log(props);
+
   const filter = value => {
     if (value >= 10000) {
       const num = Math.round((value / 10000) * 10) / 10;
@@ -13,10 +15,10 @@ const PlayScore = props => {
   };
 
   return (
-    <View style={playStyles.wrapper}>
+    <TouchableOpacity style={playStyles.wrapper} onPress={props.onPress}>
       <Image style={playStyles.image} source={require('@/assets/images/play-score.png')} />
-      <Text style={playStyles.scoreText}>{filter(props.score)}</Text>
-    </View>
+      <Text style={[playStyles.scoreText, props.textStyle]}>{filter(props.score)}</Text>
+    </TouchableOpacity>
   );
 };
 
