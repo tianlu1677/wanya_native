@@ -22,7 +22,7 @@ const PhoneLogin = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
-      // headerTintColor: 'white',
+      headerTintColor: 'white',
       title: false,
       headerStyle: {
         backgroundColor: 'black',
@@ -64,7 +64,7 @@ const PhoneLogin = ({navigation, route}) => {
   const onSendPhoneCode = () => {
     if (!/^1[3456789]\d{9}$/.test(phone)) {
       console.log('error phone');
-      Toast.show('请输入正确的手机号');
+      Toast.showError('请输入正确的手机号');
       return;
     }
     let timestamp = new Date().getTime();
@@ -79,7 +79,7 @@ const PhoneLogin = ({navigation, route}) => {
         console.log('发送成功');
         setFirstVerify(false)
       } else {
-        Toast.show('服务器出现了点小问题');
+        Toast.showError('服务器出现了点小问题');
         console.log('failed');
       }
     });
@@ -93,11 +93,11 @@ const PhoneLogin = ({navigation, route}) => {
     console.log('verifyResponse', verifyResponse);
     if (verifyResponse.error) {
 
-      Toast.show(verifyResponse.error, {
+      Toast.showError(verifyResponse.error, {
       });
 
     } else {
-      Toast.show('注册成功');
+      Toast.showError('注册成功');
       const accountInfo = await getCurrentAccount({token: token});
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
@@ -123,9 +123,11 @@ const PhoneLogin = ({navigation, route}) => {
             <Text
               style={{
                 fontSize: 15,
-                fontWeight: '600',
+                fontWeight: '700',
                 marginRight: 15,
+                lineHeight: 20,
                 color: 'white',
+                letterSpacing: 1,
               }}>
               + 86
             </Text>
@@ -143,7 +145,7 @@ const PhoneLogin = ({navigation, route}) => {
               placeholderTextColor={'#353535'}
               // textAlignVertical="top"
               // value={'198271'}
-              style={{color: 'white', fontWeight: '600'}}
+              style={styles.inputContent}
             />
           </InputView>
 
@@ -160,10 +162,7 @@ const PhoneLogin = ({navigation, route}) => {
               onChangeText={text => setPhoneCode(text)}
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
-              style={{
-                color: 'white',
-                fontWeight: '600',
-              }}
+              style={styles.inputContent}
             />
             {firstVerify ? (
               <VerifyCodeText
@@ -201,6 +200,13 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     letterSpacing: 1,
   },
+  inputContent: {
+    fontSize: 15,
+    letterSpacing: 1,
+    color: '#FFFFFF',
+    fontWeight: '700',
+    minWidth: 200
+  }
 });
 
 const TitleText = styled(Text)`
@@ -210,7 +216,7 @@ const TitleText = styled(Text)`
   font-weight: 900;
 `;
 const InputWrapView = styled(View)`
-  padding-top: 18px;
+  padding-top: 57px;
   font-size: 30px;
 `;
 const InputView = styled(View)`
@@ -227,7 +233,6 @@ const VerifyCodeText = styled(Text)`
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 600;
-  margin-right: 15px;
   color: ${props => props.color};
 `;
 export default PhoneLogin;

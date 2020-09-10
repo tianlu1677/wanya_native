@@ -113,7 +113,7 @@ const SocialLogin = ({navigation, route}) => {
           <Text
             onPress={() => {
               // navigation.navigate('AdminPhoneLogin');
-              navigation.navigate('PhoneLogin');
+              navigation.navigate('InviteLogin');
             }}>
 
             --

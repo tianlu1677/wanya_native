@@ -231,6 +231,7 @@ export const routers = [
     name: 'InviteLogin',
     component: InviteLogin,
     options: {title: '输入邀请码'},
+    safeArea: false
   },
   {
     name: 'InviteDetail',
