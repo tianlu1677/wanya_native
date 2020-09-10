@@ -6,11 +6,15 @@ import {
   getRecommendVideoListPosts,
   getRecommendLatestPosts,
 } from '@/api/home_api';
+import {View} from 'react-native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Recommend = props => {
+  const insets = useSafeAreaInsets();
   const [currentKey, setCurrentKey] = useState('recommend');
 
   const RecommendList = () => {
@@ -26,27 +30,29 @@ const Recommend = props => {
   };
 
   return (
-    <TabViewList
-      currentKey={currentKey}
-      tabData={[
-        {
-          key: 'recommend',
-          title: '推荐',
-          component: RecommendList,
-        },
-        {
-          key: 'follow',
-          title: '关注',
-          component: FollowList,
-        },
-        {
-          key: 'lasted',
-          title: '最新',
-          component: LastedList,
-        },
-      ]}
-      onChange={key => setCurrentKey(key)}
-    />
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white', paddingTop: Math.max(insets.bottom, 16)}} edges={['right', 'left']} mode="padding"  >
+      <TabViewList
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'recommend',
+            title: '推荐',
+            component: RecommendList,
+          },
+          {
+            key: 'follow',
+            title: '关注',
+            component: FollowList,
+          },
+          {
+            key: 'lasted',
+            title: '最新',
+            component: LastedList,
+          },
+        ]}
+        onChange={key => setCurrentKey(key)}
+      />
+    </SafeAreaView>
   );
 };
 

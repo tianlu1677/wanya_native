@@ -69,6 +69,7 @@ export const tabRouters = [
   {
     name: 'Recommend',
     component: Recommend,
+    safeArea: true,
     options: {title: '首页'},
   },
   {
@@ -296,6 +297,7 @@ export const routers = [
   {
     name: 'WebView',
     component: WebView,
+    safeArea: false,
     options: {title: 'WebView'},
   },
   {

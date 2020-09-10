@@ -1,13 +1,20 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {Text, SafeAreaView} from 'react-native';
+import {Text, SafeAreaView, StyleSheet, Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
 import {useSelector} from 'react-redux';
 import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+
+import {BlurView, VibrancyView} from '@react-native-community/blur';
+import IconFont from '@/iconfont';
+
+import Recommend from '@/pages/home/recommend';
+import GoNewTopic from '@/pages/topics/go-new-topic';
+import MineDetail from '@/pages/mine/mine-detail';
 //登录页面
 import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
@@ -17,59 +24,59 @@ const Tab = createBottomTabNavigator();
 const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
+const TabBar = props => (
+  <VibrancyView
+    style={styles.blurView}
+    blurType="xlight"
+    blurAmount={40}
+    reducedTransparencyFallbackColor="#white"
+  >
+    <BottomTabBar {...props} />
+  </VibrancyView>
+);
+
 function HomeTabList() {
   return (
     <Tab.Navigator
+      tabBar={TabBar}
       initialRouteName={'Recommend'}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
-          let iconName = 'logo-react';
-          if (route.name === 'Search') {
-            iconName = 'ios-search';
-          } else if (route.name === 'Fav') {
-            iconName = focused ? 'ios-heart' : 'ios-heart-empty';
+          let iconName = 'search';
+          if (route.name === 'Recommend') {
+            iconName = 'search';
+          } else if (route.name === 'MineDetail') {
+            iconName = focused ? 'white-circle' : 'double-circle';
           }
-          // You can return any component that you like here!
-          return <Text />;
+          return (
+            <IconFont name={iconName} color={focused ? 'black' : 'red'} />
+          );
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'white',
+        activeTintColor: 'black',
         inactiveTintColor: 'gray',
-        activeBackgroundColor: '#219bd9',
-        inactiveBackgroundColor: '#d6f9ff',
-        safeAreaInsets: {bottom: 0},
-        tabStyle: {paddingBottom: 15},
+        activeBackgroundColor: 'none',
+        inactiveBackgroundColor: 'none',
+        safeAreaInsets: { bottom: 0},
+        tabStyle: { display: 'flex', justifyContent: 'center', lineHeight: 55},
+        showLabel: false,
         style: {
           backgroundColor: 'transparent',
           borderTopWidth: 0,
-          position: 'absolute',
-          left: 50,
-          right: 50,
-          bottom: 20,
-          height: 50,
+          height: 55
         },
-      }}>
-      {tabRouters.map(route => {
-        const render = props => {
-          const Components = route.component;
-          return route.safeArea === false ? (
-            <Components {...props} />
-          ) : (
-            <SafeAreaView style={{flex: 1}}>
-              <Components {...props} />
-            </SafeAreaView>
-          );
-        };
-        return (
-          <Tab.Screen
-            key={route.name}
-            name={route.name}
-            component={render}
-            options={route.options}
-          />
-        );
-      })}
+      }}
+    >
+      <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{
+
+      }} />
+      <Tab.Screen key={'GoNewTopic'} name={'GoNewTopic'} component={GoNewTopic} options={{
+
+      }} />
+      <Tab.Screen key={'MineDetail'} name={'MineDetail'} component={MineDetail} options={{
+
+      }} />
     </Tab.Navigator>
   );
 }
@@ -92,21 +99,9 @@ function AuthStackList() {
         component={AdminPhoneLogin}
         options={({route}) => ({})}
       />
-      <AuthStack.Screen
-        name="SocialLogin"
-        component={SocialLogin}
-        options={({route}) => ({})}
-      />
-      <AuthStack.Screen
-        name="PhoneLogin"
-        component={PhoneLogin}
-        options={({route}) => ({})}
-      />
-      <AuthStack.Screen
-        name="InviteLogin"
-        component={InviteLogin}
-        options={({route}) => ({})}
-      />
+      <AuthStack.Screen name="SocialLogin" component={SocialLogin} options={({route}) => ({})} />
+      <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} options={({route}) => ({})} />
+      <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
     </AuthStack.Navigator>
   );
 }
@@ -163,5 +158,19 @@ const Navigation = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  blurView: {
+    position: 'absolute',
+    bottom: 20,
+    left: 80,
+    right: 80,
+    height: 55,
+    borderRadius: 28,
+  },
+  bottomTabBar: {
+    backgroundColor: 'transparent',
+  },
+});
 
 export default Navigation;

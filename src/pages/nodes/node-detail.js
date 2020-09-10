@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import Loading from '@/components/Loading';
 import TabViewList from '@/components/TabView';
-import {JoinButton, JoinAccounts, PlayScore} from '@/components/NodeComponents';
+import {JoinButton, JoinAccounts, PlayScore, JoinActivity} from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
 import {getArticleList} from '@/api/article_api';
@@ -120,6 +120,8 @@ const NodeDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+
+      <JoinActivity type={"node"} text={"立刻参与"} handleClick={() => { console.log('go new topic')}} />
     </View>
   ) : (
     <Loading />

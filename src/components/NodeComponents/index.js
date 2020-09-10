@@ -5,6 +5,7 @@ import SearchNode from './Search';
 import BadgeMessageNode from './BadgeMessage';
 import {JoinBtn} from './Button';
 import CityListNode from './CityList';
+import JoinActivityNode from './JoinActivity'
 import {Loading} from './Modal';
 
 export const PlayScore = PlayScoreNode;
@@ -15,3 +16,4 @@ export const BadgeMessage = BadgeMessageNode;
 export const JoinButton = JoinBtn;
 export const CityList = CityListNode;
 export const ModalLoading = Loading;
+export const JoinActivity = JoinActivityNode;
