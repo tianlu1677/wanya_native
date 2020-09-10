@@ -2,7 +2,7 @@ import React, {Component, useState, useLayoutEffect, useReducer} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 
-import {verifyInviteCode} from '../../api/phone_sign_api';
+import {verifyInviteCode} from '@/api/phone_sign_api';
 import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';

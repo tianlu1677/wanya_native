@@ -1,12 +1,13 @@
 import React, {Component, useState, useLayoutEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, TextInput, Text, Button} from 'react-native';
+import {StyleSheet, View, TextInput, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {sendPhoneCode, verifyPhoneCode} from '../../api/phone_sign_api';
+import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
 import {getCurrentAccount} from '@/api/mine_api';
-import Toast from 'react-native-root-toast';
+import Toast from '@/components/Toast';
 import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
+import {SafeAreaView} from 'react-native-safe-area-context';
 var md5 = require('md5');
 
 const PhoneLogin = ({navigation, route}) => {
@@ -21,14 +22,13 @@ const PhoneLogin = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
-      headerTintColor: 'white',
-      title: '',
+      // headerTintColor: 'white',
+      title: false,
       headerStyle: {
         backgroundColor: 'black',
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        // color: 'white',
       },
       headerRight: () => (
         <Button
@@ -36,6 +36,7 @@ const PhoneLogin = ({navigation, route}) => {
             onVerifyPhoneCode();
           }}
           title="确定"
+          style={{fontSize: 14, paddingRight: 17}}
           color={phoneCode.length === 6 ? 'white' : '#353535'}
         />
       ),
@@ -43,7 +44,7 @@ const PhoneLogin = ({navigation, route}) => {
   }, [navigation, phoneCode]);
 
   const downTimeRunner = () => {
-    var timeo = 11;
+    var timeo = 59;
     var timeStop = setInterval(function () {
       timeo--;
       if (timeo >= 1) {
@@ -63,13 +64,7 @@ const PhoneLogin = ({navigation, route}) => {
   const onSendPhoneCode = () => {
     if (!/^1[3456789]\d{9}$/.test(phone)) {
       console.log('error phone');
-      let toast = Toast.show('请输入正确的手机号', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.CENTER,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-      });
+      Toast.show('请输入正确的手机号');
       return;
     }
     let timestamp = new Date().getTime();
@@ -84,13 +79,7 @@ const PhoneLogin = ({navigation, route}) => {
         console.log('发送成功');
         setFirstVerify(false)
       } else {
-        let toast = Toast.show('服务器出现了点小问题', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.CENTER,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
-        });
+        Toast.show('服务器出现了点小问题');
         console.log('failed');
       }
     });
@@ -103,28 +92,16 @@ const PhoneLogin = ({navigation, route}) => {
     const verifyResponse = await verifyPhoneCode(data);
     console.log('verifyResponse', verifyResponse);
     if (verifyResponse.error) {
-      let toast = Toast.show(verifyResponse.error, {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.TOP,
-        // shadow: true,
-        // animation: true,
-        // hideOnPress: true,
-        backgroundColor: 'white',
-        textColor: 'red',
-        delay: 10,
+
+      Toast.show(verifyResponse.error, {
       });
+
     } else {
-      Toast.show('注册成功', {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.TOP,
-        backgroundColor: 'white',
-        textColor: 'black',
-      });
+      Toast.show('注册成功');
       const accountInfo = await getCurrentAccount({token: token});
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
       } else {
-
         await Helper.setData('auth_token', accountInfo.token)
         dispatch(dispatchSetAuthToken(accountInfo.token));
         dispatch(dispatchCurrentAccount());
@@ -137,82 +114,80 @@ const PhoneLogin = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}}>
-      <View>
-        <View style={styles.phoneContainer}>
-          <TitleText>绑定手机号</TitleText>
+    <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
+      <View style={styles.phoneContainer}>
+        <TitleText>绑定手机号</TitleText>
 
-          <InputWrapView>
-            <InputView>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: '600',
-                  marginRight: 15,
-                  color: 'white',
-                }}>
-                + 86
-              </Text>
-              <TextInput
-                autoFocus
-                autoComplete={'tel'}
-                caretHidden={false}
-                selectionColor={'white'}
-                keyboardType={'numeric'}
-                maxLength={11}
-                onChangeText={text => {
-                  setPhone(text);
-                }}
-                placeholder={'输入手机号'}
-                placeholderTextColor={'#353535'}
-                // textAlignVertical="top"
-                // value={'198271'}
-                style={{color: 'white', fontWeight: '600'}}
-              />
-            </InputView>
-
-            <InputView
+        <InputWrapView>
+          <InputView>
+            <Text
               style={{
-                justifyContent: 'space-between',
+                fontSize: 15,
+                fontWeight: '600',
+                marginRight: 15,
+                color: 'white',
               }}>
-              <TextInput
-                autoComplete="tel"
-                caretHidden={false}
-                selectionColor={'white'}
-                keyboardType="numeric"
-                maxLength={6}
-                onChangeText={text => setPhoneCode(text)}
-                placeholder={'输入验证码'}
-                placeholderTextColor={'#353535'}
-                style={{
-                  color: 'white',
-                  fontWeight: '600',
-                }}
-              />
-              {firstVerify ? (
-                <VerifyCodeText
-                  color="white"
-                  onPress={() => {
-                    onSendPhoneCode();
-                  }}>
-                  {verifyText}
-                </VerifyCodeText>
-              ) : (
-                <VerifyCodeText
-                  color={downTime ? '#353535' : 'white'}
-                  onPress={
-                    downTime > 0
-                      ? () => {}
-                      : () => {
-                          onSendPhoneCode();
-                        }
-                  }>
-                  {verifyText}
-                </VerifyCodeText>
-              )}
-            </InputView>
-          </InputWrapView>
-        </View>
+              + 86
+            </Text>
+            <TextInput
+              autoFocus
+              autoComplete={'tel'}
+              caretHidden={false}
+              selectionColor={'white'}
+              keyboardType={'numeric'}
+              maxLength={11}
+              onChangeText={text => {
+                setPhone(text);
+              }}
+              placeholder={'输入手机号'}
+              placeholderTextColor={'#353535'}
+              // textAlignVertical="top"
+              // value={'198271'}
+              style={{color: 'white', fontWeight: '600'}}
+            />
+          </InputView>
+
+          <InputView
+            style={{
+              justifyContent: 'space-between',
+            }}>
+            <TextInput
+              autoComplete="tel"
+              caretHidden={false}
+              selectionColor={'white'}
+              keyboardType="numeric"
+              maxLength={6}
+              onChangeText={text => setPhoneCode(text)}
+              placeholder={'输入验证码'}
+              placeholderTextColor={'#353535'}
+              style={{
+                color: 'white',
+                fontWeight: '600',
+              }}
+            />
+            {firstVerify ? (
+              <VerifyCodeText
+                color="white"
+                onPress={() => {
+                  onSendPhoneCode();
+                }}>
+                {verifyText}
+              </VerifyCodeText>
+            ) : (
+              <VerifyCodeText
+                color={downTime ? '#353535' : 'white'}
+                onPress={
+                  downTime > 0
+                    ? () => {}
+                    : () => {
+                      onSendPhoneCode();
+                    }
+                }>
+                {verifyText}
+              </VerifyCodeText>
+            )}
+          </InputView>
+        </InputWrapView>
       </View>
     </SafeAreaView>
   );
@@ -230,9 +205,9 @@ const styles = StyleSheet.create({
 
 const TitleText = styled(Text)`
   letter-spacing: 1px;
-  font-size: 27px;
+  font-size: 25px;
   color: white;
-  font-weight: 600;
+  font-weight: 900;
 `;
 const InputWrapView = styled(View)`
   padding-top: 18px;

@@ -56,7 +56,7 @@ class ToastContainer extends Component {
     duration: duration.SHORT,
     animationDuration: 200,
     animation: true,
-    position: position.BOTTOM,
+    position: position.CENTER,
     delay: 0,
     showText: true,
     indicatorSize: 'large',

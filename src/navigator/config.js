@@ -207,6 +207,7 @@ export const routers = [
   {
     name: 'PhoneLogin',
     component: PhoneLogin,
+    safeArea: false,
     options: {
       headerStyle: {
         backgroundColor: 'black',
@@ -224,6 +225,7 @@ export const routers = [
       title: '微信登录',
       headerShown: false,
     },
+    safeArea: false
   },
   {
     name: 'InviteLogin',

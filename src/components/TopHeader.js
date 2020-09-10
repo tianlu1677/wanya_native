@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 // import Icon from 'react-native-vector-icons/Ionicons';
 
-const Header = ({navigation, LeftButton, RightButton, Title, isAtRoot}) => {
+const TopHeader = ({navigation, LeftButton, RightButton, Title, isAtRoot}) => {
   return (
     <View style={styles.header}>
       <View style={styles.leftButton}>
@@ -32,8 +32,8 @@ const Header = ({navigation, LeftButton, RightButton, Title, isAtRoot}) => {
     </View>
   );
 };
-export default Header;
-Header.propTypes = {
+export default TopHeader;
+TopHeader.propTypes = {
   navigation: PropTypes.object,
   Title: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   LeftButton: PropTypes.object,
@@ -41,7 +41,7 @@ Header.propTypes = {
   isAtRoot: PropTypes.bool,
 };
 
-Header.defaultProps = {
+TopHeader.defaultProps = {
   Title: '',
   LeftButton: null,
   RightButton: null,
