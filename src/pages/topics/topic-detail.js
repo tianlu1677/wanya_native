@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {useDispatch} from 'react-redux';
+import Swiper from 'react-native-swiper';
 import Video from 'react-native-video';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
@@ -7,8 +16,10 @@ import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, getTopicCommentList, createComment} from '@/api/topic_api';
 import {BaseTopicContent} from '@/components/Item/base-topic';
+import {dispatchPreviewImage} from '@/redux/actions';
 
 const TopicDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [topicId] = useState(route.params.topicId);
   const [detail, setDetail] = useState(null);
 
@@ -27,7 +38,53 @@ const TopicDetail = ({navigation, route}) => {
   }, []);
 
   const renderImg = () => {
-    return <FastImg source={{uri: detail.medias[0]}} style={{width: '100%', height: 300}} />;
+    let {medias, media_images} = detail;
+    let maxHeight = 375;
+    let maxWidth = 375;
+
+    (media_images || []).map(img => {
+      let scale = maxWidth / img.width;
+      let imgHeight = img.height * scale;
+      if (imgHeight > maxHeight) {
+        maxHeight = imgHeight;
+      }
+    });
+
+    if (maxHeight > 500) {
+      maxHeight = 500;
+    }
+
+    media_images = (media_images || []).map(img => {
+      let scale = maxWidth / img.width;
+      let imgHeight = img.height * scale;
+
+      if (imgHeight < maxHeight) {
+        return {...img, paddingTop: (maxHeight - imgHeight) / 2};
+      } else {
+        return {...img, paddingTop: 0};
+      }
+    });
+
+    const onPreview = index => {
+      const data = {
+        images: detail.medias.map(v => {
+          return {url: v};
+        }),
+        visible: true,
+        index,
+      };
+      dispatch(dispatchPreviewImage(data));
+    };
+
+    return (
+      <Swiper style={{height: maxHeight}} showsPagination={detail.medias.length > 0}>
+        {medias.map((media, index) => (
+          <TouchableWithoutFeedback onPress={() => onPreview(index)}>
+            <FastImg key={media} source={{uri: media}} style={{width: '100%', height: 300}} />;
+          </TouchableWithoutFeedback>
+        ))}
+      </Swiper>
+    );
   };
 
   const renderVideo = () => {

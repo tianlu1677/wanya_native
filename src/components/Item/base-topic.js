@@ -46,16 +46,9 @@ export const TopicImageCenterContent = props => {
     />
   ) : (
     <ScrollView horizontal={true}>
-      {medias.map((media, media_index) => {
-        return (
-          <Image
-            source={{uri: media}}
-            mode="widthFix"
-            key={media_index}
-            style={styles.imageMulti}
-          />
-        );
-      })}
+      {medias.map(media => (
+        <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
+      ))}
     </ScrollView>
   );
 };
