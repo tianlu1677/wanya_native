@@ -6,6 +6,7 @@ import BadgeMessageNode from './BadgeMessage';
 import {JoinBtn} from './Button';
 import CityListNode from './CityList';
 import JoinActivityNode from './JoinActivity'
+import GoBackNode from './GoBack'
 import {Loading} from './Modal';
 
 export const PlayScore = PlayScoreNode;
@@ -17,3 +18,4 @@ export const JoinButton = JoinBtn;
 export const CityList = CityListNode;
 export const ModalLoading = Loading;
 export const JoinActivity = JoinActivityNode;
+export const GoBack = GoBackNode;

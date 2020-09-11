@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 // import Icon from 'react-native-vector-icons/Ionicons';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-const TopHeader = ({navigation, LeftButton, RightButton, Title, isAtRoot}) => {
+const TopHeader = ({LeftButton, RightButton, Title, isAtRoot}) => {
+  const navigation = useNavigation()
+  const route = useRoute()
   return (
     <View style={styles.header}>
       <View style={styles.leftButton}>
@@ -13,8 +16,11 @@ const TopHeader = ({navigation, LeftButton, RightButton, Title, isAtRoot}) => {
           <TouchableOpacity
             style={{marginLeft: 10}}
             onPress={() => {
-              if (!navigation.canGoBack() || isAtRoot) navigation.openDrawer();
-              else navigation.goBack();
+              if (!navigation.canGoBack() || isAtRoot) {
+                navigation.openDrawer();
+              } else {
+                navigation.goBack();
+              }
             }}>
             {/*<Icon name={(!navigation.canGoBack() || isAtRoot) ? 'ios-menu' : 'ios-arrow-back'} size={30} color={'gray'} /> */}
             <Text>Back</Text>

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import Loading from '@/components/Loading';
 import TabViewList from '@/components/TabView';
-import {JoinButton, JoinAccounts, PlayScore, JoinActivity} from '@/components/NodeComponents';
+import {JoinButton, JoinAccounts, PlayScore, JoinActivity, GoBack} from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
 import {getArticleList} from '@/api/article_api';
@@ -11,12 +11,14 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
+import { NAVIGATION_BAR_HEIGHT} from "@/utils/navbar"
+// import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const NodeDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
   const [currentKey, setCurrentKey] = useState('publish');
-
+  // const insets = useSafeAreaInsets();
   const PublishListPage = () => {
     const queryUrl = `q[node_id_eq]=${detail.id}&q[s]=published_at desc&show_followed=on`;
     return <SingleList request={{api: getPosts, params: {queryUrl}}} />;
@@ -64,7 +66,7 @@ const NodeDetail = ({navigation, route}) => {
   }, []);
 
   return detail ? (
-    <View style={styles.wrapper}>
+    <View style={{...styles.wrapper}}>
       <ImageBackground source={{uri: detail.backgroud_cover_url}} style={styles.header}>
         <View style={styles.nodeContent}>
           <View style={styles.nodeInfo}>
@@ -120,7 +122,7 @@ const NodeDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-
+      <GoBack />
       <JoinActivity type={"node"} text={"立刻参与"} handleClick={() => { console.log('go new topic')}} />
     </View>
   ) : (
@@ -131,12 +133,14 @@ const NodeDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    position: 'relative',
+    backgroundColor: 'gray'
   },
   header: {
     paddingLeft: 16,
     paddingRight: 16,
     minHeight: 283,
-    paddingTop: 67,
+    paddingTop: NAVIGATION_BAR_HEIGHT,
   },
   nodeContent: {
     flexDirection: 'row',

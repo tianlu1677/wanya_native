@@ -67,6 +67,7 @@
 		43C425A07FCA1E23243F8BC8 /* Pods-wanya_native.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native.release.xcconfig"; path = "Target Support Files/Pods-wanya_native/Pods-wanya_native.release.xcconfig"; sourceTree = "<group>"; };
 		519C93C2353D7BD3AF1899A5 /* Pods-wanya_native-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B8FCECC5A16D12132231AAB /* Pods-wanya_native-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6D23E3B2250B5584003E7609 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		6DAE6F5424F6A6A100149152 /* wanya_nativeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeRelease.entitlements; path = wanya_native/wanya_nativeRelease.entitlements; sourceTree = "<group>"; };
 		6DAE6F5724F6C83400149152 /* wanya_nativeDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeDebug.entitlements; path = wanya_native/wanya_nativeDebug.entitlements; sourceTree = "<group>"; };
 		6DAE6F6124F7C27500149152 /* UMPushModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMPushModule.m; path = wanya_native/UMPushModule.m; sourceTree = "<group>"; };
@@ -153,6 +154,7 @@
 		13B07FAE1A68108700A75B9A /* wanya_native */ = {
 			isa = PBXGroup;
 			children = (
+				6D23E3B2250B5584003E7609 /* Ionicons.ttf */,
 				6DAE6F6224F7C27500149152 /* RNUMConfigure.h */,
 				6DAE6F6424F7C27600149152 /* RNUMConfigure.m */,
 				6DAE6F6524F7C27600149152 /* UMAnalyticsModule.h */,

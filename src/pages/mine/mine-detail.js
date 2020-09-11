@@ -1,16 +1,17 @@
 import React, {useState, useEffect, useLayoutEffect, useReducer} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, Platform} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Avator, PlayScore} from '@/components/NodeComponents';
+import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
-import {AccountDetailBgImg} from '@/utils/default-image';
+import {AccountDetailBgImg, SystemNoticeImg} from '@/utils/default-image';
 import {getAccount} from '@/api/account_api';
 import {getAccountPosts} from '@/api/account_api';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import { NAVIGATION_BAR_HEIGHT } from '@/utils/navbar'
 
 const MineDetail = ({navigation, route}) => {
   const id = useSelector(state => state.account.currentAccount.id);
@@ -63,6 +64,7 @@ const MineDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
+      <GoBack />
       <View style={styles.header}>
         <Image style={styles.bgcover} source={{uri: AccountDetailBgImg}} />
         <View style={{flexDirection: 'row'}}>
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     position: 'relative',
-    paddingTop: 30,
+    paddingTop: NAVIGATION_BAR_HEIGHT,
   },
   bgcover: {
     position: 'absolute',

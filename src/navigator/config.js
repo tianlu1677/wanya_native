@@ -1,3 +1,6 @@
+import React, {useState, useEffect, useRef} from 'react';
+
+import { Text } from 'react-native'
 // 首页
 import Recommend from '@/pages/home/recommend';
 import VideoDetail from '@/pages/home/videoDetail';
@@ -152,7 +155,11 @@ const nodeRouter = [
   {
     name: 'NodeDetail',
     component: NodeDetail,
-    options: {title: '圈子详情'},
+    safeArea: false,
+    options: {
+      title: '圈子详情',
+      headerShown: false,
+    },
   },
 ];
 
