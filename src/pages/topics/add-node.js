@@ -58,7 +58,7 @@ const NodeIndex = () => {
               {nodes
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
-                  <View>
+                  <View key={node.id}>
                     <NodeItem node={node} key={node.id} type="add-node" />
                     <Text style={styles.separator} />
                   </View>

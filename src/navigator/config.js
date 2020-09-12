@@ -41,7 +41,6 @@ import AccountDetail from '@/pages/accounts/account-detail';
 import FollowNodes from '@/pages/accounts/follow-nodes';
 import FollowAccounts from '@/pages/accounts/follow-accounts';
 import FollowerAccounts from '@/pages/accounts/follower-accounts';
-import JoinAccountsList from '@/components/List/join-accounts-list';
 
 // 消息通知页面
 import NotifyIndex from '@/pages/notify/notify-index';
@@ -64,6 +63,10 @@ import InviteLogin from '@/pages/sessions/invite-login';
 
 // 网页显示
 import WebView from '@/pages/webview/webview';
+
+// 公用页面
+import ChooseCity from '@/components/List/choose-city'; //选择承受
+import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入
 
 export const tabRouters = [
   {
@@ -143,11 +146,11 @@ const spaceRouter = [
 ];
 
 const nodeRouter = [
-  {
-    name: 'NodeIndex',
-    component: NodeIndex,
-    options: {title: '圈子'},
-  },
+  // {
+  //   name: 'NodeIndex',
+  //   component: NodeIndex,
+  //   options: {title: '圈子'},
+  // },
   {
     name: 'NodeDetail',
     component: NodeDetail,
@@ -304,5 +307,10 @@ export const routers = [
     name: 'EditAccountContent',
     component: EditAccountContent,
     options: {title: '编辑信息'},
+  },
+  {
+    name: 'ChooseCity',
+    component: ChooseCity,
+    options: {title: '选择城市'},
   },
 ];

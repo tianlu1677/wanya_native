@@ -1,5 +1,6 @@
-import React, {useState, useEffect, useLayoutEffect, useReducer} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
+import {View, Text, Image, StyleSheet, ImageBackground} from 'react-native';
+import {useSelector} from 'react-redux';
 import {Avator, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -12,8 +13,9 @@ import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AccountDetail = ({navigation, route}) => {
+  const id = useSelector(state => state.account.currentAccount.id);
+  const [accountId] = useState(id);
   const [account, setAccount] = useState({});
-  const [accountId] = useState(route.params.accountId);
   const [currentKey, setCurrentKey] = useState('publish');
 
   useLayoutEffect(() => {
@@ -61,21 +63,43 @@ const AccountDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
-      <View style={styles.header}>
-        <Image style={styles.bgcover} source={{uri: AccountDetailBgImg}} />
-        <View style={{flexDirection: 'row'}}>
+      <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
+        <View style={styles.userWrap}>
           <Avator account={account} size={50} />
           <View style={{marginLeft: 8}}>
-            <Text style={styles.nickname}>{account.nickname}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.nickname}>{account.nickname}</Text>
+              <Image
+                style={{width: 16, height: 16, marginLeft: 7}}
+                source={
+                  account.settled_type === 'personal'
+                    ? require('@/assets/images/personal.png')
+                    : require('@/assets/images/brand.png')
+                }
+              />
+            </View>
             <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
           </View>
+          <Text style={styles.invite} onPress={() => navigation.navigate('InviteDetail')}>
+            邀请好友
+          </Text>
         </View>
-        <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
+        <View style={styles.settledWrap}>
+          <Image
+            style={{width: 16, height: 16, marginRight: 3}}
+            source={
+              account.settled_type === 'personal'
+                ? require('@/assets/images/personal.png')
+                : require('@/assets/images/brand.png')
+            }
+          />
+          <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
+        </View>
+        <View style={styles.introWrap}>
           <View style={{marginRight: 'auto'}}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', marginBottom: 8}}>
               {account.gender === 'man' && <IconFont name="man" size={16} />}
-              {account.gender === 'women' && <IconFont name="woman" size={16} />}
+              {account.gender === 'woman' && <IconFont name="woman" size={16} />}
               <Text style={styles.tag}>{account.age || '18'}岁</Text>
               <Text style={styles.tag}>{account.province || '未知街区'}</Text>
             </View>
@@ -83,7 +107,6 @@ const AccountDetail = ({navigation, route}) => {
           </View>
           <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} />
         </View>
-
         <View style={styles.number}>
           <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
             <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
@@ -102,7 +125,8 @@ const AccountDetail = ({navigation, route}) => {
             <Text style={styles.numberTitle}>粉丝</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ImageBackground>
+
       <TabViewList
         currentKey={currentKey}
         tabData={[
@@ -137,21 +161,19 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 16,
-    position: 'relative',
-    paddingTop: 30,
+    paddingTop: 68,
+    height: 290,
   },
-  bgcover: {
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    bottom: 0,
-    top: 0,
+  userWrap: {
+    flexDirection: 'row',
+    marginBottom: 18,
   },
   nickname: {
-    height: 27,
     fontSize: 16,
     lineHeight: 27,
     color: '#fff',
+    fontWeight: '500',
+    marginTop: 3,
   },
   uid: {
     height: 20,
@@ -169,15 +191,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginTop: 5,
     marginLeft: 'auto',
+    fontWeight: '500',
+  },
+  settledWrap: {
+    marginBottom: 19,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   settled: {
-    marginTop: 16,
-    marginBottom: 19,
-    lineHeight: 20,
     color: '#fff',
     fontSize: 12,
+    fontWeight: '500',
+  },
+  introWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 17,
   },
   tag: {
+    height: 18,
     lineHeight: 18,
     textAlign: 'center',
     paddingLeft: 6,
@@ -187,8 +219,8 @@ const styles = StyleSheet.create({
   },
   intro: {
     lineHeight: 20,
-    marginTop: 10,
     color: '#fff',
+    fontSize: 11,
   },
   number: {
     flexDirection: 'row',
@@ -204,6 +236,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     marginBottom: 5,
+    fontWeight: '500',
   },
   numberTitle: {
     fontSize: 10,

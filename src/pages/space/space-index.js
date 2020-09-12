@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {getSpacesList} from '@/api/space_api';
 import * as action from '@/redux/constants';
 import SpaceList from '@/components/List/space-list';
 import {Search} from '@/components/NodeComponents';
-
-import {SpaceIndexStyles as styles} from './styles';
+import IconFont from '@/iconfont';
 
 const SpaceIndex = () => {
   const navigation = useNavigation();
@@ -33,7 +32,14 @@ const SpaceIndex = () => {
         placeholder="搜索更多场地"
         onChangeText={text => setSearchKey(text)}
       />
-      <Text style={styles.title}>热门场地</Text>
+      <View style={styles.proitle}>
+        <Text style={styles.title}>热门场地</Text>
+        <View>
+          <IconFont name="space-point" size={12} />
+          <Text>全国</Text>
+          <IconFont name="fanhui2" size={10} />
+        </View>
+      </View>
       <SpaceList
         request={{api: getSpacesList, params: {type: 'recommend', name_cont: searchKey}}}
         onPress={onPress}
@@ -43,5 +49,23 @@ const SpaceIndex = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  search: {
+    marginLeft: 14,
+  },
+  proitle: {
+    height: 40,
+    lineHeight: 40,
+    paddingLeft: 14,
+    color: '#bdbdbd',
+    backgroundColor: '#fafafa',
+    flexDirection: 'row',
+  },
+});
 
 export default SpaceIndex;

@@ -3,13 +3,15 @@ import {Text, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
-import {getArticleCommentList, createComment} from '@/api/comment_api';
+import Toast from '@/components/Toast';
+import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 
 const ArticeDetail = ({navigation, route}) => {
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
+  const [visible, setVisible] = useState(false);
 
   const laodData = async () => {
     const res = await getArticle(7 || articleId);
@@ -17,7 +19,16 @@ const ArticeDetail = ({navigation, route}) => {
   };
 
   const publishComment = async data => {
-    const res = await createComment(data);
+    setVisible(false);
+    Toast.showLoading('发送中');
+    await createComment(data);
+    Toast.hide();
+    Toast.show('发送成功啦');
+    laodData();
+  };
+
+  const deleteArticleComment = async id => {
+    await deleteComment(id);
     laodData();
   };
 
@@ -35,6 +46,9 @@ const ArticeDetail = ({navigation, route}) => {
         detail={detail}
         enableLoadMore={false}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
+        type="Article"
+        changeVisible={value => setVisible(value)}
+        deleteComment={deleteArticleComment}
         ListHeaderComponent={
           <>
             <Text style={styles.title}>{detail.title}</Text>
@@ -53,10 +67,12 @@ const ArticeDetail = ({navigation, route}) => {
         }
       />
       <ActionComment
+        visible={visible}
         detail={detail}
         publishComment={publishComment}
         type="Article"
         setDetail={data => setDetail(data)}
+        changeVisible={value => setVisible(value)}
       />
     </KeyboardAvoidingView>
   ) : (

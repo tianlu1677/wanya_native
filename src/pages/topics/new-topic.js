@@ -11,7 +11,6 @@ import {createTopic} from '@/api/topic_api';
 import Upload from 'react-native-background-upload';
 import {ModalLoading} from '@/components/NodeComponents';
 import Toast from '@/components/Toast';
-
 const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -27,17 +26,20 @@ const NewTopic = props => {
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
   };
 
-  const onImagePicker = async () => {
+  const onImagePicker = () => {
     const options = {
       imageCount: 9 - imageSource.length,
     };
-    props.imagePick(options, (err, res) => {
+    props.imagePick(options, async (err, res) => {
       if (err) {
         return;
       }
-      console.log(res);
-
       setImageSource([...res]);
+      for (let [index, file] of new Map(res.map((item, i) => [i, item]))) {
+        const result = await props.uploadImage({uploadType: 'multipart', ...file});
+        imageSource[index] = result.asset;
+        setImageSource([...imageSource]);
+      }
     });
   };
 
@@ -182,8 +184,8 @@ const NewTopic = props => {
   }, [savetopic]);
 
   useEffect(() => {
-    console.log(3333333);
-  }, []);
+    console.log(imageSource);
+  }, [imageSource]);
 
   const closeBut = () => {
     navigation.reset({
@@ -197,7 +199,7 @@ const NewTopic = props => {
       headerLeft: () => <Button onPress={() => closeBut()} title="关闭" color="#000" />,
       headerRight: () => <Button onPress={onSubmit} title="发布" color="#000" />,
     });
-  }, [navigation]);
+  }, [navigation, imageSource, savetopic]);
 
   return (
     <View style={styles.wrapper}>
@@ -212,7 +214,15 @@ const NewTopic = props => {
 
         {imageSource.map((v, index) => (
           <View style={styles.mediaWrap} key={index}>
-            <Image key={index} style={styles.media} source={v} />
+            {v.id ? (
+              <Image key={index} style={styles.media} source={{uri: v.url}} />
+            ) : (
+              <Image
+                key={index}
+                style={styles.media}
+                source={require('@/assets/images/loading.gif')}
+              />
+            )}
             <TouchableOpacity onPress={() => deleteMedia(index)} style={styles.mediaClose}>
               <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
             </TouchableOpacity>

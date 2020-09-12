@@ -29,7 +29,7 @@ const MediasPicker = WrapperComponent => {
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {
               // store proress
-              console.log(data.progress);
+              // console.log(data.progress);
             });
             Upload.addListener('error', uploadId, data => {
               console.log(`Error: ${data.error}%`);

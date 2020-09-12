@@ -43,3 +43,37 @@ export const BaseSearchText = {
     backgroundColor: '#fafafa',
   },
 };
+
+// 公用热门styles
+export const ProWrapper = {
+  proWrapper: {
+    height: 40,
+    lineHeight: 40,
+    paddingLeft: 14,
+    paddingRight: 14,
+    backgroundColor: '#fafafa',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  proTitle: {
+    color: '#bdbdbd',
+  },
+  proCity: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 'auto',
+  },
+  proAddressIcon: {
+    marginRight: 6,
+  },
+  proCityText: {
+    fontSize: 12,
+    fontWeight: '500',
+    height: 40,
+    lineHeight: 40,
+    backgroundColor: 'pink',
+  },
+  proDownIcon: {
+    marginLeft: 6,
+  },
+};
