@@ -92,6 +92,43 @@ export const tabRouters = [
   // },
 ];
 
+export const createTopicRouter = [
+  {
+    name: 'Recommend',
+    component: Recommend,
+    safeArea: true,
+    options: {title: '首页'},
+  },
+  {
+    name: 'NewTopic',
+    component: NewTopic,
+    options: {
+      title: '发布帖子',
+      animationEnabled: true
+    },
+  },
+  {
+    name: 'AddHashTag',
+    component: AddHashTag,
+    options: {title: '@话题'},
+  },
+  {
+    name: 'AddMentionAccount',
+    component: AddMentionAccount,
+    options: {title: '提及人列表'},
+  },
+  {
+    name: 'AddSpace',
+    component: AddSpace,
+    options: {title: '场地列表'},
+  },
+  {
+    name: 'AddNode',
+    component: AddNode,
+    options: {title: '添加圈子'},
+  },
+]
+
 const topicRouter = [
   {
     name: 'TopicDetail',
@@ -101,7 +138,12 @@ const topicRouter = [
   {
     name: 'NewTopic',
     component: NewTopic,
-    options: {title: '发布帖子'},
+    options: {
+      title: '发布帖子',
+      animationEnabled: true,
+      gestureEnabled: false,
+      // mode: "modal"
+    },
   },
   {
     name: 'AddHashTag',

@@ -6,8 +6,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
 import {useSelector} from 'react-redux';
 import {navigationRef} from '@/navigator/root-navigation';
-import {routers, tabRouters} from './config'; //router 配置
+import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+import NewTopic from '@/pages/topics/new-topic';
 
 import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
@@ -20,8 +21,12 @@ import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
 
+import {useNavigation} from '@react-navigation/native';
+
 const Tab = createBottomTabNavigator();
+const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
+const TopicStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 const TabBar = props => (
@@ -29,13 +34,13 @@ const TabBar = props => (
     style={styles.blurView}
     blurType="xlight"
     blurAmount={40}
-    reducedTransparencyFallbackColor="#white"
-  >
+    reducedTransparencyFallbackColor="#white">
     <BottomTabBar {...props} />
   </VibrancyView>
 );
 
 function HomeTabList() {
+  const navigation = useNavigation();
   return (
     <Tab.Navigator
       tabBar={TabBar}
@@ -48,9 +53,7 @@ function HomeTabList() {
           } else if (route.name === 'MineDetail') {
             iconName = focused ? 'white-circle' : 'double-circle';
           }
-          return (
-            <IconFont name={iconName} color={focused ? 'black' : 'red'} />
-          );
+          return <IconFont name={iconName} color={focused ? 'black' : 'red'} />;
         },
       })}
       tabBarOptions={{
@@ -58,25 +61,31 @@ function HomeTabList() {
         inactiveTintColor: 'gray',
         activeBackgroundColor: 'none',
         inactiveBackgroundColor: 'none',
-        safeAreaInsets: { bottom: 0},
-        tabStyle: { display: 'flex', justifyContent: 'center', lineHeight: 55},
+        safeAreaInsets: {bottom: 0},
+        tabStyle: {display: 'flex', justifyContent: 'center', lineHeight: 55},
         showLabel: false,
         style: {
           backgroundColor: 'transparent',
           borderTopWidth: 0,
-          height: 55
+          height: 55,
         },
-      }}
-    >
-      <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{
-
-      }} />
-      <Tab.Screen key={'GoNewTopic'} name={'GoNewTopic'} component={GoNewTopic} options={{
-
-      }} />
-      <Tab.Screen key={'MineDetail'} name={'MineDetail'} component={MineDetail} options={{
-
-      }} />
+      }}>
+      <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{}} />
+      <Tab.Screen
+        key={'GoNewTopic'}
+        name={'GoNewTopic'}
+        component={GoNewTopic}
+        listeners={({navigation}) => ({
+          tabPress: e => {
+            e.preventDefault();
+            navigation.navigate('NewTopic');
+          },
+        })}
+        options={{
+          gestureEnabled: false
+        }}
+      />
+      <Tab.Screen key={'MineDetail'} name={'MineDetail'} component={MineDetail} options={{}} />
     </Tab.Navigator>
   );
 }
@@ -106,6 +115,89 @@ function AuthStackList() {
   );
 }
 
+// function TopicStackList() {
+//   return (
+//     <TopicStack.Navigator
+//       initialRouteName="NewTopic"
+//       headerMode="false"
+//       // screenOptions={{ animationEnabled: false }}
+//       mode="modal"
+//       screenOptions={({route}) => ({
+//         headerStyle: {
+//           backgroundColor: 'white',
+//         },
+//         headerBackTitleVisible: false,
+//         headerTintColor: 'black',
+//         headerTitleStyle: {
+//           fontWeight: 'bold',
+//         },
+//       })}>
+//       {createTopicRouter.map(route => {
+//         const render = props => {
+//           const Components = route.component;
+//           return route.safeArea === false ? (
+//             <Components {...props} />
+//           ) : (
+//             <SafeAreaView style={{flex: 1}}>
+//               <Components {...props} />
+//             </SafeAreaView>
+//           );
+//         };
+//
+//         return (
+//           <TopicStack.Screen
+//             key={route.name}
+//             name={route.name}
+//             component={render}
+//             options={route.options}
+//           />
+//         );
+//       })}
+//     </TopicStack.Navigator>
+//   );
+// }
+// function TopicStackList() {
+//   return (
+//     <TopicStack.Navigator
+//       initialRouteName="NewTopic"
+//       headerMode="false"
+//       // screenOptions={{ animationEnabled: false }}
+//       mode="modal"
+//       screenOptions={({route}) => ({
+//         headerStyle: {
+//           backgroundColor: 'white',
+//         },
+//         headerBackTitleVisible: false,
+//         headerTintColor: 'black',
+//         headerTitleStyle: {
+//           fontWeight: 'bold',
+//         },
+//       })}>
+//       {createTopicRouter.map(route => {
+//         const render = props => {
+//           const Components = route.component;
+//           return route.safeArea === false ? (
+//             <Components {...props} />
+//           ) : (
+//             <SafeAreaView style={{flex: 1}}>
+//               <Components {...props} />
+//             </SafeAreaView>
+//           );
+//         };
+//
+//         return (
+//           <TopicStack.Screen
+//             key={route.name}
+//             name={route.name}
+//             component={render}
+//             options={route.options}
+//           />
+//         );
+//       })}
+//     </TopicStack.Navigator>
+//   );
+// }
+
 function MainStackList() {
   const Render = props => {
     return <HomeTabList {...props} />;
@@ -122,6 +214,7 @@ function MainStackList() {
         headerTintColor: 'black',
         headerTitleStyle: {
           fontWeight: 'bold',
+          fontSize: 18
         },
       })}>
       <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />

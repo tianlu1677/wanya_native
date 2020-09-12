@@ -17,7 +17,7 @@ const GoNewTopic = ({navigation, route}) => {
     navigation.setOptions({
 
     });
-    navigation.navigate('NewTopic')
+    // navigation.navigate('NewTopic')
   }, [navigation]);
 
   return (

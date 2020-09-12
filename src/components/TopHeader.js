@@ -1,47 +1,72 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-// import Icon from 'react-native-vector-icons/Ionicons';
+import {
+  ViewPropTypes,
+  Text,
+  StatusBar,
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Platform,
+} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT } from '@/utils/navbar'
 
-const TopHeader = ({LeftButton, RightButton, Title, isAtRoot}) => {
-  const navigation = useNavigation()
-  const route = useRoute()
+const TopHeader = props => {
+  const LeftButton = props.LeftButton;
+  const RightButton = props.RightButton;
+  const Title = props.Title;
+  const isAtRoot = props.isAtRoot;
+  const navigation = useNavigation();
+  const route = useRoute();
   return (
-    <View style={styles.header}>
-      <View style={styles.leftButton}>
-        {LeftButton ? (
-          <LeftButton />
-        ) : (
-          <TouchableOpacity
-            style={{marginLeft: 10}}
-            onPress={() => {
-              if (!navigation.canGoBack() || isAtRoot) {
-                navigation.openDrawer();
-              } else {
-                navigation.goBack();
-              }
-            }}>
-            {/*<Icon name={(!navigation.canGoBack() || isAtRoot) ? 'ios-menu' : 'ios-arrow-back'} size={30} color={'gray'} /> */}
-            <Text>Back</Text>
-          </TouchableOpacity>
-        )}
+    <View>
+      {props.statusBar.hidden ? null : (
+        <View style={styles.statusBar}>
+          <StatusBar {...props.statusBar} />
+        </View>
+      )}
+      <View style={styles.header}>
+        <View style={styles.leftButton}>
+          {LeftButton ? (
+            <LeftButton />
+          ) : (
+            <TouchableOpacity
+              style={{marginLeft: 10}}
+              onPress={() => {
+                if (!navigation.canGoBack() || isAtRoot) {
+                  navigation.openDrawer();
+                } else {
+                  navigation.goBack();
+                }
+              }}>
+              <Icon
+                name="chevron-back-outline"
+                size={30}
+                color="white"
+                iconStyle={{marginRight: 1}}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+        {Title ?
+          <View style={styles.title}>
+            {Title && typeof Title === 'string' ? (
+              <Text style={styles.titleText}>{Title}</Text>
+            ) : (
+              <Title />
+            )}
+          </View> : null
+        }
+        <View style={styles.rightButton}>{RightButton && <RightButton />}</View>
       </View>
-      <View style={styles.title}>
-        {Title && typeof Title === 'string' ? (
-          <Text style={styles.titleText}>{Title}</Text>
-        ) : (
-          <Title />
-        )}
-      </View>
-      <View style={styles.rightButton}>{RightButton && <RightButton />}</View>
     </View>
   );
 };
 export default TopHeader;
 TopHeader.propTypes = {
-  navigation: PropTypes.object,
-  Title: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  // Title: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   LeftButton: PropTypes.object,
   RightButton: PropTypes.object,
   isAtRoot: PropTypes.bool,
@@ -52,11 +77,16 @@ TopHeader.defaultProps = {
   LeftButton: null,
   RightButton: null,
   isAtRoot: false,
+  statusBar: {
+    barStyle: 'light-content',
+    hidden: false,
+  },
 };
 
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
+    height: NAV_BAR_HEIGHT,
   },
   leftButton: {
     flex: 1,
@@ -75,5 +105,8 @@ const styles = StyleSheet.create({
   rightButton: {
     flex: 1,
     justifyContent: 'center',
+  },
+  statusBar: {
+    height: STATUS_BAR_HEIGHT,
   },
 });

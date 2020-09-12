@@ -12,6 +12,7 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import { NAVIGATION_BAR_HEIGHT} from "@/utils/navbar"
+// import TopHeader from "@/components/TopHeader"
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const NodeDetail = ({navigation, route}) => {
