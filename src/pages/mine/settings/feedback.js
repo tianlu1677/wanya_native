@@ -1,15 +1,11 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View, TextInput, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
-import SafeAreaPlus from '@/components/SafeAreaPlus';
-import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
-import {getCurrentAccount} from '@/api/mine_api';
-import Toast from 'react-native-root-toast';
 import styled from 'styled-components/native';
-import Helper from '@/utils/helper';
-import {dispatchSetAuthToken} from '@/redux/actions';
 import {createFeedback} from '@/api/feedback_api';
 import { Button } from 'react-native-elements'
+import { BOTTOM_HEIGHT } from '@/utils/navbar';
+import Toast from '@/components/Toast'
 
 const Feedback = ({navigation, route}) => {
   const [content, setContent] = useState('');
@@ -35,9 +31,7 @@ const Feedback = ({navigation, route}) => {
 
     console.log('dda', data);
     createFeedback(data);
-    // Taro.showToast({
-    //   title: '反馈成功'
-    // })
+    Toast.show('反馈成功')
 
     setTimeout(() => {
       navigation.goBack();
@@ -87,7 +81,7 @@ const Feedback = ({navigation, route}) => {
       </ContractWrapView>
 
       <Button
-        containerStyle={styles.publicBtnContainer}
+        containerStyle={{...styles.publicBtnContainer, backgroundColor: validForm() ? 'black' : '#F8F8F8'}}
         buttonStyle={{...styles.loginButton, backgroundColor: validForm() ? 'black' : '#F8F8F8'}}
         titleStyle={validForm() ? styles.validTitle : styles.novalidTitle}
         title="确定"
@@ -104,16 +98,18 @@ const styles = StyleSheet.create({
   publicBtnContainer: {
     flex: 1,
     position: 'absolute',
-    bottom: 30,
+    bottom: 0,
+    paddingBottom: BOTTOM_HEIGHT,
     left: 0,
     right: 0,
+    height: 50,
+    justifyContent: 'center',
   },
   saveButton: {
     fontSize: 28,
     color: 'red',
     width: '100%',
-    height: 40,
-
+    height: 50,
     borderRadius: 2,
   },
 

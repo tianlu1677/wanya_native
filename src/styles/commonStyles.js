@@ -26,7 +26,15 @@ const commonStyles = StyleSheet.create({
     width: '100%',
     lineHeight: 9,
     backgroundColor: '#FAFAFA'
-  }
+  },
+  topBorder1px: {
+    borderColor: '#ebebeb',
+    borderTopWidth: 1,
+  },
+  bottomBorder1px: {
+    borderColor: '#ebebeb',
+    borderBottomWidth: 1,
+  },
 });
 
 export default commonStyles;
