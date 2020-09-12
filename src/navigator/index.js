@@ -12,7 +12,7 @@ import NewTopic from '@/pages/topics/new-topic';
 
 import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 import Recommend from '@/pages/home/recommend';
 import GoNewTopic from '@/pages/topics/go-new-topic';
 import MineDetail from '@/pages/mine/mine-detail';
@@ -47,13 +47,24 @@ function HomeTabList() {
       initialRouteName={'Recommend'}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
+          let icon_list = {
+            'focused_Recommend': 'home',
+            'unfocused_Recommend': 'home-outline',
+            'unfocused_MineDetail': 'person-outline',
+            'focused_MineDetail': 'person',
+            'unfocused_GoNewTopic': 'add-circle',
+
+          }
           let iconName = 'search';
           if (route.name === 'Recommend') {
             iconName = 'search';
           } else if (route.name === 'MineDetail') {
             iconName = focused ? 'white-circle' : 'double-circle';
           }
-          return <IconFont name={iconName} color={focused ? 'black' : 'red'} />;
+
+          let icon_name = `${focused ? 'focused' : 'unfocused'}_${route.name}`
+          return <Icon name={icon_list[icon_name]} size={30} color="black" iconStyle={{marginRight: 1}} />
+          // return <IconFont name={iconName} color={focused ? 'black' : 'red'} />;
         },
       })}
       tabBarOptions={{

@@ -31,7 +31,7 @@ const Recommend = props => {
 
   // console.log('insets', insets)
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'red', paddingTop: Math.max(insets.bottom, 20)}} edges={['right', 'left']} mode="padding"  >
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white', paddingTop: Math.max(insets.bottom, 20)}} edges={['right', 'left']} mode="padding"  >
       <TabViewList
         currentKey={currentKey}
         tabData={[
