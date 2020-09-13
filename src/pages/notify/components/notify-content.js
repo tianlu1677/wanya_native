@@ -63,17 +63,16 @@ class NotifyContent extends Component {
           <RightWrapView onPress={this.handleRight}>
             {item.image_url.length > 0 && item.has_video === true && (
               <>
-                <Image source={{uri: item.image_url}} />
-                <Image source={require('../../../assets/images/play-video.png')} />
+                <Image source={{uri: item.image_url}} style={{width: 60, height: 60}} />
+                <PlayVideoImg source={require('../../../assets/images/play-video.png')} style={{width: 20, height: 20}} />
               </>
             )}
-            {item.image_url.length > 0 && !item.has_video === false && (
+            {item.image_url.length > 0 && item.has_video === false && (
               <View>
-                <Image source={{uri: item.image_url}} />
+                <Image source={{uri: item.image_url}} style={{width: 60, height: 60}} />
               </View>
             )}
-
-            {item.content.length > 0 && <RightText>{item.content}</RightText>}
+            {item.content.length > 0 && !item.image_url && <RightText>{item.content}</RightText>}
           </RightWrapView>
         )}
       </CardView>
@@ -133,6 +132,16 @@ const RightWrapView = styled(TouchableOpacity)`
   height: 60px;
   width: 60px;
 `;
+
+const PlayVideoImg = styled(Image)`
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  height: 20px;
+  width: 20px;
+`
 
 const RightText = styled(Text)`
   position: absolute;

@@ -93,7 +93,7 @@ export const TopicVideoCenterContent = props => {
 
 export const BaseTopicContent = props => {
   const {data} = props;
-
+  const navigation = useNavigation();
   return (
     <View style={props.style}>
       <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
@@ -143,6 +143,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: '#1f1f1f',
+  },
+  hashtagText: {
+    color: '#ff8d00',
+    paddingLeft: 2,
+    paddingRight: 2
   },
   spaceWrapper: {
     flexDirection: 'row',

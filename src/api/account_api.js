@@ -277,9 +277,9 @@ export async function isLearnCourse(account_id) {
 //   return res;
 // }
 
-export async function getAccountRecentFollowers(account_id, params = {}) {
+export async function getAccountRecentFollowers(params = {}) {
   const res = await request({
-    url: `/api/v1/accounts/${account_id}/recent_followers`,
+    url: `/api/v1/accounts/${params.id}/recent_followers`,
     method: 'GET',
     params: params,
   });

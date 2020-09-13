@@ -33,6 +33,8 @@ import HashtagDetail from '@/pages/hashtags/hashtag-detail';
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
+// 话题
+import HashtagDetail from '@/pages/hashtags/hashtag-detail'
 // 我的页面
 import MineDetail from '@/pages/mine/mine-detail';
 import Mine from '@/pages/mine/mine';
@@ -140,7 +142,11 @@ const topicRouter = [
   {
     name: 'TopicDetail',
     component: TopicDetail,
-    options: {title: '帖子详情'},
+    safeArea: false,
+    options: {
+      title: '帖子详情',
+      headerShown: false,
+    },
   },
   {
     name: 'NewTopic',
@@ -180,6 +186,12 @@ const articleRouter = [
     component: ArticleDetail,
     options: {title: '文章详情'},
   },
+  {
+    name: 'HashtagDetail',
+    component: HashtagDetail,
+    safeArea: false,
+    options: {title: '话题', headerShown: false},
+  },
 ];
 
 const spaceRouter = [
@@ -216,7 +228,8 @@ const accountRouter = [
   {
     name: 'AccountDetail',
     component: AccountDetail,
-    options: {title: '用户详情'},
+    safeArea: false,
+    options: {title: '用户详情', headerShown: false},
   },
   {
     name: 'FollowNodes',

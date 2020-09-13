@@ -19,6 +19,7 @@ import {BaseTopicContent} from '@/components/Item/base-topic';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
+import {GoBack} from '@/components/NodeComponents';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const TopicDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
 
-  const laodData = async () => {
+  const loadData = async () => {
     const res = await getTopic(topicId);
     setDetail(res.data.topic);
   };
@@ -37,11 +38,11 @@ const TopicDetail = ({navigation, route}) => {
     await createComment(data);
     Toast.hide();
     Toast.show('发送成功啦');
-    laodData();
+    loadData();
   };
 
   useEffect(() => {
-    laodData();
+    loadData();
   }, []);
 
   const renderImg = () => {
@@ -109,7 +110,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const deleteTopicComment = async id => {
     await deleteComment(id);
-    laodData();
+    loadData();
   };
 
   return detail ? (
@@ -127,6 +128,7 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
+            <GoBack />
             {detail.content_style === 'img' && renderImg()}
             {detail.content_style === 'video' && renderVideo()}
             <View style={{backgroundColor: '#fff'}}>

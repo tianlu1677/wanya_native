@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Avator, PlayScore} from '@/components/NodeComponents';
+import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
@@ -63,6 +63,7 @@ const AccountDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
+      <GoBack />
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
         <View style={styles.userWrap}>
           <Avator account={account} size={50} />
