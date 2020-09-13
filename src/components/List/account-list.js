@@ -76,6 +76,20 @@ export const styles = StyleSheet.create({
   nickname: {
     fontSize: 14,
     marginLeft: 10,
+    lineHeight: 21
+  },
+  right_text: {
+    paddingLeft: 8,
+    fontSize: 13,
+    letterSpacing: 1,
+    lineHeight: 21,
+    color: '#BDBDBD',
+  },
+  created_at_text: {
+    marginLeft: 10,
+    fontSize: 11,
+    lineHeight: 20,
+    color: '#BDBDBD'
   },
   btn: {
     marginLeft: 'auto',
@@ -116,13 +130,26 @@ export const AccountList = props => {
       <TouchableWithoutFeedback onPress={() => goAccountDetail(item)}>
         <View style={styles.follow}>
           <Avator account={item} size={40} />
-          <Text style={styles.nickname}>{item.nickname}</Text>
+          <View style={{flexDirection: 'column'}}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styles.nickname}>{item.nickname}</Text>
+              {
+                item.right_text && <Text style={styles.right_text}>{item.right_text}</Text>
+              }
+            </View>
+            {
+              item.created_at_text && <Text style={styles.created_at_text}>{item.created_at_text}</Text>
+            }
+          </View>
+
           <Text
             style={[styles.btn, {color: !item.followed ? '#000' : '#bdbdbd'}]}
             onPress={() => onFollowed(item, index)}>
             {item.followed && item.following ? '互相关注' : item.followed ? '已关注' : '关注'}
           </Text>
+
         </View>
+
       </TouchableWithoutFeedback>
     );
   };
@@ -133,9 +160,22 @@ export const AccountList = props => {
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    const {api, params} = props.request;
+    const {api, params, account_type, right_text} = props.request;
+    console.log('xx', props.request);
+    let data = [];
     const res = await api({...params, page});
-    const data = res.data.accounts;
+    if (account_type === 'account_recent_follow') {
+      console.log('res', res);
+      data = res.data.follows;
+      data = data.map(follow => ({
+        ...follow.account,
+        created_at_text: follow.created_at_text,
+        right_text: right_text,
+      }));
+    } else {
+      data = res.data.accounts;
+    }
+    // data = res.data.accounts;
     setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
