@@ -4,11 +4,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {dispatchCurrentAccount} from '../../../redux/actions';
+import {syncAccountInfo} from '@/api/mine_api';
 import Icon from 'react-native-vector-icons/Ionicons';
 import commonStyles from '@/styles/commonStyles';
+import RNPickerSelect from 'react-native-picker-select';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const AccountContent = ({navigation, route}) => {
-  const [phone, setPhone] = useState('');
+  const [gender, setGender] = useState('');
+  const [birthdayVisible, setBirthdayVisible] = useState(false);
+  const [birthday, setBirthday] = useState('');
   const currentAccount = useSelector(state => state.account.currentAccount);
   const dispatch = useDispatch();
 
@@ -16,8 +21,50 @@ const AccountContent = ({navigation, route}) => {
     dispatch(dispatchCurrentAccount());
   }, [navigation]);
 
+  useEffect(() => {
+    dispatch(dispatchCurrentAccount());
+    setGender(currentAccount.gender);
+    setBirthday(currentAccount.birthday);
+  }, []);
+
   const ForwardRight = () => {
     return <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />;
+  };
+
+  const setGenderValue = async value => {
+    setGender(value);
+    await syncAccountInfo({id: currentAccount.id, gender: value});
+    dispatch(dispatchCurrentAccount());
+  };
+
+  const setBirthdayData = async value => {
+    console.log('value', value);
+
+    setBirthdayVisible(false);
+    setBirthday(value);
+    await syncAccountInfo({id: currentAccount.id, birthday: value});
+    dispatch(dispatchCurrentAccount());
+  };
+
+  const GenderDropdown = () => {
+    return (
+      <RNPickerSelect
+        onValueChange={value => setGenderValue(value)}
+        placeholder={{
+          label: '请选择',
+          value: '',
+          color: 'red',
+        }}
+        value={gender}
+        doneText={'完成'}
+        style={{...pickerSelectStyles}}
+        items={[
+          {label: '男', value: 'man'},
+          {label: '女', value: 'woman'},
+          {label: '不显示', value: 'other'},
+        ]}
+      />
+    );
   };
 
   const goPages = (type = '') => {
@@ -31,6 +78,9 @@ const AccountContent = ({navigation, route}) => {
       case 'gender':
         break;
       case 'birthday':
+        setBirthday(currentAccount.birthday);
+        console.log('currentAccount.birthday', currentAccount.birthday);
+        setBirthdayVisible(true);
         break;
       case 'intro':
         navigation.navigate('EditAccountContent', {
@@ -82,10 +132,14 @@ const AccountContent = ({navigation, route}) => {
         }}>
         <ItemTitle>性别</ItemTitle>
         <ItemWrap>
-          <ItemTitle>{currentAccount.gender_text}</ItemTitle>
+          <ItemTitle>
+            {/*{currentAccount.gender_text}*/}
+            <GenderDropdown />
+          </ItemTitle>
           <ForwardRight />
         </ItemWrap>
       </ItemView>
+
       <ItemView
         style={[commonStyles.topBorder1px, commonStyles.bottomBorder1px, styles.nestLine]}
         onPress={() => {
@@ -95,6 +149,22 @@ const AccountContent = ({navigation, route}) => {
         <ItemWrap>
           <ItemTitle>{currentAccount.birthday}</ItemTitle>
           <ForwardRight />
+
+          <DateTimePickerModal
+            isVisible={birthdayVisible}
+            mode="date"
+            locale={'zh_CN'}
+            date={birthday ? new Date(birthday) : new Date()}
+            onConfirm={value => {
+              setBirthdayData(value);
+            }}
+            onCancel={() => {
+              setBirthdayVisible(false);
+            }}
+            cancelTextIOS={'取消'}
+            confirmTextIOS={'确认'}
+            headerTextIOS={'选择生日'}
+          />
         </ItemWrap>
       </ItemView>
       <ItemView
@@ -116,6 +186,29 @@ const styles = StyleSheet.create({
   nestLine: {
     marginLeft: 14,
     paddingLeft: 0,
+  },
+});
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    // paddingVertical: 12,
+    // paddingHorizontal: 10,
+    // borderWidth: 1,
+    // borderColor: 'gray',
+    // borderRadius: 4,
+    color: 'black',
+    fontSize: 14,
+    justifyContent: 'center',
+    paddingTop: 5,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
 
