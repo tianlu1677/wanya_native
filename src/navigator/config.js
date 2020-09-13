@@ -1,3 +1,6 @@
+import React, {useState, useEffect, useRef} from 'react';
+
+import { Text } from 'react-native'
 // 首页
 import Recommend from '@/pages/home/recommend';
 import VideoDetail from '@/pages/home/videoDetail';
@@ -72,6 +75,7 @@ export const tabRouters = [
   {
     name: 'Recommend',
     component: Recommend,
+    safeArea: true,
     options: {title: '首页'},
   },
   {
@@ -91,6 +95,43 @@ export const tabRouters = [
   // },
 ];
 
+export const createTopicRouter = [
+  {
+    name: 'Recommend',
+    component: Recommend,
+    safeArea: true,
+    options: {title: '首页'},
+  },
+  {
+    name: 'NewTopic',
+    component: NewTopic,
+    options: {
+      title: '发布帖子',
+      animationEnabled: true
+    },
+  },
+  {
+    name: 'AddHashTag',
+    component: AddHashTag,
+    options: {title: '@话题'},
+  },
+  {
+    name: 'AddMentionAccount',
+    component: AddMentionAccount,
+    options: {title: '提及人列表'},
+  },
+  {
+    name: 'AddSpace',
+    component: AddSpace,
+    options: {title: '场地列表'},
+  },
+  {
+    name: 'AddNode',
+    component: AddNode,
+    options: {title: '添加圈子'},
+  },
+]
+
 const topicRouter = [
   {
     name: 'TopicDetail',
@@ -100,7 +141,12 @@ const topicRouter = [
   {
     name: 'NewTopic',
     component: NewTopic,
-    options: {title: '发布帖子'},
+    options: {
+      title: '发布帖子',
+      animationEnabled: true,
+      gestureEnabled: false,
+      // mode: "modal"
+    },
   },
   {
     name: 'AddHashTag',
@@ -154,7 +200,11 @@ const nodeRouter = [
   {
     name: 'NodeDetail',
     component: NodeDetail,
-    options: {title: '圈子详情'},
+    safeArea: false,
+    options: {
+      title: '圈子详情',
+      headerShown: false,
+    },
   },
 ];
 
@@ -210,6 +260,7 @@ export const routers = [
   {
     name: 'PhoneLogin',
     component: PhoneLogin,
+    safeArea: false,
     options: {
       headerStyle: {
         backgroundColor: 'black',
@@ -227,11 +278,13 @@ export const routers = [
       title: '微信登录',
       headerShown: false,
     },
+    safeArea: false
   },
   {
     name: 'InviteLogin',
     component: InviteLogin,
     options: {title: '输入邀请码'},
+    safeArea: false
   },
   {
     name: 'InviteDetail',
@@ -296,6 +349,7 @@ export const routers = [
   {
     name: 'WebView',
     component: WebView,
+    safeArea: false,
     options: {title: 'WebView'},
   },
   {

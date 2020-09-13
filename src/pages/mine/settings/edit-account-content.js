@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {syncAccountInfo} from '@/api/mine_api';
 import {secureCheck} from '@/api/secure_check';
 import {Button} from 'react-native-elements';
+import { BOTTOM_HEIGHT} from "@/utils/navbar"
 
 const EditAccountContent = ({navigation, route}) => {
   const [editKey, setEditKey] = useState('');
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   publicBtnContainer: {
     flex: 1,
     position: 'absolute',
-    bottom: 30,
+    bottom: BOTTOM_HEIGHT,
     left: 0,
     right: 0,
   },
@@ -135,8 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: 'red',
     width: '100%',
-    height: 40,
-
+    height: 50,
     borderRadius: 2,
   },
 

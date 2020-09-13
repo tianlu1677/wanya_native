@@ -13,7 +13,7 @@ const About = ({navigation, route}) => {
   const qqnumber = '3354456216';
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
       <View>
         <LogoWrapView>
           <Image source={{uri: logo_url}} style={{height: 65, width: 65, borderRadius: 10}}/>

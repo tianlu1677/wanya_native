@@ -1,0 +1,66 @@
+import React from 'react';
+import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
+import {BlurView, VibrancyView} from '@react-native-community/blur';
+import IconFont from '@/iconfont';
+import PropTypes from 'prop-types';
+import AddPhoto from '@/assets/images/add-photo.png';
+
+export const JoinActivity = props => {
+  let type = props.type || 'photo';
+
+  const handleClick = () => {
+    console.log('handleClick');
+    props.handleClick && props.handleClick()
+  };
+
+  return (
+    <Pressable
+      onPress={() => {
+        handleClick();
+      }}>
+      <BlurView
+        style={styles.joinWrapper}
+        blurType="dark"
+        blurAmount={80}
+        reducedTransparencyFallbackColor="black">
+        {type === 'node' && <IconFont name={'takephoto'} size={22} color="white" />}
+        {/*<Image source={AddPhoto} style={styles.leftBtn} />*/}
+        <Text style={styles.centerText}>{props.text || '参与活动'}</Text>
+      </BlurView>
+    </Pressable>
+  );
+};
+
+JoinActivity.propTypes = {
+  type: PropTypes.string.isRequired, // 具体类型
+  text: PropTypes.string.isRequired, // 文字
+};
+
+export default JoinActivity;
+const styles = StyleSheet.create({
+  joinWrapper: {
+    position: 'absolute',
+    bottom: 25,
+    left: '32%',
+    zIndex: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 45,
+    width: 140,
+    borderRadius: 22,
+    flexDirection: 'row',
+  },
+
+  leftBtn: {
+    width: 22,
+    height: 22,
+  },
+
+  centerText: {
+    paddingLeft: 13,
+    fontSize: 14,
+    letterSpacing: 1,
+    color: 'white',
+    fontWeight: '500',
+  },
+});

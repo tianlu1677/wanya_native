@@ -26,6 +26,10 @@
 	<string>????</string>
 	<key>CodePushDeploymentKey</key>
 	<string>$(CODEPUSH_KEY)</string>
+  <key>UIAppFonts</key>
+  <array>
+    <string>Ionicons.ttf</string>
+  </array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

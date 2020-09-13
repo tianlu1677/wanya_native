@@ -188,10 +188,11 @@ const NewTopic = props => {
   }, [imageSource]);
 
   const closeBut = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Recommend'}],
-    });
+    navigation.goBack()
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{name: 'Recommend'}],
+    // });
   };
   useLayoutEffect(() => {
     navigation.setOptions({

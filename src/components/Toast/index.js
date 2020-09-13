@@ -46,6 +46,30 @@ class Toast extends Component {
     });
   }
 
+
+  static showError(message, options = {}) {
+    this.show(message, {
+      containerStyle: {
+        minHeight: 43,
+        backgroundColor: '#222222',
+        borderRadius: 2,
+      },
+
+      textStyle: {
+        paddingLeft: 20,
+        paddingRight: 20,
+        fontSize: 15,
+        letterSpacing: 1,
+        fontWeight: '500',
+        color: '#ffffff'
+      },
+      position: this.position.CENTER,
+      // imgSource: require('./icon_success.png'),
+      ...options,
+    });
+  }
+
+
   static show(message, options = {}) {
     let onHidden = options.onHidden;
     let toast;
