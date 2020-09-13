@@ -30,7 +30,9 @@ export const MentiosAccountList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.accounts;
+    console.log(params);
+
+    const data = params.name ? res.data.items : res.data.accounts;
     setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

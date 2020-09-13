@@ -1,29 +1,17 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, Image, Text, Button} from 'react-native';
-import {useDispatch} from 'react-redux';
+import React, {useState} from 'react';
+import {View, Image, Text} from 'react-native';
 import styled from 'styled-components/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import {getHashtagPosts} from '@/api/hashtag_api';
 
-const HashtagDetail = ({navigation, route}) => {
-  const [hashtag, setHashtag] = useState('');
-  const [currentKey, setCurrentKey] = useState('published_order');
-  const dispatch = useDispatch();
-  const rightLogo =
-    'http://file.meirixinxue.com/assets/2020/77963058-7b42-46ea-bc6b-f969e81bbdfd.png';
-  const bgLogo = 'http://file.meirixinxue.com/assets/2020/ef47c0d6-39c2-4e99-988d-86332a12449e.jpg';
+const rightLogo =
+  'http://file.meirixinxue.com/assets/2020/77963058-7b42-46ea-bc6b-f969e81bbdfd.png';
+const bgLogo = 'http://file.meirixinxue.com/assets/2020/ef47c0d6-39c2-4e99-988d-86332a12449e.jpg';
 
-  useLayoutEffect(() => {
-    let hashtag = route.params.hashtag;
-    hashtag = decodeURIComponent(hashtag).replace('#', '');
-    setHashtag(hashtag);
-    navigation.setOptions({
-      // headerBackTitleVisible: false,
-      // headerTintColor: 'white',
-      title: hashtag,
-    });
-  }, [navigation]);
+const HashtagDetail = ({navigation, route}) => {
+  const [hashtag] = useState(route.params.hashtag);
+  const [currentKey, setCurrentKey] = useState('published_order');
 
   const PublishList = () => {
     const request = {
@@ -40,12 +28,13 @@ const HashtagDetail = ({navigation, route}) => {
     };
     return <SingleList request={request} />;
   };
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <HeadView>
         <BgCoverImage source={{uri: bgLogo}} />
         <RightCoverImage source={{uri: rightLogo}} />
-        <HashtagText># {hashtag}</HashtagText>
+        <HashtagText>{hashtag}</HashtagText>
       </HeadView>
       <TabViewList
         currentKey={currentKey}
@@ -63,7 +52,7 @@ const HashtagDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

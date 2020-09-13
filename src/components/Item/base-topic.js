@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
-import {Header, Bottom} from '@/components/Item/single-list-item';
+import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
 
@@ -63,7 +63,7 @@ export const TopicImageCenterContent = props => {
   ) : (
     <ScrollView horizontal={true}>
       {medias.map((media, index) => (
-        <TouchableOpacity onPress={() => onPreview(index)}>
+        <TouchableOpacity onPress={() => onPreview(index)} key={media}>
           <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
         </TouchableOpacity>
       ))}
@@ -96,21 +96,7 @@ export const BaseTopicContent = props => {
 
   return (
     <View style={props.style}>
-      <Text numberOfLines={2} style={styles.multiText}>
-        {data.hashtag_content_json ? (
-          data.hashtag_content_json.map((v, index) => {
-            return (
-              <Text key={index}>
-                {v.is_hashtag && <Text style={styles.hashtagText}>{v.content}</Text>}
-                {v.is_mention && <Text style={styles.hashtagText}>{v.content}</Text>}
-                {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content}</Text>}
-              </Text>
-            );
-          })
-        ) : (
-          <Text>{data.plain_content}</Text>
-        )}
-      </Text>
+      <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
       <View>{data.content_style === 'link' && <Text>外链</Text>}</View>
       <View>{data.content_style === 'text' && <Text>文字</Text>}</View>
     </View>
@@ -157,10 +143,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: '#1f1f1f',
-  },
-  hashtagText: {
-    color: '#ff8d00',
-    marginRight: 3,
   },
   spaceWrapper: {
     flexDirection: 'row',

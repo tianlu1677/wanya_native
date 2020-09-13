@@ -32,27 +32,31 @@ const AddSpace = props => {
   }, [searchKey]);
 
   return (
-    <View style={styles.wrapper}>
-      <Search
-        style={styles.search}
-        placeholder="搜索更多场地"
-        onChangeText={text => setSearchKey(text)}
-      />
-      <TouchableOpacity style={pstyles.proWrapper} onPress={goChooseCity}>
-        <Text style={pstyles.proTitle}>热门场地</Text>
-        <View style={pstyles.proCity}>
-          <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
-          <Text style={pstyles.proCityText}>全国</Text>
-          <IconFont name="fanhui2" size={6} style={pstyles.proDownIcon} />
-        </View>
-      </TouchableOpacity>
-      <SpaceList
-        request={{api: getSpacesList, params: {type: 'recommend', name_cont: searchKey}}}
-        onPress={onPress}
-        enableLoadMore={false}
-        enableRefresh={false}
-      />
-    </View>
+    <SpaceList
+      request={{api: getSpacesList, params: {type: 'recommend', name_cont: searchKey}}}
+      onPress={onPress}
+      enableLoadMore={false}
+      enableRefresh={false}
+      style={styles.wrapper}
+      ListHeaderComponent={
+        <>
+          <Search
+            style={styles.search}
+            placeholder="搜索更多场地"
+            onChangeText={text => setSearchKey(text)}
+            onCancel={() => props.navigation.goBack()}
+          />
+          <TouchableOpacity style={pstyles.proWrapper} onPress={goChooseCity}>
+            <Text style={pstyles.proTitle}>热门场地</Text>
+            <View style={pstyles.proCity}>
+              <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
+              <Text style={pstyles.proCityText}>全国</Text>
+              <IconFont name="fanhui2" size={6} style={pstyles.proDownIcon} />
+            </View>
+          </TouchableOpacity>
+        </>
+      }
+    />
   );
 };
 

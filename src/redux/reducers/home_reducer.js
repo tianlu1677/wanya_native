@@ -1,17 +1,15 @@
 import * as constants from '../constants';
 
 const defaultState = {
-  savetopic: {
-    plan_content: '',
-    mention: [],
-    node: '',
-  },
+  savetopic: {},
   previewImageData: {
     images: [],
     index: 0,
     visible: false,
   },
   commentTopic: {},
+  uploadProgress: '',
+  chooseCity: '',
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -30,6 +28,16 @@ export const homeReducer = (state = defaultState, action) => {
       return {
         ...state,
         commentTopic: action.value,
+      };
+    case constants.UPLOAD_PROGRESS:
+      return {
+        ...state,
+        uploadProgress: action.value,
+      };
+    case constants.CHOOSE_CITY:
+      return {
+        ...state,
+        chooseCity: action.value,
       };
     default:
       return state;

@@ -6,19 +6,19 @@ import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
-import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import {createTopic} from '@/api/topic_api';
-import Upload from 'react-native-background-upload';
-import {ModalLoading} from '@/components/NodeComponents';
 import Toast from '@/components/Toast';
+
 const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
+  const uploadProgress = useSelector(state => state.home.uploadProgress);
+
   const [imageSource, setImageSource] = useState([]);
-  const [content, setContent] = useState(savetopic.plan_content);
   const [videoSource, setVideoSource] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  const [content, setContent] = useState(savetopic.plan_content);
 
   const onChangeContent = text => {
     setContent(text);
@@ -43,89 +43,15 @@ const NewTopic = props => {
     });
   };
 
-  const onVideoPicker = async () => {
-    const token_res = await getUploadFileToken({ftype: 'mp4'});
-    let upload_token = token_res.token;
-    props.videoPick({}, (err, res) => {
-      setVideoSource(res);
+  const onVideoPicker = () => {
+    props.videoPick({}, async (err, res) => {
       if (err) {
         return;
       }
-      let filePath = res[0].uri;
-      let defaultOptions = {
-        url: token_res.qiniu_region,
-        path: filePath,
-        method: 'POST',
-        type: 'multipart',
-        field: 'file',
-        parameters: {
-          token: upload_token,
-          key: token_res.file_key,
-          name: 'file',
-        },
-        maxRetries: 2, // set retry count (Android only). Default 2
-        headers: {
-          'content-type': 'application/octet-stream',
-        },
-
-        // Below are options only supported on Android
-        notification: {
-          enabled: true,
-        },
-        useUtf8Charset: true,
-      };
-      let uploadOptions = {...defaultOptions};
-
-      console.log('uploadOptions', uploadOptions);
-      Upload.startUpload(uploadOptions)
-        .then(uploadId => {
-          console.log('Upload started');
-          Upload.addListener('progress', uploadId, data => {
-            // console.log(`Progress: ${data.progress}%`);
-          });
-          Upload.addListener('error', uploadId, data => {
-            console.log(`Error: ${data.error}%`);
-          });
-          Upload.addListener('cancelled', uploadId, data => {
-            console.log('Cancelled!');
-          });
-          Upload.addListener('completed', uploadId, data => {
-            // data includes responseCode: number and responseBody: Object
-            console.log('Completed!');
-            console.log(data);
-            let upload_res = JSON.parse(data.responseBody);
-            if (upload_res.key) {
-              let video_m3u8 = upload_res.key.replace('mp4', 'm3u8');
-              let body = {
-                asset: {
-                  file_key: upload_res.key,
-                  fname: upload_res.key,
-                  // 获取到这些填写宽高以及尺寸
-                  // width: videoRes.width,
-                  // height: videoRes.height,
-                  // fsize: videoRes.size,
-                  // seconds: videoRes.duration,
-                  category: 'video',
-                  video_m3u8: video_m3u8,
-
-                  // seconds: videoRes.duration
-                  // errMsg: "chooseVideo:ok"
-                  // height: 960
-                  // size: 1382371
-                  // tempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.kQ9QwnJr20ry3adb3207a9a3a9d7f6b95e9ee7777e94.mp4"
-                  // thumbTempFilePath: "http://tmp/wxee56e8f240c9e89b.o6zAJs5U5gQmjzIncsPzpCrNt7DE.jxUlqGJ7Pgww849b80f49b079e0b6a0792f1ae4f7602.jpg"
-                  // width: 544
-                },
-              };
-              saveToAsset(body).then(res => {
-                console.log(res);
-              });
-            }
-          });
-        })
-        .catch(err => {
-          console.log('Upload error!', err);
-        });
+      setVideoSource([...res]);
+      const result = await props.uploadVideo(res[0], dispatch);
+      setVideoSource([result.asset]);
+      dispatch({type: action.UPLOAD_PROGRESS, value: ''});
     });
   };
 
@@ -139,61 +65,51 @@ const NewTopic = props => {
   };
 
   const onSubmit = async () => {
-    console.log(imageSource);
-    // if (imageSource.length === 0 || videoSource.length === 0) {
-    //   return Toast.show('图片/视频不能为空哦~');
-    // }
-    // if (savetopic.node && !savetopic.node.id) {
-    //   navigation.navigate('AddNode');
-    // }
-    setLoading(true);
-    let mediasImg = [];
+    if (imageSource.length === 0 && videoSource.length === 0) {
+      return Toast.show('图片/视频不能为空哦~');
+    }
+
     if (imageSource.length > 0) {
-      await Promise.all(
-        imageSource.map(async file => {
-          const res = await props.uploadImage({uploadType: 'multipart', ...file});
-          mediasImg = [...mediasImg, res.asset];
-        })
-      );
+      const isImageLoading = imageSource.every(v => v.id);
+      if (!isImageLoading) {
+        return Toast.show('图片正在上传中');
+      }
     }
 
-    let video_content = '';
-    if (videoSource) {
-      const res = await props.uploadImage({uploadType: 'raw', ...videoSource});
-      console.log(res);
-      video_content = res.asset;
+    if (videoSource.length > 0) {
+      if (!videoSource[0].id) {
+        return Toast.show('视频正在上传中');
+      }
     }
-    console.log(video_content);
 
-    // 先上传资源
+    if (savetopic.node && !savetopic.node.id) {
+      navigation.navigate('AddNode');
+    }
+
     const data = {
       type: 'single',
-      medias: mediasImg.map(v => v.url),
+      medias: imageSource.map(v => v.url),
+      video_content: videoSource.length > 0 ? videoSource[0].url : '',
       plain_content: savetopic.plan_content,
       mention_ids: savetopic.mention.map(v => v.id).join(),
       node_id: savetopic.node ? savetopic.node.id : '',
-      space_id: savetopic.node ? savetopic.space.id : '',
+      space_id: savetopic.space ? savetopic.space.id : '',
     };
+    Toast.showLoading('正在发布中...');
     const res = await createTopic(data);
-    console.log(res);
-    setLoading(false);
+    Toast.hide();
+    navigation.navigate('TopicDetail', {topicId: res.id});
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
   };
 
   useEffect(() => {
     setContent(savetopic.plan_content);
   }, [savetopic]);
 
-  useEffect(() => {
-    console.log(imageSource);
-  }, [imageSource]);
-
   const closeBut = () => {
-    navigation.goBack()
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{name: 'Recommend'}],
-    // });
+    navigation.goBack();
   };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: null,
@@ -204,7 +120,6 @@ const NewTopic = props => {
 
   return (
     <View style={styles.wrapper}>
-      {loading && <ModalLoading title="正在发布中" />}
       <View style={styles.mediaCon}>
         {/* picture */}
         {videoSource.length === 0 && (
@@ -239,14 +154,24 @@ const NewTopic = props => {
 
         {videoSource.map((v, index) => (
           <View style={styles.mediaWrap} key={index}>
-            <Video
-              style={styles.media}
-              source={v}
-              posterResizeMode={'center'}
-              controls
-              reportBandwidth
-              repeat
-            />
+            {v.id ? (
+              <Video
+                style={styles.media}
+                source={{uri: v.url}}
+                posterResizeMode={'center'}
+                controls
+                reportBandwidth
+                repeat
+              />
+            ) : (
+              <View style={[styles.media, styles.progress]}>
+                <View style={styles.progressWrap}>
+                  <Text style={styles.proNum}>{uploadProgress}</Text>
+                  <Text style={styles.proPercent}>%</Text>
+                </View>
+              </View>
+            )}
+
             <TouchableOpacity onPress={() => deleteMedia(0)} style={styles.mediaClose}>
               <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
             </TouchableOpacity>
@@ -318,6 +243,27 @@ const styles = StyleSheet.create({
     right: 0,
     width: 15,
     height: 15,
+  },
+  progress: {
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progressWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  proNum: {
+    color: '#fff',
+    fontSize: 21,
+  },
+  proPercent: {
+    color: '#fff',
+    fontSize: 10,
+    position: 'absolute',
+    right: -10,
+    bottom: 4,
   },
   content: {
     minHeight: 90,

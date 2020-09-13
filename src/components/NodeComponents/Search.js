@@ -14,7 +14,9 @@ const Search = props => {
           onChangeText={props.onChangeText}
         />
       </View>
-      <Text style={styles.cancel}>取消</Text>
+      <Text style={styles.cancel} onPress={props.onCancel}>
+        取消
+      </Text>
     </View>
   );
 };

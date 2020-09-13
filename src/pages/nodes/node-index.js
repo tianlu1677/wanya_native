@@ -1,30 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {View, Text, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
 import ScrollList from '@/components/ScrollList';
 
-import IconFont from '@/iconfont';
-import * as action from '@/redux/constants';
-
-const defaultCoverUrl =
-  'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
-
 const NodeIndex = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
   const home = useSelector(state => state.home);
   const [categories, setCategories] = useState(null);
   const [nodes, setNodes] = useState(null);
@@ -48,12 +31,6 @@ const NodeIndex = () => {
   const onChange = index => {
     setActive(index);
     scrollRef.current.scrollTo({y: layoutList[index].y, animated: true});
-  };
-
-  const chooseNode = node => {
-    const topics = {...home.savetopic, node: node};
-    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.goBack();
   };
 
   const renderItem = ({item}) => {
@@ -92,21 +69,11 @@ const NodeIndex = () => {
             key={categorie.id}
             onLayout={e => setLayout(e.nativeEvent.layout, index)}>
             <Text style={styles.cateTitle}>{categorie.name}</Text>
-            {/* <View></View> */}
             <ScrollList
               data={nodes.filter(v => v.category_id === categorie.id)}
               renderItem={renderItem}
               renderSeparator={renderSeparator}
-              // style={styles.wrapper}
             />
-            {/* <View style={{flex: 1}}>
-              {nodes
-                .filter(v => v.category_id === categorie.id)
-                .map(node => (
-                  // <NodeItem node={node} />
-                  <Text>23232</Text>
-                ))}
-            </View> */}
           </View>
         ))}
       </ScrollView>

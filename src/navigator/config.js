@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-import { Text } from 'react-native'
+import {Text} from 'react-native';
 // 首页
 import Recommend from '@/pages/home/recommend';
 import VideoDetail from '@/pages/home/videoDetail';
@@ -26,6 +26,9 @@ import NodeDetail from '@/pages/nodes/node-detail';
 // 场地
 import SpaceIndex from '@/pages/space/space-index';
 import SpaceDetail from '@/pages/space/space-detail';
+
+// 话题
+import HashtagDetail from '@/pages/hashtags/hashtag-detail';
 
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
@@ -107,7 +110,7 @@ export const createTopicRouter = [
     component: NewTopic,
     options: {
       title: '发布帖子',
-      animationEnabled: true
+      animationEnabled: true,
     },
   },
   {
@@ -118,7 +121,8 @@ export const createTopicRouter = [
   {
     name: 'AddMentionAccount',
     component: AddMentionAccount,
-    options: {title: '提及人列表'},
+    safeArea: false,
+    options: {title: '提及人列表', headerShown: false},
   },
   {
     name: 'AddSpace',
@@ -130,7 +134,7 @@ export const createTopicRouter = [
     component: AddNode,
     options: {title: '添加圈子'},
   },
-]
+];
 
 const topicRouter = [
   {
@@ -156,7 +160,7 @@ const topicRouter = [
   {
     name: 'AddMentionAccount',
     component: AddMentionAccount,
-    options: {title: '提及人列表'},
+    options: {title: '提及人列表', headerShown: false},
   },
   {
     name: 'AddSpace',
@@ -278,13 +282,13 @@ export const routers = [
       title: '微信登录',
       headerShown: false,
     },
-    safeArea: false
+    safeArea: false,
   },
   {
     name: 'InviteLogin',
     component: InviteLogin,
     options: {title: '输入邀请码'},
-    safeArea: false
+    safeArea: false,
   },
   {
     name: 'InviteDetail',
@@ -366,5 +370,10 @@ export const routers = [
     name: 'ChooseCity',
     component: ChooseCity,
     options: {title: '选择城市'},
+  },
+  {
+    name: 'HashtagDetail',
+    component: HashtagDetail,
+    options: {title: '话题详情'},
   },
 ];

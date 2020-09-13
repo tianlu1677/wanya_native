@@ -71,7 +71,6 @@ export const ProWrapper = {
     fontWeight: '500',
     height: 40,
     lineHeight: 40,
-    backgroundColor: 'pink',
   },
   proDownIcon: {
     marginLeft: 6,

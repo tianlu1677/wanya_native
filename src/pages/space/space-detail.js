@@ -27,6 +27,8 @@ const SpaceDetail = ({navigation, route}) => {
   const loadData = async () => {
     const space = await getSpaceDetail(spaceId);
     setDetail(space);
+    console.log(space);
+
     navigation.setOptions({
       title: space.name,
     });
@@ -104,11 +106,6 @@ const SpaceDetail = ({navigation, route}) => {
               {detail.tag_list.map((v, index) => (
                 <Text key={index} style={styles.tags}>
                   {v}
-                </Text>
-              ))}
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, index) => (
-                <Text key={index} style={styles.tags}>
-                  免费
                 </Text>
               ))}
             </View>

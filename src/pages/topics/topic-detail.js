@@ -86,7 +86,7 @@ const TopicDetail = ({navigation, route}) => {
     return (
       <Swiper style={{height: 300}} showsPagination={detail.medias.length > 0}>
         {medias.map((media, index) => (
-          <TouchableOpacity onPress={() => onPreview(index)}>
+          <TouchableOpacity onPress={() => onPreview(index)} key={media}>
             <FastImg key={media} source={{uri: media}} style={{width: '100%', height: 300}} />
           </TouchableOpacity>
         ))}

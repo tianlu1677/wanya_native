@@ -18,7 +18,9 @@ const HashtagList = props => {
     if (props.type === 'add-hash-tag') {
       const topics = {
         ...savetopic,
-        plan_content: `${savetopic.plan_content} #${item.name}`,
+        plan_content: savetopic.plan_content
+          ? `${savetopic.plan_content} #${item.name}`
+          : `#${item.name}`,
       };
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
       navigation.goBack();

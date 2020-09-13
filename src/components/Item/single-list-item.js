@@ -98,6 +98,41 @@ export const Bottom = props => {
   );
 };
 
+export const PlainContent = props => {
+  const {data} = props;
+  const navigation = useNavigation();
+
+  return (
+    <Text numberOfLines={props.numberOfLines} style={props.style}>
+      {data.hashtag_content_json ? (
+        data.hashtag_content_json.map((v, index) => {
+          return (
+            <Text key={index}>
+              {v.is_hashtag && (
+                <Text
+                  style={cstyles.hashtagText}
+                  onPress={() => navigation.navigate('HashtagDetail', {hashtag: v.content})}>
+                  {v.content}
+                </Text>
+              )}
+              {v.is_mention && (
+                <Text
+                  style={cstyles.hashtagText}
+                  onPress={() => navigation.navigate('AccountDetail', {accountId: v.content})}>
+                  {v.content}
+                </Text>
+              )}
+              {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content}</Text>}
+            </Text>
+          );
+        })
+      ) : (
+        <Text>{data.plain_content}</Text>
+      )}
+    </Text>
+  );
+};
+
 const hstyles = StyleSheet.create({
   headerView: {
     flexDirection: 'row',
@@ -151,5 +186,12 @@ const bstyles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 30,
     color: '#bdbdbd',
+  },
+});
+
+const cstyles = StyleSheet.create({
+  hashtagText: {
+    color: '#ff8d00',
+    marginRight: 3,
   },
 });
