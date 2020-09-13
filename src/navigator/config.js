@@ -34,7 +34,7 @@ import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
 // 话题
-import HashtagDetail from '@/pages/hashtags/hashtag-detail'
+// import HashtagDetail from '@/pages/hashtags/hashtag-detail'
 // 我的页面
 import MineDetail from '@/pages/mine/mine-detail';
 import Mine from '@/pages/mine/mine';
@@ -383,10 +383,5 @@ export const routers = [
     name: 'ChooseCity',
     component: ChooseCity,
     options: {title: '选择城市'},
-  },
-  {
-    name: 'HashtagDetail',
-    component: HashtagDetail,
-    options: {title: '话题详情'},
   },
 ];
