@@ -216,7 +216,8 @@ const accountRouter = [
   {
     name: 'AccountDetail',
     component: AccountDetail,
-    options: {title: '用户详情'},
+    safeArea: false,
+    options: {title: '用户详情', headerShown: false},
   },
   {
     name: 'FollowNodes',
