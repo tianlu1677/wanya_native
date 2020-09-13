@@ -5,8 +5,8 @@ import styled from 'styled-components/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import {getHashtagPosts} from '@/api/hashtag_api';
-import {GoBack} from "@/components/NodeComponents"
-import { NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from "@/utils/navbar"
+import {GoBack} from '@/components/NodeComponents';
+import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 
 const rightLogo =
   'http://file.meirixinxue.com/assets/2020/77963058-7b42-46ea-bc6b-f969e81bbdfd.png';
@@ -34,7 +34,7 @@ const HashtagDetail = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <GoBack />
-      <HeadView >
+      <HeadView>
         <BgCoverImage source={{uri: bgLogo}} />
         <RightCoverImage source={{uri: rightLogo}} style={{top: STATUS_BAR_HEIGHT + 5}} />
         <HashtagText style={{top: NAV_BAR_HEIGHT + 15}}># {hashtag}</HashtagText>
@@ -62,7 +62,7 @@ const HashtagDetail = ({navigation, route}) => {
 const HeadView = styled(View)`
   position: relative;
   height: 137px;
-  background-color: #FF8D00;
+  background-color: #ff8d00;
 `;
 const BgCoverImage = styled(Image)`
   height: 137px;
@@ -81,7 +81,7 @@ const RightCoverImage = styled(Image)`
 
 const HashtagText = styled(Text)`
   position: absolute;
-  
+
   left: 0;
   right: 0;
   margin-left: 15px;
