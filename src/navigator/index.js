@@ -32,8 +32,8 @@ const AuthStack = createStackNavigator();
 const TabBar = props => (
   <VibrancyView
     style={styles.blurView}
-    blurType="xlight"
-    blurAmount={40}
+    blurType="light"
+    blurAmount={80}
     reducedTransparencyFallbackColor="#white">
     <BottomTabBar {...props} />
   </VibrancyView>

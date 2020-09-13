@@ -9,8 +9,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import commonStyles from '@/styles/commonStyles';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import MediasPicker from '@/components/MediasPicker';
 
-const AccountContent = ({navigation, route}) => {
+const AccountContent = (props) => {
+  const navigation = props.navigation
   const [gender, setGender] = useState('');
   const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [birthday, setBirthday] = useState('');
@@ -29,6 +31,28 @@ const AccountContent = ({navigation, route}) => {
 
   const ForwardRight = () => {
     return <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />;
+  };
+
+  const onImagePicker = () => {
+    const options = {
+      imageCount: 1,
+      isRecordSelected: false
+    };
+    props.imagePick(options, async (err, res) => {
+      if (err) {
+        return;
+      }
+      // setImageSource([...res]);
+      for (let [index, file] of new Map(res.map((item, i) => [i, item]))) {
+        const result = await props.uploadAvatar({
+          uploadType: 'multipart',
+          account_id: currentAccount.id,
+          ...file
+        });
+        dispatch(dispatchCurrentAccount());
+        console.log('res', currentAccount)
+      }
+    });
   };
 
   const setGenderValue = async value => {
@@ -88,6 +112,8 @@ const AccountContent = ({navigation, route}) => {
           content: currentAccount.intro,
         });
         break;
+      case 'avatar':
+        onImagePicker()
       default:
         console.log('not');
     }
@@ -98,7 +124,7 @@ const AccountContent = ({navigation, route}) => {
       <Text style={commonStyles.contentBlank} />
       <ItemView
         onPress={() => {
-          goPages('edit');
+          goPages('avatar');
         }}>
         <ItemTitle>头像</ItemTitle>
         <ItemWrap>
@@ -235,4 +261,4 @@ const ItemTitle = styled(Text)`
   font-weight: 400;
 `;
 
-export default AccountContent;
+export default MediasPicker(AccountContent);
