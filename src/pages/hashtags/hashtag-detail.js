@@ -5,6 +5,8 @@ import styled from 'styled-components/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import {getHashtagPosts} from '@/api/hashtag_api';
+import {GoBack} from "@/components/NodeComponents"
+import { NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from "@/utils/navbar"
 
 const HashtagDetail = ({navigation, route}) => {
   const [hashtag, setHashtag] = useState('');
@@ -41,11 +43,12 @@ const HashtagDetail = ({navigation, route}) => {
     return <SingleList request={request} />;
   };
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <HeadView>
+    <View style={{flex: 1}}>
+      <GoBack />
+      <HeadView >
         <BgCoverImage source={{uri: bgLogo}} />
-        <RightCoverImage source={{uri: rightLogo}} />
-        <HashtagText># {hashtag}</HashtagText>
+        <RightCoverImage source={{uri: rightLogo}} style={{top: STATUS_BAR_HEIGHT + 5}} />
+        <HashtagText style={{top: NAV_BAR_HEIGHT + 15}}># {hashtag}</HashtagText>
       </HeadView>
       <TabViewList
         currentKey={currentKey}
@@ -63,19 +66,19 @@ const HashtagDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const HeadView = styled(View)`
   position: relative;
   height: 137px;
+  background-color: #FF8D00;
 `;
 const BgCoverImage = styled(Image)`
   height: 137px;
   position: absolute;
   left: 0;
-  top: 0;
   right: 0;
 `;
 
@@ -89,7 +92,7 @@ const RightCoverImage = styled(Image)`
 
 const HashtagText = styled(Text)`
   position: absolute;
-  top: 25px;
+  
   left: 0;
   right: 0;
   margin-left: 15px;

@@ -93,7 +93,7 @@ export const TopicVideoCenterContent = props => {
 
 export const BaseTopicContent = props => {
   const {data} = props;
-
+  const navigation = useNavigation();
   return (
     <View style={props.style}>
       <Text numberOfLines={2} style={styles.multiText}>
@@ -101,7 +101,7 @@ export const BaseTopicContent = props => {
           data.hashtag_content_json.map((v, index) => {
             return (
               <Text key={index}>
-                {v.is_hashtag && <Text style={styles.hashtagText}>{v.content}</Text>}
+                {v.is_hashtag && <Text style={styles.hashtagText} onPress={() => {navigation.navigate('HashtagDetail', {hashtag: v.content})}}>{v.content}</Text>}
                 {v.is_mention && <Text style={styles.hashtagText}>{v.content}</Text>}
                 {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content}</Text>}
               </Text>
@@ -160,7 +160,8 @@ const styles = StyleSheet.create({
   },
   hashtagText: {
     color: '#ff8d00',
-    marginRight: 3,
+    paddingLeft: 2,
+    paddingRight: 2
   },
   spaceWrapper: {
     flexDirection: 'row',

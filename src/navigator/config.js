@@ -30,6 +30,8 @@ import SpaceDetail from '@/pages/space/space-detail';
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
+// 话题
+import HashtagDetail from '@/pages/hashtags/hashtag-detail'
 // 我的页面
 import MineDetail from '@/pages/mine/mine-detail';
 import Mine from '@/pages/mine/mine';
@@ -179,6 +181,12 @@ const articleRouter = [
     name: 'ArticleDetail',
     component: ArticleDetail,
     options: {title: '文章详情'},
+  },
+  {
+    name: 'HashtagDetail',
+    component: HashtagDetail,
+    safeArea: false,
+    options: {title: '话题', headerShown: false},
   },
 ];
 
