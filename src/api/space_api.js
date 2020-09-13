@@ -2,6 +2,8 @@ import request from './request';
 
 // 场地列表
 export const getSpacesList = async (params = {}) => {
+  console.log(params);
+
   const res = await request({
     url: '/api/v1/spaces/list',
     method: 'GET',
@@ -30,14 +32,24 @@ export const getSpacePosts = async params => {
 };
 
 //获取位置
-export async function getLocation(params) {
+export const getLocation = async params => {
   const res = await request({
     url: '/api/v1/map/location',
     method: 'GET',
     params,
   });
-  return res.data;
-}
+  return res;
+};
+
+// //获取位置
+// export async function getLocation(params) {
+//   const res = await request({
+//     url: '/api/v1/map/location',
+//     method: 'GET',
+//     params,
+//   });
+//   return res.data;
+// }
 // 热门场地
 export async function getRecommend(params) {
   const res = await request({

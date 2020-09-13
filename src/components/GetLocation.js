@@ -6,7 +6,7 @@ import Geolocation from 'react-native-geolocation-service';
 import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
 // import Helper from '../../utils/helper';
 
-const GetLocation = ({children, handleClick}) => {
+const GetLocation = ({children, handleClick, style}) => {
   // const [hadPermission, setHadPermission] = useState(false);
   const dispatch = useDispatch();
   const iosLocationPermission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
@@ -16,7 +16,7 @@ const GetLocation = ({children, handleClick}) => {
     // console.log('xxxxxxxxx', hadPermission)
     if (!answer) {
       console.log('没权限');
-      handleClick && handleClick({error: '没有权限'})
+      handleClick && handleClick({error: '没有权限'});
       return;
     }
 
@@ -24,13 +24,13 @@ const GetLocation = ({children, handleClick}) => {
     Geolocation.getCurrentPosition(
       // console.log('getting position')
       position => {
-        console.log('position => ', position)
-        handleClick && handleClick({position: position})
+        console.log('position => ', position);
+        handleClick && handleClick({position: position});
       },
       error => {
         // See error code charts below.
         console.log(error.code, error.message);
-        handleClick({error: error.message})
+        handleClick({error: error.message});
       },
       {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000, distanceFilter: 100}
     );
@@ -40,7 +40,7 @@ const GetLocation = ({children, handleClick}) => {
 
   const checkPermission = async () => {
     const result = await check(iosLocationPermission);
-    let Permission = false
+    let Permission = false;
     switch (result) {
       case RESULTS.UNAVAILABLE:
         console.log('This feature is not available (on this device / in this context)');
@@ -62,11 +62,12 @@ const GetLocation = ({children, handleClick}) => {
         openSettings().catch(() => console.warn('cannot open settings'));
         break;
     }
-    return Permission
+    return Permission;
   };
 
   return (
     <TouchableOpacity
+      style={style}
       onPress={() => {
         getLocation();
       }}>
@@ -84,6 +85,5 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
-
 
 export default GetLocation;

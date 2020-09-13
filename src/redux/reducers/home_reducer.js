@@ -39,6 +39,11 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         chooseCity: action.value,
       };
+    case constants.GET_LOCATION:
+      return {
+        ...state,
+        location: action.value,
+      };
     default:
       return state;
   }

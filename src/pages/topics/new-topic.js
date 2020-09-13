@@ -8,6 +8,7 @@ import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
+import GetLocation from '@/components/GetLocation';
 
 const NewTopic = props => {
   const navigation = useNavigation();
@@ -24,6 +25,11 @@ const NewTopic = props => {
     setContent(text);
     const topics = {...savetopic, plan_content: text};
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+  };
+
+  const getLocation = res => {
+    dispatch({type: action.GET_LOCATION, value: res.position.coords});
+    navigation.navigate('AddSpace');
   };
 
   const onImagePicker = () => {
@@ -202,13 +208,20 @@ const NewTopic = props => {
           </Text>
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.addSlide} onPress={() => navigation.navigate('AddSpace')}>
+        <GetLocation handleClick={getLocation} style={styles.addSlide}>
           <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} />
           <Text style={[styles.addText, savetopic.space && styles.selectText]}>
             {savetopic.space ? savetopic.space.name : '选择场地'}
           </Text>
           <IconFont name="fanhui1" size={14} style={styles.backarrow} />
-        </TouchableOpacity>
+        </GetLocation>
+        {/* <TouchableOpacity style={styles.addSlide} onPress={() => }>
+          <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} />
+          <Text style={[styles.addText, savetopic.space && styles.selectText]}>
+            {savetopic.space ? savetopic.space.name : '选择场地'}
+          </Text>
+          <IconFont name="fanhui1" size={14} style={styles.backarrow} />
+        </TouchableOpacity> */}
       </View>
     </View>
   );

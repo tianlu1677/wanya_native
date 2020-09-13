@@ -177,3 +177,4 @@ export const SAVE_NEW_TOPIC = 'SAVE_NEW_TOPIC';
 export const SAVE_COMMENT_TOPIC = 'SAVE_COMMENT_TOPIC'; // 帖子评论
 export const UPLOAD_PROGRESS = 'UPLOAD_PROGRESS'; // 视频上传进度
 export const CHOOSE_CITY = 'CHOOSE_CITY'; // 视频上传进度
+export const GET_LOCATION = 'GET_LOCATION'; // 经纬度

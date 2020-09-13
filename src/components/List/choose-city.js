@@ -1,21 +1,33 @@
 import React, {useEffect, useState, useRef} from 'react';
+import {useDispatch} from 'react-redux';
+
 import {getCities} from '../../api/space_api';
 import {Text, View, StyleSheet} from 'react-native';
 import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const CitySelect = () => {
+const CitySelect = props => {
+  const dispatch = useDispatch();
   const [cities, setCities] = useState(null);
   const scrollRef = useRef();
-
   const loadCities = async () => {
     const res = await getCities();
     setCities(res);
   };
 
-  const scrollToKey = (key, index) => {};
+  const scrollToKey = (key, index) => {
+    console.log(index);
+    console.log(scrollRef);
+  };
+
+  const chooseCity = city => {
+    console.log(props);
+    dispatch({type: action.CHOOSE_CITY, value: city.name});
+    props.navigation.goBack();
+  };
 
   useEffect(() => {
     loadCities();
@@ -33,13 +45,16 @@ const CitySelect = () => {
           return (
             <View key={item.title} style={styles.cityWrap}>
               <Text style={styles.title}>{item.title}</Text>
-              {item.items.map(v => (
-                <View style={styles.cityBottom}>
-                  <Text key={v.name} style={styles.cityText}>
-                    {v.name}
-                  </Text>
-                </View>
-              ))}
+              {item.items.map(city => {
+                return (
+                  <TouchableOpacity
+                    key={city.name}
+                    style={styles.cityBottom}
+                    onPress={() => chooseCity(city)}>
+                    <Text style={styles.cityText}>{city.name}</Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           );
         }}
