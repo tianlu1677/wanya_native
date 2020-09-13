@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {getSpacesList} from '@/api/space_api';
 import * as action from '@/redux/constants';
 import SpaceList from '@/components/List/space-list';
 import {Search} from '@/components/NodeComponents';
+import IconFont from '@/iconfont';
 
-const AddSpace = () => {
+import {ProWrapper as pstyles} from '@/styles/baseCommon';
+
+const AddSpace = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const home = useSelector(state => state.home);
@@ -18,6 +21,10 @@ const AddSpace = () => {
     const topics = {...home.savetopic, space: item};
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
     navigation.goBack();
+  };
+
+  const goChooseCity = () => {
+    props.navigation.navigate('ChooseCity');
   };
 
   useEffect(() => {
@@ -31,7 +38,14 @@ const AddSpace = () => {
         placeholder="搜索更多场地"
         onChangeText={text => setSearchKey(text)}
       />
-      <Text style={styles.title}>热门场地</Text>
+      <TouchableOpacity style={pstyles.proWrapper} onPress={goChooseCity}>
+        <Text style={pstyles.proTitle}>热门场地</Text>
+        <View style={pstyles.proCity}>
+          <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
+          <Text style={pstyles.proCityText}>全国</Text>
+          <IconFont name="fanhui2" size={6} style={pstyles.proDownIcon} />
+        </View>
+      </TouchableOpacity>
       <SpaceList
         request={{api: getSpacesList, params: {type: 'recommend', name_cont: searchKey}}}
         onPress={onPress}
@@ -48,15 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   search: {
-    marginLeft: 14,
-    marginBottom: 6,
-  },
-  title: {
-    height: 40,
-    lineHeight: 40,
     paddingLeft: 14,
-    color: '#bdbdbd',
-    backgroundColor: '#fafafa',
   },
 });
 

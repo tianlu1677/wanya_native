@@ -57,7 +57,7 @@ const NodeIndex = () => {
   };
 
   const renderItem = ({item}) => {
-    return <NodeItem node={item} />;
+    return <NodeItem node={item} key={item.id} type="add-node" />;
   };
 
   const renderSeparator = () => {

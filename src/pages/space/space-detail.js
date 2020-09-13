@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -8,8 +16,10 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
+import {dispatchPreviewImage} from '@/redux/actions';
 
 const SpaceDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [spaceId] = useState(route.params.spaceId);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('lasted');
@@ -42,57 +52,70 @@ const SpaceDetail = ({navigation, route}) => {
     Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
   };
 
+  const onPreview = () => {
+    const data = {
+      images: detail.medias.map(v => {
+        return {url: v};
+      }),
+      visible: true,
+      index: 0,
+    };
+    dispatch(dispatchPreviewImage(data));
+  };
+
   useEffect(() => {
     loadData();
   }, []);
 
   return detail ? (
     <View style={styles.wrapper}>
-      <ImageBackground source={{uri: detail.cover_url}} style={styles.header}>
-        <View style={styles.info}>
-          <View>
-            <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
-              {detail.name}
-            </Text>
-            <Text style={styles.intro}>
-              <Text>
-                {detail.intro
-                  ? detail.intro.length > 20
-                    ? `${detail.intro.substring(0, 20)}...`
-                    : detail.intro
-                  : '暂无简介'}
-              </Text>{' '}
-              | <Text>{detail.medias.length}张图片</Text>
-            </Text>
-          </View>
-          <TouchableOpacity style={styles.creatorWrap} onPress={goAccountDetail}>
-            <Avator account={detail.account} size={30} />
-            <View style={styles.creator}>
-              <Text style={styles.creatorName}>{detail.account.nickname}</Text>
-              <Text style={styles.creatorDesc}>创建者</Text>
+      <TouchableWithoutFeedback onPress={onPreview}>
+        <ImageBackground source={{uri: detail.cover_url}} style={styles.header}>
+          <View style={styles.info}>
+            <View>
+              <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
+                {detail.name}
+              </Text>
+              <Text style={styles.intro}>
+                <Text>
+                  {detail.intro
+                    ? detail.intro.length > 20
+                      ? `${detail.intro.substring(0, 20)}...`
+                      : detail.intro
+                    : '暂无简介'}
+                </Text>{' '}
+                | <Text>{detail.medias.length}张图片</Text>
+              </Text>
             </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.address}>
-          <IconFont name="space-point" size={13} color={'#fff'} />
-          <Text style={styles.addressText}>{detail.address}</Text>
-        </View>
-        <View style={styles.descWrap}>
-          <View style={styles.tagsWrap}>
-            {detail.tag_list.map((v, index) => (
-              <Text key={index} style={styles.tags}>
-                {v}
-              </Text>
-            ))}
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, index) => (
-              <Text key={index} style={styles.tags}>
-                免费
-              </Text>
-            ))}
+            <TouchableOpacity style={styles.creatorWrap} onPress={goAccountDetail}>
+              <Avator account={detail.account} size={30} />
+              <View style={styles.creator}>
+                <Text style={styles.creatorName}>{detail.account.nickname}</Text>
+                <Text style={styles.creatorDesc}>创建者</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <PlayScore score={detail.play_score} onPress={onPlay} />
-        </View>
-      </ImageBackground>
+          <View style={styles.address}>
+            <IconFont name="space-point" size={13} color={'#fff'} />
+            <Text style={styles.addressText}>{detail.address}</Text>
+          </View>
+          <View style={styles.descWrap}>
+            <View style={styles.tagsWrap}>
+              {detail.tag_list.map((v, index) => (
+                <Text key={index} style={styles.tags}>
+                  {v}
+                </Text>
+              ))}
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((v, index) => (
+                <Text key={index} style={styles.tags}>
+                  免费
+                </Text>
+              ))}
+            </View>
+            <PlayScore score={detail.play_score} onPress={onPlay} />
+          </View>
+        </ImageBackground>
+      </TouchableWithoutFeedback>
       <TabViewList
         currentKey={currentKey}
         tabData={[

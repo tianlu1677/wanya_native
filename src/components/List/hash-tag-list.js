@@ -29,10 +29,7 @@ const HashtagList = props => {
 
   const renderItem = ({item, index}) => {
     return (
-      <TouchableOpacity
-        style={styles.hashtagWrap}
-        key={item.name}
-        onPress={() => onPress(item, index)}>
+      <TouchableOpacity style={styles.hashtagWrap} key={index} onPress={() => onPress(item, index)}>
         <Text style={styles.hashtagName}>#{item.name}</Text>
       </TouchableOpacity>
     );
@@ -46,8 +43,6 @@ const HashtagList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    console.log(res);
-
     const data = res.data.hashtags;
     setLoading(false);
     setHeaders(res.headers);
@@ -69,6 +64,7 @@ const HashtagList = props => {
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
+      itemKey={'name'}
       {...props}
     />
   );

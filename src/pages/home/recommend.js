@@ -1,20 +1,12 @@
 import React, {useState} from 'react';
-import {
-  getUnLoginHotPosts,
-  getRecommendPosts,
-  getFollowedTopics,
-  getRecommendVideoListPosts,
-  getRecommendLatestPosts,
-} from '@/api/home_api';
-import {View} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {getUnLoginHotPosts, getRecommendPosts, getRecommendLatestPosts} from '@/api/home_api';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import IconFont from '@/iconfont';
 
 const Recommend = props => {
-  const insets = useSafeAreaInsets();
   const [currentKey, setCurrentKey] = useState('recommend');
 
   const RecommendList = () => {
@@ -29,9 +21,8 @@ const Recommend = props => {
     return <SingleList request={{api: getRecommendLatestPosts}} />;
   };
 
-  // console.log('insets', insets)
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white', paddingTop: Math.max(insets.bottom, 20)}} edges={['right', 'left']} mode="padding"  >
+    <View style={styles.wrapper}>
       <TabViewList
         currentKey={currentKey}
         tabData={[
@@ -53,8 +44,26 @@ const Recommend = props => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-    </SafeAreaView>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('NotifyIndex')}
+        style={styles.message}>
+        <IconFont name="people" size={20} />
+      </TouchableOpacity>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    position: 'relative',
+  },
+  message: {
+    position: 'absolute',
+    right: 16,
+    zIndex: 2,
+    top: 15,
+  },
+});
 
 export default Recommend;

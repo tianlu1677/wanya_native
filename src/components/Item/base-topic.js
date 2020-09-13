@@ -1,9 +1,11 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom} from '@/components/Item/single-list-item';
 import IconFont from '@/iconfont';
+import {dispatchPreviewImage} from '@/redux/actions';
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -35,27 +37,36 @@ const calculateImg = (width, height) => {
 };
 
 export const TopicImageCenterContent = props => {
+  const dispatch = useDispatch();
   const {single_cover, medias} = props.data;
   const imgStyle = medias.length === 1 ? 'single' : 'multi';
   const imgAttr = calculateImg(single_cover.width, single_cover.height);
 
+  const onPreview = (index = 0) => {
+    const data = {
+      images: medias.map(v => {
+        return {url: v};
+      }),
+      visible: true,
+      index,
+    };
+    dispatch(dispatchPreviewImage(data));
+  };
+
   return imgStyle === 'single' ? (
-    <Image
-      source={{uri: single_cover.cover_url}}
-      style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
-    />
+    <TouchableOpacity onPress={() => onPreview()}>
+      <Image
+        source={{uri: single_cover.cover_url}}
+        style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
+      />
+    </TouchableOpacity>
   ) : (
     <ScrollView horizontal={true}>
-      {medias.map((media, media_index) => {
-        return (
-          <Image
-            source={{uri: media}}
-            mode="widthFix"
-            key={media_index}
-            style={styles.imageMulti}
-          />
-        );
-      })}
+      {medias.map((media, index) => (
+        <TouchableOpacity onPress={() => onPreview(index)}>
+          <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
+        </TouchableOpacity>
+      ))}
     </ScrollView>
   );
 };

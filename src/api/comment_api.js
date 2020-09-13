@@ -2,7 +2,6 @@ import request from './request';
 
 // 获取帖子的评论列表
 export const getTopicCommentList = async params => {
-  console.log(params);
   const res = await request({
     url: `/api/v1/topics/${params.id}/comments`,
     method: 'GET',
@@ -27,6 +26,15 @@ export const createComment = async (data = {}) => {
     url: '/api/v1/comments',
     method: 'POST',
     data,
+  });
+  return res;
+};
+
+// 删除评论
+export const deleteComment = async id => {
+  const res = await request({
+    url: `/api/v1/comments/${id}`,
+    method: 'DELETE',
   });
   return res;
 };
@@ -101,14 +109,14 @@ export async function getComment(comment_id) {
 }
 
 // 删除评论
-export async function deleteComment(comment_id) {
-  const res = await request({
-    url: `/api/v1/comments/${comment_id}`,
-    method: 'DELETE',
-  });
+// export async function deleteComment(comment_id) {
+//   const res = await request({
+//     url: `/api/v1/comments/${comment_id}`,
+//     method: 'DELETE',
+//   });
 
-  return res.data;
-}
+//   return res.data;
+// }
 
 // 点赞
 // export async function praiseComment(comment_id) {

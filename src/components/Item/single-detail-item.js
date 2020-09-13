@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
 import {Avator} from '@/components/NodeComponents';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
+import * as action from '@/redux/constants';
 
 export const PublishAccount = props => {
   const {data} = props;
@@ -87,42 +89,22 @@ export const PublishRelated = props => {
 };
 
 export const ActionComment = props => {
-  const [visible, setVisible] = useState(false);
+  const comment = useSelector(state => state.home.commentTopic);
+  const dispatch = useDispatch();
   const [value, setValue] = useState(null);
   const [praise, setPraise] = useState(props.detail.praise);
   const [star, setStar] = useState(props.detail.star);
 
-  const [comment, setComment] = useState({
-    commentable_type: '',
-    commentable_id: '',
-    content: '',
-    comment_type: '',
-    placeholder: '写点评论吧',
-  });
-
-  // 回复
-  const onReplyComment = v => {
-    if (v.id) {
-      setComment({
-        placeholder: `回复: @${v.account.nickname}`,
-        comment_type: 'comment',
-        commentable_type: props.type,
-        commentable_id: props.detail.id,
-        content: '',
-        target_comment_id: v.id,
-      });
-    } else {
-      setComment({
-        placeholder: '写点评论吧',
-        comment_type: 'topic',
-        commentable_type: props.type,
-        commentable_id: props.detail.id,
-        content: '',
-      });
-      setVisible(true);
-    }
-    setValue(null);
-    setVisible(true);
+  const onCreateComment = v => {
+    const commentTopic = {
+      placeholder: '写点评论吧',
+      comment_type: 'topic',
+      commentable_type: props.type,
+      commentable_id: props.detail.id,
+      content: '',
+    };
+    dispatch({type: action.SAVE_COMMENT_TOPIC, value: commentTopic});
+    props.changeVisible(true);
   };
 
   const publishComment = () => {
@@ -180,11 +162,15 @@ export const ActionComment = props => {
     }
   };
 
+  useEffect(() => {
+    setValue(null);
+  }, [props.visible]);
+
   return (
     <View style={astyles.actionWrapper}>
-      {!visible && (
+      {!props.visible && (
         <>
-          <Text style={astyles.text} onPress={onReplyComment}>
+          <Text style={astyles.text} onPress={onCreateComment}>
             快来评论吧
           </Text>
           <TouchableOpacity style={astyles.btn} onPress={() => onCreate('praise')}>
@@ -206,7 +192,7 @@ export const ActionComment = props => {
         </>
       )}
 
-      {visible && (
+      {props.visible && (
         <>
           <TextInput
             style={astyles.input}
@@ -214,7 +200,7 @@ export const ActionComment = props => {
             onChangeText={text => setValue(text)}
             value={value}
             autoFocus
-            onBlur={() => setVisible(false)}
+            onBlur={() => props.changeVisible(false)}
           />
           <Text style={astyles.sendBtn} onPress={publishComment}>
             发送

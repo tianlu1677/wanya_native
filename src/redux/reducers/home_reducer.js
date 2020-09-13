@@ -1,4 +1,4 @@
-import {SAVE_NEW_TOPIC, PREVIEW_IMAGES} from '../constants';
+import * as constants from '../constants';
 
 const defaultState = {
   savetopic: {
@@ -11,19 +11,25 @@ const defaultState = {
     index: 0,
     visible: false,
   },
+  commentTopic: {},
 };
 
 export const homeReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case SAVE_NEW_TOPIC:
+    case constants.SAVE_NEW_TOPIC:
       return {
         ...state,
         savetopic: action.value,
       };
-    case PREVIEW_IMAGES:
+    case constants.PREVIEW_IMAGES:
       return {
         ...state,
         previewImageData: action.previewImageData,
+      };
+    case constants.SAVE_COMMENT_TOPIC:
+      return {
+        ...state,
+        commentTopic: action.value,
       };
     default:
       return state;

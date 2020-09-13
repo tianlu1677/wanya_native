@@ -1,17 +1,52 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, ActionSheetIOS} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import ScrollList from '@/components/ScrollList';
 import {praiseComment, unpraiseComment} from '@/api/comment_api';
+import {useActionSheet} from '@expo/react-native-action-sheet';
+import * as action from '@/redux/constants';
 
 const CommentList = props => {
+  const dispatch = useDispatch();
+  const {showActionSheetWithOptions} = useActionSheet();
+  const currentAccount = useSelector(state => state.account.currentAccount);
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const choseAction = v => {
+    let options = {
+      options: ['取消', '回复'],
+      cancelButtonIndex: 0,
+    };
+
+    if (v.account.id === currentAccount.id) {
+      options = {
+        options: ['取消', '回复', '删除'],
+        destructiveButtonIndex: 2,
+        cancelButtonIndex: 0,
+      };
+    }
+
     // 区分删除和回复
+    ActionSheetIOS.showActionSheetWithOptions(options, buttonIndex => {
+      if (buttonIndex === 1) {
+        const comment = {
+          placeholder: `回复: @${v.account.nickname}`,
+          comment_type: 'comment',
+          commentable_type: props.type,
+          commentable_id: props.detail.id,
+          content: '',
+          target_comment_id: v.id,
+        };
+        dispatch({type: action.SAVE_COMMENT_TOPIC, value: comment});
+        props.changeVisible(true);
+      } else if (buttonIndex === 2) {
+        props.deleteComment(v.id);
+      }
+    });
   };
 
   const onPraise = async (item, index) => {
@@ -83,6 +118,10 @@ const CommentList = props => {
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [props.detail]);
 
   return (
     <ScrollList

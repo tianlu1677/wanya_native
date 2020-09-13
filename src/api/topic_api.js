@@ -2,8 +2,6 @@ import request from './request';
 
 // 帖子列表
 export const getTopicList = async params => {
-  console.log(params);
-
   const res = await request({
     url: `/api/v1/topics?${params.queryUrl}`,
     method: 'GET',
@@ -51,26 +49,6 @@ export const destroyTopicAction = async params => {
   return res;
 };
 
-// 帖子评论
-export const getTopicCommentList = async params => {
-  const res = await request({
-    url: `/api/v1/topics/${params.id}/comments`,
-    method: 'GET',
-    params,
-  });
-  return res;
-};
-
-// 创建评论
-export const createComment = async (data = {}) => {
-  const res = await request({
-    url: '/api/v1/comments',
-    method: 'POST',
-    data,
-  });
-  return res;
-};
-
 //话题列表
 export async function getNodeTopicList(params) {
   const res = await request({
@@ -81,103 +59,6 @@ export async function getNodeTopicList(params) {
   return res;
 }
 
-// export const getNodeTopicList = async (data = {}) => {
-//   const res = await request({
-//     url: '/api/v1/comments',
-//     method: 'POST',
-//     data,
-//   });
-//   return res;
-// };
-
-// 取消点赞,收藏
-// export async function destroyTopicAction(id, type) {
-//   const res = await request({
-//     url: `/api/v1/topics/${parid}/destroy_actions`,
-//     method: 'POST',
-//     data: {
-//       type: type,
-//     },
-//   });
-//   return res.data;
-// }
-// export async function createTopicAction(id, type) {
-//   const res = await request({
-//     url: `/api/v1/topics/${id}/create_actions`,
-//     method: 'POST',
-//     data: {
-//       type: type,
-//     },
-//   });
-//   return res.data;
-// }
-// 获取帖子详情
-// export async function getTopic(id) {
-//   const res = await request({
-//     url: `/api/v1/topics/${id}`,
-//     method: 'GET'
-//   })
-
-//   return res.data
-// }
-
-// 获取帖子详情
-// export async function getTopic(id) {
-//   const res = await request({
-//     url: `/api/v1/topics/${id}`,
-//     method: 'GET',
-//   });
-
-//   return res.data;
-// }
-
-//帖子列表
-// export async function getTopicList(params, queryUrl = '') {
-//   const res = await request({
-//     url: `/api/v1/topics?${queryUrl}`,
-//     method: 'GET',
-//     params: params,
-//   });
-
-//   return res;
-// }
-
-//话题列表
-// export async function getNodeTopicList(params, queryUrl = '') {
-//   const res = await request({
-//     url: `/api/v1/nodes/${queryUrl}/hashtags`,
-//     method: 'GET',
-//     params: params,
-//   });
-
-//   return res;
-// }
-
-// 点赞，收藏, 分享, 查看
-// action_type(praise, star, share, view)
-// export async function createTopicAction(id, type) {
-//   const res = await request({
-//     url: `/api/v1/topics/${id}/create_actions`,
-//     method: 'POST',
-//     data: {
-//       type: type,
-//     },
-//   });
-//   return res.data;
-// }
-
-// 取消点赞,收藏
-// export async function destroyTopicAction(id, type) {
-//   const res = await request({
-//     url: `/api/v1/topics/${id}/destroy_actions`,
-//     method: 'POST',
-//     data: {
-//       type: type,
-//     },
-//   });
-//   return res.data;
-// }
-
 // 帖子预设标签
 export async function getTopicTags(params) {
   const res = await request({
@@ -187,16 +68,6 @@ export async function getTopicTags(params) {
   });
   return res.data;
 }
-
-// 创建帖子
-// export async function createTopic(data = {}) {
-//   const res = await request({
-//     url: '/api/v1/topics',
-//     method: 'POST',
-//     data: data,
-//   });
-//   return res.data;
-// }
 
 // 修改帖子
 export async function updateTopic(id, data = {}) {
