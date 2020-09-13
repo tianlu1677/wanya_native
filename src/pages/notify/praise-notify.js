@@ -69,7 +69,7 @@ class PraiseNotify extends Component {
     } else if (notify.target_type === 'Topic') {
       let topic = notify.topic;
       image_url = topic.single_cover.cover_url;
-      has_video = !!topic.video_content_thumb;
+      has_video = topic.has_video;
       content = topic.plain_content;
     } else if (notify.target_type === 'Article') {
       image_url = notify.article.cover_url;
