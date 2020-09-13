@@ -11,7 +11,7 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
+import GoBack from "@/components/NodeComponents/GoBack"
 const MineDetail = ({navigation, route}) => {
   const id = useSelector(state => state.account.currentAccount.id);
   const [accountId] = useState(id);
@@ -63,6 +63,7 @@ const MineDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
+      <GoBack />
       <View style={styles.setting}>
         <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')}>
           <IconFont name="baomingcanjia" size={20} style={{marginRight: 25}} color="#fff" />
