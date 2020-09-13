@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Avator, PlayScore} from '@/components/NodeComponents';
+import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
@@ -11,7 +11,7 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import GoBack from "@/components/NodeComponents/GoBack"
+
 const MineDetail = ({navigation, route}) => {
   const id = useSelector(state => state.account.currentAccount.id);
   const [accountId] = useState(id);
@@ -135,7 +135,6 @@ const MineDetail = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-
       <TabViewList
         currentKey={currentKey}
         tabData={[

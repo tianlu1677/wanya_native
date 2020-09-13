@@ -6,7 +6,7 @@ import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import * as action from '@/redux/constants';
 
 const baseUrl =
-  process.env.NODE_ENV === 'development' ? 'https://xinxue.meirixinxue.com' : 'https://xinxue.com';
+  process.env.NODE_ENV === 'development' ? 'https://xinxue.meirixinxue.com' : 'https://api.meirixinxue.com';
 
 const MediasPicker = WrapperComponent => {
   return props => {
@@ -49,6 +49,39 @@ const MediasPicker = WrapperComponent => {
           });
       });
     };
+
+    const uploadAvatar = async (file) => {
+      const token = await Helper.getData('auth_token');
+      const uploadOptions = {
+        url: `${baseUrl}/api/v1/mine/accounts/${file.account_id}`,
+        method: 'POST',
+        maxRetries: 1,
+        type: file.uploadType,
+        field: 'account[avatar]',
+        headers: {
+          'content-type': 'application/octet-stream',
+          token: token,
+        },
+        path: file.uri,
+      };
+
+      console.log('xxx', uploadOptions)
+      return new Promise((resolve, reject) => {
+        Upload.startUpload(uploadOptions)
+          .then(uploadId => {
+            Upload.addListener('error', uploadId, data => {
+              reject(data.error);
+            });
+            Upload.addListener('completed', uploadId, data => {
+              resolve(JSON.parse(data.responseBody));
+            });
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    };
+
 
     const videoPick = (option = {}, callback) => {
       const options = {...option};
@@ -122,6 +155,7 @@ const MediasPicker = WrapperComponent => {
         videoPick={videoPick}
         uploadVideo={uploadVideo}
         removeImage={removeImage}
+        uploadAvatar={uploadAvatar}
       />
     );
   };

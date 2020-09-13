@@ -4,7 +4,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
-
+#import "SDImageCodersManager.h"
+#import <SDWebImageWebPCoder/SDImageWebPCoder.h>
 
 #import "RNUMConfigure.h"
 #import "UMAnalyticsModule.h"
@@ -62,6 +63,9 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // <- initialization using the storyboard file name
+
+  // Register WebP format support
+  [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
 
   [UMConfigure setLogEnabled:YES];
   [RNUMConfigure initWithAppkey:@"5d898ec9570df3adff00089a" channel:@"App Store"];
