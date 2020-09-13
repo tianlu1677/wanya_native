@@ -28,7 +28,7 @@ export const GoBack = props => {
       style={{...styles.goBackWrap, top: Math.max(getStatusBarHeight(), 20)}}
     >
       <Text style={styles.button}>
-        <Icon name="chevron-back-outline" size={30} color="white" iconStyle={{marginRight: 1}} />
+        <Icon name="chevron-back-outline" size={28} color="white" iconStyle={{marginRight: 1}} />
       </Text>
       {/*<IconFont name={"arrow-right"} color={'white'} size={14} />*/}
     </Pressable>

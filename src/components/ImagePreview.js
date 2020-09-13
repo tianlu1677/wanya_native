@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {StyleSheet, Modal} from 'react-native';
+import {StyleSheet, Modal, Text} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {dispatchPreviewImage} from '@/redux/actions';
 

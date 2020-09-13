@@ -8,12 +8,18 @@ import {getArticleCommentList, createComment, deleteComment} from '@/api/comment
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 
-const ArticeDetail = ({navigation, route}) => {
+const ArticleDetail = ({navigation, route}) => {
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
 
-  const laodData = async () => {
+  useEffect(() => {
+    navigation.setOptions({
+      title: (detail && detail.title) || '文章详情',
+    });
+  }, [navigation, detail]);
+
+  const loadData = async () => {
     const res = await getArticle(7 || articleId);
     setDetail(res.data.article);
   };
@@ -24,16 +30,16 @@ const ArticeDetail = ({navigation, route}) => {
     await createComment(data);
     Toast.hide();
     Toast.show('发送成功啦');
-    laodData();
+    loadData();
   };
 
   const deleteArticleComment = async id => {
     await deleteComment(id);
-    laodData();
+    loadData();
   };
 
   useEffect(() => {
-    laodData();
+    loadData();
   }, []);
 
   return detail ? (
@@ -54,7 +60,7 @@ const ArticeDetail = ({navigation, route}) => {
             <Text style={styles.title}>{detail.title}</Text>
             <PublishAccount data={detail} />
             <RichHtml
-              style={{backgroundColor: 'pink'}}
+              style={{backgroundColor: 'pink', paddingTop: 20}}
               content={
                 detail &&
                 detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
@@ -103,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ArticeDetail;
+export default ArticleDetail;
