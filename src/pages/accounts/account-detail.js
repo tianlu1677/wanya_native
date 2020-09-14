@@ -6,7 +6,7 @@ import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import {getAccount} from '@/api/account_api';
-import {getAccountPosts} from '@/api/account_api';
+import {getAccountPosts, followAccount, unfollowAccount} from '@/api/account_api';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
@@ -57,6 +57,15 @@ const AccountDetail = ({navigation, route}) => {
     navigation.navigate('FollowerAccounts', {accountId: account.id});
   };
 
+  const onFollow = async () => {
+    if (account.followed) {
+      await unfollowAccount(account.id);
+    } else {
+      await followAccount(account.id);
+    }
+    loadData();
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -81,8 +90,12 @@ const AccountDetail = ({navigation, route}) => {
             </View>
             <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
           </View>
-          <Text style={styles.invite} onPress={() => navigation.navigate('InviteDetail')}>
-            邀请好友
+          <Text style={[styles.follow, account.followed && {color: '#BDBDBD'}]} onPress={onFollow}>
+            {account.followed && account.following
+              ? '互相关注'
+              : account.followed
+              ? '已关注'
+              : '关注'}
           </Text>
         </View>
         <View style={styles.settledWrap}>
@@ -182,7 +195,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: '#fff',
   },
-  invite: {
+  follow: {
     width: 70,
     height: 28,
     lineHeight: 28,
@@ -190,7 +203,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     borderRadius: 1,
     backgroundColor: '#fff',
-    marginTop: 5,
+    marginTop: 10,
     marginLeft: 'auto',
     fontWeight: '500',
   },

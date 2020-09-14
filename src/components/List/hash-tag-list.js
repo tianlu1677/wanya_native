@@ -33,6 +33,7 @@ const HashtagList = props => {
     return (
       <TouchableOpacity style={styles.hashtagWrap} key={index} onPress={() => onPress(item, index)}>
         <Text style={styles.hashtagName}>#{item.name}</Text>
+        {item.id === 0 && <Text style={styles.newHashTag}>新话题</Text>}
       </TouchableOpacity>
     );
   };
@@ -45,10 +46,14 @@ const HashtagList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.hashtags;
+    const data = params.name ? res.data.items : res.data.hashtags;
     setLoading(false);
     setHeaders(res.headers);
-    setListData(page === 1 ? data : [...listData, ...data]);
+    if (params.name && data.length === 0) {
+      setListData([{name: params.name, id: 0}]);
+    } else {
+      setListData(page === 1 ? data : [...listData, ...data]);
+    }
   };
 
   useEffect(() => {
@@ -75,6 +80,8 @@ const HashtagList = props => {
 const styles = StyleSheet.create({
   hashtagWrap: {
     backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   hashtagName: {
     height: 45,
@@ -84,6 +91,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     letterSpacing: 1,
+  },
+  newHashTag: {
+    marginLeft: 'auto',
+    marginRight: 15,
+    fontSize: 13,
+    color: '#bdbdbd',
   },
 });
 
