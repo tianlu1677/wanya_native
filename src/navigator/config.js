@@ -75,6 +75,7 @@ import WebView from '@/pages/webview/webview';
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择承受
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入
+import SharePage from '@/pages/share'; //分享
 
 export const tabRouters = [
   {
@@ -383,5 +384,10 @@ export const routers = [
     name: 'ChooseCity',
     component: ChooseCity,
     options: {title: '选择城市'},
+  },
+  {
+    name: 'SharePage',
+    component: SharePage,
+    options: {title: '分享'},
   },
 ];

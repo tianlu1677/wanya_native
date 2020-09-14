@@ -5,7 +5,7 @@ import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
-import { STATUS_BAR_HEIGHT} from "@/utils/navbar"
+import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingTop: STATUS_BAR_HEIGHT,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   message: {
     position: 'absolute',
