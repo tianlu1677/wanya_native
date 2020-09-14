@@ -8,6 +8,8 @@ import * as WeChat from 'react-native-wechat-lib';
 import {appWechatSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 
+import { BOTTOM_HEIGHT } from "@/utils/navbar"
+
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
   // const [isValidCode, setIsValidCode] = useState(false);
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 165,
+    bottom: 165 + BOTTOM_HEIGHT,
     left: 0,
     right: 0,
   },
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     position: 'absolute',
-    bottom: 18,
+    bottom: 18 + BOTTOM_HEIGHT,
     left: 0,
     right: 0,
     fontSize: 12,
