@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 129,
+    bottom: 165,
     left: 0,
     right: 0,
   },
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
     letterSpacing: 1,
+    fontSize: 14
   },
 
   privateText: {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     position: 'absolute',
-    bottom: 30,
+    bottom: 18,
     left: 0,
     right: 0,
     fontSize: 12,
