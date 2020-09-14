@@ -16,7 +16,7 @@ const IconAt = ({ size, color, ...rest }) => {
 };
 
 IconAt.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconAt) : IconAt;

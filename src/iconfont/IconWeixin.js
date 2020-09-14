@@ -16,7 +16,7 @@ const IconWeixin = ({ size, color, ...rest }) => {
 };
 
 IconWeixin.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconWeixin) : IconWeixin;

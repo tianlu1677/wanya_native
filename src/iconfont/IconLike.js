@@ -16,7 +16,7 @@ const IconLike = ({ size, color, ...rest }) => {
 };
 
 IconLike.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconLike) : IconLike;

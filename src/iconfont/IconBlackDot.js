@@ -16,7 +16,7 @@ const IconBlackDot = ({ size, color, ...rest }) => {
 };
 
 IconBlackDot.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconBlackDot) : IconBlackDot;

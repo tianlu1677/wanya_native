@@ -48,11 +48,11 @@ function HomeTabList() {
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let icon_list = {
-            'focused_Recommend': 'home',
-            'unfocused_Recommend': 'home-outline',
-            'unfocused_MineDetail': 'person-outline',
-            'focused_MineDetail': 'person',
-            'unfocused_GoNewTopic': 'add-circle',
+            'focused_Recommend': 'home-recommend',
+            'unfocused_Recommend': 'home-recommend-outline',
+            'unfocused_MineDetail': 'home-mine-outline',
+            'focused_MineDetail': 'home-mine',
+            'unfocused_GoNewTopic': 'home-newtopic',
 
           }
           let iconName = 'search';
@@ -63,7 +63,7 @@ function HomeTabList() {
           }
 
           let icon_name = `${focused ? 'focused' : 'unfocused'}_${route.name}`
-          return <Icon name={icon_list[icon_name]} size={30} color="black" iconStyle={{marginRight: 1}} />
+          return <IconFont name={icon_list[icon_name]} size={24} color="black" />
           // return <IconFont name={iconName} color={focused ? 'black' : 'red'} />;
         },
       })}

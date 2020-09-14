@@ -16,7 +16,7 @@ const IconBlankNode = ({ size, color, ...rest }) => {
 };
 
 IconBlankNode.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconBlankNode) : IconBlankNode;

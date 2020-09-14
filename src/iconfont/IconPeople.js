@@ -20,7 +20,7 @@ const IconPeople = ({ size, color, ...rest }) => {
 };
 
 IconPeople.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconPeople) : IconPeople;

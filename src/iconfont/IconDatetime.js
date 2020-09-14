@@ -20,7 +20,7 @@ const IconDatetime = ({ size, color, ...rest }) => {
 };
 
 IconDatetime.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconDatetime) : IconDatetime;

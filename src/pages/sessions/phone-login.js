@@ -8,6 +8,7 @@ import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
 var md5 = require('md5');
 
 const PhoneLogin = ({navigation, route}) => {
@@ -31,14 +32,16 @@ const PhoneLogin = ({navigation, route}) => {
         borderBottomWidth: 0,
       },
       headerRight: () => (
-        <Button
-          onPress={() => {
-            onVerifyPhoneCode();
-          }}
-          title="确定"
-          style={{fontSize: 14, paddingRight: 17}}
-          color={phoneCode.length === 6 ? 'white' : '#353535'}
-        />
+        <View style={{fontSize: 14, paddingRight: 16}}>
+          <Text
+            onPress={() => {
+              onVerifyPhoneCode();
+            }}
+            style={{fontSize: 14, color: phoneCode.length === 6 ? 'white' : '#353535'}}
+          >
+          确定
+          </Text>
+        </View>
       ),
     });
   }, [navigation, phoneCode]);
@@ -77,7 +80,7 @@ const PhoneLogin = ({navigation, route}) => {
     sendPhoneCode(data).then(res => {
       if (res.status === 'success') {
         console.log('发送成功');
-        setFirstVerify(false)
+        setFirstVerify(false);
       } else {
         Toast.showError('服务器出现了点小问题');
         console.log('failed');
@@ -92,17 +95,14 @@ const PhoneLogin = ({navigation, route}) => {
     const verifyResponse = await verifyPhoneCode(data);
     console.log('verifyResponse', verifyResponse);
     if (verifyResponse.error) {
-
-      Toast.showError(verifyResponse.error, {
-      });
-
+      Toast.showError(verifyResponse.error, {});
     } else {
       Toast.showError('注册成功');
       const accountInfo = await getCurrentAccount({token: token});
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
       } else {
-        await Helper.setData('auth_token', accountInfo.token)
+        await Helper.setData('auth_token', accountInfo.token);
         dispatch(dispatchSetAuthToken(accountInfo.token));
         dispatch(dispatchCurrentAccount());
         navigation.reset({
@@ -124,7 +124,7 @@ const PhoneLogin = ({navigation, route}) => {
               style={{
                 fontSize: 15,
                 fontWeight: '700',
-                marginRight: 15,
+                marginRight: 20,
                 lineHeight: 20,
                 color: 'white',
                 letterSpacing: 1,
@@ -179,8 +179,8 @@ const PhoneLogin = ({navigation, route}) => {
                   downTime > 0
                     ? () => {}
                     : () => {
-                      onSendPhoneCode();
-                    }
+                        onSendPhoneCode();
+                      }
                 }>
                 {verifyText}
               </VerifyCodeText>
@@ -205,8 +205,8 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     color: '#FFFFFF',
     fontWeight: '700',
-    minWidth: 200
-  }
+    minWidth: 200,
+  },
 });
 
 const TitleText = styled(Text)`

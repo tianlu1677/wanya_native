@@ -16,7 +16,7 @@ const IconKecheng3 = ({ size, color, ...rest }) => {
 };
 
 IconKecheng3.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconKecheng3) : IconKecheng3;

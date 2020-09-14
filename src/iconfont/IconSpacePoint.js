@@ -20,7 +20,7 @@ const IconSpacePoint = ({ size, color, ...rest }) => {
 };
 
 IconSpacePoint.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconSpacePoint) : IconSpacePoint;

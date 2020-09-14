@@ -16,7 +16,7 @@ const IconTakephoto = ({ size, color, ...rest }) => {
 };
 
 IconTakephoto.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconTakephoto) : IconTakephoto;

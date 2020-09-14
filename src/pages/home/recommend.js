@@ -48,7 +48,7 @@ const Recommend = props => {
       <TouchableOpacity
         onPress={() => props.navigation.navigate('NotifyIndex')}
         style={styles.message}>
-        <IconFont name="people" size={20} />
+        <IconFont name="notice" size={20} />
       </TouchableOpacity>
     </View>
   );

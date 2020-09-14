@@ -66,10 +66,10 @@ const MineDetail = ({navigation, route}) => {
       <GoBack />
       <View style={styles.setting}>
         <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')}>
-          <IconFont name="baomingcanjia" size={20} style={{marginRight: 25}} color="#fff" />
+          <IconFont name="notice" size={20} style={{marginRight: 25}} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-          <IconFont name="shezhi" size={20} color="#fff" />
+          <IconFont name="settings" size={20} color="#fff" />
         </TouchableOpacity>
       </View>
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>

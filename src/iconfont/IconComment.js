@@ -16,7 +16,7 @@ const IconComment = ({ size, color, ...rest }) => {
 };
 
 IconComment.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconComment) : IconComment;

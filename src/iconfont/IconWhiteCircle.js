@@ -16,7 +16,7 @@ const IconWhiteCircle = ({ size, color, ...rest }) => {
 };
 
 IconWhiteCircle.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconWhiteCircle) : IconWhiteCircle;

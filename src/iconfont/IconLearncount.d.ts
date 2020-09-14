@@ -10,6 +10,6 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-declare const IconFanhui: FunctionComponent<Props>;
+declare const IconLearncount: FunctionComponent<Props>;
 
-export default IconFanhui;
+export default IconLearncount;

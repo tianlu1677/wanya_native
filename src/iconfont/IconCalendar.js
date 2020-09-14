@@ -20,7 +20,7 @@ const IconCalendar = ({ size, color, ...rest }) => {
 };
 
 IconCalendar.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconCalendar) : IconCalendar;

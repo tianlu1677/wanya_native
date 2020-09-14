@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconFanhui = ({ size, color, ...rest }) => {
+const IconArraowLeft = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -15,8 +15,8 @@ const IconFanhui = ({ size, color, ...rest }) => {
   );
 };
 
-IconFanhui.defaultProps = {
-  size: 20,
+IconArraowLeft.defaultProps = {
+  size: 16,
 };
 
-export default React.memo ? React.memo(IconFanhui) : IconFanhui;
+export default React.memo ? React.memo(IconArraowLeft) : IconArraowLeft;

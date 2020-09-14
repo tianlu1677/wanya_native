@@ -16,7 +16,7 @@ const IconUnreadMessages = ({ size, color, ...rest }) => {
 };
 
 IconUnreadMessages.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconUnreadMessages) : IconUnreadMessages;

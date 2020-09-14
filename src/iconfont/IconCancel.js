@@ -20,7 +20,7 @@ const IconCancel = ({ size, color, ...rest }) => {
 };
 
 IconCancel.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconCancel) : IconCancel;

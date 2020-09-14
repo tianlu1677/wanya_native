@@ -10,6 +10,6 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-declare const IconJiemian2: FunctionComponent<Props>;
+declare const IconHomeRecommendOutline: FunctionComponent<Props>;
 
-export default IconJiemian2;
+export default IconHomeRecommendOutline;

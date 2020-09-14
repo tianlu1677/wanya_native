@@ -16,7 +16,7 @@ const IconChoseSuccess = ({ size, color, ...rest }) => {
 };
 
 IconChoseSuccess.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconChoseSuccess) : IconChoseSuccess;

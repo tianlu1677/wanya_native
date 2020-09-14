@@ -16,7 +16,7 @@ const IconPraiseSolid = ({ size, color, ...rest }) => {
 };
 
 IconPraiseSolid.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconPraiseSolid) : IconPraiseSolid;

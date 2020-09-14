@@ -16,7 +16,7 @@ const IconQuanzi2 = ({ size, color, ...rest }) => {
 };
 
 IconQuanzi2.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconQuanzi2) : IconQuanzi2;

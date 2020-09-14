@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconJiemian = ({ size, color, ...rest }) => {
+const IconCoursegonewtopic = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -23,8 +23,8 @@ const IconJiemian = ({ size, color, ...rest }) => {
   );
 };
 
-IconJiemian.defaultProps = {
-  size: 20,
+IconCoursegonewtopic.defaultProps = {
+  size: 16,
 };
 
-export default React.memo ? React.memo(IconJiemian) : IconJiemian;
+export default React.memo ? React.memo(IconCoursegonewtopic) : IconCoursegonewtopic;

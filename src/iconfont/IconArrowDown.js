@@ -28,7 +28,7 @@ const IconArrowDown = ({ size, color, ...rest }) => {
 };
 
 IconArrowDown.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconArrowDown) : IconArrowDown;

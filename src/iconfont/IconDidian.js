@@ -20,7 +20,7 @@ const IconDidian = ({ size, color, ...rest }) => {
 };
 
 IconDidian.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconDidian) : IconDidian;

@@ -16,7 +16,7 @@ const IconHashtag = ({ size, color, ...rest }) => {
 };
 
 IconHashtag.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconHashtag) : IconHashtag;

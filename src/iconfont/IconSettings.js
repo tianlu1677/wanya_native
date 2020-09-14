@@ -4,23 +4,23 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconShezhi = ({ size, color, ...rest }) => {
+const IconSettings = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1120 1024" width={size} height={size} {...rest}>
       <Path
         d="M792.64 1018.08H329.824a91.776 91.776 0 0 1-79.456-46.688L19.008 563.52a95.136 95.136 0 0 1 0-93.408l231.36-407.872a91.776 91.776 0 0 1 79.488-46.72H792.64a91.744 91.744 0 0 1 79.488 46.72l231.36 407.872c16.352 28.896 16.352 64.48 0 93.408l-231.36 407.904a91.84 91.84 0 0 1-79.488 46.688zM329.824 92.768a15.872 15.872 0 0 0-13.728 8.096L84.8 508.704a16.48 16.48 0 0 0 0 16.16l231.36 407.872a15.84 15.84 0 0 0 13.76 8.064h462.72c5.664 0 10.88-3.104 13.76-8.096l231.36-407.84a16.48 16.48 0 0 0 0-16.16L806.304 100.864a15.84 15.84 0 0 0-13.728-8.096H329.92z"
-        fill={getIconColor(color, 0, '#FFFFFF')}
+        fill={getIconColor(color, 0, '#2c2c2c')}
       />
       <Path
         d="M573.536 712.544c-77.792 0-147.936-47.68-177.696-120.832a198.304 198.304 0 0 1 41.696-213.344 189.888 189.888 0 0 1 209.6-42.432c71.872 30.304 118.72 101.696 118.72 180.864-0.128 108.032-86.176 195.616-192.32 195.744z m0-314.24c-64.288 0-116.384 53.056-116.416 118.464 0 65.44 52.128 118.464 116.384 118.464 64.32 0 116.416-53.024 116.416-118.432-0.064-65.408-52.16-118.4-116.384-118.464z"
-        fill={getIconColor(color, 1, '#FFFFFF')}
+        fill={getIconColor(color, 1, '#2c2c2c')}
       />
     </Svg>
   );
 };
 
-IconShezhi.defaultProps = {
-  size: 20,
+IconSettings.defaultProps = {
+  size: 16,
 };
 
-export default React.memo ? React.memo(IconShezhi) : IconShezhi;
+export default React.memo ? React.memo(IconSettings) : IconSettings;

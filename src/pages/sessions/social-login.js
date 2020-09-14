@@ -112,8 +112,9 @@ const SocialLogin = ({navigation, route}) => {
           </Text>{' '}
           <Text
             onPress={() => {
-              navigation.navigate('AdminPhoneLogin');
+              // navigation.navigate('AdminPhoneLogin');
               // navigation.navigate('InviteLogin');
+              navigation.navigate('PhoneLogin');
             }}>
 
             --

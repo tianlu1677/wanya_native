@@ -20,7 +20,7 @@ const IconTianjia1 = ({ size, color, ...rest }) => {
 };
 
 IconTianjia1.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconTianjia1) : IconTianjia1;

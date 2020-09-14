@@ -16,7 +16,7 @@ const IconSearch = ({ size, color, ...rest }) => {
 };
 
 IconSearch.defaultProps = {
-  size: 20,
+  size: 16,
 };
 
 export default React.memo ? React.memo(IconSearch) : IconSearch;
