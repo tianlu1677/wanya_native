@@ -14,9 +14,6 @@ const AddSpace = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const home = useSelector(state => state.home);
-
-  console.log(home);
-
   const [searchKey, setSearchKey] = useState(null);
 
   const onPress = item => {
@@ -32,7 +29,11 @@ const AddSpace = props => {
   const loadCity = async () => {
     const {latitude, longitude} = home.location;
     const res = await getLocation({latitude, longitude});
-    dispatch({type: action.CHOOSE_CITY, value: res.data.city});
+    const {city} = res.data;
+    dispatch({
+      type: action.GET_LOCATION,
+      value: {...home.location, positionCity: city, chooseCity: city},
+    });
   };
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const AddSpace = props => {
           latitude: home.location.latitude,
           longitude: home.location.longitude,
           name_cont: searchKey,
-          city: home.chooseCity,
+          city: home.location.chooseCity,
         },
       }}
       onPress={onPress}
@@ -63,10 +64,16 @@ const AddSpace = props => {
             onCancel={() => props.navigation.goBack()}
           />
           <TouchableOpacity style={pstyles.proWrapper} onPress={goChooseCity}>
-            <Text style={pstyles.proTitle}>{searchKey ? '搜索到的场地' : '热门场地'}</Text>
+            <Text style={pstyles.proTitle}>
+              {searchKey
+                ? '搜索到的场地'
+                : home.location.positionCity === home.location.chooseCity
+                ? '附近场地'
+                : '热门场地'}
+            </Text>
             <View style={pstyles.proCity}>
               <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
-              <Text style={pstyles.proCityText}>{home.chooseCity ? home.chooseCity : '全国'}</Text>
+              <Text style={pstyles.proCityText}>{home.location.chooseCity || '全国'}</Text>
               <IconFont name="fanhui2" size={6} style={pstyles.proDownIcon} />
             </View>
           </TouchableOpacity>
