@@ -1,12 +1,32 @@
 import React, {Component} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {StyleSheet, Modal, Text} from 'react-native';
+import {StyleSheet, Modal, Text, Pressable} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {dispatchPreviewImage} from '@/redux/actions';
+
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ImagePreview = () => {
   const dispatch = useDispatch();
   const previewImageData = useSelector(state => state.home.previewImageData);
+
+  const CloseBtn = () => {
+    return (
+      <Pressable
+        style={{
+          position: 'absolute',
+          paddingTop: 35,
+          paddingLeft: 17,
+          paddingRight: 35,
+          paddingBottom: 35,
+        }}
+        onPress={() => {
+          dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
+        }}>
+        <Icon name={'close'} size={24} color={'white'} />
+      </Pressable>
+    );
+  };
 
   return (
     <Modal visible={previewImageData.visible} transparent={true}>
@@ -18,9 +38,16 @@ const ImagePreview = () => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
         }}
         // renderImage={props => <Image {...props} />}
+        renderHeader={props => <CloseBtn />}
         index={previewImageData.index}
         imageUrls={previewImageData.images}
         enableSwipeDown
+        useNativeDriver
+        pageAnimateTime={10}
+        swipeDownThreshold={10}
+        onClick={() => {
+          dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
+        }}
       />
     </Modal>
   );

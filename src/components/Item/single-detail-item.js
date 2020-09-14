@@ -20,9 +20,9 @@ export const PublishAccount = props => {
 
   const onFollow = async () => {
     if (followed) {
-      await unfollowAccount(data.account.id);
+      await unfollowAccount(data.account_id);
     } else {
-      await followAccount(data.account.id);
+      await followAccount(data.account_id);
     }
     setFollowed(!followed);
   };
@@ -34,9 +34,11 @@ export const PublishAccount = props => {
         <Text style={hstyles.nameText}>{data.account.nickname}</Text>
         <Text style={hstyles.timeText}>{data.published_at_text}</Text>
       </TouchableOpacity>
-      <Text style={[hstyles.joinBtn, {color: followed ? '#bdbdbd' : '#000'}]} onPress={onFollow}>
-        {followed ? '已关注' : '关注'}
-      </Text>
+      {props.showFollow && (
+        <Text style={[hstyles.joinBtn, {color: followed ? '#bdbdbd' : '#000'}]} onPress={onFollow}>
+          {followed ? '已关注' : '关注'}
+        </Text>
+      )}
     </View>
   );
 };

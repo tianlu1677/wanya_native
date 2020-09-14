@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -85,14 +85,14 @@ export const Bottom = props => {
 
   return (
     <View style={bstyles.botView}>
-      <TouchableOpacity style={bstyles.botCon} onPress={onPraise}>
+      <Pressable style={bstyles.botCon} onPress={onPraise}>
         <IconFont name={'like'} color={praise ? '#000' : '#bdbdbd'} />
-        <Text style={bstyles.botNum}>{data.praises_count || ''}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={bstyles.botCon} onPress={goDetail}>
+        <Text style={{...bstyles.botNum, color: (praise ? '#000' : '#bdbdbd')}}>{data.praises_count || ''}</Text>
+      </Pressable>
+      <Pressable style={bstyles.botCon} onPress={goDetail}>
         <IconFont name="comment" color={'#bdbdbd'} />
         <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
-      </TouchableOpacity>
+      </Pressable>
       <IconFont name="fenxiang" style={{marginLeft: 'auto'}} />
     </View>
   );

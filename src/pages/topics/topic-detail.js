@@ -7,9 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-controls';
+
 import {dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
@@ -20,9 +22,12 @@ import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/s
 import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {GoBack} from '@/components/NodeComponents';
+import { NAV_BAR_HEIGHT } from "@/utils/navbar";
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const currentAccount = useSelector(state => state.account.currentAccount);
+
   const [topicId] = useState(route.params.topicId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -85,6 +90,8 @@ const TopicDetail = ({navigation, route}) => {
     };
 
     return (
+      <View>
+        <GoBack />
       <Swiper style={{height: 300}} showsPagination={detail.medias.length > 0}>
         {medias.map((media, index) => (
           <TouchableOpacity onPress={() => onPreview(index)} key={media}>
@@ -92,17 +99,22 @@ const TopicDetail = ({navigation, route}) => {
           </TouchableOpacity>
         ))}
       </Swiper>
+      </View>
     );
   };
 
   const renderVideo = () => {
     return (
-      <Video
+      <VideoPlayer
         style={{height: 300}}
         source={{uri: detail.video_content_m3u8}}
         posterResizeMode={'center'}
-        controls
+        navigator={navigation}
+        controlTimeout={3000}
+        controls={false}
         reportBandwidth
+        showOnStart={false}
+        tapAnywhereToPause={true}
         repeat
       />
     );
@@ -128,11 +140,16 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            <GoBack />
             {detail.content_style === 'img' && renderImg()}
             {detail.content_style === 'video' && renderVideo()}
+
+            {
+              detail.content_style === 'text' && <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 6}}>
+                <GoBack color={'black'} />
+              </View>
+            }
             <View style={{backgroundColor: '#fff'}}>
-              <PublishAccount data={detail} />
+              <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id } />
               <View style={{paddingLeft: 16, paddingRight: 16, marginBottom: 16, marginTop: 16}}>
                 <BaseTopicContent data={detail} />
               </View>

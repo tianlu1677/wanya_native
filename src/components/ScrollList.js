@@ -111,7 +111,7 @@ const ScrollList = props => {
   return (
     <FlatList
       ref={refs => {
-        console.log(refs);
+        // console.log(refs);
       }}
       data={props.data}
       onLayout={e => setHeight(e.nativeEvent.layout.height)}

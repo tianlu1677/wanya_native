@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -54,20 +54,20 @@ export const TopicImageCenterContent = props => {
   };
 
   return imgStyle === 'single' ? (
-    <TouchableOpacity onPress={() => onPreview()}>
-      <Image
+    <Pressable style={{width: imgAttr.width / 2.0}} onPress={() =>{onPreview()}}>
+      <FastImg
         source={{uri: single_cover.cover_url}}
         style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
       />
-    </TouchableOpacity>
+    </Pressable>
   ) : (
-    <ScrollView horizontal={true}>
+    <Pressable horizontal={true}>
       {medias.map((media, index) => (
-        <TouchableOpacity onPress={() => onPreview(index)} key={media}>
+        <Pressable onPress={() => onPreview(index)} key={media}>
           <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
-        </TouchableOpacity>
+        </Pressable>
       ))}
-    </ScrollView>
+    </Pressable>
   );
 };
 
@@ -83,7 +83,7 @@ export const TopicVideoCenterContent = props => {
       {single_cover.link_url && (
         <FastImg
           source={{uri: single_cover.link_url}}
-          style={{width: videoAttr.width / 2, height: videoAttr.height / 2}}
+          style={{ width: videoAttr.width / 2, height: videoAttr.height / 2, backgroundColor: 'gray'}}
         />
       )}
       <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
@@ -112,11 +112,12 @@ const BaseTopic = props => {
   };
 
   const goTopicDetail = () => {
+    console.log('goTopicDetail')
     navigation.navigate('TopicDetail', {topicId: data.id});
   };
 
   return (
-    <TouchableOpacity style={styles.postSlide} onPress={goTopicDetail}>
+    <Pressable style={styles.postSlide} onPress={() => {goTopicDetail()}}>
       <Header data={data} type="topic" />
       <View style={{marginTop: 13, marginBottom: 13}}>
         {data.content_style === 'img' && <TopicImageCenterContent data={data} />}
@@ -124,13 +125,13 @@ const BaseTopic = props => {
       </View>
       <BaseTopicContent data={data} />
       {data.space && (
-        <TouchableOpacity style={styles.spaceWrapper} onPress={goSpaceDetail}>
+        <Pressable style={styles.spaceWrapper} onPress={goSpaceDetail}>
           <IconFont name="space-point" size={16} color={'#45ea6a'} />
           <Text style={styles.spaceText}>{data.space.name}</Text>
-        </TouchableOpacity>
+        </Pressable>
       )}
       <Bottom data={data} type="topic" />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

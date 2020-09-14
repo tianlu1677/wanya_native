@@ -4,11 +4,14 @@ import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
+import { useSelector } from 'react-redux';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 
 const ArticleDetail = ({navigation, route}) => {
+  const currentAccount = useSelector(state => state.account.currentAccount);
+
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -58,7 +61,7 @@ const ArticleDetail = ({navigation, route}) => {
         ListHeaderComponent={
           <>
             <Text style={styles.title}>{detail.title}</Text>
-            <PublishAccount data={detail} />
+            <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
             <RichHtml
               style={{backgroundColor: 'pink', paddingTop: 20}}
               content={
