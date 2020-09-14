@@ -283,7 +283,8 @@ const ShareCardView = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 110px;
+  padding-left: 98px;
+  padding-right: 88px;
 `;
 
 const ShareText = styled(Text)`
