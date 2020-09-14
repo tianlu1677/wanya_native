@@ -148,7 +148,7 @@ const InviteDetail = ({navigation, route}) => {
         <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
       </View>
       <Button
-        title="微信分享"
+        title="微信邀请"
         titleStyle={{fontSize: 16, fontWeight: '500'}}
         buttonStyle={{height: 50, backgroundColor: 'black', borderRadius: 0}}
         onPress={() => {
@@ -208,7 +208,7 @@ const CardView = styled(LinearGradient)`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 21px 25px 31px 25px;
+  margin: 23px 25px 31px 25px;
   padding-top: 20px;
   height: 145px;
   background: black;
@@ -230,17 +230,18 @@ const CardCodeText = styled(Text)`
   font-size: 28px;
   line-height: 28px;
   letter-spacing: 1px;
-  margin-top: 26px;
-  margin-left: 8px;
+  margin-top: 30px;
+  margin-left: 0px;
 `;
 
 const CardCopyText = styled(Text)`
   margin-top: 8px;
+  font-size: 10px;
   color: #bdbdbd;
 `;
 
 const DescView = styled(View)`
-  margin-top: 31px;
+  margin-top: 0px;
   align-items: center;
 `;
 
@@ -248,7 +249,7 @@ const DescText = styled(Text)`
   font-size: 14px;
   font-weight: 400;
   color: rgba(0, 0, 0, 1);
-  line-height: 23px;
+  line-height: 22px;
   letter-spacing: 1px;
 `;
 

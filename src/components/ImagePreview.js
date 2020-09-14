@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet, Modal, Text, Pressable} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {dispatchPreviewImage} from '@/redux/actions';
-
+import IconFont from "@/iconfont"
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const ImagePreview = () => {
@@ -17,12 +17,13 @@ const ImagePreview = () => {
           position: 'absolute',
           paddingTop: 35,
           paddingLeft: 17,
-          paddingRight: 35,
-          paddingBottom: 35,
+          paddingRight: 24,
+          paddingBottom: 24,
         }}
         onPress={() => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
         }}>
+        {/*<IconFont name={"cancel"} size={12} color={"white"}/>*/}
         <Icon name={'close'} size={24} color={'white'} />
       </Pressable>
     );

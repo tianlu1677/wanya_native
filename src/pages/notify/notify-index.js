@@ -34,6 +34,10 @@ class NotifyIndex extends Component {
     this.props.dispatchCurrentAccount();
   }
 
+  componentShow() {
+    this.props.dispatchCurrentAccount();
+  }
+
   goPageMethod = (type = '', event) => {
     const {currentAccount} = this.props;
     if (!currentAccount.id) {
@@ -41,9 +45,17 @@ class NotifyIndex extends Component {
     }
     switch (type) {
       case 'notify_praise':
+        syncAccountInfo({
+          id: currentAccount.id,
+          profile_attributes: {unread_inside_notifies_count: 0},
+        });
         this.props.navigation.navigate('PraiseNotify');
         break;
       case 'notify_comment':
+        syncAccountInfo({
+          id: currentAccount.id,
+          profile_attributes: {unread_comments_notifies_count: 0},
+        });
         this.props.navigation.navigate('CommentNotify');
         break;
       case 'notify_follow':
@@ -54,9 +66,17 @@ class NotifyIndex extends Component {
         this.props.navigation.navigate('FollowNotify', {title: '关注我的人'});
         break;
       case 'notify_system':
+        syncAccountInfo({
+          id: currentAccount.id,
+          profile_attributes: {unread_system_messages_count: 0},
+        });
         this.props.navigation.navigate('SystemNotify');
         break;
       case 'mention_account_notice':
+        syncAccountInfo({
+          id: currentAccount.id,
+          profile_attributes: {unread_mentions_notifies_count: 0},
+        });
         this.props.navigation.navigate('MentionNotify');
         break;
       default:

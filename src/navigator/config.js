@@ -306,7 +306,7 @@ export const routers = [
   {
     name: 'InviteDetail',
     component: InviteDetail,
-    options: {title: '我的邀请'},
+    options: {title: '邀请码'},
   },
   {
     name: 'LabIndex',
