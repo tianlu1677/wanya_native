@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList, ActivityIndicator, StyleSheet, Image} from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
@@ -21,7 +21,6 @@ const loadState = {
 };
 
 const ScrollList = props => {
-  const ref = useRef();
   const [height, setHeight] = useState(null);
   const [enableLoadMore, setEnableLoadMore] = useState(true);
   const [enableRefresh, setEnableRefresh] = useState(true);
@@ -110,9 +109,7 @@ const ScrollList = props => {
 
   return (
     <FlatList
-      ref={refs => {
-        // console.log(refs);
-      }}
+      ref={props.getRref}
       data={props.data}
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
       renderItem={props.renderItem}

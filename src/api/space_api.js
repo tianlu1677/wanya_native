@@ -41,6 +41,24 @@ export const getLocation = async params => {
   return res;
 };
 
+// 城市名称
+export const getCities = async () => {
+  const res = await request({
+    url: '/api/v1/general/cities',
+    method: 'GET',
+  });
+  return res;
+};
+
+// export async function getCities(data = {}) {
+//   const res = await request({
+//     url: '/api/v1/general/cities',
+//     method: 'GET',
+//     data,
+//   });
+//   return res.data;
+// }
+
 // //获取位置
 // export async function getLocation(params) {
 //   const res = await request({
@@ -89,14 +107,14 @@ export async function editSpaces(id, data = {}) {
 }
 
 // 城市名称
-export async function getCities(data = {}) {
-  const res = await request({
-    url: '/api/v1/general/cities',
-    method: 'GET',
-    data,
-  });
-  return res.data;
-}
+// export async function getCities(data = {}) {
+//   const res = await request({
+//     url: '/api/v1/general/cities',
+//     method: 'GET',
+//     data,
+//   });
+//   return res.data;
+// }
 
 export async function getSpaces(params, paginate) {
   const res = await request({

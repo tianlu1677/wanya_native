@@ -30,8 +30,6 @@ export const MentiosAccountList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    console.log(params);
-
     const data = params.name ? res.data.items : res.data.accounts;
     setLoading(false);
     setHeaders(res.headers);
@@ -78,7 +76,7 @@ export const styles = StyleSheet.create({
   nickname: {
     fontSize: 14,
     marginLeft: 10,
-    lineHeight: 21
+    lineHeight: 21,
   },
   right_text: {
     paddingLeft: 8,
@@ -91,7 +89,7 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 11,
     lineHeight: 20,
-    color: '#BDBDBD'
+    color: '#BDBDBD',
   },
   btn: {
     marginLeft: 'auto',
@@ -135,13 +133,11 @@ export const AccountList = props => {
           <View style={{flexDirection: 'column'}}>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.nickname}>{item.nickname}</Text>
-              {
-                item.right_text && <Text style={styles.right_text}>{item.right_text}</Text>
-              }
+              {item.right_text && <Text style={styles.right_text}>{item.right_text}</Text>}
             </View>
-            {
-              item.created_at_text && <Text style={styles.created_at_text}>{item.created_at_text}</Text>
-            }
+            {item.created_at_text && (
+              <Text style={styles.created_at_text}>{item.created_at_text}</Text>
+            )}
           </View>
 
           <Text
@@ -149,9 +145,7 @@ export const AccountList = props => {
             onPress={() => onFollowed(item, index)}>
             {item.followed && item.following ? '互相关注' : item.followed ? '已关注' : '关注'}
           </Text>
-
         </View>
-
       </TouchableWithoutFeedback>
     );
   };

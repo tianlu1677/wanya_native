@@ -15,6 +15,7 @@ const NewTopic = props => {
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
   const uploadProgress = useSelector(state => state.home.uploadProgress);
+  const location = useSelector(state => state.home.location);
 
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
@@ -28,7 +29,7 @@ const NewTopic = props => {
   };
 
   const getLocation = res => {
-    dispatch({type: action.GET_LOCATION, value: res.position.coords});
+    dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
     navigation.navigate('AddSpace');
   };
 

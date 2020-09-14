@@ -9,7 +9,7 @@ const defaultState = {
   },
   commentTopic: {},
   uploadProgress: '',
-  chooseCity: '',
+  location: {},
 };
 
 export const homeReducer = (state = defaultState, action) => {
