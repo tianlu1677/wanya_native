@@ -1,21 +1,21 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {getUnLoginHotPosts, getRecommendPosts, getRecommendLatestPosts} from '@/api/home_api';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
+import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/api/home_api';
 import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
 
   const RecommendList = () => {
-    return <DoubleList request={{api: getUnLoginHotPosts}} />;
+    return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
   };
 
   const FollowList = () => {
-    return <SingleList request={{api: getRecommendPosts}} />;
+    return <SingleList request={{api: getFollowedPosts}} />;
   };
 
   const LastedList = () => {
