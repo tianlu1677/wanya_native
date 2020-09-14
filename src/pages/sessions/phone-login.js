@@ -123,7 +123,7 @@ const PhoneLogin = ({navigation, route}) => {
             <Text
               style={{
                 fontSize: 15,
-                fontWeight: '700',
+                fontWeight: '600',
                 marginRight: 20,
                 lineHeight: 20,
                 color: 'white',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     letterSpacing: 1,
     color: '#FFFFFF',
-    fontWeight: '700',
+    fontWeight: '600',
     minWidth: 200,
   },
 });
@@ -216,11 +216,11 @@ const TitleText = styled(Text)`
   font-weight: 900;
 `;
 const InputWrapView = styled(View)`
-  padding-top: 57px;
+  padding-top: 38px;
   font-size: 30px;
 `;
 const InputView = styled(View)`
-  margin-top: 24px;
+  margin-top: 20px;
   padding-bottom: 12px;
   flex-direction: row;
   justify-content: flex-start;
@@ -230,6 +230,7 @@ const InputView = styled(View)`
 `;
 
 const VerifyCodeText = styled(Text)`
+  margin-top: 4px;
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 600;
