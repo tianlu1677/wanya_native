@@ -119,17 +119,18 @@ const styles = StyleSheet.create({
     color: '#BDBDBD',
     marginTop: 12,
     lineHeight: 27,
+    height: 27
   },
 });
 
 const TitleText = styled(Text)`
   letter-spacing: 1px;
-  font-size: 27px;
+  font-size: 25px;
   color: white;
-  font-weight: 700;
+  font-weight: 900;
 `;
 const InputWrapView = styled(View)`
-  padding-top: 57px;
+  padding-top: 58px;
   font-size: 30px;
 `;
 export default InviteLogin;
