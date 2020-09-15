@@ -12,7 +12,7 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import GoPage from '@/utils/go_page'
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import { NAVIGATION_BAR_HEIGHT } from '@/utils/navbar'
+import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 
 const MineDetail = ({navigation, route}) => {
   const id = useSelector(state => state.account.currentAccount.id);
@@ -143,6 +143,7 @@ const MineDetail = ({navigation, route}) => {
       </ImageBackground>
       <TabViewList
         currentKey={currentKey}
+        size="small"
         tabData={[
           {
             key: 'publish',

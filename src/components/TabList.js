@@ -9,6 +9,8 @@ const TabList = props => {
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
   const [layoutList, setLayoutList] = useState([]);
+  const [size] = useState(props.size || 'middle');
+  const [bottomLine] = useState(props.bottomLine ? true : false);
 
   const scrollRef = useRef(null);
 
@@ -57,7 +59,12 @@ const TabList = props => {
   }, [contentWidth]);
 
   return (
-    <View style={[tabBarStyle.tab, props.bottomLine && tabBarStyle.bottomLine]}>
+    <View
+      style={[
+        tabBarStyle.tab,
+        tabBarStyle[`tab${size}`],
+        bottomLine ? tabBarStyle.bottomLine : null,
+      ]}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator
@@ -75,6 +82,7 @@ const TabList = props => {
                 <Text
                   style={[
                     tabBarStyle.tabItemText,
+                    tabBarStyle[`tabItemText${size}`],
                     currentIndex === index && tabBarStyle.textActive,
                   ]}>
                   {item.title}
@@ -82,6 +90,7 @@ const TabList = props => {
                 <View
                   style={[
                     tabBarStyle.tabItemLine,
+                    tabBarStyle[`tabItemLine${size}`],
                     currentIndex === index && tabBarStyle.lineActive,
                   ]}
                 />
@@ -95,11 +104,17 @@ const TabList = props => {
 
 const tabBarStyle = StyleSheet.create({
   tab: {
-    backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
+    backgroundColor: '#fff',
+    // marginTop: 40,
+  },
+  tabmiddle: {
+    height: 45,
+  },
+  tabsmall: {
+    height: 45,
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
@@ -107,26 +122,43 @@ const tabBarStyle = StyleSheet.create({
   },
   tabItem: {
     paddingHorizontal: 10,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   tabItemText: {
-    fontSize: 15,
+    lineHeight: 20,
+    height: 20,
     color: '#7F7F81',
     fontWeight: '500',
   },
-  tabItemLine: {
-    width: 22,
-    height: 2,
-    backgroundColor: 'transparent',
-    marginTop: 10,
+  tabItemTextmiddle: {
+    fontSize: 15,
+  },
+  tabItemTextsmall: {
+    fontSize: 14,
   },
   textActive: {
-    fontSize: 18,
     color: '#000',
+  },
+  textActivemiddle: {
+    fontSize: 18,
+  },
+  textActivesmall: {
+    fontSize: 14,
   },
   lineActive: {
     backgroundColor: '#000',
+  },
+  tabItemLine: {
+    backgroundColor: 'transparent',
+    marginTop: 5,
+  },
+  tabItemLinemiddle: {
+    width: 22,
+    height: 3,
+  },
+  tabItemLinesmall: {
+    width: 15,
+    height: 3,
   },
 });
 
