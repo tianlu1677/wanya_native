@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, Image, Pressable, Button} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import styled from 'styled-components/native';
 import {BadgeMessage} from '@/components/NodeComponents';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {dispatchCurrentAccount} from '@/redux/actions';
 
@@ -15,31 +15,11 @@ import {
   MineMentionNoticeUserImg,
 } from '@/utils/default-image';
 
-@connect(
-  state => ({currentAccount: state.account.currentAccount, auth_token: state.login.auth_token}),
-  {
-    dispatchCurrentAccount,
-  }
-)
-class NotifyIndex extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-    };
-    this.currentAccountId = '';
-  }
+const NotifyIndex = ({navigation}) => {
+  const currentAccount = useSelector(state => state.account.currentAccount);
 
-  componentDidMount() {
-    this.props.dispatchCurrentAccount();
-  }
+  const goPageMethod = (type = '', event) => {
 
-  componentShow() {
-    this.props.dispatchCurrentAccount();
-  }
-
-  goPageMethod = (type = '', event) => {
-    const {currentAccount} = this.props;
     if (!currentAccount.id) {
       return;
     }
@@ -47,44 +27,44 @@ class NotifyIndex extends Component {
       case 'notify_praise':
         syncAccountInfo({
           id: currentAccount.id,
-          profile_attributes: {unread_inside_notifies_count: 0},
+          profile_attributes: {unread_insite_notifies_count: 0},
         });
-        this.props.navigation.navigate('PraiseNotify');
+        navigation.navigate('PraiseNotify');
         break;
       case 'notify_comment':
         syncAccountInfo({
           id: currentAccount.id,
           profile_attributes: {unread_comments_notifies_count: 0},
         });
-        this.props.navigation.navigate('CommentNotify');
+        navigation.navigate('CommentNotify');
         break;
       case 'notify_follow':
         syncAccountInfo({
           id: currentAccount.id,
           profile_attributes: {unread_follow_messages_count: 0},
         });
-        this.props.navigation.navigate('FollowNotify', {title: '关注我的人'});
+        navigation.navigate('FollowNotify', {title: '关注我的人'});
         break;
       case 'notify_system':
         syncAccountInfo({
           id: currentAccount.id,
           profile_attributes: {unread_system_messages_count: 0},
         });
-        this.props.navigation.navigate('SystemNotify');
+        navigation.navigate('SystemNotify');
         break;
       case 'mention_account_notice':
         syncAccountInfo({
           id: currentAccount.id,
           profile_attributes: {unread_mentions_notifies_count: 0},
         });
-        this.props.navigation.navigate('MentionNotify');
+        navigation.navigate('MentionNotify');
         break;
       default:
         console.log('default');
     }
   };
 
-  unreadMessageCount = message_count => {
+  const unreadMessageCount = message_count => {
     if (message_count <= 0) {
       return '0';
     } else if (message_count > 99) {
@@ -94,143 +74,139 @@ class NotifyIndex extends Component {
     }
   };
 
-  render() {
-    const {currentAccount} = this.props;
-    // console.log('xx');
-    const unread_inside_notifies_count = currentAccount.unread_insite_notifies_count;
-    const unread_comments_notifies_count = currentAccount.unread_comments_notifies_count;
-    const unread_follow_messages_count = currentAccount.unread_follow_messages_count;
-    const unread_system_messages_count = currentAccount.unread_system_messages_count;
-    const unread_mentions_notifies_count = currentAccount.unread_system_messages_count;
+  const unread_inside_notifies_count = currentAccount.unread_insite_notifies_count;
+  const unread_comments_notifies_count = currentAccount.unread_comments_notifies_count;
+  const unread_follow_messages_count = currentAccount.unread_follow_messages_count;
+  const unread_system_messages_count = currentAccount.unread_system_messages_count;
+  const unread_mentions_notifies_count = currentAccount.unread_system_messages_count;
 
-    return (
-      <SafeAreaPlus>
-        <WrapView>
-          <ItemView onPress={this.goPageMethod.bind(this, 'notify_praise')}>
-            <CoverWrapView>
-              <Image source={{uri: PraiseNoticeImg}} style={{width: 45, height: 45}} />
-              {unread_inside_notifies_count > 0 && (
+  return (
+    <SafeAreaPlus>
+      <WrapView>
+        <ItemView onPress={goPageMethod.bind(this, 'notify_praise')}>
+          <CoverWrapView>
+            <Image source={{uri: PraiseNoticeImg}} style={{width: 45, height: 45}} />
+            {unread_inside_notifies_count > 0 && (
+              <BadgeMessage
+                value={unreadMessageCount(unread_inside_notifies_count)}
+                status={'error'}
+                containerStyle={styles.badgeContainer}
+              />
+            )}
+          </CoverWrapView>
+
+          <NotifyContentView>
+            <NotifyContentTitle>赞与收藏</NotifyContentTitle>
+            <NotifyContentDesc>
+              🤘
+              {unread_inside_notifies_count > 0
+                ? `有${unread_inside_notifies_count}人赞了你`
+                : '查看赞与收藏'}
+            </NotifyContentDesc>
+          </NotifyContentView>
+        </ItemView>
+
+        <ItemView onPress={goPageMethod.bind(this, 'notify_comment')}>
+          <CoverWrapView>
+            <Image source={{uri: CommentNoticeImg}} style={{width: 45, height: 45}} />
+            {unread_comments_notifies_count > 0 && (
+              <BadgeMessage
+                value={unreadMessageCount(unread_comments_notifies_count)}
+                status={'error'}
+                containerStyle={styles.badgeContainer}
+              />
+            )}
+          </CoverWrapView>
+
+          <NotifyContentView>
+            <NotifyContentTitle>评论及回复</NotifyContentTitle>
+            <NotifyContentDesc>
+              🤝
+              {unread_comments_notifies_count > 0
+                ? `有${unread_comments_notifies_count}人评论了你`
+                : '查看评论及回复'}{' '}
+            </NotifyContentDesc>
+          </NotifyContentView>
+        </ItemView>
+
+        <ItemView onPress={goPageMethod.bind(this, 'mention_account_notice')}>
+          <CoverWrapView>
+            <Image source={{uri: MineMentionNoticeUserImg}} style={{width: 45, height: 45}} />
+            {unread_mentions_notifies_count > 0 && (
+              <BadgeMessage
+                value={unreadMessageCount(unread_mentions_notifies_count)}
+                status={'error'}
+                containerStyle={styles.badgeContainer}
+              />
+            )}
+          </CoverWrapView>
+
+          <NotifyContentView>
+            <NotifyContentTitle>@我的</NotifyContentTitle>
+            <NotifyContentDesc>
+              🤞
+              {unread_mentions_notifies_count > 0
+                ? `有${unread_mentions_notifies_count}人@了你`
+                : '查看@我的消息'}{' '}
+            </NotifyContentDesc>
+          </NotifyContentView>
+        </ItemView>
+
+        <ItemView onPress={goPageMethod.bind(this, 'notify_follow')}>
+          <CoverWrapView>
+            <Image source={{uri: FollowNoticeImg}} style={{width: 45, height: 45}} />
+            {unread_follow_messages_count > 0 && (
+              <BadgeMessage
+                value={unreadMessageCount(unread_follow_messages_count)}
+                status={'error'}
+                containerStyle={styles.badgeContainer}
+              />
+            )}
+          </CoverWrapView>
+
+          <NotifyContentView>
+            <NotifyContentTitle>新增粉丝</NotifyContentTitle>
+            <NotifyContentDesc>
+              🤟
+              {unread_follow_messages_count > 0
+                ? `有${unread_follow_messages_count}人关注了你`
+                : '查看新增粉丝'}{' '}
+            </NotifyContentDesc>
+          </NotifyContentView>
+        </ItemView>
+
+        <ItemView onPress={goPageMethod.bind(this, 'notify_system')}>
+          <CoverWrapView>
+            <View>
+              <Image
+                source={{uri: SystemNoticeImg}}
+                style={{width: 45, height: 45, borderRadius: 22.5}}
+              />
+              {unread_system_messages_count > 0 && (
                 <BadgeMessage
-                  value={this.unreadMessageCount(unread_inside_notifies_count)}
+                  value={unreadMessageCount(unread_system_messages_count)}
                   status={'error'}
                   containerStyle={styles.badgeContainer}
                 />
               )}
-            </CoverWrapView>
+            </View>
+          </CoverWrapView>
 
-            <NotifyContentView>
-              <NotifyContentTitle>赞与收藏</NotifyContentTitle>
-              <NotifyContentDesc>
-                🤘
-                {unread_inside_notifies_count > 0
-                  ? `有${unread_inside_notifies_count}人赞了你`
-                  : '查看赞与收藏'}
-              </NotifyContentDesc>
-            </NotifyContentView>
-          </ItemView>
-
-          <ItemView onPress={this.goPageMethod.bind(this, 'notify_comment')}>
-            <CoverWrapView>
-              <Image source={{uri: CommentNoticeImg}} style={{width: 45, height: 45}} />
-              {unread_comments_notifies_count > 0 && (
-                <BadgeMessage
-                  value={this.unreadMessageCount(unread_comments_notifies_count)}
-                  status={'error'}
-                  containerStyle={styles.badgeContainer}
-                />
-              )}
-            </CoverWrapView>
-
-            <NotifyContentView>
-              <NotifyContentTitle>评论及回复</NotifyContentTitle>
-              <NotifyContentDesc>
-                🤝
-                {unread_comments_notifies_count > 0
-                  ? `有${unread_comments_notifies_count}人评论了你`
-                  : '查看评论及回复'}{' '}
-              </NotifyContentDesc>
-            </NotifyContentView>
-          </ItemView>
-
-          <ItemView onPress={this.goPageMethod.bind(this, 'mention_account_notice')}>
-            <CoverWrapView>
-              <Image source={{uri: MineMentionNoticeUserImg}} style={{width: 45, height: 45}} />
-              {unread_mentions_notifies_count > 0 && (
-                <BadgeMessage
-                  value={this.unreadMessageCount(unread_mentions_notifies_count)}
-                  status={'error'}
-                  containerStyle={styles.badgeContainer}
-                />
-              )}
-            </CoverWrapView>
-
-            <NotifyContentView>
-              <NotifyContentTitle>@我的</NotifyContentTitle>
-              <NotifyContentDesc>
-                🤞
-                {unread_mentions_notifies_count > 0
-                  ? `有${unread_mentions_notifies_count}人@了你`
-                  : '查看@我的消息'}{' '}
-              </NotifyContentDesc>
-            </NotifyContentView>
-          </ItemView>
-
-          <ItemView onPress={this.goPageMethod.bind(this, 'notify_follow')}>
-            <CoverWrapView>
-              <Image source={{uri: FollowNoticeImg}} style={{width: 45, height: 45}} />
-              {unread_follow_messages_count > 0 && (
-                <BadgeMessage
-                  value={this.unreadMessageCount(unread_follow_messages_count)}
-                  status={'error'}
-                  containerStyle={styles.badgeContainer}
-                />
-              )}
-            </CoverWrapView>
-
-            <NotifyContentView>
-              <NotifyContentTitle>新增粉丝</NotifyContentTitle>
-              <NotifyContentDesc>
-                🤟
-                {unread_follow_messages_count > 0
-                  ? `有${unread_follow_messages_count}人关注了你`
-                  : '查看新增粉丝'}{' '}
-              </NotifyContentDesc>
-            </NotifyContentView>
-          </ItemView>
-
-          <ItemView onPress={this.goPageMethod.bind(this, 'notify_system')}>
-            <CoverWrapView>
-              <View>
-                <Image
-                  source={{uri: SystemNoticeImg}}
-                  style={{width: 45, height: 45, borderRadius: 22.5}}
-                />
-                {unread_system_messages_count > 0 && (
-                  <BadgeMessage
-                    value={this.unreadMessageCount(unread_system_messages_count)}
-                    status={'error'}
-                    containerStyle={styles.badgeContainer}
-                  />
-                )}
-              </View>
-            </CoverWrapView>
-
-            <NotifyContentView>
-              <NotifyContentTitle>顽鸦小助手</NotifyContentTitle>
-              <NotifyContentDesc>
-                {' '}
-                ⚡️
-                {unread_system_messages_count > 0
-                  ? `有${unread_system_messages_count}条新的推荐`
-                  : '查看消息通知'}{' '}
-              </NotifyContentDesc>
-            </NotifyContentView>
-          </ItemView>
-        </WrapView>
-      </SafeAreaPlus>
-    );
-  }
-}
+          <NotifyContentView>
+            <NotifyContentTitle>顽鸦小助手</NotifyContentTitle>
+            <NotifyContentDesc>
+              {' '}
+              ⚡️
+              {unread_system_messages_count > 0
+                ? `有${unread_system_messages_count}条新的推荐`
+                : '查看消息通知'}{' '}
+            </NotifyContentDesc>
+          </NotifyContentView>
+        </ItemView>
+      </WrapView>
+    </SafeAreaPlus>
+  );
+};
 
 const styles = StyleSheet.create({
   badgeContainer: {
