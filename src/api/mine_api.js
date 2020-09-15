@@ -13,7 +13,7 @@ export async function getCurrentAccount(params = {}) {
 // 更新用户信息
 export async function syncAccountInfo(data = {}) {
   const res = await request({
-    url: '/api/v1/mine/accounts/' + data['id'],
+    url: '/api/v1/mine/accounts/' + data.id,
     method: 'PUT',
     data: data,
   });
@@ -60,7 +60,7 @@ export async function verifyInviteCode(data = {code: ''}) {
 // 已坚持打卡多少天
 export async function learningRecords() {
   const res = await request({
-    url: `/api/v1/learnings/learning_records`,
+    url: '/api/v1/learnings/learning_records',
     method: 'GET',
   });
   return res.data;
@@ -69,7 +69,7 @@ export async function learningRecords() {
 // 获取手机号
 export async function fetchPhone(data = {}) {
   const res = await request({
-    url: `/api/v1/mine/accounts/fetch_phone`,
+    url: '/api/v1/mine/accounts/fetch_phone',
     method: 'POST',
     data: data,
   });
@@ -79,7 +79,7 @@ export async function fetchPhone(data = {}) {
 // 推荐关注用户
 export async function recommendAccounts(params) {
   const res = await request({
-    url: `/api/v1/mine/accounts/recommend_accounts`,
+    url: '/api/v1/mine/accounts/recommend_accounts',
     method: 'GET',
     data: params,
   });
@@ -89,7 +89,7 @@ export async function recommendAccounts(params) {
 // 用户权限
 export async function accountsPermissions() {
   const res = await request({
-    url: `/api/v1/mine/accounts/permissions`,
+    url: '/api/v1/mine/accounts/permissions',
     method: 'GET',
   });
   return res.data;
@@ -98,7 +98,7 @@ export async function accountsPermissions() {
 //关注任意东西
 export const followItem = async (params = {}) => {
   const res = await request({
-    url: `/api/v1/mine/accounts/follow`,
+    url: '/api/v1/mine/accounts/follow',
     method: 'POST',
     data: params,
   });
@@ -108,9 +108,19 @@ export const followItem = async (params = {}) => {
 //取消关注任意东西
 export const unfollowItem = async (params = {}) => {
   const res = await request({
-    url: `/api/v1/mine/accounts/unfollow`,
+    url: '/api/v1/mine/accounts/unfollow',
     method: 'POST',
     data: params,
+  });
+  return res;
+};
+
+// 首页关注单排列表
+export const getFollowedFeeds = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/mine/feeds/follow_feeds',
+    method: 'GET',
+    params: params,
   });
   return res;
 };

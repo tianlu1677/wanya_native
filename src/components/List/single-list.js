@@ -10,6 +10,8 @@ const SingleList = props => {
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
+    console.log(item);
+
     if (item.item_type === 'Topic') {
       return <BaseTopic data={item.item} />;
     } else if (item.item_type === 'Article') {
@@ -21,7 +23,9 @@ const SingleList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.posts;
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
+    console.log(data);
+
     setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
@@ -46,6 +50,7 @@ const SingleList = props => {
 // List 属性继承scrollList 默认可下拉加载刷新
 SingleList.propTypes = {
   request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
+  dataKey: PropTypes.string, // single-list 默认posts
 };
 
 export default SingleList;

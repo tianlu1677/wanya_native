@@ -10,7 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
-import ScrollList from '@/components/ScrollList';
+import ScrollList, {pagination} from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
@@ -128,7 +128,15 @@ const DoubleList = props => {
     const data = res.data.posts;
     setLoading(false);
     setHeaders(res.headers);
-    setListData(page === 1 ? data : [...listData, ...data]);
+    setListData(data);
+  };
+
+  const onRefresh = () => {
+    if (props.type === 'recommend') {
+      loadData(pagination(headers).nextPage);
+    } else {
+      loadData();
+    }
   };
 
   useEffect(() => {
@@ -139,7 +147,7 @@ const DoubleList = props => {
     <ScrollList
       data={listData.length === 0 ? [] : [1, 2]}
       loading={loading}
-      onRefresh={loadData}
+      onRefresh={onRefresh}
       headers={headers}
       renderItem={renderItem}
       numColumns={2}
@@ -151,6 +159,7 @@ const DoubleList = props => {
 // List 属性继承scrollList 默认可下拉加载刷新
 DoubleList.propTypes = {
   request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
+  type: PropTypes.string,
 };
 
 const styles = StyleSheet.create({

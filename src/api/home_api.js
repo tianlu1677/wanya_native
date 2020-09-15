@@ -1,15 +1,5 @@
 import request from './request';
 
-// 未登录热门推荐
-export const getUnLoginHotPosts = async (params = {}) => {
-  const res = await request({
-    url: '/api/v1/recommend/hot_posts',
-    method: 'GET',
-    params,
-  });
-  return res;
-};
-
 // 推荐帖子
 export const getRecommendPosts = async (params = {}) => {
   const res = await request({
@@ -20,22 +10,12 @@ export const getRecommendPosts = async (params = {}) => {
   return res;
 };
 
-// 随机推荐帖子
-export const getRecommendVideoListPosts = async (params = {}) => {
-  const res = await request({
-    url: '/api/v1/recommend/video_list',
+// 关注帖子
+export const getFollowedPosts = async (params = {}) => {
+  const res = request({
+    url: '/api/v1/recommend/followed_posts',
     method: 'GET',
     params: params,
-  });
-  return res;
-};
-
-// 关注的帖子
-export const getFollowedTopics = async (params = {}) => {
-  const res = await request({
-    url: '/api/v1/home/followed_topics',
-    method: 'GET',
-    params,
   });
   return res;
 };
@@ -74,6 +54,16 @@ export const createComment = async (data = {}) => {
     url: '/api/v1/comments',
     method: 'POST',
     data,
+  });
+  return res;
+};
+
+// 关注的帖子
+export const getFollowedTopics = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/home/followed_topics',
+    method: 'GET',
+    params,
   });
   return res;
 };
@@ -164,14 +154,14 @@ export async function getHotTopics(params = {}) {
   return res;
 }
 
-export function getFollowedPosts(params = {}) {
-  const res = request({
-    url: '/api/v1/recommend/followed_posts',
-    method: 'GET',
-    params: params,
-  });
-  return res;
-}
+// export function getFollowedPosts(params = {}) {
+//   const res = request({
+//     url: '/api/v1/recommend/followed_posts',
+//     method: 'GET',
+//     params: params,
+//   });
+//   return res;
+// }
 
 // export async function getUnLoginHotPosts(params = {}) {
 //   const res = await request({
