@@ -203,7 +203,11 @@ const spaceRouter = [
   {
     name: 'SpaceDetail',
     component: SpaceDetail,
-    options: {title: '场地详情'},
+    safeArea: false,
+    options: {
+      title: '场地详情',
+      headerShown: false
+    },
   },
 ];
 

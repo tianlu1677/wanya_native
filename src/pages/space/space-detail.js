@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
+  Button,
   Text,
   StyleSheet,
   ImageBackground,
@@ -11,18 +12,24 @@ import {useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
-import {PlayScore, Avator} from '@/components/NodeComponents';
+import {PlayScore, Avator, GoBack} from '@/components/NodeComponents';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {dispatchPreviewImage} from '@/redux/actions';
+import BottomSheetContent from '@/components/BottomSheetContent'
+import BottomSheet from 'reanimated-bottom-sheet';
+import { NAVIGATION_BAR_HEIGHT } from "@/utils/navbar"
 
 const SpaceDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [spaceId] = useState(route.params.spaceId);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('lasted');
+  const [bottomRef, setBottomRef] = useState(null);
+
+  const sheetRef = React.useRef(null);
 
   const loadData = async () => {
     const space = await getSpaceDetail(spaceId);
@@ -33,6 +40,22 @@ const SpaceDetail = ({navigation, route}) => {
       title: space.name,
     });
   };
+
+  const renderContent = () => (
+    <View
+      style={{
+        backgroundColor: 'white',
+        padding: 16,
+        height: 400,
+      }}
+    >
+      <Text>{detail.intro}</Text>
+    </View>
+  );
+
+  const onShowIntro = () => {
+    sheetRef.current.snapTo(0)
+  }
 
   const LastedList = () => (
     <SingleList
@@ -71,6 +94,7 @@ const SpaceDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={styles.wrapper}>
+      <GoBack />
       <TouchableWithoutFeedback onPress={onPreview}>
         <ImageBackground source={{uri: detail.cover_url}} style={styles.header}>
           <View style={styles.info}>
@@ -78,7 +102,7 @@ const SpaceDetail = ({navigation, route}) => {
               <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
                 {detail.name}
               </Text>
-              <Text style={styles.intro}>
+              <Text style={styles.intro} onPress={() => { onShowIntro() }}>
                 <Text>
                   {detail.intro
                     ? detail.intro.length > 20
@@ -129,6 +153,15 @@ const SpaceDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+
+      <BottomSheet
+        ref={sheetRef}
+        initialSnap={1}
+        snapPoints={[400, 0]}
+        borderRadius={10}
+        renderContent={renderContent}
+        renderHeader={() => <View style={{height: 20}} />}
+      />
     </View>
   ) : (
     <Loading />
@@ -142,7 +175,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 24,
-    paddingTop: 63,
+    paddingTop: NAVIGATION_BAR_HEIGHT,
     minHeight: 275,
   },
   info: {

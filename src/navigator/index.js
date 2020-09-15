@@ -9,6 +9,7 @@ import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import NewTopic from '@/pages/topics/new-topic';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
@@ -220,13 +221,25 @@ function MainStackList() {
       screenOptions={({route}) => ({
         headerStyle: {
           backgroundColor: 'white',
+          height: 54,
         },
         headerBackTitleVisible: false,
         headerTintColor: 'black',
+        leftButtonStyle: {
+
+        },
+        headerLeftContainerStyle: {
+          paddingLeft: 15,
+        },
+        headerRightContainerStyle: {
+          paddingRight: 15,
+          paddingLeft: 15,
+        },
         headerTitleStyle: {
           fontWeight: 'bold',
-          fontSize: 18
+          fontSize: 16
         },
+        headerBackImage: () => (<Image source={require('../assets/images/back.png')} style={{width: 16, height: 16}} />)
       })}>
       <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
       {routers.map(route => {

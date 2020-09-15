@@ -69,10 +69,12 @@ const CommentNotify = ({navigation}) => {
     // console.log('xxxxxxxx')
     if (comment.commentable_type === 'Topic' && comment.commentable) {
       // goPage.goTopicDetailUrl(comment.commentable_id)
+      navigation.navigate('TopicDetail', {topicId: comment.commentable_id});
       return;
     }
     if (comment.commentable_type === 'Article' && comment.commentable) {
       // goPage.goArticleDetailUrl(comment.commentable_id)
+      navigation.navigate('ArticleDetail', {articleId: comment.commentable_id});
     }
   };
 

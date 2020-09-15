@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: '#FAFAFA',
-    height: 2,
+    height: 1,
     marginLeft: 16,
   },
 });
