@@ -10,8 +10,6 @@ const SingleList = props => {
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    console.log(item);
-
     if (item.item_type === 'Topic') {
       return <BaseTopic data={item.item} />;
     } else if (item.item_type === 'Article') {

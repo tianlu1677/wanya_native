@@ -1,20 +1,24 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground} from 'react-native';
-import {useSelector} from 'react-redux';
 import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
-import {getAccount} from '@/api/account_api';
-import {getAccountPosts, followAccount, unfollowAccount} from '@/api/account_api';
+import {
+  getAccount,
+  getAccountPosts,
+  followAccount,
+  unfollowAccount,
+  getAccountArticles,
+} from '@/api/account_api';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
+import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AccountDetail = ({navigation, route}) => {
-  const id = route.params.accountId
-  const [accountId] = useState(id);
+  const [accountId] = useState(route.params.accountId);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
 
@@ -43,6 +47,11 @@ const AccountDetail = ({navigation, route}) => {
 
   const PraiseList = () => {
     return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
+  };
+
+  const ArticleListPage = () => {
+    const params = {id: accountId, type: 'publish'};
+    return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
   const goFollowList = () => {
@@ -158,6 +167,11 @@ const AccountDetail = ({navigation, route}) => {
             key: 'praise',
             title: '喜欢',
             component: PraiseList,
+          },
+          {
+            key: 'article',
+            title: '文章',
+            component: ArticleListPage,
           },
         ]}
         onChange={key => setCurrentKey(key)}

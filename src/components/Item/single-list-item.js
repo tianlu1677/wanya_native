@@ -5,6 +5,7 @@ import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
+import {getAccountBaseInfo} from '@/api/account_api';
 
 export const Header = props => {
   const {data} = props;
@@ -18,8 +19,9 @@ export const Header = props => {
     navigation.navigate('AccountDetail', {accountId: data.account.id});
   };
 
-  const Content = () => {
-    return (
+  return (
+    <View style={hstyles.headerView}>
+      <Avator account={data.account} size={40} />
       <View style={hstyles.content}>
         <Text style={hstyles.nameText} onPress={goAccountDetail}>
           {data.account.nickname}
@@ -30,13 +32,6 @@ export const Header = props => {
           <Text style={hstyles.nodeName}>{data.node_name}</Text>
         </TouchableOpacity>
       </View>
-    );
-  };
-
-  return (
-    <View style={hstyles.headerView}>
-      <Avator account={data.account} size={40} />
-      <Content />
       <Text style={hstyles.joinBtn} onPress={goNodeDetail}>
         进入圈子
       </Text>
@@ -47,7 +42,6 @@ export const Header = props => {
 export const Bottom = props => {
   const [praise, setPraise] = useState(props.data.praise);
   const {data} = props;
-  const navigation = useNavigation();
 
   const onPraise = async () => {
     switch (props.type) {
@@ -72,27 +66,18 @@ export const Bottom = props => {
     }
   };
 
-  const goDetail = () => {
-    switch (props.type) {
-      case 'article':
-        navigation.navigate('ArticleDetail', {articleId: data.id});
-        break;
-      case 'topic':
-        navigation.navigate('TopicDetail', {topicId: data.id});
-        break;
-    }
-  };
-
   return (
     <View style={bstyles.botView}>
       <Pressable style={bstyles.botCon} onPress={onPraise}>
         <IconFont name={'like'} color={praise ? '#000' : '#bdbdbd'} />
-        <Text style={{...bstyles.botNum, color: (praise ? '#000' : '#bdbdbd')}}>{data.praises_count || ''}</Text>
+        <Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
+          {data.praises_count || ''}
+        </Text>
       </Pressable>
-      <Pressable style={bstyles.botCon} onPress={goDetail}>
+      <View style={bstyles.botCon}>
         <IconFont name="comment" color={'#bdbdbd'} />
         <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
-      </Pressable>
+      </View>
       <IconFont name="fenxiang" style={{marginLeft: 'auto'}} />
     </View>
   );
@@ -102,6 +87,15 @@ export const PlainContent = props => {
   const {data} = props;
   const navigation = useNavigation();
 
+  const goHashTagDetail = name => {
+    navigation.navigate('HashtagDetail', {hashtag: name});
+  };
+
+  const AccountDetail = async nickname => {
+    const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
+    navigation.navigate('AccountDetail', {accountId: res.data.account.id});
+  };
+
   return (
     <Text numberOfLines={props.numberOfLines} style={props.style}>
       {data.hashtag_content_json ? (
@@ -109,16 +103,12 @@ export const PlainContent = props => {
           return (
             <Text key={index}>
               {v.is_hashtag && (
-                <Text
-                  style={cstyles.hashtagText}
-                  onPress={() => navigation.navigate('HashtagDetail', {hashtag: v.content})}>
+                <Text style={cstyles.hashtagText} onPress={() => goHashTagDetail(v.content)}>
                   {v.content}
                 </Text>
               )}
               {v.is_mention && (
-                <Text
-                  style={cstyles.hashtagText}
-                  onPress={() => navigation.navigate('AccountDetail', {accountId: v.content})}>
+                <Text style={cstyles.hashtagText} onPress={() => AccountDetail(v.content)}>
                   {v.content}
                 </Text>
               )}

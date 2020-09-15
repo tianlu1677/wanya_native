@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Pressable} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -36,7 +36,7 @@ const calculateImg = (width, height) => {
   return {...attr, x: x};
 };
 
-export const TopicImageCenterContent = props => {
+export const TopicImageContent = props => {
   const dispatch = useDispatch();
   const {single_cover, medias} = props.data;
   const imgStyle = medias.length === 1 ? 'single' : 'multi';
@@ -54,52 +54,59 @@ export const TopicImageCenterContent = props => {
   };
 
   return imgStyle === 'single' ? (
-    <Pressable style={{width: imgAttr.width / 2.0}} onPress={() =>{onPreview()}}>
+    <Pressable
+      style={{width: imgAttr.width / 2.0}}
+      onPress={() => {
+        onPreview();
+      }}>
       <FastImg
         source={{uri: single_cover.cover_url}}
         style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
       />
     </Pressable>
   ) : (
-    <Pressable horizontal={true}>
+    <ScrollView horizontal={true}>
       {medias.map((media, index) => (
         <Pressable onPress={() => onPreview(index)} key={media}>
           <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
         </Pressable>
       ))}
-    </Pressable>
+    </ScrollView>
   );
 };
 
-export const TopicVideoCenterContent = props => {
+export const TopicVideoContent = props => {
   const {single_cover} = props.data;
-
   const videoAttr = calculateImg(
     single_cover.width ? single_cover.width : 100,
     single_cover.height ? single_cover.height : 100
   );
+
   return (
-    <View>
-      {single_cover.link_url && (
-        <FastImg
-          source={{uri: single_cover.link_url}}
-          style={{ width: videoAttr.width / 2, height: videoAttr.height / 2, backgroundColor: 'gray'}}
-        />
-      )}
+    <>
+      <FastImg
+        source={{uri: single_cover.link_url}}
+        style={{width: videoAttr.width / 2, height: videoAttr.height / 2}}
+      />
       <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
-    </View>
+    </>
   );
 };
 
-export const BaseTopicContent = props => {
-  const {data} = props;
+export const TopicLinkContent = props => {
   const navigation = useNavigation();
+
+  const goLinkDetail = () => {
+    navigation.navigate('LabWebview', {sourceUrl: props.data.topic_link.raw_link});
+  };
+
   return (
-    <View style={props.style}>
-      <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
-      <View>{data.content_style === 'link' && <Text>外链</Text>}</View>
-      <View>{data.content_style === 'text' && <Text>文字</Text>}</View>
-    </View>
+    <TouchableOpacity style={styles.linkWrap} onPress={goLinkDetail}>
+      <FastImg source={{uri: props.data.topic_link.cover_url}} style={{flex: 1, height: 167}} />
+      <View style={styles.linkTitleBg}>
+        <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -112,18 +119,20 @@ const BaseTopic = props => {
   };
 
   const goTopicDetail = () => {
-    console.log('goTopicDetail')
     navigation.navigate('TopicDetail', {topicId: data.id});
   };
 
   return (
-    <Pressable style={styles.postSlide} onPress={() => {goTopicDetail()}}>
+    <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" />
-      <View style={{marginTop: 13, marginBottom: 13}}>
-        {data.content_style === 'img' && <TopicImageCenterContent data={data} />}
-        {data.content_style === 'video' && <TopicVideoCenterContent data={data} />}
-      </View>
-      <BaseTopicContent data={data} />
+      {data.content_style !== 'text' && (
+        <View style={{marginTop: 13, marginBottom: 13}}>
+          {data.content_style === 'img' && <TopicImageContent data={data} />}
+          {data.content_style === 'video' && <TopicVideoContent data={data} />}
+          {data.content_style === 'link' && <TopicLinkContent data={data} />}
+        </View>
+      )}
+      <PlainContent data={data} style={styles.multiLineText} numberOfLines={5} />
       {data.space && (
         <Pressable style={styles.spaceWrapper} onPress={goSpaceDetail}>
           <IconFont name="space-point" size={16} color={'#45ea6a'} />
@@ -148,7 +157,7 @@ const styles = StyleSheet.create({
   hashtagText: {
     color: '#ff8d00',
     paddingLeft: 2,
-    paddingRight: 2
+    paddingRight: 2,
   },
   spaceWrapper: {
     flexDirection: 'row',
@@ -175,6 +184,24 @@ const styles = StyleSheet.create({
     right: '25%',
     bottom: '50%',
     margin: 'auto',
+  },
+  linkTitleBg: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 64,
+  },
+  linkTitle: {
+    paddingLeft: 11,
+    paddingRight: 11,
+    paddingTop: 11,
+    paddingBottom: 11,
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#fff',
+    lineHeight: 22,
+    zIndex: 2,
   },
 });
 
