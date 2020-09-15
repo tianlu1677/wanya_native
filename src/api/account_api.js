@@ -71,14 +71,34 @@ export const getAccount = async id => {
 };
 
 //用户的基本信息
-export async function getAccountBaseInfo(nickname) {
+export const getAccountBaseInfo = async params => {
   const res = await request({
     url: '/api/v1/accounts/base_info',
     method: 'GET',
-    params: {name: nickname},
+    params,
   });
-  return res.data.account;
-}
+  return res;
+};
+
+// 发布的帖子 收藏，喜欢的帖子
+// type= publish, praise, star
+export const getAccountArticles = async params => {
+  const res = await request({
+    url: `/api/v1/accounts/${params.id}/articles`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
+// export async function getAccountBaseInfo(nickname) {
+//   const res = await request({
+//     url: '/api/v1/accounts/base_info',
+//     method: 'GET',
+//     params: {name: nickname},
+//   });
+//   return res.data.account;
+// }
 
 // 发布的帖子 收藏，喜欢的帖子
 // type= publish, praise, star
@@ -110,17 +130,17 @@ export async function getAccountTopics(id, type, params = {}) {
 
 // 发布的帖子 收藏，喜欢的帖子
 // type= publish, praise, star
-export async function getAccountArticles(id, type, params = {}) {
-  const res = await request({
-    url: `/api/v1/accounts/${id}/articles`,
-    method: 'GET',
-    params: {
-      type: type,
-      ...params,
-    },
-  });
-  return res;
-}
+// export async function getAccountArticles(id, type, params = {}) {
+//   const res = await request({
+//     url: `/api/v1/accounts/${id}/articles`,
+//     method: 'GET',
+//     params: {
+//       type: type,
+//       ...params,
+//     },
+//   });
+//   return res;
+// }
 
 // 发布的课程, 学过的课程， 收藏的课程
 // type: publish, learn, star, praise, view

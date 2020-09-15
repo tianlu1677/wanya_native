@@ -5,10 +5,10 @@ import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
-import {getAccount} from '@/api/account_api';
-import {getAccountPosts} from '@/api/account_api';
+import {getAccount, getAccountPosts, getAccountArticles} from '@/api/account_api';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
+import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -43,6 +43,11 @@ const MineDetail = ({navigation, route}) => {
 
   const PraiseList = () => {
     return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
+  };
+
+  const ArticleListPage = () => {
+    const params = {id: accountId, type: 'publish'};
+    return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
   const goFollowList = () => {
@@ -152,6 +157,11 @@ const MineDetail = ({navigation, route}) => {
             key: 'praise',
             title: '喜欢',
             component: PraiseList,
+          },
+          {
+            key: 'article',
+            title: '文章',
+            component: ArticleListPage,
           },
         ]}
         onChange={key => setCurrentKey(key)}

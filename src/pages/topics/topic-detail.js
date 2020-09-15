@@ -9,20 +9,18 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
-import Video from 'react-native-video';
 import VideoPlayer from 'react-native-video-controls';
-
 import {dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import CommentList from '@/components/List/comment-list';
-import {BaseTopicContent} from '@/components/Item/base-topic';
+import {PlainContent} from '@/components/Item/single-list-item';
+import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {GoBack} from '@/components/NodeComponents';
-import { NAV_BAR_HEIGHT } from "@/utils/navbar";
+import {NAV_BAR_HEIGHT} from '@/utils/navbar';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -92,13 +90,13 @@ const TopicDetail = ({navigation, route}) => {
     return (
       <View>
         <GoBack />
-      <Swiper style={{height: 300}} showsPagination={detail.medias.length > 0}>
-        {medias.map((media, index) => (
-          <TouchableOpacity onPress={() => onPreview(index)} key={media}>
-            <FastImg key={media} source={{uri: media}} style={{width: '100%', height: 300}} />
-          </TouchableOpacity>
-        ))}
-      </Swiper>
+        <Swiper style={{height: 300}} showsPagination={detail.medias.length > 0}>
+          {medias.map((media, index) => (
+            <TouchableOpacity onPress={() => onPreview(index)} key={media}>
+              <FastImg key={media} source={{uri: media}} style={{width: '100%', height: 300}} />
+            </TouchableOpacity>
+          ))}
+        </Swiper>
       </View>
     );
   };
@@ -143,15 +141,15 @@ const TopicDetail = ({navigation, route}) => {
             {detail.content_style === 'img' && renderImg()}
             {detail.content_style === 'video' && renderVideo()}
 
-            {
-              detail.content_style === 'text' && <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 6}}>
+            {detail.content_style === 'text' && (
+              <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 6}}>
                 <GoBack color={'black'} />
               </View>
-            }
+            )}
             <View style={{backgroundColor: '#fff'}}>
-              <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id } />
+              <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
               <View style={{paddingLeft: 16, paddingRight: 16, marginBottom: 16, marginTop: 16}}>
-                <BaseTopicContent data={detail} />
+                <PlainContent data={detail} />
               </View>
               <PublishRelated data={detail} />
             </View>
