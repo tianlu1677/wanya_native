@@ -6,6 +6,7 @@ import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/api/home_api';
 import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BadgeMessage} from '@/components/NodeComponents';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -49,12 +50,26 @@ const Recommend = props => {
         onPress={() => props.navigation.navigate('NotifyIndex')}
         style={styles.message}>
         <IconFont name="notice" size={20} />
+        <BadgeMessage
+          value={"81+"}
+          status={'error'}
+          containerStyle={styles.badgeContainer}
+          // badgeStyle={{width: 12, height: 12, borderRadius: 12}}
+          // textStyle={{fontSize: 10}}
+        />
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  badgeContainer: {
+    position: 'absolute',
+    right: -10,
+    top: -6,
+    // width: 3,
+    // height: 3
+  },
   wrapper: {
     flex: 1,
     position: 'relative',

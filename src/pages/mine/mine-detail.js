@@ -10,6 +10,7 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
+import GoPage from '@/utils/go_page'
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { NAVIGATION_BAR_HEIGHT } from '@/utils/navbar'
 
@@ -69,7 +70,6 @@ const MineDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
-      <GoBack />
       <View style={styles.setting}>
         <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')}>
           <IconFont name="notice" size={20} style={{marginRight: 25}} color="#fff" />

@@ -222,6 +222,9 @@ function MainStackList() {
         headerStyle: {
           backgroundColor: 'white',
           height: 54,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
         },
         headerBackTitleVisible: false,
         headerTintColor: 'black',

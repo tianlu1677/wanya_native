@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {StyleSheet, Modal, Text, Pressable} from 'react-native';
+import {StyleSheet, Modal, Text, Pressable, Image, TouchableWithoutFeedback} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {dispatchPreviewImage} from '@/redux/actions';
 import IconFont from "@/iconfont"
@@ -15,16 +15,17 @@ const ImagePreview = () => {
       <Pressable
         style={{
           position: 'absolute',
-          paddingTop: 35,
+          paddingTop: 45,
           paddingLeft: 17,
           paddingRight: 24,
           paddingBottom: 24,
         }}
+
         onPress={() => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
-        }}>
-        {/*<IconFont name={"cancel"} size={12} color={"white"}/>*/}
-        <Icon name={'close'} size={24} color={'white'} />
+        }}
+      >
+        <IconFont name={"cancel"} size={12} color={"white"}/>
       </Pressable>
     );
   };
@@ -39,13 +40,13 @@ const ImagePreview = () => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
         }}
         // renderImage={props => <Image {...props} />}
-        renderHeader={props => <CloseBtn />}
+        // renderHeader={props => <CloseBtn {...props} />}
         index={previewImageData.index}
         imageUrls={previewImageData.images}
         enableSwipeDown
         useNativeDriver
-        pageAnimateTime={10}
-        swipeDownThreshold={10}
+        pageAnimateTime={200}
+        swipeDownThreshold={100}
         onClick={() => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
         }}

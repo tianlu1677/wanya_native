@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {View, Image, Text, TextInput, StyleSheet, Pressable, TouchableOpacity, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -9,6 +9,7 @@ import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
+import CloseImg from '@/assets/images/close.png'
 
 const NewTopic = props => {
   const navigation = useNavigation();
@@ -113,15 +114,28 @@ const NewTopic = props => {
     setContent(savetopic.plan_content);
   }, [savetopic]);
 
-  const closeBut = () => {
-    navigation.goBack();
-  };
+
+  const LeftBtn = () => {
+    return (
+      <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}}>
+        <IconFont name={'cancel'} size={12} />
+      </Pressable>
+    )
+  }
+
+  // TODO, 当数据有效时，变黑色，其余变灰色
+  const RightBtn = () => {
+    return (
+      <Pressable onPress={onSubmit}>
+        <Text style={{...styles.finishBtn}}>发布</Text>
+    </Pressable>)
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: null,
-      headerLeft: () => <Button onPress={() => closeBut()} title="关闭" color="#000" />,
-      headerRight: () => <Button onPress={onSubmit} title="发布" color="#000" />,
+      headerLeft: () => <LeftBtn />,
+      headerRight: () => <RightBtn />
     });
   }, [navigation, imageSource, savetopic]);
 
@@ -318,6 +332,12 @@ const styles = StyleSheet.create({
   submitBtn: {
     fontWeight: '500',
   },
+
+  finishBtn: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#BDBDBD',
+  }
 });
 
 export default MediasPicker(NewTopic);

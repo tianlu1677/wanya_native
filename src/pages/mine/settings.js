@@ -30,6 +30,20 @@ const Settings = ({navigation, route}) => {
       case 'invite':
         navigation.navigate('InviteDetail');
         break;
+      case 'private':
+        navigation.navigate('WebView', {
+          sourceUrl: 'https://xinxue.meirixinxue.com/home/private_policy',
+          title: '顽鸦隐私政策',
+          bgColor: 'black',
+        });
+        break;
+      case 'user_agreement':
+        navigation.navigate('WebView', {
+          sourceUrl: 'https://xinxue.meirixinxue.com/home/user_agreement',
+          title: '顽鸦用户协议',
+          bgColor: 'black',
+        });
+        break;
       case 'logout':
         console.log('logout');
         Helper.clearAllData()
@@ -76,6 +90,22 @@ const Settings = ({navigation, route}) => {
           goPages('feedback');
         }}>
         <ItemTitle>意见反馈</ItemTitle>
+        <ForwardRight />
+      </ItemView>
+      <ItemView
+        style={{...styles.bottomBorder1px, marginLeft: 14, paddingLeft: 0}}
+        onPress={() => {
+          goPages('private');
+        }}>
+        <ItemTitle>用户协议</ItemTitle>
+        <ForwardRight />
+      </ItemView>
+      <ItemView
+        style={{...styles.bottomBorder1px, marginLeft: 14, paddingLeft: 0}}
+        onPress={() => {
+          goPages('user_agreement');
+        }}>
+        <ItemTitle>隐私政策</ItemTitle>
         <ForwardRight />
       </ItemView>
       <ItemView
