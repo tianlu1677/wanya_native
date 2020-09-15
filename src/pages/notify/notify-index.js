@@ -224,7 +224,6 @@ const WrapView = styled(View)`
   flex-direction: column;
 `;
 const ItemView = styled(Pressable)`
-  margin-top: 18px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
