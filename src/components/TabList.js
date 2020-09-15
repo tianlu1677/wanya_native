@@ -108,7 +108,6 @@ const tabBarStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    // marginTop: 40,
   },
   tabmiddle: {
     height: 45,
