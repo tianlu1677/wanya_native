@@ -13,7 +13,7 @@ import TabViewList from '@/components/TabView';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AccountDetail = ({navigation, route}) => {
-  const id = useSelector(state => state.account.currentAccount.id);
+  const id = route.params.accountId
   const [accountId] = useState(id);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');

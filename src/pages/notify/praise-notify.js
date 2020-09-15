@@ -23,7 +23,7 @@ const PraiseNotify = ({navigation}) => {
   }, []);
 
   const loadInfo = async (page = 1) => {
-    let params = {page: page, per_page: 10};
+    let params = {page: page, per_page: 20};
     let res_data = [];
     let headers = {};
     const res = await getInsideNotifies(params);
@@ -89,7 +89,7 @@ const PraiseNotify = ({navigation}) => {
         notify_type={notify.message_detail}
         time={notify.created_at_text}
         item={notify.item}
-        handleClickRight={goInsideNotify.bind(this, notify)}
+        handleClickRight={() => { goInsideNotify(notify)} }
       />
     );
   };
