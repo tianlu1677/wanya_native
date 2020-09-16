@@ -97,7 +97,10 @@ export const TopicLinkContent = props => {
   const navigation = useNavigation();
 
   const goLinkDetail = () => {
-    navigation.navigate('LabWebview', {sourceUrl: props.data.topic_link.raw_link});
+    navigation.navigate('WebView', {
+      sourceUrl: props.data.topic_link.raw_link,
+      title: props.data.topic_link.title
+    });
   };
 
   return (

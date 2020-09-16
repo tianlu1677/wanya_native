@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
+import FastImg from '@/components/FastImg';
 
 const Avator = props => {
   const navigation = useNavigation();
@@ -24,7 +25,7 @@ const Avator = props => {
 
   return (
     <TouchableOpacity style={{...imagestyle, position: 'relative'}} onPress={goAccountDetail}>
-      <Image
+      <FastImg
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
       />

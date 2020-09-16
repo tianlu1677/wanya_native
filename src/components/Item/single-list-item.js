@@ -6,6 +6,7 @@ import IconFont from '@/iconfont';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
+import * as WeChat from 'react-native-wechat-lib';
 
 export const Header = props => {
   const {data} = props;
@@ -66,6 +67,40 @@ export const Bottom = props => {
     }
   };
 
+  const onShare = () => {
+    // console.log('share', data)
+    let shareOptions = {
+      title: '顽鸦',
+      userName: 'gh_c2b50fe8e928',
+      webpageUrl: '',
+      path: '',
+      thumbImageUrl: data.wx_share_image_url,
+      scene: 0,
+    };
+    switch (props.type) {
+      case 'article':
+        shareOptions = {
+          ...shareOptions,
+          title: data.plain_content,
+          path: '/pages/articles/article-detail?article_id=' + data.id,
+          thumbImageUrl: data.wx_share_image_url,
+        };
+        break;
+      case 'topic':
+        shareOptions = {
+          ...shareOptions,
+          title: data.plain_content,
+          path: '/pages/topics/topic-detail?topic_id=' + data.id,
+          thumbImageUrl: data.wx_share_image_url,
+        };
+        break;
+      default:
+        shareOptions;
+        break;
+    }
+    WeChat.shareMiniProgram(shareOptions);
+  };
+
   return (
     <View style={bstyles.botView}>
       <Pressable style={bstyles.botCon} onPress={onPraise}>
@@ -78,7 +113,13 @@ export const Bottom = props => {
         <IconFont name="comment" color={'#bdbdbd'} />
         <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
       </View>
-      <IconFont name="fenxiang" style={{marginLeft: 'auto'}} />
+      <Pressable
+        style={{marginLeft: 'auto'}}
+        onPress={() => {
+          onShare();
+        }}>
+        <IconFont name="fenxiang" style={{marginLeft: 'auto'}} />
+      </Pressable>
     </View>
   );
 };

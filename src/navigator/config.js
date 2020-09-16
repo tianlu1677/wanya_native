@@ -61,7 +61,6 @@ import MentionNotify from '@/pages/notify/mention-notify';
 // 实验室页面
 import LabIndex from '@/pages/labs/index';
 import LabTabIndex from '@/pages/labs/tabindex';
-import LabWebview from '@/pages/labs/webview';
 import LabStorageIndex from '@/pages/labs/storageindex';
 
 //登录页面
@@ -322,11 +321,6 @@ export const routers = [
     name: 'LabTabIndex',
     component: LabTabIndex,
     options: {title: '实验室标签页'},
-  },
-  {
-    name: 'LabWebview',
-    component: LabWebview,
-    options: {title: 'LabWebview'},
   },
   {
     name: 'LabStorageIndex',

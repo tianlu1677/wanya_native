@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   accountOpacity: {
     backgroundColor: '#fff',
-    opacity: 0.12,
+    opacity: 0.5,
     position: 'absolute',
     left: 0,
     right: 0,

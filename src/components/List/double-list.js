@@ -15,6 +15,7 @@ import {Avator} from '@/components/NodeComponents';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {PlainContent} from '@/components/Item/single-list-item';
+import FastImg from '@/components/FastImg';
 
 const SingleItem = props => {
   const [height, setheight] = useState(200);
@@ -74,17 +75,17 @@ const SingleItem = props => {
 
   return (
     <TouchableWithoutFeedback key={data.id} onPress={() => onGoDetail(data)}>
-      <View>
+      <View style={{backgroundColor: 'white'}}>
         {data.single_cover.link_url && (
-          <Image source={{uri: data.single_cover.link_url}} style={{height: height}} />
+          <FastImg source={{uri: data.single_cover.link_url}} style={{height: height}} />
         )}
         {data.has_video && (
-          <Image style={styles.videoPlay} source={require('@/assets/images/video-play.png')} />
+          <FastImg style={styles.videoPlay} source={require('@/assets/images/video-play.png')} />
         )}
         <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
-          <Text style={styles.singleName}>{data.account.nickname}</Text>
+          <Text style={styles.singleName}>{data.account.nickname.toString().substr(0, 16)}</Text>
           <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={onPraise}>
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
             <Text
@@ -190,6 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 8,
     paddingLeft: 5,
+    paddingRight: 5,
     height: 17,
   },
   singleName: {
