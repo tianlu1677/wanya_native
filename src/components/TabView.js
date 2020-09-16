@@ -39,7 +39,13 @@ const TabViewIndex = props => {
     routes.length > 0 && (
       <TabView
         renderTabBar={() => (
-          <TabList data={routes} current={props.currentKey} tabChange={tabChange} />
+          <TabList
+            data={routes}
+            current={props.currentKey}
+            tabChange={tabChange}
+            size={props.size}
+            bottomLine={props.bottomLine}
+          />
         )}
         navigationState={{index, routes}}
         renderScene={SceneMap(scenes)}

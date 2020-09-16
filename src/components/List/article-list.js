@@ -21,7 +21,6 @@ const ArticleList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    console.log(res);
     const data = res.data.articles;
     setLoading(false);
     setHeaders(res.headers);
