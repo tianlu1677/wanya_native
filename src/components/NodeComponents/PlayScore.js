@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, Image, StyleSheet, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 
 const PlayScore = props => {
@@ -13,10 +13,10 @@ const PlayScore = props => {
   };
 
   return (
-    <TouchableOpacity style={playStyles.wrapper} onPress={props.onPress}>
+    <Pressable style={playStyles.wrapper} onPress={props.onPress}>
       <Image style={playStyles.image} source={require('@/assets/images/play-score.png')} />
       <Text style={[playStyles.scoreText, props.textStyle]}>{filter(props.score)}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

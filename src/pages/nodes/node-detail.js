@@ -1,8 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, Image, ImageBackground, Pressable} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import Loading from '@/components/Loading';
 import TabViewList from '@/components/TabView';
-import {JoinButton, JoinAccounts, PlayScore, JoinActivity, GoBack} from '@/components/NodeComponents';
+import {
+  JoinButton,
+  JoinAccounts,
+  PlayScore,
+  JoinActivity,
+  GoBack,
+} from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
 import {getArticleList} from '@/api/article_api';
@@ -11,15 +18,18 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
-import { NAVIGATION_BAR_HEIGHT} from "@/utils/navbar"
-// import TopHeader from "@/components/TopHeader"
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
+import * as action from '@/redux/constants';
+import Toast from '@/components/Toast';
 
 const NodeDetail = ({navigation, route}) => {
+  const home = useSelector(state => state.home);
+  const dispatch = useDispatch();
+
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
   const [currentKey, setCurrentKey] = useState('publish');
-  // const insets = useSafeAreaInsets();
+
   const PublishListPage = () => {
     const queryUrl = `q[node_id_eq]=${detail.id}&q[s]=published_at desc&show_followed=on`;
     return <SingleList request={{api: getPosts, params: {queryUrl}}} />;
@@ -60,7 +70,15 @@ const NodeDetail = ({navigation, route}) => {
     });
   };
 
-  const onPlay = () => {};
+  const onPlay = () => {
+    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
+  };
+
+  const joinNewTopic = () => {
+    const topics = {...home.savetopic, node: {id: detail.id, name: detail.name}};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.navigate('NewTopic');
+  };
 
   useEffect(() => {
     loadData();
@@ -84,7 +102,7 @@ const NodeDetail = ({navigation, route}) => {
           </Text>
           <PlayScore score={detail.play_score} onPress={onPlay} />
         </View>
-        <TouchableOpacity style={styles.accountInfo} onPress={goJoinAccounts}>
+        <Pressable style={styles.accountInfo} onPress={goJoinAccounts}>
           <Text style={styles.accountOpacity} />
           <JoinAccounts accounts={detail.accounts} size={25} />
           <Text style={styles.count}>
@@ -95,7 +113,7 @@ const NodeDetail = ({navigation, route}) => {
             text={detail.followed ? '已加入' : '加入'}
             onPress={onFollowNode}
           />
-        </TouchableOpacity>
+        </Pressable>
       </ImageBackground>
       <TabViewList
         currentKey={currentKey}
@@ -124,7 +142,7 @@ const NodeDetail = ({navigation, route}) => {
         onChange={key => setCurrentKey(key)}
       />
       <GoBack />
-      <JoinActivity type={"node"} text={"立刻参与"} handleClick={() => { console.log('go new topic')}} />
+      <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
     </View>
   ) : (
     <Loading />
@@ -135,7 +153,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
-    backgroundColor: 'gray'
+    backgroundColor: 'gray',
   },
   header: {
     paddingLeft: 16,

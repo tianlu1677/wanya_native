@@ -1,61 +1,36 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  Button,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View, Text, StyleSheet, ImageBackground, TouchableOpacity, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
-import IconFont from '@/iconfont';
 import {PlayScore, Avator, GoBack} from '@/components/NodeComponents';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
+import BottomSheetContent from '@/components/BottomSheetContent';
+import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
-import BottomSheetContent from '@/components/BottomSheetContent'
-import BottomSheet from 'reanimated-bottom-sheet';
-import { NAVIGATION_BAR_HEIGHT } from "@/utils/navbar"
+import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 
 const SpaceDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const sheetRef = useRef(null);
   const [spaceId] = useState(route.params.spaceId);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('lasted');
-  const [bottomRef, setBottomRef] = useState(null);
-
-  const sheetRef = React.useRef(null);
 
   const loadData = async () => {
     const space = await getSpaceDetail(spaceId);
     setDetail(space);
-    console.log(space);
-
     navigation.setOptions({
       title: space.name,
     });
   };
 
-  const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: 'white',
-        padding: 16,
-        height: 400,
-      }}
-    >
-      <Text>{detail.intro}</Text>
-    </View>
-  );
-
   const onShowIntro = () => {
-    sheetRef.current.snapTo(0)
-  }
+    sheetRef.current.snapTo();
+  };
 
   const LastedList = () => (
     <SingleList
@@ -95,14 +70,14 @@ const SpaceDetail = ({navigation, route}) => {
   return detail ? (
     <View style={styles.wrapper}>
       <GoBack />
-      <TouchableWithoutFeedback onPress={onPreview}>
+      <Pressable onPress={onPreview}>
         <ImageBackground source={{uri: detail.cover_url}} style={styles.header}>
           <View style={styles.info}>
             <View>
               <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
                 {detail.name}
               </Text>
-              <Text style={styles.intro} onPress={() => { onShowIntro() }}>
+              <Text style={styles.intro} onPress={onShowIntro}>
                 <Text>
                   {detail.intro
                     ? detail.intro.length > 20
@@ -136,7 +111,7 @@ const SpaceDetail = ({navigation, route}) => {
             <PlayScore score={detail.play_score} onPress={onPlay} />
           </View>
         </ImageBackground>
-      </TouchableWithoutFeedback>
+      </Pressable>
       <TabViewList
         currentKey={currentKey}
         tabData={[
@@ -153,15 +128,7 @@ const SpaceDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-
-      <BottomSheet
-        ref={sheetRef}
-        initialSnap={1}
-        snapPoints={[400, 0]}
-        borderRadius={10}
-        renderContent={renderContent}
-        renderHeader={() => <View style={{height: 20}} />}
-      />
+      <BottomSheetContent content={detail.intro} ref={sheetRef} />
     </View>
   ) : (
     <Loading />

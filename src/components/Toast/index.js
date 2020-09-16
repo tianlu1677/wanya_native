@@ -46,7 +46,6 @@ class Toast extends Component {
     });
   }
 
-
   static showError(message, options = {}) {
     this.show(message, {
       containerStyle: {
@@ -61,14 +60,13 @@ class Toast extends Component {
         fontSize: 15,
         letterSpacing: 1,
         fontWeight: '500',
-        color: '#ffffff'
+        color: '#ffffff',
       },
       position: this.position.CENTER,
       // imgSource: require('./icon_success.png'),
       ...options,
     });
   }
-
 
   static show(message, options = {}) {
     let onHidden = options.onHidden;

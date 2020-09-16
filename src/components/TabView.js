@@ -57,6 +57,7 @@ const TabViewIndex = props => {
         lazyPreloadDistance={props.lazyPreloadDistance || 0}
         removeClippedSubviews={props.removeClippedSubviews || false}
         keyboardDismissMode={props.keyboardDismissMode || 'auto'}
+        style={props.style}
       />
     )
   );

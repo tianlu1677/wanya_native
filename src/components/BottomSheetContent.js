@@ -1,22 +1,31 @@
-import React, {useState, useRef} from 'react';
-import PropTypes from 'prop-types';
-import Animated from 'react-native-reanimated';
+import React, {useRef, useImperativeHandle, forwardRef} from 'react';
 import BottomSheet from 'reanimated-bottom-sheet';
+import {StyleSheet, View, Text} from 'react-native';
 
-import {StyleSheet, View, Button, Text, TouchableOpacity} from 'react-native';
+const BottomSheetContent = (props, ref) => {
+  const sheetRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    snapTo: () => {
+      sheetRef.current.snapTo(0);
+    },
+  }));
 
-const BottomSheetContent = props => {
-  const sheetRef = React.useRef(null);
+  const renderContent = () => (
+    <View style={{backgroundColor: '#fff', padding: 16, height: 400}}>
+      <Text>{props.content}</Text>
+    </View>
+  );
+
+  const renderHeader = () => {};
 
   return (
     <>
       <BottomSheet
-        // ref={sheetRef}
-        getRef={props.getRef}
-        snapPoints={props.snapPoints || [300, 0]}
+        ref={sheetRef}
+        snapPoints={[300, 0]}
         borderRadius={10}
-        renderContent={props.renderContent}
-        renderHeader={props.renderHeader}
+        renderContent={renderContent}
+        renderHeader={renderHeader}
         {...props}
       />
     </>
@@ -34,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomSheetContent;
+export default forwardRef(BottomSheetContent);

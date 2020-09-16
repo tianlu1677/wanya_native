@@ -51,7 +51,7 @@ const Recommend = props => {
         style={styles.message}>
         <IconFont name="notice" size={20} />
         <BadgeMessage
-          value={"99"}
+          value={'99'}
           status={'error'}
           containerStyle={styles.badgeContainer}
           // badgeStyle={{width: 12, height: 12, borderRadius: 12}}

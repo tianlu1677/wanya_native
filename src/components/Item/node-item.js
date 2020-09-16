@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
 import * as action from '@/redux/constants';
 import {JoinButton} from '@/components/NodeComponents';
