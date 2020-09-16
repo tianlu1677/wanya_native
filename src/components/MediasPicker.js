@@ -6,7 +6,7 @@ import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import * as action from '@/redux/constants';
 
 const baseUrl =
-  process.env.NODE_ENV === 'development' ? 'https://xinxue.meirixinxue.com' : 'https://api.meirixinxue.com';
+  process.env.NODE_ENV === 'development' ? 'https://xinxue.meirixinxue.com' : 'https://xinxue.meirixinxue.com';
 
 const MediasPicker = WrapperComponent => {
   return props => {
