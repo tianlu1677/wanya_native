@@ -14,6 +14,8 @@ import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {Avator} from '@/components/NodeComponents';
+import { BOTTOM_HEIGHT } from "@/utils/navbar"
+
 // import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
 import ViewShot from 'react-native-view-shot';
@@ -110,7 +112,7 @@ const InviteDetail = ({navigation, route}) => {
     }
   };
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <CardView colors={['#4e4e4e', '#181818']}>
         <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
           <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
@@ -160,7 +162,9 @@ const InviteDetail = ({navigation, route}) => {
           bottom: 0,
           left: 0,
           right: 0,
+          paddingBottom: BOTTOM_HEIGHT,
           borderRadius: 0,
+          backgroundColor: 'black'
         }}
       />
 
@@ -173,7 +177,7 @@ const InviteDetail = ({navigation, route}) => {
           onPress={() => {
             setShareModelVisible(false);
           }}>
-          <ShareCardView>
+          <ShareCardView style={{paddingBottom: BOTTOM_HEIGHT}}>
             <TouchableOpacity
               style={{display: 'flex', alignItems: 'center'}}
               onPress={() => {
@@ -200,7 +204,7 @@ const InviteDetail = ({navigation, route}) => {
           </ShareCardView>
         </ModelWrap>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 };
 

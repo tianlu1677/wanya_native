@@ -221,10 +221,14 @@ function MainStackList() {
       screenOptions={({route}) => ({
         headerStyle: {
           backgroundColor: 'white',
-          height: 54,
+          // height: 54,
           elevation: 0,
           shadowOpacity: 0,
-          borderBottomWidth: 0,
+          borderBottomWidth: 1,
+          borderTopWidth: 1,
+          // borderBottomColor: 'red',
+          // justifyContent: 'center',
+          // alignItems: 'center'
         },
         headerBackTitleVisible: false,
         headerTintColor: 'black',

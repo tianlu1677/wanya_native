@@ -59,7 +59,7 @@ const EditAccountContent = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fafafa'}}>
+    <View style={{flex: 1, backgroundColor: '#fafafa'}}>
       {editKey === 'nickname' && (
         <TextInput
           caretHidden={false}
@@ -99,7 +99,7 @@ const EditAccountContent = ({navigation, route}) => {
           saveContent();
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -128,9 +128,11 @@ const styles = StyleSheet.create({
   publicBtnContainer: {
     flex: 1,
     position: 'absolute',
-    bottom: BOTTOM_HEIGHT,
+    bottom: 0,
     left: 0,
     right: 0,
+    paddingBottom: BOTTOM_HEIGHT,
+    backgroundColor: 'black'
   },
   saveButton: {
     fontSize: 28,

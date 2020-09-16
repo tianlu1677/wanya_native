@@ -5,7 +5,7 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/api/home_api';
-import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {STATUS_BAR_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 
 const Recommend = props => {
@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
-    paddingTop: STATUS_BAR_HEIGHT,
+    paddingTop: BOTTOM_HEIGHT,
     backgroundColor: 'white',
   },
   message: {
     position: 'absolute',
     right: 16,
     zIndex: 2,
-    top: 15 + STATUS_BAR_HEIGHT,
+    top: 15 + BOTTOM_HEIGHT,
   },
 });
 

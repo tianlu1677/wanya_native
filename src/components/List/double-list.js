@@ -77,7 +77,7 @@ const SingleItem = props => {
     <TouchableWithoutFeedback key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
         {data.single_cover.link_url && (
-          <FastImg source={{uri: data.single_cover.link_url}} style={{height: height}} />
+          <FastImg source={{uri: data.single_cover.link_url}} style={{height: height, backgroundColor: 'gray'}} />
         )}
         {data.has_video && (
           <FastImg style={styles.videoPlay} source={require('@/assets/images/video-play.png')} />

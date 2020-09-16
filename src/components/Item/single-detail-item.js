@@ -8,6 +8,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
+import {BOTTOM_HEIGHT} from "@/utils/navbar"
 
 export const PublishAccount = props => {
   const {data} = props;
@@ -302,6 +303,7 @@ const astyles = StyleSheet.create({
     alignItems: 'center',
     borderTopColor: '#ebebeb',
     borderTopWidth: 1,
+    marginBottom: BOTTOM_HEIGHT
   },
   text: {
     width: 174,

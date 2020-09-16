@@ -1,7 +1,8 @@
 import React, {Component, useEffect} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, Image} from 'react-native';
 import {WebView} from 'react-native-webview';
-
+import BackImg from '@/assets/images/back.png'
+import BackWhiteImg from '@/assets/images/back-white.png'
 // https://github.com/react-native-community/react-native-webview/blob/master/docs/Guide.md
 
 const WebViewPage = ({route, navigation}) => {
@@ -18,6 +19,8 @@ const WebViewPage = ({route, navigation}) => {
         shadowOpacity: 0,
         borderBottomWidth: 0,
       },
+
+      headerBackImage: () => (<Image source={bgColor === 'black' ? BackWhiteImg : BackImg} style={{width: 16, height: 16}} />)
     });
   }, [navigation]);
 

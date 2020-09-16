@@ -172,7 +172,9 @@ const TopicDetail = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {},
+  wrapper: {
+    paddingBottom: 20,
+  },
   title: {
     fontSize: 20,
     paddingTop: 8,

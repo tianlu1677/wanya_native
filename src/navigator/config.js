@@ -310,6 +310,7 @@ export const routers = [
   {
     name: 'InviteDetail',
     component: InviteDetail,
+    safeArea: false,
     options: {title: '邀请码'},
   },
   {
@@ -375,6 +376,7 @@ export const routers = [
   },
   {
     name: 'EditAccountContent',
+    safeArea: false,
     component: EditAccountContent,
     options: {title: '编辑信息'},
   },
