@@ -326,6 +326,7 @@ export const routers = [
   {
     name: 'LabStorageIndex',
     component: LabStorageIndex,
+    safeArea: false,
     options: {title: 'LabStorageIndex'},
   },
   {

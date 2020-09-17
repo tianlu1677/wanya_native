@@ -44,6 +44,9 @@ const Settings = ({navigation, route}) => {
           bgColor: 'black',
         });
         break;
+      case 'lab':
+        navigation.navigate('LabIndex');
+        break;
       case 'logout':
         console.log('logout');
         Helper.clearAllData()
@@ -114,6 +117,14 @@ const Settings = ({navigation, route}) => {
           goPages('invite');
         }}>
         <ItemTitle>邀请码</ItemTitle>
+        <ForwardRight />
+      </ItemView>
+      <ItemView
+        style={{...styles.bottomBorder1px}}
+        onPress={() => {
+          goPages('lab');
+        }}>
+        <ItemTitle>实验室</ItemTitle>
         <ForwardRight />
       </ItemView>
 

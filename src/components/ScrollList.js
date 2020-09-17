@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList, ActivityIndicator, StyleSheet, Image} from 'react-native';
+import {View, Animated, Text, FlatList, ActivityIndicator, StyleSheet, Image} from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
 
@@ -108,7 +108,7 @@ const ScrollList = props => {
   }, [props.loading]);
 
   return (
-    <FlatList
+    <Animated.FlatList
       ref={props.getRref}
       data={props.data}
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
@@ -125,6 +125,16 @@ const ScrollList = props => {
       numColumns={props.numColumns || 1}
       horizontal={false}
       ListHeaderComponent={props.ListHeaderComponent || null}
+      onScroll={Animated.event(
+        [{nativeEvent: {contentOffset: {y: props.scrollY || new Animated.Value(0)}}}],
+        {useNativeDriver: true},
+      )}
+      scrollToOverflowEnabled={true}
+      showsHorizontalScrollIndicator={false}
+      onMomentumScrollBegin={props.onMomentumScrollBegin}
+      onScrollEndDrag={props.onScrollEndDrag}
+      onMomentumScrollEnd={props.onMomentumScrollEnd}
+      contentContainerStyle={props.contentContainerStyle}
     />
   );
 };
