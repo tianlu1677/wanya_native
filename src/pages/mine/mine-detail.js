@@ -15,6 +15,7 @@ import GoPage from '@/utils/go_page';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import Toast from '@/components/Toast';
 
 const MineDetail = ({navigation, route}) => {
   const id = useSelector(state => state.account.currentAccount.id);
@@ -66,6 +67,10 @@ const MineDetail = ({navigation, route}) => {
 
   const goFollowerAccounts = () => {
     navigation.navigate('FollowerAccounts', {accountId: account.id});
+  };
+
+  const onPlay = () => {
+    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
   };
 
   useEffect(() => {
@@ -147,7 +152,7 @@ const MineDetail = ({navigation, route}) => {
               </View>
               <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
             </View>
-            <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} />
+            <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
           </View>
           <View style={styles.number}>
             <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
@@ -212,6 +217,7 @@ const MineDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   setting: {
     height: 20,

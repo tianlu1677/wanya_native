@@ -6,7 +6,9 @@ import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import * as action from '@/redux/constants';
 
 const baseUrl =
-  process.env.NODE_ENV === 'development' ? 'https://xinxue.meirixinxue.com' : 'https://xinxue.meirixinxue.com';
+  process.env.NODE_ENV === 'development'
+    ? 'https://xinxue.meirixinxue.com'
+    : 'https://xinxue.meirixinxue.com';
 
 const MediasPicker = WrapperComponent => {
   return props => {
@@ -50,7 +52,7 @@ const MediasPicker = WrapperComponent => {
       });
     };
 
-    const uploadAvatar = async (file) => {
+    const uploadAvatar = async file => {
       const token = await Helper.getData('auth_token');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/mine/accounts/${file.account_id}`,
@@ -65,7 +67,7 @@ const MediasPicker = WrapperComponent => {
         path: file.uri,
       };
 
-      console.log('xxx', uploadOptions)
+      console.log('xxx', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -81,7 +83,6 @@ const MediasPicker = WrapperComponent => {
           });
       });
     };
-
 
     const videoPick = (option = {}, callback) => {
       const options = {...option};
@@ -147,6 +148,10 @@ const MediasPicker = WrapperComponent => {
       SyanImagePicker.removePhotoAtIndex(index);
     };
 
+    const removeAllPhoto = () => {
+      SyanImagePicker.removeAllPhoto();
+    };
+
     return (
       <WrapperComponent
         {...props}
@@ -154,8 +159,9 @@ const MediasPicker = WrapperComponent => {
         uploadImage={uploadImage}
         videoPick={videoPick}
         uploadVideo={uploadVideo}
-        removeImage={removeImage}
         uploadAvatar={uploadAvatar}
+        removeImage={removeImage}
+        removeAllPhoto={removeAllPhoto}
       />
     );
   };

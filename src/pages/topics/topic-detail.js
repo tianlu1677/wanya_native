@@ -140,19 +140,16 @@ const TopicDetail = ({navigation, route}) => {
           <>
             {detail.content_style === 'img' && renderImg()}
             {detail.content_style === 'video' && renderVideo()}
-
             {detail.content_style === 'text' && (
-              <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 6}}>
+              <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
                 <GoBack color={'black'} />
               </View>
             )}
-            <View style={{backgroundColor: '#fff'}}>
-              <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-              <View style={{paddingLeft: 16, paddingRight: 16, marginBottom: 16, marginTop: 16}}>
-                <PlainContent data={detail} />
-              </View>
-              <PublishRelated data={detail} />
+            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+            <View style={{paddingLeft: 16, paddingRight: 16, marginBottom: 16, marginTop: 16}}>
+              <PlainContent data={detail} />
             </View>
+            <PublishRelated data={detail} />
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
         }
@@ -173,6 +170,7 @@ const TopicDetail = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     paddingBottom: 20,
   },
   title: {

@@ -21,7 +21,6 @@ const TopicList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    console.log(res);
     const data = res.data.topics;
     setLoading(false);
     setHeaders(res.headers);
@@ -50,8 +49,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingLeft: 16,
-    paddingRight: 16,
   },
   follow: {
     flexDirection: 'row',
@@ -72,7 +69,7 @@ const styles = StyleSheet.create({
   separator: {
     backgroundColor: '#ebebeb',
     height: 1,
-    marginLeft: 60,
+    marginLeft: 16,
   },
 });
 

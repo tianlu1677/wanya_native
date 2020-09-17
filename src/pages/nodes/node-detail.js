@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
-    backgroundColor: 'gray',
   },
   header: {
     paddingLeft: 16,

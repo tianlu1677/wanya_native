@@ -8,7 +8,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
-import {BOTTOM_HEIGHT} from "@/utils/navbar"
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 
 export const PublishAccount = props => {
   const {data} = props;
@@ -56,8 +56,10 @@ export const PublishRelated = props => {
     navigation.navigate('SpaceDetail', {spaceId: data.space.id});
   };
 
+  console.log(data);
+
   return (
-    <View>
+    <>
       {data.space && (
         <TouchableOpacity style={pstyles.spaceWrapper} onPress={goSpaceDetail}>
           <IconFont name="space-point" size={16} color={'#45ea6a'} />
@@ -65,7 +67,7 @@ export const PublishRelated = props => {
         </TouchableOpacity>
       )}
 
-      {data.tag_list && (
+      {data.tag_list.length > 0 && (
         <View style={pstyles.tagsWrapper}>
           {data.tag_list.map((v, index) => (
             <Text style={pstyles.tagsText} key={index}>
@@ -87,7 +89,7 @@ export const PublishRelated = props => {
           <Image style={pstyles.formImage} source={{uri: data.node.cover_url}} />
         </TouchableOpacity>
       )}
-    </View>
+    </>
   );
 };
 
@@ -177,20 +179,22 @@ export const ActionComment = props => {
             快来评论吧
           </Text>
           <TouchableOpacity style={astyles.btn} onPress={() => onCreate('praise')}>
-            <IconFont name="like" size={16} color={praise ? '#000' : '#bdbdbd'} />
+            <IconFont name="like" size={20} color={praise ? '#000' : '#bdbdbd'} />
             <Text style={{marginLeft: 5, color: praise ? '#000' : '#bdbdbd'}}>
               {props.detail.praises_count}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={astyles.btn} onPress={() => onCreate('star')}>
-            <IconFont name="star" size={16} color={star ? '#000' : '#bdbdbd'} />
+            <IconFont name="star" size={20} color={star ? '#f4ea2a' : '#bdbdbd'} />
             <Text style={{marginLeft: 5, color: star ? '#000' : '#bdbdbd'}}>
               {props.detail.stars_count}
             </Text>
           </TouchableOpacity>
           <View style={astyles.btn}>
-            <IconFont name="fenxiang" size={16} />
-            <Text style={{marginLeft: 5}}>{props.detail.stars_count}</Text>
+            <IconFont name="fenxiang" size={20} />
+            <Text style={{marginLeft: 5, color: star ? '#000' : '#bdbdbd'}}>
+              {props.detail.stars_count}
+            </Text>
           </View>
         </>
       )}
@@ -272,11 +276,12 @@ const pstyles = StyleSheet.create({
     fontSize: 11,
   },
   fromWrapper: {
-    marginBottom: 30,
-    marginTop: 20,
+    paddingBottom: 20,
+    paddingTop: 20,
     flexDirection: 'row',
     paddingLeft: 16,
     paddingRight: 19,
+    alignItems: 'center',
   },
   formTitle: {
     fontSize: 15,
@@ -296,23 +301,25 @@ const pstyles = StyleSheet.create({
 const astyles = StyleSheet.create({
   actionWrapper: {
     backgroundColor: '#fff',
-    height: 40,
+    height: 57,
     flexDirection: 'row',
     paddingLeft: 30,
     paddingRight: 30,
     alignItems: 'center',
     borderTopColor: '#ebebeb',
     borderTopWidth: 1,
-    marginBottom: BOTTOM_HEIGHT
+    marginBottom: BOTTOM_HEIGHT,
   },
   text: {
     width: 174,
     height: 35,
     lineHeight: 35,
     borderRadius: 5,
+    overflow: 'hidden',
     backgroundColor: '#f2f3f5',
     color: '#bdbdbd',
     paddingLeft: 19,
+    fontSize: 13,
   },
   btn: {
     marginLeft: 'auto',
@@ -322,7 +329,6 @@ const astyles = StyleSheet.create({
     lineHeight: 35,
     borderRadius: 15,
     overflow: 'hidden',
-    backgroundColor: '#fff',
   },
   input: {
     flex: 1,

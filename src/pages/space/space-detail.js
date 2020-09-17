@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, StyleSheet, ImageBackground, TouchableOpacity, Pressable} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
-import {PlayScore, Avator, GoBack} from '@/components/NodeComponents';
+import {PlayScore, Avator, JoinActivity, GoBack} from '@/components/NodeComponents';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
@@ -12,8 +12,10 @@ import BottomSheetContent from '@/components/BottomSheetContent';
 import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
+import * as action from '@/redux/constants';
 
 const SpaceDetail = ({navigation, route}) => {
+  const home = useSelector(state => state.home);
   const dispatch = useDispatch();
   const sheetRef = useRef(null);
   const [spaceId] = useState(route.params.spaceId);
@@ -61,6 +63,12 @@ const SpaceDetail = ({navigation, route}) => {
       index: 0,
     };
     dispatch(dispatchPreviewImage(data));
+  };
+
+  const joinNewTopic = () => {
+    const topics = {...home.savetopic, space: {id: detail.id, name: detail.name}};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.navigate('NewTopic');
   };
 
   useEffect(() => {
@@ -128,6 +136,7 @@ const SpaceDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+      <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
       <BottomSheetContent content={detail.intro} ref={sheetRef} />
     </View>
   ) : (
@@ -138,6 +147,7 @@ const SpaceDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   header: {
     paddingLeft: 16,

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
@@ -38,13 +38,13 @@ const NodeIndex = () => {
     <View style={styles.wrapper}>
       <View style={styles.cateWrap}>
         {categories.map((categorie, index) => (
-          <TouchableOpacity
+          <Pressable
             key={index}
             onPress={() => onChange(index)}
             style={[styles.cateName, active === index && styles.cateNameActive]}>
             <Text>{categorie.name}</Text>
             {active === index && <Text style={styles.active} />}
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </View>
       <ScrollView ref={scrollRef}>

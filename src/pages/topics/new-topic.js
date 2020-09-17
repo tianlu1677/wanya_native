@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, Pressable, TouchableOpacity, Button} from 'react-native';
+import {View, Image, Text, TextInput, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, CommonActions} from '@react-navigation/native';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
@@ -9,7 +9,6 @@ import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
-import CloseImg from '@/assets/images/close.png'
 
 const NewTopic = props => {
   const navigation = useNavigation();
@@ -72,26 +71,38 @@ const NewTopic = props => {
     setVideoSource(video);
   };
 
+  const isValidateForm = () => {
+    if (imageSource.length === 0 && videoSource.length === 0 && !content) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const onSubmit = async () => {
-    if (imageSource.length === 0 && videoSource.length === 0) {
-      return Toast.show('图片/视频不能为空哦~');
+    if (!isValidateForm()) {
+      Toast.show('图片/视频不能为空哦~');
+      return false;
     }
 
     if (imageSource.length > 0) {
       const isImageLoading = imageSource.every(v => v.id);
       if (!isImageLoading) {
-        return Toast.show('图片正在上传中');
+        Toast.show('图片正在上传中');
+        return false;
       }
     }
 
     if (videoSource.length > 0) {
       if (!videoSource[0].id) {
-        return Toast.show('视频正在上传中');
+        Toast.show('视频正在上传中');
+        return false;
       }
     }
 
-    if (savetopic.node && !savetopic.node.id) {
+    if (!savetopic.node) {
       navigation.navigate('AddNode');
+      return false;
     }
 
     const data = {
@@ -99,43 +110,56 @@ const NewTopic = props => {
       medias: imageSource.map(v => v.url),
       video_content: videoSource.length > 0 ? videoSource[0].url : '',
       plain_content: savetopic.plan_content,
-      mention_ids: savetopic.mention.map(v => v.id).join(),
+      mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
     };
     Toast.showLoading('正在发布中...');
     const res = await createTopic(data);
     Toast.hide();
-    navigation.navigate('TopicDetail', {topicId: res.id});
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
+      })
+    );
+
     dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
   };
-
-  useEffect(() => {
-    setContent(savetopic.plan_content);
-  }, [savetopic]);
-
 
   const LeftBtn = () => {
     return (
       <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}}>
         <IconFont name={'cancel'} size={12} />
       </Pressable>
-    )
-  }
+    );
+  };
 
-  // TODO, 当数据有效时，变黑色，其余变灰色
   const RightBtn = () => {
     return (
       <Pressable onPress={onSubmit}>
-        <Text style={{...styles.finishBtn}}>发布</Text>
-    </Pressable>)
-  }
+        <Text style={[styles.finishBtn, {color: isValidateForm() ? '#000' : '#bdbdbd'}]}>发布</Text>
+      </Pressable>
+    );
+  };
+
+  useEffect(() => {
+    setContent(savetopic.plan_content);
+  }, [savetopic]);
+
+  useEffect(() => {
+    // 清空数据
+    return () => {
+      dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
+      props.removeAllPhoto();
+    };
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: null,
       headerLeft: () => <LeftBtn />,
-      headerRight: () => <RightBtn />
+      headerRight: () => <RightBtn />,
     });
   }, [navigation, imageSource, savetopic]);
 
@@ -221,22 +245,15 @@ const NewTopic = props => {
           <Text style={[styles.addText, savetopic.node && styles.selectText]}>
             {savetopic.node ? savetopic.node.name : '选择圈子（必选）'}
           </Text>
-          <IconFont name="fanhui1" size={14} style={styles.backarrow} />
+          <IconFont name="arrow-right" size={10} style={styles.backarrow} />
         </TouchableOpacity>
         <GetLocation handleClick={getLocation} style={styles.addSlide}>
           <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} />
           <Text style={[styles.addText, savetopic.space && styles.selectText]}>
             {savetopic.space ? savetopic.space.name : '选择场地'}
           </Text>
-          <IconFont name="fanhui1" size={14} style={styles.backarrow} />
+          <IconFont name="arrow-right" size={10} style={styles.backarrow} />
         </GetLocation>
-        {/* <TouchableOpacity style={styles.addSlide} onPress={() => }>
-          <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} />
-          <Text style={[styles.addText, savetopic.space && styles.selectText]}>
-            {savetopic.space ? savetopic.space.name : '选择场地'}
-          </Text>
-          <IconFont name="fanhui1" size={14} style={styles.backarrow} />
-        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -328,6 +345,7 @@ const styles = StyleSheet.create({
   },
   backarrow: {
     marginLeft: 'auto',
+    color: '#c2c2c2',
   },
   submitBtn: {
     fontWeight: '500',
@@ -337,7 +355,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#BDBDBD',
-  }
+  },
 });
 
 export default MediasPicker(NewTopic);

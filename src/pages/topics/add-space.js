@@ -74,7 +74,7 @@ const AddSpace = props => {
             <View style={pstyles.proCity}>
               <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
               <Text style={pstyles.proCityText}>{home.location.chooseCity || '全国'}</Text>
-              <IconFont name="fanhui2" size={6} style={pstyles.proDownIcon} />
+              <IconFont name="backdown" size={6} style={pstyles.proDownIcon} />
             </View>
           </TouchableOpacity>
         </>

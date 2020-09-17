@@ -94,6 +94,7 @@ const CitySelect = props => {
               <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {hotCity.map((v, index) => (
                   <Text
+                    key={v}
                     onPress={() => chooseCity(v)}
                     style={[
                       styles.hotCityName,

@@ -2,8 +2,6 @@ import request from './request';
 
 // 场地列表
 export const getSpacesList = async (params = {}) => {
-  console.log(params);
-
   const res = await request({
     url: '/api/v1/spaces/list',
     method: 'GET',

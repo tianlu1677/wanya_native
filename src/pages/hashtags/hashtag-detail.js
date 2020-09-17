@@ -1,18 +1,20 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View, Image, Text, Button} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import {getHashtagPosts} from '@/api/hashtag_api';
-import {GoBack} from '@/components/NodeComponents';
+import {GoBack, JoinActivity} from '@/components/NodeComponents';
 import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import * as action from '@/redux/constants';
 
 const rightLogo =
   'http://file.meirixinxue.com/assets/2020/77963058-7b42-46ea-bc6b-f969e81bbdfd.png';
 const bgLogo = 'http://file.meirixinxue.com/assets/2020/ef47c0d6-39c2-4e99-988d-86332a12449e.jpg';
 
 const HashtagDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [hashtag] = useState(route.params.hashtag);
   const [currentKey, setCurrentKey] = useState('published_order');
 
@@ -31,6 +33,15 @@ const HashtagDetail = ({navigation, route}) => {
     };
     return <SingleList request={request} />;
   };
+
+  const joinNewTopic = () => {
+    const topics = {
+      plan_content: route.params.hashtag,
+    };
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.navigate('NewTopic');
+  };
+
   return (
     <View style={{flex: 1}}>
       <GoBack />
@@ -55,6 +66,7 @@ const HashtagDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+      <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
     </View>
   );
 };

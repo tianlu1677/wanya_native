@@ -67,7 +67,7 @@ const CommentList = props => {
 
   const renderItem = ({item, index}) => {
     return (
-      <View key={item.id} style={cstyles.wrapper}>
+      <View key={item.id} style={[cstyles.wrapper, props.style]}>
         <View style={cstyles.info}>
           <Avator account={item.account} size={25} />
           <Text style={{marginLeft: 7}}>{item.account.nickname}</Text>
