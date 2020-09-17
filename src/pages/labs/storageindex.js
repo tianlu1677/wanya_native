@@ -123,6 +123,7 @@ const App = () => {
     syncScrollOffset();
   };
 
+  // 放在最外面
   const renderHeader = () => {
     const y = scrollY.interpolate({
       inputRange: [0, HeaderHeight],
@@ -169,7 +170,8 @@ const App = () => {
       </View>
     );
   };
-
+  // 拆分成 scolllist ==> tabview header(需要知道宽高)
+  // sss
   const renderLabel = ({route, focused}) => {
     return (
       <Text style={[styles.label, {opacity: focused ? 1 : 0.5}]}>
@@ -197,6 +199,19 @@ const App = () => {
       default:
         return null;
     }
+
+    const getFlatListRefs = (ref, route) => {
+      if (ref) {
+        const found = listRefArr.current.find((e) => e.key === route.key);
+        if (!found) {
+          listRefArr.current.push({
+            key: route.key,
+            value: ref,
+          });
+        }
+      }
+    };
+
     return (
       <TabScene
         numCols={numCols}
