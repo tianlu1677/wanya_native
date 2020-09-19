@@ -115,8 +115,10 @@ const NodeDetail = ({navigation, route}) => {
           />
         </Pressable>
       </ImageBackground>
+      <View style={styles.separator} />
       <TabViewList
         currentKey={currentKey}
+        separator={true}
         tabData={[
           {
             key: 'publish',

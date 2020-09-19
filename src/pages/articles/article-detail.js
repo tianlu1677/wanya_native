@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
+import {useSelector} from 'react-redux';
 import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
-import { useSelector } from 'react-redux';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';

@@ -59,60 +59,62 @@ const TabList = props => {
   }, [contentWidth]);
 
   return (
-    <View
-      style={[
-        tabBarStyle.tab,
-        tabBarStyle[`tab${size}`],
-        bottomLine ? tabBarStyle.bottomLine : null,
-      ]}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator
-        ref={scrollRef}
-        centerContent={center}
-        scrollEnabled={scrollEnabled}>
-        {props.data.length > 0 &&
-          props.data.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => setIndex(item, index)}
-                onLayout={e => setLayout(e.nativeEvent.layout, index)}
-                key={item.key}
-                style={tabBarStyle.tabItem}>
-                <Text
-                  style={[
-                    tabBarStyle.tabItemText,
-                    tabBarStyle[`tabItemText${size}`],
-                    currentIndex === index && tabBarStyle.textActive,
-                  ]}>
-                  {item.title}
-                </Text>
-                <View
-                  style={[
-                    tabBarStyle.tabItemLine,
-                    tabBarStyle[`tabItemLine${size}`],
-                    currentIndex === index && tabBarStyle.lineActive,
-                  ]}
-                />
-              </TouchableOpacity>
-            );
-          })}
-      </ScrollView>
-    </View>
+    <>
+      <View
+        style={[
+          tabBarStyle.tabWrap,
+          tabBarStyle[`tab${size}`],
+          bottomLine ? tabBarStyle.bottomLine : null,
+        ]}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator
+          ref={scrollRef}
+          centerContent={center}
+          scrollEnabled={scrollEnabled}>
+          {props.data.length > 0 &&
+            props.data.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => setIndex(item, index)}
+                  onLayout={e => setLayout(e.nativeEvent.layout, index)}
+                  key={item.key}
+                  style={[tabBarStyle.tabItem]}>
+                  <Text
+                    style={[
+                      tabBarStyle.tabItemText,
+                      // tabBarStyle[`tabItemText${size}`],
+                      currentIndex === index && tabBarStyle.textActive,
+                    ]}>
+                    {item.title}
+                  </Text>
+                  <View
+                    style={[
+                      tabBarStyle.tabItemLine,
+                      tabBarStyle[`tabItemLine${size}`],
+                      currentIndex === index && tabBarStyle.lineActive,
+                    ]}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+        </ScrollView>
+      </View>
+      {props.separator ? <View style={tabBarStyle.separator} /> : null}
+    </>
   );
 };
 
 const tabBarStyle = StyleSheet.create({
-  tab: {
+  tabWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#fff',
   },
-  tabmiddle: {
+  tabbig: {
     height: 45,
   },
-  tabsmall: {
+  tabmiddle: {
     height: 45,
   },
   bottomLine: {
@@ -129,19 +131,19 @@ const tabBarStyle = StyleSheet.create({
     color: '#7F7F81',
     fontWeight: '500',
   },
-  tabItemTextmiddle: {
+  tabItemTextbig: {
     fontSize: 15,
   },
-  tabItemTextsmall: {
+  tabItemTextmiddle: {
     fontSize: 14,
   },
   textActive: {
     color: '#000',
   },
-  textActivemiddle: {
+  textActivebig: {
     fontSize: 18,
   },
-  textActivesmall: {
+  textActivemiddle: {
     fontSize: 14,
   },
   lineActive: {
@@ -151,13 +153,18 @@ const tabBarStyle = StyleSheet.create({
     backgroundColor: 'transparent',
     marginTop: 5,
   },
-  tabItemLinemiddle: {
+  tabItemLinebig: {
     width: 22,
     height: 3,
   },
-  tabItemLinesmall: {
+  tabItemLinemiddle: {
     width: 15,
     height: 3,
+  },
+  separator: {
+    backgroundColor: '#FAFAFA',
+    height: 9,
+    zIndex: 2,
   },
 });
 

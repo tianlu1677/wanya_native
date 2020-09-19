@@ -102,9 +102,13 @@ const TopicDetail = ({navigation, route}) => {
   };
 
   const renderVideo = () => {
+    const {width, height} = detail.media_video;
+    const videoWidth = 375;
+    const videoHeight = height ? height * (videoWidth / width) : videoWidth;
+
     return (
       <VideoPlayer
-        style={{height: 300}}
+        style={{height: videoHeight}}
         source={{uri: detail.video_content_m3u8}}
         posterResizeMode={'center'}
         navigator={navigation}
@@ -134,7 +138,7 @@ const TopicDetail = ({navigation, route}) => {
         detail={detail}
         enableLoadMore={false}
         changeVisible={value => setVisible(value)}
-        deleteTopicComment={deleteTopicComment}
+        deleteComment={deleteTopicComment}
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
@@ -146,10 +150,11 @@ const TopicDetail = ({navigation, route}) => {
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-            <View style={{paddingLeft: 16, paddingRight: 16, marginBottom: 16, marginTop: 16}}>
+            <View style={{padding: 16, paddingBottom: 10}}>
               <PlainContent data={detail} />
             </View>
             <PublishRelated data={detail} />
+            <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
         }
@@ -171,7 +176,6 @@ const TopicDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    paddingBottom: 20,
   },
   title: {
     fontSize: 20,
@@ -186,9 +190,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     paddingLeft: 16,
-    paddingTop: 20,
-    marginTop: 5,
-    backgroundColor: '#fff',
+    marginTop: 20,
   },
 });
 

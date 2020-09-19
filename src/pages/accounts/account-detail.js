@@ -31,29 +31,6 @@ const AccountDetail = ({navigation, route}) => {
     setAccount(res.data.account);
   };
 
-  const PublishList = () => {
-    return (
-      <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
-    );
-  };
-
-  const VideoList = () => {
-    return (
-      <DoubleList
-        request={{api: getAccountPosts, params: {id: accountId, type: 'publish_video'}}}
-      />
-    );
-  };
-
-  const PraiseList = () => {
-    return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
-  };
-
-  const ArticleListPage = () => {
-    const params = {id: accountId, type: 'publish'};
-    return <ArticleList request={{api: getAccountArticles, params}} />;
-  };
-
   const goFollowList = () => {
     navigation.navigate('FollowNodes', {accountId: account.id});
   };
@@ -149,33 +126,6 @@ const AccountDetail = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-
-      <TabViewList
-        currentKey={currentKey}
-        tabData={[
-          {
-            key: 'publish',
-            title: '动态',
-            component: PublishList,
-          },
-          {
-            key: 'video',
-            title: '视频',
-            component: VideoList,
-          },
-          {
-            key: 'praise',
-            title: '喜欢',
-            component: PraiseList,
-          },
-          {
-            key: 'article',
-            title: '文章',
-            component: ArticleListPage,
-          },
-        ]}
-        onChange={key => setCurrentKey(key)}
-      />
     </View>
   ) : (
     <Loading />
@@ -273,3 +223,58 @@ const styles = StyleSheet.create({
 });
 
 export default AccountDetail;
+
+export const AccountTab = props => {
+  const {detail} = props;
+  const [currentKey, setCurrentKey] = useState('publish');
+  const PublishList = () => {
+    return (
+      <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
+    );
+  };
+
+  const VideoList = () => {
+    return (
+      <DoubleList
+        request={{api: getAccountPosts, params: {id: accountId, type: 'publish_video'}}}
+      />
+    );
+  };
+
+  const PraiseList = () => {
+    return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
+  };
+
+  const ArticleListPage = () => {
+    const params = {id: accountId, type: 'publish'};
+    return <ArticleList request={{api: getAccountArticles, params}} />;
+  };
+  return (
+    <TabViewList
+      currentKey={currentKey}
+      tabData={[
+        {
+          key: 'publish',
+          title: '动态',
+          component: PublishList,
+        },
+        {
+          key: 'video',
+          title: '视频',
+          component: VideoList,
+        },
+        {
+          key: 'praise',
+          title: '喜欢',
+          component: PraiseList,
+        },
+        {
+          key: 'article',
+          title: '文章',
+          component: ArticleListPage,
+        },
+      ]}
+      onChange={key => setCurrentKey(key)}
+    />
+  );
+};

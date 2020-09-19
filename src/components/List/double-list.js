@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, Pressable, TouchableOpacity, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
@@ -74,10 +67,13 @@ const SingleItem = props => {
   });
 
   return (
-    <TouchableWithoutFeedback key={data.id} onPress={() => onGoDetail(data)}>
+    <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
         {data.single_cover.link_url && (
-          <FastImg source={{uri: data.single_cover.link_url}} style={{height: height, backgroundColor: 'gray'}} />
+          <FastImg
+            source={{uri: data.single_cover.link_url}}
+            style={{height: height, backgroundColor: 'gray'}}
+          />
         )}
         {data.has_video && (
           <FastImg style={styles.videoPlay} source={require('@/assets/images/video-play.png')} />
@@ -95,7 +91,7 @@ const SingleItem = props => {
           </TouchableOpacity>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
@@ -117,8 +113,8 @@ const DoubleList = props => {
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item, index}) => {
-    const leftPostList = listData.filter((v, index) => index % 2 === 0);
-    const rightPostLIst = listData.filter((v, index) => index % 2 !== 0);
+    const leftPostList = listData.filter((v, i) => i % 2 === 0);
+    const rightPostLIst = listData.filter((v, i) => i % 2 !== 0);
     return <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostLIst} />;
   };
 
@@ -129,14 +125,24 @@ const DoubleList = props => {
     const data = res.data.posts;
     setLoading(false);
     setHeaders(res.headers);
+    setListData(page === 1 ? data : [...listData, ...data]);
+  };
+
+  const indexLoadData = async (page = 1) => {
+    setLoading(true);
+    const {api, params} = props.request;
+    const res = await api({...params, page});
+    const data = res.data.posts;
+    setLoading(false);
+    setHeaders(res.headers);
     setListData(data);
   };
 
-  const onRefresh = () => {
-    if (props.type === 'recommend') {
-      loadData(pagination(headers).nextPage);
+  const onRefresh = (page = 1) => {
+    if (props.type === 'recommend' && page === 1) {
+      indexLoadData(pagination(headers).nextPage);
     } else {
-      loadData();
+      loadData(page);
     }
   };
 

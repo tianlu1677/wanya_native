@@ -29,7 +29,7 @@ export const Header = props => {
         </Text>
         <TouchableOpacity style={hstyles.infoView} onPress={goNodeDetail}>
           <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-          <IconFont name="node-solid" size={14} color={'#000'} style={{marginRight: 2}} />
+          <IconFont name="node-solid" size={12} color={'#000'} />
           <Text style={hstyles.nodeName}>{data.node_name}</Text>
         </TouchableOpacity>
       </View>
@@ -42,6 +42,8 @@ export const Header = props => {
 
 export const Bottom = props => {
   const [praise, setPraise] = useState(props.data.praise);
+  const [praiseCount, setPraiseCount] = useState(props.data.praises_count);
+
   const {data} = props;
 
   const onPraise = async () => {
@@ -65,10 +67,11 @@ export const Bottom = props => {
         }
         break;
     }
+    const count = praiseCount + (praise === true ? -1 : 1);
+    setPraiseCount(count);
   };
 
   const onShare = () => {
-    // console.log('share', data)
     let shareOptions = {
       title: '顽鸦',
       userName: 'gh_c2b50fe8e928',
@@ -104,13 +107,13 @@ export const Bottom = props => {
   return (
     <View style={bstyles.botView}>
       <Pressable style={bstyles.botCon} onPress={onPraise}>
-        <IconFont name={'like'} color={praise ? '#000' : '#bdbdbd'} />
+        <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
         <Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
-          {data.praises_count || ''}
+          {praiseCount > 0 ? praiseCount : ''}
         </Text>
       </Pressable>
       <View style={bstyles.botCon}>
-        <IconFont name="comment" color={'#bdbdbd'} />
+        <IconFont name="comment" size={20} color={'#bdbdbd'} />
         <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
       </View>
       <Pressable
@@ -118,7 +121,7 @@ export const Bottom = props => {
         onPress={() => {
           onShare();
         }}>
-        <IconFont name="fenxiang" style={{marginLeft: 'auto'}} />
+        <IconFont name="fenxiang" size={18} style={{marginLeft: 'auto'}} />
       </Pressable>
     </View>
   );
@@ -129,7 +132,7 @@ export const PlainContent = props => {
   const navigation = useNavigation();
 
   const goHashTagDetail = name => {
-    navigation.navigate('HashtagDetail', {hashtag: name});
+    navigation.navigate('HashtagDetail', {hashtag: name.replace('#', '')});
   };
 
   const AccountDetail = async nickname => {
@@ -138,19 +141,19 @@ export const PlainContent = props => {
   };
 
   return (
-    <Text numberOfLines={props.numberOfLines} style={props.style}>
+    <Text numberOfLines={props.numberOfLines} style={[props.style, cstyles.plainWrap]}>
       {data.hashtag_content_json ? (
         data.hashtag_content_json.map((v, index) => {
           return (
             <Text key={index}>
               {v.is_hashtag && (
                 <Text style={cstyles.hashtagText} onPress={() => goHashTagDetail(v.content)}>
-                  {v.content}
+                  {v.content}&nbsp;
                 </Text>
               )}
               {v.is_mention && (
                 <Text style={cstyles.hashtagText} onPress={() => AccountDetail(v.content)}>
-                  {v.content}
+                  {v.content}&nbsp;
                 </Text>
               )}
               {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content}</Text>}
@@ -172,41 +175,45 @@ const hstyles = StyleSheet.create({
   },
   content: {
     marginLeft: 12,
+    paddingTop: 4,
   },
   nameText: {
-    lineHeight: 20,
-    marginBottom: 4,
     color: '#9c9c9c',
+    fontSize: 12,
+    lineHeight: 20,
   },
   infoView: {
     flexDirection: 'row',
     alignItems: 'center',
-    color: '#9c9c9c',
   },
   timeText: {
-    color: '#9c9c9c',
+    color: '#bdbdbd',
     marginRight: 6,
+    fontSize: 11,
   },
   nodeName: {
     fontWeight: '500',
+    fontSize: 12,
+    marginLeft: 4,
   },
   joinBtn: {
     width: 75,
     height: 34,
     lineHeight: 34,
     backgroundColor: '#fafafa',
-    marginLeft: 'auto',
-    textAlign: 'center',
     borderRadius: 17,
     fontSize: 11,
     overflow: 'hidden',
+    marginLeft: 'auto',
+    textAlign: 'center',
   },
 });
 
 const bstyles = StyleSheet.create({
   botView: {
     flexDirection: 'row',
-    height: 54,
+    paddingBottom: 18,
+    paddingTop: 15,
     alignItems: 'center',
   },
   botCon: {
@@ -215,12 +222,19 @@ const bstyles = StyleSheet.create({
   },
   botNum: {
     marginLeft: 5,
-    marginRight: 30,
+    marginRight: 20,
     color: '#bdbdbd',
+    fontSize: 12,
   },
 });
 
 const cstyles = StyleSheet.create({
+  plainWrap: {
+    fontSize: 14,
+    lineHeight: 23,
+    color: '#1f1f1f',
+    textAlign: 'justify',
+  },
   hashtagText: {
     color: '#ff8d00',
     marginRight: 3,

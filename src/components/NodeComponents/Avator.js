@@ -29,15 +29,21 @@ const Avator = props => {
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
       />
-      {props.account && props.account.settled_type && props.account.settled_type !== 'single' && (
-        <Image
-          style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
-          source={
-            props.account.settled_type === 'personal'
-              ? require('@/assets/images/personal.png')
-              : require('@/assets/images/brand.png')
-          }
-        />
+      {props.isShowSettledIcon && (
+        <>
+          {props.account &&
+            props.account.settled_type &&
+            props.account.settled_type !== 'single' && (
+              <Image
+                style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
+                source={
+                  props.account.settled_type === 'personal'
+                    ? require('@/assets/images/personal.png')
+                    : require('@/assets/images/brand.png')
+                }
+              />
+            )}
+        </>
       )}
     </TouchableOpacity>
   );
@@ -45,6 +51,7 @@ const Avator = props => {
 
 Avator.propTypes = {
   size: PropTypes.number.isRequired, //宽高尺寸
+  isShowSettledIcon: true, //是否展示加v
 };
 
 // avatar_url

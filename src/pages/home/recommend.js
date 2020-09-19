@@ -26,6 +26,7 @@ const Recommend = props => {
   return (
     <View style={styles.wrapper}>
       <TabViewList
+        size="big"
         currentKey={currentKey}
         tabData={[
           {
