@@ -29,21 +29,21 @@ const MineDetail = ({navigation, route}) => {
     setAccount(res.data.account);
   };
 
-  // const goFollowList = () => {
-  //   navigation.navigate('FollowNodes', {accountId: account.id});
-  // };
-  //
-  // const goFollowAccounts = () => {
-  //   navigation.navigate('FollowAccounts', {accountId: account.id});
-  // };
-  //
-  // const goFollowerAccounts = () => {
-  //   navigation.navigate('FollowerAccounts', {accountId: account.id});
-  // };
+  const goFollowList = () => {
+    navigation.navigate('FollowNodes', {accountId: account.id});
+  };
 
-  // const onPlay = () => {
-  //   Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
-  // };
+  const goFollowAccounts = () => {
+    navigation.navigate('FollowAccounts', {accountId: account.id});
+  };
+
+  const goFollowerAccounts = () => {
+    navigation.navigate('FollowerAccounts', {accountId: account.id});
+  };
+
+  const onPlay = () => {
+    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
+  };
 
   const PublishList = () => {
     return (
@@ -66,22 +66,6 @@ const MineDetail = ({navigation, route}) => {
   const ArticleListPage = () => {
     const params = {id: accountId, type: 'publish'};
     return <ArticleList request={{api: getAccountArticles, params}} />;
-  };
-
-  const goFollowList = () => {
-    navigation.navigate('FollowNodes', {accountId: account.id});
-  };
-
-  const goFollowAccounts = () => {
-    navigation.navigate('FollowAccounts', {accountId: account.id});
-  };
-
-  const goFollowerAccounts = () => {
-    navigation.navigate('FollowerAccounts', {accountId: account.id});
-  };
-
-  const onPlay = () => {
-    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
   };
 
   const UnreadMessageCount = () => {
