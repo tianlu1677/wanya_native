@@ -17,7 +17,6 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {acc} from 'react-native-reanimated';
 
 const AccountDetail = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
@@ -85,14 +84,13 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  console.log(account);
-
   return account ? (
     <View style={styles.wrapper}>
       <GoBack />
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
-        <View style={styles.userWrap}>
-          <Avator account={account} size={50} isShowSettledIcon={false} />
+        <View
+          style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
+          <Avator account={account} size={51} isShowSettledIcon={false} />
           <View style={{marginLeft: 8}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.nickname}>{account.nickname}</Text>
@@ -133,8 +131,12 @@ const AccountDetail = ({navigation, route}) => {
         <View style={styles.introWrap}>
           <View style={{marginRight: 'auto'}}>
             <View style={{flexDirection: 'row', marginBottom: 8}}>
-              {account.gender === 'man' && <IconFont name="man" size={16} />}
-              {account.gender === 'woman' && <IconFont name="woman" size={16} />}
+              {account.gender === 'man' && (
+                <IconFont name="man" size={13} style={styles.maleIcon} />
+              )}
+              {account.gender === 'woman' && (
+                <IconFont name="woman" size={13} style={styles.maleIcon} />
+              )}
               <Text style={styles.tag}>{account.age || '18'}岁</Text>
               <Text style={styles.tag}>{account.province || '未知街区'}</Text>
             </View>
@@ -142,7 +144,7 @@ const AccountDetail = ({navigation, route}) => {
           </View>
           <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
         </View>
-        <View style={styles.number}>
+        <View style={styles.numberWrap}>
           <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
             <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
             <Text style={styles.numberTitle}>动态</Text>
@@ -199,14 +201,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingLeft: 16,
+    paddingLeft: 19,
     paddingRight: 16,
     paddingTop: 68,
     height: 290,
   },
   userWrap: {
     flexDirection: 'row',
-    marginBottom: 18,
+    marginBottom: 20,
   },
   nickname: {
     fontSize: 16,
@@ -222,19 +224,19 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   follow: {
-    width: 70,
+    width: 69,
     height: 28,
     lineHeight: 28,
     textAlign: 'center',
     fontSize: 13,
     borderRadius: 1,
     backgroundColor: '#fff',
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 'auto',
     fontWeight: '500',
   },
   settledWrap: {
-    marginBottom: 19,
+    marginBottom: 21,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -245,8 +247,11 @@ const styles = StyleSheet.create({
   },
   introWrap: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 17,
+  },
+  maleIcon: {
+    marginRight: 7,
+    marginTop: 2,
   },
   tag: {
     height: 18,
@@ -254,28 +259,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingLeft: 6,
     paddingRight: 6,
-    marginLeft: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backgroundColor: '#fff',
+    opacity: 0.6,
+    marginRight: 10,
   },
   intro: {
     lineHeight: 20,
     color: '#fff',
     fontSize: 11,
   },
-  number: {
+  numberWrap: {
     flexDirection: 'row',
-    marginBottom: 16,
+    position: 'absolute',
+    bottom: 18,
+    left: 20,
   },
   numberItem: {
     width: 45,
-    marginRight: 25,
+    marginRight: 24,
   },
   numberCount: {
     lineHeight: 20,
     height: 20,
     fontSize: 16,
     color: '#fff',
-    marginBottom: 5,
+    marginBottom: 3,
     fontWeight: '500',
   },
   numberTitle: {
