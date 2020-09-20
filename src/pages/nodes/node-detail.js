@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, View, Text, Image, ImageBackground, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Loading from '@/components/Loading';
@@ -18,6 +18,7 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
+import BottomSheetContent from '@/components/BottomSheetContent';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
@@ -25,6 +26,7 @@ import Toast from '@/components/Toast';
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
   const dispatch = useDispatch();
+  const sheetRef = useRef(null);
 
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
@@ -80,6 +82,10 @@ const NodeDetail = ({navigation, route}) => {
     navigation.navigate('NewTopic');
   };
 
+  const onShowIntro = () => {
+    sheetRef.current.snapTo();
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -97,7 +103,7 @@ const NodeDetail = ({navigation, route}) => {
           </View>
         </View>
         <View style={styles.descWrap}>
-          <Text style={styles.nodeDesc} numberOfLines={2}>
+          <Text style={styles.nodeDesc} numberOfLines={2} onPress={onShowIntro}>
             {detail.desc}
           </Text>
           <PlayScore score={detail.play_score} onPress={onPlay} />
@@ -145,6 +151,7 @@ const NodeDetail = ({navigation, route}) => {
       />
       <GoBack />
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
+      <BottomSheetContent content={detail.desc} ref={sheetRef} />
     </View>
   ) : (
     <Loading />
