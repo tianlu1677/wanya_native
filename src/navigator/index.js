@@ -23,6 +23,8 @@ import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
 
 import {useNavigation} from '@react-navigation/native';
+import BackWhiteImg from "@/assets/images/back-white.png"
+import BackImg from "@/assets/images/back.png"
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -106,22 +108,23 @@ function AuthStackList() {
   return (
     <AuthStack.Navigator
       screenOptions={({route}) => ({
-        // title: '管理员手机登录',
-        // headerStyle: {
-        //   backgroundColor: '#f4511e',
-        // },
-        // headerTintColor: 'white',
-        // headerTitleStyle: {
-        //   fontWeight: 'bold',
-        // },
+        headerBackTitleVisible: false,
+        title: false,
+        headerStyle: {
+          backgroundColor: 'black',
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 16, height: 16}} />)
       })}>
       <AuthStack.Screen
         name="AdminPhoneLogin"
         component={AdminPhoneLogin}
         options={({route}) => ({})}
       />
-      <AuthStack.Screen name="SocialLogin" component={SocialLogin} options={({route}) => ({})} />
-      <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} options={({route}) => ({})} />
+      <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
+      <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
       <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
     </AuthStack.Navigator>
   );

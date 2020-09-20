@@ -281,16 +281,7 @@ export const routers = [
   {
     name: 'PhoneLogin',
     component: PhoneLogin,
-    safeArea: false,
-    options: {
-      headerStyle: {
-        backgroundColor: 'black',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-        color: 'white',
-      },
-    },
+    safeArea: false
   },
   {
     name: 'SocialLogin',
@@ -301,12 +292,12 @@ export const routers = [
     },
     safeArea: false,
   },
-  {
-    name: 'InviteLogin',
-    component: InviteLogin,
-    options: {title: '输入邀请码'},
-    safeArea: false,
-  },
+  // {
+  //   name: 'InviteLogin',
+  //   component: InviteLogin,
+  //   options: {title: '输入邀请码'},
+  //   safeArea: false,
+  // },
   {
     name: 'InviteDetail',
     component: InviteDetail,

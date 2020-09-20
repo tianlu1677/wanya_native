@@ -6,7 +6,7 @@ import BackWhiteImg from '@/assets/images/back-white.png'
 // https://github.com/react-native-community/react-native-webview/blob/master/docs/Guide.md
 
 const WebViewPage = ({route, navigation}) => {
-  // console.log('route', route);
+  console.log('route', route);
   const {sourceUrl, title, bgColor} = route.params;
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const WebViewPage = ({route, navigation}) => {
 
       headerBackImage: () => (<Image source={bgColor === 'black' ? BackWhiteImg : BackImg} style={{width: 16, height: 16}} />)
     });
-  }, [navigation]);
+  }, [navigation, route]);
 
   return (
     <WebView

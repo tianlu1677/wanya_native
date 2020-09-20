@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect} from 'react';
-import {StyleSheet, View, TextInput, Text, Button} from 'react-native';
+import {StyleSheet, View, TextInput, Text, Button, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
 import {getCurrentAccount} from '@/api/mine_api';
@@ -22,15 +22,6 @@ const PhoneLogin = ({navigation, route}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerBackTitleVisible: false,
-      headerTintColor: 'white',
-      title: false,
-      headerStyle: {
-        backgroundColor: 'black',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-      },
       headerRight: () => (
         <View style={{fontSize: 14, paddingRight: 16}}>
           <Text
