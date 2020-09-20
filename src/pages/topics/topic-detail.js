@@ -150,8 +150,7 @@ const TopicDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: 'white'}}
-      keyboardVerticalOffset={90}>
+      style={{flex: 1, backgroundColor: '#fff'}}>
       <CommentList
         style={styles.wrapper}
         type="Topic"
@@ -195,7 +194,7 @@ const TopicDetail = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
+    // flex: 1,
   },
   title: {
     fontSize: 20,
@@ -210,7 +209,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     paddingLeft: 16,
-    marginTop: 20,
+    paddingTop: 20,
+    marginTop: 5,
+    backgroundColor: '#fff',
   },
 });
 

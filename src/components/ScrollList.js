@@ -65,10 +65,11 @@ const ScrollList = props => {
     let footer = null;
     switch (state) {
       case loadState.LOADING:
-        footer =
+        footer = (
           <View style={{height: 40}}>
             <ActivityIndicator />
           </View>
+        );
         break;
       case loadState.EMPTY:
         // footer = <Text>数据已全部完成</Text>;
@@ -130,7 +131,7 @@ const ScrollList = props => {
       ListHeaderComponent={props.ListHeaderComponent || null}
       onScroll={Animated.event(
         [{nativeEvent: {contentOffset: {y: props.scrollY || new Animated.Value(0)}}}],
-        {useNativeDriver: true},
+        {useNativeDriver: true}
       )}
       scrollToOverflowEnabled={true}
       showsHorizontalScrollIndicator={false}
@@ -138,6 +139,7 @@ const ScrollList = props => {
       onScrollEndDrag={props.onScrollEndDrag}
       onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
+      scrollIndicatorInsets={{right: 1}}
     />
   );
 };
