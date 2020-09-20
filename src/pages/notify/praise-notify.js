@@ -102,7 +102,7 @@ const PraiseNotify = ({navigation}) => {
         data={data}
         loading={loading}
         renderItem={renderItem}
-        height={1200}
+        // height={1200}
         renderSeparator={() => <View />}
       />
     </SafeAreaView>

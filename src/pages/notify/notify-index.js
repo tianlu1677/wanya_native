@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {StyleSheet, View, Text, Image, Pressable, Button} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import styled from 'styled-components/native';
 import {BadgeMessage} from '@/components/NodeComponents';
-import {connect, useSelector} from 'react-redux';
+import {connect, useSelector, useDispatch} from 'react-redux';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {dispatchCurrentAccount} from '@/redux/actions';
 
@@ -17,9 +17,9 @@ import {
 
 const NotifyIndex = ({navigation}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const dispatch = useDispatch();
 
   const goPageMethod = (type = '', event) => {
-
     if (!currentAccount.id) {
       return;
     }
@@ -63,6 +63,10 @@ const NotifyIndex = ({navigation}) => {
         console.log('default');
     }
   };
+
+  useEffect(() => {
+    dispatch(dispatchCurrentAccount())
+  });
 
   const unreadMessageCount = message_count => {
     if (message_count <= 0) {
@@ -206,7 +210,7 @@ const NotifyIndex = ({navigation}) => {
       </WrapView>
     </View>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   badgeContainer: {

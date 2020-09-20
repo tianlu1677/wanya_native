@@ -133,7 +133,7 @@ const TopicDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}
+      style={{flex: 1, backgroundColor: 'white'}}
       keyboardVerticalOffset={90}>
       <CommentList
         style={styles.wrapper}

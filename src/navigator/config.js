@@ -184,6 +184,7 @@ const articleRouter = [
   {
     name: 'ArticleDetail',
     component: ArticleDetail,
+    safeArea: false,
     options: {title: '文章详情'},
   },
   {

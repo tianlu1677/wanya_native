@@ -11,7 +11,7 @@ import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import {BadgeMessage} from '@/components/NodeComponents';
-import GoPage from '@/utils/go_page';
+
 // import HeaderImageScrollView, {TriggeringView} from 'react-native-image-header-scroll-view';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';

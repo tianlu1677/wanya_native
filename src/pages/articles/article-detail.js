@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
+import {Text, StyleSheet, KeyboardAvoidingView, Platform, Dimensions} from 'react-native';
 import {useSelector} from 'react-redux';
 import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
@@ -18,7 +18,7 @@ const ArticleDetail = ({navigation, route}) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: (detail && detail.title) || '文章详情',
+      title: (detail && detail.title) || '',
     });
   }, [navigation, detail]);
 
@@ -48,7 +48,7 @@ const ArticleDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}
+      style={{flex: 1, backgroundColor: 'white'}}
       keyboardVerticalOffset={90}>
       <CommentList
         style={styles.wrapper}
@@ -67,12 +67,14 @@ const ArticleDetail = ({navigation, route}) => {
               containerStyle={{
                 backgroundColor: 'white',
                 paddingTop: 20,
+                paddingLeft: 10,
+                paddingRight: 10,
               }}
-              imagesMaxWidth={300}
+              imagesMaxWidth={Dimensions.get("window").width - 20}
               baseFontStyle={{fontSize: 14, lineHeight: 0}}
               content={
                 detail &&
-                detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
+                detail.content.replace(/\.<img/gi, '<img style="max-width:"90%";height:auto" ')
               }
             />
             <PublishRelated data={detail} />
