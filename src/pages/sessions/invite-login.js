@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useReducer} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Text, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Image, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import {verifyInviteCode} from '@/api/phone_sign_api';
@@ -16,15 +16,14 @@ const InviteLogin = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
-      title: '',
-      headerTintColor: 'white',
+      title: false,
       headerStyle: {
         backgroundColor: 'black',
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        // color: 'white',
       },
+      headerBackImage: () => (<Image source={require('../../assets/images/back-white.png')} style={{width: 16, height: 16}} />),
       headerRight: () => (
         <Button
           onPress={onVerifyInviteCode}

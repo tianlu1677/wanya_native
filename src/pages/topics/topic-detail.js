@@ -90,10 +90,13 @@ const TopicDetail = ({navigation, route}) => {
     return (
       <View>
         <GoBack />
-        <Swiper style={{height: 300}} showsPagination={detail.medias.length > 0}>
-          {medias.map((media, index) => (
-            <TouchableOpacity onPress={() => onPreview(index)} key={media}>
-              <FastImg key={media} source={{uri: media}} style={{width: '100%', height: 300}} />
+        <Swiper
+          style={{height: maxHeight, backgroundColor: 'black'}}
+          showsPagination={detail.media_images.length > 0}
+        >
+          {media_images.map((media, index) => (
+            <TouchableOpacity onPress={() => onPreview(index)} key={media.image_url}>
+              <FastImg key={media.image_url} source={{uri: media.image_url}} style={{width: '100%', height: media.height}} mode={'contain'} />
             </TouchableOpacity>
           ))}
         </Swiper>

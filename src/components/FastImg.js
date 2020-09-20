@@ -12,7 +12,7 @@ const FastImg = props => {
     stretch: FastImage.resizeMode.stretch,
     center: FastImage.resizeMode.center,
   };
-  const resizeMode = modeList[props.mode || 'cover'];
+  const resizeMode = modeList[props.mode || 'stretch'];
 
   const onLoad = event => {
     props.onLoad && props.onLoad(event);

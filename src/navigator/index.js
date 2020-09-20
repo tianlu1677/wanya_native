@@ -104,31 +104,6 @@ function HomeTabList() {
   );
 }
 
-function AuthStackList() {
-  return (
-    <AuthStack.Navigator
-      screenOptions={({route}) => ({
-        headerBackTitleVisible: false,
-        title: false,
-        headerStyle: {
-          backgroundColor: 'black',
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 16, height: 16}} />)
-      })}>
-      <AuthStack.Screen
-        name="AdminPhoneLogin"
-        component={AdminPhoneLogin}
-        options={({route}) => ({})}
-      />
-      <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
-      <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
-      <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
-    </AuthStack.Navigator>
-  );
-}
 
 // function TopicStackList() {
 //   return (
@@ -277,6 +252,33 @@ function MainStackList() {
   );
 }
 
+function AuthStackList() {
+  return (
+    <AuthStack.Navigator
+      screenOptions={({route}) => ({
+        headerBackTitleVisible: false,
+        title: false,
+        headerStyle: {
+          backgroundColor: 'black',
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 16, height: 16}} />)
+      })}>
+      <AuthStack.Screen
+        name="AdminPhoneLogin"
+        component={AdminPhoneLogin}
+        options={({route}) => ({})}
+      />
+      <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
+      <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
+      <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
+    </AuthStack.Navigator>
+  );
+}
+
+
 const Navigation = () => {
   const login = useSelector(state => state.login);
   return (
@@ -285,6 +287,8 @@ const Navigation = () => {
     </NavigationContainer>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   blurView: {

@@ -6,18 +6,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 export const GoBack = props => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   let type = props.type || 'goback';
   const handleClick = () => {
-    if(navigation.canGoBack()) {
-      navigation.goBack()
+    if (navigation.canGoBack()) {
+      navigation.goBack();
     } else {
+      navigation.navigate('Recommend');
       console.log('no go');
     }
-    // props.handleClick && props.handleClick()
   };
   // console.log('getStatusBarHeight', getStatusBarHeight())
   return (
@@ -25,10 +25,14 @@ export const GoBack = props => {
       onPress={() => {
         handleClick();
       }}
-      style={{...styles.goBackWrap, top: Math.max(getStatusBarHeight(), 20)}}
-    >
+      style={{...styles.goBackWrap, top: Math.max(getStatusBarHeight(), 20)}}>
       <Text style={styles.button}>
-        <Icon name="chevron-back-outline" size={28} color={props.color || 'white'} iconStyle={{marginRight: 1}} />
+        <Icon
+          name="chevron-back-outline"
+          size={28}
+          color={props.color || 'white'}
+          iconStyle={{marginRight: 1}}
+        />
       </Text>
       {/*<IconFont name={"arrow-right"} color={'white'} size={14} />*/}
     </Pressable>
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    color: 'white'
+    color: 'white',
   },
 
   centerText: {

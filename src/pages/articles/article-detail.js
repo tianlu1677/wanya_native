@@ -62,15 +62,20 @@ const ArticleDetail = ({navigation, route}) => {
           <>
             <Text style={styles.title}>{detail.title}</Text>
             <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
+
             <RichHtml
-              style={{backgroundColor: 'pink', paddingTop: 20}}
+              containerStyle={{
+                backgroundColor: 'white',
+                paddingTop: 20,
+              }}
+              imagesMaxWidth={300}
+              baseFontStyle={{fontSize: 14, lineHeight: 0}}
               content={
                 detail &&
                 detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
               }
             />
             <PublishRelated data={detail} />
-
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
         }

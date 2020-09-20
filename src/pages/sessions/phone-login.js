@@ -22,6 +22,15 @@ const PhoneLogin = ({navigation, route}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerBackTitleVisible: false,
+      title: false,
+      headerStyle: {
+        backgroundColor: 'black',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+      },
+      headerBackImage: () => (<Image source={require('../../assets/images/back-white.png')} style={{width: 16, height: 16}} />),
       headerRight: () => (
         <View style={{fontSize: 14, paddingRight: 16}}>
           <Text
