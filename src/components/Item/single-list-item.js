@@ -13,11 +13,11 @@ export const Header = props => {
   const navigation = useNavigation();
 
   const goNodeDetail = () => {
-    navigation.navigate('NodeDetail', {nodeId: data.node_id});
+    navigation.push('NodeDetail', {nodeId: data.node_id});
   };
 
   const goAccountDetail = () => {
-    navigation.navigate('AccountDetail', {accountId: data.account.id});
+    navigation.push('AccountDetail', {accountId: data.account.id});
   };
 
   return (
@@ -132,12 +132,12 @@ export const PlainContent = props => {
   const navigation = useNavigation();
 
   const goHashTagDetail = name => {
-    navigation.navigate('HashtagDetail', {hashtag: name.replace('#', '')});
+    navigation.push('HashtagDetail', {hashtag: name.replace('#', '')});
   };
 
   const AccountDetail = async nickname => {
     const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
-    navigation.navigate('AccountDetail', {accountId: res.data.account.id});
+    navigation.push('AccountDetail', {accountId: res.data.account.id});
   };
 
   return (

@@ -75,15 +75,15 @@ const MineDetail = ({navigation, route}) => {
   };
 
   const goFollowList = () => {
-    navigation.navigate('FollowNodes', {accountId: account.id});
+    navigation.push('FollowNodes', {accountId: account.id});
   };
 
   const goFollowAccounts = () => {
-    navigation.navigate('FollowAccounts', {accountId: account.id});
+    navigation.push('FollowAccounts', {accountId: account.id});
   };
 
   const goFollowerAccounts = () => {
-    navigation.navigate('FollowerAccounts', {accountId: account.id});
+    navigation.push('FollowerAccounts', {accountId: account.id});
   };
 
   const onPlay = () => {

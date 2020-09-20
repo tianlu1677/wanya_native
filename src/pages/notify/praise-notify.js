@@ -65,18 +65,18 @@ const PraiseNotify = ({navigation}) => {
     const comment = notify.comment;
     if (notify.target_type === 'Comment' && comment && comment.commentable_id) {
       if (comment.commentable_type === 'Topic') {
-        navigation.navigate('TopicDetail', {topicId: comment.commentable_id});
+        navigation.push('TopicDetail', {topicId: comment.commentable_id});
         return;
       }
       if (comment.commentable_type === 'Article') {
-        navigation.navigate('ArticleDetail', {articleId: comment.commentable_id});
+        navigation.push('ArticleDetail', {articleId: comment.commentable_id});
       }
     } else if (notify.topic) {
       console.log('topic, topic');
-      navigation.navigate('TopicDetail', {topicId: notify.topic.id});
+      navigation.push('TopicDetail', {topicId: notify.topic.id});
     } else if (notify.article) {
       console.log('article, article');
-      navigation.navigate('ArticleDetail', {articleId: notify.article.id});
+      navigation.push('ArticleDetail', {articleId: notify.article.id});
     }
   };
 

@@ -97,7 +97,7 @@ export const TopicLinkContent = props => {
   const navigation = useNavigation();
 
   const goLinkDetail = () => {
-    navigation.navigate('WebView', {
+    navigation.push('WebView', {
       sourceUrl: props.data.topic_link.raw_link,
       title: props.data.topic_link.title,
     });
@@ -118,11 +118,11 @@ const BaseTopic = props => {
   const navigation = useNavigation();
 
   const goSpaceDetail = () => {
-    navigation.navigate('SpaceDetail', {spaceId: data.space.id});
+    navigation.push('SpaceDetail', {spaceId: data.space.id});
   };
 
   const goTopicDetail = () => {
-    navigation.navigate('TopicDetail', {topicId: data.id});
+    navigation.push('TopicDetail', {topicId: data.id});
   };
 
   return (

@@ -122,7 +122,7 @@ export const AccountList = props => {
   };
 
   const goAccountDetail = item => {
-    navigation.navigate('AccountDetail', {accountId: item.id});
+    navigation.push('AccountDetail', {accountId: item.id});
   };
 
   const renderItem = ({item, index}) => {

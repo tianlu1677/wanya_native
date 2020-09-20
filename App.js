@@ -49,12 +49,12 @@ class App extends Component {
   loginAdmin = () => {    
     // if (!Helper.getData('auth_token')) {
     //   setTimeout(() => {
-    //     this.props.navigation.navigate('AdminPhoneLogin');
+    //     this.props.navigation.push('AdminPhoneLogin');
     //   }, 1000);
     // }
 
     // if (React.$Store.getStore('auth_token')) {
-    //   this.props.navigation.navigate('AdminPhoneLogin')
+    //   this.props.navigation.push('AdminPhoneLogin')
     // }
   };
 

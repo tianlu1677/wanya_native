@@ -10,7 +10,7 @@ const JoinAccountsList = ({navigation, route}) => {
   const [listData, setListData] = useState([]);
 
   const goAccountDetail = item => {
-    navigation.navigate('AccountDetail', {accountId: item.id});
+    navigation.push('AccountDetail', {accountId: item.id});
   };
 
   const renderItem = ({item, index}) => {

@@ -16,7 +16,7 @@ export const PublishAccount = props => {
   const [followed, setFollowed] = useState(props.data.account.followed);
 
   const goAccountDetail = () => {
-    navigation.navigate('AccountDetail', {accountId: data.account.id});
+    navigation.push('AccountDetail', {accountId: data.account.id});
   };
 
   const onFollow = async () => {
@@ -49,11 +49,11 @@ export const PublishRelated = props => {
   const navigation = useNavigation();
 
   const goNodeDetail = () => {
-    navigation.navigate('NodeDetail', {nodeId: data.node.id});
+    navigation.push('NodeDetail', {nodeId: data.node.id});
   };
 
   const goSpaceDetail = () => {
-    navigation.navigate('SpaceDetail', {spaceId: data.space.id});
+    navigation.push('SpaceDetail', {spaceId: data.space.id});
   };
 
   console.log(data);

@@ -25,7 +25,7 @@ const HashtagList = props => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
       navigation.goBack();
     } else {
-      navigation.navigate('HashtagDetail', {hashtag: item.name});
+      navigation.push('HashtagDetail', {hashtag: item.name});
     }
   };
 

@@ -35,7 +35,7 @@ const NodeItem = props => {
     }
 
     if (props.type === 'list') {
-      navigation.navigate('NodeDetail', {nodeId: node.id});
+      navigation.push('NodeDetail', {nodeId: node.id});
     }
   };
 

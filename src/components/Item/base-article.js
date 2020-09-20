@@ -8,7 +8,7 @@ const BaseTopic = props => {
   const navigation = useNavigation();
 
   const goArticleDetail = () => {
-    navigation.navigate('ArticleDetail', {topicId: data.id});
+    navigation.push('ArticleDetail', {topicId: data.id});
   };
 
   return (
