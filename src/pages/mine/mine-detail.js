@@ -174,8 +174,6 @@ const MineDetail = ({navigation, route}) => {
       <TabViewList
         separator={true}
         currentKey={currentKey}
-        // header={<HeaderContent />}
-        size="small"
         tabData={[
           {
             key: 'publish',
