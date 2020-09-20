@@ -107,7 +107,10 @@ const TopicDetail = ({navigation, route}) => {
   const renderVideo = () => {
     const {width, height} = detail.media_video;
     const videoWidth = 375;
-    const videoHeight = height ? height * (videoWidth / width) : videoWidth;
+    let videoHeight = height ? height * (videoWidth / width) : videoWidth;
+    if (videoHeight > 500) {
+      videoHeight = 500;
+    }
 
     return (
       <VideoPlayer
