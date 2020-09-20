@@ -141,11 +141,11 @@ const Settings = ({navigation, route}) => {
 const styles = StyleSheet.create({
   topBorder1px: {
     borderColor: '#ebebeb',
-    borderTopWidth: 1,
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   bottomBorder1px: {
     borderColor: '#ebebeb',
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
 

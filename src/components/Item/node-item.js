@@ -63,7 +63,7 @@ const NodeItem = props => {
           {/* addnode */}
           {props.type === 'add-node' &&
             (home.savetopic.node && home.savetopic.node.id === node.id ? (
-              <IconFont name="chose-success" size={16} color={'#000'} style={styles.icon} />
+              <IconFont name="chose-success" size={16} color={'#000'} style={{}} />
             ) : (
               <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
             ))}

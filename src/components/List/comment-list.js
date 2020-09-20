@@ -186,7 +186,7 @@ const cstyles = StyleSheet.create({
   },
   separator: {
     backgroundColor: '#ebebeb',
-    height: 1,
+    height: StyleSheet.hairlineWidth,
     marginLeft: 49,
   },
 });
