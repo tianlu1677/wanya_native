@@ -67,22 +67,6 @@ const MineDetail = ({navigation, route}) => {
     return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
-  const goFollowList = () => {
-    navigation.navigate('FollowNodes', {accountId: account.id});
-  };
-
-  const goFollowAccounts = () => {
-    navigation.navigate('FollowAccounts', {accountId: account.id});
-  };
-
-  const goFollowerAccounts = () => {
-    navigation.navigate('FollowerAccounts', {accountId: account.id});
-  };
-
-  const onPlay = () => {
-    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
-  };
-
   useEffect(() => {
     loadData();
   }, []);
