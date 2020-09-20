@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Avator, PlayScore} from '@/components/NodeComponents';
+import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
@@ -11,10 +11,11 @@ import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
-import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT} from '@/utils/navbar';
 
 const MineDetail = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const currentBaseInfo = useSelector(state => state.account.currentBaseInfo);
   const [accountId] = useState(currentAccount.id);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
@@ -83,6 +84,14 @@ const MineDetail = ({navigation, route}) => {
     Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
   };
 
+  const UnreadMessageCount = () => {
+    // console.log('currentAccount', currentAccount)
+    if (!currentAccount || currentAccount.new_message_count === 0) {
+      return 0;
+    }
+    return currentAccount.new_message_count > 99 ? '99+' : currentAccount.new_message_count;
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -90,8 +99,17 @@ const MineDetail = ({navigation, route}) => {
   return account ? (
     <View style={styles.wrapper}>
       <View style={styles.setting}>
-        <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')}>
-          <IconFont name="notice" size={20} style={{marginRight: 25}} color="#fff" />
+        <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}>
+          <View style={styles.message_icon}>
+            <IconFont name="notice" size={20} style={{marginRight: 9}} color="#fff" />
+          </View>
+          {UnreadMessageCount() > 0 && (
+            <BadgeMessage
+              value={UnreadMessageCount()}
+              status={'error'}
+              containerStyle={{position: 'absolute', right: 2}}
+            />
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
           <IconFont name="settings" size={20} color="#fff" />
@@ -212,15 +230,15 @@ const styles = StyleSheet.create({
     height: 20,
     position: 'absolute',
     right: 16,
-    top: 30 + STATUS_BAR_HEIGHT,
+    top: 15 + BASIC_HEIGHT,
     zIndex: 2,
     flexDirection: 'row',
   },
   header: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 64 + STATUS_BAR_HEIGHT,
-    height: 290 + STATUS_BAR_HEIGHT,
+    paddingTop: 54 + BASIC_HEIGHT,
+    height: 270 + BASIC_HEIGHT,
   },
   userWrap: {
     flexDirection: 'row',
@@ -307,6 +325,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   message: {
+    marginRight: 10,
     // position: 'absolute',
     // right: 16,
     // zIndex: 2,
@@ -314,11 +333,11 @@ const styles = StyleSheet.create({
     // paddingRight: 10,
   },
   message_icon: {
-    marginRight: 25,
+    // marginRight: 10,
     // position: 'absolute',
     // top: 0,
     // right: 30,
-    zIndex: -1,
+    // zIndex: -1,
   },
 });
 
