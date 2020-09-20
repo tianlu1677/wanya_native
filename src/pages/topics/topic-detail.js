@@ -5,6 +5,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
+  Pressable,
+  Dimensions,
   TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -49,32 +51,30 @@ const TopicDetail = ({navigation, route}) => {
   }, []);
 
   const renderImg = () => {
+    const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
     let {medias, media_images} = detail;
-    let maxHeight = 375;
-    let maxWidth = 375;
-
+    let maxHeight = 100;
     (media_images || []).map(img => {
-      let scale = maxWidth / img.width;
-      let imgHeight = img.height * scale;
+      let imgHeight = Math.floor((screenWidth / img.width) * img.height);
       if (imgHeight > maxHeight) {
         maxHeight = imgHeight;
       }
     });
 
-    if (maxHeight > 500) {
-      maxHeight = 500;
-    }
+    // if (maxHeight > 1000) {
+    //   maxHeight = 750;
+    // }
 
     media_images = (media_images || []).map(img => {
-      let scale = maxWidth / img.width;
-      let imgHeight = img.height * scale;
-
+      let imgHeight = (screenWidth / img.width) * img.height;
       if (imgHeight < maxHeight) {
-        return {...img, paddingTop: (maxHeight - imgHeight) / 2};
+        return {...img, imgHeight: imgHeight, paddingTop: (maxHeight - imgHeight) / 2};
       } else {
-        return {...img, paddingTop: 0};
+        return {...img, imgHeight: imgHeight, paddingTop: 0};
       }
     });
+    // console.log('maxHeight', maxHeight)
+    // console.log('media_images', media_images)
 
     const onPreview = index => {
       const data = {
@@ -91,13 +91,17 @@ const TopicDetail = ({navigation, route}) => {
       <View>
         <GoBack />
         <Swiper
+          index={0}
+          loop={false}
+          activeDotColor={'yellow'}
+          dotColor={'white'}
           style={{height: maxHeight, backgroundColor: 'black'}}
           showsPagination={detail.media_images.length > 0}
         >
           {media_images.map((media, index) => (
-            <TouchableOpacity onPress={() => onPreview(index)} key={media.image_url}>
-              <FastImg key={media.image_url} source={{uri: media.image_url}} style={{width: '100%', height: media.height}} mode={'contain'} />
-            </TouchableOpacity>
+            <Pressable onPress={() => onPreview(index)} key={media.image_url} style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
+              <FastImg key={media.image_url} source={{uri: media.image_url}} style={{width: screenWidth, height: media.imgHeight}} mode={'contain'} />
+            </Pressable>
           ))}
         </Swiper>
       </View>
