@@ -10,6 +10,15 @@ export async function getCurrentAccount(params = {}) {
   return res.data;
 }
 
+// 当前用户的基本信息
+export async function getCurrentAccountBaseInfo() {
+  const res = await request({
+    url: '/api/v1/mine/accounts/base',
+    method: 'GET',
+  });
+  return res.data;
+}
+
 // 更新用户信息
 export async function syncAccountInfo(data = {}) {
   const res = await request({

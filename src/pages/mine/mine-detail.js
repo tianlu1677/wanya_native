@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, Animated} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -10,15 +10,19 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
+import {BadgeMessage} from '@/components/NodeComponents';
 import GoPage from '@/utils/go_page';
 // import HeaderImageScrollView, {TriggeringView} from 'react-native-image-header-scroll-view';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import Toast from '@/components/Toast';
+import {dispatchBaseCurrentAccount} from "@/redux/actions"
 
 const MineDetail = ({navigation, route}) => {
   const id = useSelector(state => state.account.currentAccount.id);
+  const currentBaseInfo = useSelector(state => state.account.currentBaseInfo);
+  const dispatch = useDispatch();
   const [accountId] = useState(id);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
@@ -29,9 +33,22 @@ const MineDetail = ({navigation, route}) => {
     navigation.setOptions({});
   }, [navigation]);
 
+  useEffect(() => {
+    dispatch(dispatchBaseCurrentAccount());
+  }, []);
+
   const loadData = async () => {
     const res = await getAccount(accountId);
     setAccount(res.data.account);
+  };
+
+  const UnreadMessageCount = () => {
+    // console.log('currentAccount', currentAccount)
+    // eslint-disable-next-line no-undef
+    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
+      return 0;
+    }
+    return currentBaseInfo.new_message_count > 99 ? '99+' : currentBaseInfo.new_message_count;
   };
 
   const PublishList = () => {
@@ -103,8 +120,17 @@ const MineDetail = ({navigation, route}) => {
     return (
       <View>
         <View style={styles.setting}>
-          <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')}>
-            <IconFont name="notice" size={20} style={{marginRight: 25}} color="#fff" />
+          <TouchableOpacity style={styles.message} onPress={() => navigation.navigate('NotifyIndex')}>
+            <BadgeMessage
+              value={UnreadMessageCount()}
+              status={'error'}
+              containerStyle={{position: 'absolute', right: 4, top: -3}}
+              // badgeStyle={{width: 12, height: 12, borderRadius: 12}}
+              // textStyle={{fontSize: 10}}
+            />
+            <View style={styles.message_icon}>
+              <IconFont name="notice" size={20} color={'white'} />
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
             <IconFont name="settings" size={20} color="#fff" />
@@ -310,6 +336,20 @@ const styles = StyleSheet.create({
   numberTitle: {
     fontSize: 10,
     color: '#fff',
+  },
+  message: {
+    // position: 'absolute',
+    // right: 16,
+    // zIndex: 2,
+    // top: 15 + BASIC_HEIGHT,
+    // paddingRight: 10,
+  },
+  message_icon: {
+    marginRight: 25,
+    // position: 'absolute',
+    // top: 0,
+    // right: 30,
+    zIndex: -1,
   },
 });
 

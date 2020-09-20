@@ -9,10 +9,11 @@ import {
   SAVE_NEW_TOPIC,
   ADMIN_SIGN_SUCCESS,
   CURRENT_ACCOUNT_SUCCESS,
-  PREVIEW_IMAGES
+  PREVIEW_IMAGES,
+  BASE_CURRENT_ACCOUNT_SUCCESS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
-import {getCurrentAccount} from '../../api/mine_api';
+import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import Helper from "@/utils/helper"
 
 // 当前用户
@@ -21,10 +22,13 @@ export const dispatchCurrentAccount = () => async dispatch => {
   dispatch({type: CURRENT_ACCOUNT_SUCCESS, account: res.account});
 };
 
-export const dispatchBaseCurrentAccount = () => {
-  return {
-    type: BASE_CURRENT_ACCOUNT_REQUEST,
-  };
+export const dispatchBaseCurrentAccount = () => async (dispatch) => {
+  const res = await getCurrentAccountBaseInfo();
+  console.log('dispatchBaseCurrentAccount', res)
+  dispatch({
+    type: BASE_CURRENT_ACCOUNT_SUCCESS,
+    account: res.account
+  });
 };
 
 export const dispatchAccountDetail = account_id => {

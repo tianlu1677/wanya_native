@@ -32,6 +32,7 @@ function accountReducer(state = defaultState, action) {
         account: action.account,
       });
     case BASE_CURRENT_ACCOUNT_SUCCESS:
+      console.log('account', action)
       return (state = {
         ...state,
         currentBaseInfo: action.account,
