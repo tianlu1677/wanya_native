@@ -70,10 +70,10 @@ const MineDetail = ({navigation, route}) => {
 
   const UnreadMessageCount = () => {
     // console.log('currentAccount', currentAccount)
-    if (!currentAccount || currentAccount.new_message_count === 0) {
+    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }
-    return currentAccount.new_message_count > 99 ? '99+' : currentAccount.new_message_count;
+    return currentBaseInfo.new_message_count > 99 ? '99+' : currentBaseInfo.new_message_count;
   };
 
   useEffect(() => {
