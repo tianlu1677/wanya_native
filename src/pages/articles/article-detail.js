@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, KeyboardAvoidingView, Platform, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, KeyboardAvoidingView, Platform, Dimensions} from 'react-native';
 import {useSelector} from 'react-redux';
 import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
@@ -48,8 +48,7 @@ const ArticleDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: 'white'}}
-      keyboardVerticalOffset={90}>
+      style={{flex: 1, backgroundColor: 'white'}}>
       <CommentList
         style={styles.wrapper}
         detail={detail}
@@ -70,7 +69,7 @@ const ArticleDetail = ({navigation, route}) => {
                 paddingLeft: 10,
                 paddingRight: 10,
               }}
-              imagesMaxWidth={Dimensions.get("window").width - 20}
+              imagesMaxWidth={Dimensions.get('window').width - 20}
               baseFontStyle={{fontSize: 14, lineHeight: 0}}
               content={
                 detail &&
@@ -78,6 +77,7 @@ const ArticleDetail = ({navigation, route}) => {
               }
             />
             <PublishRelated data={detail} />
+            <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
         }

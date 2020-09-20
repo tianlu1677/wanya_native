@@ -143,10 +143,7 @@ const topicRouter = [
     name: 'TopicDetail',
     component: TopicDetail,
     safeArea: false,
-    options: {
-      title: '帖子详情',
-      headerShown: false,
-    },
+    options: {title: '帖子详情', headerShown: false},
   },
   {
     name: 'NewTopic',
@@ -185,7 +182,7 @@ const articleRouter = [
     name: 'ArticleDetail',
     component: ArticleDetail,
     safeArea: false,
-    options: {title: '文章详情'},
+    options: {title: '文章详情', headerShown: false},
   },
   {
     name: 'HashtagDetail',
@@ -282,7 +279,7 @@ export const routers = [
   {
     name: 'PhoneLogin',
     component: PhoneLogin,
-    safeArea: false
+    safeArea: false,
   },
   {
     name: 'SocialLogin',

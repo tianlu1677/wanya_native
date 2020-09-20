@@ -314,7 +314,6 @@ const pstyles = StyleSheet.create({
 
 const astyles = StyleSheet.create({
   actionWrapper: {
-    backgroundColor: '#fff',
     height: 57,
     flexDirection: 'row',
     paddingLeft: 30,

@@ -83,6 +83,8 @@ const NewTopic = props => {
   };
 
   const onSubmit = async () => {
+    console.log(videoSource);
+
     if (!isValidateForm()) {
       Toast.show('图片/视频不能为空哦~');
       return false;
@@ -125,16 +127,20 @@ const NewTopic = props => {
     };
 
     Toast.showLoading('正在发布中...');
-    const res = await createTopic(data);
-    Toast.hide();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
-      })
-    );
+    try {
+      const res = await createTopic(data);
+      Toast.hide();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
+        })
+      );
 
-    dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
+      dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
+    } catch {
+      Toast.hide();
+    }
   };
 
   const LeftBtn = () => {
@@ -171,7 +177,7 @@ const NewTopic = props => {
       headerLeft: () => <LeftBtn />,
       headerRight: () => <RightBtn />,
     });
-  }, [navigation, imageSource, savetopic]);
+  }, [navigation, imageSource, videoSource, savetopic]);
 
   return (
     <View style={styles.wrapper}>
