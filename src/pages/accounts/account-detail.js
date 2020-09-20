@@ -15,7 +15,9 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
+import Toast from '@/components/Toast';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {acc} from 'react-native-reanimated';
 
 const AccountDetail = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
@@ -52,27 +54,58 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const onPlay = () => {
+    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
+  };
+
+  const PublishList = () => {
+    return (
+      <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
+    );
+  };
+
+  const VideoList = () => {
+    return (
+      <DoubleList
+        request={{api: getAccountPosts, params: {id: accountId, type: 'publish_video'}}}
+      />
+    );
+  };
+
+  const PraiseList = () => {
+    return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
+  };
+
+  const ArticleListPage = () => {
+    const params = {id: accountId, type: 'publish'};
+    return <ArticleList request={{api: getAccountArticles, params}} />;
+  };
+
   useEffect(() => {
     loadData();
   }, []);
+
+  console.log(account);
 
   return account ? (
     <View style={styles.wrapper}>
       <GoBack />
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
         <View style={styles.userWrap}>
-          <Avator account={account} size={50} />
+          <Avator account={account} size={50} isShowSettledIcon={false} />
           <View style={{marginLeft: 8}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.nickname}>{account.nickname}</Text>
-              <Image
-                style={{width: 16, height: 16, marginLeft: 7}}
-                source={
-                  account.settled_type === 'personal'
-                    ? require('@/assets/images/personal.png')
-                    : require('@/assets/images/brand.png')
-                }
-              />
+              {account.settled_type !== 'single' && (
+                <Image
+                  style={{width: 16, height: 16, marginLeft: 7}}
+                  source={
+                    account.settled_type === 'personal'
+                      ? require('@/assets/images/personal.png')
+                      : require('@/assets/images/brand.png')
+                  }
+                />
+              )}
             </View>
             <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
           </View>
@@ -84,17 +117,19 @@ const AccountDetail = ({navigation, route}) => {
               : '关注'}
           </Text>
         </View>
-        <View style={styles.settledWrap}>
-          <Image
-            style={{width: 16, height: 16, marginRight: 3}}
-            source={
-              account.settled_type === 'personal'
-                ? require('@/assets/images/personal.png')
-                : require('@/assets/images/brand.png')
-            }
-          />
-          <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
-        </View>
+        {account.settled_type !== 'single' && (
+          <View style={styles.settledWrap}>
+            <Image
+              style={{width: 16, height: 16, marginRight: 3}}
+              source={
+                account.settled_type === 'personal'
+                  ? require('@/assets/images/personal.png')
+                  : require('@/assets/images/brand.png')
+              }
+            />
+            <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
+          </View>
+        )}
         <View style={styles.introWrap}>
           <View style={{marginRight: 'auto'}}>
             <View style={{flexDirection: 'row', marginBottom: 8}}>
@@ -105,7 +140,7 @@ const AccountDetail = ({navigation, route}) => {
             </View>
             <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
           </View>
-          <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} />
+          <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
         </View>
         <View style={styles.number}>
           <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
@@ -126,6 +161,33 @@ const AccountDetail = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
+      <TabViewList
+        separator={true}
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'publish',
+            title: '动态',
+            component: PublishList,
+          },
+          {
+            key: 'video',
+            title: '视频',
+            component: VideoList,
+          },
+          {
+            key: 'praise',
+            title: '喜欢',
+            component: PraiseList,
+          },
+          {
+            key: 'article',
+            title: '文章',
+            component: ArticleListPage,
+          },
+        ]}
+        onChange={key => setCurrentKey(key)}
+      />
     </View>
   ) : (
     <Loading />
@@ -223,58 +285,3 @@ const styles = StyleSheet.create({
 });
 
 export default AccountDetail;
-
-export const AccountTab = props => {
-  const {detail} = props;
-  const [currentKey, setCurrentKey] = useState('publish');
-  const PublishList = () => {
-    return (
-      <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
-    );
-  };
-
-  const VideoList = () => {
-    return (
-      <DoubleList
-        request={{api: getAccountPosts, params: {id: accountId, type: 'publish_video'}}}
-      />
-    );
-  };
-
-  const PraiseList = () => {
-    return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
-  };
-
-  const ArticleListPage = () => {
-    const params = {id: accountId, type: 'publish'};
-    return <ArticleList request={{api: getAccountArticles, params}} />;
-  };
-  return (
-    <TabViewList
-      currentKey={currentKey}
-      tabData={[
-        {
-          key: 'publish',
-          title: '动态',
-          component: PublishList,
-        },
-        {
-          key: 'video',
-          title: '视频',
-          component: VideoList,
-        },
-        {
-          key: 'praise',
-          title: '喜欢',
-          component: PraiseList,
-        },
-        {
-          key: 'article',
-          title: '文章',
-          component: ArticleListPage,
-        },
-      ]}
-      onChange={key => setCurrentKey(key)}
-    />
-  );
-};

@@ -173,7 +173,8 @@ TabList.propTypes = {
   tabChange: PropTypes.func.isRequired, //onChange 返回item
   current: PropTypes.string, // 默认高亮第几项key
   center: PropTypes.bool, // 是否居中显示
-  bottomLine: PropTypes.bool, //是否显示底部分界线
+  bottomLine: PropTypes.bool, //是否显示底部线
+  separator: PropTypes.bool, //是否显示底部分界线
 };
 
 export default TabList;

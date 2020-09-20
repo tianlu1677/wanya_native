@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 
 const Avator = props => {
+  const [isShow] = useState(props.isShowSettledIcon === false ? false : true);
   const navigation = useNavigation();
   const imagestyle = {
     width: props.size,
@@ -29,21 +30,15 @@ const Avator = props => {
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
       />
-      {props.isShowSettledIcon && (
-        <>
-          {props.account &&
-            props.account.settled_type &&
-            props.account.settled_type !== 'single' && (
-              <Image
-                style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
-                source={
-                  props.account.settled_type === 'personal'
-                    ? require('@/assets/images/personal.png')
-                    : require('@/assets/images/brand.png')
-                }
-              />
-            )}
-        </>
+      {isShow && props.account.settled_type !== 'single' && (
+        <Image
+          style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
+          source={
+            props.account.settled_type === 'personal'
+              ? require('@/assets/images/personal.png')
+              : require('@/assets/images/brand.png')
+          }
+        />
       )}
     </TouchableOpacity>
   );
@@ -51,10 +46,8 @@ const Avator = props => {
 
 Avator.propTypes = {
   size: PropTypes.number.isRequired, //宽高尺寸
-  isShowSettledIcon: true, //是否展示加v
+  account: PropTypes.object.isRequired, //用户信息
+  isShowSettledIcon: PropTypes.bool, //是否展示加v
 };
 
-// avatar_url
-// 点击事件
-// 外层的padding
 export default Avator;

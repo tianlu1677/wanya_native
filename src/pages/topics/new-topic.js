@@ -13,6 +13,7 @@ import GetLocation from '@/components/GetLocation';
 const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const currentAccount = useSelector(state => state.account.currentAccount);
   const savetopic = useSelector(state => state.home.savetopic);
   const uploadProgress = useSelector(state => state.home.uploadProgress);
   const location = useSelector(state => state.home.location);
@@ -34,6 +35,7 @@ const NewTopic = props => {
   };
 
   const onImagePicker = () => {
+    props.removeAllPhoto();
     const options = {
       imageCount: 9 - imageSource.length,
     };
@@ -51,6 +53,7 @@ const NewTopic = props => {
   };
 
   const onVideoPicker = () => {
+    props.removeAllPhoto();
     props.videoPick({}, async (err, res) => {
       if (err) {
         return;
@@ -109,11 +112,18 @@ const NewTopic = props => {
       type: 'single',
       medias: imageSource.map(v => v.url),
       video_content: videoSource.length > 0 ? videoSource[0].url : '',
-      plain_content: savetopic.plan_content,
+      plain_content: savetopic.plan_content
+        ? savetopic.plan_content
+        : imageSource.length > 0
+        ? '分享图片'
+        : videoSource.length > 0
+        ? '分享视频'
+        : '',
       mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
     };
+
     Toast.showLoading('正在发布中...');
     const res = await createTopic(data);
     Toast.hide();
@@ -167,12 +177,6 @@ const NewTopic = props => {
     <View style={styles.wrapper}>
       <View style={styles.mediaCon}>
         {/* picture */}
-        {videoSource.length === 0 && (
-          <TouchableOpacity onPress={onImagePicker}>
-            <Image style={styles.mediaWrap} source={require('@/assets/images/add-photo.png')} />
-          </TouchableOpacity>
-        )}
-
         {imageSource.map((v, index) => (
           <View style={styles.mediaWrap} key={index}>
             {v.id ? (
@@ -184,19 +188,19 @@ const NewTopic = props => {
                 source={require('@/assets/images/loading.gif')}
               />
             )}
-            <TouchableOpacity onPress={() => deleteMedia(index)} style={styles.mediaClose}>
+            <TouchableOpacity onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
               <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
             </TouchableOpacity>
           </View>
         ))}
 
-        {/* video */}
-        {imageSource.length === 0 && videoSource.length === 0 && (
-          <TouchableOpacity onPress={onVideoPicker}>
-            <Image style={styles.mediaWrap} source={require('@/assets/images/add-video.png')} />
+        {videoSource.length === 0 && (
+          <TouchableOpacity onPress={onImagePicker}>
+            <Image style={styles.mediaWrap} source={require('@/assets/images/add-photo.png')} />
           </TouchableOpacity>
         )}
 
+        {/* video */}
         {videoSource.map((v, index) => (
           <View style={styles.mediaWrap} key={index}>
             {v.id ? (
@@ -216,43 +220,54 @@ const NewTopic = props => {
                 </View>
               </View>
             )}
-
-            <TouchableOpacity onPress={() => deleteMedia(0)} style={styles.mediaClose}>
+            <TouchableOpacity onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
               <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
             </TouchableOpacity>
           </View>
         ))}
+
+        {imageSource.length === 0 && videoSource.length === 0 && (
+          <TouchableOpacity onPress={onVideoPicker}>
+            <Image style={styles.mediaWrap} source={require('@/assets/images/add-video.png')} />
+          </TouchableOpacity>
+        )}
       </View>
       <TextInput
         style={styles.content}
         multiline
         textAlignVertical="top"
-        placeholder="记录与分享"
+        placeholder={
+          currentAccount.publish_topics_count > 0 ? '记录与分享' : '快开始写下你的第一篇帖子吧~'
+        }
         onChangeText={onChangeContent}
         value={content}
       />
       <View style={{flexDirection: 'row'}}>
-        <Text style={styles.addTextName} onPress={() => navigation.navigate('AddHashTag')}>
-          # 话题
-        </Text>
-        <Text style={styles.addTextName} onPress={() => navigation.navigate('AddMentionAccount')}>
-          @ 顽友
-        </Text>
+        <Pressable style={styles.addTextNameWrap} onPress={() => navigation.navigate('AddHashTag')}>
+          <IconFont name={'hashtag'} size={13} color="#000" />
+          <Text style={styles.addTextName}>话题</Text>
+        </Pressable>
+        <Pressable
+          style={styles.addTextNameWrap}
+          onPress={() => navigation.navigate('AddMentionAccount')}>
+          <IconFont name={'at'} size={13} color="#000" />
+          <Text style={styles.addTextName}>顽友</Text>
+        </Pressable>
       </View>
       <View style={styles.addWrapper}>
         <TouchableOpacity style={styles.addSlide} onPress={() => navigation.navigate('AddNode')}>
-          <IconFont name="node-solid" color={savetopic.node ? '#000' : '#c2c2c2'} />
+          <IconFont name="node-solid" color={savetopic.node ? '#000' : '#c2c2c2'} size={16} />
           <Text style={[styles.addText, savetopic.node && styles.selectText]}>
             {savetopic.node ? savetopic.node.name : '选择圈子（必选）'}
           </Text>
-          <IconFont name="arrow-right" size={10} style={styles.backarrow} />
+          <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
         </TouchableOpacity>
         <GetLocation handleClick={getLocation} style={styles.addSlide}>
-          <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} />
+          <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
           <Text style={[styles.addText, savetopic.space && styles.selectText]}>
             {savetopic.space ? savetopic.space.name : '选择场地'}
           </Text>
-          <IconFont name="arrow-right" size={10} style={styles.backarrow} />
+          <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
         </GetLocation>
       </View>
     </View>
@@ -270,6 +285,7 @@ const styles = StyleSheet.create({
   mediaCon: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    paddingBottom: 7,
   },
   mediaWrap: {
     position: 'relative',
@@ -282,10 +298,15 @@ const styles = StyleSheet.create({
     width: 71,
     height: 71,
   },
-  mediaClose: {
+  mediaCloseWrap: {
     position: 'absolute',
     top: 0,
     right: 0,
+    paddingLeft: 10,
+    paddingBottom: 10,
+    textAlign: 'right',
+  },
+  mediaClose: {
     width: 15,
     height: 15,
   },
@@ -312,20 +333,28 @@ const styles = StyleSheet.create({
   },
   content: {
     minHeight: 90,
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 20,
   },
-  addTextName: {
+  addTextNameWrap: {
     width: 63,
     height: 30,
-    lineHeight: 30,
     borderColor: '#cfd1dd',
     borderWidth: 1,
-    textAlign: 'center',
     marginRight: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addTextName: {
+    fontSize: 13,
+    marginLeft: 3,
   },
   addWrapper: {
     borderTopWidth: 1,
     borderTopColor: '#ebebeb',
-    marginTop: 24,
+    marginTop: 22,
   },
   addSlide: {
     flexDirection: 'row',
@@ -333,7 +362,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderBottomWidth: 1,
     borderBottomColor: '#ebebeb',
-    paddingLeft: 7,
+    paddingLeft: 6,
   },
   addText: {
     fontSize: 13,
@@ -345,7 +374,7 @@ const styles = StyleSheet.create({
   },
   backarrow: {
     marginLeft: 'auto',
-    color: '#c2c2c2',
+    marginRight: 7,
   },
   submitBtn: {
     fontWeight: '500',

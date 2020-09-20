@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, View} from 'react-native';
+import {Dimensions} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import PropTypes from 'prop-types';
 import TabList from './TabList';
@@ -35,8 +35,6 @@ const TabViewIndex = props => {
     setIndex(i);
   }, [props.currentKey]);
 
-  console.log(props);
-
   return (
     routes.length > 0 && (
       <TabView
@@ -47,7 +45,8 @@ const TabViewIndex = props => {
             tabChange={tabChange}
             size={props.size}
             bottomLine={props.bottomLine}
-            separator={props.separator} />
+            separator={props.separator}
+          />
         )}
         navigationState={{index, routes}}
         renderScene={SceneMap(scenes)}

@@ -78,7 +78,12 @@ const SingleItem = props => {
         {data.has_video && (
           <FastImg style={styles.videoPlay} source={require('@/assets/images/video-play.png')} />
         )}
-        <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
+        {data.type === 'topic' && (
+          <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
+        )}
+
+        {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
           <Text style={styles.singleName}>{data.account.nickname.toString().substr(0, 16)}</Text>
@@ -158,6 +163,7 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItem}
       numColumns={2}
+      style={{backgroundColor: '#fff'}}
       {...props}
     />
   );
