@@ -81,7 +81,7 @@ const NotifyIndex = ({navigation}) => {
   const unread_mentions_notifies_count = currentAccount.unread_system_messages_count;
 
   return (
-    <SafeAreaPlus>
+    <View>
       <WrapView>
         <ItemView onPress={goPageMethod.bind(this, 'notify_praise')}>
           <CoverWrapView>
@@ -204,7 +204,7 @@ const NotifyIndex = ({navigation}) => {
           </NotifyContentView>
         </ItemView>
       </WrapView>
-    </SafeAreaPlus>
+    </View>
   );
 };
 
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
 });
 
 const WrapView = styled(View)`
+  padding-top: 25px;
   background-color: white;
   height: 100%;
   padding-left: 15px;

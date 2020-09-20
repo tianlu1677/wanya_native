@@ -224,8 +224,8 @@ function MainStackList() {
           // height: 54,
           elevation: 0,
           shadowOpacity: 0,
-          borderBottomWidth: 1,
-          borderTopWidth: 1,
+          borderBottomWidth: 0,
+          borderTopWidth: 0,
           // borderBottomColor: 'red',
           // justifyContent: 'center',
           // alignItems: 'center'
