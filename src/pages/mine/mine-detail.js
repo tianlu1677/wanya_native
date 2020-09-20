@@ -91,7 +91,7 @@ const MineDetail = ({navigation, route}) => {
             <BadgeMessage
               value={UnreadMessageCount()}
               status={'error'}
-              containerStyle={{position: 'absolute', right: 2}}
+              containerStyle={{position: 'absolute', right: -6, top: -6}}
             />
           )}
         </TouchableOpacity>

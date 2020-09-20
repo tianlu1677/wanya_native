@@ -65,7 +65,10 @@ const ScrollList = props => {
     let footer = null;
     switch (state) {
       case loadState.LOADING:
-        footer = <ActivityIndicator />;
+        footer =
+          <View style={{height: 40}}>
+            <ActivityIndicator />
+          </View>
         break;
       case loadState.EMPTY:
         // footer = <Text>数据已全部完成</Text>;
