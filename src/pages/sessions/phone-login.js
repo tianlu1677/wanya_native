@@ -97,6 +97,7 @@ const PhoneLogin = ({navigation, route}) => {
     if (verifyResponse.error) {
       Toast.showError(verifyResponse.error, {});
     } else {
+      await Helper.setData('auth_token', accountInfo.token);
       Toast.showError('注册成功');
       const accountInfo = await getCurrentAccount({token: token});
       if (!accountInfo.account.had_invited) {
