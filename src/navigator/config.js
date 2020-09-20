@@ -206,7 +206,7 @@ const spaceRouter = [
     safeArea: false,
     options: {
       title: '场地详情',
-      headerShown: false
+      headerShown: false,
     },
   },
 ];

@@ -9,7 +9,7 @@ import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import NewTopic from '@/pages/topics/new-topic';
-import { HeaderBackButton } from '@react-navigation/stack';
+import {HeaderBackButton} from '@react-navigation/stack';
 
 import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
@@ -49,13 +49,12 @@ function HomeTabList() {
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let icon_list = {
-            'focused_Recommend': 'home-recommend',
-            'unfocused_Recommend': 'home-recommend-outline',
-            'unfocused_MineDetail': 'home-mine-outline',
-            'focused_MineDetail': 'home-mine',
-            'unfocused_GoNewTopic': 'home-newtopic',
-
-          }
+            focused_Recommend: 'home-recommend',
+            unfocused_Recommend: 'home-recommend-outline',
+            unfocused_MineDetail: 'home-mine-outline',
+            focused_MineDetail: 'home-mine',
+            unfocused_GoNewTopic: 'home-newtopic',
+          };
           let iconName = 'search';
           if (route.name === 'Recommend') {
             iconName = 'search';
@@ -63,8 +62,8 @@ function HomeTabList() {
             iconName = focused ? 'white-circle' : 'double-circle';
           }
 
-          let icon_name = `${focused ? 'focused' : 'unfocused'}_${route.name}`
-          return <IconFont name={icon_list[icon_name]} size={24} color="black" />
+          let icon_name = `${focused ? 'focused' : 'unfocused'}_${route.name}`;
+          return <IconFont name={icon_list[icon_name]} size={24} color="black" />;
           // return <IconFont name={iconName} color={focused ? 'black' : 'red'} />;
         },
       })}
@@ -94,7 +93,7 @@ function HomeTabList() {
           },
         })}
         options={{
-          gestureEnabled: false
+          gestureEnabled: false,
         }}
       />
       <Tab.Screen key={'MineDetail'} name={'MineDetail'} component={MineDetail} options={{}} />
@@ -232,9 +231,7 @@ function MainStackList() {
         },
         headerBackTitleVisible: false,
         headerTintColor: 'black',
-        leftButtonStyle: {
-
-        },
+        leftButtonStyle: {},
         headerLeftContainerStyle: {
           paddingLeft: 15,
         },
@@ -244,9 +241,11 @@ function MainStackList() {
         },
         headerTitleStyle: {
           fontWeight: 'bold',
-          fontSize: 16
+          fontSize: 16,
         },
-        headerBackImage: () => (<Image source={require('../assets/images/back.png')} style={{width: 16, height: 16}} />)
+        headerBackImage: () => (
+          <Image source={require('../assets/images/back.png')} style={{width: 16, height: 16}} />
+        ),
       })}>
       <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
       {routers.map(route => {

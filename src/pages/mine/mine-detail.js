@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, Animated} from 'react-native';
+import {View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
+import {Avator, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
@@ -10,20 +10,14 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
-import GoPage from '@/utils/go_page';
-// import HeaderImageScrollView, {TriggeringView} from 'react-native-image-header-scroll-view';
-
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import Toast from '@/components/Toast';
+import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
 
 const MineDetail = ({navigation, route}) => {
-  const id = useSelector(state => state.account.currentAccount.id);
-  const [accountId] = useState(id);
+  const currentAccount = useSelector(state => state.account.currentAccount);
+  const [accountId] = useState(currentAccount.id);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
-  const [scoll, setScroll] = useState(new Animated.Value(0));
-  // this.scroll = new Animated.Value(0)
 
   useLayoutEffect(() => {
     navigation.setOptions({});
@@ -32,6 +26,22 @@ const MineDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getAccount(accountId);
     setAccount(res.data.account);
+  };
+
+  const goFollowList = () => {
+    navigation.navigate('FollowNodes', {accountId: account.id});
+  };
+
+  const goFollowAccounts = () => {
+    navigation.navigate('FollowAccounts', {accountId: account.id});
+  };
+
+  const goFollowerAccounts = () => {
+    navigation.navigate('FollowerAccounts', {accountId: account.id});
+  };
+
+  const onPlay = () => {
+    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
   };
 
   const PublishList = () => {
@@ -57,80 +67,45 @@ const MineDetail = ({navigation, route}) => {
     return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
-  const goFollowList = () => {
-    navigation.navigate('FollowNodes', {accountId: account.id});
-  };
-
-  const goFollowAccounts = () => {
-    navigation.navigate('FollowAccounts', {accountId: account.id});
-  };
-
-  const goFollowerAccounts = () => {
-    navigation.navigate('FollowerAccounts', {accountId: account.id});
-  };
-
-  const onPlay = () => {
-    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
-  };
-
   useEffect(() => {
     loadData();
   }, []);
 
-  const HEADER_HEIGHT = 240;
-  const COLLAPSED_HEIGHT = 50;
-  const SCROLLABLE_HEIGHT = HEADER_HEIGHT - COLLAPSED_HEIGHT;
-
-  const _renderHeader = props => {
-    const translateY = this.state.scroll.interpolate({
-      inputRange: [0, SCROLLABLE_HEIGHT],
-      outputRange: [0, -SCROLLABLE_HEIGHT],
-      extrapolate: 'clamp',
-    });
-
-    return (
-      <Animated.View style={[styles.header, {transform: [{translateY}]}]}>
-        <ImageBackground source={{uri: 'https://picsum.photos/900'}} style={styles.cover}>
-          <View style={styles.overlay} />
-          <Text>xxxxx</Text>
-          {/*<TabBar {...props} style={styles.tabbar} />*/}
-        </ImageBackground>
-      </Animated.View>
-    );
-  };
-
-  const HeaderContent = () => {
-    return (
-      <View>
-        <View style={styles.setting}>
-          <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')}>
-            <IconFont name="notice" size={20} style={{marginRight: 25}} color="#fff" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-            <IconFont name="settings" size={20} color="#fff" />
-          </TouchableOpacity>
-        </View>
-        <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
-          <View style={styles.userWrap}>
-            <Avator account={account} size={50} isShowSettledIcon={false} />
-            <View style={{marginLeft: 8}}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.nickname}>{account.nickname}</Text>
+  return account ? (
+    <View style={styles.wrapper}>
+      <View style={styles.setting}>
+        <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')}>
+          <IconFont name="notice" size={20} style={{marginRight: 25}} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+          <IconFont name="settings" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
+      <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
+        <View
+          style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
+          <Avator account={account} size={50} isShowSettledIcon={false} />
+          <View style={{marginLeft: 8}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.nickname}>{account.nickname}</Text>
+              {account.settled_type !== 'single' && (
                 <Image
-                  style={{width: 16, height: 16, marginLeft: 7}}
+                  style={{width: 16, height: 16, marginLeft: 5}}
                   source={
                     account.settled_type === 'personal'
                       ? require('@/assets/images/personal.png')
                       : require('@/assets/images/brand.png')
                   }
                 />
-              </View>
-              <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
+              )}
             </View>
-            <Text style={styles.invite} onPress={() => navigation.navigate('InviteDetail')}>
-              邀请好友
-            </Text>
+            <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
           </View>
+          <Text style={styles.invite} onPress={() => navigation.navigate('InviteDetail')}>
+            邀请好友
+          </Text>
+        </View>
+        {account.settled_type !== 'single' && (
           <View style={styles.settledWrap}>
             <Image
               style={{width: 16, height: 16, marginRight: 3}}
@@ -142,48 +117,45 @@ const MineDetail = ({navigation, route}) => {
             />
             <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
           </View>
-          <View style={styles.introWrap}>
-            <View style={{marginRight: 'auto'}}>
-              <View style={{flexDirection: 'row', marginBottom: 8}}>
-                {account.gender === 'man' && <IconFont name="man" size={16} />}
-                {account.gender === 'woman' && <IconFont name="woman" size={16} />}
-                <Text style={styles.tag}>{account.age || '18'}岁</Text>
-                <Text style={styles.tag}>{account.province || '未知街区'}</Text>
-              </View>
-              <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
+        )}
+        <View style={styles.introWrap}>
+          <View style={{marginRight: 'auto'}}>
+            <View style={{flexDirection: 'row', marginBottom: 8}}>
+              {account.gender === 'man' && (
+                <IconFont name="man" size={16} style={styles.maleIcon} />
+              )}
+              {account.gender === 'woman' && (
+                <IconFont name="woman" size={16} style={styles.maleIcon} />
+              )}
+              <Text style={styles.tag}>{account.age || '18'}岁</Text>
+              <Text style={styles.tag}>{account.province || '未知街区'}</Text>
             </View>
-            <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
+            <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
           </View>
-          <View style={styles.number}>
-            <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-              <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
-              <Text style={styles.numberTitle}>动态</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.numberItem} onPress={goFollowList}>
-              <Text style={styles.numberCount}>{account.nodes_count}</Text>
-              <Text style={styles.numberTitle}>圈子</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.numberItem} onPress={goFollowAccounts}>
-              <Text style={styles.numberCount}>{account.following_count}</Text>
-              <Text style={styles.numberTitle}>关注</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.numberItem} onPress={goFollowerAccounts}>
-              <Text style={styles.numberCount}>{account.followers_count}</Text>
-              <Text style={styles.numberTitle}>粉丝</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </View>
-    );
-  };
-
-  return account ? (
-    <View style={styles.wrapper}>
-      <HeaderContent />
+          <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
+        </View>
+        <View style={styles.numberWrap}>
+          <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
+            <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
+            <Text style={styles.numberTitle}>动态</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.numberItem} onPress={goFollowList}>
+            <Text style={styles.numberCount}>{account.nodes_count}</Text>
+            <Text style={styles.numberTitle}>圈子</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.numberItem} onPress={goFollowAccounts}>
+            <Text style={styles.numberCount}>{account.following_count}</Text>
+            <Text style={styles.numberTitle}>关注</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.numberItem} onPress={goFollowerAccounts}>
+            <Text style={styles.numberCount}>{account.followers_count}</Text>
+            <Text style={styles.numberTitle}>粉丝</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
       <TabViewList
+        separator={true}
         currentKey={currentKey}
-        header={<HeaderContent />}
-        size="small"
         tabData={[
           {
             key: 'publish',
@@ -217,7 +189,6 @@ const MineDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   setting: {
     height: 20,
@@ -228,14 +199,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   header: {
-    paddingLeft: 16,
+    paddingLeft: 19,
     paddingRight: 16,
     paddingTop: 64 + STATUS_BAR_HEIGHT,
     height: 290 + STATUS_BAR_HEIGHT,
   },
   userWrap: {
     flexDirection: 'row',
-    marginBottom: 18,
+    marginBottom: 20,
   },
   nickname: {
     fontSize: 16,
@@ -263,7 +234,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   settledWrap: {
-    marginBottom: 19,
+    marginBottom: 21,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -274,8 +245,11 @@ const styles = StyleSheet.create({
   },
   introWrap: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 17,
+  },
+  maleIcon: {
+    marginRight: 7,
+    marginTop: 2,
   },
   tag: {
     height: 18,
@@ -283,28 +257,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingLeft: 6,
     paddingRight: 6,
-    marginLeft: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backgroundColor: '#fff',
+    opacity: 0.6,
+    marginRight: 10,
   },
   intro: {
     lineHeight: 20,
     color: '#fff',
     fontSize: 11,
   },
-  number: {
+  numberWrap: {
     flexDirection: 'row',
-    marginBottom: 16,
+    position: 'absolute',
+    bottom: 18,
+    left: 20,
   },
   numberItem: {
     width: 45,
-    marginRight: 25,
+    marginRight: 24,
   },
   numberCount: {
     lineHeight: 20,
     height: 20,
     fontSize: 16,
     color: '#fff',
-    marginBottom: 5,
+    marginBottom: 3,
     fontWeight: '500',
   },
   numberTitle: {

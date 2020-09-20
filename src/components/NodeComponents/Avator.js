@@ -25,7 +25,9 @@ const Avator = props => {
   }
 
   return (
-    <TouchableOpacity style={{...imagestyle, position: 'relative'}} onPress={goAccountDetail}>
+    <TouchableOpacity
+      style={{...imagestyle, position: 'relative', flexShrink: 0}}
+      onPress={goAccountDetail}>
       <FastImg
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
