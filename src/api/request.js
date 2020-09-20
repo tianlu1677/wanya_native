@@ -59,14 +59,14 @@ axios.interceptors.response.use(
         console.log('error', error);
         break;
       case 401:
-        Toast.show('请重新登录', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.CENTER,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
-          delay: 0,
-        });
+        // Toast.show('请重新登录', {
+        //   duration: Toast.durations.SHORT,
+        //   position: Toast.positions.CENTER,
+        //   shadow: true,
+        //   animation: true,
+        //   hideOnPress: true,
+        //   delay: 0,
+        // });
         // RootNavigation.reset({
         //   index: 0,
         //   routes: [{name: 'Recommend'}],

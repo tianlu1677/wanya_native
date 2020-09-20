@@ -86,6 +86,22 @@ const SocialLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%'}}
         resizeMode={'cover'}>
+
+        <View style={{position: 'absolute', backgroundColor: 'black', top: 29, right: 10, width: 30, height: 10}}>
+
+
+          <Text
+            onPress={() => {
+              // navigation.navigate('AdminPhoneLogin');
+              // navigation.navigate('InviteLogin');
+              navigation.navigate('PhoneLogin');
+            }}
+            style={{color: 'black'}}
+          >
+            去别的页面
+          </Text>
+        </View>
+
         <Button
           containerStyle={styles.loginContainer}
           buttonStyle={styles.loginButton}
@@ -112,15 +128,7 @@ const SocialLogin = ({navigation, route}) => {
             }}>
             《隐私政策》
           </Text>{' '}
-          <Text
-            onPress={() => {
-              navigation.navigate('AdminPhoneLogin');
-              // navigation.navigate('InviteLogin');
-              // navigation.navigate('PhoneLogin');
-            }}>
 
-            --
-          </Text>
         </Text>
       </ImageBackground>
     </View>

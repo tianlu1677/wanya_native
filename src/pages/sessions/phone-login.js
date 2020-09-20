@@ -103,8 +103,8 @@ const PhoneLogin = ({navigation, route}) => {
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
       } else {
-        await Helper.setData('auth_token', accountInfo.token);
-        dispatch(dispatchSetAuthToken(accountInfo.token));
+        await Helper.setData('auth_token', token);
+        dispatch(dispatchSetAuthToken(token));
         dispatch(dispatchCurrentAccount());
         navigation.reset({
           index: 0,

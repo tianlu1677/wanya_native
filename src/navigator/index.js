@@ -264,7 +264,10 @@ function AuthStackList() {
           shadowOpacity: 0,
           borderBottomWidth: 0,
         },
-        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 16, height: 16}} />)
+        headerLeftContainerStyle: {
+          paddingLeft: 15,
+        },
+        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 12, height: 12}} />)
       })}>
 
       <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
