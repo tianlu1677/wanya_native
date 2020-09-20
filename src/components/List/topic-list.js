@@ -13,10 +13,6 @@ const TopicList = props => {
     return <BaseTopic data={item} key={item.id} />;
   };
 
-  const renderSeparator = () => {
-    return <Text style={styles.separator} />;
-  };
-
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params} = props.request;
@@ -38,7 +34,6 @@ const TopicList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
-      renderSeparator={renderSeparator}
       {...props}
       style={styles.wrapper}
     />
@@ -65,11 +60,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginLeft: 'auto',
-  },
-  separator: {
-    backgroundColor: '#ebebeb',
-    height: 1,
-    marginLeft: 16,
   },
 });
 

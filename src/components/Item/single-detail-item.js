@@ -76,12 +76,18 @@ export const PublishRelated = props => {
           ))}
         </View>
       )}
+      <View style={{backgroundColor: '#FAFAFA', height: 9}} />
 
       {data.node && (
         <TouchableOpacity style={pstyles.fromWrapper} onPress={goNodeDetail}>
           <View>
-            <Text style={pstyles.formTitle}>来自{data.node.name}</Text>
-            <Text>
+            <View style={pstyles.formTitleWrap}>
+              <Text style={pstyles.formTitle}>来自</Text>
+              <IconFont name="node-solid" size={16} color={'#000'} style={{marginLeft: 10}} />
+              <Text style={pstyles.formTitle}>{data.node.name}</Text>
+            </View>
+
+            <Text style={pstyles.formInfo}>
               {data.node.topics_count}篇帖子 · {data.node.accounts_count}位
               {data.node.nickname || '圈友'}
             </Text>
@@ -127,8 +133,8 @@ export const ActionComment = props => {
             await createArticleAction({id: props.detail.id, type});
           }
         }
-        if (type === 'start') {
-          if (type) {
+        if (type === 'star') {
+          if (star) {
             await destroyArticleAction({id: props.detail.id, type});
           } else {
             await createArticleAction({id: props.detail.id, type});
@@ -143,8 +149,8 @@ export const ActionComment = props => {
             await createTopicAction({id: props.detail.id, type});
           }
         }
-        if (type === 'start') {
-          if (type) {
+        if (type === 'star') {
+          if (star) {
             await destroyTopicAction({id: props.detail.id, type});
           } else {
             await createTopicAction({id: props.detail.id, type});
@@ -179,22 +185,19 @@ export const ActionComment = props => {
             快来评论吧
           </Text>
           <TouchableOpacity style={astyles.btn} onPress={() => onCreate('praise')}>
-            <IconFont name="like" size={20} color={praise ? '#000' : '#bdbdbd'} />
+            <IconFont name="like" size={16} color={praise ? '#000' : '#bdbdbd'} />
             <Text style={{marginLeft: 5, color: praise ? '#000' : '#bdbdbd'}}>
               {props.detail.praises_count}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={astyles.btn} onPress={() => onCreate('star')}>
-            <IconFont name="star" size={20} color={star ? '#f4ea2a' : '#bdbdbd'} />
+            <IconFont name="star" size={16} color={star ? '#f4ea2a' : '#bdbdbd'} />
             <Text style={{marginLeft: 5, color: star ? '#000' : '#bdbdbd'}}>
               {props.detail.stars_count}
             </Text>
           </TouchableOpacity>
           <View style={astyles.btn}>
-            <IconFont name="fenxiang" size={20} />
-            <Text style={{marginLeft: 5, color: star ? '#000' : '#bdbdbd'}}>
-              {props.detail.stars_count}
-            </Text>
+            <IconFont name="fenxiang" size={16} />
           </View>
         </>
       )}
@@ -209,7 +212,9 @@ export const ActionComment = props => {
             autoFocus
             onBlur={() => props.changeVisible(false)}
           />
-          <Text style={astyles.sendBtn} onPress={publishComment}>
+          <Text
+            style={[astyles.sendBtn, {color: value ? '#000' : '#bdbdbd'}]}
+            onPress={publishComment}>
             发送
           </Text>
         </>
@@ -255,11 +260,13 @@ const pstyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 16,
+    marginBottom: 18,
   },
   spaceText: {
     color: '#45ea6a',
     marginLeft: 6,
     fontSize: 14,
+    lineHeight: 20,
   },
   tagsWrapper: {
     flexDirection: 'row',
@@ -276,18 +283,25 @@ const pstyles = StyleSheet.create({
     fontSize: 11,
   },
   fromWrapper: {
-    paddingBottom: 20,
-    paddingTop: 20,
+    height: 90,
     flexDirection: 'row',
     paddingLeft: 16,
     paddingRight: 19,
     alignItems: 'center',
   },
+  formTitleWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 20,
+    marginBottom: 7,
+  },
   formTitle: {
     fontSize: 15,
-    lineHeight: 20,
     fontWeight: '500',
-    marginBottom: 7,
+  },
+  formInfo: {
+    fontSize: 12,
+    lineHeight: 20,
   },
   formImage: {
     width: 50,
@@ -347,7 +361,6 @@ const astyles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     textAlign: 'center',
-    color: '#bdbdbd',
     fontSize: 13,
     marginLeft: 10,
     marginRight: 10,

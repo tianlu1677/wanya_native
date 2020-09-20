@@ -38,6 +38,7 @@ const SingleList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
+      style={{backgroundColor: '#fff'}}
       {...props}
     />
   );

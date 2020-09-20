@@ -6,7 +6,7 @@ import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
 import {searchApi} from '@/api/search_api';
 
-const AddHashTag = () => {
+const AddHashTag = ({navigation}) => {
   const [searchKey, setSearchKey] = useState(null);
   const [request, setRequest] = useState({
     api: getHashtagList,
@@ -39,10 +39,13 @@ const AddHashTag = () => {
         <>
           <Search
             style={styles.search}
-            placeholder="搜索更多场地"
+            placeholder="搜索更多话题"
             onChangeText={text => setSearchKey(text)}
+            onCancel={() => navigation.goBack()}
           />
-          <Text style={[pstyles.proCityText, pstyles.proWrapper]}>热门话题</Text>
+          <Text style={[pstyles.proCityText, pstyles.proWrapper]}>
+            {searchKey ? '搜索到的话题' : '热门话题'}
+          </Text>
         </>
       }
     />
@@ -52,6 +55,7 @@ const AddHashTag = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   search: {
     paddingLeft: 14,

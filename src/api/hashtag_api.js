@@ -32,6 +32,5 @@ export async function getHashtagPosts(params) {
     method: 'GET',
     params: params,
   });
-  console.log('api params', params);
   return res;
 }

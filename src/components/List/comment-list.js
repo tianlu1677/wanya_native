@@ -70,7 +70,7 @@ const CommentList = props => {
       <View key={item.id} style={[cstyles.wrapper, props.style]}>
         <View style={cstyles.info}>
           <Avator account={item.account} size={25} />
-          <Text style={{marginLeft: 7}}>{item.account.nickname}</Text>
+          <Text style={cstyles.nickname}>{item.account.nickname}</Text>
           <TouchableOpacity
             onPress={() => onPraise(item, index)}
             style={{marginLeft: 'auto', flexDirection: 'row'}}>
@@ -80,29 +80,27 @@ const CommentList = props => {
             </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{marginLeft: 32}} onPress={() => choseAction(item)}>
-          <View style={cstyles.comment}>
-            <Text style={cstyles.text}>{item.content}</Text>
-            {item.target_account_id && (
-              <View style={cstyles.more}>
-                <Text style={{fontWeight: '500'}}>{item.target_account_nickname}: </Text>
-                <Text>
-                  {item.target_comment_content ? item.target_comment_content : '评论已删除'}
-                </Text>
-              </View>
-            )}
-            <Text style={{color: '#bdbdbd', fontSize: 11}}>
-              {item.created_at_text} · 回复{' '}
-              {item.child_comments_count ? item.child_comments_count : ''}
-            </Text>
-          </View>
+        <TouchableOpacity style={cstyles.comment} onPress={() => choseAction(item)}>
+          <Text style={cstyles.text}>{item.content}</Text>
+          {item.target_account_id && (
+            <View style={cstyles.more}>
+              <Text style={cstyles.moreNickname}>{item.target_account_nickname}: </Text>
+              <Text style={cstyles.moreText}>
+                {item.target_comment_content ? item.target_comment_content : '评论已删除'}
+              </Text>
+            </View>
+          )}
+          <Text style={cstyles.reply}>
+            {item.created_at_text} · 回复{' '}
+            {item.child_comments_count ? item.child_comments_count : ''}
+          </Text>
         </TouchableOpacity>
       </View>
     );
   };
 
   const renderSeparator = () => {
-    return <View style={{backgroundColor: '#ebebeb', height: 1, marginLeft: 49}} />;
+    return <View style={cstyles.separator} />;
   };
 
   const loadData = async (page = 1) => {
@@ -139,32 +137,57 @@ const CommentList = props => {
 
 const cstyles = StyleSheet.create({
   wrapper: {
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
+    padding: 16,
+    paddingBottom: 10,
   },
   info: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 5,
   },
-  content: {
-    paddingBottom: 10,
+  nickname: {
+    marginLeft: 7,
+    color: '#9c9c9c',
+    fontSize: 12,
+  },
+  comment: {
+    marginLeft: 32,
   },
   text: {
     fontSize: 13,
-    marginTop: 11,
-    marginBottom: 11,
+    lineHeight: 20,
+    textAlign: 'justify',
+    marginBottom: 5,
   },
   more: {
-    paddingLeft: 14,
-    paddingRight: 14,
-    paddingTop: 11,
-    paddingBottom: 11,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     backgroundColor: '#f2f3f5',
     color: '#bdbdbd',
-    marginBottom: 11,
     fontSize: 12,
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  moreNickname: {
+    fontWeight: '500',
+    color: '#bdbdbd',
+    textAlign: 'justify',
+    fontSize: 12,
+  },
+  moreText: {
+    color: '#bdbdbd',
+    textAlign: 'justify',
+    fontSize: 12,
+  },
+  reply: {
+    color: '#bdbdbd',
+    fontSize: 11,
+    lineHeight: 19,
+  },
+  separator: {
+    backgroundColor: '#ebebeb',
+    height: 1,
+    marginLeft: 49,
   },
 });
 

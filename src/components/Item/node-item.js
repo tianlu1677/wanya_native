@@ -27,18 +27,14 @@ const NodeItem = props => {
     setFollowed(!followed);
   };
 
-  const chooseNode = item => {
-    const topics = {...home.savetopic, node: item};
-    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.goBack();
-  };
-
   const goNodeDetail = () => {
     if (props.type === 'add-node') {
-      return false;
+      const topics = {...home.savetopic, node};
+      dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+      navigation.goBack();
     }
 
-    if (props.type === '') {
+    if (props.type === 'list') {
       navigation.navigate('NodeDetail', {nodeId: node.id});
     }
   };
@@ -65,15 +61,12 @@ const NodeItem = props => {
           )}
 
           {/* addnode */}
-          {props.type === 'add-node' && (
-            <TouchableOpacity onPress={() => chooseNode(node)}>
-              {home.savetopic.node && home.savetopic.node.id === node.id ? (
-                <IconFont name="chose-success" size={16} color={'#000'} style={styles.icon} />
-              ) : (
-                <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
-              )}
-            </TouchableOpacity>
-          )}
+          {props.type === 'add-node' &&
+            (home.savetopic.node && home.savetopic.node.id === node.id ? (
+              <IconFont name="chose-success" size={16} color={'#000'} style={styles.icon} />
+            ) : (
+              <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
+            ))}
         </View>
       </View>
     </TouchableOpacity>

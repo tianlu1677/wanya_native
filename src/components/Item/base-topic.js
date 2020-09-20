@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Pressable} from 'react-native';
+import {View, Text, Image, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -86,9 +86,9 @@ export const TopicVideoContent = props => {
     <>
       <FastImg
         source={{uri: single_cover.link_url}}
-        style={{width: videoAttr.width / 2, height: videoAttr.height / 2}}
-      />
-      <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
+        style={{width: videoAttr.width / 2, height: videoAttr.height / 2, position: 'relative'}}>
+        <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
+      </FastImg>
     </>
   );
 };
@@ -99,17 +99,17 @@ export const TopicLinkContent = props => {
   const goLinkDetail = () => {
     navigation.navigate('WebView', {
       sourceUrl: props.data.topic_link.raw_link,
-      title: props.data.topic_link.title
+      title: props.data.topic_link.title,
     });
   };
 
   return (
-    <TouchableOpacity style={styles.linkWrap} onPress={goLinkDetail}>
+    <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
       <FastImg source={{uri: props.data.topic_link.cover_url}} style={{flex: 1, height: 167}} />
       <View style={styles.linkTitleBg}>
         <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -128,8 +128,10 @@ const BaseTopic = props => {
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" />
-      {data.content_style !== 'text' && (
-        <View style={{marginTop: 13, marginBottom: 13}}>
+      {data.content_style === 'text' ? (
+        <View style={{paddingTop: 13}} />
+      ) : (
+        <View style={{paddingTop: 13, paddingBottom: 13}}>
           {data.content_style === 'img' && <TopicImageContent data={data} />}
           {data.content_style === 'video' && <TopicVideoContent data={data} />}
           {data.content_style === 'link' && <TopicLinkContent data={data} />}
@@ -138,7 +140,7 @@ const BaseTopic = props => {
       <PlainContent data={data} style={styles.multiLineText} numberOfLines={5} />
       {data.space && (
         <Pressable style={styles.spaceWrapper} onPress={goSpaceDetail}>
-          <IconFont name="space-point" size={16} color={'#45ea6a'} />
+          <IconFont name="space-point" size={14} color={'#45ea6a'} />
           <Text style={styles.spaceText}>{data.space.name}</Text>
         </Pressable>
       )}
@@ -150,7 +152,8 @@ const BaseTopic = props => {
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
-    backgroundColor: 'white',
+    paddingBottom: 0,
+    backgroundColor: '#fff',
   },
   multiText: {
     fontSize: 14,
@@ -165,12 +168,13 @@ const styles = StyleSheet.create({
   spaceWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 6,
   },
   spaceText: {
     color: '#45ea6a',
     marginLeft: 6,
     fontSize: 14,
+    lineHeight: 20,
   },
   imageMulti: {
     width: 167,
@@ -182,11 +186,10 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     position: 'absolute',
-    top: '40%',
-    left: '25%',
-    right: '25%',
-    bottom: '50%',
-    margin: 'auto',
+    left: '50%',
+    top: '50%',
+    marginTop: -15,
+    marginLeft: -15,
   },
   linkTitleBg: {
     position: 'absolute',

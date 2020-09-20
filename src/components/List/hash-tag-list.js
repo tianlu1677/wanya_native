@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import ScrollList from '@/components/ScrollList';
 import {useNavigation} from '@react-navigation/native';
@@ -14,7 +14,7 @@ const HashtagList = props => {
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
 
-  const onPress = (item, index) => {
+  const onPress = item => {
     if (props.type === 'add-hash-tag') {
       const topics = {
         ...savetopic,
@@ -29,12 +29,12 @@ const HashtagList = props => {
     }
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({item}) => {
     return (
-      <TouchableOpacity style={styles.hashtagWrap} key={index} onPress={() => onPress(item, index)}>
+      <Pressable style={styles.hashtagWrap} key={item} onPress={() => onPress(item)}>
         <Text style={styles.hashtagName}>#{item.name}</Text>
         {item.id === 0 && <Text style={styles.newHashTag}>新话题</Text>}
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
@@ -81,6 +81,7 @@ const HashtagList = props => {
 const styles = StyleSheet.create({
   wraper: {
     backgroundColor: '#fff',
+    flex: 1,
   },
   hashtagWrap: {
     backgroundColor: 'white',

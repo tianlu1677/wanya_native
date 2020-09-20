@@ -45,6 +45,7 @@ const TabViewIndex = props => {
             tabChange={tabChange}
             size={props.size}
             bottomLine={props.bottomLine}
+            separator={props.separator}
           />
         )}
         navigationState={{index, routes}}
@@ -67,6 +68,7 @@ TabViewIndex.propTypes = {
   tabData: PropTypes.array.isRequired, //tabList接收的数据[{key, value, component: () => <View />}]
   onChange: PropTypes.func.isRequired, //onChange 返回key
   currentKey: PropTypes.string, // 需要高亮第几项key 默认0
+  separator: PropTypes.bool, // 是否显示分割线
 };
 
 export default TabViewIndex;

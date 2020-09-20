@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseArticle from '@/components/Item/base-article';
@@ -11,10 +11,6 @@ const ArticleList = props => {
 
   const renderItem = ({item}) => {
     return <BaseArticle data={item} key={item.id} />;
-  };
-
-  const renderSeparator = () => {
-    return <Text style={styles.separator} />;
   };
 
   const loadData = async (page = 1) => {
@@ -38,7 +34,6 @@ const ArticleList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
-      renderSeparator={renderSeparator}
       {...props}
       style={styles.wrapper}
     />
@@ -49,8 +44,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingLeft: 16,
-    paddingRight: 16,
   },
   follow: {
     flexDirection: 'row',
@@ -67,11 +60,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginLeft: 'auto',
-  },
-  separator: {
-    backgroundColor: '#ebebeb',
-    height: 1,
-    marginLeft: 60,
   },
 });
 
