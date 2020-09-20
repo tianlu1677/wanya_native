@@ -46,8 +46,8 @@ const NewTopic = props => {
       setImageSource([...res]);
       for (let [index, file] of new Map(res.map((item, i) => [i, item]))) {
         const result = await props.uploadImage({uploadType: 'multipart', ...file});
-        imageSource[index] = result.asset;
-        setImageSource([...imageSource]);
+        res[index] = result.asset;
+        setImageSource([...res]);
       }
     });
   };
@@ -83,8 +83,6 @@ const NewTopic = props => {
   };
 
   const onSubmit = async () => {
-    console.log(videoSource);
-
     if (!isValidateForm()) {
       Toast.show('图片/视频不能为空哦~');
       return false;
@@ -178,6 +176,10 @@ const NewTopic = props => {
       headerRight: () => <RightBtn />,
     });
   }, [navigation, imageSource, videoSource, savetopic]);
+
+  useLayoutEffect(() => {
+    console.log(imageSource);
+  }, [imageSource]);
 
   return (
     <View style={styles.wrapper}>

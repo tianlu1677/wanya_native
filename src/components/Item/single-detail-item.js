@@ -56,8 +56,6 @@ export const PublishRelated = props => {
     navigation.push('SpaceDetail', {spaceId: data.space.id});
   };
 
-  console.log(data);
-
   return (
     <>
       {data.space && (
