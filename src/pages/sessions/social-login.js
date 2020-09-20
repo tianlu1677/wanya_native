@@ -92,9 +92,9 @@ const SocialLogin = ({navigation, route}) => {
 
           <Text
             onPress={() => {
-              // navigation.navigate('AdminPhoneLogin');
+              navigation.navigate('AdminPhoneLogin');
               // navigation.navigate('InviteLogin');
-              navigation.navigate('PhoneLogin');
+              // navigation.navigate('PhoneLogin');
             }}
             style={{color: 'black'}}
           >

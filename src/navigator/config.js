@@ -181,8 +181,8 @@ const articleRouter = [
   {
     name: 'ArticleDetail',
     component: ArticleDetail,
-    safeArea: false,
-    options: {title: '文章详情', headerShown: false},
+    safeArea: true,
+    options: {title: '文章详情', headerShown: true},
   },
   {
     name: 'HashtagDetail',
