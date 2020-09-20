@@ -51,7 +51,7 @@ const TopicDetail = ({navigation, route}) => {
   }, []);
 
   const renderImg = () => {
-    const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+    const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     let {medias, media_images} = detail;
     let maxHeight = 100;
     (media_images || []).map(img => {
@@ -96,11 +96,18 @@ const TopicDetail = ({navigation, route}) => {
           activeDotColor={'yellow'}
           dotColor={'white'}
           style={{height: maxHeight, backgroundColor: 'black'}}
-          showsPagination={detail.media_images.length > 0}
-        >
+          showsPagination={detail.media_images.length > 0}>
           {media_images.map((media, index) => (
-            <Pressable onPress={() => onPreview(index)} key={media.image_url} style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
-              <FastImg key={media.image_url} source={{uri: media.image_url}} style={{width: screenWidth, height: media.imgHeight}} mode={'contain'} />
+            <Pressable
+              onPress={() => onPreview(index)}
+              key={media.image_url}
+              style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
+              <FastImg
+                key={media.image_url}
+                source={{uri: media.image_url}}
+                style={{width: screenWidth, height: media.imgHeight}}
+                mode={'contain'}
+              />
             </Pressable>
           ))}
         </Swiper>
@@ -109,26 +116,29 @@ const TopicDetail = ({navigation, route}) => {
   };
 
   const renderVideo = () => {
+    const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     const {width, height} = detail.media_video;
     const videoWidth = 375;
-    let videoHeight = height ? height * (videoWidth / width) : videoWidth;
-    if (videoHeight > 500) {
-      videoHeight = 500;
-    }
+    let videoHeight = height ? height * (screenWidth / width) : screenWidth;
+    // if (videoHeight > 500) {
+    //   videoHeight = 500;
+    // }
 
     return (
-      <VideoPlayer
-        style={{height: videoHeight}}
-        source={{uri: detail.video_content_m3u8}}
-        posterResizeMode={'center'}
-        navigator={navigation}
-        controlTimeout={3000}
-        controls={false}
-        reportBandwidth
-        showOnStart={false}
-        tapAnywhereToPause={true}
-        repeat
-      />
+      <View style={{height: videoHeight, backgroundColor: 'black'}}>
+        <VideoPlayer
+          style={{height: videoHeight}}
+          source={{uri: detail.video_content_m3u8}}
+          posterResizeMode={'contain'}
+          navigator={navigation}
+          controlTimeout={3000}
+          controls={false}
+          reportBandwidth
+          showOnStart={false}
+          tapAnywhereToPause={true}
+          repeat
+        />
+      </View>
     );
   };
 
