@@ -43,11 +43,14 @@ const NewTopic = props => {
       if (err) {
         return;
       }
-      setImageSource([...res]);
-      for (let [index, file] of new Map(res.map((item, i) => [i, item]))) {
-        const result = await props.uploadImage({uploadType: 'multipart', ...file});
-        res[index] = result.asset;
-        setImageSource([...res]);
+      const allImage = [...imageSource, ...res];
+      setImageSource([...allImage]);
+      for (let [index, file] of new Map(allImage.map((item, i) => [i, item]))) {
+        if (!file.id) {
+          const result = await props.uploadImage({uploadType: 'multipart', ...file});
+          allImage[index] = result.asset;
+          setImageSource([...allImage]);
+        }
       }
     });
   };
@@ -176,10 +179,6 @@ const NewTopic = props => {
       headerRight: () => <RightBtn />,
     });
   }, [navigation, imageSource, videoSource, savetopic]);
-
-  useLayoutEffect(() => {
-    console.log(imageSource);
-  }, [imageSource]);
 
   return (
     <View style={styles.wrapper}>
