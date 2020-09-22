@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   singleWrap: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: '#fff',
   },
   videoPlay: {
     width: 16,
