@@ -45,7 +45,7 @@ export const TopicImageContent = props => {
   const onPreview = (index = 0) => {
     const data = {
       images: medias.map(v => {
-        return {url: v};
+        return {url: v.split('?')[0]};
       }),
       visible: true,
       index,

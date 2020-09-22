@@ -24,7 +24,14 @@ const SingleItem = props => {
   const onGoDetail = v => {
     switch (props.type) {
       case 'Topic':
-        navigation.push('TopicDetail', {topicId: data.id});
+        if (data.topic_link) {
+          navigation.push('WebView', {
+            sourceUrl: props.data.topic_link.raw_link,
+            title: props.data.topic_link.title,
+          });
+        } else {
+          navigation.push('TopicDetail', {topicId: data.id});
+        }
         break;
       case 'Article':
         navigation.navigate('ArticleDetail', {topicId: data.id});
@@ -91,7 +98,7 @@ const SingleItem = props => {
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
             <Text
               style={{marginLeft: 5, color: praiseForm.praise ? '#000' : '#bdbdbd', fontSize: 12}}>
-              {praiseForm.praises_count}
+              {praiseForm.praises_count > 0 ? praiseForm.praises_count : ''}
             </Text>
           </TouchableOpacity>
         </View>
@@ -104,7 +111,7 @@ const DoubleSingle = props => {
   const {data} = props;
 
   return (
-    <View style={styles.singleWrap}>
+    <View style={[styles.singleWrap, {marginLeft: props.index === 0 ? 0 : 5}]}>
       {data.map((v, index) => {
         return <SingleItem key={v.id} data={v.item} type={v.item_type} />;
       })}
@@ -120,7 +127,9 @@ const DoubleList = props => {
   const renderItem = ({item, index}) => {
     const leftPostList = listData.filter((v, i) => i % 2 === 0);
     const rightPostLIst = listData.filter((v, i) => i % 2 !== 0);
-    return <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostLIst} />;
+    return (
+      <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostLIst} index={index} />
+    );
   };
 
   const loadData = async (page = 1) => {
@@ -163,7 +172,7 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItem}
       numColumns={2}
-      style={{backgroundColor: '#fff'}}
+      style={styles.wrapper}
       {...props}
     />
   );
@@ -176,10 +185,14 @@ DoubleList.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: '#fff',
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
   singleWrap: {
     flex: 1,
-    marginRight: 5,
-    marginLeft: 5,
+    backgroundColor: 'pink',
   },
   videoPlay: {
     width: 16,

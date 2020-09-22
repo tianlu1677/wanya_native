@@ -122,6 +122,7 @@ const SpaceDetail = ({navigation, route}) => {
       </Pressable>
       <TabViewList
         currentKey={currentKey}
+        separator={true}
         tabData={[
           {
             key: 'lasted',
@@ -137,10 +138,7 @@ const SpaceDetail = ({navigation, route}) => {
         onChange={key => setCurrentKey(key)}
       />
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
-      <BottomSheetContent
-        content={detail.intro}
-        ref={sheetRef}
-      />
+      <BottomSheetContent content={detail.intro} ref={sheetRef} />
     </View>
   ) : (
     <Loading />

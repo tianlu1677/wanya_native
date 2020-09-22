@@ -8,6 +8,7 @@ import Toast from '@/components/Toast';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
+import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 
 const ArticleDetail = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -48,6 +49,7 @@ const ArticleDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={BASIC_HEIGHT + BOTTOM_HEIGHT}
       style={{flex: 1, backgroundColor: 'white'}}>
       <CommentList
         style={styles.wrapper}
@@ -61,7 +63,6 @@ const ArticleDetail = ({navigation, route}) => {
           <>
             <Text style={styles.title}>{detail.title}</Text>
             <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
-
             <RichHtml
               containerStyle={{
                 backgroundColor: 'white',
@@ -98,7 +99,8 @@ const ArticleDetail = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    // backgroundColor: '#fff',
+    // backgroundColor: 'pink',
+    flex: 1,
   },
   title: {
     fontSize: 20,

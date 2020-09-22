@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Pressable,
   Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -73,13 +72,11 @@ const TopicDetail = ({navigation, route}) => {
         return {...img, imgHeight: imgHeight, paddingTop: 0};
       }
     });
-    // console.log('maxHeight', maxHeight)
-    // console.log('media_images', media_images)
 
     const onPreview = index => {
       const data = {
         images: detail.medias.map(v => {
-          return {url: v};
+          return {url: v.split('?')[0]};
         }),
         visible: true,
         index,
