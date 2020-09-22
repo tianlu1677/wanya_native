@@ -82,17 +82,15 @@ const TabList = props => {
                   style={[tabBarStyle.tabItem]}>
                   <Text
                     style={[
-                      tabBarStyle.tabItemText,
-                      // tabBarStyle[`tabItemText${size}`],
-                      currentIndex === index && tabBarStyle.textActive,
+                      tabBarStyle[`tabItemText${size}`],
+                      currentIndex === index && tabBarStyle[`textActive${size}`],
                     ]}>
                     {item.title}
                   </Text>
                   <View
                     style={[
-                      tabBarStyle.tabItemLine,
                       tabBarStyle[`tabItemLine${size}`],
-                      currentIndex === index && tabBarStyle.lineActive,
+                      currentIndex === index && tabBarStyle[`lineActive${size}`],
                     ]}
                   />
                 </TouchableOpacity>
@@ -107,14 +105,14 @@ const TabList = props => {
 
 const tabBarStyle = StyleSheet.create({
   tabWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
   tabbig: {
-    height: 45,
+    paddingTop: 8,
+    paddingBottom: 9,
   },
   tabmiddle: {
+    paddingTop: 11,
     height: 45,
   },
   bottomLine: {
@@ -122,44 +120,41 @@ const tabBarStyle = StyleSheet.create({
     borderBottomWidth: 2,
   },
   tabItem: {
-    paddingHorizontal: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
     alignItems: 'center',
-  },
-  tabItemText: {
-    lineHeight: 20,
-    height: 20,
-    color: '#7F7F81',
-    fontWeight: '500',
   },
   tabItemTextbig: {
     fontSize: 15,
+    paddingTop: 15,
   },
   tabItemTextmiddle: {
     fontSize: 14,
   },
-  textActive: {
-    color: '#000',
-  },
   textActivebig: {
     fontSize: 18,
+    paddingTop: 12,
   },
   textActivemiddle: {
     fontSize: 14,
   },
-  lineActive: {
+  lineActivebig: {
     backgroundColor: '#000',
+    marginTop: 6,
   },
-  tabItemLine: {
-    backgroundColor: 'transparent',
-    marginTop: 5,
+  lineActivemiddle: {
+    backgroundColor: '#000',
+    marginTop: 6,
   },
   tabItemLinebig: {
     width: 22,
     height: 3,
+    backgroundColor: 'transparent',
   },
   tabItemLinemiddle: {
     width: 15,
     height: 3,
+    backgroundColor: 'transparent',
   },
   separator: {
     backgroundColor: '#FAFAFA',

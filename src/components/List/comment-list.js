@@ -76,7 +76,7 @@ const CommentList = props => {
             style={{marginLeft: 'auto', flexDirection: 'row'}}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
             <Text style={{marginLeft: 5, color: item.praise ? '#000' : '#bdbdbd'}}>
-              {item.praises_count}
+              {item.praises_count > 0 ? item.praises_count : 0}
             </Text>
           </TouchableOpacity>
         </View>

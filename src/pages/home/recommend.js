@@ -32,7 +32,6 @@ const Recommend = props => {
   }, []);
 
   const UnreadMessageCount = () => {
-    // console.log('currentAccount', currentAccount)
     if (!currentAccount || currentAccount.new_message_count === 0) {
       return 0;
     }
@@ -70,11 +69,11 @@ const Recommend = props => {
           value={UnreadMessageCount()}
           status={'error'}
           containerStyle={styles.badgeContainer}
-          // badgeStyle={{width: 12, height: 12, borderRadius: 12}}
-          // textStyle={{fontSize: 10}}
+          badgeStyle={{width: 20, height: 20, borderRadius: 10}}
+          textStyle={{fontSize: 9}}
         />
         <View style={styles.message_icon}>
-          <IconFont name="notice" size={20} />
+          <IconFont name="notice" size={19} />
         </View>
       </TouchableOpacity>
     </View>
@@ -83,24 +82,21 @@ const Recommend = props => {
 
 const styles = StyleSheet.create({
   badgeContainer: {
+    height: 18,
     position: 'absolute',
-    right: 1,
-    top: -8,
-    // top: -10,
-    // width: 3,
-    // height: 3
+    right: 5,
+    top: -9,
   },
   wrapper: {
     flex: 1,
     position: 'relative',
     paddingTop: BASIC_HEIGHT,
-    backgroundColor: 'white',
   },
   message: {
     position: 'absolute',
-    right: 16,
+    right: -3,
     zIndex: 2,
-    top: 15 + BASIC_HEIGHT,
+    top: BASIC_HEIGHT + 21,
   },
   message_icon: {
     position: 'absolute',

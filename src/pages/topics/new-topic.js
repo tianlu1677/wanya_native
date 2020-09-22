@@ -9,6 +9,7 @@ import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
+import {dispatchPreviewImage} from '@/redux/actions';
 
 const NewTopic = props => {
   const navigation = useNavigation();
@@ -144,6 +145,18 @@ const NewTopic = props => {
     }
   };
 
+  const onPreview = (index = 0) => {
+    console.log(imageSource);
+    const data = {
+      images: imageSource.map(v => {
+        return {url: v.url};
+      }),
+      visible: true,
+      index,
+    };
+    dispatch(dispatchPreviewImage(data));
+  };
+
   const LeftBtn = () => {
     return (
       <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}}>
@@ -187,7 +200,9 @@ const NewTopic = props => {
         {imageSource.map((v, index) => (
           <View style={styles.mediaWrap} key={index}>
             {v.id ? (
-              <Image key={index} style={styles.media} source={{uri: v.url}} />
+              <Pressable onPress={() => onPreview(index)}>
+                <Image key={index} style={styles.media} source={{uri: v.url}} />
+              </Pressable>
             ) : (
               <Image
                 key={index}

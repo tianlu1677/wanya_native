@@ -185,7 +185,7 @@ export const ActionComment = props => {
           <TouchableOpacity style={astyles.btn} onPress={() => onCreate('praise')}>
             <IconFont name="like" size={16} color={praise ? '#000' : '#bdbdbd'} />
             <Text style={{marginLeft: 5, color: praise ? '#000' : '#bdbdbd'}}>
-              {props.detail.praises_count}
+              {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={astyles.btn} onPress={() => onCreate('star')}>
