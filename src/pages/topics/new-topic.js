@@ -146,7 +146,6 @@ const NewTopic = props => {
   };
 
   const onPreview = (index = 0) => {
-    console.log(imageSource);
     const data = {
       images: imageSource.map(v => {
         return {url: v.url};

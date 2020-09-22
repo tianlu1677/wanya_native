@@ -110,8 +110,6 @@ const SingleItem = props => {
 const DoubleSingle = props => {
   const {data} = props;
 
-  console.log(props);
-
   return (
     <View style={[styles.singleWrap, {marginLeft: props.index === 0 ? 0 : 5}]}>
       {data.map((v, index) => {
