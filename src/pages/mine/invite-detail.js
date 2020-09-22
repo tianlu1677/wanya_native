@@ -169,7 +169,7 @@ const InviteDetail = ({navigation, route}) => {
       />
 
       <Modal
-        animationType="slide"
+        animationType=""
         transparent={true}
         visible={shareModelVisible}
         onRequestClose={() => {}}>
