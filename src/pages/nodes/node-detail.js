@@ -93,6 +93,7 @@ const NodeDetail = ({navigation, route}) => {
   return detail ? (
     <View style={{...styles.wrapper}}>
       <ImageBackground source={{uri: detail.backgroud_cover_url}} style={styles.header}>
+        <View style={styles.headerBgCover} />
         <View style={styles.nodeContent}>
           <View style={styles.nodeInfo}>
             <Image style={styles.cover} source={{uri: detail.cover_url}} />
@@ -167,7 +168,17 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     minHeight: 283,
-    paddingTop: NAVIGATION_BAR_HEIGHT,
+    paddingTop: NAVIGATION_BAR_HEIGHT + 1,
+    position: 'relative',
+  },
+  headerBgCover: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#000',
+    opacity: 0.3,
   },
   nodeContent: {
     flexDirection: 'row',
@@ -177,49 +188,54 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
   },
   cover: {
-    width: 70,
-    height: 70,
+    width: 69,
+    height: 69,
     borderRadius: 2,
     marginRight: 16,
+    marginLeft: 1,
   },
   nodewrap: {
     alignItems: 'flex-start',
-    justifyContent: 'center',
   },
   nodeName: {
     fontSize: 24,
     color: '#fff',
+    marginTop: 6,
   },
   nodeNum: {
     fontSize: 11,
     color: '#fff',
-    lineHeight: 20,
-    marginTop: 8,
+    marginTop: 11,
   },
   nodeCreator: {
     flexDirection: 'row',
   },
   descWrap: {
-    marginTop: 22,
+    marginTop: 20,
+    paddingRight: 9,
     flexDirection: 'row',
   },
   nodeDesc: {
-    width: 270,
+    width: 250,
     color: '#fff',
     marginBottom: 20,
-    lineHeight: 19,
     fontSize: 11,
+    lineHeight: 19,
     marginRight: 'auto',
   },
   accountInfo: {
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10,
     zIndex: 2,
     borderRadius: 2,
-    position: 'relative',
+    position: 'absolute',
+    bottom: 22,
+    left: 15,
+    right: 15,
   },
   accountOpacity: {
     backgroundColor: '#fff',
@@ -234,6 +250,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginRight: 'auto',
     marginLeft: 7,
+    fontSize: 11,
   },
 });
 

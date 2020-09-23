@@ -44,7 +44,7 @@ const NodeItem = props => {
       <View style={[styles.nodeItem, props.style]}>
         <Image style={styles.nodeImg} source={{uri: node.cover_url || defaultCoverUrl}} />
         <View style={styles.nodeInfo}>
-          <View style={{marginRight: 'auto'}}>
+          <View style={styles.nodeNameWrap}>
             <Text style={styles.nodeName}>{node.name}</Text>
             <Text style={styles.nodeDesc}>
               {node.topics_count}篇帖子 · {node.accounts_count}位{node.nickname || '圈友'}
@@ -63,9 +63,9 @@ const NodeItem = props => {
           {/* addnode */}
           {props.type === 'add-node' &&
             (home.savetopic.node && home.savetopic.node.id === node.id ? (
-              <IconFont name="chose-success" size={16} color={'#000'} style={{}} />
+              <IconFont name="chose-success" size={15} color={'#000'} style={{}} />
             ) : (
-              <IconFont name="tianjia1" size={16} color={'#000'} style={styles.icon} />
+              <IconFont name="tianjia1" size={15} color={'#000'} style={styles.icon} />
             ))}
         </View>
       </View>
@@ -79,11 +79,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingTop: 15,
     paddingBottom: 15,
-    backgroundColor: '#fff',
   },
   nodeImg: {
-    width: 50,
-    height: 50,
+    width: 49,
+    height: 49,
     borderRadius: 5,
     borderWidth: 3,
     borderColor: '#ffff00',
@@ -97,23 +96,27 @@ const styles = StyleSheet.create({
   nodeInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 5,
     flex: 1,
   },
+  nodeNameWrap: {
+    marginRight: 'auto',
+    height: 49,
+    flex: 1,
+    paddingTop: 5,
+  },
   nodeName: {
-    height: 20,
     lineHeight: 20,
     fontSize: 15,
+    fontWeight: '500',
   },
   nodeDesc: {
-    height: 20,
-    lineHeight: 20,
     fontSize: 11,
     color: '#bdbdbd',
+    marginTop: 5,
   },
   icon: {
     marginLeft: 'auto',
-    marginRight: 22,
+    marginRight: 20,
   },
 });
 
