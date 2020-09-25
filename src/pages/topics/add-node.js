@@ -47,14 +47,14 @@ const NodeIndex = () => {
           </Pressable>
         ))}
       </View>
-      <ScrollView ref={scrollRef}>
+      <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
         {categories.map((categorie, index) => (
           <View
             style={styles.nodeContent}
             key={categorie.id}
             onLayout={e => setLayout(e.nativeEvent.layout, index)}>
             <Text style={styles.cateTitle}>{categorie.name}</Text>
-            <View style={{flex: 1}}>
+            <View style={styles.typeNodeWrap}>
               {nodes
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 14,
     position: 'relative',
-    marginBottom: 10,
   },
   cateNameActive: {
     backgroundColor: 'white',
@@ -99,14 +98,22 @@ const styles = StyleSheet.create({
     marginTop: -5,
     backgroundColor: '#ffff00',
   },
+  nodeListWrap: {
+    paddingTop: 15,
+    backgroundColor: '#fff',
+  },
   nodeContent: {
     paddingLeft: 18,
     backgroundColor: 'white',
   },
   cateTitle: {
-    paddingTop: 15,
     color: '#7f7f81',
     lineHeight: 20,
+    fontSize: 12,
+  },
+  typeNodeWrap: {
+    flex: 1,
+    marginBottom: 15,
   },
   separator: {
     backgroundColor: '#ebebeb',

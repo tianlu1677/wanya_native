@@ -16,7 +16,7 @@ export const getSpaceDetail = async id => {
     url: `/api/v1/spaces/${id}`,
     method: 'GET',
   });
-  return res.data.space;
+  return res;
 };
 
 // 场地动态(最新+热门)

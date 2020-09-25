@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, ImageBackground, TouchableOpacity, Pressable} from 'react-native';
+import {View, Text, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
@@ -23,10 +23,10 @@ const SpaceDetail = ({navigation, route}) => {
   const [currentKey, setCurrentKey] = useState('lasted');
 
   const loadData = async () => {
-    const space = await getSpaceDetail(spaceId);
-    setDetail(space);
+    const res = await getSpaceDetail(spaceId);
+    setDetail(res.data.space);
     navigation.setOptions({
-      title: space.name,
+      title: res.data.space.name,
     });
   };
 
@@ -80,6 +80,7 @@ const SpaceDetail = ({navigation, route}) => {
       <GoBack />
       <Pressable onPress={onPreview}>
         <ImageBackground source={{uri: detail.cover_url}} style={styles.header}>
+          <View style={styles.headerBgCover} />
           <View style={styles.info}>
             <View>
               <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
@@ -96,16 +97,16 @@ const SpaceDetail = ({navigation, route}) => {
                 | <Text>{detail.medias.length}张图片</Text>
               </Text>
             </View>
-            <TouchableOpacity style={styles.creatorWrap} onPress={goAccountDetail}>
+            <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
               <Avator account={detail.account} size={30} />
               <View style={styles.creator}>
                 <Text style={styles.creatorName}>{detail.account.nickname}</Text>
                 <Text style={styles.creatorDesc}>创建者</Text>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={styles.address}>
-            <IconFont name="space-point" size={13} color={'#fff'} />
+            <IconFont name="space-point" size={15} color={'#fff'} />
             <Text style={styles.addressText}>{detail.address}</Text>
           </View>
           <View style={styles.descWrap}>
@@ -151,10 +152,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    paddingLeft: 16,
+    paddingLeft: 14,
     paddingRight: 24,
-    paddingTop: NAVIGATION_BAR_HEIGHT,
+    paddingTop: NAVIGATION_BAR_HEIGHT + 2,
     minHeight: 275,
+    position: 'relative',
+  },
+  headerBgCover: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#000',
+    opacity: 0.3,
   },
   info: {
     flexDirection: 'row',
@@ -164,12 +175,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 25,
     color: '#fff',
+    fontWeight: '500',
   },
   intro: {
     fontSize: 11,
-    lineHeight: 20,
+    lineHeight: 19,
     color: '#fff',
-    marginTop: 8,
+    marginTop: 6,
   },
   creatorWrap: {
     flexDirection: 'row',
@@ -190,7 +202,7 @@ const styles = StyleSheet.create({
   address: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 32,
   },
   addressText: {
     color: '#fff',
@@ -214,8 +226,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: '#fff',
     opacity: 0.5,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 11,
+    paddingRight: 11,
     marginRight: 8,
     marginBottom: 8,
   },

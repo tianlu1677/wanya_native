@@ -99,7 +99,6 @@ const ArticleDetail = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    // backgroundColor: 'pink',
     flex: 1,
   },
   title: {
