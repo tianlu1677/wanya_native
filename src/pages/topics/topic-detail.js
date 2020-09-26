@@ -166,7 +166,7 @@ const TopicDetail = ({navigation, route}) => {
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-            <View style={{padding: 16, paddingBottom: 10}}>
+            <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
               <PlainContent data={detail} />
             </View>
             <PublishRelated data={detail} />

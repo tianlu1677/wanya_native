@@ -74,6 +74,7 @@ export const PublishRelated = props => {
           ))}
         </View>
       )}
+
       <View style={{backgroundColor: '#FAFAFA', height: 9}} />
 
       {data.node && (
@@ -182,20 +183,20 @@ export const ActionComment = props => {
           <Text style={astyles.text} onPress={onCreateComment}>
             快来评论吧
           </Text>
-          <TouchableOpacity style={astyles.btn} onPress={() => onCreate('praise')}>
-            <IconFont name="like" size={16} color={praise ? '#000' : '#bdbdbd'} />
-            <Text style={{marginLeft: 5, color: praise ? '#000' : '#bdbdbd'}}>
+          <TouchableOpacity style={astyles.btnWrap} onPress={() => onCreate('praise')}>
+            <IconFont name="like" size={19} color={praise ? '#000' : '#bdbdbd'} />
+            <Text style={[astyles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
               {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={astyles.btn} onPress={() => onCreate('star')}>
-            <IconFont name="star" size={16} color={star ? '#f4ea2a' : '#bdbdbd'} />
-            <Text style={{marginLeft: 5, color: star ? '#000' : '#bdbdbd'}}>
+          <TouchableOpacity style={astyles.btnWrap} onPress={() => onCreate('star')}>
+            <IconFont name="star-solid" size={19} color={star ? '#f4ea2a' : '#bdbdbd'} />
+            <Text style={[astyles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
               {props.detail.stars_count}
             </Text>
           </TouchableOpacity>
-          <View style={astyles.btn}>
-            <IconFont name="fenxiang" size={16} />
+          <View style={astyles.btnWrap}>
+            <IconFont name="fenxiang" size={19} />
           </View>
         </>
       )}
@@ -226,8 +227,8 @@ const hstyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 40,
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingLeft: 15,
+    paddingRight: 14,
     marginTop: 20,
   },
   content: {
@@ -243,7 +244,8 @@ const hstyles = StyleSheet.create({
     marginRight: 6,
   },
   joinBtn: {
-    width: 75,
+    paddingLeft: 12,
+    paddingRight: 12,
     height: 34,
     lineHeight: 34,
     marginLeft: 'auto',
@@ -268,9 +270,10 @@ const pstyles = StyleSheet.create({
   },
   tagsWrapper: {
     flexDirection: 'row',
-    marginBottom: 20,
-    marginTop: 18,
-    paddingLeft: 18,
+    flexWrap: 'wrap',
+    paddingLeft: 15,
+    paddingRight: 53,
+    marginBottom: 12,
   },
   tagsText: {
     paddingLeft: 9,
@@ -278,12 +281,13 @@ const pstyles = StyleSheet.create({
     lineHeight: 24,
     backgroundColor: '#f2f3f5',
     marginRight: 8,
+    marginBottom: 8,
     fontSize: 11,
   },
   fromWrapper: {
     height: 90,
     flexDirection: 'row',
-    paddingLeft: 16,
+    paddingLeft: 15,
     paddingRight: 19,
     alignItems: 'center',
   },
@@ -314,11 +318,11 @@ const astyles = StyleSheet.create({
   actionWrapper: {
     height: 57,
     flexDirection: 'row',
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingLeft: 14,
+    paddingRight: 14,
     alignItems: 'center',
     borderTopColor: '#ebebeb',
-    borderTopWidth: 1,
+    borderTopWidth: StyleSheet.hairlineWidth,
     marginBottom: BOTTOM_HEIGHT,
   },
   text: {
@@ -330,16 +334,20 @@ const astyles = StyleSheet.create({
     backgroundColor: '#f2f3f5',
     color: '#bdbdbd',
     paddingLeft: 19,
+    marginRight: 10,
     fontSize: 13,
   },
-  btn: {
-    marginLeft: 'auto',
+  btnWrap: {
+    width: 60,
     flexDirection: 'row',
     height: '100%',
     alignItems: 'center',
-    lineHeight: 35,
+    justifyContent: 'center',
     borderRadius: 15,
-    overflow: 'hidden',
+  },
+  btnText: {
+    marginLeft: 5,
+    fontSize: 14,
   },
   input: {
     flex: 1,
@@ -360,6 +368,5 @@ const astyles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 13,
     marginLeft: 10,
-    marginRight: 10,
   },
 });

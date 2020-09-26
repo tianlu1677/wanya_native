@@ -57,6 +57,7 @@ export const ProWrapper = {
   },
   proTitle: {
     color: '#bdbdbd',
+    fontSize: 12,
   },
   proCity: {
     flexDirection: 'row',
@@ -68,7 +69,6 @@ export const ProWrapper = {
   },
   proCityText: {
     fontSize: 12,
-    fontWeight: '500',
     height: 40,
     lineHeight: 40,
   },

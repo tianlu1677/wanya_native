@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#fff',
     marginTop: 6,
+    fontWeight: '500',
   },
   nodeNum: {
     fontSize: 11,
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   count: {
-    color: '#fff',
+    color: '#dbdbdb',
     marginRight: 'auto',
     marginLeft: 7,
     fontSize: 11,

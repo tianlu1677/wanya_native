@@ -31,6 +31,11 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: '#bdbdbd',
   },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#ebebeb',
+    marginLeft: 14,
+  },
 });
 
 const SpaceList = props => {
@@ -43,7 +48,7 @@ const SpaceList = props => {
   };
 
   const renderSeparator = () => {
-    return <View style={{height: 1, backgroundColor: '#ebebeb', marginLeft: 14}} />;
+    return <View style={styles.separator} />;
   };
 
   const loadData = async (page = 1) => {
