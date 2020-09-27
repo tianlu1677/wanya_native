@@ -1,5 +1,5 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, Pressable, Image, Text} from 'react-native';
+import React, {Component, useState, useLayoutEffect, useEffect, useCallback} from 'react';
+import {SafeAreaView, StatusBar, StyleSheet, View, Pressable, Image, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
@@ -10,6 +10,7 @@ import commonStyles from '@/styles/commonStyles';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MediasPicker from '@/components/MediasPicker';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AccountContent = (props) => {
   const navigation = props.navigation
@@ -20,14 +21,14 @@ const AccountContent = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(dispatchCurrentAccount());
+    setGender(currentAccount.gender);
   }, [navigation]);
 
-  useEffect(() => {
-    dispatch(dispatchCurrentAccount());
-    setGender(currentAccount.gender);
-    setBirthday(currentAccount.birthday);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(dispatchCurrentAccount());
+    }, [])
+  )
 
   const ForwardRight = () => {
     return <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />;
@@ -62,8 +63,7 @@ const AccountContent = (props) => {
   };
 
   const setBirthdayData = async value => {
-    console.log('value', value);
-
+    // console.log('value', value);
     setBirthdayVisible(false);
     setBirthday(value);
     await syncAccountInfo({id: currentAccount.id, birthday: value});
@@ -77,7 +77,7 @@ const AccountContent = (props) => {
         placeholder={{
           label: '请选择',
           value: '',
-          color: 'red',
+          color: 'gray',
         }}
         value={gender}
         doneText={'完成'}
@@ -121,6 +121,7 @@ const AccountContent = (props) => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'white'}}>
+      <StatusBar barStyle="dark-content" />
       <Text style={commonStyles.contentBlank} />
       <ItemView
         onPress={() => {
@@ -145,7 +146,7 @@ const AccountContent = (props) => {
         onPress={() => {
           goPages('nickname');
         }}>
-        <ItemTitle>昵称{currentAccount.id}</ItemTitle>
+        <ItemTitle>昵称</ItemTitle>
         <ItemWrap>
           <ItemTitle>{currentAccount.nickname}</ItemTitle>
           <ForwardRight />

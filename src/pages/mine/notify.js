@@ -115,7 +115,7 @@ class Notify extends Component {
                   🤘
                   {unread_inside_notifies_count > 0
                     ? `有${unread_inside_notifies_count}人赞了你`
-                    : '查看赞与收藏'}
+                    : '查看赞和收藏'}
                 </NotifyContentDesc>
               </NotifyContentView>
             </ItemView>

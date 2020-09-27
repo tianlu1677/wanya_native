@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useEffect, useSelector} from 'react';
-import {SafeAreaView, StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 // import ListItem from '@/components/ListItem';
 
 const Settings = ({navigation, route}) => {
-  const [phone, setPhone] = useState('');
+  // const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -69,6 +69,7 @@ const Settings = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fafafa'}}>
+      <StatusBar barStyle="dark-content" />
       <Text style={contentBlank} />
       <ItemView
         onPress={() => {
@@ -98,7 +99,7 @@ const Settings = ({navigation, route}) => {
       <ItemView
         style={{...styles.bottomBorder1px, marginLeft: 14, paddingLeft: 0}}
         onPress={() => {
-          goPages('private');
+          goPages('user_agreement');
         }}>
         <ItemTitle>用户协议</ItemTitle>
         <ForwardRight />
@@ -106,7 +107,7 @@ const Settings = ({navigation, route}) => {
       <ItemView
         style={{...styles.bottomBorder1px, marginLeft: 14, paddingLeft: 0}}
         onPress={() => {
-          goPages('user_agreement');
+          goPages('private');
         }}>
         <ItemTitle>隐私政策</ItemTitle>
         <ForwardRight />

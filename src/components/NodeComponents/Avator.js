@@ -32,7 +32,7 @@ const Avator = props => {
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}
         source={{uri: props.account.avatar_url}}
       />
-      {isShow && props.account.settled_type !== 'single' && (
+      {isShow && !!props.account.settled_type && props.account.settled_type !== 'single' && (
         <Image
           style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
           source={

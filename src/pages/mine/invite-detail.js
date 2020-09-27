@@ -3,18 +3,19 @@ import {
   SafeAreaView,
   Modal,
   StyleSheet,
+  StatusBar,
   View,
   TouchableOpacity,
   Image,
   Text,
-  BackgroudImage,
+  Pressable,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {Avator} from '@/components/NodeComponents';
-import { BOTTOM_HEIGHT } from "@/utils/navbar"
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 
 // import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
@@ -26,7 +27,8 @@ import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import { captureRef } from "react-native-view-shot";
+import {captureRef} from 'react-native-view-shot';
+import AddFriendImg from '@/assets/images/add-invite.png';
 //
 // function useCapture() {
 //   const captureViewRef = useRef();
@@ -68,7 +70,7 @@ const InviteDetail = ({navigation, route}) => {
   const loadInitInfo = async () => {
     const codeRes = await getInviteCode();
     setInviteCode(codeRes.invite_code);
-    setShareUri(codeRes.shareimg_url)
+    setShareUri(codeRes.shareimg_url);
 
     getAccountInviteList().then(res => {
       console.log('res', res);
@@ -76,11 +78,10 @@ const InviteDetail = ({navigation, route}) => {
     });
   };
 
-
   const onCopy = () => {
     let message = `我的顽鸦邀请码是 ${inviteCode}`;
     Helper.setClipboard(message);
-    Toast.show('已复制');
+    Toast.showError('已复制');
   };
 
   //https://github.com/little-snow-fox/react-native-wechat-lib
@@ -113,12 +114,17 @@ const InviteDetail = ({navigation, route}) => {
   };
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <StatusBar barStyle={'default'} />
       <CardView colors={['#4e4e4e', '#181818']}>
         <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
           <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
           <CardTitleText>我的邀请码</CardTitleText>
         </View>
-        <CardCodeText>{inviteCode}</CardCodeText>
+        <CardCodeText
+          onPress={() => {
+            onCopy();
+          }}
+        >{inviteCode}</CardCodeText>
         <CardCopyText
           onPress={() => {
             onCopy();
@@ -136,14 +142,23 @@ const InviteDetail = ({navigation, route}) => {
         {accountList.map(invite => {
           return <Avator size={40} key={invite.id} account={invite.account} />;
         })}
+        {accountList.length <= 0 &&
+          [1, 2, 3, 4].map(i => {
+            return (
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  setShareModelVisible(true);
+                }}>
+                <Image source={AddFriendImg} style={{width: 40, height: 40, borderRadius: 20, marginRight: 15}} />
+              </TouchableOpacity>
+            );
+          })}
         <TouchableOpacity
           onPress={() => {
             setShareModelVisible(true);
           }}>
-          <Image
-            source={require('../../assets/images/add-invite.png')}
-            style={{width: 40, height: 40, borderRadius: 20}}
-          />
+          <Image source={AddFriendImg} style={{width: 40, height: 40, borderRadius: 20}} />
         </TouchableOpacity>
       </AccountCardView>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -164,12 +179,12 @@ const InviteDetail = ({navigation, route}) => {
           right: 0,
           paddingBottom: BOTTOM_HEIGHT,
           borderRadius: 0,
-          backgroundColor: 'black'
+          backgroundColor: 'black',
         }}
       />
 
       <Modal
-        animationType="slide"
+        animationType=""
         transparent={true}
         visible={shareModelVisible}
         onRequestClose={() => {}}>
@@ -178,7 +193,7 @@ const InviteDetail = ({navigation, route}) => {
             setShareModelVisible(false);
           }}>
           <ShareCardView style={{paddingBottom: BOTTOM_HEIGHT}}>
-            <TouchableOpacity
+            <Pressable
               style={{display: 'flex', alignItems: 'center'}}
               onPress={() => {
                 shareFriend();
@@ -189,7 +204,7 @@ const InviteDetail = ({navigation, route}) => {
                 resizeMode={'contain'}
               />
               <ShareText>微信好友</ShareText>
-            </TouchableOpacity>
+            </Pressable>
             <TouchableOpacity
               style={{display: 'flex', alignItems: 'center'}}
               onPress={() => {

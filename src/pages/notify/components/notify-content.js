@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Image, TouchableOpacity, Pressable} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity, Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import {Avator} from '@/components/NodeComponents';
 
@@ -17,7 +17,7 @@ const NotifyContent = ({
   };
 
   return (
-    <CardView>
+    <CardView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
       <Avator size={40} account={account} />
       <CardDescView>
         <View style={{display: 'flex', flexDirection: 'row', width: '80%'}}>

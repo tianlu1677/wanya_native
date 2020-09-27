@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect} from 'react';
-import {StyleSheet, View, TextInput, Text, Button, Image} from 'react-native';
+import {StyleSheet, StatusBar, View, TextInput, Pressable, Text, Button, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
 import {getCurrentAccount} from '@/api/mine_api';
@@ -30,16 +30,20 @@ const PhoneLogin = ({navigation, route}) => {
         shadowOpacity: 0,
         borderBottomWidth: 0,
       },
-      headerBackImage: () => (<Image source={require('../../assets/images/back-white.png')} style={{width: 16, height: 16}} />),
+      headerBackImage: () => (
+        <Image
+          source={require('../../assets/images/back-white.png')}
+          style={{width: 9, height: 15}}
+        />
+      ),
       headerRight: () => (
-        <View style={{fontSize: 14, paddingRight: 16}}>
+        <View style={{fontSize: 14, paddingRight: 20}}>
           <Text
             onPress={() => {
               onVerifyPhoneCode();
             }}
-            style={{fontSize: 14, color: phoneCode.length === 6 ? 'white' : '#353535'}}
-          >
-          确定
+            style={{fontSize: 14, color: phoneCode.length === 6 ? 'white' : '#353535'}}>
+            确定
           </Text>
         </View>
       ),
@@ -82,7 +86,7 @@ const PhoneLogin = ({navigation, route}) => {
         console.log('发送成功');
         setFirstVerify(false);
       } else {
-        Toast.showError('服务器出现了点小问题');
+        Toast.showError('请稍后重试');
         console.log('failed');
       }
     });
@@ -98,7 +102,7 @@ const PhoneLogin = ({navigation, route}) => {
       Toast.showError(verifyResponse.error, {});
     } else {
       await Helper.setData('auth_token', token);
-      Toast.showError('注册成功');
+      // Toast.showError('注册成功');
       const accountInfo = await getCurrentAccount({token: token});
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
@@ -116,9 +120,9 @@ const PhoneLogin = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
+      <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
         <TitleText>绑定手机号</TitleText>
-
         <InputWrapView>
           <InputView>
             <Text
@@ -166,16 +170,16 @@ const PhoneLogin = ({navigation, route}) => {
               style={styles.inputContent}
             />
             {firstVerify ? (
-              <VerifyCodeText
-                color="white"
+              <Pressable
+                hitSlop={{top: 10, left: 10, right: 10, bottom: 10}}
                 onPress={() => {
                   onSendPhoneCode();
                 }}>
-                {verifyText}
-              </VerifyCodeText>
+                <VerifyCodeText color="white">{verifyText}</VerifyCodeText>
+              </Pressable>
             ) : (
-              <VerifyCodeText
-                color={downTime ? '#353535' : 'white'}
+              <Pressable
+                hitSlop={{top: 10, left: 10, right: 10, bottom: 10}}
                 onPress={
                   downTime > 0
                     ? () => {}
@@ -183,8 +187,8 @@ const PhoneLogin = ({navigation, route}) => {
                         onSendPhoneCode();
                       }
                 }>
-                {verifyText}
-              </VerifyCodeText>
+                <VerifyCodeText color={downTime ? '#353535' : 'white'}>{verifyText}</VerifyCodeText>
+              </Pressable>
             )}
           </InputView>
         </InputWrapView>
@@ -231,7 +235,6 @@ const InputView = styled(View)`
 `;
 
 const VerifyCodeText = styled(Text)`
-  margin-top: 4px;
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 600;

@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect} from 'react';
-import {StyleSheet, View, Text, ImageBackground} from 'react-native';
+import {StyleSheet, View, Text, ImageBackground, Pressable} from 'react-native';
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
 import {useDispatch} from 'react-redux';
@@ -8,7 +8,7 @@ import * as WeChat from 'react-native-wechat-lib';
 import {appWechatSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 
-import { BOTTOM_HEIGHT } from "@/utils/navbar"
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -40,7 +40,7 @@ const SocialLogin = ({navigation, route}) => {
       Helper.setData('socialToken', accountInfo.token);
       // 有手机且已验证码，跳转到首页
       if (accountInfo.had_phone && accountInfo.had_invited) {
-        await Helper.setData('auth_token', accountInfo.token)
+        await Helper.setData('auth_token', accountInfo.token);
         dispatch(dispatchSetAuthToken(accountInfo.token));
         dispatch(dispatchCurrentAccount());
 
@@ -86,33 +86,35 @@ const SocialLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%'}}
         resizeMode={'cover'}>
-
-        <View style={{position: 'absolute', backgroundColor: 'black', top: 29, right: 10, width: 30, height: 10}}>
-
-
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: 'black',
+            top: 29,
+            right: 10,
+            width: 30,
+            height: 10,
+          }}>
           <Text
             onPress={() => {
               navigation.navigate('AdminPhoneLogin');
               // navigation.navigate('InviteLogin');
               // navigation.navigate('PhoneLogin');
             }}
-            style={{color: 'black'}}
-          >
+            style={{color: 'black'}}>
             去别的页面
           </Text>
         </View>
 
-        <Button
-          containerStyle={styles.loginContainer}
-          buttonStyle={styles.loginButton}
-          titleStyle={styles.loginText}
-          title="微信登录"
-          clear="clear"
-          onPress={() => {
-            wechatLogin();
-          }}
-        />
-
+        <View style={styles.loginContainer}>
+          <Pressable
+            style={styles.loginButton}
+            onPress={() => {
+              wechatLogin();
+            }}>
+            <Text style={styles.loginText}>微信登录</Text>
+          </Pressable>
+        </View>
         <Text style={styles.privateText}>
           我已阅读并同意{' '}
           <Text
@@ -128,7 +130,6 @@ const SocialLogin = ({navigation, route}) => {
             }}>
             《隐私政策》
           </Text>{' '}
-
         </Text>
       </ImageBackground>
     </View>
@@ -147,6 +148,9 @@ const styles = StyleSheet.create({
     right: 0,
   },
   loginButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     fontSize: 28,
     color: 'red',
     width: 180,
@@ -159,7 +163,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
     letterSpacing: 1,
-    fontSize: 14
+    fontSize: 16,
   },
 
   privateText: {
@@ -173,6 +177,7 @@ const styles = StyleSheet.create({
     bottom: 18 + BOTTOM_HEIGHT,
     left: 0,
     right: 0,
+    paddingTop: 10,
     fontSize: 12,
     color: 'white',
   },

@@ -290,7 +290,7 @@ export const routers = [
   {
     name: 'PraiseNotify',
     component: PraiseNotify,
-    options: {title: '赞与收藏'},
+    options: {title: '赞和收藏'},
   },
   {
     name: 'SystemNotify',

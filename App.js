@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
+import {Text, StatusBar, SafeAreaView, StyleSheet, Image} from 'react-native';
 import CodePush from "react-native-code-push";
 import checkHotUpdate from '@/utils/codepush';
-import {Text} from 'react-native';
 // const emitter = emitt()
 
 import Navigation from './src/navigator/index';
@@ -37,7 +37,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    RNBootSplash.hide({duration: 3000});
+    this.loadSplashImg()
     this.loadNetworkInfo();
     this.loadDeviceInfo();
     this.loginAdmin();
@@ -46,16 +46,13 @@ class App extends Component {
     checkHotUpdate(CodePush); // 开始检查更新
   }
 
-  loginAdmin = () => {    
-    // if (!Helper.getData('auth_token')) {
-    //   setTimeout(() => {
-    //     this.props.navigation.push('AdminPhoneLogin');
-    //   }, 1000);
-    // }
+  loadSplashImg = () => {
+    setTimeout(() => {
+      RNBootSplash.hide({duration: 10});
+    }, 1500)
+  }
 
-    // if (React.$Store.getStore('auth_token')) {
-    //   this.props.navigation.push('AdminPhoneLogin')
-    // }
+  loginAdmin = () => {
   };
 
   loadNetworkInfo = () => {
@@ -87,6 +84,7 @@ class App extends Component {
       <>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
+            <StatusBar barStyle="light-content" />
             <Navigation />
             <ImagePreview />
           </PersistGate>

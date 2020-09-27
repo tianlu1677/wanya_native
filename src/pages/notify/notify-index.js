@@ -2,7 +2,7 @@ import React, {Component, useEffect} from 'react';
 import {StyleSheet, View, Text, Image, Pressable, Button} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import styled from 'styled-components/native';
-import {BadgeMessage} from '@/components/NodeComponents';
+import {BadgeMessage, Avator} from '@/components/NodeComponents';
 import {connect, useSelector, useDispatch} from 'react-redux';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import {dispatchCurrentAccount} from '@/redux/actions';
@@ -66,7 +66,7 @@ const NotifyIndex = ({navigation}) => {
 
   useEffect(() => {
     dispatch(dispatchCurrentAccount())
-  });
+  }, []);
 
   const unreadMessageCount = message_count => {
     if (message_count <= 0) {
@@ -99,13 +99,13 @@ const NotifyIndex = ({navigation}) => {
             )}
           </CoverWrapView>
 
-          <NotifyContentView>
-            <NotifyContentTitle>赞与收藏</NotifyContentTitle>
+          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
+            <NotifyContentTitle>赞和收藏</NotifyContentTitle>
             <NotifyContentDesc>
               🤘
               {unread_inside_notifies_count > 0
                 ? `有${unread_inside_notifies_count}人赞了你`
-                : '查看赞与收藏'}
+                : '查看赞和收藏'}
             </NotifyContentDesc>
           </NotifyContentView>
         </ItemView>
@@ -122,7 +122,7 @@ const NotifyIndex = ({navigation}) => {
             )}
           </CoverWrapView>
 
-          <NotifyContentView>
+          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
             <NotifyContentTitle>评论及回复</NotifyContentTitle>
             <NotifyContentDesc>
               🤝
@@ -145,7 +145,7 @@ const NotifyIndex = ({navigation}) => {
             )}
           </CoverWrapView>
 
-          <NotifyContentView>
+          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
             <NotifyContentTitle>@我的</NotifyContentTitle>
             <NotifyContentDesc>
               🤞
@@ -168,7 +168,7 @@ const NotifyIndex = ({navigation}) => {
             )}
           </CoverWrapView>
 
-          <NotifyContentView>
+          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
             <NotifyContentTitle>新增粉丝</NotifyContentTitle>
             <NotifyContentDesc>
               🤟
@@ -182,9 +182,9 @@ const NotifyIndex = ({navigation}) => {
         <ItemView onPress={goPageMethod.bind(this, 'notify_system')}>
           <CoverWrapView>
             <View>
-              <Image
-                source={{uri: SystemNoticeImg}}
-                style={{width: 45, height: 45, borderRadius: 22.5}}
+              <Avator
+                size={45}
+                account={{avatar_url: SystemNoticeImg, settled_type: 'brand'}}
               />
               {unread_system_messages_count > 0 && (
                 <BadgeMessage
@@ -196,10 +196,9 @@ const NotifyIndex = ({navigation}) => {
             </View>
           </CoverWrapView>
 
-          <NotifyContentView>
+          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
             <NotifyContentTitle>顽鸦小助手</NotifyContentTitle>
-            <NotifyContentDesc>
-              {' '}
+            <NotifyContentDesc style={{marginLeft: -3}}>
               ⚡️
               {unread_system_messages_count > 0
                 ? `有${unread_system_messages_count}条新的推荐`

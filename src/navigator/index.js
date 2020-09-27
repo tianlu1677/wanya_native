@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {Text, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {Text, StatusBar, SafeAreaView, StyleSheet, Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
@@ -222,7 +222,7 @@ function MainStackList() {
           fontSize: 16,
         },
         headerBackImage: () => (
-          <Image source={require('../assets/images/back.png')} style={{width: 16, height: 16}} />
+          <Image source={require('../assets/images/back.png')} style={{width: 15, height: 15}} />
         ),
       })}>
       <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
@@ -267,7 +267,7 @@ function AuthStackList() {
         headerLeftContainerStyle: {
           paddingLeft: 15,
         },
-        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 12, height: 12}} />)
+        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 9, height: 15}} />)
       })}>
 
       <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
