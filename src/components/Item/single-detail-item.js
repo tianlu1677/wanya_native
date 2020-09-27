@@ -192,7 +192,7 @@ export const ActionComment = props => {
           <TouchableOpacity style={astyles.btnWrap} onPress={() => onCreate('star')}>
             <IconFont name="star-solid" size={19} color={star ? '#f4ea2a' : '#bdbdbd'} />
             <Text style={[astyles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
-              {props.detail.stars_count}
+              {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
             </Text>
           </TouchableOpacity>
           <View style={astyles.btnWrap}>
@@ -318,8 +318,8 @@ const astyles = StyleSheet.create({
   actionWrapper: {
     height: 57,
     flexDirection: 'row',
-    paddingLeft: 14,
-    paddingRight: 14,
+    paddingLeft: 15,
+    paddingRight: 15,
     alignItems: 'center',
     borderTopColor: '#ebebeb',
     borderTopWidth: StyleSheet.hairlineWidth,

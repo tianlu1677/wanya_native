@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, ActionSheetIOS} from 'react-native';
+import {View, Text, StyleSheet, ActionSheetIOS, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -71,16 +71,16 @@ const CommentList = props => {
         <View style={cstyles.info}>
           <Avator account={item.account} size={25} />
           <Text style={cstyles.nickname}>{item.account.nickname}</Text>
-          <TouchableOpacity
+          <Pressable
             onPress={() => onPraise(item, index)}
             style={{marginLeft: 'auto', flexDirection: 'row'}}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
             <Text style={{marginLeft: 5, color: item.praise ? '#000' : '#bdbdbd'}}>
               {item.praises_count > 0 ? item.praises_count : 0}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
-        <TouchableOpacity style={cstyles.comment} onPress={() => choseAction(item)}>
+        <Pressable style={cstyles.comment} onPress={() => choseAction(item)}>
           <Text style={cstyles.text}>{item.content}</Text>
           {item.target_account_id && (
             <View style={cstyles.more}>
@@ -94,7 +94,7 @@ const CommentList = props => {
             {item.created_at_text} · 回复{' '}
             {item.child_comments_count ? item.child_comments_count : ''}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     );
   };

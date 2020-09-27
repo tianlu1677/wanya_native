@@ -11,12 +11,12 @@ const BottomSheetContent = (props, ref) => {
   }));
 
   const renderContent = () => (
-    <View style={{backgroundColor: '#BDBDBD', padding: 16, height: 400}}>
-      <Text style={{color: 'white'}}>{props.content}</Text>
+    <View style={{backgroundColor: '#fafafa', padding: 16, height: 400}}>
+      <Text style={{color: '#222'}}>{props.content}</Text>
     </View>
   );
 
-  const renderHeader = () => {}
+  const renderHeader = () => {};
 
   return (
     <>

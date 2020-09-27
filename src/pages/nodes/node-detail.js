@@ -73,7 +73,7 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const onPlay = () => {
-    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
+    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。', {duration: 1000});
   };
 
   const joinNewTopic = () => {
@@ -193,6 +193,8 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginRight: 16,
     marginLeft: 1,
+    borderWidth: 3,
+    borderColor: '#ffff00',
   },
   nodewrap: {
     alignItems: 'flex-start',
@@ -233,6 +235,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     zIndex: 2,
     borderRadius: 2,
+    overflow: 'hidden',
     position: 'absolute',
     bottom: 22,
     left: 15,

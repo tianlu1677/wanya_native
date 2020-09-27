@@ -10,10 +10,11 @@ const JoinStyles = StyleSheet.create({
     fontSize: 13,
     borderRadius: 1,
     fontWeight: '500',
+    overflow: 'hidden',
   },
   joined: {
     color: '#bdbdbd',
-    backgroundColor: '#efefef',
+    backgroundColor: '#fff',
   },
   join: {
     color: '#fff',

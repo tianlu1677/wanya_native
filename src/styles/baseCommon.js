@@ -48,7 +48,6 @@ export const BaseSearchText = {
 export const ProWrapper = {
   proWrapper: {
     height: 40,
-    lineHeight: 40,
     paddingLeft: 14,
     paddingRight: 14,
     backgroundColor: '#fafafa',
@@ -58,6 +57,8 @@ export const ProWrapper = {
   proTitle: {
     color: '#bdbdbd',
     fontSize: 12,
+    height: 40,
+    lineHeight: 40,
   },
   proCity: {
     flexDirection: 'row',
@@ -67,12 +68,12 @@ export const ProWrapper = {
   proAddressIcon: {
     marginRight: 6,
   },
+  proDownIcon: {
+    marginLeft: 6,
+  },
   proCityText: {
     fontSize: 12,
     height: 40,
     lineHeight: 40,
-  },
-  proDownIcon: {
-    marginLeft: 6,
   },
 };

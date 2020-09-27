@@ -129,10 +129,7 @@ const ScrollList = props => {
       numColumns={props.numColumns || 1}
       horizontal={false}
       ListHeaderComponent={props.ListHeaderComponent || null}
-      onScroll={Animated.event(
-        [{nativeEvent: {contentOffset: {y: props.scrollY || new Animated.Value(0)}}}],
-        {useNativeDriver: true}
-      )}
+      onScroll={props.onScroll}
       scrollToOverflowEnabled={true}
       showsHorizontalScrollIndicator={false}
       onMomentumScrollBegin={props.onMomentumScrollBegin}

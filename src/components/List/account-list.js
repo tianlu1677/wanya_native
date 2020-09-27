@@ -1,19 +1,37 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
+import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 
-export const MentiosAccountList = props => {
+export const MentionsAccountList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const savetopic = useSelector(state => state.home.savetopic);
+
+  const onPress = item => {
+    const topics = {
+      ...savetopic,
+      plan_content: savetopic.plan_content
+        ? `${savetopic.plan_content} @${item.nickname}`
+        : `@${item.nickname}`,
+      mention: savetopic.mention ? [...savetopic.mention, item] : [item],
+    };
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.goBack();
+  };
+
   const renderItem = ({item}) => {
     return (
-      <TouchableWithoutFeedback onPress={() => props.onPress(item)}>
+      <TouchableWithoutFeedback onPress={() => onPress(item)}>
         <View style={styles.follow}>
           <Avator account={item} size={40} />
           <Text style={styles.nickname}>{item.nickname}</Text>
@@ -57,7 +75,7 @@ export const MentiosAccountList = props => {
   );
 };
 
-MentiosAccountList.propTypes = {
+MentionsAccountList.propTypes = {
   request: PropTypes.object.isRequired,
   onPress: PropTypes.func,
   ref: PropTypes.any,

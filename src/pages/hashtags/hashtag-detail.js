@@ -4,6 +4,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
+
 import {getHashtagPosts} from '@/api/hashtag_api';
 import {GoBack, JoinActivity} from '@/components/NodeComponents';
 import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
@@ -31,7 +33,7 @@ const HashtagDetail = ({navigation, route}) => {
       api: getHashtagPosts,
       params: {hashtag: '滑板', hashtag_name: '滑板', type: 'hot_order'},
     };
-    return <SingleList request={request} />;
+    return <DoubleList request={request} />;
   };
 
   const joinNewTopic = () => {
@@ -52,6 +54,7 @@ const HashtagDetail = ({navigation, route}) => {
       </HeadView>
       <TabViewList
         currentKey={currentKey}
+        separator={true}
         tabData={[
           {
             key: 'published_order',

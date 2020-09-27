@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Pressable} from 'react-native';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import ScrollList from '@/components/ScrollList';
 import {useNavigation} from '@react-navigation/native';
@@ -39,7 +39,7 @@ const HashtagList = props => {
   };
 
   const renderSeparator = () => {
-    return <View style={{height: 1, backgroundColor: '#ebebeb', marginLeft: 14}} />;
+    return <View style={styles.separator} />;
   };
 
   const loadData = async (page = 1) => {
@@ -102,6 +102,11 @@ const styles = StyleSheet.create({
     marginRight: 15,
     fontSize: 13,
     color: '#bdbdbd',
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#ebebeb',
+    marginLeft: 14,
   },
 });
 

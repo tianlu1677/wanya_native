@@ -15,29 +15,6 @@ const SpaceItem = props => {
   );
 };
 
-const styles = StyleSheet.create({
-  spaceWrapper: {
-    justifyContent: 'flex-start',
-    paddingTop: 12,
-    paddingBottom: 12,
-    marginLeft: 15,
-  },
-  name: {
-    fontSize: 15,
-    lineHeight: 20,
-  },
-  address: {
-    fontSize: 11,
-    lineHeight: 20,
-    color: '#bdbdbd',
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#ebebeb',
-    marginLeft: 14,
-  },
-});
-
 const SpaceList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
@@ -87,5 +64,28 @@ SpaceList.propTypes = {
   onPress: PropTypes.func,
   ref: PropTypes.any,
 };
+
+const styles = StyleSheet.create({
+  spaceWrapper: {
+    justifyContent: 'flex-start',
+    paddingTop: 12,
+    paddingBottom: 12,
+    marginLeft: 15,
+  },
+  name: {
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  address: {
+    fontSize: 11,
+    lineHeight: 20,
+    color: '#bdbdbd',
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#ebebeb',
+    marginLeft: 14,
+  },
+});
 
 export default SpaceList;

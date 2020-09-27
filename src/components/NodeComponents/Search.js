@@ -12,6 +12,7 @@ const Search = props => {
           style={styles.textInput}
           placeholder={props.placeholder}
           onChangeText={props.onChangeText}
+          textAlignVertical="top"
         />
       </View>
       <Text style={styles.cancel} onPress={props.onCancel}>
@@ -40,14 +41,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     marginTop: -6,
-    left: 10,
+    left: 14,
     fontSize: 10,
   },
   textInput: {
     height: 30,
     backgroundColor: '#ebebeb',
     borderRadius: 5,
-    paddingLeft: 38,
+    paddingLeft: 36,
     fontSize: 12,
   },
   cancel: {

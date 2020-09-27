@@ -20,11 +20,9 @@ import ArticleDetail from '@/pages/articles/article-detail';
 // 发布
 
 // 圈子
-import NodeIndex from '@/pages/nodes/node-index';
 import NodeDetail from '@/pages/nodes/node-detail';
 
 // 场地
-import SpaceIndex from '@/pages/space/space-index';
 import SpaceDetail from '@/pages/space/space-detail';
 
 // 话题
@@ -100,44 +98,6 @@ export const tabRouters = [
   // },
 ];
 
-export const createTopicRouter = [
-  {
-    name: 'Recommend',
-    component: Recommend,
-    safeArea: true,
-    options: {title: '首页'},
-  },
-  {
-    name: 'NewTopic',
-    component: NewTopic,
-    options: {
-      title: '发布帖子',
-      animationEnabled: true,
-    },
-  },
-  {
-    name: 'AddHashTag',
-    component: AddHashTag,
-    options: {title: '@话题'},
-  },
-  {
-    name: 'AddMentionAccount',
-    component: AddMentionAccount,
-    safeArea: false,
-    options: {title: '提及人列表', headerShown: false},
-  },
-  {
-    name: 'AddSpace',
-    component: AddSpace,
-    options: {title: '场地列表'},
-  },
-  {
-    name: 'AddNode',
-    component: AddNode,
-    options: {title: '添加圈子'},
-  },
-];
-
 const topicRouter = [
   {
     name: 'TopicDetail',
@@ -152,13 +112,12 @@ const topicRouter = [
       title: '发布帖子',
       animationEnabled: true,
       gestureEnabled: false,
-      // mode: "modal"
     },
   },
   {
     name: 'AddHashTag',
     component: AddHashTag,
-    options: {title: '@话题'},
+    options: {title: '@话题', headerShown: false},
   },
   {
     name: 'AddMentionAccount',
@@ -168,7 +127,7 @@ const topicRouter = [
   {
     name: 'AddSpace',
     component: AddSpace,
-    options: {title: '场地列表'},
+    options: {title: '场地列表', headerShown: false},
   },
   {
     name: 'AddNode',
@@ -193,11 +152,6 @@ const articleRouter = [
 ];
 
 const spaceRouter = [
-  {
-    name: 'SpaceIndex',
-    component: SpaceIndex,
-    options: {title: '场地'},
-  },
   {
     name: 'SpaceDetail',
     component: SpaceDetail,
