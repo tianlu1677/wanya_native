@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
+import {View, Text, Image,StatusBar, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
@@ -12,6 +12,7 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {BASIC_HEIGHT} from '@/utils/navbar';
+import { useFocusEffect } from '@react-navigation/native';
 
 const MineDetail = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -23,6 +24,10 @@ const MineDetail = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({});
   }, [navigation]);
+
+  useFocusEffect(() => {
+    loadData();
+  }, [])
 
   const loadData = async () => {
     const res = await getAccount(accountId);
@@ -77,7 +82,7 @@ const MineDetail = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    loadData();
+
   }, []);
 
   return account ? (

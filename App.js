@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
+import {Text, StatusBar, SafeAreaView, StyleSheet, Image} from 'react-native';
 import CodePush from "react-native-code-push";
 import checkHotUpdate from '@/utils/codepush';
-import {Text} from 'react-native';
 // const emitter = emitt()
 
 import Navigation from './src/navigator/index';
@@ -84,6 +84,7 @@ class App extends Component {
       <>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
+            <StatusBar barStyle="light-content" />
             <Navigation />
             <ImagePreview />
           </PersistGate>

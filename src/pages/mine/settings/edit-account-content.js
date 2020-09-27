@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, View, TextInput, Text} from 'react-native';
+import {StyleSheet, SafeAreaView, StatusBar, View, TextInput, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 // import {SafeAreaView} from 'react-native-safe-area-context';
 import {syncAccountInfo} from '@/api/mine_api';
@@ -60,6 +60,7 @@ const EditAccountContent = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
+      <StatusBar barStyle="dark-content" />
       {editKey === 'nickname' && (
         <TextInput
           caretHidden={false}

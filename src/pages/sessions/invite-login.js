@@ -67,9 +67,9 @@ const InviteLogin = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
+      <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
         <TitleText>内测邀请</TitleText>
-
         <InputWrapView>
           <TextInput
             autoFocus

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -40,6 +40,7 @@ const Recommend = props => {
 
   return (
     <View style={styles.wrapper}>
+      <StatusBar barStyle={'default'} />
       <TabViewList
         size="big"
         currentKey={currentKey}

@@ -30,7 +30,7 @@ const About = ({navigation, route}) => {
           <ContentText>顽鸦是一个新青年潮流文化庇护所</ContentText>
           <ContentText>顽鸦的内容涵盖</ContentText>
           <ContentText>街头文化、极限运动、独立音乐、当代</ContentText>
-          <ContentText>艺术等亚文化领域</ContentText>
+          <ContentText>艺术、亚文化等青年文化领域</ContentText>
           <ContentText>通过社区的形式</ContentText>
           <ContentText>集结每一个与主流世界格格不入</ContentText>
           <ContentText>而又倔强、叛逆甚至顽固的个体</ContentText>
