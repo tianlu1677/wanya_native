@@ -3,7 +3,7 @@ import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Pressable} fro
 import {connect, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import goPage from '../../utils/page_path';
-import {getInsideNotifies} from '@/api/account_api';
+import {getPraiseNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
 import SafeAreaPlus from '../../components/SafeAreaPlus';
@@ -26,7 +26,7 @@ const PraiseNotify = ({navigation}) => {
     let params = {page: page, per_page: 20};
     let res_data = [];
     let headers = {};
-    const res = await getInsideNotifies(params);
+    const res = await getPraiseNotifies(params);
     res_data = params.page === 1
         ? res.data.inside_notifies
         : data.concat(res.data.inside_notifies);

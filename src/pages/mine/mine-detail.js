@@ -23,10 +23,11 @@ const MineDetail = ({navigation, route}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({});
+    loadData();
   }, [navigation]);
 
   useFocusEffect(() => {
-    loadData();
+
   }, [])
 
   const loadData = async () => {

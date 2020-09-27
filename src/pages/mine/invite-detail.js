@@ -81,7 +81,7 @@ const InviteDetail = ({navigation, route}) => {
   const onCopy = () => {
     let message = `我的顽鸦邀请码是 ${inviteCode}`;
     Helper.setClipboard(message);
-    Toast.show('已复制');
+    Toast.showError('已复制');
   };
 
   //https://github.com/little-snow-fox/react-native-wechat-lib
@@ -120,7 +120,11 @@ const InviteDetail = ({navigation, route}) => {
           <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
           <CardTitleText>我的邀请码</CardTitleText>
         </View>
-        <CardCodeText>{inviteCode}</CardCodeText>
+        <CardCodeText
+          onPress={() => {
+            onCopy();
+          }}
+        >{inviteCode}</CardCodeText>
         <CardCopyText
           onPress={() => {
             onCopy();
