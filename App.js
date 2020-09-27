@@ -37,7 +37,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    RNBootSplash.hide({duration: 3000});
+    this.loadSplashImg()
     this.loadNetworkInfo();
     this.loadDeviceInfo();
     this.loginAdmin();
@@ -46,16 +46,13 @@ class App extends Component {
     checkHotUpdate(CodePush); // 开始检查更新
   }
 
-  loginAdmin = () => {    
-    // if (!Helper.getData('auth_token')) {
-    //   setTimeout(() => {
-    //     this.props.navigation.push('AdminPhoneLogin');
-    //   }, 1000);
-    // }
+  loadSplashImg = () => {
+    setTimeout(() => {
+      RNBootSplash.hide({duration: 10});
+    }, 1500)
+  }
 
-    // if (React.$Store.getStore('auth_token')) {
-    //   this.props.navigation.push('AdminPhoneLogin')
-    // }
+  loginAdmin = () => {
   };
 
   loadNetworkInfo = () => {
