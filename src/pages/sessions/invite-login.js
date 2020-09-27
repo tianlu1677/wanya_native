@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useReducer} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, TextInput, Image, Text, Button} from 'react-native';
+import {SafeAreaView, StyleSheet,StatusBar, ScrollView, View, TextInput, Image, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import {verifyInviteCode} from '@/api/phone_sign_api';
@@ -23,7 +23,7 @@ const InviteLogin = ({navigation, route}) => {
         shadowOpacity: 0,
         borderBottomWidth: 0,
       },
-      headerBackImage: () => (<Image source={require('../../assets/images/back-white.png')} style={{width: 16, height: 16}} />),
+      headerBackImage: () => (<Image source={require('../../assets/images/back-white.png')} style={{width: 9, height: 15}} />),
       headerRight: () => (
         <Button
           onPress={onVerifyInviteCode}
@@ -54,7 +54,7 @@ const InviteLogin = ({navigation, route}) => {
           index: 0,
           routes: [{name: 'Recommend'}],
         });
-        Toast.showError('已注册成功')
+        // Toast.showError('已注册成功')
       }
     });
   };
