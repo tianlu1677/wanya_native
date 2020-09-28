@@ -118,9 +118,9 @@ const TopicDetail = ({navigation, route}) => {
     const {width, height} = detail.media_video;
     const videoWidth = 375;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-    // if (videoHeight > 500) {
-    //   videoHeight = 500;
-    // }
+    if (videoHeight > 500) {
+      videoHeight = 500;
+    }
     return (
       <View style={{height: videoHeight, backgroundColor: 'black'}}>
         <GoBack name={navigation.canGoBack() ? 'arraow-left' : 'home-recommend'} />

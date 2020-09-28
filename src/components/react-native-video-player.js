@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   seekBarBackground: {
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)', // 有问题
     height: 3,
   },
   overlayButton: {
