@@ -74,7 +74,7 @@ const SystemNotify = ({navigation}) => {
     // console.log('notify', notify)
     return (
       <NotifyContent
-        account={{...notify.actor, username: ''}}
+        account={{...notify.actor, nickname: ''}}
         notify_type={notify.message}
         time={notify.created_at_text}
         item={notify.item}

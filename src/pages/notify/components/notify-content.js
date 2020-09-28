@@ -22,9 +22,9 @@ const NotifyContent = ({
       <CardDescView>
         <View style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
           <Text>
-          <AccountNameTitle>{account.nickname}</AccountNameTitle>
-            <Text>{' '}</Text>
-          <AccountActionDesc>{notify_type}</AccountActionDesc>
+            <AccountNameTitle>{account.nickname} </AccountNameTitle>
+
+            <AccountActionDesc>{notify_type}</AccountActionDesc>
           </Text>
         </View>
         <ActionTime>{time}</ActionTime>
@@ -38,7 +38,10 @@ const NotifyContent = ({
           }}>
           {!!item.image_url && item.has_video === true && (
             <>
-              <Image source={{uri: item.image_url}} style={{width: 60, height: 60, borderRadius: 2}} />
+              <Image
+                source={{uri: item.image_url}}
+                style={{width: 60, height: 60, borderRadius: 2}}
+              />
               <PlayVideoImg
                 source={require('../../../assets/images/play-video.png')}
                 style={{width: 20, height: 20}}
@@ -47,10 +50,15 @@ const NotifyContent = ({
           )}
           {!!item.image_url && item.has_video === false && (
             <View>
-              <Image source={{uri: item.image_url}} style={{width: 60, height: 60, borderRadius: 2}} />
+              <Image
+                source={{uri: item.image_url}}
+                style={{width: 60, height: 60, borderRadius: 2}}
+              />
             </View>
           )}
-          {item.content.length > 0 && !item.image_url && <RightText numberOfLines={3}>{item.content}</RightText>}
+          {item.content.length > 0 && !item.image_url && (
+            <RightText numberOfLines={3}>{item.content}</RightText>
+          )}
         </RightWrapView>
       )}
     </CardView>
@@ -160,15 +168,3 @@ const VideoPlayImage = styled(Image)`
   right: 0;
 `;
 export default NotifyContent;
-// {/*{item.image_url && item.has_video && (*/}
-// {/*  <View style={{fontSize: 0}}>*/}
-// {/*    <Image source={{uri: item.image_url}} />*/}
-// {/*    <Image source={require('../../../assets/images/play-video.png')} />*/}
-// {/*  </View>*/}
-// {/*)}*/}
-// {item.image_url && !item.has_video && (
-//   <Image source={{uri: item.image_url}} />
-// )}
-// {/*{!item.image_url && <View>/!*<Text>{item.content}</Text>*!/</View>}*/}
-// {/*<ImageBackground source={{uri: CommentNoticeImg}} style={{width: 60, height: 60}} />*/}
-// {/*<VideoPlayImage source={{url: LogoImg}} />*/}
