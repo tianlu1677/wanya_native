@@ -130,7 +130,8 @@ const TopicDetail = ({navigation, route}) => {
           videoHeight={videoHeight}
           hideControlsOnStart
           autoplay
-          loop/>
+          loop
+        />
       </View>
     );
   };
@@ -141,47 +142,47 @@ const TopicDetail = ({navigation, route}) => {
   };
 
   return detail ? (
-    // <KeyboardAvoidingView
-    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    //   style={{flex: 1, backgroundColor: '#fff'}}>
-    <CommentList
-      style={styles.wrapper}
-      type="Topic"
-      detail={detail}
-      enableLoadMore={false}
-      changeVisible={value => setVisible(value)}
-      deleteComment={deleteTopicComment}
-      request={{api: getTopicCommentList, params: {id: detail.id}}}
-      ListHeaderComponent={
-        <>
-          <StatusBar barStyle={'light-content'} />
-          {detail.content_style === 'img' && renderImg()}
-          {detail.content_style === 'video' && renderVideo()}
-          {detail.content_style === 'text' && (
-            <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
-              <GoBack color={'black'} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1, backgroundColor: '#fff'}}>
+      <CommentList
+        style={styles.wrapper}
+        type="Topic"
+        detail={detail}
+        enableLoadMore={false}
+        changeVisible={value => setVisible(value)}
+        deleteComment={deleteTopicComment}
+        request={{api: getTopicCommentList, params: {id: detail.id}}}
+        ListHeaderComponent={
+          <>
+            <StatusBar barStyle={'light-content'} />
+            {detail.content_style === 'img' && renderImg()}
+            {detail.content_style === 'video' && renderVideo()}
+            {detail.content_style === 'text' && (
+              <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
+                <GoBack color={'black'} />
+              </View>
+            )}
+            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+            <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
+              <PlainContent data={detail} />
             </View>
-          )}
-          <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-          <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
-            <PlainContent data={detail} />
-          </View>
-          <PublishRelated data={detail} />
-          <View style={{backgroundColor: '#FAFAFA', height: 9}} />
-          <Text style={styles.commentTitle}>全部评论</Text>
-        </>
-      }
-    />
+            <PublishRelated data={detail} />
+            <View style={{backgroundColor: '#FAFAFA', height: 9}} />
+            <Text style={styles.commentTitle}>全部评论</Text>
+          </>
+        }
+      />
+      <ActionComment
+        visible={visible}
+        detail={detail}
+        publishComment={publishComment}
+        type="Topic"
+        setDetail={data => setDetail(data)}
+        changeVisible={value => setVisible(value)}
+      />
+    </KeyboardAvoidingView>
   ) : (
-    //   <ActionComment
-    //     visible={visible}
-    //     detail={detail}
-    //     publishComment={publishComment}
-    //     type="Topic"
-    //     setDetail={data => setDetail(data)}
-    //     changeVisible={value => setVisible(value)}
-    //   />
-    // </KeyboardAvoidingView>
     <Loading />
   );
 };
