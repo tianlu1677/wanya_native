@@ -41,8 +41,8 @@ const NodeIndex = () => {
           <Pressable
             key={index}
             onPress={() => onChange(index)}
-            style={[styles.cateName, active === index && styles.cateNameActive]}>
-            <Text>{categorie.name}</Text>
+            style={[styles.cateNameWrap, active === index && styles.cateNameActive]}>
+            <Text style={styles.cateName}>{categorie.name}</Text>
             {active === index && <Text style={styles.active} />}
           </Pressable>
         ))}
@@ -78,13 +78,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-  cateName: {
+  cateWrap: {
+    backgroundColor: '#fafafa',
+  },
+  cateNameWrap: {
     width: 75,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 14,
     position: 'relative',
+  },
+  cateName: {
+    fontSize: 14,
   },
   cateNameActive: {
     backgroundColor: 'white',

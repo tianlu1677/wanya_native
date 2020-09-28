@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 import IconFont from '@/iconfont';
 import * as action from '@/redux/constants';
 import {JoinButton} from '@/components/NodeComponents';
@@ -40,7 +40,7 @@ const NodeItem = props => {
   };
 
   return (
-    <TouchableOpacity onPress={goNodeDetail}>
+    <Pressable onPress={goNodeDetail}>
       <View style={[styles.nodeItem, props.style]}>
         <Image style={styles.nodeImg} source={{uri: node.cover_url || defaultCoverUrl}} />
         <View style={styles.nodeInfo}>
@@ -63,13 +63,13 @@ const NodeItem = props => {
           {/* addnode */}
           {props.type === 'add-node' &&
             (home.savetopic.node && home.savetopic.node.id === node.id ? (
-              <IconFont name="chose-success" size={15} color={'#000'} style={{}} />
+              <IconFont name="chose-success" size={15} color={'#000'} style={styles.icon} />
             ) : (
               <IconFont name="tianjia1" size={15} color={'#000'} style={styles.icon} />
             ))}
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

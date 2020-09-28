@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {ScrollView, TouchableOpacity, View, Text, StyleSheet, Dimensions} from 'react-native';
+import {ScrollView, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 const deviceWidth = Dimensions.get('window').width;
 
@@ -75,7 +75,7 @@ const TabList = props => {
           {props.data.length > 0 &&
             props.data.map((item, index) => {
               return (
-                <TouchableOpacity
+                <Pressable
                   onPress={() => setIndex(item, index)}
                   onLayout={e => setLayout(e.nativeEvent.layout, index)}
                   key={item.key}
@@ -93,7 +93,7 @@ const TabList = props => {
                       currentIndex === index && tabBarStyle[`lineActive${size}`],
                     ]}
                   />
-                </TouchableOpacity>
+                </Pressable>
               );
             })}
         </ScrollView>

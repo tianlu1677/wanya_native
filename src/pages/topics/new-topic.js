@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
+import {View, Image, Text, TextInput, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, CommonActions} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -199,9 +199,14 @@ const NewTopic = props => {
         {imageSource.map((v, index) => (
           <View style={styles.mediaWrap} key={index}>
             {v.id ? (
-              <Pressable onPress={() => onPreview(index)}>
-                <Image key={index} style={styles.media} source={{uri: v.url}} />
-              </Pressable>
+              <>
+                <Pressable onPress={() => onPreview(index)}>
+                  <Image key={index} style={styles.media} source={{uri: v.url}} />
+                </Pressable>
+                <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
+                  <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+                </Pressable>
+              </>
             ) : (
               <Image
                 key={index}
@@ -209,16 +214,12 @@ const NewTopic = props => {
                 source={require('@/assets/images/loading.gif')}
               />
             )}
-            <TouchableOpacity onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-              <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
-            </TouchableOpacity>
           </View>
         ))}
-
-        {videoSource.length === 0 && (
-          <TouchableOpacity onPress={onImagePicker}>
+        {videoSource.length === 0 && imageSource.length !== 9 && (
+          <Pressable onPress={onImagePicker}>
             <Image style={styles.mediaWrap} source={require('@/assets/images/add-photo.png')} />
-          </TouchableOpacity>
+          </Pressable>
         )}
 
         {/* video */}
@@ -241,16 +242,15 @@ const NewTopic = props => {
                 </View>
               </View>
             )}
-            <TouchableOpacity onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
+            <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
               <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         ))}
-
         {imageSource.length === 0 && videoSource.length === 0 && (
-          <TouchableOpacity onPress={onVideoPicker}>
+          <Pressable onPress={onVideoPicker}>
             <Image style={styles.mediaWrap} source={require('@/assets/images/add-video.png')} />
-          </TouchableOpacity>
+          </Pressable>
         )}
       </View>
       <TextInput
@@ -276,13 +276,13 @@ const NewTopic = props => {
         </Pressable>
       </View>
       <View style={styles.addWrapper}>
-        <TouchableOpacity style={styles.addSlide} onPress={() => navigation.navigate('AddNode')}>
-          <IconFont name="node-solid" color={savetopic.node ? '#000' : '#c2c2c2'} size={16} />
+        <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddNode')}>
+          <IconFont name="blank-node" color={savetopic.node ? '#000' : '#c2c2c2'} size={16} />
           <Text style={[styles.addText, savetopic.node && styles.selectText]}>
             {savetopic.node ? savetopic.node.name : '选择圈子（必选）'}
           </Text>
           <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
-        </TouchableOpacity>
+        </Pressable>
         <GetLocation handleClick={getLocation} style={styles.addSlide}>
           <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
           <Text style={[styles.addText, savetopic.space && styles.selectText]}>
@@ -344,13 +344,14 @@ const styles = StyleSheet.create({
   proNum: {
     color: '#fff',
     fontSize: 21,
+    fontWeight: '500',
   },
   proPercent: {
     color: '#fff',
     fontSize: 10,
     position: 'absolute',
     right: -10,
-    bottom: 4,
+    bottom: 3,
   },
   content: {
     minHeight: 90,
@@ -362,11 +363,13 @@ const styles = StyleSheet.create({
     width: 63,
     height: 30,
     borderColor: '#cfd1dd',
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     marginRight: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 1,
+    overflow: 'hidden',
   },
   addTextName: {
     fontSize: 13,
@@ -375,7 +378,7 @@ const styles = StyleSheet.create({
   addWrapper: {
     borderTopWidth: 1,
     borderTopColor: '#ebebeb',
-    marginTop: 22,
+    marginTop: 24,
   },
   addSlide: {
     flexDirection: 'row',

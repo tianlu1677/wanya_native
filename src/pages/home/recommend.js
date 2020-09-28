@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, StatusBar, Pressable} from 'react-native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -63,9 +63,7 @@ const Recommend = props => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('NotifyIndex')}
-        style={styles.message}>
+      <Pressable onPress={() => props.navigation.navigate('NotifyIndex')} style={styles.message}>
         <BadgeMessage
           value={UnreadMessageCount()}
           status={'error'}
@@ -76,7 +74,7 @@ const Recommend = props => {
         <View style={styles.message_icon}>
           <IconFont name="notice" size={19} />
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

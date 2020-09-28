@@ -83,13 +83,11 @@ export const TopicVideoContent = props => {
   );
 
   return (
-    <>
-      <FastImg
-        source={{uri: single_cover.link_url}}
-        style={{width: videoAttr.width / 2, height: videoAttr.height / 2, position: 'relative'}}>
-        <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
-      </FastImg>
-    </>
+    <FastImg
+      source={{uri: single_cover.link_url}}
+      style={[styles.imageCover, {width: videoAttr.width / 2, height: videoAttr.height / 2}]}>
+      <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
+    </FastImg>
   );
 };
 
@@ -181,6 +179,10 @@ const styles = StyleSheet.create({
     height: 167,
     marginRight: 5,
     borderRadius: 2,
+  },
+  imageCover: {
+    borderRadius: 2,
+    position: 'relative',
   },
   playImage: {
     width: 30,

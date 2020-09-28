@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getCities} from '@/api/space_api';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, Pressable} from 'react-native';
 import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const hotCity = [
   '北京',
@@ -69,12 +68,12 @@ const CitySelect = props => {
               <Text style={styles.title}>{item.title}</Text>
               {item.items.map(city => {
                 return (
-                  <TouchableOpacity
+                  <Pressable
                     key={city.name}
                     style={styles.cityBottom}
                     onPress={() => chooseCity(city.name)}>
                     <Text style={styles.cityText}>{city.name}</Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 );
               })}
             </View>

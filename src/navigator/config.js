@@ -1,9 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-
-import {Text} from 'react-native';
 // 首页
 import Recommend from '@/pages/home/recommend';
-import VideoDetail from '@/pages/home/videoDetail';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
@@ -17,8 +13,6 @@ import TopicDetail from '@/pages/topics/topic-detail';
 // article
 import ArticleDetail from '@/pages/articles/article-detail';
 
-// 发布
-
 // 圈子
 import NodeDetail from '@/pages/nodes/node-detail';
 
@@ -31,11 +25,8 @@ import HashtagDetail from '@/pages/hashtags/hashtag-detail';
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
-// 话题
-// import HashtagDetail from '@/pages/hashtags/hashtag-detail'
 // 我的页面
 import MineDetail from '@/pages/mine/mine-detail';
-import Mine from '@/pages/mine/mine';
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
@@ -70,33 +61,9 @@ import InviteLogin from '@/pages/sessions/invite-login';
 import WebView from '@/pages/webview/webview';
 
 // 公用页面
-import ChooseCity from '@/components/List/choose-city'; //选择承受
-import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入
+import ChooseCity from '@/components/List/choose-city'; //选择城市
+import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
 import SharePage from '@/pages/share'; //分享
-
-export const tabRouters = [
-  {
-    name: 'Recommend',
-    component: Recommend,
-    safeArea: true,
-    options: {title: '首页'},
-  },
-  {
-    name: 'GoNewTopic',
-    component: GoNewTopic,
-    options: {title: '发布'},
-  },
-  {
-    name: 'MindDetail',
-    component: MineDetail,
-    options: {title: '我的'},
-  },
-  // {
-  //   name: 'Mine',
-  //   component: Mine,
-  //   options: {title: '实验室'},
-  // },
-];
 
 const topicRouter = [
   {
@@ -164,11 +131,6 @@ const spaceRouter = [
 ];
 
 const nodeRouter = [
-  // {
-  //   name: 'NodeIndex',
-  //   component: NodeIndex,
-  //   options: {title: '圈子'},
-  // },
   {
     name: 'NodeDetail',
     component: NodeDetail,
@@ -190,18 +152,14 @@ const accountRouter = [
   {
     name: 'FollowNodes',
     component: FollowNodes,
-    options: {title: '用户圈子'},
+    options: {title: '圈子列表'},
   },
   {
     name: 'FollowAccounts',
     component: FollowAccounts,
     options: {title: '关注列表'},
   },
-  {
-    name: 'JoinAccountsList',
-    component: JoinAccountsList,
-    options: {title: '最近加入列表'},
-  },
+
   {
     name: 'FollowerAccounts',
     component: FollowerAccounts,
@@ -224,12 +182,31 @@ const accountRouter = [
   },
 ];
 
+const commonRouter = [
+  {
+    name: 'ChooseCity',
+    component: ChooseCity,
+    options: {title: '选择城市'},
+  },
+  {
+    name: 'JoinAccountsList',
+    component: JoinAccountsList,
+    options: {title: '最近加入列表'},
+  },
+  {
+    name: 'SharePage',
+    component: SharePage,
+    options: {title: '分享'},
+  },
+];
+
 export const routers = [
   ...topicRouter,
   ...articleRouter,
   ...spaceRouter,
   ...nodeRouter,
   ...accountRouter,
+  ...commonRouter,
   {
     name: 'PhoneLogin',
     component: PhoneLogin,
@@ -323,15 +300,5 @@ export const routers = [
     safeArea: false,
     component: EditAccountContent,
     options: {title: '编辑信息'},
-  },
-  {
-    name: 'ChooseCity',
-    component: ChooseCity,
-    options: {title: '选择城市'},
-  },
-  {
-    name: 'SharePage',
-    component: SharePage,
-    options: {title: '分享'},
   },
 ];

@@ -63,6 +63,7 @@ export const ProWrapper = {
   proCity: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginLeft: 'auto',
   },
   proAddressIcon: {
@@ -70,6 +71,7 @@ export const ProWrapper = {
   },
   proDownIcon: {
     marginLeft: 6,
+    marginTop: 3,
   },
   proCityText: {
     fontSize: 12,

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, Image,StatusBar, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
@@ -12,7 +12,7 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {BASIC_HEIGHT} from '@/utils/navbar';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 const MineDetail = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -26,9 +26,7 @@ const MineDetail = ({navigation, route}) => {
     loadData();
   }, [navigation]);
 
-  useFocusEffect(() => {
-
-  }, [])
+  useFocusEffect(() => {}, []);
 
   const loadData = async () => {
     const res = await getAccount(accountId);
@@ -82,14 +80,12 @@ const MineDetail = ({navigation, route}) => {
     return currentBaseInfo.new_message_count > 99 ? '99+' : currentBaseInfo.new_message_count;
   };
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   return account ? (
     <View style={styles.wrapper}>
       <View style={styles.setting}>
-        <TouchableOpacity onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}>
+        <Pressable onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}>
           <View style={styles.message_icon}>
             <IconFont name="notice" size={20} style={{marginRight: 9}} color="#fff" />
           </View>
@@ -100,10 +96,10 @@ const MineDetail = ({navigation, route}) => {
               containerStyle={{position: 'absolute', right: -6, top: -6}}
             />
           )}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+        </Pressable>
+        <Pressable onPress={() => navigation.navigate('Settings')}>
           <IconFont name="settings" size={20} color="#fff" />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
         <View
@@ -159,22 +155,22 @@ const MineDetail = ({navigation, route}) => {
           <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
         </View>
         <View style={styles.numberWrap}>
-          <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
+          <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
             <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
             <Text style={styles.numberTitle}>动态</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberItem} onPress={goFollowList}>
+          </Pressable>
+          <Pressable style={styles.numberItem} onPress={goFollowList}>
             <Text style={styles.numberCount}>{account.nodes_count}</Text>
             <Text style={styles.numberTitle}>圈子</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberItem} onPress={goFollowAccounts}>
+          </Pressable>
+          <Pressable style={styles.numberItem} onPress={goFollowAccounts}>
             <Text style={styles.numberCount}>{account.following_count}</Text>
             <Text style={styles.numberTitle}>关注</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberItem} onPress={goFollowerAccounts}>
+          </Pressable>
+          <Pressable style={styles.numberItem} onPress={goFollowerAccounts}>
             <Text style={styles.numberCount}>{account.followers_count}</Text>
             <Text style={styles.numberTitle}>粉丝</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ImageBackground>
       <TabViewList
@@ -252,6 +248,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 13,
     borderRadius: 1,
+    overflow: 'hidden',
     backgroundColor: '#fff',
     marginTop: 5,
     marginLeft: 'auto',

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -27,11 +27,11 @@ export const Header = props => {
         <Text style={hstyles.nameText} onPress={goAccountDetail}>
           {data.account.nickname}
         </Text>
-        <TouchableOpacity style={hstyles.infoView} onPress={goNodeDetail}>
+        <Pressable style={hstyles.infoView} onPress={goNodeDetail}>
           <Text style={hstyles.timeText}>{data.published_at_text}</Text>
           <IconFont name="node-solid" size={12} color={'#000'} />
           <Text style={hstyles.nodeName}>{data.node_name}</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <Text style={hstyles.joinBtn} onPress={goNodeDetail}>
         进入圈子
@@ -136,7 +136,10 @@ export const PlainContent = props => {
   };
 
   const AccountDetail = async nickname => {
+    console.log(nickname);
+    console.log(data);
     const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
+    console.log(res);
     navigation.push('AccountDetail', {accountId: res.data.account.id});
   };
 

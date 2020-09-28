@@ -1,8 +1,13 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground} from 'react-native';
+import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
+import IconFont from '@/iconfont';
 import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
-import IconFont from '@/iconfont';
+import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
+import ArticleList from '@/components/List/article-list';
+import TabViewList from '@/components/TabView';
+import Toast from '@/components/Toast';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import {
   getAccount,
@@ -11,12 +16,6 @@ import {
   unfollowAccount,
   getAccountArticles,
 } from '@/api/account_api';
-import SingleList from '@/components/List/single-list';
-import DoubleList from '@/components/List/double-list';
-import ArticleList from '@/components/List/article-list';
-import TabViewList from '@/components/TabView';
-import Toast from '@/components/Toast';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AccountDetail = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
@@ -145,22 +144,22 @@ const AccountDetail = ({navigation, route}) => {
           <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
         </View>
         <View style={styles.numberWrap}>
-          <TouchableOpacity style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
+          <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
             <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
             <Text style={styles.numberTitle}>动态</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberItem} onPress={goFollowList}>
+          </Pressable>
+          <Pressable style={styles.numberItem} onPress={goFollowList}>
             <Text style={styles.numberCount}>{account.nodes_count}</Text>
             <Text style={styles.numberTitle}>圈子</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberItem} onPress={goFollowAccounts}>
+          </Pressable>
+          <Pressable style={styles.numberItem} onPress={goFollowAccounts}>
             <Text style={styles.numberCount}>{account.following_count}</Text>
             <Text style={styles.numberTitle}>关注</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberItem} onPress={goFollowerAccounts}>
+          </Pressable>
+          <Pressable style={styles.numberItem} onPress={goFollowerAccounts}>
             <Text style={styles.numberCount}>{account.followers_count}</Text>
             <Text style={styles.numberTitle}>粉丝</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ImageBackground>
       <TabViewList
@@ -230,6 +229,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 13,
     borderRadius: 1,
+    overflow: 'hidden',
     backgroundColor: '#fff',
     marginTop: 5,
     marginLeft: 'auto',

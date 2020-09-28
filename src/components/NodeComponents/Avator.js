@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, TouchableOpacity} from 'react-native';
+import {Image, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -25,7 +25,7 @@ const Avator = props => {
   }
 
   return (
-    <TouchableOpacity
+    <Pressable
       style={{...imagestyle, position: 'relative', flexShrink: 0}}
       onPress={goAccountDetail}>
       <FastImg
@@ -42,7 +42,7 @@ const Avator = props => {
           }
         />
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

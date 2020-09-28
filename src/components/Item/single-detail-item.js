@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, Image, StyleSheet, Pressable, TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
@@ -31,10 +31,10 @@ export const PublishAccount = props => {
   return (
     <View style={hstyles.headerView}>
       <Avator account={data.account} size={40} />
-      <TouchableOpacity style={hstyles.content} onPress={goAccountDetail}>
+      <Pressable style={hstyles.content} onPress={goAccountDetail}>
         <Text style={hstyles.nameText}>{data.account.nickname}</Text>
         <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-      </TouchableOpacity>
+      </Pressable>
       {props.showFollow && (
         <Text style={[hstyles.joinBtn, {color: followed ? '#bdbdbd' : '#000'}]} onPress={onFollow}>
           {followed ? '已关注' : '关注'}
@@ -59,10 +59,10 @@ export const PublishRelated = props => {
   return (
     <>
       {data.space && (
-        <TouchableOpacity style={pstyles.spaceWrapper} onPress={goSpaceDetail}>
+        <Pressable style={pstyles.spaceWrapper} onPress={goSpaceDetail}>
           <IconFont name="space-point" size={16} color={'#45ea6a'} />
           <Text style={pstyles.spaceText}>{data.space.name}</Text>
-        </TouchableOpacity>
+        </Pressable>
       )}
 
       {data.tag_list.length > 0 && (
@@ -78,7 +78,7 @@ export const PublishRelated = props => {
       <View style={{backgroundColor: '#FAFAFA', height: 9}} />
 
       {data.node && (
-        <TouchableOpacity style={pstyles.fromWrapper} onPress={goNodeDetail}>
+        <Pressable style={pstyles.fromWrapper} onPress={goNodeDetail}>
           <View>
             <View style={pstyles.formTitleWrap}>
               <Text style={pstyles.formTitle}>来自</Text>
@@ -92,7 +92,7 @@ export const PublishRelated = props => {
             </Text>
           </View>
           <Image style={pstyles.formImage} source={{uri: data.node.cover_url}} />
-        </TouchableOpacity>
+        </Pressable>
       )}
     </>
   );
@@ -183,18 +183,18 @@ export const ActionComment = props => {
           <Text style={astyles.text} onPress={onCreateComment}>
             快来评论吧
           </Text>
-          <TouchableOpacity style={astyles.btnWrap} onPress={() => onCreate('praise')}>
+          <Pressable style={astyles.btnWrap} onPress={() => onCreate('praise')}>
             <IconFont name="like" size={19} color={praise ? '#000' : '#bdbdbd'} />
             <Text style={[astyles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
               {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={astyles.btnWrap} onPress={() => onCreate('star')}>
+          </Pressable>
+          <Pressable style={astyles.btnWrap} onPress={() => onCreate('star')}>
             <IconFont name="star-solid" size={19} color={star ? '#f4ea2a' : '#bdbdbd'} />
             <Text style={[astyles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
               {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
           <View style={astyles.btnWrap}>
             <IconFont name="fenxiang" size={19} />
           </View>

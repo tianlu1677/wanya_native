@@ -8,7 +8,7 @@ const defaultState = {
     visible: false,
   },
   commentTopic: {},
-  uploadProgress: '',
+  uploadProgress: 0,
   location: {},
 };
 

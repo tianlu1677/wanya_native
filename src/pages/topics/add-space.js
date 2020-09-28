@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {getSpacesList, getLocation} from '@/api/space_api';
@@ -63,7 +63,7 @@ const AddSpace = props => {
             onChangeText={text => setSearchKey(text)}
             onCancel={() => props.navigation.goBack()}
           />
-          <TouchableOpacity style={pstyles.proWrapper} onPress={goChooseCity}>
+          <Pressable style={pstyles.proWrapper} onPress={goChooseCity}>
             <Text style={pstyles.proTitle}>
               {searchKey
                 ? '搜索到的场地'
@@ -76,7 +76,7 @@ const AddSpace = props => {
               <Text style={pstyles.proCityText}>{home.location.chooseCity || '全国'}</Text>
               <IconFont name="backdown" size={6} style={pstyles.proDownIcon} />
             </View>
-          </TouchableOpacity>
+          </Pressable>
         </>
       }
     />

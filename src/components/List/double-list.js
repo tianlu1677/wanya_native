@@ -94,13 +94,13 @@ const SingleItem = props => {
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
           <Text style={styles.singleName}>{data.account.nickname.toString().substr(0, 16)}</Text>
-          <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={onPraise}>
+          <Pressable style={{flexDirection: 'row', alignItems: 'center'}} onPress={onPraise}>
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
             <Text
               style={{marginLeft: 5, color: praiseForm.praise ? '#000' : '#bdbdbd', fontSize: 12}}>
               {praiseForm.praises_count > 0 ? praiseForm.praises_count : ''}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </Pressable>
