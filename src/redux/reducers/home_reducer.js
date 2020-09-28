@@ -7,6 +7,13 @@ const defaultState = {
     index: 0,
     visible: false,
   },
+  shareContent: {
+    visible: false,
+    title: '',
+    desc: '',
+    thumbImageUrl: '',
+    path: '',
+  },
   commentTopic: {},
   uploadProgress: '',
   location: {},
@@ -24,6 +31,11 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         previewImageData: action.previewImageData,
       };
+    case constants.ShareView:
+      return {
+        ...state,
+        shareContent: action.shareContent
+      }
     case constants.SAVE_COMMENT_TOPIC:
       return {
         ...state,
