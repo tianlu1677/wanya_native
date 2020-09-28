@@ -3,10 +3,12 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
+import {useDispatch} from 'react-redux';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
 import * as WeChat from 'react-native-wechat-lib';
+import {dispatchPreviewImage, dispatchShareItem} from '@/redux/actions';
 
 export const Header = props => {
   const {data} = props;
@@ -41,6 +43,7 @@ export const Header = props => {
 };
 
 export const Bottom = props => {
+  const dispatch = useDispatch();
   const [praise, setPraise] = useState(props.data.praise);
   const [praiseCount, setPraiseCount] = useState(props.data.praises_count);
 
@@ -101,7 +104,10 @@ export const Bottom = props => {
         shareOptions;
         break;
     }
-    WeChat.shareMiniProgram(shareOptions);
+
+    const shareContent = {...shareOptions, visible: true}
+    dispatch(dispatchShareItem(shareContent));
+    // WeChat.shareMiniProgram(shareOptions);
   };
 
   return (

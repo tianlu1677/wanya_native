@@ -41,11 +41,12 @@ list = %w[
   https://raw.githubusercontent.com/react-native-community/react-native-webview/master/README.md
   https://raw.githubusercontent.com/little-snow-fox/react-native-wechat-lib/master/README.md
   https://raw.githubusercontent.com/osdnk/react-native-reanimated-bottom-sheet/master/README.md
+  https://raw.githubusercontent.com/cornedor/react-native-video-player/master/README.md
+
 ]
 
 new_list = %w[
-        #    https://raw.githubusercontent.com/osdnk/react-native-reanimated-bottom-sheet/master/README.md
-        https://raw.githubusercontent.com/react-native-community/react-native-blur/master/README.md
+        https://raw.githubusercontent.com/cornedor/react-native-video-player/master/README.md
 ]
 
 new_list.each do |url|

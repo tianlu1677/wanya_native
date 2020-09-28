@@ -51,7 +51,7 @@ const ScrollList = props => {
     if (refreshing || state === loadState.LOADING) {
       return;
     }
-    console.log('onEndReached ===============', state, refreshing);
+    console.log('onEndReached ===============', pagin, refreshing);
     setRefreshing(true);
     setState(loadState.LOADING);
     try {

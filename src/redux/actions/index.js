@@ -11,6 +11,7 @@ import {
   CURRENT_ACCOUNT_SUCCESS,
   PREVIEW_IMAGES,
   BASE_CURRENT_ACCOUNT_SUCCESS,
+  ShareView,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -87,6 +88,13 @@ export const dispatchPreviewImage = (previewImageData = {}) => async dispatch =>
   });
 };
 
+// 预览分享
+export const dispatchShareItem = (shareContent = {}) => async dispatch => {
+  dispatch({
+    type: ShareView,
+    shareContent: shareContent
+  });
+};
 
 
 // // new topic

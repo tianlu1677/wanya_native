@@ -10,7 +10,7 @@ import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 export const GoBack = props => {
   const navigation = useNavigation();
-  let type = props.type || 'goback';
+  let name = props.name || 'arraow-left';
   const handleClick = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
@@ -26,15 +26,15 @@ export const GoBack = props => {
         handleClick();
       }}
       style={{...styles.goBackWrap, top: Math.max(getStatusBarHeight(), 20)}}>
-      <Text style={styles.button}>
-        <Icon
-          name="chevron-back-outline"
-          size={28}
-          color={props.color || 'white'}
-          iconStyle={{marginRight: 1}}
-        />
-      </Text>
-      {/*<IconFont name={"arrow-right"} color={'white'} size={14} />*/}
+      {/*<Text style={styles.button}>*/}
+      {/*  <Icon*/}
+      {/*    name="chevron-back-outline"*/}
+      {/*    size={28}*/}
+      {/*    color={props.color || 'white'}*/}
+      {/*    iconStyle={{marginRight: 1}}*/}
+      {/*  />*/}
+      {/*</Text>*/}
+      <IconFont name={name} color={'white'} size={15} />
     </Pressable>
   );
 };

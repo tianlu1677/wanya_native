@@ -30,6 +30,7 @@ const codePushOptions = {
 // https://github.com/react-native-community/react-native-device-info#installation
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from "@/components/ImagePreview";
+import ShareItem from "@/components/ShareItem";
 
 class App extends Component {
   constructor(props) {
@@ -87,6 +88,7 @@ class App extends Component {
             <StatusBar barStyle="light-content" />
             <Navigation />
             <ImagePreview />
+            <ShareItem />
           </PersistGate>
         </Provider>
       </>

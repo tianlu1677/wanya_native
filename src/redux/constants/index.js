@@ -10,6 +10,8 @@ export const ACCOUNT_SET_TOKEN = 'ACCOUNT_SET_TOKEN';
 
 // 预览图片
 export const PREVIEW_IMAGES = 'PREVIEW_IMAGES';
+// 展示分享
+export const ShareView = 'ShareView';
 
 // 当前用户的详细信息
 export const BASE_CURRENT_ACCOUNT_REQUEST = 'BASE_CURRENT_ACCOUNT_REQUEST';

@@ -10,6 +10,7 @@ const NotifyContent = ({
   notify_content,
   showRight,
   item,
+  descStyle,
   handleClickRight,
 }) => {
   const clickRight = () => {
@@ -20,12 +21,14 @@ const NotifyContent = ({
     <CardView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
       <Avator size={40} account={account} />
       <CardDescView>
-        <View style={{display: 'flex', flexDirection: 'row', width: '80%'}}>
-          <AccountNameTitle>{account.nickname}</AccountNameTitle>
-          <AccountActionDesc>{notify_type}</AccountActionDesc>
+        <View style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+          <Text>
+            {account.nickname && <AccountNameTitle>{account.nickname} </AccountNameTitle>}
+            {notify_type && <AccountActionDesc style={descStyle}>{notify_type}</AccountActionDesc>}
+          </Text>
         </View>
-        <ActionTime>{time}</ActionTime>
-        {notify_content.length > 0 && <ContentText>{notify_content}</ContentText>}
+        {time && <ActionTime>{time}</ActionTime>}
+        {notify_content.length > 0 && <ContentText numberOfLines={2}>{notify_content}</ContentText>}
       </CardDescView>
 
       {showRight === true && (
@@ -35,7 +38,10 @@ const NotifyContent = ({
           }}>
           {!!item.image_url && item.has_video === true && (
             <>
-              <Image source={{uri: item.image_url}} style={{width: 60, height: 60}} />
+              <Image
+                source={{uri: item.image_url}}
+                style={{width: 60, height: 60, borderRadius: 2}}
+              />
               <PlayVideoImg
                 source={require('../../../assets/images/play-video.png')}
                 style={{width: 20, height: 20}}
@@ -44,10 +50,15 @@ const NotifyContent = ({
           )}
           {!!item.image_url && item.has_video === false && (
             <View>
-              <Image source={{uri: item.image_url}} style={{width: 60, height: 60}} />
+              <Image
+                source={{uri: item.image_url}}
+                style={{width: 60, height: 60, borderRadius: 2}}
+              />
             </View>
           )}
-          {item.content.length > 0 && !item.image_url && <RightText>{item.content}</RightText>}
+          {item.content.length > 0 && !item.image_url && (
+            <RightText numberOfLines={3}>{item.content}</RightText>
+          )}
         </RightWrapView>
       )}
     </CardView>
@@ -64,15 +75,16 @@ NotifyContent.defaultProps = {
   notify_content: '',
   currentAccount: {},
   showRight: true,
+  descStyle: {},
   item: {image_url: '', has_video: '', content: ''},
 };
 
 const CardView = styled(View)`
   margin-left: 14px;
-  padding: 15px 15px 30px 0;
+  padding: 15px 15px 15px 0;
   border-bottom-width: 1px;
   border-bottom-color: #ebebeb;
-  min-height: 95px;
+  min-height: 90px;
   letter-spacing: 1px;
   display: flex;
   flex-direction: row;
@@ -83,7 +95,7 @@ const CardDescView = styled(View)`
   font-size: 14px;
   font-weight: 400;
   width: 65%;
-  margin-top: 5px;
+  margin-top: 2px;
 `;
 const AccountNameTitle = styled(Text)`
   padding-right: 6px;
@@ -157,15 +169,3 @@ const VideoPlayImage = styled(Image)`
   right: 0;
 `;
 export default NotifyContent;
-// {/*{item.image_url && item.has_video && (*/}
-// {/*  <View style={{fontSize: 0}}>*/}
-// {/*    <Image source={{uri: item.image_url}} />*/}
-// {/*    <Image source={require('../../../assets/images/play-video.png')} />*/}
-// {/*  </View>*/}
-// {/*)}*/}
-// {item.image_url && !item.has_video && (
-//   <Image source={{uri: item.image_url}} />
-// )}
-// {/*{!item.image_url && <View>/!*<Text>{item.content}</Text>*!/</View>}*/}
-// {/*<ImageBackground source={{uri: CommentNoticeImg}} style={{width: 60, height: 60}} />*/}
-// {/*<VideoPlayImage source={{url: LogoImg}} />*/}

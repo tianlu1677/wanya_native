@@ -31,7 +31,9 @@ const NewTopic = props => {
   };
 
   const getLocation = res => {
-    dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
+    if(res.position && res.position.coords) {
+      dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
+    }
     navigation.navigate('AddSpace');
   };
 
@@ -158,8 +160,8 @@ const NewTopic = props => {
 
   const LeftBtn = () => {
     return (
-      <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}}>
-        <IconFont name={'cancel'} size={12} />
+      <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
+        <IconFont name={'close'} size={12} />
       </Pressable>
     );
   };
@@ -405,7 +407,8 @@ const styles = StyleSheet.create({
   },
 
   finishBtn: {
-    fontSize: 16,
+    marginRight: 8,
+    fontSize: 15,
     fontWeight: 'bold',
     color: '#BDBDBD',
   },
