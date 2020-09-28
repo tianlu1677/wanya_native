@@ -22,6 +22,7 @@ import BottomSheetContent from '@/components/BottomSheetContent';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
+import FastImg from '@/components/FastImg';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -92,8 +93,10 @@ const NodeDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={{...styles.wrapper}}>
-      <ImageBackground source={{uri: detail.backgroud_cover_url}} style={styles.header}>
-        <View style={styles.headerBgCover} />
+      <GoBack />
+      <FastImg source={{uri: detail.backgroud_cover_url}} style={styles.imageCover} />
+      <View style={styles.imageCoverOpacity} />
+      <View style={styles.header}>
         <View style={styles.nodeContent}>
           <View style={styles.nodeInfo}>
             <Image style={styles.cover} source={{uri: detail.cover_url}} />
@@ -121,7 +124,7 @@ const NodeDetail = ({navigation, route}) => {
             onPress={onFollowNode}
           />
         </Pressable>
-      </ImageBackground>
+      </View>
       <View style={styles.separator} />
       <TabViewList
         currentKey={currentKey}
@@ -150,7 +153,6 @@ const NodeDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-      <GoBack />
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
       <BottomSheetContent content={detail.desc} ref={sheetRef} />
     </View>
@@ -171,14 +173,22 @@ const styles = StyleSheet.create({
     paddingTop: NAVIGATION_BAR_HEIGHT + 1,
     position: 'relative',
   },
-  headerBgCover: {
+  imageCover: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: -1,
+  },
+  imageCoverOpacity: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     backgroundColor: '#000',
-    opacity: 0.3,
+    opacity: 0.5,
   },
   nodeContent: {
     flexDirection: 'row',

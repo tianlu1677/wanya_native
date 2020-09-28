@@ -12,7 +12,7 @@ const Search = props => {
           style={styles.textInput}
           placeholder={props.placeholder}
           onChangeText={props.onChangeText}
-          textAlignVertical="top"
+          selectionColor={'#ff193a'}
         />
       </View>
       <Text style={styles.cancel} onPress={props.onCancel}>

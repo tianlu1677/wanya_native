@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, StyleSheet, StatusBar, Pressable} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -9,6 +10,7 @@ import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/ap
 import {STATUS_BAR_HEIGHT, BOTTOM_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount} from '@/redux/actions';
+import {dispatchCurrentAccount} from '@/redux/actions';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -27,16 +29,18 @@ const Recommend = props => {
     return <SingleList request={{api: getRecommendLatestPosts}} />;
   };
 
-  useEffect(() => {
-    dispatch(dispatchBaseCurrentAccount());
-  }, []);
-
   const UnreadMessageCount = () => {
     if (!currentAccount || currentAccount.new_message_count === 0) {
       return 0;
     }
     return currentAccount.new_message_count > 99 ? '99+' : currentAccount.new_message_count;
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(dispatchBaseCurrentAccount());
+    }, [])
+  );
 
   return (
     <View style={styles.wrapper}>

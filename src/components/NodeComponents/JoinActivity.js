@@ -10,7 +10,7 @@ export const JoinActivity = props => {
 
   const handleClick = () => {
     console.log('handleClick');
-    props.handleClick && props.handleClick()
+    props.handleClick && props.handleClick();
   };
 
   return (

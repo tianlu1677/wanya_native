@@ -1,6 +1,7 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect, useCallback} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -12,7 +13,7 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {BASIC_HEIGHT} from '@/utils/navbar';
-import {useFocusEffect} from '@react-navigation/native';
+import {dispatchBaseCurrentAccount} from '@/redux/actions';
 
 const MineDetail = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -21,12 +22,7 @@ const MineDetail = ({navigation, route}) => {
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
 
-  useLayoutEffect(() => {
-    navigation.setOptions({});
-    loadData();
-  }, [navigation]);
-
-  useFocusEffect(() => {}, []);
+  const dispatch = useDispatch();
 
   const loadData = async () => {
     const res = await getAccount(accountId);
@@ -73,14 +69,22 @@ const MineDetail = ({navigation, route}) => {
   };
 
   const UnreadMessageCount = () => {
-    // console.log('currentAccount', currentAccount)
     if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }
     return currentBaseInfo.new_message_count > 99 ? '99+' : currentBaseInfo.new_message_count;
   };
 
-  useEffect(() => {}, []);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(dispatchBaseCurrentAccount());
+    }, [])
+  );
+
+  useLayoutEffect(() => {
+    navigation.setOptions({});
+    loadData();
+  }, [navigation]);
 
   return account ? (
     <View style={styles.wrapper}>

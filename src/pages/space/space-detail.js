@@ -13,6 +13,7 @@ import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
+import FastImg from '@/components/FastImg';
 
 const SpaceDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -78,48 +79,47 @@ const SpaceDetail = ({navigation, route}) => {
   return detail ? (
     <View style={styles.wrapper}>
       <GoBack />
-      <Pressable onPress={onPreview}>
-        <ImageBackground source={{uri: detail.cover_url}} style={styles.header}>
-          <View style={styles.headerBgCover} />
-          <View style={styles.info}>
-            <View>
-              <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
-                {detail.name}
-              </Text>
-              <Text style={styles.intro} onPress={onShowIntro}>
-                <Text>
-                  {detail.intro
-                    ? detail.intro.length > 20
-                      ? `${detail.intro.substring(0, 20)}...`
-                      : detail.intro
-                    : '暂无简介'}
-                </Text>{' '}
-                | <Text>{detail.medias.length}张图片</Text>
-              </Text>
+      <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
+      <View style={styles.imageCoverOpacity} />
+      <Pressable onPress={onPreview} style={styles.header}>
+        <View style={styles.info}>
+          <View>
+            <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
+              {detail.name}
+            </Text>
+            <Text style={styles.intro} onPress={onShowIntro}>
+              <Text>
+                {detail.intro
+                  ? detail.intro.length > 20
+                    ? `${detail.intro.substring(0, 20)}...`
+                    : detail.intro
+                  : '暂无简介'}
+              </Text>{' '}
+              | <Text>{detail.medias.length}张图片</Text>
+            </Text>
+          </View>
+          <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
+            <Avator account={detail.account} size={30} />
+            <View style={styles.creator}>
+              <Text style={styles.creatorName}>{detail.account.nickname}</Text>
+              <Text style={styles.creatorDesc}>创建者</Text>
             </View>
-            <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
-              <Avator account={detail.account} size={30} />
-              <View style={styles.creator}>
-                <Text style={styles.creatorName}>{detail.account.nickname}</Text>
-                <Text style={styles.creatorDesc}>创建者</Text>
-              </View>
-            </Pressable>
+          </Pressable>
+        </View>
+        <View style={styles.address}>
+          <IconFont name="space-point" size={15} color={'#fff'} />
+          <Text style={styles.addressText}>{detail.address}</Text>
+        </View>
+        <View style={styles.descWrap}>
+          <View style={styles.tagsWrap}>
+            {detail.tag_list.map((v, index) => (
+              <Text key={index} style={styles.tags}>
+                {v}
+              </Text>
+            ))}
           </View>
-          <View style={styles.address}>
-            <IconFont name="space-point" size={15} color={'#fff'} />
-            <Text style={styles.addressText}>{detail.address}</Text>
-          </View>
-          <View style={styles.descWrap}>
-            <View style={styles.tagsWrap}>
-              {detail.tag_list.map((v, index) => (
-                <Text key={index} style={styles.tags}>
-                  {v}
-                </Text>
-              ))}
-            </View>
-            <PlayScore score={detail.play_score} onPress={onPlay} />
-          </View>
-        </ImageBackground>
+          <PlayScore score={detail.play_score} onPress={onPlay} />
+        </View>
       </Pressable>
       <TabViewList
         currentKey={currentKey}
@@ -158,14 +158,22 @@ const styles = StyleSheet.create({
     minHeight: 275,
     position: 'relative',
   },
-  headerBgCover: {
+  imageCover: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: -1,
+  },
+  imageCoverOpacity: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     backgroundColor: '#000',
-    opacity: 0.3,
+    opacity: 0.5,
   },
   info: {
     flexDirection: 'row',

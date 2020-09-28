@@ -105,7 +105,7 @@ export const Bottom = props => {
         break;
     }
 
-    const shareContent = {...shareOptions, visible: true}
+    const shareContent = {...shareOptions, visible: true};
     dispatch(dispatchShareItem(shareContent));
     // WeChat.shareMiniProgram(shareOptions);
   };
@@ -226,6 +226,7 @@ const bstyles = StyleSheet.create({
     alignItems: 'center',
   },
   botCon: {
+    width: 60,
     flexDirection: 'row',
     alignItems: 'center',
   },
