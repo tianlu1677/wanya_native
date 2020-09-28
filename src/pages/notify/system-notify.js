@@ -78,6 +78,7 @@ const SystemNotify = ({navigation}) => {
         notify_type={notify.message}
         time={notify.created_at_text}
         item={notify.item}
+        descStyle={{fontSize: 14, color: 'black'}}
         handleClickRight={() => {
           goInsideNotify(notify);
         }}

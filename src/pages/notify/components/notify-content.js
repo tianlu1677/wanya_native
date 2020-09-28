@@ -10,6 +10,7 @@ const NotifyContent = ({
   notify_content,
   showRight,
   item,
+  descStyle,
   handleClickRight,
 }) => {
   const clickRight = () => {
@@ -22,12 +23,11 @@ const NotifyContent = ({
       <CardDescView>
         <View style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
           <Text>
-            <AccountNameTitle>{account.nickname} </AccountNameTitle>
-
-            <AccountActionDesc>{notify_type}</AccountActionDesc>
+            {account.nickname && <AccountNameTitle>{account.nickname} </AccountNameTitle>}
+            {notify_type && <AccountActionDesc style={descStyle}>{notify_type}</AccountActionDesc>}
           </Text>
         </View>
-        <ActionTime>{time}</ActionTime>
+        {time && <ActionTime>{time}</ActionTime>}
         {notify_content.length > 0 && <ContentText>{notify_content}</ContentText>}
       </CardDescView>
 
@@ -75,6 +75,7 @@ NotifyContent.defaultProps = {
   notify_content: '',
   currentAccount: {},
   showRight: true,
+  descStyle: {},
   item: {image_url: '', has_video: '', content: ''},
 };
 
