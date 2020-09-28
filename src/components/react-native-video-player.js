@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   ViewPropTypes,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video'; // eslint-disable-line
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
           backgroundColor: 'black',
         },
   controls: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
     height: 48,
     marginTop: -48,
     flexDirection: 'row',
@@ -84,15 +85,15 @@ const styles = StyleSheet.create({
   },
   seekBarProgress: {
     height: 3,
-    backgroundColor: '#F00',
+    backgroundColor: 'white',
   },
   seekBarKnob: {
-    width: 20,
-    height: 20,
-    marginHorizontal: -8,
-    marginVertical: -10,
+    width: 5,
+    height: 5,
+    marginHorizontal: -1,
+    marginVertical: 1,
     borderRadius: 10,
-    backgroundColor: '#F00',
+    backgroundColor: 'white',
     transform: [{scale: 0.8}],
     zIndex: 1,
   },
@@ -102,6 +103,13 @@ const styles = StyleSheet.create({
   },
   overlayButton: {
     flex: 1,
+  },
+  activityIndicator: {
+    position: 'absolute',
+    top: 70,
+    left: 70,
+    right: 70,
+    height: 50,
   },
 });
 
@@ -119,6 +127,7 @@ export default class VideoPlayer extends Component {
       isControlsVisible: !props.hideControlsOnStart,
       duration: 0,
       isSeeking: false,
+      opacity: 0,
     };
 
     this.seekBarWidth = 200;
@@ -213,7 +222,15 @@ export default class VideoPlayer extends Component {
     }
 
     const {duration} = event;
-    this.setState({duration});
+    this.setState({duration, opacity: 0});
+  }
+
+  onLoadStart = () => {
+    this.setState({opacity: 1});
+  }
+
+  onBuffer = ({isBuffering}) => {
+    this.setState({opacity: isBuffering ? 1 : 0});
   }
 
   onPlayPress() {
@@ -488,11 +505,18 @@ export default class VideoPlayer extends Component {
           paused={
             this.props.paused ? this.props.paused || !this.state.isPlaying : !this.state.isPlaying
           }
+          onLoadStart={this.onLoadStart}
           onProgress={this.onProgress}
           onEnd={this.onEnd}
           onLoad={this.onLoad}
           source={video}
           resizeMode={resizeMode}
+        />
+        <ActivityIndicator
+          animating
+          size="large"
+          color={'white'}
+          style={[styles.activityIndicator, {opacity: this.state.opacity}]}
         />
         <View style={[this.getSizeStyles(), {marginTop: -this.getSizeStyles().height}]}>
           <TouchableOpacity

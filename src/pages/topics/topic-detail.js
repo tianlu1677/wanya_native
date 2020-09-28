@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
-import VideoPlayer from 'react-native-video-controls';
+import VideoPlayerContent from '@/components/react-native-video-player';
 import {dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
@@ -87,8 +87,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-
-        <GoBack name={navigation.canGoBack() ? 'home-recommend' : 'home-recommend'} />
+        <GoBack name={navigation.canGoBack() ? 'arraow-left' : 'home-recommend'} />
         <Swiper
           index={0}
           loop={false}
@@ -122,21 +121,16 @@ const TopicDetail = ({navigation, route}) => {
     // if (videoHeight > 500) {
     //   videoHeight = 500;
     // }
-
     return (
       <View style={{height: videoHeight, backgroundColor: 'black'}}>
-        <VideoPlayer
-          style={{height: videoHeight}}
-          source={{uri: detail.video_content_m3u8}}
-          posterResizeMode={'contain'}
-          navigator={navigation}
-          controlTimeout={3000}
-          controls={false}
-          reportBandwidth
-          showOnStart={false}
-          tapAnywhereToPause={true}
-          repeat
-        />
+        <GoBack name={navigation.canGoBack() ? 'arraow-left' : 'home-recommend'} />
+        <VideoPlayerContent
+          video={{uri: detail.video_content_m3u8}}
+          videoWidth={videoWidth}
+          videoHeight={videoHeight}
+          hideControlsOnStart
+          autoplay
+          loop/>
       </View>
     );
   };
