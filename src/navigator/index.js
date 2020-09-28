@@ -232,7 +232,7 @@ function MainStackList() {
           return route.safeArea === false ? (
             <Components {...props} />
           ) : (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
               <Components {...props} />
             </SafeAreaView>
           );

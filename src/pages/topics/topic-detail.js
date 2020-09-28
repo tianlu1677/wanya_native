@@ -4,6 +4,7 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
+  StatusBar,
   StyleSheet,
   Pressable,
   Dimensions,
@@ -86,7 +87,8 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-        <GoBack />
+
+        <GoBack name={navigation.canGoBack() ? 'home-recommend' : 'home-recommend'} />
         <Swiper
           index={0}
           loop={false}
@@ -158,6 +160,7 @@ const TopicDetail = ({navigation, route}) => {
       request={{api: getTopicCommentList, params: {id: detail.id}}}
       ListHeaderComponent={
         <>
+          <StatusBar barStyle={'light-content'} />
           {detail.content_style === 'img' && renderImg()}
           {detail.content_style === 'video' && renderVideo()}
           {detail.content_style === 'text' && (

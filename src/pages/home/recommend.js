@@ -40,7 +40,7 @@ const Recommend = props => {
 
   return (
     <View style={styles.wrapper}>
-      <StatusBar barStyle={'default'} />
+      <StatusBar barStyle={'dark-content'} />
       <TabViewList
         size="big"
         currentKey={currentKey}
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
+    backgroundColor: 'white',
     paddingTop: BASIC_HEIGHT,
   },
   message: {

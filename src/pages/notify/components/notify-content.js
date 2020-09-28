@@ -28,7 +28,7 @@ const NotifyContent = ({
           </Text>
         </View>
         {time && <ActionTime>{time}</ActionTime>}
-        {notify_content.length > 0 && <ContentText>{notify_content}</ContentText>}
+        {notify_content.length > 0 && <ContentText numberOfLines={2}>{notify_content}</ContentText>}
       </CardDescView>
 
       {showRight === true && (

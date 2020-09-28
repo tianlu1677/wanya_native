@@ -103,7 +103,6 @@ const CommentNotify = ({navigation}) => {
         data={data}
         loading={loading}
         renderItem={renderItem}
-
         renderSeparator={() => <View />}
       />
     </SafeAreaView>

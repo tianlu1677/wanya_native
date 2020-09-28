@@ -32,7 +32,7 @@ const GetLocation = ({children, handleClick, style}) => {
         console.log(error.code, error.message);
         handleClick({error: error.message});
       },
-      {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000, distanceFilter: 100}
+      {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}
     );
 
     // 传递回父组件经纬度以及城市 props.handleClick({})
