@@ -23,8 +23,8 @@ import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
 
 import {useNavigation} from '@react-navigation/native';
-import BackWhiteImg from "@/assets/images/back-white.png"
-import BackImg from "@/assets/images/back.png"
+import BackWhiteImg from '@/assets/images/back-white.png';
+import BackImg from '@/assets/images/back.png';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -102,7 +102,6 @@ function HomeTabList() {
     </Tab.Navigator>
   );
 }
-
 
 // function TopicStackList() {
 //   return (
@@ -230,9 +229,17 @@ function MainStackList() {
         const render = props => {
           const Components = route.component;
           return route.safeArea === false ? (
-            <Components {...props} />
+            <>
+              {route.bar !== false && (
+                <StatusBar barStyle={`${route.barColor || 'light'}-content`} />
+              )}
+              <Components {...props} />
+            </>
           ) : (
             <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+              {route.bar !== false && (
+                <StatusBar barStyle={`${route.barColor || 'light'}-content`} />
+              )}
               <Components {...props} />
             </SafeAreaView>
           );
@@ -267,9 +274,13 @@ function AuthStackList() {
         headerLeftContainerStyle: {
           paddingLeft: 15,
         },
-        headerBackImage: () => (<Image source={require('../assets/images/back-white.png')} style={{width: 9, height: 15}} />)
+        headerBackImage: () => (
+          <Image
+            source={require('../assets/images/back-white.png')}
+            style={{width: 9, height: 15}}
+          />
+        ),
       })}>
-
       <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
       <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
       <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
@@ -282,7 +293,6 @@ function AuthStackList() {
   );
 }
 
-
 const Navigation = () => {
   const login = useSelector(state => state.login);
   return (
@@ -291,8 +301,6 @@ const Navigation = () => {
     </NavigationContainer>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   blurView: {
