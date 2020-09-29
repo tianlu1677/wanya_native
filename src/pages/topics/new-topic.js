@@ -161,7 +161,7 @@ const NewTopic = props => {
   const LeftBtn = () => {
     return (
       <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
-        <IconFont name={'close'} size={12} />
+        <IconFont name={'close'} size={14} />
       </Pressable>
     );
   };
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
   },
 
   finishBtn: {
-    marginRight: 8,
+    marginRight: 5,
     fontSize: 15,
     fontWeight: 'bold',
     color: '#BDBDBD',

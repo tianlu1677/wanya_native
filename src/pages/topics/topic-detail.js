@@ -116,19 +116,22 @@ const TopicDetail = ({navigation, route}) => {
   const renderVideo = () => {
     const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     const {width, height} = detail.media_video;
-    const videoWidth = 375;
+    const videoWidth = screenWidth;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     if (videoHeight > 500) {
       videoHeight = 500;
     }
+
     return (
-      <View style={{height: videoHeight, backgroundColor: 'black'}}>
+      <View style={{backgroundColor: 'black'}}>
         <GoBack name={navigation.canGoBack() ? 'arraow-left' : 'home-recommend'} />
         <VideoPlayerContent
+          customStyles={{height: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
           videoWidth={videoWidth}
           videoHeight={videoHeight}
           hideControlsOnStart
+          pauseOnPress
           autoplay
           loop/>
       </View>
@@ -159,6 +162,7 @@ const TopicDetail = ({navigation, route}) => {
           {detail.content_style === 'video' && renderVideo()}
           {detail.content_style === 'text' && (
             <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
+              <StatusBar barStyle={'dark-content'} />
               <GoBack color={'black'} />
             </View>
           )}

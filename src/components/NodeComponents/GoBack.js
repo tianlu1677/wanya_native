@@ -11,6 +11,7 @@ import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper';
 export const GoBack = props => {
   const navigation = useNavigation();
   let name = props.name || 'arraow-left';
+  let color = props.color || 'white'
   const handleClick = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
@@ -34,7 +35,7 @@ export const GoBack = props => {
       {/*    iconStyle={{marginRight: 1}}*/}
       {/*  />*/}
       {/*</Text>*/}
-      <IconFont name={name} color={'white'} size={15} />
+      <IconFont name={name} color={color} size={15} />
     </Pressable>
   );
 };

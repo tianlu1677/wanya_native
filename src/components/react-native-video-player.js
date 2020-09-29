@@ -106,9 +106,10 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     position: 'absolute',
-    top: 70,
-    left: 70,
-    right: 70,
+    top: '45%',
+    left: '50%',
+    right: '50%',
+    bottom: '50%',
     height: 50,
   },
 });
@@ -512,12 +513,15 @@ export default class VideoPlayer extends Component {
           source={video}
           resizeMode={resizeMode}
         />
-        <ActivityIndicator
-          animating
-          size="large"
-          color={'white'}
-          style={[styles.activityIndicator, {opacity: this.state.opacity}]}
-        />
+        {
+          this.state.opacity > 0 && <ActivityIndicator
+            animating
+            size="large"
+            color={'white'}
+            style={[styles.activityIndicator, {opacity: this.state.opacity}]}
+          />
+        }
+
         <View style={[this.getSizeStyles(), {marginTop: -this.getSizeStyles().height}]}>
           <TouchableOpacity
             style={styles.overlayButton}
