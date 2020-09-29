@@ -19,8 +19,10 @@ const NewTopic = props => {
   const uploadProgress = useSelector(state => state.home.uploadProgress);
   const location = useSelector(state => state.home.location);
 
+  // const defaultVideo = [{id: 1, url: 'http://xinxuefile.meirixinxue.com/assets/d479716443f6aca08c4e45135509bd03.mp4'}]
+  const defaultVideo = []
   const [imageSource, setImageSource] = useState([]);
-  const [videoSource, setVideoSource] = useState([]);
+  const [videoSource, setVideoSource] = useState(defaultVideo)
 
   const [content, setContent] = useState(savetopic.plan_content);
 
@@ -161,7 +163,7 @@ const NewTopic = props => {
   const LeftBtn = () => {
     return (
       <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
-        <IconFont name={'close'} size={12} />
+        <IconFont name={'close'} size={14} />
       </Pressable>
     );
   };
@@ -226,13 +228,17 @@ const NewTopic = props => {
 
         {/* video */}
         {videoSource.map((v, index) => (
-          <View style={styles.mediaWrap} key={index}>
+          <Pressable
+            style={[styles.mediaWrap, {backgroundColor: 'black'}]}
+            key={index}
+            onProgress={() => {console.log('xxxx')}}>
             {v.id ? (
               <Video
                 style={styles.media}
                 source={{uri: v.url}}
                 posterResizeMode={'center'}
-                controls
+                controls={false}
+                muted
                 reportBandwidth
                 repeat
               />
@@ -247,7 +253,7 @@ const NewTopic = props => {
             <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
               <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
             </Pressable>
-          </View>
+          </Pressable>
         ))}
         {imageSource.length === 0 && videoSource.length === 0 && (
           <Pressable onPress={onVideoPicker}>
@@ -407,7 +413,7 @@ const styles = StyleSheet.create({
   },
 
   finishBtn: {
-    marginRight: 8,
+    marginRight: 5,
     fontSize: 15,
     fontWeight: 'bold',
     color: '#BDBDBD',

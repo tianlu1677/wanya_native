@@ -1,5 +1,5 @@
-import React, {useState, useLayoutEffect, useCallback} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
+import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react';
+import {View, Text, Image, StatusBar, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
@@ -69,6 +69,7 @@ const MineDetail = ({navigation, route}) => {
   };
 
   const UnreadMessageCount = () => {
+    // console.log('currentAccount', currentAccount)
     if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }

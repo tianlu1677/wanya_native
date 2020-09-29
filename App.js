@@ -85,7 +85,6 @@ class App extends Component {
       <>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <StatusBar barStyle="light-content" />
             <Navigation />
             <ImagePreview />
             <ShareItem />

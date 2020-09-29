@@ -26,7 +26,7 @@ const Avator = props => {
 
   return (
     <Pressable
-      style={{...imagestyle, position: 'relative', flexShrink: 0}}
+      style={{...imagestyle, position: 'relative', flexShrink: 0, ...props.containerStyle}}
       onPress={goAccountDetail}>
       <FastImg
         style={{...imagestyle, borderRadius: Number(props.size / 2), display: 'flex'}}

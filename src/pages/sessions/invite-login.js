@@ -1,5 +1,15 @@
 import React, {Component, useState, useLayoutEffect, useReducer} from 'react';
-import {SafeAreaView, StyleSheet,StatusBar, ScrollView, View, TextInput, Image, Text, Button} from 'react-native';
+import {
+  SafeAreaView,
+  Pressable,
+  StyleSheet,
+  StatusBar,
+  View,
+  TextInput,
+  Image,
+  Text,
+  Button,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import {verifyInviteCode} from '@/api/phone_sign_api';
@@ -23,13 +33,16 @@ const InviteLogin = ({navigation, route}) => {
         shadowOpacity: 0,
         borderBottomWidth: 0,
       },
-      headerBackImage: () => (<Image source={require('../../assets/images/back-white.png')} style={{width: 9, height: 15}} />),
-      headerRight: () => (
-        <Button
-          onPress={onVerifyInviteCode}
-          title="完成"
-          color={isValidCode ? 'white' : '#353535'}
+      headerBackImage: () => (
+        <Image
+          source={require('../../assets/images/back-white.png')}
+          style={{width: 9, height: 15}}
         />
+      ),
+      headerRight: () => (
+        <Pressable onPress={onVerifyInviteCode} style={{fontSize: 14, paddingRight: 5}}>
+          <Text style={{fontSize: 14, color: isValidCode ? 'white' : '#353535'}}>完成</Text>
+        </Pressable>
       ),
     });
   }, [navigation, isValidCode]);
@@ -39,15 +52,14 @@ const InviteLogin = ({navigation, route}) => {
     if (!isValidCode) {
       return;
     }
-
     const token = await Helper.getData('socialToken');
     let data = {invite_code: inviteCode, token: token};
-    verifyInviteCode(data).then(async (res) => {
+    verifyInviteCode(data).then(async res => {
       console.log('res', res);
       if (res.error) {
         Toast.showError(res.error);
       } else {
-        await Helper.setData('auth_token', token)
+        await Helper.setData('auth_token', token);
         dispatch(dispatchSetAuthToken(token));
         dispatch(dispatchCurrentAccount());
         navigation.reset({
@@ -118,7 +130,7 @@ const styles = StyleSheet.create({
     color: '#BDBDBD',
     marginTop: 12,
     lineHeight: 27,
-    height: 27
+    height: 27,
   },
 });
 

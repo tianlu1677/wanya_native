@@ -137,6 +137,7 @@ const ScrollList = props => {
       onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
       scrollIndicatorInsets={{right: 1}}
+      {...props.settings}
     />
   );
 };
@@ -172,6 +173,7 @@ ScrollList.propTypes = {
   emptyTitle: PropTypes.string, //数据为空时提示
   renderSeparator: PropTypes.func, // 分割线
   ListHeaderComponent: PropTypes.object, //
+  settings: PropTypes.object, // 一些其他的默认限制
 };
 
 export default ScrollList;
