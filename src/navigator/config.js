@@ -75,6 +75,7 @@ const topicRouter = [
   {
     name: 'NewTopic',
     component: NewTopic,
+    barColor: 'dark',
     options: {
       title: '发布帖子',
       animationEnabled: true,
@@ -83,21 +84,25 @@ const topicRouter = [
   },
   {
     name: 'AddHashTag',
+    barColor: 'dark',
     component: AddHashTag,
     options: {title: '@话题', headerShown: false},
   },
   {
     name: 'AddMentionAccount',
+    barColor: 'dark',
     component: AddMentionAccount,
     options: {title: '提及人列表', headerShown: false},
   },
   {
     name: 'AddSpace',
+    barColor: 'dark',
     component: AddSpace,
     options: {title: '场地列表', headerShown: false},
   },
   {
     name: 'AddNode',
+    barColor: 'dark',
     component: AddNode,
     options: {title: '添加圈子'},
   },
@@ -257,16 +262,19 @@ export const routers = [
   {
     name: 'NotifyIndex',
     component: NotifyIndex,
+    barColor: 'dark',
     options: {title: '消息', headerShown: true},
   },
   {
     name: 'CommentNotify',
     component: CommentNotify,
+    barColor: 'dark',
     options: {title: '评论及回复'},
   },
   {
     name: 'PraiseNotify',
     component: PraiseNotify,
+    barColor: 'dark',
     options: {title: '赞和收藏'},
   },
   {
@@ -276,11 +284,13 @@ export const routers = [
   },
   {
     name: 'FollowNotify',
+    barColor: 'dark',
     component: FollowNotify,
     options: {title: '新增粉丝'},
   },
   {
     name: 'MentionNotify',
+    barColor: 'dark',
     component: MentionNotify,
     options: {title: '@我的'},
   },

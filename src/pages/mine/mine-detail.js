@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
+import {View, Text, Image, StatusBar, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
@@ -84,6 +84,7 @@ const MineDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="light-content" />
       <View style={styles.setting}>
         <Pressable onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}>
           <View style={styles.message_icon}>
