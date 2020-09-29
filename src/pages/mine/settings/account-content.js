@@ -10,6 +10,7 @@ import commonStyles from '@/styles/commonStyles';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MediasPicker from '@/components/MediasPicker';
+import Toast from '@/components/Toast';
 import { useFocusEffect } from '@react-navigation/native';
 
 const AccountContent = (props) => {
@@ -44,6 +45,7 @@ const AccountContent = (props) => {
         return;
       }
       // setImageSource([...res]);
+      Toast.showLoading('上传中...')
       for (let [index, file] of new Map(res.map((item, i) => [i, item]))) {
         const result = await props.uploadAvatar({
           uploadType: 'multipart',
@@ -51,8 +53,9 @@ const AccountContent = (props) => {
           ...file
         });
         dispatch(dispatchCurrentAccount());
-        console.log('res', currentAccount)
+        // console.log('res', currentAccount)
       }
+      Toast.hide();
     });
   };
 
@@ -114,6 +117,7 @@ const AccountContent = (props) => {
         break;
       case 'avatar':
         onImagePicker()
+        break;
       default:
         console.log('not');
     }
@@ -199,9 +203,9 @@ const AccountContent = (props) => {
         onPress={() => {
           goPages('intro');
         }}>
-        <ItemTitle>简介</ItemTitle>
-        <ItemWrap>
-          <ItemTitle>{currentAccount.intro}</ItemTitle>
+        <ItemTitle numberOfLines={1}>简介</ItemTitle>
+        <ItemWrap style={{width: 200}}>
+          <ItemTitle numberOfLines={1}>{currentAccount.intro}</ItemTitle>
           <ForwardRight />
         </ItemWrap>
       </ItemView>
@@ -259,7 +263,7 @@ const ItemView = styled(Pressable)`
 
 const ItemTitle = styled(Text)`
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 400;  
 `;
 
 export default MediasPicker(AccountContent);

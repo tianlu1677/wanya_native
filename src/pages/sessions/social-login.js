@@ -112,25 +112,30 @@ const SocialLogin = ({navigation, route}) => {
             onPress={() => {
               wechatLogin();
             }}>
-            <Text style={styles.loginText}>微信登录</Text>
+            <Text style={styles.loginText} allowFontScaling={false}>
+              微信登录
+            </Text>
           </Pressable>
         </View>
-        <Text style={styles.privateText}>
-          我已阅读并同意{' '}
-          <Text
+        <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
+          <Text style={styles.textContent}>我已阅读并同意</Text>
+          <Pressable
             onPress={() => {
               goPages('user');
-            }}>
-            《用户协议》
-          </Text>{' '}
-          和{' '}
-          <Text
+            }}
+            hitSlop={{top: 10, bottom: 10}}
+          >
+            <Text style={styles.textContent}>《用户协议》</Text>
+          </Pressable>
+          <Text style={styles.textContent}>和</Text>
+          <Pressable
             onPress={() => {
               goPages('private');
-            }}>
-            《隐私政策》
-          </Text>{' '}
-        </Text>
+            }}
+            hitSlop={{top: 10, bottom: 10}}>
+            <Text style={styles.textContent}>《隐私政策》</Text>
+          </Pressable>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -168,8 +173,8 @@ const styles = StyleSheet.create({
 
   privateText: {
     display: 'flex',
-    // flex: 1,
-    // flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
@@ -178,6 +183,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingTop: 10,
+    fontSize: 12,
+    color: 'white',
+  },
+
+  textContent: {
     fontSize: 12,
     color: 'white',
   },

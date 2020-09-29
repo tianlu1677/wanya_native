@@ -173,16 +173,19 @@ const accountRouter = [
   {
     name: 'Settings',
     component: Settings,
+    barColor: 'dark',
     options: {title: '设置'},
   },
   {
     name: 'About',
     component: About,
+    barColor: 'dark',
     options: {title: '关于顽鸦'},
   },
   {
     name: 'Feedback',
     component: Feedback,
+    barColor: 'dark',
     options: {title: '反馈'},
   },
 ];
@@ -226,12 +229,12 @@ export const routers = [
     },
     safeArea: false,
   },
-  // {
-  //   name: 'InviteLogin',
-  //   component: InviteLogin,
-  //   options: {title: '输入邀请码'},
-  //   safeArea: false,
-  // },
+  {
+    name: 'InviteLogin',
+    component: InviteLogin,
+    options: {title: '输入邀请码'},
+    safeArea: false,
+  },
   {
     name: 'InviteDetail',
     component: InviteDetail,

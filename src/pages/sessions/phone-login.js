@@ -37,7 +37,7 @@ const PhoneLogin = ({navigation, route}) => {
         />
       ),
       headerRight: () => (
-        <View style={{fontSize: 14, paddingRight: 20}}>
+        <View style={{fontSize: 14, paddingRight: 5}}>
           <Text
             onPress={() => {
               onVerifyPhoneCode();
@@ -168,10 +168,11 @@ const PhoneLogin = ({navigation, route}) => {
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
               style={styles.inputContent}
+              clearButtonMode
             />
             {firstVerify ? (
               <Pressable
-                hitSlop={{top: 10, left: 10, right: 10, bottom: 10}}
+                hitSlop={{top: 20, left: 10, right: 10, bottom: 20}}
                 onPress={() => {
                   onSendPhoneCode();
                 }}>
@@ -179,7 +180,7 @@ const PhoneLogin = ({navigation, route}) => {
               </Pressable>
             ) : (
               <Pressable
-                hitSlop={{top: 10, left: 10, right: 10, bottom: 10}}
+                hitSlop={{top: 20, left: 10, right: 10, bottom: 20}}
                 onPress={
                   downTime > 0
                     ? () => {}

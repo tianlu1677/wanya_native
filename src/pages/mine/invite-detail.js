@@ -81,7 +81,7 @@ const InviteDetail = ({navigation, route}) => {
   const onCopy = () => {
     let message = `我的顽鸦邀请码是 ${inviteCode}`;
     Helper.setClipboard(message);
-    Toast.showError('已复制');
+    Toast.showError(`已复制 ${inviteCode}`);
   };
 
   //https://github.com/little-snow-fox/react-native-wechat-lib
@@ -123,8 +123,9 @@ const InviteDetail = ({navigation, route}) => {
         <CardCodeText
           onPress={() => {
             onCopy();
-          }}
-        >{inviteCode}</CardCodeText>
+          }}>
+          {inviteCode}
+        </CardCodeText>
         <CardCopyText
           onPress={() => {
             onCopy();
@@ -140,7 +141,14 @@ const InviteDetail = ({navigation, route}) => {
 
       <AccountCardView>
         {accountList.map(invite => {
-          return <Avator size={40} key={invite.id} account={invite.account} />;
+          return (
+            <Avator
+              size={40}
+              key={invite.id}
+              account={invite.account}
+              containerStyle={{marginRight: 15}}
+            />
+          );
         })}
         {accountList.length <= 0 &&
           [1, 2, 3, 4].map(i => {
@@ -150,7 +158,10 @@ const InviteDetail = ({navigation, route}) => {
                 onPress={() => {
                   setShareModelVisible(true);
                 }}>
-                <Image source={AddFriendImg} style={{width: 40, height: 40, borderRadius: 20, marginRight: 15}} />
+                <Image
+                  source={AddFriendImg}
+                  style={{width: 40, height: 40, borderRadius: 20, marginRight: 15}}
+                />
               </TouchableOpacity>
             );
           })}
