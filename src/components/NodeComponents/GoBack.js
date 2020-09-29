@@ -10,7 +10,7 @@ import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 export const GoBack = props => {
   const navigation = useNavigation();
-  let name = props.name || 'arraow-left';
+  let name = props.name || 'arrow-left';
   let color = props.color || 'white'
   const handleClick = () => {
     if (navigation.canGoBack()) {

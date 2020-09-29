@@ -57,7 +57,7 @@ import IconLearncount from './IconLearncount';
 import IconPinglunanniu from './IconPinglunanniu';
 import IconCoursegonewtopic from './IconCoursegonewtopic';
 import IconBlankStar from './IconBlankStar';
-import IconArraowLeft from './IconArraowLeft';
+import IconArrowLeft from './IconArrowLeft';
 import IconIcon from './IconIcon';
 import IconStar from './IconStar';
 import IconArrowDown from './IconArrowDown';
@@ -181,8 +181,8 @@ const IconFont = ({ name, ...rest }) => {
       return <IconCoursegonewtopic key="54" {...rest} />;
     case 'blank-star':
       return <IconBlankStar key="55" {...rest} />;
-    case 'arraow-left':
-      return <IconArraowLeft key="56" {...rest} />;
+    case 'arrow-left':
+      return <IconArrowLeft key="56" {...rest} />;
     case 'icon':
       return <IconIcon key="57" {...rest} />;
     case 'star':

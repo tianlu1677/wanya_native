@@ -87,7 +87,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-        <GoBack name={navigation.canGoBack() ? 'arraow-left' : 'home-recommend'} />
+        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} />
         <Swiper
           index={0}
           loop={false}
@@ -124,7 +124,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View style={{backgroundColor: 'black'}}>
-        <GoBack name={navigation.canGoBack() ? 'arraow-left' : 'home-recommend'} />
+        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} />
         <VideoPlayerContent
           customStyles={{height: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
@@ -163,7 +163,7 @@ const TopicDetail = ({navigation, route}) => {
           {detail.content_style === 'text' && (
             <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
               <StatusBar barStyle={'dark-content'} />
-              <GoBack color={'black'} />
+              <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={'black'} />
             </View>
           )}
           <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
