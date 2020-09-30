@@ -4,9 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
-
-import LinearGradient from 'react-native-linear-gradient';
-import {dispatchShareItem} from "@/redux/actions"
+import {dispatchShareItem} from '@/redux/actions';
 
 const ShareItem = () => {
   const [shareModelVisible, setShareModelVisible] = useState(false);
@@ -20,15 +18,6 @@ const ShareItem = () => {
   const shareTimeline = () => {
     try {
       WeChat.shareMiniProgram(shareContent);
-      // WeChat.shareImage(
-      //   {
-      //     imageUrl: '',
-      //     scene: 1,
-      //   },
-      //   error => {
-      //     console.log('error', error);
-      //   }
-      // );
     } catch (e) {
       console.log('e', e);
     }
@@ -115,3 +104,20 @@ const ShareText = styled(Text)`
   font-size: 12px;
   margin-top: 10px;
 `;
+
+// #### ShareMiniProgram(ShareMiniProgramMetadata) 分享小程序
+//
+// ShareMiniProgram
+//
+// | name    | type   | description                         |
+// |---------|--------|-------------------------------------|
+// | title| String | 标题                       |
+// | description| String | 描述                       |
+// | thumbImageUrl| String | 缩略图地址，本库会自动压缩到32KB |
+// | userName| String | 小程序的 userName，填小程序原始id          |
+// | path| String | 小程序的页面路径                   |
+// | hdImageUrl| String | 小程序新版本的预览图二进制数据，6.5.9及以上版本微信客户端支持 |
+// | withShareTicket| String | 是否使用带shareTicket的分享            |
+// | miniProgramType| Number | 小程序的类型，默认正式版，1.8.1及以上版本开发者工具包支持分享开发版和体验版小程序 |
+// | webpageUrl| String | 兼容低版本的网页链接                   |
+// | scene   | Number | 分享到, 0:会话 1:朋友圈 2:收藏 |

@@ -17,8 +17,11 @@ const SafeAreaPlus = props => {
         props.styles,
       ]}
       edges={['right', 'bottom', 'left']}
-      mode="padding">
+      mode="padding"
+      {...props}
+    >
       {props.children}
+
     </SafeAreaView>
   );
 };

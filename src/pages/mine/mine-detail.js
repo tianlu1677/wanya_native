@@ -14,6 +14,7 @@ import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {BASIC_HEIGHT} from '@/utils/navbar';
 import {dispatchBaseCurrentAccount} from '@/redux/actions';
+import FocusAwareStatusBar from '@/components/FocusAwareStatusBar'
 
 const MineDetail = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -89,6 +90,7 @@ const MineDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
+      <FocusAwareStatusBar barStyle="light-content" />
       <View style={styles.setting}>
         <Pressable onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}>
           <View style={styles.message_icon}>
@@ -214,6 +216,7 @@ const MineDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: 'white'
   },
   setting: {
     height: 20,

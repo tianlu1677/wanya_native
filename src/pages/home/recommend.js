@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, StyleSheet, StatusBar, Pressable} from 'react-native';
+import {View, SafeAreaView, StyleSheet, StatusBar, Pressable} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
@@ -11,6 +11,8 @@ import {STATUS_BAR_HEIGHT, BOTTOM_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
+import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
+import SafeAreaPlus from '@/components/SafeAreaPlus';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -43,43 +45,45 @@ const Recommend = props => {
   );
 
   return (
-    <View style={styles.wrapper}>
-      <StatusBar barStyle={'dark-content'} />
-      <TabViewList
-        size="big"
-        currentKey={currentKey}
-        tabData={[
-          {
-            key: 'recommend',
-            title: '推荐',
-            component: RecommendList,
-          },
-          {
-            key: 'follow',
-            title: '关注',
-            component: FollowList,
-          },
-          {
-            key: 'lasted',
-            title: '最新',
-            component: LastedList,
-          },
-        ]}
-        onChange={key => setCurrentKey(key)}
-      />
-      <Pressable onPress={() => props.navigation.navigate('NotifyIndex')} style={styles.message}>
-        <BadgeMessage
-          value={UnreadMessageCount()}
-          status={'error'}
-          containerStyle={styles.badgeContainer}
-          badgeStyle={{width: 20, height: 20, borderRadius: 10}}
-          textStyle={{fontSize: 9}}
+    <SafeAreaPlus style={{flex: 1}} edges={['right', 'bottom', 'left']}>
+      <FocusAwareStatusBar barStyle="dark-content" />
+      <View style={styles.wrapper}>
+        <TabViewList
+          size="big"
+          currentKey={currentKey}
+          tabData={[
+            {
+              key: 'recommend',
+              title: '推荐',
+              component: RecommendList,
+            },
+            {
+              key: 'follow',
+              title: '关注',
+              component: FollowList,
+            },
+            {
+              key: 'lasted',
+              title: '最新',
+              component: LastedList,
+            },
+          ]}
+          onChange={key => setCurrentKey(key)}
         />
-        <View style={styles.message_icon}>
-          <IconFont name="notice" size={19} />
-        </View>
-      </Pressable>
-    </View>
+        <Pressable onPress={() => props.navigation.navigate('NotifyIndex')} style={styles.message}>
+          <BadgeMessage
+            value={UnreadMessageCount()}
+            status={'error'}
+            containerStyle={styles.badgeContainer}
+            badgeStyle={{width: 20, height: 20, borderRadius: 10}}
+            textStyle={{fontSize: 9}}
+          />
+          <View style={styles.message_icon}>
+            <IconFont name="notice" size={19} />
+          </View>
+        </Pressable>
+      </View>
+    </SafeAreaPlus>
   );
 };
 

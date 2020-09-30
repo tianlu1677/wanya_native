@@ -164,7 +164,6 @@ const accountRouter = [
     component: FollowAccounts,
     options: {title: '关注列表'},
   },
-
   {
     name: 'FollowerAccounts',
     component: FollowerAccounts,
