@@ -1,4 +1,5 @@
 // 首页
+import { CardStyleInterpolators } from '@react-navigation/stack';
 import Recommend from '@/pages/home/recommend';
 
 // Topic
@@ -80,6 +81,7 @@ const topicRouter = [
       title: '发布帖子',
       animationEnabled: true,
       gestureEnabled: false,
+      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
     },
   },
   {
@@ -265,7 +267,10 @@ export const routers = [
     name: 'NotifyIndex',
     component: NotifyIndex,
     barColor: 'dark',
-    options: {title: '消息', headerShown: true},
+    options: {title: '消息', headerShown: true,
+
+
+    },
   },
   {
     name: 'CommentNotify',

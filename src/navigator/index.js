@@ -194,6 +194,7 @@ function MainStackList() {
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
+      headerMode="screen"
       screenOptions={({route}) => ({
         headerStyle: {
           backgroundColor: 'white',
