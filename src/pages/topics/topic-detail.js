@@ -12,6 +12,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import VideoPlayerContent from '@/components/react-native-video-player';
+import {useNavigation} from '@react-navigation/native';
 import {dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
@@ -133,8 +134,24 @@ const TopicDetail = ({navigation, route}) => {
           hideControlsOnStart
           pauseOnPress
           autoplay
-          loop/>
+          loop
+        />
       </View>
+    );
+  };
+
+  const renderLink = () => {
+    const goLinkDetail = () => {
+      navigation.push('WebView', {
+        sourceUrl: detail.topic_link.raw_link,
+        title: detail.topic_link.title,
+      });
+    };
+    return (
+      <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
+        <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
+        <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
+      </Pressable>
     );
   };
 
@@ -160,10 +177,14 @@ const TopicDetail = ({navigation, route}) => {
             <StatusBar barStyle={'light-content'} />
             {detail.content_style === 'img' && renderImg()}
             {detail.content_style === 'video' && renderVideo()}
+            {detail.content_style === 'link' && renderLink()}
             {detail.content_style === 'text' && (
               <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
                 <StatusBar barStyle={'dark-content'} />
-                <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={'black'} />
+                <GoBack
+                  name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+                  color={'black'}
+                />
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
@@ -186,15 +207,6 @@ const TopicDetail = ({navigation, route}) => {
       />
     </KeyboardAvoidingView>
   ) : (
-    //   <ActionComment
-    //     visible={visible}
-    //     detail={detail}
-    //     publishComment={publishComment}
-    //     type="Topic"
-    //     setDetail={data => setDetail(data)}
-    //     changeVisible={value => setVisible(value)}
-    //   />
-    // </KeyboardAvoidingView>
     <Loading />
   );
 };
@@ -219,6 +231,26 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     marginTop: 5,
     backgroundColor: '#fff',
+  },
+  linkWrap: {
+    backgroundColor: 'pink',
+    marginRight: 14,
+    marginLeft: 14,
+    height: 167,
+    position: 'relative',
+  },
+  linkTitle: {
+    padding: 11,
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#fff',
+    lineHeight: 22,
+    zIndex: 2,
+    position: 'absolute',
+  },
+  linkImageCover: {
+    height: 167,
+    flex: 1,
   },
 });
 

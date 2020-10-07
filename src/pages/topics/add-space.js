@@ -41,45 +41,43 @@ const AddSpace = props => {
   }, []);
 
   return (
-    <SpaceList
-      request={{
-        api: getSpacesList,
-        params: {
-          latitude: home.location.latitude,
-          longitude: home.location.longitude,
-          name_cont: searchKey,
-          city: home.location.chooseCity,
-        },
-      }}
-      onPress={onPress}
-      enableLoadMore={false}
-      enableRefresh={false}
-      style={styles.wrapper}
-      ListHeaderComponent={
-        <>
-          <Search
-            style={styles.search}
-            placeholder="搜索更多场地"
-            onChangeText={text => setSearchKey(text)}
-            onCancel={() => props.navigation.goBack()}
-          />
-          <Pressable style={pstyles.proWrapper} onPress={goChooseCity}>
-            <Text style={pstyles.proTitle}>
-              {searchKey
-                ? '搜索到的场地'
-                : home.location.positionCity === home.location.chooseCity
-                ? '附近场地'
-                : '热门场地'}
-            </Text>
-            <View style={pstyles.proCity}>
-              <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
-              <Text style={pstyles.proCityText}>{home.location.chooseCity || '全国'}</Text>
-              <IconFont name="backdown" size={6} style={pstyles.proDownIcon} />
-            </View>
-          </Pressable>
-        </>
-      }
-    />
+    <View style={styles.wrapper}>
+      <Search
+        style={styles.search}
+        placeholder="搜索更多场地"
+        onChangeText={text => setSearchKey(text)}
+        onCancel={() => props.navigation.goBack()}
+      />
+      <Pressable style={pstyles.proWrapper} onPress={goChooseCity}>
+        <Text style={pstyles.proTitle}>
+          {searchKey
+            ? '搜索到的场地'
+            : home.location.positionCity === home.location.chooseCity
+            ? '附近场地'
+            : '热门场地'}
+        </Text>
+        <View style={pstyles.proCity}>
+          <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
+          <Text style={pstyles.proCityText}>{home.location.chooseCity || '全国'}</Text>
+          <IconFont name="backdown" size={6} style={pstyles.proDownIcon} />
+        </View>
+      </Pressable>
+      <SpaceList
+        request={{
+          api: getSpacesList,
+          params: {
+            latitude: home.location.latitude,
+            longitude: home.location.longitude,
+            name_cont: searchKey,
+            city: home.location.chooseCity,
+          },
+        }}
+        onPress={onPress}
+        enableLoadMore={false}
+        enableRefresh={false}
+        style={styles.wrapper}
+      />
+    </View>
   );
 };
 

@@ -1,5 +1,5 @@
 // 首页
-import { CardStyleInterpolators } from '@react-navigation/stack';
+import {CardStyleInterpolators} from '@react-navigation/stack';
 import Recommend from '@/pages/home/recommend';
 
 // Topic
@@ -106,7 +106,7 @@ const topicRouter = [
     name: 'AddNode',
     barColor: 'dark',
     component: AddNode,
-    options: {title: '添加圈子'},
+    // options: {title: '选择圈子'},
   },
 ];
 
@@ -267,10 +267,7 @@ export const routers = [
     name: 'NotifyIndex',
     component: NotifyIndex,
     barColor: 'dark',
-    options: {title: '消息', headerShown: true,
-
-
-    },
+    options: {title: '消息', headerShown: true},
   },
   {
     name: 'CommentNotify',

@@ -92,22 +92,22 @@ export const TopicVideoContent = props => {
 };
 
 export const TopicLinkContent = props => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
-  const goLinkDetail = () => {
-    navigation.push('WebView', {
-      sourceUrl: props.data.topic_link.raw_link,
-      title: props.data.topic_link.title,
-    });
-  };
+  // const goLinkDetail = () => {
+  //   navigation.push('WebView', {
+  //     sourceUrl: props.data.topic_link.raw_link,
+  //     title: props.data.topic_link.title,
+  //   });
+  // };
 
   return (
-    <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
+    <View style={styles.linkWrap}>
       <FastImg source={{uri: props.data.topic_link.cover_url}} style={{flex: 1, height: 167}} />
       <View style={styles.linkTitleBg}>
         <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
       </View>
-    </Pressable>
+    </View>
   );
 };
 
@@ -201,10 +201,7 @@ const styles = StyleSheet.create({
     height: 64,
   },
   linkTitle: {
-    paddingLeft: 11,
-    paddingRight: 11,
-    paddingTop: 11,
-    paddingBottom: 11,
+    padding: 11,
     fontSize: 16,
     fontWeight: '500',
     color: '#fff',

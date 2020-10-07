@@ -14,7 +14,7 @@ import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {BASIC_HEIGHT} from '@/utils/navbar';
 import {dispatchBaseCurrentAccount} from '@/redux/actions';
-import FocusAwareStatusBar from '@/components/FocusAwareStatusBar'
+import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 
 const MineDetail = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -216,7 +216,7 @@ const MineDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   setting: {
     height: 20,
@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     opacity: 0.6,
     marginRight: 10,
+    fontSize: 10,
   },
   intro: {
     lineHeight: 20,

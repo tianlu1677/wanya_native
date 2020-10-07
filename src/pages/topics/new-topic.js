@@ -19,10 +19,12 @@ const NewTopic = props => {
   const uploadProgress = useSelector(state => state.home.uploadProgress);
   const location = useSelector(state => state.home.location);
 
-  // const defaultVideo = [{id: 1, url: 'http://xinxuefile.meirixinxue.com/assets/d479716443f6aca08c4e45135509bd03.mp4'}]
-  const defaultVideo = []
+  // const defaultVideo = [
+  //   {id: 1, url: 'http://xinxuefile.meirixinxue.com/assets/d479716443f6aca08c4e45135509bd03.mp4'},
+  // ];
+  const defaultVideo = [];
   const [imageSource, setImageSource] = useState([]);
-  const [videoSource, setVideoSource] = useState(defaultVideo)
+  const [videoSource, setVideoSource] = useState(defaultVideo);
 
   const [content, setContent] = useState(savetopic.plan_content);
 
@@ -33,7 +35,7 @@ const NewTopic = props => {
   };
 
   const getLocation = res => {
-    if(res.position && res.position.coords) {
+    if (res.position && res.position.coords) {
       dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
     }
     navigation.navigate('AddSpace');
@@ -162,7 +164,10 @@ const NewTopic = props => {
 
   const LeftBtn = () => {
     return (
-      <Pressable onPress={() => navigation.goBack()} style={{paddingLeft: 5}} hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
+      <Pressable
+        onPress={() => navigation.goBack()}
+        style={{paddingLeft: 5}}
+        hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
         <IconFont name={'close'} size={14} />
       </Pressable>
     );
@@ -231,7 +236,9 @@ const NewTopic = props => {
           <Pressable
             style={[styles.mediaWrap, {backgroundColor: 'black'}]}
             key={index}
-            onProgress={() => {console.log('xxxx')}}>
+            onProgress={() => {
+              console.log('xxxx');
+            }}>
             {v.id ? (
               <Video
                 style={styles.media}
@@ -270,6 +277,7 @@ const NewTopic = props => {
         }
         onChangeText={onChangeContent}
         value={content}
+        selectionColor={'#ff193a'}
       />
       <View style={{flexDirection: 'row'}}>
         <Pressable style={styles.addTextNameWrap} onPress={() => navigation.navigate('AddHashTag')}>

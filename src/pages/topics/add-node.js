@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {getCategoryList} from '@/api/category_api';
 import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
 
-const NodeIndex = () => {
+const NodeIndex = ({navigation}) => {
   const [categories, setCategories] = useState(null);
   const [nodes, setNodes] = useState(null);
   const [layoutList, setLayoutList] = useState([]);
@@ -33,6 +33,18 @@ const NodeIndex = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: '选择圈子',
+      headerLeft: () => null,
+      headerRight: () => (
+        <Pressable onPress={() => navigation.goBack()}>
+          <Text style={{color: '#bdbdbd'}}>取消</Text>
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
 
   return categories && nodes ? (
     <View style={styles.wrapper}>

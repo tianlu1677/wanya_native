@@ -32,25 +32,23 @@ const MentionAccounts = ({navigation}) => {
   }, [searchKey]);
 
   return (
-    <MentionsAccountList
-      request={request}
-      enableLoadMore={false}
-      enableRefresh={false}
-      style={styles.wrapper}
-      ListHeaderComponent={
-        <>
-          <Search
-            style={styles.search}
-            placeholder="搜索更多顽友"
-            onChangeText={text => setSearchKey(text)}
-            onCancel={() => navigation.goBack()}
-          />
-          <View style={pstyles.proWrapper}>
-            <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
-          </View>
-        </>
-      }
-    />
+    <View style={styles.wrapper}>
+      <Search
+        style={styles.search}
+        placeholder="搜索更多顽友"
+        onChangeText={text => setSearchKey(text)}
+        onCancel={() => navigation.goBack()}
+      />
+      <View style={pstyles.proWrapper}>
+        <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
+      </View>
+      <MentionsAccountList
+        request={request}
+        enableLoadMore={false}
+        enableRefresh={false}
+        style={styles.wrapper}
+      />
+    </View>
   );
 };
 
