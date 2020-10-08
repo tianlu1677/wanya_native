@@ -133,6 +133,7 @@ const BaseTopic = props => {
           {data.content_style === 'img' && <TopicImageContent data={data} />}
           {data.content_style === 'video' && <TopicVideoContent data={data} />}
           {data.content_style === 'link' && <TopicLinkContent data={data} />}
+          {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         </View>
       )}
       <PlainContent data={data} style={styles.multiLineText} numberOfLines={5} />
@@ -207,6 +208,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     lineHeight: 22,
     zIndex: 2,
+  },
+  excellentLabel: {
+    width: 30,
+    height: 16,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 10,
+    lineHeight: 16,
+    backgroundColor: '#FF2242',
+    borderRadius: 2,
+    overflow: 'hidden',
+    color: 'white',
+    position: 'absolute',
+    left: 20,
+    top: 23,
   },
 });
 

@@ -85,7 +85,6 @@ const SingleItem = props => {
         )}
 
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
-
         {data.is_top && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
         {!data.is_top && data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
 

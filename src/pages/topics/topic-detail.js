@@ -175,9 +175,13 @@ const TopicDetail = ({navigation, route}) => {
         ListHeaderComponent={
           <>
             <StatusBar barStyle={'light-content'} />
-            {detail.content_style === 'img' && renderImg()}
-            {detail.content_style === 'video' && renderVideo()}
-            {detail.content_style === 'link' && renderLink()}
+            <View>
+              {detail.content_style === 'img' && renderImg()}
+              {detail.content_style === 'video' && renderVideo()}
+              {detail.content_style === 'link' && renderLink()}
+              {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+            </View>
+
             {detail.content_style === 'text' && (
               <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
                 <StatusBar barStyle={'dark-content'} />
@@ -251,6 +255,21 @@ const styles = StyleSheet.create({
   linkImageCover: {
     height: 167,
     flex: 1,
+  },
+  excellentLabel: {
+    width: 30,
+    height: 16,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 10,
+    lineHeight: 16,
+    backgroundColor: '#FF2242',
+    borderRadius: 2,
+    overflow: 'hidden',
+    color: 'white',
+    position: 'absolute',
+    left: 20,
+    top: 23,
   },
 });
 
