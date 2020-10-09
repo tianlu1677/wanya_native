@@ -199,12 +199,12 @@ const AccountContent = (props) => {
         </ItemWrap>
       </ItemView>
       <ItemView
-        style={{}}
+        style={{...commonStyles.bottomBorder1px}}
         onPress={() => {
           goPages('intro');
         }}>
         <ItemTitle numberOfLines={1}>简介</ItemTitle>
-        <ItemWrap style={{width: 200}}>
+        <ItemWrap>
           <ItemTitle numberOfLines={1}>{currentAccount.intro}</ItemTitle>
           <ForwardRight />
         </ItemWrap>

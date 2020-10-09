@@ -71,13 +71,15 @@ const Recommend = props => {
           onChange={key => setCurrentKey(key)}
         />
         <Pressable onPress={() => props.navigation.navigate('NotifyIndex')} style={styles.message}>
-          <BadgeMessage
-            value={UnreadMessageCount()}
-            status={'error'}
-            containerStyle={styles.badgeContainer}
-            badgeStyle={{width: 20, height: 20, borderRadius: 10}}
-            textStyle={{fontSize: 9}}
-          />
+          {UnreadMessageCount() > 0 && (
+            <BadgeMessage
+              value={UnreadMessageCount()}
+              status={'error'}
+              containerStyle={styles.badgeContainer}
+              badgeStyle={{width: 20, height: 20, borderRadius: 10}}
+              textStyle={{fontSize: 9}}
+            />
+          )}
           <View style={styles.message_icon}>
             <IconFont name="notice" size={19} />
           </View>
