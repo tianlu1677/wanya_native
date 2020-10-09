@@ -86,25 +86,27 @@ const SocialLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%'}}
         resizeMode={'cover'}>
-        <View
+        <Pressable
           style={{
             position: 'absolute',
             backgroundColor: 'black',
-            top: 29,
+            top: 39,
             right: 10,
             width: 30,
             height: 10,
-          }}>
+          }}
+          onPress={() => {
+            console.log('xxx')
+            navigation.navigate('AdminPhoneLogin');
+            // navigation.navigate('InviteLogin');
+            // navigation.navigate('PhoneLogin');
+          }}
+        >
           <Text
-            onPress={() => {
-              navigation.navigate('AdminPhoneLogin');
-              // navigation.navigate('InviteLogin');
-              // navigation.navigate('PhoneLogin');
-            }}
             style={{color: 'black'}}>
             去别的页面
           </Text>
-        </View>
+        </Pressable>
 
         <View style={styles.loginContainer}>
           <Pressable
