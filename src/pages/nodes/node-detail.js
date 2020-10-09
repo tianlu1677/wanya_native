@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, View, Text, Image, ImageBackground, Pressable} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {BlurView} from '@react-native-community/blur';
 import Loading from '@/components/Loading';
 import TabViewList from '@/components/TabView';
 import {
@@ -112,17 +113,24 @@ const NodeDetail = ({navigation, route}) => {
           </Text>
           <PlayScore score={detail.play_score} onPress={onPlay} />
         </View>
-        <Pressable style={styles.accountInfo} onPress={goJoinAccounts}>
-          <Text style={styles.accountOpacity} />
-          <JoinAccounts accounts={detail.accounts} size={25} />
-          <Text style={styles.count}>
-            {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
-          </Text>
-          <JoinButton
-            join={detail.followed}
-            text={detail.followed ? '已加入' : '加入'}
-            onPress={onFollowNode}
-          />
+        <Pressable
+          onPress={goJoinAccounts}
+          style={{position: 'absolute', bottom: 22, left: 15, right: 15}}>
+          <BlurView
+            style={styles.accountInfo}
+            blurType="light"
+            blurAmount={10}
+            reducedTransparencyFallbackColor="#white">
+            <JoinAccounts accounts={detail.accounts} size={25} />
+            <Text style={styles.count}>
+              {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
+            </Text>
+            <JoinButton
+              join={detail.followed}
+              text={detail.followed ? '已加入' : '加入'}
+              onPress={onFollowNode}
+            />
+          </BlurView>
         </Pressable>
       </View>
       <View style={styles.separator} />
@@ -187,8 +195,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#000',
-    opacity: 0.5,
+    // backgroundColor: '#000',
+    // opacity: 0.5,
   },
   nodeContent: {
     flexDirection: 'row',
@@ -246,19 +254,10 @@ const styles = StyleSheet.create({
     zIndex: 2,
     borderRadius: 2,
     overflow: 'hidden',
-    position: 'absolute',
-    bottom: 22,
-    left: 15,
-    right: 15,
-  },
-  accountOpacity: {
-    backgroundColor: '#fff',
-    opacity: 0.5,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    // position: 'absolute',
+    // bottom: 22,
+    // left: 15,
+    // right: 15,
   },
   count: {
     color: '#dbdbdb',

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Pressable, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
@@ -9,6 +9,8 @@ import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
+
+const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 
 const SingleItem = props => {
   const [height, setheight] = useState(200);
@@ -24,14 +26,7 @@ const SingleItem = props => {
   const onGoDetail = v => {
     switch (props.type) {
       case 'Topic':
-        if (data.topic_link) {
-          navigation.push('WebView', {
-            sourceUrl: props.data.topic_link.raw_link,
-            title: props.data.topic_link.title,
-          });
-        } else {
-          navigation.push('TopicDetail', {topicId: data.id});
-        }
+        navigation.push('TopicDetail', {topicId: data.id});
         break;
       case 'Article':
         navigation.navigate('ArticleDetail', {topicId: data.id});
@@ -90,6 +85,8 @@ const SingleItem = props => {
         )}
 
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+        {data.is_top && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
+        {!data.is_top && data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
 
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
@@ -228,6 +225,28 @@ const styles = StyleSheet.create({
   hashtagText: {
     color: '#ff8d00',
     marginRight: 3,
+  },
+  imageLabel: {
+    width: 32,
+    height: 16,
+    position: 'absolute',
+    left: 8,
+    top: 8,
+  },
+  excellentLabel: {
+    width: 30,
+    height: 16,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 10,
+    lineHeight: 16,
+    backgroundColor: '#FF2242',
+    borderRadius: 2,
+    overflow: 'hidden',
+    color: 'white',
+    position: 'absolute',
+    left: 8,
+    top: 8,
   },
 });
 

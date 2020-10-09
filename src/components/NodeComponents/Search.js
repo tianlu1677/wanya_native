@@ -10,7 +10,7 @@ const Search = props => {
         <IconFont name="sousuo" size={12} color={'#7f7f81'} style={styles.icon} />
         <TextInput
           style={styles.textInput}
-          placeholder={props.placeholder}
+          placeholder={props.placehold323er}
           onChangeText={props.onChangeText}
           selectionColor={'#ff193a'}
         />

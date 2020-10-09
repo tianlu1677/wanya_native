@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, ImageBackground, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';

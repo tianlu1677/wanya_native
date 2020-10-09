@@ -92,22 +92,22 @@ export const TopicVideoContent = props => {
 };
 
 export const TopicLinkContent = props => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
-  const goLinkDetail = () => {
-    navigation.push('WebView', {
-      sourceUrl: props.data.topic_link.raw_link,
-      title: props.data.topic_link.title,
-    });
-  };
+  // const goLinkDetail = () => {
+  //   navigation.push('WebView', {
+  //     sourceUrl: props.data.topic_link.raw_link,
+  //     title: props.data.topic_link.title,
+  //   });
+  // };
 
   return (
-    <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
+    <View style={styles.linkWrap}>
       <FastImg source={{uri: props.data.topic_link.cover_url}} style={{flex: 1, height: 167}} />
       <View style={styles.linkTitleBg}>
         <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
       </View>
-    </Pressable>
+    </View>
   );
 };
 
@@ -133,6 +133,7 @@ const BaseTopic = props => {
           {data.content_style === 'img' && <TopicImageContent data={data} />}
           {data.content_style === 'video' && <TopicVideoContent data={data} />}
           {data.content_style === 'link' && <TopicLinkContent data={data} />}
+          {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         </View>
       )}
       <PlainContent data={data} style={styles.multiLineText} numberOfLines={5} />
@@ -201,15 +202,27 @@ const styles = StyleSheet.create({
     height: 64,
   },
   linkTitle: {
-    paddingLeft: 11,
-    paddingRight: 11,
-    paddingTop: 11,
-    paddingBottom: 11,
+    padding: 11,
     fontSize: 16,
     fontWeight: '500',
     color: '#fff',
     lineHeight: 22,
     zIndex: 2,
+  },
+  excellentLabel: {
+    width: 30,
+    height: 16,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 10,
+    lineHeight: 16,
+    backgroundColor: '#FF2242',
+    borderRadius: 2,
+    overflow: 'hidden',
+    color: 'white',
+    position: 'absolute',
+    left: 20,
+    top: 23,
   },
 });
 

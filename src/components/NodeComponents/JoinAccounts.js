@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   opacity: {
     backgroundColor: '#000',
-    opacity: 0.5,
+    opacity: 0.3,
   },
   textCenter: {
     position: 'absolute',
