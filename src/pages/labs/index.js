@@ -1,6 +1,5 @@
 import React, {Component, useState} from 'react';
 import {View, Text, Button} from 'react-native';
-import Toast from 'react-native-root-toast';
 import Share from 'react-native-share';
 import {WebView} from 'react-native-webview';
 import Animated from 'react-native-reanimated';
@@ -75,30 +74,6 @@ const LabIndex = ({navigation, route}) => {
       });
   };
 
-  const showToast = () => {
-    console.log('showToast');
-    // Add a Toast on screen.
-    let toast = Toast.show('This is a message', {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.BOTTOM,
-      shadow: true,
-      animation: true,
-      hideOnPress: true,
-      delay: 0,
-      onShow: () => {
-        // calls on toast\`s appear animation start
-      },
-      onShown: () => {
-        // calls on toast\`s appear animation end.
-      },
-      onHide: () => {
-        // calls on toast\`s hide animation start.
-      },
-      onHidden: () => {
-        // calls on toast\`s hide animation end.
-      },
-    });
-  };
   const sheetRef = React.useRef(null);
 
   const previewImg = () => {

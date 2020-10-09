@@ -10,6 +10,7 @@ import {
   PlayScore,
   JoinActivity,
   GoBack,
+  BottomModal,
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
@@ -33,6 +34,7 @@ const NodeDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
   const [currentKey, setCurrentKey] = useState('publish');
+  const [showModal, setShowModal] = useState(false);
 
   const PublishListPage = () => {
     const queryUrl = `q[node_id_eq]=${detail.id}&q[s]=published_at desc&show_followed=on`;
@@ -85,7 +87,8 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const onShowIntro = () => {
-    sheetRef.current.snapTo();
+    setShowModal(true)
+    // sheetRef.current.snapTo();
   };
 
   useEffect(() => {
@@ -161,8 +164,10 @@ const NodeDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+      <BottomModal visible={showModal} cancleClick={() => setShowModal(false)} title={detail.name} >
+        <Text>{detail.desc}</Text>
+      </BottomModal>
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
-      <BottomSheetContent content={detail.desc} ref={sheetRef} />
     </View>
   ) : (
     <Loading />

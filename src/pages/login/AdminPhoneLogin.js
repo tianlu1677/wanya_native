@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, TextInput, Button} from 'react-native';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
-import Toast from 'react-native-root-toast';
 import Helper from '../../utils/helper';
 import {Input} from 'react-native-elements';
 import {phoneSignIn} from '../../api/sign_api';
@@ -35,14 +34,7 @@ class AdminPhoneLogin extends Component {
         Helper.setData('account_avatar_url', res.avatar_url);
         this.props.dispatchSetAuthToken(res.token);
         this.props.dispatchCurrentAccount();
-        let toast = Toast.show('登录成功', {
-          duration: Toast.durations.LONG,
-          position: Toast.positions.TOP,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
-          delay: 0,
-        });
+
 
         this.props.navigation.reset({
           index: 0,

@@ -8,6 +8,7 @@ import CityListNode from './CityList';
 import JoinActivityNode from './JoinActivity'
 import GoBackNode from './GoBack'
 import {Loading} from './Modal';
+import BottomModalNode from './BottomModal';
 
 export const PlayScore = PlayScoreNode;
 export const Avator = AvatorNode;
@@ -19,3 +20,4 @@ export const CityList = CityListNode;
 export const ModalLoading = Loading;
 export const JoinActivity = JoinActivityNode;
 export const GoBack = GoBackNode;
+export const BottomModal = BottomModalNode;
