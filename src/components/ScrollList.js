@@ -137,6 +137,7 @@ const ScrollList = props => {
       onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
       scrollIndicatorInsets={{right: 1}}
+      // initialNumToRender={8}
       {...props.settings}
     />
   );

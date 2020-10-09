@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, View, ActivityIndicator} from 'react-native';
-import Modal from 'react-native-modal';
+import {Text, View, ActivityIndicator, Modal} from 'react-native';
+// import Modal from 'react-native-modal';
 
 export const Loading = props => {
   return (
-    <Modal isVisible={true}>
+    <Modal visible={true}>
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator />
         {props.title && <Text style={{color: '#fff', marginTop: 10}}>{props.title}</Text>}

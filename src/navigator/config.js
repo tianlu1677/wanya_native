@@ -48,6 +48,9 @@ import SystemNotify from '@/pages/notify/system-notify';
 import FollowNotify from '@/pages/notify/follow-notify';
 import MentionNotify from '@/pages/notify/mention-notify';
 
+// 搜索
+import SearchIndex from '@/pages/search/search-index';
+
 // 实验室页面
 import LabIndex from '@/pages/labs/index';
 import LabTabIndex from '@/pages/labs/tabindex';
@@ -212,6 +215,15 @@ const commonRouter = [
   },
 ];
 
+const searchRouter = [
+  {
+    name: 'SearchIndex',
+    component: SearchIndex,
+    barColor: 'dark',
+    options: {title: '搜索'},
+  },
+];
+
 export const routers = [
   ...topicRouter,
   ...articleRouter,
@@ -219,6 +231,7 @@ export const routers = [
   ...nodeRouter,
   ...accountRouter,
   ...commonRouter,
+  ...searchRouter,
   {
     name: 'PhoneLogin',
     component: PhoneLogin,

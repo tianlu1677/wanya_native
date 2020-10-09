@@ -10,9 +10,13 @@ const Search = props => {
         <IconFont name="sousuo" size={12} color={'#7f7f81'} style={styles.icon} />
         <TextInput
           style={styles.textInput}
-          placeholder={props.placehold323er}
+          placeholder={props.placeholder}
           onChangeText={props.onChangeText}
           selectionColor={'#ff193a'}
+          autoFocus
+          clearButtonMode
+          textAlign={'left'}
+          returnKeyType={'search'}
         />
       </View>
       <Pressable onPress={props.onCancel}>
