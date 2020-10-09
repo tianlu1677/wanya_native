@@ -284,6 +284,7 @@ export const routers = [
   {
     name: 'SystemNotify',
     component: SystemNotify,
+    barColor: 'dark',
     options: {title: '顽鸦小助手'},
   },
   {

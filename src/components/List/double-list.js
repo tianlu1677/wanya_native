@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
@@ -15,6 +15,8 @@ const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a77
 const SingleItem = props => {
   const [height, setheight] = useState(200);
   const navigation = useNavigation();
+  const width = Dimensions.get('window').width;
+  const halfWidth = ((width - 10)/2) // 屏幕去掉两边后的宽度
 
   const {data} = props;
 
@@ -62,7 +64,7 @@ const SingleItem = props => {
   useEffect(() => {
     if (data.single_cover.height) {
       const h = data.single_cover
-        ? (data.single_cover.height * 180) / data.single_cover.width
+        ? (data.single_cover.height * halfWidth) / data.single_cover.width
         : 500;
       setheight(h);
     }

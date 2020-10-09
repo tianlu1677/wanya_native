@@ -1,12 +1,12 @@
-import React, {Component, useEffect} from 'react';
+import React, {Component, useEffect, useCallback} from 'react';
 import {StyleSheet, View, Text, Image, Pressable, Button} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import styled from 'styled-components/native';
 import {BadgeMessage, Avator} from '@/components/NodeComponents';
 import {connect, useSelector, useDispatch} from 'react-redux';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
-import {dispatchCurrentAccount} from '@/redux/actions';
-
+import {dispatchBaseCurrentAccount, dispatchCurrentAccount} from '@/redux/actions';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   CommentNoticeImg,
   FollowNoticeImg,
@@ -64,9 +64,11 @@ const NotifyIndex = ({navigation}) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(dispatchCurrentAccount())
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(dispatchCurrentAccount())
+    }, [])
+  );
 
   const unreadMessageCount = message_count => {
     if (message_count <= 0) {
@@ -185,6 +187,7 @@ const NotifyIndex = ({navigation}) => {
               <Avator
                 size={45}
                 account={{avatar_url: SystemNoticeImg, settled_type: 'brand'}}
+                handleClick={goPageMethod.bind(this, 'notify_system')}
               />
               {unread_system_messages_count > 0 && (
                 <BadgeMessage
