@@ -47,10 +47,11 @@ const HashtagDetail = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <GoBack />
+      <View style={{paddingTop: NAV_BAR_HEIGHT, backgroundColor: '#ff8d00'}} />
       <HeadView>
         <BgCoverImage source={{uri: bgLogo}} />
         <RightCoverImage source={{uri: rightLogo}} style={{top: STATUS_BAR_HEIGHT + 5}} />
-        <HashtagText style={{top: NAV_BAR_HEIGHT + 15}}># {hashtag}</HashtagText>
+        <HashtagText style={{top: NAV_BAR_HEIGHT}}># {hashtag}</HashtagText>
       </HeadView>
       <TabViewList
         currentKey={currentKey}
@@ -96,7 +97,7 @@ const RightCoverImage = styled(Image)`
 
 const HashtagText = styled(Text)`
   position: absolute;
-
+  top: 0;
   left: 0;
   right: 0;
   margin-left: 15px;

@@ -159,15 +159,18 @@ const accountRouter = [
   {
     name: 'FollowNodes',
     component: FollowNodes,
+    barColor: 'dark',
     options: {title: '圈子列表'},
   },
   {
     name: 'FollowAccounts',
     component: FollowAccounts,
+    barColor: 'dark',
     options: {title: '关注列表'},
   },
   {
     name: 'FollowerAccounts',
+    barColor: 'dark',
     component: FollowerAccounts,
     options: {title: '粉丝列表'},
   },
