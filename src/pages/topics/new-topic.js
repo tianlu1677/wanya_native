@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     marginLeft: 3,
   },
   addWrapper: {
-    borderTopWidth: 1,
+    borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#ebebeb',
     marginTop: 24,
   },
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 50,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#ebebeb',
     paddingLeft: 6,
   },

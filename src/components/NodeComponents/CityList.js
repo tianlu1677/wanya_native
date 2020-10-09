@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     borderColor: '#F2F2F2',
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   cancel: {
     position: 'absolute',
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     borderRightWidth: 1,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#f3f3f3',
     justifyContent: 'center',
   },

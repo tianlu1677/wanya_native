@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   city: {
     borderColor: '#fafafa',
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     alignItems: 'center',
     height: 45,
@@ -161,12 +161,12 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     paddingLeft: 15,
     backgroundColor: '#fafafa',
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     color: '#bdbdbd',
   },
   cityBottom: {
     borderColor: '#fafafa',
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     marginLeft: 16,
   },
   cityText: {

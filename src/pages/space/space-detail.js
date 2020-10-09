@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
-import {PlayScore, Avator, JoinActivity, GoBack} from '@/components/NodeComponents';
+import {PlayScore, Avator, JoinActivity, GoBack, BottomModal} from '@/components/NodeComponents';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
@@ -22,6 +22,7 @@ const SpaceDetail = ({navigation, route}) => {
   const [spaceId] = useState(route.params.spaceId);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('lasted');
+  const [showModal, setShowModal] = useState(false);
 
   const loadData = async () => {
     const res = await getSpaceDetail(spaceId);
@@ -32,7 +33,8 @@ const SpaceDetail = ({navigation, route}) => {
   };
 
   const onShowIntro = () => {
-    sheetRef.current.snapTo();
+    setShowModal(true)
+    // sheetRef.current.snapTo();
   };
 
   const LastedList = () => (
@@ -138,8 +140,11 @@ const SpaceDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+      <BottomModal visible={showModal} cancleClick={() => setShowModal(false)} title={detail.name} >
+        <Text>{detail.intro}</Text>
+      </BottomModal>
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
-      <BottomSheetContent content={detail.intro} ref={sheetRef} />
+      {/*<BottomSheetContent content={detail.intro} ref={sheetRef} />*/}
     </View>
   ) : (
     <Loading />

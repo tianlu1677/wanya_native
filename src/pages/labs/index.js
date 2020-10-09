@@ -1,24 +1,23 @@
 import React, {Component, useState} from 'react';
-import { View, Text, Button} from 'react-native';
-import Toast from 'react-native-root-toast';
+import {View, Text, Button} from 'react-native';
 import Share from 'react-native-share';
 import {WebView} from 'react-native-webview';
-import Modal from 'react-native-modal';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
-import ImagePreview from "@/components/ImagePreview"
-import { DefaultLog, EmptyImg, MineSystemNoticeUserImg, MineNodeImg} from "@/utils/default-image"
+import ImagePreview from '@/components/ImagePreview';
+import {DefaultLog, EmptyImg, MineSystemNoticeUserImg, MineNodeImg} from '@/utils/default-image';
 import Helper from '@/utils/helper';
-import { dispatchPreviewImage } from '@/redux/actions'
+import {dispatchPreviewImage} from '@/redux/actions';
+
 const types = {toast: 'toast', webview: '网页'};
 
 const LabIndex = ({navigation, route}) => {
   const [isVisible, setIsVisible] = useState(false);
   const dispatch = useDispatch();
-  const imageSource = [DefaultLog]
+  const imageSource = [DefaultLog];
   const renderContent = () => (
     <View
       style={{
@@ -47,21 +46,17 @@ const LabIndex = ({navigation, route}) => {
   //https://github.com/react-native-community/react-native-permissions
   const checkPermission = () => {
     check(PERMISSIONS.IOS.CAMERA)
-      .then((result) => {
+      .then(result => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
+            console.log('This feature is not available (on this device / in this context)');
             break;
           case RESULTS.DENIED:
             // 请求过一次就不能再请求了
 
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
-            request(PERMISSIONS.IOS.MEDIA_LIBRARY).then((result) => {
-              console.log('result', result)
+            console.log('The permission has not been requested / is denied but requestable');
+            request(PERMISSIONS.IOS.MEDIA_LIBRARY).then(result => {
+              console.log('result', result);
             });
 
             break;
@@ -74,40 +69,15 @@ const LabIndex = ({navigation, route}) => {
             break;
         }
       })
-      .catch((error) => {
+      .catch(error => {
         // …
       });
-  }
+  };
 
-  const showToast = () => {
-    console.log('showToast')
-    // Add a Toast on screen.
-    let toast = Toast.show('This is a message', {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.BOTTOM,
-      shadow: true,
-      animation: true,
-      hideOnPress: true,
-      delay: 0,
-      onShow: () => {
-        // calls on toast\`s appear animation start
-      },
-      onShown: () => {
-        // calls on toast\`s appear animation end.
-      },
-      onHide: () => {
-        // calls on toast\`s hide animation start.
-      },
-      onHidden: () => {
-        // calls on toast\`s hide animation end.
-      }
-    });
-
-  }
   const sheetRef = React.useRef(null);
 
   const previewImg = () => {
-    console.log('previewImg')
+    console.log('previewImg');
 
     const images = [
       {
@@ -132,43 +102,56 @@ const LabIndex = ({navigation, route}) => {
       },
     ];
 
-    const data = {images: images, visible: true, index: 1}
-    dispatch(dispatchPreviewImage(data))
-
-  }
+    const data = {images: images, visible: true, index: 1};
+    dispatch(dispatchPreviewImage(data));
+  };
 
   return (
     <View style={{flex: 1}}>
       <Text>实验室主页</Text>
 
       <View>
-        <Button title={"显示"}
-                onPress={() => showToast()}
-        >
+        <Button title={'显示'} onPress={() => showToast()}></Button>
 
-        </Button>
+        <Button
+          title={'显示所有本地缓存'}
+          onPress={() => {
+            navigation.navigate('LabStorageIndex');
+          }}
+        />
 
-        <Button title={"显示所有本地缓存"} onPress={() => {navigation.navigate('LabStorageIndex')}}>
-
-
-        </Button>
+        <Button
+          title={'去搜索'}
+          onPress={() => {
+            navigation.navigate('SearchIndex');
+          }}
+        />
 
         <ImagePreview
           data={imageSource}
           selectedPreviewImageContainerStyle={{}}
-          mainImageStyle={{ backgroundColor: '#F2F2F2', flex: 1}}
+          mainImageStyle={{backgroundColor: '#F2F2F2', flex: 1}}
           previewFlatListProps={{}}
-          />
+        />
       </View>
 
-      <Button title={"预览图片"} onPress={() => { previewImg() }} />
+      <Button
+        title={'预览图片'}
+        onPress={() => {
+          previewImg();
+        }}
+      />
 
-        <Button title={"请求权限"} onPress={() => { checkPermission() }} />
+      <Button
+        title={'请求权限'}
+        onPress={() => {
+          checkPermission();
+        }}
+      />
 
-        {/*<Button title={"选择图片"} onPress={() => { choseImage() } }>*/}
+      {/*<Button title={"选择图片"} onPress={() => { choseImage() } }>*/}
 
-        {/*</Button>*/}
-
+      {/*</Button>*/}
 
       {/*<View*/}
       {/*  style={{*/}

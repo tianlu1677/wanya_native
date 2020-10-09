@@ -46,7 +46,7 @@ list = %w[
 ]
 
 new_list = %w[
-        https://raw.githubusercontent.com/cornedor/react-native-video-player/master/README.md
+        https://raw.githubusercontent.com/jacklam718/react-native-modals/master/README.md
 ]
 
 new_list.each do |url|

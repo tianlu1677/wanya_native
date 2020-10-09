@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingBottom: 6,
     letterSpacing: 1,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     fontWeight: '700',
     height: 30,
     fontSize: 15,

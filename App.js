@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
-import {Text, StatusBar, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {Text, StatusBar, TextInput, Dimensions, SafeAreaView, StyleSheet, Image} from 'react-native';
 import CodePush from "react-native-code-push";
 import checkHotUpdate from '@/utils/codepush';
 // const emitter = emitt()
@@ -32,29 +32,36 @@ import DeviceInfo from 'react-native-device-info';
 import ImagePreview from "@/components/ImagePreview";
 import ShareItem from "@/components/ShareItem";
 
+
 class App extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    this.loadSplashImg()
+    const scale = Dimensions.get('window').width / 375;
+    console.log('scale', scale);
+    this.loadSplashImg();
     this.loadNetworkInfo();
     this.loadDeviceInfo();
     this.loginAdmin();
-
-    CodePush.disallowRestart(); // 禁止重启
-    checkHotUpdate(CodePush); // 开始检查更新
+    // CodePush.disallowRestart(); // 禁止重启
+    // checkHotUpdate(CodePush); // 开始检查更新
+    Text.defaultProps = Object.assign({}, Text.defaultProps, {
+      allowFontScaling: false,
+      adjustsFontSizeToFit: true,
+      minimumFontScale: scale,
+    });
+    TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {defaultProps: false});
   }
 
   loadSplashImg = () => {
     setTimeout(() => {
       RNBootSplash.hide({duration: 10});
-    }, 1500)
-  }
-
-  loginAdmin = () => {
+    }, 1500);
   };
+
+  loginAdmin = () => {};
 
   loadNetworkInfo = () => {
     // const unsubscribe = NetInfo.addEventListener(state => {
@@ -78,6 +85,8 @@ class App extends Component {
 
     let bundleId = DeviceInfo.getBundleId();
     // console.log('bundleId', bundleId)
+
+
   };
 
   render() {

@@ -10,6 +10,7 @@ import {
   PlayScore,
   JoinActivity,
   GoBack,
+  BottomModal,
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
@@ -33,6 +34,7 @@ const NodeDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
   const [currentKey, setCurrentKey] = useState('publish');
+  const [showModal, setShowModal] = useState(false);
 
   const PublishListPage = () => {
     const queryUrl = `q[node_id_eq]=${detail.id}&q[s]=published_at desc&show_followed=on`;
@@ -85,7 +87,8 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const onShowIntro = () => {
-    sheetRef.current.snapTo();
+    setShowModal(true)
+    // sheetRef.current.snapTo();
   };
 
   useEffect(() => {
@@ -95,7 +98,7 @@ const NodeDetail = ({navigation, route}) => {
   return detail ? (
     <View style={{...styles.wrapper}}>
       <GoBack />
-      <FastImg source={{uri: detail.backgroud_cover_url}} style={styles.imageCover} />
+      <FastImg source={{uri: detail.backgroud_cover_url}} resizeMode={'cover'} style={styles.imageCover} />
       <View style={styles.imageCoverOpacity} />
       <View style={styles.header}>
         <View style={styles.nodeContent}>
@@ -161,8 +164,10 @@ const NodeDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+      <BottomModal visible={showModal} cancleClick={() => setShowModal(false)} title={detail.name} >
+        <Text>{detail.desc}</Text>
+      </BottomModal>
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
-      <BottomSheetContent content={detail.desc} ref={sheetRef} />
     </View>
   ) : (
     <Loading />
@@ -182,6 +187,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   imageCover: {
+    width: '100%',
+    height: 400,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -194,7 +201,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 400,
     // backgroundColor: '#000',
     // opacity: 0.5,
   },

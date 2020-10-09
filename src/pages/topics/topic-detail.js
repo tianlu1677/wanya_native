@@ -23,7 +23,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -88,7 +88,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} />
+        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={'white'} />
         <Swiper
           index={0}
           loop={false}
@@ -268,8 +268,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    left: 20,
-    top: 23,
+    left: 35,
+    top: NAV_BAR_HEIGHT,
   },
 });
 

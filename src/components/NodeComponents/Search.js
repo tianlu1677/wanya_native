@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
 
@@ -10,14 +10,21 @@ const Search = props => {
         <IconFont name="sousuo" size={12} color={'#7f7f81'} style={styles.icon} />
         <TextInput
           style={styles.textInput}
-          placeholder={props.placehold323er}
+          placeholder={props.placeholder}
           onChangeText={props.onChangeText}
           selectionColor={'#ff193a'}
+          autoFocus
+          clearButtonMode
+          textAlign={'left'}
+          returnKeyType={'search'}
         />
       </View>
-      <Text style={styles.cancel} onPress={props.onCancel}>
-        取消
-      </Text>
+      <Pressable onPress={props.onCancel}>
+        <Text style={styles.cancel} >
+          取消
+        </Text>
+      </Pressable>
+
     </View>
   );
 };

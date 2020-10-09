@@ -21,6 +21,7 @@ import MineDetail from '@/pages/mine/mine-detail';
 import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
+import WebView from '@/pages/webview/webview';
 
 import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
@@ -102,89 +103,6 @@ function HomeTabList() {
     </Tab.Navigator>
   );
 }
-
-// function TopicStackList() {
-//   return (
-//     <TopicStack.Navigator
-//       initialRouteName="NewTopic"
-//       headerMode="false"
-//       // screenOptions={{ animationEnabled: false }}
-//       mode="modal"
-//       screenOptions={({route}) => ({
-//         headerStyle: {
-//           backgroundColor: 'white',
-//         },
-//         headerBackTitleVisible: false,
-//         headerTintColor: 'black',
-//         headerTitleStyle: {
-//           fontWeight: 'bold',
-//         },
-//       })}>
-//       {createTopicRouter.map(route => {
-//         const render = props => {
-//           const Components = route.component;
-//           return route.safeArea === false ? (
-//             <Components {...props} />
-//           ) : (
-//             <SafeAreaView style={{flex: 1}}>
-//               <Components {...props} />
-//             </SafeAreaView>
-//           );
-//         };
-//
-//         return (
-//           <TopicStack.Screen
-//             key={route.name}
-//             name={route.name}
-//             component={render}
-//             options={route.options}
-//           />
-//         );
-//       })}
-//     </TopicStack.Navigator>
-//   );
-// }
-// function TopicStackList() {
-//   return (
-//     <TopicStack.Navigator
-//       initialRouteName="NewTopic"
-//       headerMode="false"
-//       // screenOptions={{ animationEnabled: false }}
-//       mode="modal"
-//       screenOptions={({route}) => ({
-//         headerStyle: {
-//           backgroundColor: 'white',
-//         },
-//         headerBackTitleVisible: false,
-//         headerTintColor: 'black',
-//         headerTitleStyle: {
-//           fontWeight: 'bold',
-//         },
-//       })}>
-//       {createTopicRouter.map(route => {
-//         const render = props => {
-//           const Components = route.component;
-//           return route.safeArea === false ? (
-//             <Components {...props} />
-//           ) : (
-//             <SafeAreaView style={{flex: 1}}>
-//               <Components {...props} />
-//             </SafeAreaView>
-//           );
-//         };
-//
-//         return (
-//           <TopicStack.Screen
-//             key={route.name}
-//             name={route.name}
-//             component={render}
-//             options={route.options}
-//           />
-//         );
-//       })}
-//     </TopicStack.Navigator>
-//   );
-// }
 
 function MainStackList() {
   const Render = props => {
@@ -285,6 +203,7 @@ function AuthStackList() {
       <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
       <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
       <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
+      <AuthStack.Screen name="WebView" component={WebView} options={({route}) => ({})} />
       <AuthStack.Screen
         name="AdminPhoneLogin"
         component={AdminPhoneLogin}
