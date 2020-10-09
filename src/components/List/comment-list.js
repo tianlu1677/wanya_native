@@ -137,8 +137,11 @@ const CommentList = props => {
 
 const cstyles = StyleSheet.create({
   wrapper: {
-    padding: 16,
-    paddingBottom: 10,
+    paddingTop: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    // padding: 16,
+    // paddingBottom: 10,
   },
   info: {
     flexDirection: 'row',

@@ -95,7 +95,7 @@ const NodeDetail = ({navigation, route}) => {
   return detail ? (
     <View style={{...styles.wrapper}}>
       <GoBack />
-      <FastImg source={{uri: detail.backgroud_cover_url}} style={styles.imageCover} />
+      <FastImg source={{uri: detail.backgroud_cover_url}} resizeMode={'cover'} style={styles.imageCover} />
       <View style={styles.imageCoverOpacity} />
       <View style={styles.header}>
         <View style={styles.nodeContent}>
@@ -182,6 +182,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   imageCover: {
+    width: '100%',
+    height: 400,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 400,
     // backgroundColor: '#000',
     // opacity: 0.5,
   },

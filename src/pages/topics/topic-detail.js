@@ -88,7 +88,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={'red'}  />
+        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={'white'} />
         <Swiper
           index={0}
           loop={false}
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    left: 20,
+    left: 35,
     top: NAV_BAR_HEIGHT,
   },
 });

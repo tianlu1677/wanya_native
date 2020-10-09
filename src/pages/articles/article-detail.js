@@ -49,7 +49,6 @@ const ArticleDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={BASIC_HEIGHT + BOTTOM_HEIGHT}
       style={{flex: 1, backgroundColor: 'white'}}>
       <CommentList
         style={styles.wrapper}
@@ -74,7 +73,7 @@ const ArticleDetail = ({navigation, route}) => {
               baseFontStyle={{fontSize: 14, lineHeight: 0}}
               content={
                 detail &&
-                detail.content.replace(/\.<img/gi, '<img style="max-width:"90%";height:auto" ')
+                detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
               }
             />
             <PublishRelated data={detail} />

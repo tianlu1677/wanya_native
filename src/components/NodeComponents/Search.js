@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
 
@@ -15,9 +15,12 @@ const Search = props => {
           selectionColor={'#ff193a'}
         />
       </View>
-      <Text style={styles.cancel} onPress={props.onCancel}>
-        取消
-      </Text>
+      <Pressable onPress={props.onCancel}>
+        <Text style={styles.cancel} >
+          取消
+        </Text>
+      </Pressable>
+
     </View>
   );
 };
