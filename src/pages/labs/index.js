@@ -11,165 +11,145 @@ import ImagePreview from '@/components/ImagePreview';
 import {DefaultLog, EmptyImg, MineSystemNoticeUserImg, MineNodeImg} from '@/utils/default-image';
 import Helper from '@/utils/helper';
 import {dispatchPreviewImage} from '@/redux/actions';
+import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
 
 const types = {toast: 'toast', webview: '网页'};
 
+import CollapsibleTab from "@/components/CollapsibleTab"
+import {getFollowedPosts, getRecommendLatestPosts, getRecommendPosts} from "@/api/home_api"
+import TabViewList from "@/components/TabView"
+
 const LabIndex = ({navigation, route}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const dispatch = useDispatch();
-  const imageSource = [DefaultLog];
-  const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: 'white',
-        padding: 16,
-        height: 450,
-      }}>
-      <Text>Swipe down to close</Text>
-    </View>
-  );
-
-  // const choseImage = () => {
-  //   let options = {
+  const [currentKey, setCurrentKey] = useState('recommend');
+  // const [isVisible, setIsVisible] = useState(false);
+  // const dispatch = useDispatch();
+  // const imageSource = [DefaultLog];
+  // const renderContent = () => (
+  //   <View
+  //     style={{
+  //       backgroundColor: 'white',
+  //       padding: 16,
+  //       height: 450,
+  //     }}>
+  //     <Text>Swipe down to close</Text>
+  //   </View>
+  // );
   //
-  //   }
-  //   SyanImagePicker.showImagePicker(options, (err, selectedPhotos) => {
-  //     if (err) {
-  //       // 取消选择
-  //       return;
-  //     }
-  //     // 选择成功，渲染图片
-  //     // ...
-  //   })
-  // }
+  // // const choseImage = () => {
+  // //   let options = {
+  // //
+  // //   }
+  // //   SyanImagePicker.showImagePicker(options, (err, selectedPhotos) => {
+  // //     if (err) {
+  // //       // 取消选择
+  // //       return;
+  // //     }
+  // //     // 选择成功，渲染图片
+  // //     // ...
+  // //   })
+  // // }
+  //
+  // //https://github.com/react-native-community/react-native-permissions
+  // const checkPermission = () => {
+  //   check(PERMISSIONS.IOS.CAMERA)
+  //     .then(result => {
+  //       switch (result) {
+  //         case RESULTS.UNAVAILABLE:
+  //           console.log('This feature is not available (on this device / in this context)');
+  //           break;
+  //         case RESULTS.DENIED:
+  //           // 请求过一次就不能再请求了
+  //
+  //           console.log('The permission has not been requested / is denied but requestable');
+  //           request(PERMISSIONS.IOS.MEDIA_LIBRARY).then(result => {
+  //             console.log('result', result);
+  //           });
+  //
+  //           break;
+  //         case RESULTS.GRANTED:
+  //           console.log('The permission is granted');
+  //           break;
+  //         case RESULTS.BLOCKED:
+  //           console.log('The permission is denied and not requestable anymore');
+  //           openSettings().catch(() => console.warn('cannot open settings'));
+  //           break;
+  //       }
+  //     })
+  //     .catch(error => {
+  //       // …
+  //     });
+  // };
+  //
+  // const sheetRef = React.useRef(null);
+  //
+  // const previewImg = () => {
+  //   console.log('previewImg');
+  //
+  //   const images = [
+  //     {
+  //       // Simplest usage.
+  //       url: 'http://file.meirixinxue.com/assets/2020/15bf8a6a-0429-4122-8107-0d0d3b724d61.jpeg',
+  //
+  //       // width: number
+  //       // height: number
+  //       // Optional, if you know the image size, you can set the optimization performance
+  //
+  //       // You can pass props to <Image />.
+  //       props: {
+  //         // headers: ...
+  //       },
+  //     },
+  //     {
+  //       url: 'http://file.meirixinxue.com/assets/2020/852febda-3dcd-46ee-ab8e-a6cc1322b7c5.jpg',
+  //       props: {
+  //         // Or you can set source directory.
+  //         // source: require('../background.png')
+  //       },
+  //     },
+  //   ];
+  //
+  //   const data = {images: images, visible: true, index: 1};
+  //   dispatch(dispatchPreviewImage(data));
+  // };
 
-  //https://github.com/react-native-community/react-native-permissions
-  const checkPermission = () => {
-    check(PERMISSIONS.IOS.CAMERA)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log('This feature is not available (on this device / in this context)');
-            break;
-          case RESULTS.DENIED:
-            // 请求过一次就不能再请求了
-
-            console.log('The permission has not been requested / is denied but requestable');
-            request(PERMISSIONS.IOS.MEDIA_LIBRARY).then(result => {
-              console.log('result', result);
-            });
-
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            openSettings().catch(() => console.warn('cannot open settings'));
-            break;
-        }
-      })
-      .catch(error => {
-        // …
-      });
+  const RecommendList = () => {
+    return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
   };
 
-  const sheetRef = React.useRef(null);
+  const FollowList = () => {
+    return <SingleList request={{api: getFollowedPosts}} />;
+  };
 
-  const previewImg = () => {
-    console.log('previewImg');
-
-    const images = [
-      {
-        // Simplest usage.
-        url: 'http://file.meirixinxue.com/assets/2020/15bf8a6a-0429-4122-8107-0d0d3b724d61.jpeg',
-
-        // width: number
-        // height: number
-        // Optional, if you know the image size, you can set the optimization performance
-
-        // You can pass props to <Image />.
-        props: {
-          // headers: ...
-        },
-      },
-      {
-        url: 'http://file.meirixinxue.com/assets/2020/852febda-3dcd-46ee-ab8e-a6cc1322b7c5.jpg',
-        props: {
-          // Or you can set source directory.
-          // source: require('../background.png')
-        },
-      },
-    ];
-
-    const data = {images: images, visible: true, index: 1};
-    dispatch(dispatchPreviewImage(data));
+  const LastedList = () => {
+    return <SingleList request={{api: getRecommendLatestPosts}} />;
   };
 
   return (
     <View style={{flex: 1}}>
-      <Text>实验室主页</Text>
-
-      <View>
-        <Button title={'显示'} onPress={() => showToast()}></Button>
-
-        <Button
-          title={'显示所有本地缓存'}
-          onPress={() => {
-            navigation.navigate('LabStorageIndex');
-          }}
-        />
-
-        <Button
-          title={'去搜索'}
-          onPress={() => {
-            navigation.navigate('SearchIndex');
-          }}
-        />
-
-        <ImagePreview
-          data={imageSource}
-          selectedPreviewImageContainerStyle={{}}
-          mainImageStyle={{backgroundColor: '#F2F2F2', flex: 1}}
-          previewFlatListProps={{}}
-        />
-      </View>
-
-      <Button
-        title={'预览图片'}
-        onPress={() => {
-          previewImg();
-        }}
+      <CollapsibleTab
+        size="big"
+        lazy={true}
+        currentKey={currentKey}
+        tabData={[
+          {
+            key: 'recommend',
+            title: '推荐',
+            component: RecommendList,
+          },
+          {
+            key: 'follow',
+            title: '关注',
+            component: FollowList,
+          },
+          {
+            key: 'lasted',
+            title: '最新',
+            component: LastedList,
+          },
+        ]}
+        onChange={key => setCurrentKey(key)}
       />
-
-      <Button
-        title={'请求权限'}
-        onPress={() => {
-          checkPermission();
-        }}
-      />
-
-      {/*<Button title={"选择图片"} onPress={() => { choseImage() } }>*/}
-
-      {/*</Button>*/}
-
-      {/*<View*/}
-      {/*  style={{*/}
-      {/*    flex: 1,*/}
-      {/*    backgroundColor: 'papayawhip',*/}
-      {/*    alignItems: 'center',*/}
-      {/*    justifyContent: 'center',*/}
-      {/*  }}>*/}
-      {/*  <Button title="Open Bottom Sheet" onPress={() => sheetRef.current.snapTo(0)} />*/}
-      {/*</View>*/}
-
-      {/*<BottomSheet*/}
-      {/*  renderHeader={() => (<Text>ssss</Text>)}*/}
-      {/*  ref={sheetRef}*/}
-      {/*  snapPoints={[450, 100, 0]}*/}
-      {/*  borderRadius={10}*/}
-      {/*  renderContent={renderContent}*/}
-      {/*/>*/}
     </View>
   );
 };
