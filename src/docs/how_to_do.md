@@ -38,5 +38,5 @@
 ```
 
 3. 权限判断
-在 labs/index.js 定义了权限判断 checkPermission
+在 labs/index.tsx 定义了权限判断 checkPermission
 https://github.com/react-native-community/react-native-permissions 
