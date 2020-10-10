@@ -118,6 +118,7 @@ const articleRouter = [
     name: 'ArticleDetail',
     component: ArticleDetail,
     safeArea: true,
+    barColor: 'dark',
     options: {title: '文章详情', headerShown: true},
   },
   {

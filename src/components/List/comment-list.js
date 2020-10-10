@@ -130,6 +130,7 @@ const CommentList = props => {
       renderItem={renderItem}
       renderSeparator={renderSeparator}
       {...props}
+      settings={{bounces: false}}
       style={{backgroundColor: '#fff'}}
     />
   );

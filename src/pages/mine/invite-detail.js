@@ -260,8 +260,7 @@ const CardCodeText = styled(Text)`
   font-size: 28px;
   line-height: 28px;
   letter-spacing: 1px;
-  margin-top: 30px;
-  margin-left: 0px;
+  padding-top: 30px;
 `;
 
 const CardCopyText = styled(Text)`

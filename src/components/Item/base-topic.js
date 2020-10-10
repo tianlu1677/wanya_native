@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import IconFont from '@/iconfont';
+import VideoPlayImg from '@/assets/images/video-play.png';
 import {dispatchPreviewImage} from '@/redux/actions';
 
 const calculateImg = (width, height) => {
@@ -86,7 +87,7 @@ export const TopicVideoContent = props => {
     <FastImg
       source={{uri: single_cover.link_url}}
       style={[styles.imageCover, {width: videoAttr.width / 2, height: videoAttr.height / 2}]}>
-      <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
+      <Image style={styles.playImage} source={VideoPlayImg} />
     </FastImg>
   );
 };

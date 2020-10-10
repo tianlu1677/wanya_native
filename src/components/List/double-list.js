@@ -9,6 +9,7 @@ import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
+import VideoPlayImg from '@/assets/images/video-play.png';
 
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 
@@ -80,7 +81,7 @@ const SingleItem = props => {
           />
         )}
         {data.has_video && (
-          <FastImg style={styles.videoPlay} source={require('@/assets/images/video-play.png')} />
+          <FastImg style={styles.videoPlay} source={VideoPlayImg} />
         )}
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />

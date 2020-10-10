@@ -3,6 +3,8 @@ import {Image, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
+import PersonImg from '@/assets/images/personal.png';
+import BrandImg from '@/assets/images/brand.png';
 
 const Avator = props => {
   const [isShow] = useState(props.isShowSettledIcon === false ? false : true);
@@ -33,12 +35,12 @@ const Avator = props => {
         source={{uri: props.account.avatar_url}}
       />
       {isShow && !!props.account.settled_type && props.account.settled_type !== 'single' && (
-        <Image
+        <FastImg
           style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
           source={
             props.account.settled_type === 'personal'
-              ? require('@/assets/images/personal.png')
-              : require('@/assets/images/brand.png')
+              ? PersonImg
+              : BrandImg
           }
         />
       )}
