@@ -323,7 +323,7 @@ const astyles = StyleSheet.create({
     alignItems: 'center',
     borderTopColor: '#ebebeb',
     borderTopWidth: StyleSheet.hairlineWidth,
-    marginBottom: BOTTOM_HEIGHT,
+    // marginBottom: BOTTOM_HEIGHT,
   },
   text: {
     width: 174,

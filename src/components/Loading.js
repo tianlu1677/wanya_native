@@ -8,7 +8,7 @@ const Loading = () => {
   return (
     <View style={styles.loading}>
       {/*<ActivityIndicator size="large" />*/}
-      <Spinner style={{}} isVisible={true} size={100} type={allTypes[type]} color={'red'} />
+      <Spinner style={{}} isVisible={true} size={80} type={allTypes[type]} color={'red'} />
     </View>
   );
 };

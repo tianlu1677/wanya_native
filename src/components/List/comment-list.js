@@ -124,14 +124,14 @@ const CommentList = props => {
   return (
     <ScrollList
       data={listData}
-      loading={loading}
+      loading={false}
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
-      {...props}
       settings={{bounces: false}}
       style={{backgroundColor: '#fff'}}
+      {...props}
     />
   );
 };

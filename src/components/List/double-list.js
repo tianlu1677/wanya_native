@@ -17,7 +17,7 @@ const SingleItem = props => {
   const [height, setheight] = useState(200);
   const navigation = useNavigation();
   const width = Dimensions.get('window').width;
-  const halfWidth = ((width - 10)/2) // 屏幕去掉两边后的宽度
+  const halfWidth = (width - 10) / 2; // 屏幕去掉两边后的宽度
 
   const {data} = props;
 
@@ -80,9 +80,7 @@ const SingleItem = props => {
             style={{height: height, backgroundColor: '#F1F1F1'}}
           />
         )}
-        {data.has_video && (
-          <FastImg style={styles.videoPlay} source={VideoPlayImg} />
-        )}
+        {data.has_video && <FastImg style={styles.videoPlay} source={VideoPlayImg} />}
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
@@ -123,12 +121,29 @@ const DoubleList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
+  const [leftHeight, setLeftHeight] = useState(0);
+  const [rightHeight, setRightHeight] = useState(0);
+  const [leftPosts, setLeftPosts] = useState([]);
+  const [rightPosts, setRightPosts] = useState([]);
+
+
+  // listData.forEach((content) => {
+  //   console.log('cccc', content)
+  //   if(leftHeight <= rightHeight) {
+  //     setLeftHeight(leftHeight + content.item.single_cover.height)
+  //     setLeftPosts(leftPosts + [content])
+  //   } else {
+  //     setRightHeight(rightHeight + content.item.single_cover.height)
+  //     setRightPosts(rightPosts + [content])
+  //   }
+  // })
 
   const renderItem = ({item, index}) => {
+
     const leftPostList = listData.filter((v, i) => i % 2 === 0);
-    const rightPostLIst = listData.filter((v, i) => i % 2 !== 0);
+    const rightPostList = listData.filter((v, i) => i % 2 !== 0);
     return (
-      <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostLIst} index={index} />
+      <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostList} index={index} />
     );
   };
 
