@@ -61,6 +61,7 @@
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-share": "^3.7.0",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-spinkit": "^1.5.1",
     "react-native-svg": "^12.1.0",
     "react-native-swipe-list-view": "^3.2.3",
     "react-native-swiper": "^1.6.0-rc.3",
