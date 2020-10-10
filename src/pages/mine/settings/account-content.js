@@ -204,7 +204,7 @@ const AccountContent = (props) => {
           goPages('intro');
         }}>
         <ItemTitle numberOfLines={1}>简介</ItemTitle>
-        <ItemWrap>
+        <ItemWrap style={{maxWidth: 200}}>
           <ItemTitle numberOfLines={1}>{currentAccount.intro}</ItemTitle>
           <ForwardRight />
         </ItemWrap>

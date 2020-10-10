@@ -31,15 +31,15 @@ const MineDetail = ({navigation, route}) => {
   };
 
   const goFollowList = () => {
-    navigation.navigate('FollowNodes', {accountId: account.id});
+    navigation.navigate('FollowNodes', {accountId: currentAccount.id});
   };
 
   const goFollowAccounts = () => {
-    navigation.navigate('FollowAccounts', {accountId: account.id});
+    navigation.navigate('FollowAccounts', {accountId: currentAccount.id});
   };
 
   const goFollowerAccounts = () => {
-    navigation.navigate('FollowerAccounts', {accountId: account.id});
+    navigation.navigate('FollowerAccounts', {accountId: currentAccount.id});
   };
 
   const onPlay = () => {
@@ -88,7 +88,7 @@ const MineDetail = ({navigation, route}) => {
     loadData();
   }, [navigation]);
 
-  return account ? (
+  return currentAccount ? (
     <View style={styles.wrapper}>
       <FocusAwareStatusBar barStyle="light-content" />
       <View style={styles.setting}>

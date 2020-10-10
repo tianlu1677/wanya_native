@@ -148,10 +148,19 @@ const TopicDetail = ({navigation, route}) => {
       });
     };
     return (
+      <View>
+        <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
+          <StatusBar barStyle={'dark-content'} />
+          <GoBack
+            name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+            color={'black'}
+          />
+        </View>
       <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
         <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
         <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
       </Pressable>
+        </View>
     );
   };
 
@@ -182,7 +191,7 @@ const TopicDetail = ({navigation, route}) => {
               {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}
             </View>
 
-            {detail.content_style === 'text' && (
+            {(detail.content_style === 'text') && (
               <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
                 <StatusBar barStyle={'dark-content'} />
                 <GoBack
@@ -237,10 +246,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   linkWrap: {
+    marginTop: 14,
     backgroundColor: 'pink',
     marginRight: 14,
     marginLeft: 14,
     height: 167,
+    width: 345,
     position: 'relative',
   },
   linkTitle: {
