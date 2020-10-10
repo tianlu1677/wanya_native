@@ -38,7 +38,7 @@ const HashtagDetail = ({navigation, route}) => {
 
   const joinNewTopic = () => {
     const topics = {
-      plan_content: route.params.hashtag,
+      plan_content: `#${route.params.hashtag}`,
     };
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
     navigation.navigate('NewTopic');
@@ -51,7 +51,7 @@ const HashtagDetail = ({navigation, route}) => {
       <HeadView>
         <BgCoverImage source={{uri: bgLogo}} />
         <RightCoverImage source={{uri: rightLogo}} style={{top: STATUS_BAR_HEIGHT + 5}} />
-        <HashtagText style={{top: NAV_BAR_HEIGHT}}># {hashtag}</HashtagText>
+        <HashtagText style={{top: NAV_BAR_HEIGHT}}>#{hashtag}</HashtagText>
       </HeadView>
       <TabViewList
         currentKey={currentKey}

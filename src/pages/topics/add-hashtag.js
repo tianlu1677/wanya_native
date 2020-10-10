@@ -45,6 +45,7 @@ const AddHashTag = ({navigation}) => {
         type="add-hash-tag"
         style={styles.wrapper}
         searchKey={searchKey}
+        loading={false}
       />
     </View>
   );

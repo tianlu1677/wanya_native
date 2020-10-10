@@ -14,7 +14,7 @@ const Search = props => {
           onChangeText={props.onChangeText}
           selectionColor={'#ff193a'}
           autoFocus
-          clearButtonMode
+          clearButtonMode={'always'}
           textAlign={'left'}
           returnKeyType={'search'}
         />

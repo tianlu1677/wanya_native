@@ -108,9 +108,9 @@ const CommentList = props => {
     const {api, params} = props.request;
     const res = await api({id: params.id, page});
     const data = res.data.comments;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -124,13 +124,14 @@ const CommentList = props => {
   return (
     <ScrollList
       data={listData}
-      loading={loading}
+      loading={false}
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
-      {...props}
+      settings={{bounces: false}}
       style={{backgroundColor: '#fff'}}
+      {...props}
     />
   );
 };

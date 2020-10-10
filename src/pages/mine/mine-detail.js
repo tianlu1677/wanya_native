@@ -31,15 +31,15 @@ const MineDetail = ({navigation, route}) => {
   };
 
   const goFollowList = () => {
-    navigation.navigate('FollowNodes', {accountId: account.id});
+    navigation.navigate('FollowNodes', {accountId: currentAccount.id});
   };
 
   const goFollowAccounts = () => {
-    navigation.navigate('FollowAccounts', {accountId: account.id});
+    navigation.navigate('FollowAccounts', {accountId: currentAccount.id});
   };
 
   const goFollowerAccounts = () => {
-    navigation.navigate('FollowerAccounts', {accountId: account.id});
+    navigation.navigate('FollowerAccounts', {accountId: currentAccount.id});
   };
 
   const onPlay = () => {
@@ -88,7 +88,7 @@ const MineDetail = ({navigation, route}) => {
     loadData();
   }, [navigation]);
 
-  return account ? (
+  return currentAccount ? (
     <View style={styles.wrapper}>
       <FocusAwareStatusBar barStyle="light-content" />
       <View style={styles.setting}>
@@ -96,13 +96,12 @@ const MineDetail = ({navigation, route}) => {
           <View style={styles.message_icon}>
             <IconFont name="notice" size={20} style={{marginRight: 9}} color="#fff" />
           </View>
-          {UnreadMessageCount() > 0 && (
-            <BadgeMessage
-              value={UnreadMessageCount()}
-              status={'error'}
-              containerStyle={{position: 'absolute', right: -6, top: -6}}
-            />
-          )}
+          <BadgeMessage
+            value={UnreadMessageCount()}
+            containerStyle={{position: 'absolute', right: 3, top: -5}}
+            size={'small'}
+          >
+          </BadgeMessage>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Settings')}>
           <IconFont name="settings" size={20} color="#fff" />

@@ -21,7 +21,7 @@ const codePushOptions = {
   // ON_APP_RESUME APP恢复到前台的时候
   // ON_APP_START APP开启的时候
   // MANUAL 手动检查
-  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
 
 // Config.API_URL; // 'https://myapi.com'
@@ -40,11 +40,11 @@ class App extends Component {
 
   componentDidMount() {
     const scale = Dimensions.get('window').width / 375;
-    console.log('scale', scale);
+    // console.log('scale', scale);
     this.loadSplashImg();
-    this.loadNetworkInfo();
-    this.loadDeviceInfo();
-    this.loginAdmin();
+    // this.loadNetworkInfo();
+    // this.loadDeviceInfo();
+    // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
     Text.defaultProps = Object.assign({}, Text.defaultProps, {
@@ -85,8 +85,6 @@ class App extends Component {
 
     let bundleId = DeviceInfo.getBundleId();
     // console.log('bundleId', bundleId)
-
-
   };
 
   render() {

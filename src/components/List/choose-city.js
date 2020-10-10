@@ -92,18 +92,19 @@ const CitySelect = props => {
               <Text style={styles.hotCityTitle}>热门城市</Text>
               <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {hotCity.map((v, index) => (
-                  <Text
-                    key={v}
-                    onPress={() => chooseCity(v)}
-                    style={[
-                      styles.hotCityName,
-                      {
-                        color: home.location.chooseCity === v ? '#6190E8' : '#000',
-                        marginRight: (index + 1) % 4 === 0 ? 0 : 9,
-                      },
-                    ]}>
-                    {v}
-                  </Text>
+                  <Pressable onPress={() => chooseCity(v)}>
+                    <Text
+                      key={v}
+                      style={[
+                        styles.hotCityName,
+                        {
+                          color: home.location.chooseCity === v ? '#6190E8' : '#000',
+                          marginRight: (index + 1) % 4 === 0 ? 0 : 9,
+                        },
+                      ]}>
+                      {v}
+                    </Text>
+                  </Pressable>
                 ))}
               </View>
             </View>

@@ -1,5 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Animated, Text, FlatList, ActivityIndicator, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Animated,
+  Text,
+  RefreshControl,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
 
@@ -51,12 +60,14 @@ const ScrollList = props => {
     if (refreshing || state === loadState.LOADING) {
       return;
     }
-    console.log('onEndReached ===============', pagin, refreshing);
     setRefreshing(true);
     setState(loadState.LOADING);
+    console.log('onEndReached ===============', pagin, refreshing);
+
     try {
       props.onRefresh(pagin.nextPage);
     } catch {
+      setRefreshing(false);
       setState(loadState.ERROR);
     }
   };
@@ -66,8 +77,8 @@ const ScrollList = props => {
     switch (state) {
       case loadState.LOADING:
         footer = (
-          <View style={{height: 40}}>
-            <ActivityIndicator />
+          <View style={{height: 60, backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center'}}>
+            <ActivityIndicator size="small" />
           </View>
         );
         break;
@@ -122,7 +133,7 @@ const ScrollList = props => {
       onRefresh={enableLoadMore ? onRefresh : null}
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
-      onEndReachedThreshold={0.1}
+      onEndReachedThreshold={0.2}
       ListEmptyComponent={renderEmpty}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
       style={[scrollStyle.containter, props.style]}
@@ -137,6 +148,16 @@ const ScrollList = props => {
       onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
       scrollIndicatorInsets={{right: 1}}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing ? refreshing : false}
+          onRefresh={() => {
+            console.log('xxxx');
+          }} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
+          tintColor="black"
+          title={refreshing ? '努力加载中...' : ''}
+        />
+      }
       // initialNumToRender={8}
       {...props.settings}
     />

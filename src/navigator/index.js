@@ -66,7 +66,7 @@ function HomeTabList() {
           }
 
           let icon_name = `${focused ? 'focused' : 'unfocused'}_${route.name}`;
-          return <IconFont name={icon_list[icon_name]} size={24} color="black" />;
+          return <IconFont name={icon_list[icon_name]} size={22} color="black" />;
           // return <IconFont name={iconName} color={focused ? 'black' : 'red'} />;
         },
       })}

@@ -335,7 +335,7 @@ $ yarn start
 $ react-native run-ios
 ```
 
-Then launch simulator to preview. Note that you just need to edit the source file `src/index.js`, the change will auto sync to examples.
+Then launch simulator to preview. Note that you just need to edit the source file `src/index.tsx`, the change will auto sync to examples.
 
 After development, you should add test for your modification and make all tests passed to prevent other contributors break the feature in the future accidentally. We use detox + jest for e2e test now, you can read [Detox](https://github.com/wix/Detox) for more detail.
 

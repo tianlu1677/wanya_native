@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, Pressable} from 'react-native';
+import {View, Keyboard, Image, Text, TextInput, TouchableWithoutFeedback, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, CommonActions} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -202,7 +202,12 @@ const NewTopic = props => {
   }, [navigation, imageSource, videoSource, savetopic]);
 
   return (
-    <View style={styles.wrapper}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss()
+      }}
+    >
+      <View style={styles.wrapper}>
       <View style={styles.mediaCon}>
         {/* picture */}
         {imageSource.map((v, index) => (
@@ -307,7 +312,8 @@ const NewTopic = props => {
           <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
         </GetLocation>
       </View>
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

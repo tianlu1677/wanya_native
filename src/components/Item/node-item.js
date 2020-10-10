@@ -6,6 +6,7 @@ import IconFont from '@/iconfont';
 import * as action from '@/redux/constants';
 import {JoinButton} from '@/components/NodeComponents';
 import {followItem, unfollowItem} from '@/api/mine_api';
+import FastImg from "@/components/FastImg"
 
 const defaultCoverUrl =
   'http://file.meirixinxue.com/assets/2020/964cc82f-09d1-4561-b415-8fa58e29c817.png';
@@ -42,7 +43,7 @@ const NodeItem = props => {
   return (
     <Pressable onPress={goNodeDetail}>
       <View style={[styles.nodeItem, props.style]}>
-        <Image style={styles.nodeImg} source={{uri: node.cover_url || defaultCoverUrl}} />
+        <FastImg style={styles.nodeImg} source={{uri: node.cover_url || defaultCoverUrl}} />
         <View style={styles.nodeInfo}>
           <View style={styles.nodeNameWrap}>
             <Text style={styles.nodeName}>{node.name}</Text>

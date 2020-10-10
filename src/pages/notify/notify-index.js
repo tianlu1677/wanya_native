@@ -92,13 +92,10 @@ const NotifyIndex = ({navigation}) => {
         <ItemView onPress={goPageMethod.bind(this, 'notify_praise')}>
           <CoverWrapView>
             <Image source={{uri: PraiseNoticeImg}} style={{width: 45, height: 45}} />
-            {unread_inside_notifies_count > 0 && (
-              <BadgeMessage
-                value={unreadMessageCount(unread_inside_notifies_count)}
-                status={'error'}
-                containerStyle={styles.badgeContainer}
-              />
-            )}
+            <BadgeMessage
+              value={unread_inside_notifies_count}
+              containerStyle={styles.badgeContainer}
+            />
           </CoverWrapView>
 
           <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
@@ -115,13 +112,10 @@ const NotifyIndex = ({navigation}) => {
         <ItemView onPress={goPageMethod.bind(this, 'notify_comment')}>
           <CoverWrapView>
             <Image source={{uri: CommentNoticeImg}} style={{width: 45, height: 45}} />
-            {unread_comments_notifies_count > 0 && (
-              <BadgeMessage
-                value={unreadMessageCount(unread_comments_notifies_count)}
-                status={'error'}
-                containerStyle={styles.badgeContainer}
-              />
-            )}
+            <BadgeMessage
+              value={unread_comments_notifies_count}
+              containerStyle={styles.badgeContainer}
+            />
           </CoverWrapView>
 
           <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
@@ -138,13 +132,10 @@ const NotifyIndex = ({navigation}) => {
         <ItemView onPress={goPageMethod.bind(this, 'mention_account_notice')}>
           <CoverWrapView>
             <Image source={{uri: MineMentionNoticeUserImg}} style={{width: 45, height: 45}} />
-            {unread_mentions_notifies_count > 0 && (
-              <BadgeMessage
-                value={unreadMessageCount(unread_mentions_notifies_count)}
-                status={'error'}
-                containerStyle={styles.badgeContainer}
-              />
-            )}
+            <BadgeMessage
+              value={unread_mentions_notifies_count}
+              containerStyle={styles.badgeContainer}
+            />
           </CoverWrapView>
 
           <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
@@ -161,13 +152,10 @@ const NotifyIndex = ({navigation}) => {
         <ItemView onPress={goPageMethod.bind(this, 'notify_follow')}>
           <CoverWrapView>
             <Image source={{uri: FollowNoticeImg}} style={{width: 45, height: 45}} />
-            {unread_follow_messages_count > 0 && (
-              <BadgeMessage
-                value={unreadMessageCount(unread_follow_messages_count)}
-                status={'error'}
-                containerStyle={styles.badgeContainer}
-              />
-            )}
+            <BadgeMessage
+              value={unread_follow_messages_count}
+              containerStyle={styles.badgeContainer}
+            />
           </CoverWrapView>
 
           <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
@@ -189,13 +177,10 @@ const NotifyIndex = ({navigation}) => {
                 account={{avatar_url: SystemNoticeImg, settled_type: 'brand'}}
                 handleClick={goPageMethod.bind(this, 'notify_system')}
               />
-              {unread_system_messages_count > 0 && (
-                <BadgeMessage
-                  value={unreadMessageCount(unread_system_messages_count)}
-                  status={'error'}
-                  containerStyle={styles.badgeContainer}
-                />
-              )}
+              <BadgeMessage
+                value={unread_system_messages_count}
+                containerStyle={styles.badgeContainer}
+              />
             </View>
           </CoverWrapView>
 

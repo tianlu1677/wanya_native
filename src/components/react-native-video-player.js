@@ -318,8 +318,8 @@ export default class VideoPlayer extends Component {
     const {width} = this.state;
     const ratio = videoHeight / videoWidth;
     return {
-      height: width * ratio,
-      width,
+      height: videoHeight,
+      width: videoWidth
     };
   }
 

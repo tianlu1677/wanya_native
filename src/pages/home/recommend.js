@@ -50,6 +50,7 @@ const Recommend = props => {
       <View style={styles.wrapper}>
         <TabViewList
           size="big"
+          lazy={true}
           currentKey={currentKey}
           tabData={[
             {
@@ -73,10 +74,8 @@ const Recommend = props => {
         <Pressable onPress={() => props.navigation.navigate('NotifyIndex')} style={styles.message}>
           <BadgeMessage
             value={UnreadMessageCount()}
-            status={'error'}
             containerStyle={styles.badgeContainer}
-            badgeStyle={{width: 20, height: 20, borderRadius: 10}}
-            textStyle={{fontSize: 9}}
+            size={'small'}
           />
           <View style={styles.message_icon}>
             <IconFont name="notice" size={19} />
@@ -91,8 +90,8 @@ const styles = StyleSheet.create({
   badgeContainer: {
     height: 18,
     position: 'absolute',
-    right: 5,
-    top: -9,
+    right: 8,
+    top: -5,
   },
   wrapper: {
     flex: 1,

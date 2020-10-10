@@ -1,11 +1,21 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, StatusBar, View, TextInput, Text} from 'react-native';
+import React, {Component, useRef, useState, useLayoutEffect, useEffect} from 'react';
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+  Keyboard,
+  Platform,
+  StatusBar,
+  View,
+  TextInput,
+  Text,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 // import {SafeAreaView} from 'react-native-safe-area-context';
 import {syncAccountInfo} from '@/api/mine_api';
 import {secureCheck} from '@/api/secure_check';
 import {Button} from 'react-native-elements';
-import { BOTTOM_HEIGHT} from "@/utils/navbar"
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 
 const EditAccountContent = ({navigation, route}) => {
   const [editKey, setEditKey] = useState('');
@@ -59,48 +69,56 @@ const EditAccountContent = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fafafa'}}>
-      <StatusBar barStyle="dark-content" />
-      {editKey === 'nickname' && (
-        <TextInput
-          caretHidden={false}
-          selectionColor={'black'}
-          maxLength={20}
-          onChangeText={text => {
-            setContent(text);
+    <TouchableWithoutFeedback
+      style={{flex: 1, backgroundColor: '#fafafa'}}
+      onPress={() => {
+        Keyboard.dismiss()
+      }}>
+      <View style={{flex: 1, backgroundColor: '#fafafa'}}>
+        <StatusBar barStyle="dark-content" />
+        {editKey === 'nickname' && (
+          <TextInput
+            caretHidden={false}
+            selectionColor={'#c2c2c2'}
+            maxLength={20}
+            onChangeText={text => {
+              setContent(text);
+            }}
+            placeholder={'请输入昵称'}
+            placeholderTextColor={'#c2c2c2'}
+            defaultValue={content}
+            style={styles.editInput}
+          />
+        )}
+        {editKey === 'intro' && (
+          <TextInput
+            caretHidden={false}
+            selectionColor={'#c2c2c2'}
+            maxLength={40}
+            multiline
+            numberOfLines={10}
+            onChangeText={text => {
+              setContent(text);
+            }}
+            // returnKeyType={'done'}
+            placeholder={'输入简介，30个字以内'}
+            placeholderTextColor={'#c2c2c2'}
+            defaultValue={content}
+            style={styles.multiLine}
+          />
+        )}
+        {/*{editKey === 'province' && <TextInput></TextInput>}*/}
+        <Button
+          containerStyle={styles.publicBtnContainer}
+          buttonStyle={{...styles.saveButton, backgroundColor: validForm() ? 'black' : '#F8F8F8'}}
+          titleStyle={validForm() ? styles.validTitle : styles.novalidTitle}
+          title="确定"
+          onPress={() => {
+            saveContent();
           }}
-          placeholder={'请输入昵称'}
-          placeholderTextColor={'#c2c2c2'}
-          defaultValue={content}
-          style={styles.editInput}
         />
-      )}
-      {editKey === 'intro' && (
-        <TextInput
-          caretHidden={false}
-          selectionColor={'black'}
-          maxLength={40}
-          multiline
-          numberOfLines={10}
-          onChangeText={text => {
-            setContent(text);
-          }}
-          placeholder={'输入简介，30个字以内'}
-          placeholderTextColor={'#c2c2c2'}
-          defaultValue={content}
-          style={styles.multiLine} />
-      )}
-      {/*{editKey === 'province' && <TextInput></TextInput>}*/}
-      <Button
-        containerStyle={styles.publicBtnContainer}
-        buttonStyle={{...styles.saveButton, backgroundColor: validForm() ? 'black' : '#F8F8F8'}}
-        titleStyle={validForm() ? styles.validTitle : styles.novalidTitle}
-        title="确定"
-        onPress={() => {
-          saveContent();
-        }}
-      />
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -133,7 +151,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingBottom: BOTTOM_HEIGHT,
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   saveButton: {
     fontSize: 28,

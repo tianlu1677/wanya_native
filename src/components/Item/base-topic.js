@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import IconFont from '@/iconfont';
+import VideoPlayImg from '@/assets/images/video-play.png';
 import {dispatchPreviewImage} from '@/redux/actions';
 
 const calculateImg = (width, height) => {
@@ -65,7 +66,7 @@ export const TopicImageContent = props => {
       />
     </Pressable>
   ) : (
-    <ScrollView horizontal={true}>
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       {medias.map((media, index) => (
         <Pressable onPress={() => onPreview(index)} key={media}>
           <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
@@ -86,7 +87,7 @@ export const TopicVideoContent = props => {
     <FastImg
       source={{uri: single_cover.link_url}}
       style={[styles.imageCover, {width: videoAttr.width / 2, height: videoAttr.height / 2}]}>
-      <Image style={styles.playImage} source={require('@/assets/images/video-play.png')} />
+      <Image style={styles.playImage} source={VideoPlayImg} />
     </FastImg>
   );
 };
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    left: 20,
+    left: 12,
     top: 23,
   },
 });

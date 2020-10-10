@@ -5,7 +5,10 @@ import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {contentBlank} from '../../styles/commonStyles';
 import {Button, ListItem} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
+import Toast from '@/components/Toast';
+import CodePush from 'react-native-code-push';
+import checkHotUpdate from '@/utils/codepush';
 // import ListItem from '@/components/ListItem';
 
 const Settings = ({navigation, route}) => {
@@ -47,13 +50,23 @@ const Settings = ({navigation, route}) => {
       case 'lab':
         navigation.navigate('LabIndex');
         break;
+      case 'checkupdate':
+        // Toast.showError('正在检测更新，请稍等')
+        // CodePush.sync({
+        //   updateDialog: true,
+        //   installMode: CodePush.InstallMode.IMMEDIATE
+        // });
+
+        // CodePush.disallowRestart(); // 禁止重启
+        checkHotUpdate(CodePush); // 开始检查更新
+        break;
       case 'logout':
-        console.log('logout');
-        Helper.clearAllData()
+        // console.log('logout');
+        Helper.clearAllData();
         navigation.reset({
           index: 0,
           routes: [{name: 'SocialLogin'}],
-        })
+        });
         break;
       default:
         console.log('others');
@@ -62,10 +75,8 @@ const Settings = ({navigation, route}) => {
   };
 
   const ForwardRight = () => {
-    return (
-      <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />
-    )
-  }
+    return <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />;
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fafafa'}}>
@@ -80,55 +91,64 @@ const Settings = ({navigation, route}) => {
       </ItemView>
 
       <Text style={contentBlank} />
-      <ItemView
-        style={[styles.topBorder1px]}
-        onPress={() => {
-          goPages('about');
-        }}>
-        <ItemTitle>关于顽鸦</ItemTitle>
-        <ForwardRight />
-      </ItemView>
-      <ItemView
-        style={{...styles.topBorder1px, ...styles.bottomBorder1px, marginLeft: 14, paddingLeft: 0}}
-        onPress={() => {
-          goPages('feedback');
-        }}>
-        <ItemTitle>意见反馈</ItemTitle>
-        <ForwardRight />
-      </ItemView>
-      <ItemView
-        style={{...styles.bottomBorder1px, marginLeft: 14, paddingLeft: 0}}
-        onPress={() => {
-          goPages('user_agreement');
-        }}>
-        <ItemTitle>用户协议</ItemTitle>
-        <ForwardRight />
-      </ItemView>
-      <ItemView
-        style={{...styles.bottomBorder1px, marginLeft: 14, paddingLeft: 0}}
-        onPress={() => {
-          goPages('private');
-        }}>
-        <ItemTitle>隐私政策</ItemTitle>
-        <ForwardRight />
-      </ItemView>
-      <ItemView
-        style={{...styles.bottomBorder1px}}
-        onPress={() => {
-          goPages('invite');
-        }}>
-        <ItemTitle>邀请码</ItemTitle>
-        <ForwardRight />
-      </ItemView>
-      <ItemView
-        style={{...styles.bottomBorder1px}}
-        onPress={() => {
-          goPages('lab');
-        }}>
-        <ItemTitle>实验室</ItemTitle>
-        <ForwardRight />
-      </ItemView>
-
+      <View style={{backgroundColor: 'white'}}>
+        <ItemView
+          style={[styles.topBorder1px]}
+          onPress={() => {
+            goPages('about');
+          }}>
+          <ItemTitle>关于顽鸦</ItemTitle>
+          <ForwardRight />
+        </ItemView>
+        <ItemView
+          style={[styles.bottomBorder1px, styles.topBorder1px, styles.nestLine]}
+          onPress={() => {
+            goPages('feedback');
+          }}>
+          <ItemTitle>意见反馈</ItemTitle>
+          <ForwardRight />
+        </ItemView>
+        <ItemView
+          style={[styles.bottomBorder1px, styles.nestLine]}
+          onPress={() => {
+            goPages('user_agreement');
+          }}>
+          <ItemTitle>用户协议</ItemTitle>
+          <ForwardRight />
+        </ItemView>
+        <ItemView
+          style={[styles.bottomBorder1px, styles.nestLine]}
+          onPress={() => {
+            goPages('private');
+          }}>
+          <ItemTitle>隐私政策</ItemTitle>
+          <ForwardRight />
+        </ItemView>
+        <ItemView
+          style={[styles.bottomBorder1px, styles.nestLine]}
+          onPress={() => {
+            goPages('invite');
+          }}>
+          <ItemTitle>邀请码</ItemTitle>
+          <ForwardRight />
+        </ItemView>
+        <ItemView
+          style={[styles.bottomBorder1px, styles.nestLine]}
+          onPress={() => {
+            goPages('checkupdate');
+          }}>
+          <ItemTitle>检测更新</ItemTitle>
+          <ForwardRight />
+        </ItemView>
+        <ItemView
+          style={[styles.bottomBorder1px, styles.nestLine]}
+          onPress={() => {
+            goPages('lab');
+          }}>
+          <ItemTitle>实验室</ItemTitle>
+          <ForwardRight />
+        </ItemView>
+      </View>
       <LoginView
         onPress={() => {
           goPages('logout');
@@ -147,6 +167,10 @@ const styles = StyleSheet.create({
   bottomBorder1px: {
     borderColor: '#ebebeb',
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  nestLine: {
+    marginLeft: 14,
+    paddingLeft: 0,
   },
 });
 

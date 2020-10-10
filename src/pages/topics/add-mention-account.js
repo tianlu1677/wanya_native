@@ -24,10 +24,12 @@ const MentionAccounts = ({navigation}) => {
         params: {name: searchKey, type: 'account'},
       });
     } else {
-      setRequest({
-        api: getAccountFollowings,
-        params: {id: currentAccount.id},
-      });
+      setTimeout(() => {
+        setRequest({
+          api: getAccountFollowings,
+          params: {id: currentAccount.id, per_page: 20},
+        });
+      }, 300)
     }
   }, [searchKey]);
 
@@ -47,6 +49,7 @@ const MentionAccounts = ({navigation}) => {
         enableLoadMore={false}
         enableRefresh={false}
         style={styles.wrapper}
+        loading={false}
       />
     </View>
   );

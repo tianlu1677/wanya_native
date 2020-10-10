@@ -20,7 +20,7 @@ const WebViewPage = ({route, navigation}) => {
         borderBottomWidth: 0,
       },
 
-      headerBackImage: () => (<Image source={bgColor === 'black' ? BackWhiteImg : BackImg} style={{width: 10, height: 14}} />)
+      headerBackImage: () => (<Image source={bgColor === 'black' ? BackWhiteImg : BackImg} style={{width: 12, height: 14}} />)
     });
   }, [navigation, route]);
 
