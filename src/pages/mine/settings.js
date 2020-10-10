@@ -5,7 +5,10 @@ import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {contentBlank} from '../../styles/commonStyles';
 import {Button, ListItem} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
+import Toast from "@/components/Toast";
+import CodePush from "react-native-code-push";
+import checkHotUpdate from '@/utils/codepush';
 // import ListItem from '@/components/ListItem';
 
 const Settings = ({navigation, route}) => {
@@ -46,6 +49,16 @@ const Settings = ({navigation, route}) => {
         break;
       case 'lab':
         navigation.navigate('LabIndex');
+        break;
+      case 'checkupdate':
+        // Toast.showError('正在检测更新，请稍等')
+        // CodePush.sync({
+        //   updateDialog: true,
+        //   installMode: CodePush.InstallMode.IMMEDIATE
+        // });
+
+        // CodePush.disallowRestart(); // 禁止重启
+        checkHotUpdate(CodePush); // 开始检查更新
         break;
       case 'logout':
         console.log('logout');
@@ -118,6 +131,14 @@ const Settings = ({navigation, route}) => {
           goPages('invite');
         }}>
         <ItemTitle>邀请码</ItemTitle>
+        <ForwardRight />
+      </ItemView>
+      <ItemView
+        style={{...styles.bottomBorder1px}}
+        onPress={() => {
+          goPages('checkupdate');
+        }}>
+        <ItemTitle>检测更新</ItemTitle>
         <ForwardRight />
       </ItemView>
       <ItemView

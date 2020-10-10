@@ -51,7 +51,6 @@ const Recommend = props => {
         <TabViewList
           size="big"
           lazy={true}
-          settings={{ lazyPreloadDistance: 2}}
           currentKey={currentKey}
           tabData={[
             {

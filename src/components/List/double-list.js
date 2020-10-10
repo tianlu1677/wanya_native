@@ -137,9 +137,9 @@ const DoubleList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
+    setLoading(false);
   };
 
   const indexLoadData = async (page = 1) => {
@@ -147,9 +147,9 @@ const DoubleList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(data);
+    setLoading(false);
   };
 
   const onRefresh = (page = 1) => {

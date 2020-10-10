@@ -22,9 +22,9 @@ const NodeList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.nodes;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
+    setLoading(false);
   };
 
   useEffect(() => {

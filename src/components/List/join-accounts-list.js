@@ -38,9 +38,9 @@ const JoinAccountsList = ({navigation, route}) => {
     const {api, params} = route.params.request;
     const res = await api({...params, page});
     const data = res.data.accounts;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
+    setLoading(false);
   };
 
   useEffect(() => {

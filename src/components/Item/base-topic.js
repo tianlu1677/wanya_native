@@ -66,7 +66,7 @@ export const TopicImageContent = props => {
       />
     </Pressable>
   ) : (
-    <ScrollView horizontal={true}>
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       {medias.map((media, index) => (
         <Pressable onPress={() => onPreview(index)} key={media}>
           <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    left: 20,
+    left: 12,
     top: 23,
   },
 });

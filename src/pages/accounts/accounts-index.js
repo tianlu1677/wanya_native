@@ -35,9 +35,9 @@ export const AccountsIndex = () => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const res = await getAccountFollowers(310);
-    setLoading(false);
     setHeaders(res.headers);
     setAccounts(res.data.accounts);
+    setLoading(false);
   };
 
   useEffect(() => {

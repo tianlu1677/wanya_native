@@ -21,7 +21,7 @@ const codePushOptions = {
   // ON_APP_RESUME APP恢复到前台的时候
   // ON_APP_START APP开启的时候
   // MANUAL 手动检查
-  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
 
 // Config.API_URL; // 'https://myapi.com'

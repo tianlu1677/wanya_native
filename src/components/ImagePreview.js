@@ -46,7 +46,8 @@ const ImagePreview = () => {
         enableSwipeDown
         useNativeDriver
         pageAnimateTime={200}
-        swipeDownThreshold={100}
+        swipeDownThreshold={120}
+        saveToLocalByLongPress={false}
         onClick={() => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
         }}

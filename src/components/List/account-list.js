@@ -49,9 +49,9 @@ export const MentionsAccountList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = params.name ? res.data.items : res.data.accounts;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -190,9 +190,9 @@ export const AccountList = props => {
       data = res.data.accounts;
     }
     // data = res.data.accounts;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
+    setLoading(false);
   };
 
   useEffect(() => {

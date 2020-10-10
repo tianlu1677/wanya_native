@@ -18,9 +18,9 @@ const ArticleList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.articles;
-    setLoading(false);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
+    setLoading(false);
   };
 
   useEffect(() => {

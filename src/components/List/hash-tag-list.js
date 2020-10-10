@@ -47,13 +47,13 @@ const HashtagList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = params.name ? res.data.items : res.data.hashtags;
-    setLoading(false);
     setHeaders(res.headers);
     if (params.name && data.length === 0) {
       setListData([{name: params.name, id: 0}]);
     } else {
       setListData(page === 1 ? data : [...listData, ...data]);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
