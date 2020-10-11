@@ -1,33 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
 
 const Search = props => {
+  const [focus, setFocus] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      // setFocus(true)
+      console.log('inputRef', inputRef)
+      inputRef.current.focus()
+    }, 500)
+    return () => {
+      // setFocus(false)
+    };
+  }, []);
+
   return (
     <View style={[styles.wrapper, props.style]}>
       <View style={styles.inputContent}>
         <IconFont name="sousuo" size={12} color={'#7f7f81'} style={styles.icon} />
         <TextInput
+          ref={inputRef}
           style={styles.textInput}
           placeholder={props.placeholder}
           onChangeText={props.onChangeText}
           selectionColor={'#ff193a'}
-          autoFocus
+          // autoFocus={true}
           clearButtonMode={'always'}
           textAlign={'left'}
           returnKeyType={'search'}
         />
       </View>
       <Pressable onPress={props.onCancel}>
-        <Text style={styles.cancel} >
-          取消
-        </Text>
+        <Text style={styles.cancel}>取消</Text>
       </Pressable>
-
     </View>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   wrapper: {

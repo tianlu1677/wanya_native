@@ -24,6 +24,7 @@ import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/s
 import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {NAV_BAR_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -188,7 +189,7 @@ const TopicDetail = ({navigation, route}) => {
               {detail.content_style === 'img' && renderImg()}
               {detail.content_style === 'video' && renderVideo()}
               {detail.content_style === 'link' && renderLink()}
-              {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+              {detail.excellent && <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
             </View>
 
             {(detail.content_style === 'text') && (
@@ -270,6 +271,7 @@ const styles = StyleSheet.create({
   excellentLabel: {
     width: 30,
     height: 16,
+    marginTop: 14,
     flex: 1,
     textAlign: 'center',
     fontSize: 10,
@@ -280,7 +282,6 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     left: 35,
-    top: NAV_BAR_HEIGHT,
   },
 });
 

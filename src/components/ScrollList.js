@@ -155,7 +155,7 @@ const ScrollList = props => {
             console.log('xxxx');
           }} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
           tintColor="black"
-          title={refreshing ? '努力加载中...' : ''}
+          title={refreshing ? '努力加载中...' : '加载完成'}
         />
       }
       // initialNumToRender={8}

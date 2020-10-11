@@ -86,7 +86,7 @@ const InviteLogin = ({navigation, route}) => {
           <TextInput
             autoFocus
             caretHidden={false}
-            selectionColor={'white'}
+            selectionColor={'blue'}
             autoCapitalize={'characters'}
             maxLength={6}
             onChangeText={text => {

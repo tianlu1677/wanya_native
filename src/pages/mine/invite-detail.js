@@ -178,7 +178,7 @@ const InviteDetail = ({navigation, route}) => {
       <Button
         title="微信邀请"
         titleStyle={{fontSize: 16, fontWeight: '500'}}
-        buttonStyle={{height: 90, backgroundColor: 'black', borderRadius: 0}}
+        buttonStyle={{height: 50, backgroundColor: 'black', borderRadius: 0}}
         onPress={() => {
           setShareModelVisible(true);
         }}

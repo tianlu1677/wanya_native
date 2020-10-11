@@ -179,7 +179,7 @@ export const AccountList = props => {
     let data = [];
     const res = await api({...params, page});
     if (account_type === 'account_recent_follow') {
-      console.log('res', res);
+      // console.log('res', res);
       data = res.data.follows;
       data = data.map(follow => ({
         ...follow.account,
@@ -195,9 +195,9 @@ export const AccountList = props => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  // useEffect(() => {
+  //   loadData();
+  // }, []);
 
   useEffect(() => {
     loadData();
