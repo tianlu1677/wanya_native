@@ -27,7 +27,7 @@ const Search = props => {
           style={styles.textInput}
           placeholder={props.placeholder}
           onChangeText={props.onChangeText}
-          selectionColor={'#ff193a'}
+          selectionColor={'blue'}
           // autoFocus={true}
           clearButtonMode={'always'}
           textAlign={'left'}

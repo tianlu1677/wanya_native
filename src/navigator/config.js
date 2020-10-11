@@ -262,7 +262,8 @@ export const routers = [
   {
     name: 'LabIndex',
     component: LabIndex,
-    options: {title: '实验室主页'},
+    safeArea: false,
+    options: {title: '实验室主页', headerShown: false},
   },
   {
     name: 'LabTabIndex',

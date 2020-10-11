@@ -11,7 +11,7 @@ import Modal, {
 
 const BottomModal = props => {
   const [isVisible, setIsVisible] = useState(props.visible);
-  console.log('prps', props, isVisible);
+  // console.log('prps', props, isVisible);
 
   const cancel = () => {
     props.cancleClick();

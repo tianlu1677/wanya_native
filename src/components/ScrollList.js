@@ -93,11 +93,12 @@ const ScrollList = props => {
   };
 
   const renderEmpty = () => {
+    console.log('height', height)
     return (
       !refreshing && (
-        <View style={[scrollStyle.footer, {maxHeight: height}]}>
+        <View style={[scrollStyle.footer, {minHeight: 300}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
-          <Text>{props.emptyTitle || '还没有内容哦'}</Text>
+          <Text style={{color: '#DADADA', fontSize: 13}}>{props.emptyTitle || '暂时还没有内容哦'}</Text>
         </View>
       )
     );
@@ -175,7 +176,7 @@ const scrollStyle = StyleSheet.create({
   emptyImg: {
     width: 64,
     height: 64,
-    marginBottom: 10,
+    marginBottom: 18,
   },
   separator: {
     backgroundColor: '#FAFAFA',

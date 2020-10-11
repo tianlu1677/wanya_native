@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
   imageCover: {
     width: '100%',
-    height: 400,
+    height: 275,
     position: 'absolute',
     top: 0,
     left: 0,

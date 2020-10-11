@@ -282,7 +282,7 @@ const NewTopic = props => {
         }
         onChangeText={onChangeContent}
         value={content}
-        selectionColor={'#ff193a'}
+        selectionColor={'blue'}
       />
       <View style={{flexDirection: 'row'}}>
         <Pressable style={styles.addTextNameWrap} onPress={() => navigation.navigate('AddHashTag')}>

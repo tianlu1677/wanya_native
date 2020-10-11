@@ -79,7 +79,7 @@ const EditAccountContent = ({navigation, route}) => {
         {editKey === 'nickname' && (
           <TextInput
             caretHidden={false}
-            selectionColor={'#c2c2c2'}
+            selectionColor={'blue'}
             maxLength={20}
             onChangeText={text => {
               setContent(text);
@@ -93,7 +93,7 @@ const EditAccountContent = ({navigation, route}) => {
         {editKey === 'intro' && (
           <TextInput
             caretHidden={false}
-            selectionColor={'#c2c2c2'}
+            selectionColor={'blue'}
             maxLength={40}
             multiline
             numberOfLines={10}
