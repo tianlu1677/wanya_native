@@ -135,12 +135,12 @@ const CollapsibleHeader = props => {
     });
 
     const propsToPass = {
-      onTabPress: ({preventDefault}) => {
-        if (isListGliding.current) {
-          preventDefault();
-        }
-      },
-      ...innerProps,
+      // onTabPress: ({preventDefault}) => {
+      //   if (isListGliding.current) {
+      //     preventDefault();
+      //   }
+      // },
+      // ...innerProps,
     };
 
     const viewStyles = {
