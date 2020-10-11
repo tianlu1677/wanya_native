@@ -1,57 +1,29 @@
-import React, { useEffect, useRef } from 'react';
-import {
-  Animated,
-  Dimensions,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  FlatListProps,
-  ListRenderItem,
-} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Animated, Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
+import {TabView} from 'react-native-tab-view';
+import TabViewList from '@/components/TabView';
+import TabList from '@/components/TabList';
 
-import {TabView, SceneMap, ScrollPager} from 'react-native-tab-view';
-
-// import TabView from './TabView';
-
-interface Props {
-  renderTabItems: (ListRenderItem<any> | null | undefined)[];
-  tabBarHeight: number;
-  headerHeight: number;
-  onIndexChange: (index: number) => void;
-  navigationState: any;
-  renderHeader: React.FunctionComponent;
-  renderTabBar: any;
-  tabDataAA: any;
-  tabViewProps?: object;
-  flatListProps?: Partial<FlatListProps<any>>[];
-}
-
-const CollapsibleHeader = (props: Props) => {
+const CollapsibleHeader = props => {
   const {
     renderTabItems,
     tabBarHeight,
     headerHeight,
     onIndexChange,
     navigationState,
-    renderHeader,
     renderTabBar,
     tabDataAA,
-    tabViewProps = {},
-    flatListProps,
   } = props;
 
+  const {routes, index: tabIndex} = navigationState;
 
-  console.log('tabData', tabDataAA)
-
-  const { routes, index: tabIndex } = navigationState;
-
-  const scrollY = useRef<any>(new Animated.Value(0)).current;
-  const listRefArr = useRef<any[]>([]);
-  const listOffset = useRef<any>({});
-  const isListGliding = useRef<boolean>(false);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const listRefArr = useRef([]);
+  const listOffset = useRef({});
+  const isListGliding = useRef(false);
 
   useEffect(() => {
-    scrollY.addListener(({ value }: any) => {
+    scrollY.addListener(({value}) => {
       const curRoute = routes[tabIndex].key;
       listOffset.current[curRoute] = value;
     });
@@ -62,7 +34,7 @@ const CollapsibleHeader = (props: Props) => {
 
   const syncScrollOffset = () => {
     const curRouteKey = routes[tabIndex].key;
-    listRefArr.current.forEach((item) => {
+    listRefArr.current.forEach(item => {
       if (item.key === curRouteKey) {
         return;
       }
@@ -77,8 +49,7 @@ const CollapsibleHeader = (props: Props) => {
         }
       } else if (
         scrollY._value >= headerHeight &&
-        (listOffset.current[item.key] < headerHeight ||
-          listOffset.current[item.key] == null) &&
+        (listOffset.current[item.key] < headerHeight || listOffset.current[item.key] == null) &&
         item.value
       ) {
         item.value.scrollToOffset({
@@ -103,15 +74,17 @@ const CollapsibleHeader = (props: Props) => {
     syncScrollOffset();
   };
 
-  const renderScene = ({ route }: any) => {
-    const index = navigationState.routes.findIndex(
-      ({ key }: { key: string }) => key === route.key
-    );
-
-    const renderItem = renderTabItems[index];
-    const data = tabDataAA[index];
-    const flatListPropsForTab = flatListProps?.[index];
-
+  const renderScene = ({route}) => {
+    // console.log(props.tabDataAA);
+    // console.log(props.currentKey);
+    // console.log(props.tabData);
+    const index = props.tabData.findIndex(v => v.key === props.currentKey);
+    // console.log(index);
+    const renderItem = props.tabData[index].component;
+    // console.log(renderItem);
+    // const index = navigationState.routes.findIndex(v => v.key === route.key);
+    // const renderItem = renderTabItems[index];
+    // const data = tabDataAA[index];
     const windowHeight = Dimensions.get('window').height;
 
     const contentContainerStyle = {
@@ -122,22 +95,21 @@ const CollapsibleHeader = (props: Props) => {
     return (
       <>
         {/* Since TabBar is absolute positioned, we need to add space so push content down below it. Don't use FlatList padding as that breaks stickyHeaders */}
-        <View style={{ height: tabBarHeight }} />
+        <View style={{height: tabBarHeight}} />
         <Animated.FlatList
           scrollToOverflowEnabled
           scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
-          )}
+          onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+            useNativeDriver: true,
+          })}
           onMomentumScrollBegin={onMomentumScrollBegin}
           onScrollEndDrag={onScrollEndDrag}
           onMomentumScrollEnd={onMomentumScrollEnd}
           contentContainerStyle={contentContainerStyle}
-          data={data}
-          ref={(ref: any) => {
+          data={[{key: String(index)}]}
+          ref={ref => {
             if (ref) {
-              const found = listRefArr.current.find((e) => e.key === route.key);
+              const found = listRefArr.current.find(e => e.key === route.key);
               if (!found) {
                 listRefArr.current.push({
                   key: route.key,
@@ -150,13 +122,12 @@ const CollapsibleHeader = (props: Props) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           decelerationRate="fast" // Since we prevent switching tabs during momentum, we want it to decelerate faster
-          {...flatListPropsForTab}
         />
       </>
     );
   };
 
-  const renderTabBarWithWrapper = (innerProps: any) => {
+  const renderTabBarWithWrapper = innerProps => {
     const y = scrollY.interpolate({
       inputRange: [0, headerHeight],
       outputRange: [headerHeight, 0],
@@ -164,7 +135,7 @@ const CollapsibleHeader = (props: Props) => {
     });
 
     const propsToPass = {
-      onTabPress: ({ preventDefault }: any) => {
+      onTabPress: ({preventDefault}) => {
         if (isListGliding.current) {
           preventDefault();
         }
@@ -176,29 +147,59 @@ const CollapsibleHeader = (props: Props) => {
       top: 0,
       zIndex: 1,
       position: 'absolute',
-      transform: [{ translateY: y }],
+      transform: [{translateY: y}],
       width: '100%',
     };
-
+    // return <Animated.View style={viewStyles}>{renderTabBar(propsToPass)}</Animated.View>;
     return (
       <Animated.View style={viewStyles}>
-        {renderTabBar(propsToPass)}
+        <TabList
+          data={routes}
+          current={props.currentKey}
+          // tabChange={tab => console.log(tab.key)}
+          tabChange={tab => props.onKeyChange(tab.key)}
+          size={props.size}
+          bottomLine={props.bottomLine}
+          separator={props.separator}
+          {...propsToPass}
+        />
       </Animated.View>
     );
   };
 
   const renderTabView = () => {
+    // return (
+    //   <TabViewList
+    //     currentKey={props.currentKey}
+    //     separator={props.separator}
+    //     tabData={props.tabData}
+    //     onChange={props.onChange}
+    //     initialLayout={{
+    //       height: 0,
+    //       width: Dimensions.get('window').width,
+    //     }}
+    //   />
+    // );
     return (
       <TabView
         onIndexChange={onIndexChange}
         navigationState={navigationState}
         renderScene={renderScene}
         renderTabBar={renderTabBarWithWrapper}
+        // renderTabBar={() => (
+        //   <TabList
+        //     data={routes}
+        //     current={props.currentKey}
+        //     // tabChange={tabChange}
+        //     size={props.size}
+        //     bottomLine={props.bottomLine}
+        //     separator={props.separator}
+        //   />
+        // )}
         initialLayout={{
           height: 0,
           width: Dimensions.get('window').width,
         }}
-        {...tabViewProps}
       />
     );
   };
@@ -212,13 +213,8 @@ const CollapsibleHeader = (props: Props) => {
 
     return (
       <Animated.View
-        style={[
-          localStyles.header,
-          { height: headerHeight },
-          { transform: [{ translateY: y }] },
-        ]}
-      >
-        {renderHeader({})}
+        style={[localStyles.header, {height: headerHeight}, {transform: [{translateY: y}]}]}>
+        {props.renderHeader}
       </Animated.View>
     );
   };
