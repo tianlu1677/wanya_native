@@ -1,5 +1,14 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Keyboard, Image, Text, TextInput, TouchableWithoutFeedback, StyleSheet, Pressable} from 'react-native';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
+import {
+  View,
+  Keyboard,
+  Image,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, CommonActions} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -18,6 +27,7 @@ const NewTopic = props => {
   const savetopic = useSelector(state => state.home.savetopic);
   const uploadProgress = useSelector(state => state.home.uploadProgress);
   const location = useSelector(state => state.home.location);
+  const videoRef = useRef('');
 
   // const defaultVideo = [
   //   {id: 1, url: 'http://xinxuefile.meirixinxue.com/assets/d479716443f6aca08c4e45135509bd03.mp4'},
@@ -204,114 +214,126 @@ const NewTopic = props => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        Keyboard.dismiss()
-      }}
-    >
+        Keyboard.dismiss();
+      }}>
       <View style={styles.wrapper}>
-      <View style={styles.mediaCon}>
-        {/* picture */}
-        {imageSource.map((v, index) => (
-          <View style={styles.mediaWrap} key={index}>
-            {v.id ? (
-              <>
-                <Pressable onPress={() => onPreview(index)}>
-                  <Image key={index} style={styles.media} source={{uri: v.url}} />
-                </Pressable>
-                <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                  <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
-                </Pressable>
-              </>
-            ) : (
-              <Image
-                key={index}
-                style={styles.media}
-                source={require('@/assets/images/loading.gif')}
-              />
-            )}
-          </View>
-        ))}
-        {videoSource.length === 0 && imageSource.length !== 9 && (
-          <Pressable onPress={onImagePicker}>
-            <Image style={styles.mediaWrap} source={require('@/assets/images/add-photo.png')} />
-          </Pressable>
-        )}
-
-        {/* video */}
-        {videoSource.map((v, index) => (
-          <Pressable
-            style={[styles.mediaWrap, {backgroundColor: 'black'}]}
-            key={index}
-            onProgress={() => {
-              console.log('xxxx');
-            }}>
-            {v.id ? (
-              <Video
-                style={styles.media}
-                source={{uri: v.url}}
-                posterResizeMode={'center'}
-                controls={false}
-                muted
-                reportBandwidth
-                repeat
-              />
-            ) : (
-              <View style={[styles.media, styles.progress]}>
-                <View style={styles.progressWrap}>
-                  <Text style={styles.proNum}>{uploadProgress}</Text>
-                  <Text style={styles.proPercent}>%</Text>
-                </View>
-              </View>
-            )}
-            <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-              <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+        <View style={styles.mediaCon}>
+          {/* picture */}
+          {imageSource.map((v, index) => (
+            <View style={styles.mediaWrap} key={index}>
+              {v.id ? (
+                <>
+                  <Pressable onPress={() => onPreview(index)}>
+                    <Image key={index} style={styles.media} source={{uri: v.url}} />
+                  </Pressable>
+                  <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
+                    <Image
+                      style={styles.mediaClose}
+                      source={require('@/assets/images/close.png')}
+                    />
+                  </Pressable>
+                </>
+              ) : (
+                <Image
+                  key={index}
+                  style={styles.media}
+                  source={require('@/assets/images/loading.gif')}
+                />
+              )}
+            </View>
+          ))}
+          {videoSource.length === 0 && imageSource.length !== 9 && (
+            <Pressable onPress={onImagePicker}>
+              <Image style={styles.mediaWrap} source={require('@/assets/images/add-photo.png')} />
             </Pressable>
+          )}
+
+          {/* video */}
+          {videoSource.map((v, index) => (
+            <Pressable
+              style={[styles.mediaWrap, {backgroundColor: 'black'}]}
+              key={index}
+              onProgress={() => {
+                console.log('xxxx');
+              }}>
+              {v.id ? (
+                <Pressable
+                  style={styles.media}
+                  onPress={() => {
+                    videoRef.current.presentFullscreenPlayer();
+                  }}>
+                  <Video
+                    style={styles.media}
+                    ref={videoRef}
+                    source={{uri: v.url}}
+                    posterResizeMode={'center'}
+                    controls={false}
+                    muted
+                    reportBandwidth
+                    repeat
+                    onFullscreenPlayerDidDismiss={() => { videoRef.current.seek(0)}}
+                  />
+                </Pressable>
+              ) : (
+                <View style={[styles.media, styles.progress]}>
+                  <View style={styles.progressWrap}>
+                    <Text style={styles.proNum}>{uploadProgress}</Text>
+                    <Text style={styles.proPercent}>%</Text>
+                  </View>
+                </View>
+              )}
+              <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
+                <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+              </Pressable>
+            </Pressable>
+          ))}
+          {imageSource.length === 0 && videoSource.length === 0 && (
+            <Pressable onPress={onVideoPicker}>
+              <Image style={styles.mediaWrap} source={require('@/assets/images/add-video.png')} />
+            </Pressable>
+          )}
+        </View>
+        <TextInput
+          style={styles.content}
+          multiline
+          textAlignVertical="top"
+          placeholder={
+            currentAccount.publish_topics_count > 0 ? '记录与分享' : '快开始写下你的第一篇帖子吧~'
+          }
+          onChangeText={onChangeContent}
+          value={content}
+          selectionColor={'blue'}
+        />
+        <View style={{flexDirection: 'row'}}>
+          <Pressable
+            style={styles.addTextNameWrap}
+            onPress={() => navigation.navigate('AddHashTag')}>
+            <IconFont name={'hashtag'} size={13} color="#000" />
+            <Text style={styles.addTextName}>话题</Text>
           </Pressable>
-        ))}
-        {imageSource.length === 0 && videoSource.length === 0 && (
-          <Pressable onPress={onVideoPicker}>
-            <Image style={styles.mediaWrap} source={require('@/assets/images/add-video.png')} />
+          <Pressable
+            style={styles.addTextNameWrap}
+            onPress={() => navigation.navigate('AddMentionAccount')}>
+            <IconFont name={'at'} size={13} color="#000" />
+            <Text style={styles.addTextName}>顽友</Text>
           </Pressable>
-        )}
-      </View>
-      <TextInput
-        style={styles.content}
-        multiline
-        textAlignVertical="top"
-        placeholder={
-          currentAccount.publish_topics_count > 0 ? '记录与分享' : '快开始写下你的第一篇帖子吧~'
-        }
-        onChangeText={onChangeContent}
-        value={content}
-        selectionColor={'blue'}
-      />
-      <View style={{flexDirection: 'row'}}>
-        <Pressable style={styles.addTextNameWrap} onPress={() => navigation.navigate('AddHashTag')}>
-          <IconFont name={'hashtag'} size={13} color="#000" />
-          <Text style={styles.addTextName}>话题</Text>
-        </Pressable>
-        <Pressable
-          style={styles.addTextNameWrap}
-          onPress={() => navigation.navigate('AddMentionAccount')}>
-          <IconFont name={'at'} size={13} color="#000" />
-          <Text style={styles.addTextName}>顽友</Text>
-        </Pressable>
-      </View>
-      <View style={styles.addWrapper}>
-        <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddNode')}>
-          <IconFont name="blank-node" color={savetopic.node ? '#000' : '#c2c2c2'} size={16} />
-          <Text style={[styles.addText, savetopic.node && styles.selectText]}>
-            {savetopic.node ? savetopic.node.name : '选择圈子（必选）'}
-          </Text>
-          <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
-        </Pressable>
-        <GetLocation handleClick={getLocation} style={styles.addSlide}>
-          <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
-          <Text style={[styles.addText, savetopic.space && styles.selectText]}>
-            {savetopic.space ? savetopic.space.name : '选择场地'}
-          </Text>
-          <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
-        </GetLocation>
-      </View>
+        </View>
+        <View style={styles.addWrapper}>
+          <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddNode')}>
+            <IconFont name="blank-node" color={savetopic.node ? '#000' : '#c2c2c2'} size={16} />
+            <Text style={[styles.addText, savetopic.node && styles.selectText]}>
+              {savetopic.node ? savetopic.node.name : '选择圈子（必选）'}
+            </Text>
+            <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
+          </Pressable>
+          <GetLocation handleClick={getLocation} style={styles.addSlide}>
+            <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
+            <Text style={[styles.addText, savetopic.space && styles.selectText]}>
+              {savetopic.space ? savetopic.space.name : '选择场地'}
+            </Text>
+            <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
+          </GetLocation>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );

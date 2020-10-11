@@ -96,7 +96,7 @@ const ScrollList = props => {
   };
 
   const renderEmpty = () => {
-    console.log('height', height)
+    // console.log('height', height)
     return (
       !refreshing && (
         <View style={[scrollStyle.footer, {minHeight: 300}]}>
@@ -152,12 +152,17 @@ const ScrollList = props => {
       onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
       scrollIndicatorInsets={{right: 1}}
+      progressViewOffset={1}
+      removeClippedSubviews
       refreshControl={
         <RefreshControl
           refreshing={refreshing ? refreshing : false}
           onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
           tintColor="black"
-          title={refreshing ? '努力加载中...' : '加载完成'}
+          progressViewOffset={10}
+          style={{backgroundColor: 'white'}}
+
+          // title={refreshing ? '努力加载中...' : '加载完成'}
         />
       }
       // initialNumToRender={8}

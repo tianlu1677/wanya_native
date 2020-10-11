@@ -11,7 +11,7 @@ const Search = props => {
     setTimeout(() => {
       // setFocus(true)
       console.log('inputRef', inputRef)
-      inputRef.current.focus()
+      // inputRef.current.focus()
     }, 500)
     return () => {
       // setFocus(false)

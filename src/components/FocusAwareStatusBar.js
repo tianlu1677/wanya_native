@@ -4,7 +4,7 @@ import {useIsFocused} from '@react-navigation/native';
 
 const FocusAwareStatusBar = (props) => {
   const isFocused = useIsFocused();
-  console.log('isFocused', isFocused)
+  // console.log('isFocused', isFocused)
   return isFocused ? <StatusBar {...props} /> : null;
 }
 
