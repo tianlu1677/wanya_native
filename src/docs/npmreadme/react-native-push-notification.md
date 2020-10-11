@@ -279,7 +279,7 @@ PushNotification.configure({
 
 ## Example app
 
-Example folder contains an example app to demonstrate how to use this package. The notification Handling is done in `NotifService.js`.
+Example folder contains an example app to demonstrate how to use this package. The notification Handling is done in `NotifyService.js`.
 
 Please test your PRs with this example app before submitting them. It'll help maintaining this repo.
 
