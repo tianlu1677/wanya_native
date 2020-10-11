@@ -252,7 +252,6 @@ const styles = StyleSheet.create({
     marginRight: 14,
     marginLeft: 14,
     height: 167,
-    width: 345,
     position: 'relative',
   },
   linkTitle: {
