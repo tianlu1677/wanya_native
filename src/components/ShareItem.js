@@ -33,7 +33,7 @@ const ShareItem = () => {
         onPress={() => {
           dispatch(dispatchShareItem({...shareContent, visible: false}));
         }}>
-        <ShareCardView style={{paddingBottom: BOTTOM_HEIGHT}}>
+        <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
           <Pressable
             style={{display: 'flex', alignItems: 'center'}}
             onPress={() => {
@@ -85,8 +85,7 @@ const ModelWrap = styled(TouchableOpacity)`
 `;
 
 const ShareCardView = styled(View)`
-  position: absolute;
-  bottom: 0;
+  position: absolute;  
   left: 0;
   right: 0;
   height: 90px;
