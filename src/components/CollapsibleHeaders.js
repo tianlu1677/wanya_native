@@ -4,8 +4,10 @@ import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 const windowHeight = Dimensions.get('window').height;
 
+const tabBarHeight = 48;
+
 const CollapsibleHeader = props => {
-  const {tabData, currentKey, tabBarHeight, headerHeight} = props;
+  const {tabData, currentKey, headerHeight} = props;
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
     index: index,
@@ -158,6 +160,7 @@ const CollapsibleHeader = props => {
           height: 0,
           width: Dimensions.get('window').width,
         }}
+        style={{flex: 1, backgroundColor: '#fff', zIndex: -1}}
       />
     );
   };
@@ -178,12 +181,12 @@ const CollapsibleHeader = props => {
   };
 
   return (
-    <SafeAreaView style={localStyles.flex1}>
-      <View style={localStyles.flex1}>
+    <View style={{flex: 1}}>
+      <View style={{flex: 1}}>
         {renderTabView()}
         {renderHeaderWithWrapper()}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -195,9 +198,6 @@ const localStyles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     zIndex: -1,
-  },
-  flex1: {
-    flex: 1,
   },
 });
 

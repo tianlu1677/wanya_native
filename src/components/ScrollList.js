@@ -94,7 +94,8 @@ const ScrollList = props => {
 
   const renderEmpty = () => {
     return (
-      !refreshing && (
+      !refreshing &&
+      props.data.length === 0 && (
         <View style={[scrollStyle.footer, {maxHeight: height}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
           <Text>{props.emptyTitle || '还没有内容哦'}</Text>
@@ -123,7 +124,7 @@ const ScrollList = props => {
   }, [props.loading]);
 
   return (
-    <Animated.FlatList
+    <FlatList
       ref={props.getRref}
       data={props.data}
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
