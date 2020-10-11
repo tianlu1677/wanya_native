@@ -201,31 +201,4 @@ const localStyles = StyleSheet.create({
   },
 });
 
-const styles = StyleSheet.create({
-  tabbar: {
-    backgroundColor: '#3f51b5',
-  },
-  tab: {
-    width: 120,
-  },
-  indicator: {
-    backgroundColor: '#ffeb3b',
-  },
-  label: {
-    fontWeight: '400',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    backgroundColor: '#429BB8',
-  },
-  headerCol: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: 24,
-  },
-});
-
 export default CollapsibleHeader;

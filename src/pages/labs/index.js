@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {TabBar} from 'react-native-tab-view';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
