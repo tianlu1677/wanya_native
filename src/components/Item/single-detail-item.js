@@ -9,6 +9,8 @@ import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {dispatchShareItem} from "@/redux/actions";
+import * as WeChat from 'react-native-wechat-lib';
 
 export const PublishAccount = props => {
   const {data} = props;
@@ -172,6 +174,48 @@ export const ActionComment = props => {
     }
   };
 
+  // 分享
+
+  const onShare = () => {
+    console.log('onShare', props)
+    const { detail } = props;
+    // const detail = data.detail
+    let shareOptions = {
+      title: '顽鸦',
+      userName: 'gh_c2b50fe8e928',
+      webpageUrl: '',
+      path: '',
+      thumbImageUrl: detail.wx_share_image_url,
+      scene: 0,
+    };
+    switch (props.type) {
+      case 'Article':
+        shareOptions = {
+          ...shareOptions,
+          title: detail.plain_content,
+          path: '/pages/articles/article-detail?article_id=' + detail.id,
+          thumbImageUrl: detail.wx_share_image_url,
+        };
+        break;
+      case 'Topic':
+        shareOptions = {
+          ...shareOptions,
+          title: detail.plain_content,
+          path: '/pages/topics/topic-detail?topic_id=' + detail.id,
+          thumbImageUrl: detail.wx_share_image_url,
+        };
+        break;
+      default:
+        shareOptions;
+        break;
+    }
+
+    const shareContent = {...shareOptions, visible: true};
+    // console.log('xxx', shareContent)
+    dispatch(dispatchShareItem(shareContent));
+    WeChat.shareMiniProgram(shareOptions);
+  };
+
   useEffect(() => {
     setValue(null);
   }, [props.visible]);
@@ -195,9 +239,9 @@ export const ActionComment = props => {
               {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
             </Text>
           </Pressable>
-          <View style={astyles.btnWrap}>
+          <Pressable style={astyles.btnWrap} onPress={() => { onShare() }}>
             <IconFont name="fenxiang" size={19} />
-          </View>
+          </Pressable>
         </>
       )}
 
