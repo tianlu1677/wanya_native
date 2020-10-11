@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   smallWrap: {
     width: 14,
     height: 14,
-    borderRadius: 7,
+    borderRadius: 10,
     backgroundColor: '#FF2242',
     justifyContent: 'center',
     alignItems: 'center',

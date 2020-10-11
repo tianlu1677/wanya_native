@@ -74,7 +74,7 @@ const MineDetail = ({navigation, route}) => {
     if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }
-    return currentBaseInfo.new_message_count > 99 ? '99+' : currentBaseInfo.new_message_count;
+    return currentBaseInfo.new_message_count
   };
 
   useFocusEffect(
@@ -98,7 +98,7 @@ const MineDetail = ({navigation, route}) => {
           </View>
           <BadgeMessage
             value={UnreadMessageCount()}
-            containerStyle={{position: 'absolute', right: 3, top: -5}}
+            containerStyle={{position: 'absolute', right: (UnreadMessageCount() > 10 ? -5 : 3), top: -5}}
             size={'small'}
           >
           </BadgeMessage>
