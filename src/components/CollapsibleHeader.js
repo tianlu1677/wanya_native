@@ -79,10 +79,8 @@ const CollapsibleHeader = props => {
 
     const renderItem = renderTabItems[index];
     const data = tabDataAA[index];
-    console.log(flatListProps);
 
     const flatListPropsForTab = flatListProps?.[index];
-    console.log(flatListPropsForTab);
 
     const windowHeight = Dimensions.get('window').height;
 
@@ -134,13 +132,15 @@ const CollapsibleHeader = props => {
       extrapolateRight: 'clamp',
     });
 
+    console.log(innerProps);
+
     const propsToPass = {
       // onTabPress: ({preventDefault}) => {
       //   if (isListGliding.current) {
       //     preventDefault();
       //   }
       // },
-      // ...innerProps,
+      ...innerProps,
     };
 
     const viewStyles = {

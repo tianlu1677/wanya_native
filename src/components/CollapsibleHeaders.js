@@ -1,13 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Animated, Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 const windowHeight = Dimensions.get('window').height;
 
 const CollapsibleHeader = props => {
-  const [index, setIndex] = useState(0);
-  const {tabBarHeight, headerHeight, tabData, currentKey} = props;
-
+  const {tabData, currentKey, tabBarHeight, headerHeight} = props;
+  const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
     index: index,
     routes: props.tabData.map(v => {
@@ -24,16 +23,11 @@ const CollapsibleHeader = props => {
     scrollY.addListener(({value}) => {
       listOffset.current[currentKey] = value;
     });
+
     return () => {
       scrollY.removeAllListeners();
     };
   }, [tabData, scrollY, currentKey]);
-
-  useEffect(() => {
-    const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);
-    const i = findIndex > -1 ? findIndex : 0;
-    setIndex(i);
-  }, [props.currentKey]);
 
   const syncScrollOffset = () => {
     listRefArr.current.forEach(item => {
@@ -77,13 +71,12 @@ const CollapsibleHeader = props => {
   };
 
   const renderScene = ({route}) => {
-    const index = props.tabData.findIndex(v => v.key === props.currentKey);
-    const renderItem = props.tabData[index].component;
+    const i = navigationState.routes.findIndex(v => v.key === route.key);
+    const renderItem = tabData[i].component;
     const contentContainerStyle = {
       paddingTop: headerHeight,
       minHeight: windowHeight - tabBarHeight,
     };
-
     return (
       <>
         {/* Since TabBar is absolute positioned, we need to add space so push content down below it. Don't use FlatList padding as that breaks stickyHeaders */}
@@ -98,7 +91,7 @@ const CollapsibleHeader = props => {
           onScrollEndDrag={onScrollEndDrag}
           onMomentumScrollEnd={onMomentumScrollEnd}
           contentContainerStyle={contentContainerStyle}
-          data={[{key: String(index)}]}
+          data={[{key: String(i)}]}
           ref={ref => {
             if (ref) {
               const found = listRefArr.current.find(e => e.key === route.key);
@@ -126,15 +119,6 @@ const CollapsibleHeader = props => {
       extrapolateRight: 'clamp',
     });
 
-    const propsToPass = {
-      onTabPress: ({preventDefault}) => {
-        if (isListGliding.current) {
-          preventDefault();
-        }
-      },
-      ...innerProps,
-    };
-
     const viewStyles = {
       top: 0,
       zIndex: 1,
@@ -152,6 +136,7 @@ const CollapsibleHeader = props => {
           size={props.size}
           bottomLine={props.bottomLine}
           separator={props.separator}
+          {...innerProps}
         />
       </Animated.View>
     );
@@ -159,7 +144,7 @@ const CollapsibleHeader = props => {
 
   const renderTabView = () => {
     const onIndexChange = i => {
-      const key = props.tabData[i].key;
+      const key = tabData[i].key;
       props.onKeyChange(key);
     };
 
@@ -213,6 +198,33 @@ const localStyles = StyleSheet.create({
   },
   flex1: {
     flex: 1,
+  },
+});
+
+const styles = StyleSheet.create({
+  tabbar: {
+    backgroundColor: '#3f51b5',
+  },
+  tab: {
+    width: 120,
+  },
+  indicator: {
+    backgroundColor: '#ffeb3b',
+  },
+  label: {
+    fontWeight: '400',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    backgroundColor: '#429BB8',
+  },
+  headerCol: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 24,
   },
 });
 

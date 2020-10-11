@@ -4,27 +4,13 @@ import {TabBar} from 'react-native-tab-view';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/api/home_api';
+import {getRecommendPosts, getFollowedPosts} from '@/api/home_api';
 
 const HEADER_HEIGHT = 144;
 const TAB_BAR_HEIGHT = 48;
 
 const CollapsibleHeaderExample = () => {
-  const [index, setIndex] = useState(1);
   const [currentKey, setCurrentKey] = useState('article');
-
-  const renderTabBar = props => {
-    return (
-      <TabBar
-        {...props}
-        scrollEnabled
-        indicatorStyle={styles.indicator}
-        style={styles.tabbar}
-        tabStyle={styles.tab}
-        labelStyle={styles.label}
-      />
-    );
-  };
 
   const renderTabOne = () => {
     return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
@@ -36,21 +22,10 @@ const CollapsibleHeaderExample = () => {
 
   return (
     <CollapsibleHeader
-      // tabDataAA={[[{key: '0'}], [{key: '1'}], [{key: '2'}]]}
       tabBarHeight={TAB_BAR_HEIGHT}
       headerHeight={HEADER_HEIGHT}
-      // renderTabItems={[renderTabOne, renderTabTwo]}
-      // renderTabBar={renderTabBar}
-      // onIndexChange={i => setIndex(i)}
       currentKey={currentKey}
       onKeyChange={key => setCurrentKey(key)}
-      // navigationState={{
-      //   index: index,
-      //   routes: [
-      //     {key: 'article', title: '动态'},
-      //     {key: 'contacts', title: '帖子'},
-      //   ],
-      // }}
       tabData={[
         {
           key: 'article',
