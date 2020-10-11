@@ -59,6 +59,7 @@ const TabViewIndex = props => {
         removeClippedSubviews={props.removeClippedSubviews || false}
         keyboardDismissMode={props.keyboardDismissMode || 'auto'}
         style={props.style}
+        {...props}
       />
     )
   );
