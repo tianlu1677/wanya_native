@@ -107,7 +107,7 @@ export const Bottom = props => {
 
     const shareContent = {...shareOptions, visible: true};
     dispatch(dispatchShareItem(shareContent));
-    WeChat.shareMiniProgram(shareOptions);
+    // WeChat.shareMiniProgram(shareOptions);
   };
 
   return (
