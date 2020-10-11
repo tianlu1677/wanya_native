@@ -1,21 +1,19 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
 import {TabView} from 'react-native-tab-view';
-import TabViewList from '@/components/TabView';
 import TabList from '@/components/TabList';
+const windowHeight = Dimensions.get('window').height;
 
 const CollapsibleHeader = props => {
-  const {
-    renderTabItems,
-    tabBarHeight,
-    headerHeight,
-    onIndexChange,
-    navigationState,
-    renderTabBar,
-    tabDataAA,
-  } = props;
+  const [index, setIndex] = useState(0);
+  const {tabBarHeight, headerHeight, tabData, currentKey} = props;
 
-  const {routes, index: tabIndex} = navigationState;
+  const navigationState = {
+    index: index,
+    routes: props.tabData.map(v => {
+      return {key: v.key, title: v.title};
+    }),
+  };
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const listRefArr = useRef([]);
@@ -24,18 +22,22 @@ const CollapsibleHeader = props => {
 
   useEffect(() => {
     scrollY.addListener(({value}) => {
-      const curRoute = routes[tabIndex].key;
-      listOffset.current[curRoute] = value;
+      listOffset.current[currentKey] = value;
     });
     return () => {
       scrollY.removeAllListeners();
     };
-  }, [routes, scrollY, tabIndex]);
+  }, [tabData, scrollY, currentKey]);
+
+  useEffect(() => {
+    const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);
+    const i = findIndex > -1 ? findIndex : 0;
+    setIndex(i);
+  }, [props.currentKey]);
 
   const syncScrollOffset = () => {
-    const curRouteKey = routes[tabIndex].key;
     listRefArr.current.forEach(item => {
-      if (item.key === curRouteKey) {
+      if (item.key === currentKey) {
         return;
       }
 
@@ -75,18 +77,8 @@ const CollapsibleHeader = props => {
   };
 
   const renderScene = ({route}) => {
-    // console.log(props.tabDataAA);
-    // console.log(props.currentKey);
-    // console.log(props.tabData);
     const index = props.tabData.findIndex(v => v.key === props.currentKey);
-    // console.log(index);
     const renderItem = props.tabData[index].component;
-    // console.log(renderItem);
-    // const index = navigationState.routes.findIndex(v => v.key === route.key);
-    // const renderItem = renderTabItems[index];
-    // const data = tabDataAA[index];
-    const windowHeight = Dimensions.get('window').height;
-
     const contentContainerStyle = {
       paddingTop: headerHeight,
       minHeight: windowHeight - tabBarHeight,
@@ -150,52 +142,33 @@ const CollapsibleHeader = props => {
       transform: [{translateY: y}],
       width: '100%',
     };
-    // return <Animated.View style={viewStyles}>{renderTabBar(propsToPass)}</Animated.View>;
+
     return (
       <Animated.View style={viewStyles}>
         <TabList
-          data={routes}
+          data={navigationState.routes}
           current={props.currentKey}
-          // tabChange={tab => console.log(tab.key)}
           tabChange={tab => props.onKeyChange(tab.key)}
           size={props.size}
           bottomLine={props.bottomLine}
           separator={props.separator}
-          {...propsToPass}
         />
       </Animated.View>
     );
   };
 
   const renderTabView = () => {
-    // return (
-    //   <TabViewList
-    //     currentKey={props.currentKey}
-    //     separator={props.separator}
-    //     tabData={props.tabData}
-    //     onChange={props.onChange}
-    //     initialLayout={{
-    //       height: 0,
-    //       width: Dimensions.get('window').width,
-    //     }}
-    //   />
-    // );
+    const onIndexChange = i => {
+      const key = props.tabData[i].key;
+      props.onKeyChange(key);
+    };
+
     return (
       <TabView
         onIndexChange={onIndexChange}
         navigationState={navigationState}
         renderScene={renderScene}
         renderTabBar={renderTabBarWithWrapper}
-        // renderTabBar={() => (
-        //   <TabList
-        //     data={routes}
-        //     current={props.currentKey}
-        //     // tabChange={tabChange}
-        //     size={props.size}
-        //     bottomLine={props.bottomLine}
-        //     separator={props.separator}
-        //   />
-        // )}
         initialLayout={{
           height: 0,
           width: Dimensions.get('window').width,

@@ -40,17 +40,17 @@ const CollapsibleHeaderExample = () => {
       tabBarHeight={TAB_BAR_HEIGHT}
       headerHeight={HEADER_HEIGHT}
       // renderTabItems={[renderTabOne, renderTabTwo]}
-      renderTabBar={renderTabBar}
-      onIndexChange={i => setIndex(i)}
+      // renderTabBar={renderTabBar}
+      // onIndexChange={i => setIndex(i)}
       currentKey={currentKey}
       onKeyChange={key => setCurrentKey(key)}
-      navigationState={{
-        index: index,
-        routes: [
-          {key: 'article', title: '动态'},
-          {key: 'contacts', title: '帖子'},
-        ],
-      }}
+      // navigationState={{
+      //   index: index,
+      //   routes: [
+      //     {key: 'article', title: '动态'},
+      //     {key: 'contacts', title: '帖子'},
+      //   ],
+      // }}
       tabData={[
         {
           key: 'article',
