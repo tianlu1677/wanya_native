@@ -7,11 +7,14 @@ import ScrollList, {pagination} from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
+import {getRecommendTopPosts} from '@/api/home_api';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
 
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
+
+// const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
 
 const SingleItem = props => {
   const [height, setheight] = useState(200);
@@ -21,6 +24,7 @@ const SingleItem = props => {
 
   const {data} = props;
 
+  // console.log('data', props)
   const [praiseForm, setPraiseForm] = useState({
     praise: data.praise,
     praises_count: data.praises_count,
@@ -86,8 +90,8 @@ const SingleItem = props => {
         )}
 
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
-        {data.is_top && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
-        {!data.is_top && data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+        {props.isTop && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
+        {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选{data.is_top}</Text>}
 
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
@@ -111,7 +115,7 @@ const DoubleSingle = props => {
   return (
     <View style={[styles.singleWrap, {marginLeft: props.index === 0 ? 0 : 5}]}>
       {data.map((v, index) => {
-        return <SingleItem key={v.id} data={v.item} type={v.item_type} />;
+        return <SingleItem key={v.id} data={v.item} isTop={v.is_top} type={v.item_type} />;
       })}
     </View>
   );
@@ -157,18 +161,27 @@ const DoubleList = props => {
     setLoading(false);
   };
 
+  //首页推荐
   const indexLoadData = async (page = 1) => {
     setLoading(true);
+    let itemList = []
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
+
+    // 加载首页置顶的
+    let top_posts_res = await getRecommendTopPosts()
+    itemList = top_posts_res.data.posts
+    itemList = itemList.map((item) => ({...item, is_top: true }))
+
     setHeaders(res.headers);
-    setListData(data);
+    setListData(itemList.concat(data));
     setLoading(false);
   };
 
   const onRefresh = (page = 1) => {
-    if (props.type === 'recommend' && page === 1) {
+    // console.log('props', props)
+    if (props.type === 'recommend' && (page === 1 || !page) ) {
       indexLoadData(pagination(headers).nextPage);
     } else {
       loadData(page);
@@ -176,7 +189,11 @@ const DoubleList = props => {
   };
 
   useEffect(() => {
-    loadData();
+    if(props.type === 'recommend') {
+      indexLoadData(1)
+    } else {
+      loadData();
+    }
   }, []);
 
   return (

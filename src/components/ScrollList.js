@@ -38,6 +38,7 @@ const ScrollList = props => {
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
+    console.log('onRefresh =============', state, refreshing);
     if (refreshing || state === loadState.LOADING) {
       return;
     }
@@ -48,7 +49,9 @@ const ScrollList = props => {
       props.onRefresh();
     } catch {
       setState(loadState.ERROR);
+      setRefreshing(false);
     }
+    setRefreshing(false);
   };
 
   const onEndReached = () => {
@@ -131,7 +134,7 @@ const ScrollList = props => {
       renderItem={props.renderItem}
       keyExtractor={item => String(item[props.itemKey || 'id'])}
       refreshing={refreshing ? refreshing : false}
-      onRefresh={enableLoadMore ? onRefresh : null}
+      onRefresh={enableRefresh ? onRefresh : null}
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.2}
@@ -152,9 +155,7 @@ const ScrollList = props => {
       refreshControl={
         <RefreshControl
           refreshing={refreshing ? refreshing : false}
-          onRefresh={() => {
-            console.log('xxxx');
-          }} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
+          onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
           tintColor="black"
           title={refreshing ? '努力加载中...' : '加载完成'}
         />
