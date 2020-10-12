@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: 'white',
     paddingTop: BASIC_HEIGHT,
   },
   message: {

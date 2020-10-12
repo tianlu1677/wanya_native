@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 0,
     paddingHorizontal: 0,
-    marginTop: -3,
-    height: 3,
+    marginTop: -2,
+    height: 2,
   },
   seekBarProgress: {
     height: 2,
@@ -159,6 +159,7 @@ export default class VideoPlayer extends Component {
   }
 
   componentWillUnmount() {
+    console.log('xxx', 'xxxx')
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout);
       this.controlsTimeout = null;

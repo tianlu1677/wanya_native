@@ -213,7 +213,7 @@ export const ActionComment = props => {
     const shareContent = {...shareOptions, visible: true};
     // console.log('xxx', shareContent)
     dispatch(dispatchShareItem(shareContent));
-    WeChat.shareMiniProgram(shareOptions);
+    // WeChat.shareMiniProgram(shareOptions);
   };
 
   useEffect(() => {

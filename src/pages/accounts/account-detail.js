@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     opacity: 0.6,
     marginRight: 10,
+    fontSize: 10,
   },
   intro: {
     lineHeight: 20,

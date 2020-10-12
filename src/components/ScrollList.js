@@ -135,8 +135,8 @@ const ScrollList = props => {
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
       renderItem={props.renderItem}
       keyExtractor={item => String(item[props.itemKey || 'id'])}
-      // refreshing={refreshing ? refreshing : false}
-      // onRefresh={enableRefresh ? onRefresh : null}
+      refreshing={refreshing ? refreshing : false}
+      onRefresh={enableRefresh ? onRefresh : null}
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.2}
@@ -155,17 +155,17 @@ const ScrollList = props => {
       contentContainerStyle={props.contentContainerStyle}
       scrollIndicatorInsets={{right: 1}}
 
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing ? refreshing : false}
-          onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
-          tintColor="black"
-          progressViewOffset={10}
-          style={{backgroundColor: 'white'}}
-
-          title={refreshing ? '努力加载中...' : '...'}
-        />
-      }
+      // refreshControl={
+      //   <RefreshControl
+      //     refreshing={refreshing ? refreshing : false}
+      //     onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
+      //     tintColor="black"
+      //     progressViewOffset={10}
+      //     style={{backgroundColor: 'white'}}
+      //
+      //     title={refreshing ? '努力加载中...' : '...'}
+      //   />
+      // }
       // initialNumToRender={8}
 
     />

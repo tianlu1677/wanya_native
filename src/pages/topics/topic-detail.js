@@ -120,13 +120,14 @@ const TopicDetail = ({navigation, route}) => {
     const {width, height} = detail.media_video;
     const videoWidth = screenWidth;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-    if (videoHeight > 400) {
-      videoHeight = 400;
+    if (videoHeight > 350) {
+      videoHeight = 350;
     }
 
     return (
       <View style={{backgroundColor: 'black'}}>
         <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} />
+        { detail.excellent && <Text style={{...styles.excellentLabel, zIndex: 100, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
         <VideoPlayerContent
           customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
@@ -187,9 +188,9 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            <View>
+            <View style={{position: 'relative'}}>
               {detail.content_style === 'img' && renderImg()}
-              {detail.excellent && <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
+              {detail.content_style === 'img' && detail.excellent && <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
             </View>
 
             {(detail.content_style === 'text') && (
