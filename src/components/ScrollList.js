@@ -47,6 +47,7 @@ const ScrollList = props => {
     console.log('onRefresh =============', state, refreshing);
     try {
       props.onRefresh();
+      // setRefreshing(false);
     } catch {
       setState(loadState.ERROR);
       setRefreshing(false);
@@ -69,6 +70,7 @@ const ScrollList = props => {
 
     try {
       props.onRefresh(pagin.nextPage);
+      // setRefreshing(false);
     } catch {
       setRefreshing(false);
       setState(loadState.ERROR);
@@ -127,7 +129,7 @@ const ScrollList = props => {
   }, [props.loading]);
 
   return (
-    <Animated.FlatList
+    <FlatList
       ref={props.getRref}
       data={props.data}
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
@@ -152,21 +154,20 @@ const ScrollList = props => {
       onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
       scrollIndicatorInsets={{right: 1}}
-      progressViewOffset={1}
-      removeClippedSubviews
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing ? refreshing : false}
-          onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
-          tintColor="black"
-          progressViewOffset={10}
-          style={{backgroundColor: 'white'}}
 
-          // title={refreshing ? '努力加载中...' : '加载完成'}
-        />
-      }
+      // refreshControl={
+      //   <RefreshControl
+      //     refreshing={refreshing ? refreshing : false}
+      //     onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
+      //     tintColor="black"
+      //     progressViewOffset={10}
+      //     style={{backgroundColor: 'white'}}
+      //
+      //     // title={refreshing ? '努力加载中...' : '加载完成'}
+      //   />
+      // }
       // initialNumToRender={8}
-      {...props.settings}
+
     />
   );
 };
