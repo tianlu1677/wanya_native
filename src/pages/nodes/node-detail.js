@@ -3,7 +3,6 @@ import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {BlurView} from '@react-native-community/blur';
 import Loading from '@/components/Loading';
-import TabViewList from '@/components/TabView';
 import {
   JoinButton,
   JoinAccounts,
@@ -20,16 +19,15 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
-import BottomSheetContent from '@/components/BottomSheetContent';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
+import CollapsibleHeader from '@/components/CollapsibleHeaders';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
   const dispatch = useDispatch();
-  const sheetRef = useRef(null);
 
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
@@ -87,8 +85,7 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const onShowIntro = () => {
-    setShowModal(true)
-    // sheetRef.current.snapTo();
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -98,48 +95,11 @@ const NodeDetail = ({navigation, route}) => {
   return detail ? (
     <View style={{...styles.wrapper}}>
       <GoBack />
-      <FastImg source={{uri: detail.backgroud_cover_url}} resizeMode={'cover'} style={styles.imageCover} />
-      <View style={styles.imageCoverOpacity} />
-      <View style={styles.header}>
-        <View style={styles.nodeContent}>
-          <View style={styles.nodeInfo}>
-            <Image style={styles.cover} source={{uri: detail.cover_url}} />
-            <View style={styles.nodewrap}>
-              <Text style={styles.nodeName}>{detail.name}</Text>
-              <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.descWrap}>
-          <Text style={styles.nodeDesc} numberOfLines={2} onPress={onShowIntro}>
-            {detail.desc}
-          </Text>
-          <PlayScore score={detail.play_score} onPress={onPlay} />
-        </View>
-        <Pressable
-          onPress={goJoinAccounts}
-          style={{position: 'absolute', bottom: 22, left: 15, right: 15}}>
-          <BlurView
-            style={styles.accountInfo}
-            blurType="light"
-            blurAmount={10}
-            reducedTransparencyFallbackColor="#white">
-            <JoinAccounts accounts={detail.accounts} size={25} />
-            <Text style={styles.count}>
-              {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
-            </Text>
-            <JoinButton
-              join={detail.followed}
-              text={detail.followed ? '已加入' : '加入'}
-              onPress={onFollowNode}
-            />
-          </BlurView>
-        </Pressable>
-      </View>
-      <View style={styles.separator} />
-      <TabViewList
-        currentKey={currentKey}
+      <CollapsibleHeader
+        headerHeight={283}
         separator={true}
+        currentKey={currentKey}
+        onKeyChange={key => setCurrentKey(key)}
         tabData={[
           {
             key: 'publish',
@@ -162,9 +122,56 @@ const NodeDetail = ({navigation, route}) => {
             component: TopicListPage,
           },
         ]}
-        onChange={key => setCurrentKey(key)}
+        renderHeader={
+          <>
+            <FastImg
+              source={{uri: detail.backgroud_cover_url}}
+              resizeMode={'cover'}
+              style={styles.imageCover}
+            />
+            <View style={styles.imageCoverOpacity} />
+            <View style={styles.header}>
+              <View style={styles.nodeContent}>
+                <View style={styles.nodeInfo}>
+                  <Image style={styles.cover} source={{uri: detail.cover_url}} />
+                  <View style={styles.nodewrap}>
+                    <Text style={styles.nodeName}>{detail.name}</Text>
+                    <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.descWrap}>
+                <Text style={styles.nodeDesc} numberOfLines={2} onPress={onShowIntro}>
+                  {detail.desc}
+                </Text>
+                <PlayScore score={detail.play_score} onPress={onPlay} />
+              </View>
+              <Pressable
+                onPress={goJoinAccounts}
+                style={{position: 'absolute', bottom: 22, left: 15, right: 15}}>
+                <BlurView
+                  style={styles.accountInfo}
+                  blurType="light"
+                  blurAmount={10}
+                  reducedTransparencyFallbackColor="#white">
+                  <JoinAccounts accounts={detail.accounts} size={25} />
+                  <Text style={styles.count}>
+                    {detail.accounts_count
+                      ? `${detail.accounts_count}位板友已加入`
+                      : '还没有板友加入'}
+                  </Text>
+                  <JoinButton
+                    join={detail.followed}
+                    text={detail.followed ? '已加入' : '加入'}
+                    onPress={onFollowNode}
+                  />
+                </BlurView>
+              </Pressable>
+            </View>
+          </>
+        }
       />
-      <BottomModal visible={showModal} cancleClick={() => setShowModal(false)} title={detail.name} >
+      <BottomModal visible={showModal} cancleClick={() => setShowModal(false)} title={detail.name}>
         <Text>{detail.desc}</Text>
       </BottomModal>
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
@@ -188,7 +195,7 @@ const styles = StyleSheet.create({
   },
   imageCover: {
     width: '100%',
-    height: 275,
+    height: 283,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -201,9 +208,9 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 400,
-    // backgroundColor: '#000',
-    // opacity: 0.5,
+    bottom: 283,
+    backgroundColor: '#000',
+    opacity: 0.5,
   },
   nodeContent: {
     flexDirection: 'row',

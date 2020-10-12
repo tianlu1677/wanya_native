@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated, Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Animated, Dimensions, StyleSheet, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 const windowHeight = Dimensions.get('window').height;
@@ -7,6 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 const tabBarHeight = 48;
 
 const CollapsibleHeader = props => {
+  const navigation = useNavigation();
   const {tabData, currentKey, headerHeight} = props;
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
@@ -23,9 +25,17 @@ const CollapsibleHeader = props => {
 
   useEffect(() => {
     scrollY.addListener(({value}) => {
+      if (value > props.headerHeight) {
+        navigation.setOptions({
+          headerShown: true,
+        });
+      } else {
+        navigation.setOptions({
+          headerShown: false,
+        });
+      }
       listOffset.current[currentKey] = value;
     });
-
     return () => {
       scrollY.removeAllListeners();
     };
@@ -79,6 +89,7 @@ const CollapsibleHeader = props => {
       paddingTop: headerHeight,
       minHeight: windowHeight - tabBarHeight,
     };
+
     return (
       <>
         {/* Since TabBar is absolute positioned, we need to add space so push content down below it. Don't use FlatList padding as that breaks stickyHeaders */}
