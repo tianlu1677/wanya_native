@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Image, Pressable} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -8,6 +9,8 @@ import BrandImg from '@/assets/images/brand.png';
 
 const Avator = props => {
   const [isShow] = useState(props.isShowSettledIcon === false ? false : true);
+  // const currentAccountId = useSelector(state => state.account.currentAccount.id);
+
   const navigation = useNavigation();
   const imagestyle = {
     width: props.size,
@@ -23,6 +26,11 @@ const Avator = props => {
     props.handleClick && props.handleClick();
     if (props.account && props.account.id) {
       navigation.navigate('AccountDetail', {accountId: props.account.id});
+      // if(currentAccountId && currentAccountId === props.account.id) {
+      //   navigation.push('MineDetail');
+      // } else {
+      //   navigation.navigate('AccountDetail', {accountId: props.account.id});
+      // }
     }
   }
 

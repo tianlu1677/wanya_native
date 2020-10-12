@@ -282,6 +282,13 @@ export const routers = [
     options: {title: 'AdminPhoneLogin'},
   },
   {
+    name: 'MineDetail',
+    component: MineDetail,
+    safeArea: false,
+    options: {title: 'MineDetail', headerShown: false},
+  },
+
+  {
     name: 'NotifyIndex',
     component: NotifyIndex,
     barColor: 'dark',

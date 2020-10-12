@@ -44,6 +44,10 @@ const Recommend = props => {
     }, [])
   );
 
+  useEffect(() => {
+    dispatch(dispatchCurrentAccount());
+  }, [])
+
   return (
     <SafeAreaPlus style={{flex: 1}} edges={['right', 'left']}>
       <FocusAwareStatusBar barStyle="dark-content" />
