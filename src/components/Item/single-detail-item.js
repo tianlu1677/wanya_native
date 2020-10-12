@@ -9,6 +9,8 @@ import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {dispatchShareItem} from '@/redux/actions';
+import * as WeChat from 'react-native-wechat-lib';
 
 export const PublishAccount = props => {
   const {data} = props;
@@ -172,6 +174,47 @@ export const ActionComment = props => {
     }
   };
 
+  // 分享
+  const onShare = () => {
+    console.log('onShare', props);
+    const {detail} = props;
+    // const detail = data.detail
+    let shareOptions = {
+      title: '顽鸦',
+      userName: 'gh_c2b50fe8e928',
+      webpageUrl: '',
+      path: '',
+      thumbImageUrl: detail.wx_share_image_url,
+      scene: 0,
+    };
+    switch (props.type) {
+      case 'Article':
+        shareOptions = {
+          ...shareOptions,
+          title: detail.plain_content,
+          path: '/pages/articles/article-detail?article_id=' + detail.id,
+          thumbImageUrl: detail.wx_share_image_url,
+        };
+        break;
+      case 'Topic':
+        shareOptions = {
+          ...shareOptions,
+          title: detail.plain_content,
+          path: '/pages/topics/topic-detail?topic_id=' + detail.id,
+          thumbImageUrl: detail.wx_share_image_url,
+        };
+        break;
+      default:
+        shareOptions;
+        break;
+    }
+
+    const shareContent = {...shareOptions, visible: true};
+    // console.log('xxx', shareContent)
+    dispatch(dispatchShareItem(shareContent));
+    // WeChat.shareMiniProgram(shareOptions);
+  };
+
   useEffect(() => {
     setValue(null);
   }, [props.visible]);
@@ -183,20 +226,30 @@ export const ActionComment = props => {
           <Text style={astyles.text} onPress={onCreateComment}>
             快来评论吧
           </Text>
-          <Pressable style={astyles.btnWrap} onPress={() => onCreate('praise')}>
-            <IconFont name="like" size={19} color={praise ? '#000' : '#bdbdbd'} />
-            <Text style={[astyles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
-              {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
-            </Text>
-          </Pressable>
-          <Pressable style={astyles.btnWrap} onPress={() => onCreate('star')}>
-            <IconFont name="star-solid" size={19} color={star ? '#f4ea2a' : '#bdbdbd'} />
-            <Text style={[astyles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
-              {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
-            </Text>
-          </Pressable>
-          <View style={astyles.btnWrap}>
-            <IconFont name="fenxiang" size={19} />
+          <View style={astyles.wrapBottomBtns}>
+            <Pressable style={astyles.btnWrap} onPress={() => onCreate('praise')}>
+              <IconFont name="like" size={19} color={praise ? '#000' : '#bdbdbd'} />
+              <Text style={[astyles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
+                {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
+              </Text>
+            </Pressable>
+            <Pressable style={astyles.btnWrap} onPress={() => onCreate('star')}>
+              <IconFont
+                name={star ? 'star-solid' : 'blank-star'}
+                size={19}
+                color={star ? '#f4ea2a' : '#bdbdbd'}
+              />
+              <Text style={[astyles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
+                {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={astyles.btnWrap}
+              onPress={() => {
+                onShare();
+              }}>
+              <IconFont name="fenxiang" size={19} />
+            </Pressable>
           </View>
         </>
       )}
@@ -325,6 +378,13 @@ const astyles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     // marginBottom: BOTTOM_HEIGHT,
   },
+  wrapBottomBtns: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+  },
   text: {
     width: 174,
     height: 35,
@@ -338,7 +398,7 @@ const astyles = StyleSheet.create({
     fontSize: 13,
   },
   btnWrap: {
-    width: 60,
+    minWidth: 25,
     flexDirection: 'row',
     height: '100%',
     alignItems: 'center',
@@ -348,6 +408,7 @@ const astyles = StyleSheet.create({
   btnText: {
     marginLeft: 5,
     fontSize: 14,
+    minWidth: 5,
   },
   input: {
     flex: 1,

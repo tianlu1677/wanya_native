@@ -5,6 +5,9 @@ import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {dispatchShareItem} from '@/redux/actions';
+import FastImg from '@/components/FastImg';
+import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
+import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
 
 const ShareItem = () => {
   const [shareModelVisible, setShareModelVisible] = useState(false);
@@ -13,11 +16,13 @@ const ShareItem = () => {
 
   const shareFriend = e => {
     // e.stopPropagation();
-    WeChat.shareMiniProgram(shareContent);
+    const content = {...shareContent, scene: 0};
+    WeChat.shareMiniProgram(content);
   };
   const shareTimeline = () => {
     try {
-      WeChat.shareMiniProgram(shareContent);
+      const content = {...shareContent, scene: 1};
+      WeChat.shareMiniProgram(content);
     } catch (e) {
       console.log('e', e);
     }
@@ -39,8 +44,8 @@ const ShareItem = () => {
             onPress={() => {
               shareFriend();
             }}>
-            <Image
-              source={require('../assets/images/sharewchatfrient.png')}
+            <FastImg
+              source={ShareFriendImg}
               style={{width: 28, height: 22}}
               resizeMode={'contain'}
             />
@@ -51,10 +56,7 @@ const ShareItem = () => {
             onPress={() => {
               shareTimeline();
             }}>
-            <Image
-              source={require('../assets/images/sharewechattimeline.png')}
-              style={{width: 20, height: 20}}
-            />
+            <FastImg source={ShareTimeImg} style={{width: 20, height: 20}} />
             <ShareText>分享朋友圈</ShareText>
           </TouchableOpacity>
         </ShareCardView>
@@ -85,7 +87,7 @@ const ModelWrap = styled(TouchableOpacity)`
 `;
 
 const ShareCardView = styled(View)`
-  position: absolute;  
+  position: absolute;
   left: 0;
   right: 0;
   height: 90px;

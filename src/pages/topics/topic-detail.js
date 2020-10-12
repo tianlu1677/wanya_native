@@ -24,6 +24,7 @@ import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/s
 import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {NAV_BAR_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -119,15 +120,16 @@ const TopicDetail = ({navigation, route}) => {
     const {width, height} = detail.media_video;
     const videoWidth = screenWidth;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-    if (videoHeight > 500) {
-      videoHeight = 500;
+    if (videoHeight > 350) {
+      videoHeight = 350;
     }
 
     return (
       <View style={{backgroundColor: 'black'}}>
         <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} />
+        { detail.excellent && <Text style={{...styles.excellentLabel, zIndex: 100, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
         <VideoPlayerContent
-          customStyles={{height: videoHeight}}
+          customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
           videoWidth={videoWidth}
           videoHeight={videoHeight}
@@ -149,6 +151,7 @@ const TopicDetail = ({navigation, route}) => {
     };
     return (
       <View>
+        <StatusBar barStyle={'dark-content'} />
         <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
           <StatusBar barStyle={'dark-content'} />
           <GoBack
@@ -173,6 +176,8 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
+      {detail.content_style === 'video' && renderVideo()}
+      {detail.content_style === 'link' && renderLink()}
       <CommentList
         style={styles.wrapper}
         type="Topic"
@@ -183,12 +188,9 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            <StatusBar barStyle={'light-content'} />
-            <View>
+            <View style={{position: 'relative'}}>
               {detail.content_style === 'img' && renderImg()}
-              {detail.content_style === 'video' && renderVideo()}
-              {detail.content_style === 'link' && renderLink()}
-              {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+              {detail.content_style === 'img' && detail.excellent && <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
             </View>
 
             {(detail.content_style === 'text') && (
@@ -251,7 +253,6 @@ const styles = StyleSheet.create({
     marginRight: 14,
     marginLeft: 14,
     height: 167,
-    width: 345,
     position: 'relative',
   },
   linkTitle: {
@@ -266,10 +267,12 @@ const styles = StyleSheet.create({
   linkImageCover: {
     height: 167,
     flex: 1,
+    borderRadius: 2
   },
   excellentLabel: {
     width: 30,
     height: 16,
+    marginTop: 14,
     flex: 1,
     textAlign: 'center',
     fontSize: 10,
@@ -280,7 +283,6 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     left: 35,
-    top: NAV_BAR_HEIGHT,
   },
 });
 

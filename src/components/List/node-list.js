@@ -20,6 +20,7 @@ const NodeList = props => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params} = props.request;
+    //console.log('api', api)
     const res = await api({...params, page});
     const data = res.data.nodes;
     setHeaders(res.headers);

@@ -31,19 +31,22 @@ const SystemNotify = ({navigation}) => {
   };
 
   const formatNotify = notify => {
+    console.log('noti', notify)
     let image_url = '';
     let has_video = false;
     let content = '';
     if (notify.target_type === 'Comment') {
       content = notify.comment ? notify.comment.content : '评论已删除';
-    } else if (notify.target_type === 'Topic') {
+    } else if (notify.target_type === 'Topic' && notify.topic) {
       let topic = notify.topic;
-      image_url = topic.single_cover.cover_url;
+      image_url = topic.single_cover ? topic.single_cover.cover_url : '';
       has_video = topic.has_video;
       content = topic.plain_content;
     } else if (notify.target_type === 'Article') {
       image_url = notify.article.cover_url;
       content = notify.article.title;
+    } else if (notify.target_type === null){
+      content = 'nothing';
     } else {
       content = '已删除';
     }
@@ -79,6 +82,7 @@ const SystemNotify = ({navigation}) => {
         time={notify.created_at_text}
         item={notify.item}
         descStyle={{fontSize: 14, color: 'black'}}
+        showRight={notify.item.content !== 'nothing'}
         handleClickRight={() => {
           goInsideNotify(notify);
         }}

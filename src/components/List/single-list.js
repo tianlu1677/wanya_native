@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
+import { View } from 'react-native';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
 
@@ -38,7 +39,7 @@ const SingleList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
-      style={{backgroundColor: '#fff'}}
+      style={{backgroundColor: '#FAFAFA'}}
       {...props}
     />
   );

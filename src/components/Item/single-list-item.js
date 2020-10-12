@@ -26,9 +26,11 @@ export const Header = props => {
     <View style={hstyles.headerView}>
       <Avator account={data.account} size={40} />
       <View style={hstyles.content}>
-        <Text style={hstyles.nameText} onPress={goAccountDetail}>
-          {data.account.nickname}
-        </Text>
+        <Pressable onPress={goAccountDetail}>
+          <Text style={hstyles.nameText} >
+            {data.account.nickname}
+          </Text>
+        </Pressable>
         <Pressable style={hstyles.infoView} onPress={goNodeDetail}>
           <Text style={hstyles.timeText}>{data.published_at_text}</Text>
           <IconFont name="node-solid" size={12} color={'#000'} />

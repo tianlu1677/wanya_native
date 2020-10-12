@@ -13,7 +13,7 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {BASIC_HEIGHT} from '@/utils/navbar';
-import {dispatchBaseCurrentAccount} from '@/redux/actions';
+import {dispatchBaseCurrentAccount, dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 
 const MineDetail = ({navigation, route}) => {
@@ -26,8 +26,9 @@ const MineDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const loadData = async () => {
-    const res = await getAccount(accountId);
-    setAccount(res.data.account);
+    dispatch(dispatchCurrentAccount())
+    // const res = await getAccount(accountId);
+    // setAccount(res.data.account);
   };
 
   const goFollowList = () => {
@@ -74,7 +75,7 @@ const MineDetail = ({navigation, route}) => {
     if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }
-    return currentBaseInfo.new_message_count > 99 ? '99+' : currentBaseInfo.new_message_count;
+    return currentBaseInfo.new_message_count
   };
 
   useFocusEffect(
@@ -86,7 +87,7 @@ const MineDetail = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({});
     loadData();
-  }, [navigation]);
+  }, []);
 
   return currentAccount ? (
     <View style={styles.wrapper}>
@@ -109,72 +110,72 @@ const MineDetail = ({navigation, route}) => {
       </View>
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
         <View
-          style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
-          <Avator account={account} size={50} isShowSettledIcon={false} />
+          style={[styles.userWrap, {marginBottom: currentAccount.settled_type === 'single' ? 30 : 20}]}>
+          <Avator account={currentAccount} size={50} isShowSettledIcon={false} />
           <View style={{marginLeft: 8}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.nickname}>{account.nickname}</Text>
-              {account.settled_type !== 'single' && (
+              <Text style={styles.nickname}>{currentAccount.nickname}</Text>
+              {currentAccount.settled_type !== 'single' && (
                 <Image
                   style={{width: 16, height: 16, marginLeft: 5}}
                   source={
-                    account.settled_type === 'personal'
+                    currentAccount.settled_type === 'personal'
                       ? require('@/assets/images/personal.png')
                       : require('@/assets/images/brand.png')
                   }
                 />
               )}
             </View>
-            <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
+            <Text style={styles.uid}>顽鸦号: {currentAccount.uid}</Text>
           </View>
           <Text style={styles.invite} onPress={() => navigation.navigate('InviteDetail')}>
             邀请好友
           </Text>
         </View>
-        {account.settled_type !== 'single' && (
+        {currentAccount.settled_type !== 'single' && (
           <View style={styles.settledWrap}>
             <Image
               style={{width: 16, height: 16, marginRight: 3}}
               source={
-                account.settled_type === 'personal'
+                currentAccount.settled_type === 'personal'
                   ? require('@/assets/images/personal.png')
                   : require('@/assets/images/brand.png')
               }
             />
-            <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
+            <Text style={styles.settled}>顽鸦认证：{currentAccount.settled_name}</Text>
           </View>
         )}
         <View style={styles.introWrap}>
           <View style={{marginRight: 'auto'}}>
             <View style={{flexDirection: 'row', marginBottom: 8}}>
-              {account.gender === 'man' && (
+              {currentAccount.gender === 'man' && (
                 <IconFont name="man" size={16} style={styles.maleIcon} />
               )}
-              {account.gender === 'woman' && (
+              {currentAccount.gender === 'woman' && (
                 <IconFont name="woman" size={16} style={styles.maleIcon} />
               )}
-              <Text style={styles.tag}>{account.age || '18'}岁</Text>
-              <Text style={styles.tag}>{account.province || '未知街区'}</Text>
+              <Text style={styles.tag}>{currentAccount.age || '18'}岁</Text>
+              <Text style={styles.tag}>{currentAccount.province || '未知街区'}</Text>
             </View>
-            <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
+            <Text style={styles.intro}>{currentAccount.intro || '这个人很懒，还没有填写简介'}</Text>
           </View>
-          <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
+          <PlayScore score={currentAccount.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
         </View>
         <View style={styles.numberWrap}>
           <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-            <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
+            <Text style={styles.numberCount}>{currentAccount.account_feeds_count}</Text>
             <Text style={styles.numberTitle}>动态</Text>
           </Pressable>
           <Pressable style={styles.numberItem} onPress={goFollowList}>
-            <Text style={styles.numberCount}>{account.nodes_count}</Text>
+            <Text style={styles.numberCount}>{currentAccount.nodes_count}</Text>
             <Text style={styles.numberTitle}>圈子</Text>
           </Pressable>
           <Pressable style={styles.numberItem} onPress={goFollowAccounts}>
-            <Text style={styles.numberCount}>{account.following_count}</Text>
+            <Text style={styles.numberCount}>{currentAccount.following_count}</Text>
             <Text style={styles.numberTitle}>关注</Text>
           </Pressable>
           <Pressable style={styles.numberItem} onPress={goFollowerAccounts}>
-            <Text style={styles.numberCount}>{account.followers_count}</Text>
+            <Text style={styles.numberCount}>{currentAccount.followers_count}</Text>
             <Text style={styles.numberTitle}>粉丝</Text>
           </Pressable>
         </View>
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 54 + BASIC_HEIGHT,
+    paddingTop: 40 + BASIC_HEIGHT,
     height: 270 + BASIC_HEIGHT,
   },
   userWrap: {

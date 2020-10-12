@@ -75,7 +75,7 @@ const CommentList = props => {
             onPress={() => onPraise(item, index)}
             style={{marginLeft: 'auto', flexDirection: 'row'}}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
-            <Text style={{marginLeft: 5, color: item.praise ? '#000' : '#bdbdbd'}}>
+            <Text style={{marginLeft: 5, color: item.praise ? '#000' : '#bdbdbd', lineHeight: 16, textAlign: 'center'}}>
               {item.praises_count > 0 ? item.praises_count : 0}
             </Text>
           </Pressable>
@@ -187,10 +187,11 @@ const cstyles = StyleSheet.create({
     color: '#bdbdbd',
     fontSize: 11,
     lineHeight: 19,
+    marginBottom: 6
   },
   separator: {
-    backgroundColor: '#ebebeb',
-    height: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ebebeb',
+    borderBottomWidth: StyleSheet.hairlineWidth,
     marginLeft: 49,
   },
 });

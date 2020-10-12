@@ -89,7 +89,7 @@ export default async function requestHttp(options, url = null) {
   let data = {};
   let params = {};
   const auth_token = await Helper.getData('auth_token');
-  // console.log('requestHttp token', auth_token)
+
   if (options.method === 'GET') {
     params = {...options.data, ...options.params};
   } else {
@@ -111,5 +111,6 @@ export default async function requestHttp(options, url = null) {
   if (options.method !== 'GET') {
     request_options = {...request_options, data: data};
   }
+  // console.log('requestHttp token', request_options)
   return axios(request_options);
 }

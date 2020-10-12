@@ -96,7 +96,7 @@ const CommentNotify = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white'}}>
+
       <ScrollList
         onRefresh={loadInfo}
         headers={headers}
@@ -105,7 +105,7 @@ const CommentNotify = ({navigation}) => {
         renderItem={renderItem}
         renderSeparator={() => <View />}
       />
-    </SafeAreaView>
+
   );
 };
 

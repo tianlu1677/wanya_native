@@ -140,7 +140,7 @@ const PhoneLogin = ({navigation, route}) => {
               autoFocus
               autoComplete={'tel'}
               caretHidden={false}
-              selectionColor={'white'}
+              selectionColor={'blue'}
               keyboardType={'numeric'}
               maxLength={11}
               onChangeText={text => {
@@ -161,7 +161,7 @@ const PhoneLogin = ({navigation, route}) => {
             <TextInput
               autoComplete="tel"
               caretHidden={false}
-              selectionColor={'white'}
+              selectionColor={'blue'}
               keyboardType="numeric"
               maxLength={6}
               onChangeText={text => setPhoneCode(text)}

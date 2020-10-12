@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {useSelector} from 'react-redux';
 import {getAccountFollowings} from '@/api/account_api';
 import {searchApi} from '@/api/search_api';
@@ -29,29 +29,34 @@ const MentionAccounts = ({navigation}) => {
           api: getAccountFollowings,
           params: {id: currentAccount.id, per_page: 20},
         });
-      }, 300)
+      }, 300);
     }
   }, [searchKey]);
 
   return (
-    <View style={styles.wrapper}>
-      <Search
-        style={styles.search}
-        placeholder="搜索更多顽友"
-        onChangeText={text => setSearchKey(text)}
-        onCancel={() => navigation.goBack()}
-      />
-      <View style={pstyles.proWrapper}>
-        <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}>
+      <View style={styles.wrapper}>
+        <Search
+          style={styles.search}
+          placeholder="搜索更多顽友"
+          onChangeText={text => setSearchKey(text)}
+          onCancel={() => navigation.goBack()}
+        />
+        <View style={pstyles.proWrapper}>
+          <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
+        </View>
+        <MentionsAccountList
+          request={request}
+          enableLoadMore={false}
+          enableRefresh={false}
+          style={styles.wrapper}
+          loading={false}
+        />
       </View>
-      <MentionsAccountList
-        request={request}
-        enableLoadMore={false}
-        enableRefresh={false}
-        style={styles.wrapper}
-        loading={false}
-      />
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -49,7 +49,7 @@ const Feedback = ({navigation, route}) => {
       <ContentWrapView>
         <ContentInput
           caretHidden={false}
-          selectionColor={'black'}
+          selectionColor={'blue'}
           maxLength={1000}
           onChangeText={text => {
             setContent(text);
@@ -69,7 +69,7 @@ const Feedback = ({navigation, route}) => {
       <ContractWrapView>
         <ContractInput
           caretHidden={false}
-          selectionColor={'black'}
+          selectionColor={'blue'}
           maxLength={100}
           onChangeText={text => {
             setContact(text);

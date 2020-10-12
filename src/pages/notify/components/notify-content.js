@@ -56,7 +56,7 @@ const NotifyContent = ({
               />
             </View>
           )}
-          {item.content.length > 0 && !item.image_url && (
+          {item.content && item.content !== 'nothing' && !item.image_url && (
             <RightText numberOfLines={3}>{item.content}</RightText>
           )}
         </RightWrapView>

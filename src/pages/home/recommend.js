@@ -35,7 +35,7 @@ const Recommend = props => {
     if (!currentAccount || currentAccount.new_message_count === 0) {
       return 0;
     }
-    return currentAccount.new_message_count > 99 ? '99+' : currentAccount.new_message_count;
+    return currentAccount.new_message_count;
   };
 
   useFocusEffect(
@@ -43,6 +43,10 @@ const Recommend = props => {
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
+
+  useEffect(() => {
+    dispatch(dispatchCurrentAccount());
+  }, [])
 
   return (
     <SafeAreaPlus style={{flex: 1}} edges={['right', 'left']}>
@@ -71,16 +75,20 @@ const Recommend = props => {
           ]}
           onChange={key => setCurrentKey(key)}
         />
-        <Pressable onPress={() => props.navigation.navigate('NotifyIndex')} style={styles.message}>
+        <View style={styles.message}>
           <BadgeMessage
             value={UnreadMessageCount()}
-            containerStyle={styles.badgeContainer}
+            containerStyle={{...styles.badgeContainer, right: UnreadMessageCount() > 10 ? 2 : 8}}
             size={'small'}
           />
-          <View style={styles.message_icon}>
+          <Pressable
+            style={styles.message_icon}
+            hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
+            onPress={() => props.navigation.navigate('NotifyIndex')}
+          >
             <IconFont name="notice" size={19} />
-          </View>
-        </Pressable>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaPlus>
   );
@@ -101,9 +109,9 @@ const styles = StyleSheet.create({
   },
   message: {
     position: 'absolute',
-    right: -3,
-    zIndex: 2,
-    top: BASIC_HEIGHT + 21,
+    right: 4,
+    zIndex: 100,
+    top: BASIC_HEIGHT + 22,
   },
   message_icon: {
     position: 'absolute',

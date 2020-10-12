@@ -27,6 +27,8 @@ const SpaceDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getSpaceDetail(spaceId);
     setDetail(res.data.space);
+
+    console.log('res', res.data.space)
     navigation.setOptions({
       title: res.data.space.name,
     });
@@ -165,6 +167,7 @@ const styles = StyleSheet.create({
   },
   imageCover: {
     position: 'absolute',
+    height: 275,
     top: 0,
     left: 0,
     right: 0,

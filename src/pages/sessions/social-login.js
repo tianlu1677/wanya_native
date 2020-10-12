@@ -103,7 +103,7 @@ const SocialLogin = ({navigation, route}) => {
           }}
         >
           <Text
-            style={{color: 'white'}}>
+            style={{color: 'black'}}>
             去别的页面
           </Text>
         </Pressable>

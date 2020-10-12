@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
           backgroundColor: 'black',
         },
   controls: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
     height: 48,
     marginTop: -48,
     flexDirection: 'row',
@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 0,
     paddingHorizontal: 0,
-    marginTop: -3,
-    height: 3,
+    marginTop: -2,
+    height: 2,
   },
   seekBarProgress: {
-    height: 3,
+    height: 2,
     backgroundColor: 'white',
   },
   seekBarKnob: {
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
   },
   seekBarBackground: {
     backgroundColor: 'rgba(255, 255, 255, 0.5)', // 有问题
-    height: 3,
+    color: 'red',
+    height: 2,
   },
   overlayButton: {
     flex: 1,
@@ -158,6 +159,7 @@ export default class VideoPlayer extends Component {
   }
 
   componentWillUnmount() {
+    console.log('xxx', 'xxxx')
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout);
       this.controlsTimeout = null;
@@ -458,7 +460,7 @@ export default class VideoPlayer extends Component {
           <Icon
             style={[styles.playControl, customStyles.controlIcon, customStyles.playIcon]}
             name={this.state.isPlaying ? 'pause' : 'play-arrow'}
-            size={32}
+            size={26}
           />
         </TouchableOpacity>
         {this.renderSeekBar()}
@@ -467,7 +469,7 @@ export default class VideoPlayer extends Component {
             <Icon
               style={[styles.extraControl, customStyles.controlIcon]}
               name={this.state.isMuted ? 'volume-off' : 'volume-up'}
-              size={24}
+              size={22}
             />
           </TouchableOpacity>
         )}
@@ -476,7 +478,7 @@ export default class VideoPlayer extends Component {
             <Icon
               style={[styles.extraControl, customStyles.controlIcon]}
               name="fullscreen"
-              size={32}
+              size={28}
             />
           </TouchableOpacity>
         )}
