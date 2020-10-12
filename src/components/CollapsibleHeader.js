@@ -23,14 +23,20 @@ const CollapsibleHeader = props => {
   const isListGliding = useRef(false);
 
   useEffect(() => {
+    console.log(2);
+
     scrollY.addListener(({value}) => {
       const curRoute = routes[tabIndex].key;
       listOffset.current[curRoute] = value;
     });
     return () => {
-      scrollY.removeAllListeners();
+      // scrollY.removeAllListeners();
     };
   }, [routes, scrollY, tabIndex]);
+
+  useEffect(() => {
+    console.log(3232);
+  }, [listOffset]);
 
   const syncScrollOffset = () => {
     const curRouteKey = routes[tabIndex].key;
@@ -131,8 +137,6 @@ const CollapsibleHeader = props => {
       outputRange: [headerHeight, 0],
       extrapolateRight: 'clamp',
     });
-
-    console.log(innerProps);
 
     const propsToPass = {
       // onTabPress: ({preventDefault}) => {

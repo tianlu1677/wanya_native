@@ -3,7 +3,6 @@ import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {BlurView} from '@react-native-community/blur';
 import Loading from '@/components/Loading';
-import TabViewList from '@/components/TabView';
 import {
   JoinButton,
   JoinAccounts,
@@ -20,18 +19,15 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
-import BottomSheetContent from '@/components/BottomSheetContent';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
-
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
   const dispatch = useDispatch();
-  const sheetRef = useRef(null);
 
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
@@ -90,7 +86,6 @@ const NodeDetail = ({navigation, route}) => {
 
   const onShowIntro = () => {
     setShowModal(true);
-    // sheetRef.current.snapTo();
   };
 
   useEffect(() => {
@@ -214,8 +209,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 283,
-    // backgroundColor: '#000',
-    // opacity: 0.5,
+    backgroundColor: '#000',
+    opacity: 0.5,
   },
   nodeContent: {
     flexDirection: 'row',
