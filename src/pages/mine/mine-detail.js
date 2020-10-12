@@ -111,7 +111,7 @@ const MineDetail = ({navigation, route}) => {
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
         <View
           style={[styles.userWrap, {marginBottom: currentAccount.settled_type === 'single' ? 30 : 20}]}>
-          <Avator account={account} size={50} isShowSettledIcon={false} />
+          <Avator account={currentAccount} size={50} isShowSettledIcon={false} />
           <View style={{marginLeft: 8}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.nickname}>{currentAccount.nickname}</Text>
