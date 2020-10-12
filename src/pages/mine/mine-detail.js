@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 54 + BASIC_HEIGHT,
+    paddingTop: 40 + BASIC_HEIGHT,
     height: 270 + BASIC_HEIGHT,
   },
   userWrap: {
