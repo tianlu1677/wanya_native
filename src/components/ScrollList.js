@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Animated,
   Text,
   RefreshControl,
   FlatList,
@@ -92,17 +91,20 @@ const ScrollList = props => {
     return footer;
   };
 
-  const renderEmpty = () => {
-    return (
-      !refreshing &&
-      props.data.length === 0 && (
-        <View style={[scrollStyle.footer, {maxHeight: height}]}>
-          <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
-          <Text>{props.emptyTitle || '还没有内容哦'}</Text>
-        </View>
-      )
-    );
-  };
+  // const renderEmpty = () => {
+  //   console.log(refreshing);
+
+  //   return (
+  //     <Text style={{backgroundColor: 'pink'}}>3232</Text>
+  //     // !refreshing &&
+  //     // props.data.length === 0 && (
+  //     //   <View style={[scrollStyle.footer, {maxHeight: height}]}>
+  //     //     <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
+  //     //     <Text>{props.emptyTitle || '还没有内容哦'}</Text>
+  //     //   </View>
+  //     // )
+  //   );
+  // };
 
   const renderSeparator = () => {
     return <View style={scrollStyle.separator} />;
@@ -135,18 +137,23 @@ const ScrollList = props => {
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.2}
-      ListEmptyComponent={renderEmpty}
+      ListEmptyComponent={
+        <View style={[scrollStyle.footer, {maxHeight: height}]}>
+          <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
+          <Text>{props.emptyTitle || '还没有内容哦'}</Text>
+        </View>
+      }
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
-      style={[scrollStyle.containter, props.style]}
+      // style={[scrollStyle.containter, props.style]}
       numColumns={props.numColumns || 1}
       horizontal={false}
       ListHeaderComponent={props.ListHeaderComponent || null}
-      onScroll={props.onScroll}
+      // onScroll={props.onScroll}
       scrollToOverflowEnabled={true}
       showsHorizontalScrollIndicator={false}
-      onMomentumScrollBegin={props.onMomentumScrollBegin}
-      onScrollEndDrag={props.onScrollEndDrag}
-      onMomentumScrollEnd={props.onMomentumScrollEnd}
+      // onMomentumScrollBegin={props.onMomentumScrollBegin}
+      // onScrollEndDrag={props.onScrollEndDrag}
+      // onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
       scrollIndicatorInsets={{right: 1}}
       refreshControl={
@@ -166,12 +173,18 @@ const ScrollList = props => {
 };
 
 const scrollStyle = StyleSheet.create({
-  containter: {},
+  containter: {
+    flex: 1,
+    backgroundColor: 'green',
+  },
   footer: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 20,
     paddingBottom: 20,
+    backgroundColor: 'pink',
+    marginTop: 1,
+    flex: 1,
   },
   emptyImg: {
     width: 64,

@@ -59,47 +59,45 @@ const TabList = props => {
   }, [contentWidth]);
 
   return (
-    <>
-      <View
-        style={[
-          tabBarStyle.tabWrap,
-          tabBarStyle[`tab${size}`],
-          bottomLine ? tabBarStyle.bottomLine : null,
-        ]}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator
-          ref={scrollRef}
-          centerContent={center}
-          scrollEnabled={scrollEnabled}>
-          {props.data.length > 0 &&
-            props.data.map((item, index) => {
-              return (
-                <Pressable
-                  onPress={() => setIndex(item, index)}
-                  onLayout={e => setLayout(e.nativeEvent.layout, index)}
-                  key={item.key}
-                  style={[tabBarStyle.tabItem]}>
-                  <Text
-                    style={[
-                      tabBarStyle[`tabItemText${size}`],
-                      currentIndex === index && tabBarStyle[`textActive${size}`],
-                    ]}>
-                    {item.title}
-                  </Text>
-                  <View
-                    style={[
-                      tabBarStyle[`tabItemLine${size}`],
-                      currentIndex === index && tabBarStyle[`lineActive${size}`],
-                    ]}
-                  />
-                </Pressable>
-              );
-            })}
-        </ScrollView>
-      </View>
-      {props.separator ? <View style={tabBarStyle.separator} /> : null}
-    </>
+    <View
+      style={[
+        tabBarStyle.tabWrap,
+        tabBarStyle[`tab${size}`],
+        bottomLine ? tabBarStyle.bottomLine : null,
+        props.separator ? tabBarStyle.separator : null,
+      ]}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator
+        ref={scrollRef}
+        centerContent={center}
+        scrollEnabled={scrollEnabled}>
+        {props.data.length > 0 &&
+          props.data.map((item, index) => {
+            return (
+              <Pressable
+                onPress={() => setIndex(item, index)}
+                onLayout={e => setLayout(e.nativeEvent.layout, index)}
+                key={item.key}
+                style={[tabBarStyle.tabItem]}>
+                <Text
+                  style={[
+                    tabBarStyle[`tabItemText${size}`],
+                    currentIndex === index && tabBarStyle[`textActive${size}`],
+                  ]}>
+                  {item.title}
+                </Text>
+                <View
+                  style={[
+                    tabBarStyle[`tabItemLine${size}`],
+                    currentIndex === index && tabBarStyle[`lineActive${size}`],
+                  ]}
+                />
+              </Pressable>
+            );
+          })}
+      </ScrollView>
+    </View>
   );
 };
 
@@ -157,9 +155,8 @@ const tabBarStyle = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   separator: {
-    backgroundColor: '#FAFAFA',
-    height: 9,
-    zIndex: 2,
+    borderBottomColor: '#FAFAFA',
+    borderBottomWidth: 9,
   },
 });
 
