@@ -120,15 +120,15 @@ const TopicDetail = ({navigation, route}) => {
     const {width, height} = detail.media_video;
     const videoWidth = screenWidth;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-    if (videoHeight > 500) {
-      videoHeight = 500;
+    if (videoHeight > 400) {
+      videoHeight = 400;
     }
 
     return (
       <View style={{backgroundColor: 'black'}}>
         <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} />
         <VideoPlayerContent
-          customStyles={{height: videoHeight}}
+          customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
           videoWidth={videoWidth}
           videoHeight={videoHeight}
@@ -150,6 +150,7 @@ const TopicDetail = ({navigation, route}) => {
     };
     return (
       <View>
+        <StatusBar barStyle={'dark-content'} />
         <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
           <StatusBar barStyle={'dark-content'} />
           <GoBack
@@ -174,6 +175,8 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
+      {detail.content_style === 'video' && renderVideo()}
+      {detail.content_style === 'link' && renderLink()}
       <CommentList
         style={styles.wrapper}
         type="Topic"
@@ -184,11 +187,8 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            <StatusBar barStyle={'light-content'} />
             <View>
               {detail.content_style === 'img' && renderImg()}
-              {detail.content_style === 'video' && renderVideo()}
-              {detail.content_style === 'link' && renderLink()}
               {detail.excellent && <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
             </View>
 
@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
   linkImageCover: {
     height: 167,
     flex: 1,
+    borderRadius: 2
   },
   excellentLabel: {
     width: 30,

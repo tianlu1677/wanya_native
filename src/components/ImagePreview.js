@@ -31,7 +31,11 @@ const ImagePreview = () => {
   };
 
   return (
-    <Modal visible={previewImageData.visible} transparent={true}>
+    <Modal
+      visible={previewImageData.visible}
+      transparent={true}
+      animationType={'fade'}
+    >
       <ImageViewer
         onShowModal={() => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: true}));
@@ -45,8 +49,9 @@ const ImagePreview = () => {
         imageUrls={previewImageData.images}
         enableSwipeDown
         useNativeDriver
-        pageAnimateTime={200}
-        swipeDownThreshold={120}
+        pageAnimateTime={100}
+        swipeDownThreshold={200}
+        enablePreload
         saveToLocalByLongPress={false}
         onClick={() => {
           dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
