@@ -175,7 +175,6 @@ export const ActionComment = props => {
   };
 
   // 分享
-
   const onShare = () => {
     console.log('onShare', props);
     const {detail} = props;

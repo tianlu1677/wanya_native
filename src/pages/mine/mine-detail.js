@@ -26,8 +26,9 @@ const MineDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const loadData = async () => {
-    const res = await getAccount(accountId);
-    setAccount(res.data.account);
+    dispatch(dispatchCurrentAccount())
+    // const res = await getAccount(accountId);
+    // setAccount(res.data.account);
   };
 
   const goFollowList = () => {
@@ -85,8 +86,8 @@ const MineDetail = ({navigation, route}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({});
-    dispatch(dispatchCurrentAccount())
-  }, [navigation]);
+    loadData();
+  }, []);
 
   return currentAccount ? (
     <View style={styles.wrapper}>
@@ -98,7 +99,7 @@ const MineDetail = ({navigation, route}) => {
           </View>
           <BadgeMessage
             value={UnreadMessageCount()}
-            containerStyle={{position: 'absolute', right: (UnreadMessageCount() > 10 ? -5 : 3), top: -5}}
+            containerStyle={{position: 'absolute', right: 3, top: -5}}
             size={'small'}
           >
           </BadgeMessage>
@@ -110,7 +111,7 @@ const MineDetail = ({navigation, route}) => {
       <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
         <View
           style={[styles.userWrap, {marginBottom: currentAccount.settled_type === 'single' ? 30 : 20}]}>
-          <Avator account={currentAccount} size={50} isShowSettledIcon={false} />
+          <Avator account={account} size={50} isShowSettledIcon={false} />
           <View style={{marginLeft: 8}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.nickname}>{currentAccount.nickname}</Text>
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 40 + BASIC_HEIGHT,
+    paddingTop: 54 + BASIC_HEIGHT,
     height: 270 + BASIC_HEIGHT,
   },
   userWrap: {
