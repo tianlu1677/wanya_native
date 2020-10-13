@@ -1,6 +1,16 @@
 import React, {Component} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {StyleSheet, Modal, Text, Pressable, Image, TouchableWithoutFeedback} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  Dimensions,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import Modal from 'react-native-modal';
+import FastImg from '@/components/FastImg';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
@@ -9,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const ImagePreview = () => {
   const dispatch = useDispatch();
   const previewImageData = useSelector(state => state.home.previewImageData);
+  const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
   const CloseBtn = () => {
     return (
@@ -30,33 +41,56 @@ const ImagePreview = () => {
     );
   };
 
+  const onOpen = (visible = false) => {
+    dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
+  };
+
   return (
     <Modal
-      visible={previewImageData.visible}
-      transparent={true}
-      animationType={'fade'}
+      isVisible={previewImageData.visible}
+      style={{flex: 1, margin: 0}}
+      // deviceHeight={1000}
+      // transparent={true}
+      onBackdropPress={() => onOpen(false)}
+      // onSwipeComplete={() => onOpen(false)}
+      useNativeDriver
+      propagateSwipe
+      backdropColor="black"
+      backdropOpacity={1}
+      hideModalContentWhileAnimating={true}
+      animationIn="zoomIn"
+      animationOut="zoomOut"
+      animationInTiming={300}
+      animationOutTiming={500}
+      avoidKeyboard
+      // hasBackdrop={false}
+      // backdropTransitionInTiming={300}
+      // backdropTransitionOutTiming={0}
+      // animationType={'fade'}
     >
-      <ImageViewer
-        onShowModal={() => {
-          dispatch(dispatchPreviewImage({...previewImageData, visible: true}));
-        }}
-        onCancel={() => {
-          dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
-        }}
-        // renderImage={props => <Image {...props} />}
-        renderHeader={props => <CloseBtn {...props} />}
-        index={previewImageData.index}
-        imageUrls={previewImageData.images}
-        enableSwipeDown
-        useNativeDriver
-        pageAnimateTime={100}
-        swipeDownThreshold={200}
-        enablePreload
-        saveToLocalByLongPress={false}
-        onClick={() => {
-          dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
-        }}
-      />
+      <View style={{flex: 1, padding: 0}}>
+        <ImageViewer
+          onShowModal={() => {
+            onOpen(true);
+          }}
+          onCancel={() => {
+            onOpen(false);
+          }}
+          renderImage={props => <FastImg {...props} />}
+          renderHeader={props => <CloseBtn {...props} />}
+          index={previewImageData.index}
+          imageUrls={previewImageData.images}
+          enableSwipeDown
+          useNativeDriver
+          pageAnimateTime={100}
+          swipeDownThreshold={120}
+          enablePreload
+          saveToLocalByLongPress={false}
+          onClick={() => {
+            onOpen(false);
+          }}
+        />
+      </View>
     </Modal>
   );
 };

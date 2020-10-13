@@ -7,6 +7,8 @@ import {useDispatch} from 'react-redux';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
+import * as Animatable from 'react-native-animatable';
+
 import * as WeChat from 'react-native-wechat-lib';
 import {dispatchPreviewImage, dispatchShareItem} from '@/redux/actions';
 
@@ -49,9 +51,12 @@ export const Bottom = props => {
   const [praise, setPraise] = useState(props.data.praise);
   const [praiseCount, setPraiseCount] = useState(props.data.praises_count);
 
+  const [an, setAn] = useState('')
   const {data} = props;
 
   const onPraise = async () => {
+
+
     switch (props.type) {
       case 'article':
         if (praise) {
@@ -73,6 +78,12 @@ export const Bottom = props => {
         break;
     }
     const count = praiseCount + (praise === true ? -1 : 1);
+    if(!praise) {
+      setAn(zoomOut)
+    } else {
+      setAn('')
+    }
+
     setPraiseCount(count);
   };
 
@@ -111,14 +122,32 @@ export const Bottom = props => {
     dispatch(dispatchShareItem(shareContent));
     // WeChat.shareMiniProgram(shareOptions);
   };
+  const zoomOut = {
+    0: {
+      opacity: 0,
+      scale: 1,
+    },
+    0.5: {
+      opacity: 1,
+      scale: 1.5,
+    },
+    1: {
+      opacity: 1,
+      scale: 1,
+    },
+    duration: 1000,
+    // delay: 2000
+  };
 
   return (
     <View style={bstyles.botView}>
       <Pressable style={bstyles.botCon} onPress={onPraise}>
+      <Animatable.View animation={an} easing="ease-out" iterationCount={1}>
         <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
-        <Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
-          {praiseCount > 0 ? praiseCount : ''}
-        </Text>
+      </Animatable.View>
+      <Animatable.Text  style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
+        {praiseCount > 0 ? praiseCount : ''}
+      </Animatable.Text>
       </Pressable>
       <View style={bstyles.botCon}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />

@@ -206,6 +206,7 @@ const commonRouter = [
   },
   {
     name: 'JoinAccountsList',
+    barColor: 'dark',
     component: JoinAccountsList,
     options: {title: '最近加入列表'},
   },
