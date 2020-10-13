@@ -19,14 +19,14 @@ const FastImg = props => {
   };
   return (
     <FastImage
-      style={{width: 100, height: 100, ...props.styles}}
+      style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
       source={props.source}
       resizeMode={resizeMode}
-      onLoad={() => {
-        onLoad();
+      // tintColor={'gray'}
+      onLoad={(e) => {
+        onLoad(e);
       }}
-      {...props}
-    />
+    >{props.children}</FastImage>
   );
 };
 

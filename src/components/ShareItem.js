@@ -38,6 +38,7 @@ const ShareItem = () => {
         onPress={() => {
           dispatch(dispatchShareItem({...shareContent, visible: false}));
         }}>
+
         <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
           <Pressable
             style={{display: 'flex', alignItems: 'center'}}

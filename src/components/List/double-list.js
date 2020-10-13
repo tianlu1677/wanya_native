@@ -81,7 +81,7 @@ const SingleItem = props => {
         {data.single_cover.link_url && (
           <FastImg
             source={{uri: data.single_cover.link_url}}
-            style={{height: height, backgroundColor: '#F1F1F1'}}
+            style={{height: height, width: '100%', backgroundColor: '#F1F1F1'}}
           />
         )}
         {data.has_video && <FastImg style={styles.videoPlay} source={VideoPlayImg} />}

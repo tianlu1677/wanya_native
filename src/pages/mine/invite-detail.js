@@ -16,6 +16,8 @@ import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {Avator} from '@/components/NodeComponents';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import { useWindowDimensions } from 'react-native';
+
 
 // import Modal from 'react-native-modal';
 import InvitePoster from './components/invite-poster';
@@ -29,6 +31,7 @@ import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {captureRef} from 'react-native-view-shot';
 import AddFriendImg from '@/assets/images/add-invite.png';
+import FastImg from '@/components/FastImg'
 //
 // function useCapture() {
 //   const captureViewRef = useRef();
@@ -199,10 +202,16 @@ const InviteDetail = ({navigation, route}) => {
         transparent={true}
         visible={shareModelVisible}
         onRequestClose={() => {}}>
+
         <ModelWrap
           onPress={() => {
             setShareModelVisible(false);
           }}>
+          {/*<FastImg*/}
+          {/*  source={{uri: shareUri}} style={{width: useWindowDimensions().width, top: 100, position: 'absolute', height: 100, zIndex: 100}}*/}
+          {/*  onLoad={(e) => {console.log('.', e.nativeEvent.height)}}*/}
+          {/*/>*/}
+
           <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
             <Pressable
               style={{display: 'flex', alignItems: 'center'}}

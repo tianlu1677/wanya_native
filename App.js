@@ -14,8 +14,8 @@ import Config from 'react-native-config';
 import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
 import NotifyService from '@/notifyservice/NotifyService';
-
-
+import FastImage from 'react-native-fast-image';
+import {ImageList } from '@/utils/default-image';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
 const codePushOptions = {
@@ -42,15 +42,19 @@ class App extends Component {
     this.notif = new NotifyService();
   }
 
+
+
   componentDidMount() {
     const scale = Dimensions.get('window').width / 375;
     // console.log('scale', scale);
     this.loadSplashImg();
+    this.loadImgList()
     // this.loadNetworkInfo();
     // this.loadDeviceInfo();
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
+
     Text.defaultProps = Object.assign({}, Text.defaultProps, {
       allowFontScaling: false,
       adjustsFontSizeToFit: true,
@@ -90,6 +94,10 @@ class App extends Component {
     let bundleId = DeviceInfo.getBundleId();
     // console.log('bundleId', bundleId)
   };
+
+  loadImgList = () => {
+    FastImage.preload(ImageList.map((u) => ({uri: u})))
+  }
 
   render() {
     return (

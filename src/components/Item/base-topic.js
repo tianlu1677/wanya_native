@@ -86,7 +86,7 @@ export const TopicVideoContent = props => {
   return (
     <FastImg
       source={{uri: single_cover.link_url}}
-      style={[styles.imageCover, {width: videoAttr.width / 2, height: videoAttr.height / 2}]}>
+      style={{...styles.imageCover, ...{width: videoAttr.width / 2, height: videoAttr.height / 2}}}>
       <Image style={styles.playImage} source={VideoPlayImg} />
     </FastImg>
   );
