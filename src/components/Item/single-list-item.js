@@ -135,14 +135,14 @@ export const Bottom = props => {
       opacity: 1,
       scale: 1,
     },
-    duration: 1000,
+    duration: 600,
     // delay: 2000
   };
 
   return (
     <View style={bstyles.botView}>
       <Pressable style={bstyles.botCon} onPress={onPraise}>
-      <Animatable.View animation={an} easing="ease-out" iterationCount={1}>
+      <Animatable.View animation={an} useNativeDriver easing="ease-out" iterationCount={1}>
         <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
       </Animatable.View>
       <Animatable.Text  style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>

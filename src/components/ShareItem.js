@@ -21,7 +21,7 @@ const ShareItem = () => {
   };
   const shareTimeline = () => {
     try {
-      const content = {...shareContent, scene: 1};
+      const content = {...shareContent, scene: 0};
       WeChat.shareMiniProgram(content);
     } catch (e) {
       console.log('e', e);
