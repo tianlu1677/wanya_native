@@ -78,7 +78,7 @@ const Recommend = props => {
         <View style={styles.message}>
           <BadgeMessage
             value={UnreadMessageCount()}
-            containerStyle={{...styles.badgeContainer, right: UnreadMessageCount() > 10 ? 2 : 8}}
+            containerStyle={{...styles.badgeContainer, right: UnreadMessageCount() > 99 ? 2 : 8}}
             size={'small'}
           />
           <Pressable

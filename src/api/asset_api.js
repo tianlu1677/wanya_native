@@ -20,3 +20,14 @@ export async function uploadWechatMedia(data = {media_id: ''}) {
 }
 
 
+
+// 上传base64文件
+export async function uploadBase64File(data = {file: ''}) {
+  const res = await request({
+    url: '/api/v1/assets/upload_base64',
+    method: 'POST',
+    data: data
+  })
+  return res.data
+}
+

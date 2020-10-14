@@ -67,7 +67,7 @@ import WebView from '@/pages/webview/webview';
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
-import SharePage from '@/pages/share'; //分享
+import SharePage from '@/components/SharePage'; //分享
 
 const topicRouter = [
   {

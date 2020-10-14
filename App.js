@@ -96,7 +96,7 @@ class App extends Component {
   };
 
   loadImgList = () => {
-    FastImage.preload(ImageList.map((u) => ({uri: u})))
+    // FastImage.preload(ImageList.map((u) => ({uri: u})))
   }
 
   render() {
