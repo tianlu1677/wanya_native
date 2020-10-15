@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {Text, StatusBar, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {Text, StatusBar, SafeAreaView, StyleSheet, Image, Linking, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
@@ -10,6 +10,8 @@ import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import NewTopic from '@/pages/topics/new-topic';
 import {HeaderBackButton} from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
@@ -32,6 +34,7 @@ const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
 const TopicStack = createStackNavigator();
 const AuthStack = createStackNavigator();
+const PERSISTENCE_KEY = 'NAVIGATION_STATE';  // 存储上次打开的位置
 
 const TabBar = props => (
   <VibrancyView
@@ -150,14 +153,14 @@ function MainStackList() {
           return route.safeArea === false ? (
             <>
               {route.bar !== false && (
-                <StatusBar barStyle={`${route.barColor || 'light'}-content`} />
+                <StatusBar barStyle={`${route.barColor || 'light'}-content`} backgroundColor={'red'} />
               )}
               <Components {...props} />
             </>
           ) : (
             <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
               {route.bar !== false && (
-                <StatusBar barStyle={`${route.barColor || 'light'}-content`} />
+                <StatusBar barStyle={`${route.barColor || 'light'}-content`} backgroundColor={'red'} />
               )}
               <Components {...props} />
             </SafeAreaView>
@@ -214,9 +217,47 @@ function AuthStackList() {
 }
 
 const Navigation = () => {
+  const [isReady, setIsReady] = React.useState(false);
+  const [initialState, setInitialState] = React.useState();
   const login = useSelector(state => state.login);
+
+  React.useEffect(() => {
+    const restoreState = async () => {
+      try {
+        const initialUrl = await Linking.getInitialURL();
+
+        if (Platform.OS !== 'web' && initialUrl == null) {
+          // Only restore state if there's no deep link and we're not on web
+          const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
+          const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+
+          if (state !== undefined) {
+            console.log('state', state)
+            setInitialState(state);
+          }
+        }
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    if (!isReady) {
+      restoreState();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
+
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer
+      ref={navigationRef}
+      initialState={initialState}
+      onStateChange={(state) =>
+        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+      }
+    >
       <>{!login.auth_token ? AuthStackList() : MainStackList()}</>
     </NavigationContainer>
   );

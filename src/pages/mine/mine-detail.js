@@ -132,7 +132,7 @@ const MineDetail = ({navigation, route}) => {
             邀请好友
           </Text>
         </View>
-        {currentAccount.settled_type !== 'single' && (
+        {currentAccount.settled_type && currentAccount.settled_type !== 'single' && (
           <View style={styles.settledWrap}>
             <Image
               style={{width: 16, height: 16, marginRight: 3}}

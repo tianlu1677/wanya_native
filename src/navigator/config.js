@@ -1,5 +1,5 @@
 // 首页
-import {CardStyleInterpolators} from '@react-navigation/stack';
+import {CardStyleInterpolators, HeaderStyleInterpolators} from '@react-navigation/stack';
 import Recommend from '@/pages/home/recommend';
 
 // Topic

@@ -153,6 +153,7 @@ const ScrollList = props => {
       onScrollEndDrag={props.onScrollEndDrag}
       onMomentumScrollEnd={props.onMomentumScrollEnd}
       contentContainerStyle={props.contentContainerStyle}
+      {...props.settings}
       // scrollIndicatorInsets={{right: 1}}
 
       // refreshControl={

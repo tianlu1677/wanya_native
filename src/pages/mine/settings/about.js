@@ -2,6 +2,7 @@ import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View, TextInput, Image, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
+import FastImg from "@/components/FastImg"
 
 const About = ({navigation, route}) => {
   useLayoutEffect(() => {
@@ -16,8 +17,8 @@ const About = ({navigation, route}) => {
     <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
       <View>
         <LogoWrapView>
-          <Image source={{uri: logo_url}} style={{height: 65, width: 65, borderRadius: 10}}/>
-          <Image
+          <FastImg source={{uri: logo_url}} style={{height: 65, width: 65, borderRadius: 10}}/>
+          <FastImg
             source={{
               uri:
                 'http://file.meirixinxue.com/assets/2019/ac1a1624-4145-4b1b-b4d5-63036ef3ec4c.png',
