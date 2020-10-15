@@ -103,11 +103,7 @@ const SpaceDetail = ({navigation, route}) => {
             </Text>
           </View>
           <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
-            <Avator account={detail.account} size={30} />
-            <View style={styles.creator}>
-              <Text style={styles.creatorName}>{detail.account.nickname}</Text>
-              <Text style={styles.creatorDesc}>创建者</Text>
-            </View>
+            <Avator account={detail.account} size={30} handleClick={goAccountDetail} />
           </Pressable>
         </View>
         <View style={styles.address}>
@@ -168,10 +164,10 @@ const styles = StyleSheet.create({
   imageCover: {
     position: 'absolute',
     height: 275,
+    width: '100%',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
     zIndex: -1,
   },
   imageCoverOpacity: {

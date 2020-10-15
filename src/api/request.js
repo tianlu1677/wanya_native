@@ -4,11 +4,11 @@ import qs from 'querystring';
 import Helper from '../utils/helper';
 import Toast from '@/components/Toast';
 import * as RootNavigation from '@/navigator/root-navigation';
+import {BaseApiUrl} from '@/utils/config';
 
 const VERSION = '1.0.0';
-const BASE_URL = 'https://xinxue.meirixinxue.com';
 
-axios.defaults.baseURL = `${BASE_URL}`;
+axios.defaults.baseURL = `${BaseApiUrl}`;
 
 // Add a request interceptor
 axios.interceptors.request.use(
@@ -40,38 +40,20 @@ axios.interceptors.response.use(
 
     switch (error.response.status) {
       case 200:
-
         break;
       case 422:
-        // Toast.show(Object.values(error.response.data)[0], {
-        //   containerStyle: {
-        //     width: 200,
-        //   },
-        //   duration: Toast.durations.SHORT,
-        //   position: 0,
-        //   shadow: false,
-        //   animation: true,
-        //   hideOnPress: true,
-        //   delay: 0,
-        // });
+        Toast.showError(Object.values(error.response.data)[0]);
         break;
       case 400:
         console.log('error', error);
         break;
       case 401:
-        // Toast.show('请重新登录', {
-        //   duration: Toast.durations.SHORT,
-        //   position: Toast.positions.CENTER,
-        //   shadow: true,
-        //   animation: true,
-        //   hideOnPress: true,
-        //   delay: 0,
-        // });
-        // RootNavigation.reset({
-        //   index: 0,
-        //   routes: [{name: 'Recommend'}],
-        // });
-        return Promise.reject(error);;
+        Toast.showError('请重新登录');
+        RootNavigation.reset({
+          index: 0,
+          routes: [{name: 'Recommend'}],
+        });
+        return Promise.reject(error);
       // console.log('401, 未登录')
       // if (error.response.data.error === 'Your account is locked.') {
       //   storeData('lock_user', true);

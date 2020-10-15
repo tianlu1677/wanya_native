@@ -7,7 +7,7 @@ import Helper from '../../utils/helper';
 import * as WeChat from 'react-native-wechat-lib';
 import {appWechatSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
-
+import {BaseApiUrl} from '@/utils/config';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 
 const SocialLogin = ({navigation, route}) => {
@@ -67,14 +67,14 @@ const SocialLogin = ({navigation, route}) => {
   const goPages = type => {
     if (type === 'private') {
       navigation.navigate('WebView', {
-        sourceUrl: 'https://xinxue.meirixinxue.com/home/private_policy',
+        sourceUrl: `${BaseApiUrl}/home/private_policy`,
         title: '顽鸦隐私政策',
         bgColor: 'black',
       });
     }
     if (type === 'user') {
       navigation.navigate('WebView', {
-        sourceUrl: 'https://xinxue.meirixinxue.com/home/user_agreement',
+        sourceUrl: `${BaseApiUrl}/home/user_agreement`,
         title: '顽鸦用户协议',
         bgColor: 'black',
       });
