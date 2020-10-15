@@ -53,29 +53,6 @@ const TopicDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerBackTitleVisible: false,
-      title: 'xxx',
-      headerStyle: {
-        backgroundColor: 'black',
-        // elevation: 0,
-        shadowOpacity: 1,
-        borderBottomWidth: 1,
-      },
-      headerBackImage: () => (
-        <Image
-          source={
-            navigation.canGoBack() ?
-              require('../../assets/images/back-white.png') :
-              require('../../assets/images/back.png')}
-          style={{width: 9, height: 15}}
-        />
-      ),
-    });
-  }, [navigation, detail]);
-
-
   const renderImg = () => {
     const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     let {medias, media_images} = detail;
@@ -113,7 +90,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-        <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'white'} />
+        {/*<GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'white'} />*/}
         <Swiper
           index={0}
           loop={false}
@@ -150,7 +127,6 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View style={{backgroundColor: 'black'}}>
-        <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} />
         { detail.excellent && <Text style={{...styles.excellentLabel, zIndex: 100, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
         <VideoPlayerContent
           customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
@@ -178,10 +154,6 @@ const TopicDetail = ({navigation, route}) => {
         <StatusBar barStyle={'dark-content'} />
         <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
           <StatusBar barStyle={'dark-content'} />
-          <GoBack
-            name={navigation.canGoBack() ? '' : 'home-recommend'}
-            color={'black'}
-          />
         </View>
       <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
         <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
@@ -200,8 +172,10 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
-      {detail.content_style === 'video' && renderVideo()}
-      {detail.content_style === 'link' && renderLink()}
+      <GoBack
+        name={navigation.canGoBack() ? '' : 'home-recommend'}
+        color={ ['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
+      />
       <CommentList
         style={styles.wrapper}
         type="Topic"
@@ -213,17 +187,16 @@ const TopicDetail = ({navigation, route}) => {
         ListHeaderComponent={
           <>
             <View style={{position: 'relative'}}>
+              {detail.content_style === 'video' && renderVideo()}
+              {detail.content_style === 'link' && renderLink()}
               {detail.content_style === 'img' && renderImg()}
               {detail.content_style === 'img' && detail.excellent && <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
             </View>
 
             {(detail.content_style === 'text') && (
-              <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
+              <View style={{paddingTop: BASIC_HEIGHT + 5, paddingBottom: 16}}>
                 <StatusBar barStyle={'dark-content'} />
-                <GoBack
-                  name={navigation.canGoBack() ? false : 'home-recommend'}
-                  color={'black'}
-                />
+
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />

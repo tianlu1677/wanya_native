@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   middleWrap: {
     width: 18,
     height: 18,
+    lineHeight: 18,
     borderRadius: 9,
     backgroundColor: '#FF2242',
     justifyContent: 'center',

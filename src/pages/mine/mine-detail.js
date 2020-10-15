@@ -99,7 +99,7 @@ const MineDetail = ({navigation, route}) => {
           </View>
           <BadgeMessage
             value={UnreadMessageCount()}
-            containerStyle={{position: 'absolute', right: 3, top: -5}}
+            containerStyle={{position: 'absolute', right: UnreadMessageCount() > 9 ? -6 : 3, top: -5}}
             size={'small'}
           >
           </BadgeMessage>

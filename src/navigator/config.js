@@ -75,7 +75,7 @@ const topicRouter = [
     component: TopicDetail,
     safeArea: false,
     options: {
-      headerShown: true,
+      headerShown: false,
       title: false,
       headerTransparent: true
     },

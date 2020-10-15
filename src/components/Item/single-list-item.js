@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Vibration} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -55,8 +55,6 @@ export const Bottom = props => {
   const {data} = props;
 
   const onPraise = async () => {
-
-
     switch (props.type) {
       case 'article':
         if (praise) {
@@ -80,6 +78,7 @@ export const Bottom = props => {
     const count = praiseCount + (praise === true ? -1 : 1);
     if(!praise) {
       setAn(zoomOut)
+      Vibration.vibrate()
     } else {
       setAn('')
     }

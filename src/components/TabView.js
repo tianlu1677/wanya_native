@@ -55,7 +55,7 @@ const TabViewIndex = props => {
         tabBarPosition={props.tabBarPosition || 'top'}
         lazy={props.lazy || true}
         swipeEnabled={props.swipeEnabled || true}
-        lazyPreloadDistance={props.lazyPreloadDistance || 10}
+        // lazyPreloadDistance={props.lazyPreloadDistance || 10}
         removeClippedSubviews={props.removeClippedSubviews || false}
         keyboardDismissMode={props.keyboardDismissMode || 'on-drag'}
         style={props.style}
