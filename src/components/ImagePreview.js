@@ -21,7 +21,7 @@ const ImagePreview = () => {
   const previewImageData = useSelector(state => state.home.previewImageData);
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
-  const CloseBtn = () => {
+  const HeaderContent = () => {
     return (
       <Pressable
         style={{
@@ -77,11 +77,11 @@ const ImagePreview = () => {
             onOpen(false);
           }}
           renderImage={props => <FastImg {...props} />}
-          renderHeader={props => <CloseBtn {...props} />}
+          renderHeader={props => <HeaderContent {...props} />}
           index={previewImageData.index}
           imageUrls={previewImageData.images}
           enableSwipeDown
-          useNativeDriver
+          useNativeDriver={true}
           pageAnimateTime={100}
           swipeDownThreshold={120}
           enablePreload

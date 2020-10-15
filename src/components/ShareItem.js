@@ -8,12 +8,15 @@ import {dispatchShareItem} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
 import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
 import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
+import { DefaultLog} from "@/utils/default-image"
 
 const ShareItem = () => {
   const [shareModelVisible, setShareModelVisible] = useState(false);
   const dispatch = useDispatch();
-  const shareContent = useSelector(state => state.home.shareContent);
-
+  let shareContent = useSelector(state => state.home.shareContent);
+  if(!shareContent.thumbImageUrl) {
+    shareContent = {...shareContent, thumbImageUrl: DefaultLog}
+  }
   const shareFriend = e => {
     // e.stopPropagation();
     const content = {...shareContent, scene: 0};

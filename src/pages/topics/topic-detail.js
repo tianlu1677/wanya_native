@@ -174,7 +174,7 @@ const TopicDetail = ({navigation, route}) => {
       style={{flex: 1, backgroundColor: '#fff'}}>
       <GoBack
         name={navigation.canGoBack() ? '' : 'home-recommend'}
-        color={ ['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
+        color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
       />
       <CommentList
         style={styles.wrapper}
