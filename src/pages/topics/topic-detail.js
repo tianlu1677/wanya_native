@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react';
+import React, {useEffect, useState, useRef, useCallback,useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import VideoPlayerContent from '@/components/react-native-video-player';
 import {useNavigation} from '@react-navigation/native';
-import {dispatchPreviewImage} from '@/redux/actions';
+import {dispatchBaseCurrentAccount, dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
@@ -26,6 +26,7 @@ import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {NAV_BAR_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {useFocusEffect} from '@react-navigation/native';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ const TopicDetail = ({navigation, route}) => {
   const [topicId] = useState(route.params.topicId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
+
+  const videoRef = useRef(null);
 
   const loadData = async () => {
     const res = await getTopic(topicId);
@@ -116,6 +119,14 @@ const TopicDetail = ({navigation, route}) => {
     );
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        videoRef && videoRef.current.pause()
+      }
+    }, [])
+  );
+
   const renderVideo = () => {
     const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     const {width, height} = detail.media_video;
@@ -127,15 +138,28 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View style={{backgroundColor: 'black'}}>
-        { detail.excellent && <Text style={{...styles.excellentLabel, zIndex: 100, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
+        {detail.excellent && (
+          <Text
+            style={{
+              ...styles.excellentLabel,
+              zIndex: 100,
+              top: Math.max(getStatusBarHeight(), 20),
+            }}>
+            精选
+          </Text>
+        )}
         <VideoPlayerContent
+          ref={videoRef}
           customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
           videoWidth={videoWidth}
           videoHeight={videoHeight}
+          poster={`${detail.video_content_m3u8}?vframe/jpg/offset/0/rotate/auto`}
+          posterResizeMode={'cover'}
           hideControlsOnStart
           pauseOnPress
-          autoplay
+          resizeMode={'cover'}
+          autoplay={true}
           loop
         />
       </View>

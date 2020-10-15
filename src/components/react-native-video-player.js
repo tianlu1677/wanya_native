@@ -150,6 +150,7 @@ export default class VideoPlayer extends Component {
     this.onSeekGrant = this.onSeekGrant.bind(this);
     this.onSeekRelease = this.onSeekRelease.bind(this);
     this.onSeek = this.onSeek.bind(this);
+    this.onFullscreenPlayerDidDismiss = this.onFullscreenPlayerDidDismiss.bind(this);
   }
 
   componentDidMount() {
@@ -158,8 +159,13 @@ export default class VideoPlayer extends Component {
     }
   }
 
+  onFullscreenPlayerDidDismiss() {
+    this.setState({
+      isPlaying: true,
+    });
+  }
   componentWillUnmount() {
-    console.log('xxx', 'xxxx')
+    // console.log('xxx', 'xxxx')
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout);
       this.controlsTimeout = null;
@@ -503,6 +509,7 @@ export default class VideoPlayer extends Component {
           style={[styles.video, this.getSizeStyles(), style, customStyles.video]}
           ref={p => {
             this.player = p;
+            props.playerRef = p;
           }}
           muted={this.props.muted || this.state.isMuted}
           paused={
@@ -514,6 +521,9 @@ export default class VideoPlayer extends Component {
           onLoad={this.onLoad}
           source={video}
           resizeMode={resizeMode}
+          hideShutterView={true}
+          onFullscreenPlayerDidDismiss={this.onFullscreenPlayerDidDismiss}
+          // fullscreenOrientation={'landscape'}
         />
         {
           this.state.opacity > 0 && <ActivityIndicator
