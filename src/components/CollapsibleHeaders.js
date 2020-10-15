@@ -1,11 +1,14 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated, Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Animated, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 const windowHeight = Dimensions.get('window').height;
 
+const tabBarHeight = 48;
+const headerHeight = 50;
+
 const CollapsibleHeader = props => {
-  const {tabData, currentKey, tabBarHeight, headerHeight} = props;
+  const {tabData, currentKey, headerHeight} = props;
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
     index: index,
@@ -23,7 +26,6 @@ const CollapsibleHeader = props => {
     scrollY.addListener(({value}) => {
       listOffset.current[currentKey] = value;
     });
-
     return () => {
       scrollY.removeAllListeners();
     };
@@ -77,6 +79,7 @@ const CollapsibleHeader = props => {
       paddingTop: headerHeight,
       minHeight: windowHeight - tabBarHeight,
     };
+
     return (
       <>
         {/* Since TabBar is absolute positioned, we need to add space so push content down below it. Don't use FlatList padding as that breaks stickyHeaders */}
@@ -115,7 +118,7 @@ const CollapsibleHeader = props => {
   const renderTabBarWithWrapper = innerProps => {
     const y = scrollY.interpolate({
       inputRange: [0, headerHeight],
-      outputRange: [headerHeight, 0],
+      outputRange: [headerHeight, 50],
       extrapolateRight: 'clamp',
     });
 
@@ -158,6 +161,7 @@ const CollapsibleHeader = props => {
           height: 0,
           width: Dimensions.get('window').width,
         }}
+        style={{flex: 1, backgroundColor: '#fff', zIndex: -1}}
       />
     );
   };
@@ -171,24 +175,39 @@ const CollapsibleHeader = props => {
 
     return (
       <Animated.View
-        style={[localStyles.header, {height: headerHeight}, {transform: [{translateY: y}]}]}>
+        style={[localStyles.headerContent, {height: headerHeight}, {transform: [{translateY: y}]}]}>
         {props.renderHeader}
       </Animated.View>
     );
   };
 
+  const renderHeader = () => {
+    const opacity = scrollY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    });
+
+    return (
+      <Animated.View style={[localStyles.header, {opacity: opacity}]}>
+        <Text style={{color: '#fff'}}>标题</Text>
+      </Animated.View>
+    );
+  };
+
   return (
-    <SafeAreaView style={localStyles.flex1}>
-      <View style={localStyles.flex1}>
+    <View style={{flex: 1}}>
+      <View style={{flex: 1}}>
         {renderTabView()}
+        {renderHeader()}
         {renderHeaderWithWrapper()}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const localStyles = StyleSheet.create({
-  header: {
+  headerContent: {
     top: 0,
     width: '100%',
     alignItems: 'center',
@@ -196,8 +215,14 @@ const localStyles = StyleSheet.create({
     position: 'absolute',
     zIndex: -1,
   },
-  flex1: {
-    flex: 1,
+  header: {
+    width: '100%',
+    height: headerHeight,
+    position: 'absolute',
+    top: 0,
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
