@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {Text, StatusBar, SafeAreaView, StyleSheet, Image, Linking, Platform} from 'react-native';
+import {Text, StatusBar, SafeAreaView, StyleSheet, Image, Linking, Platform, ActivityIndicator} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
@@ -10,6 +10,7 @@ import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import NewTopic from '@/pages/topics/new-topic';
 import {HeaderBackButton} from '@react-navigation/stack';
+import Helper from "@/utils/helper"
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -228,7 +229,7 @@ const Navigation = () => {
 
         if (Platform.OS !== 'web' && initialUrl == null) {
           // Only restore state if there's no deep link and we're not on web
-          const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
+          const savedStateString = await Helper.getData(PERSISTENCE_KEY);
           const state = savedStateString ? JSON.parse(savedStateString) : undefined;
 
           if (state !== undefined) {
@@ -236,6 +237,9 @@ const Navigation = () => {
             setInitialState(state);
           }
         }
+      } catch (e) {
+        // console.log('e', e)
+        setInitialState()
       } finally {
         setIsReady(true);
       }
@@ -247,7 +251,7 @@ const Navigation = () => {
   }, [isReady]);
 
   if (!isReady) {
-    return null;
+    return <ActivityIndicator />;;
   }
 
   return (
@@ -255,7 +259,7 @@ const Navigation = () => {
       ref={navigationRef}
       initialState={initialState}
       onStateChange={(state) =>
-        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+        Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))
       }
     >
       <>{!login.auth_token ? AuthStackList() : MainStackList()}</>
