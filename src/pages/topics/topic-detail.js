@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StatusBar,
   StyleSheet,
   Pressable,
+  Image,
   Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -52,6 +53,29 @@ const TopicDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      title: 'xxx',
+      headerStyle: {
+        backgroundColor: 'black',
+        // elevation: 0,
+        shadowOpacity: 1,
+        borderBottomWidth: 1,
+      },
+      headerBackImage: () => (
+        <Image
+          source={
+            navigation.canGoBack() ?
+              require('../../assets/images/back-white.png') :
+              require('../../assets/images/back.png')}
+          style={{width: 9, height: 15}}
+        />
+      ),
+    });
+  }, [navigation, detail]);
+
+
   const renderImg = () => {
     const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     let {medias, media_images} = detail;
@@ -89,7 +113,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={'white'} />
+        <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'white'} />
         <Swiper
           index={0}
           loop={false}
@@ -126,7 +150,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View style={{backgroundColor: 'black'}}>
-        <GoBack name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} />
+        <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} />
         { detail.excellent && <Text style={{...styles.excellentLabel, zIndex: 100, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
         <VideoPlayerContent
           customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
@@ -155,7 +179,7 @@ const TopicDetail = ({navigation, route}) => {
         <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
           <StatusBar barStyle={'dark-content'} />
           <GoBack
-            name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+            name={navigation.canGoBack() ? '' : 'home-recommend'}
             color={'black'}
           />
         </View>
@@ -197,7 +221,7 @@ const TopicDetail = ({navigation, route}) => {
               <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
                 <StatusBar barStyle={'dark-content'} />
                 <GoBack
-                  name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+                  name={navigation.canGoBack() ? false : 'home-recommend'}
                   color={'black'}
                 />
               </View>

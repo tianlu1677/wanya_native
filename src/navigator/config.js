@@ -74,7 +74,11 @@ const topicRouter = [
     name: 'TopicDetail',
     component: TopicDetail,
     safeArea: false,
-    options: {title: '帖子详情', headerShown: false},
+    options: {
+      headerShown: true,
+      title: false,
+      headerTransparent: true
+    },
   },
   {
     name: 'NewTopic',
