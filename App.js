@@ -4,8 +4,6 @@ import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
 import {Text, StatusBar, TextInput, Dimensions, SafeAreaView, StyleSheet, Image} from 'react-native';
 import CodePush from "react-native-code-push";
-import checkHotUpdate from '@/utils/codepush';
-// const emitter = emitt()
 
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';

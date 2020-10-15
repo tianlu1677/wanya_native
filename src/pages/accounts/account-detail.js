@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import IconFont from '@/iconfont';
+import {useSelector, useDispatch} from 'react-redux';
 import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import SingleList from '@/components/List/single-list';
@@ -21,6 +22,7 @@ const AccountDetail = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
+  const currentAccount = useSelector(state => state.account.currentAccount);
 
   useLayoutEffect(() => {
     navigation.setOptions({});
@@ -106,13 +108,15 @@ const AccountDetail = ({navigation, route}) => {
             </View>
             <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
           </View>
-          <Text style={[styles.follow, account.followed && {color: '#BDBDBD'}]} onPress={onFollow}>
-            {account.followed && account.following
-              ? '互相关注'
-              : account.followed
-              ? '已关注'
-              : '关注'}
-          </Text>
+          {
+            currentAccount.id !== account.id && <Text style={[styles.follow, account.followed && {color: '#BDBDBD'}]} onPress={onFollow}>
+              {account.followed && account.following
+                ? '互相关注'
+                : account.followed
+                  ? '已关注'
+                  : '关注'}
+            </Text>
+          }
         </View>
         {account.settled_type !== 'single' && (
           <View style={styles.settledWrap}>

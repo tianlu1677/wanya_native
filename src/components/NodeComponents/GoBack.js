@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     lineHeight: 44,
     flexDirection: 'row',
     color: 'white',
-    // backgroundColor: 'green',
+    // backgroundColor: 'white',
   },
 
   button: {

@@ -17,7 +17,11 @@ components/Scroll.js
 7. 抖音中的滑动效果实现 [抖音滑动效果](#https://juejin.im/post/5ec8ed8d6fb9a0480067bb1f)
 可以参考 react-native-swiper 
 
+密码
+https://github.com/flexible-agency/react-native-keycode
 
+地图
+https://github.com/flexible-agency/react-native-map-link
 
 - icon
  [npm](https://github.com/iconfont-cli/react-native-iconfont-cli)

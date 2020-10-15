@@ -99,7 +99,7 @@ const MineDetail = ({navigation, route}) => {
           </View>
           <BadgeMessage
             value={UnreadMessageCount()}
-            containerStyle={{position: 'absolute', right: 3, top: -5}}
+            containerStyle={{position: 'absolute', right: UnreadMessageCount() > 9 ? -6 : 3, top: -5}}
             size={'small'}
           >
           </BadgeMessage>
@@ -132,7 +132,7 @@ const MineDetail = ({navigation, route}) => {
             邀请好友
           </Text>
         </View>
-        {currentAccount.settled_type !== 'single' && (
+        {currentAccount.settled_type && currentAccount.settled_type !== 'single' && (
           <View style={styles.settledWrap}>
             <Image
               style={{width: 16, height: 16, marginRight: 3}}

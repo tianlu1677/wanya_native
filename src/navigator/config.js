@@ -1,5 +1,5 @@
 // 首页
-import {CardStyleInterpolators} from '@react-navigation/stack';
+import {CardStyleInterpolators, HeaderStyleInterpolators} from '@react-navigation/stack';
 import Recommend from '@/pages/home/recommend';
 
 // Topic
@@ -75,7 +75,7 @@ const topicRouter = [
     component: TopicDetail,
     safeArea: false,
     options: {
-      headerShown: true,
+      headerShown: false,
       title: false,
       headerTransparent: true
     },

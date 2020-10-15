@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Toast from '@/components/Toast';
 import CodePush from 'react-native-code-push';
 import checkHotUpdate from '@/utils/codepush';
+import {BaseApiUrl} from '@/utils/config';
 // import ListItem from '@/components/ListItem';
 
 const Settings = ({navigation, route}) => {
@@ -35,14 +36,14 @@ const Settings = ({navigation, route}) => {
         break;
       case 'private':
         navigation.navigate('WebView', {
-          sourceUrl: 'https://xinxue.meirixinxue.com/home/private_policy',
+          sourceUrl: `${BaseApiUrl}/home/private_policy`,
           title: '顽鸦隐私政策',
           bgColor: 'black',
         });
         break;
       case 'user_agreement':
         navigation.navigate('WebView', {
-          sourceUrl: 'https://xinxue.meirixinxue.com/home/user_agreement',
+          sourceUrl: `${BaseApiUrl}/home/user_agreement`,
           title: '顽鸦用户协议',
           bgColor: 'black',
         });

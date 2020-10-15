@@ -3,12 +3,10 @@ import Upload from 'react-native-background-upload';
 import Helper from '@/utils/helper';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
+import {BaseApiUrl} from '@/utils/config';
 import * as action from '@/redux/constants';
 
-const baseUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'https://xinxue.meirixinxue.com'
-    : 'https://xinxue.meirixinxue.com';
+const baseUrl = BaseApiUrl;
 
 const MediasPicker = WrapperComponent => {
   return props => {

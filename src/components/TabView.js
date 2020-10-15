@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, View, Text} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import PropTypes from 'prop-types';
 import TabList from './TabList';
 
 const initialLayout = {
+  height: 0,
   width: Dimensions.get('window').width,
 };
 
@@ -55,7 +56,8 @@ const TabViewIndex = props => {
         tabBarPosition={props.tabBarPosition || 'top'}
         lazy={props.lazy || true}
         swipeEnabled={props.swipeEnabled || true}
-        lazyPreloadDistance={props.lazyPreloadDistance || 10}
+        renderLazyPlaceholder={() => <View style={{flex: 1}}><Text>Loading</Text></View>}
+        // lazyPreloadDistance={props.lazyPreloadDistance || 10}
         removeClippedSubviews={props.removeClippedSubviews || false}
         keyboardDismissMode={props.keyboardDismissMode || 'on-drag'}
         style={props.style}
