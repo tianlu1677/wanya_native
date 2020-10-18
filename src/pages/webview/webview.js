@@ -28,7 +28,7 @@ const WebViewPage = ({route, navigation}) => {
     <WebView
       originWhitelist={['*']}
       source={{uri: sourceUrl}}
-      startInLoadingState={true}
+      startInLoadingState={false}
       // renderLoading={() => <ActivityIndicator />}
     />
   );

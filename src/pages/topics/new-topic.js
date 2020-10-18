@@ -268,7 +268,6 @@ const NewTopic = props => {
                     source={{uri: v.url}}
                     posterResizeMode={'center'}
                     controls={false}
-                    muted
                     reportBandwidth
                     repeat
                     onFullscreenPlayerDidDismiss={() => { videoRef.current.seek(0)}}

@@ -24,6 +24,7 @@ import MineDetail from '@/pages/mine/mine-detail';
 import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
+import PasswordLogin from '@/pages/sessions/password-login';
 import WebView from '@/pages/webview/webview';
 
 import {useNavigation} from '@react-navigation/native';
@@ -207,6 +208,7 @@ function AuthStackList() {
       <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
       <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
       <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
+      <AuthStack.Screen name="PasswordLogin" component={PasswordLogin} options={({route}) => ({})} />
       <AuthStack.Screen name="WebView" component={WebView} options={({route}) => ({})} />
       <AuthStack.Screen
         name="AdminPhoneLogin"
@@ -271,8 +273,8 @@ const styles = StyleSheet.create({
   blurView: {
     position: 'absolute',
     bottom: 20,
-    left: 80,
-    right: 80,
+    left: '23%', // 23%
+    right: '23%',
     height: 55,
     borderRadius: 28,
   },

@@ -2,8 +2,16 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
-import {Text, StatusBar, TextInput, Dimensions, SafeAreaView, StyleSheet, Image} from 'react-native';
-import CodePush from "react-native-code-push";
+import {
+  Text,
+  StatusBar,
+  TextInput,
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import CodePush from 'react-native-code-push';
 
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';
@@ -13,7 +21,8 @@ import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
 import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
-import {ImageList } from '@/utils/default-image';
+import {ImageList} from '@/utils/default-image';
+
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
 const codePushOptions = {
@@ -29,9 +38,8 @@ const codePushOptions = {
 //
 // https://github.com/react-native-community/react-native-device-info#installation
 import DeviceInfo from 'react-native-device-info';
-import ImagePreview from "@/components/ImagePreview";
-import ShareItem from "@/components/ShareItem";
-
+import ImagePreview from '@/components/ImagePreview';
+import ShareItem from '@/components/ShareItem';
 
 class App extends Component {
   constructor(props) {
@@ -40,13 +48,14 @@ class App extends Component {
     this.notif = new NotifyService();
   }
 
-
-
   componentDidMount() {
-    const scale = Dimensions.get('window').width / 375;
-    // console.log('scale', scale);
+    let scale = Dimensions.get('window').width / 375;
+    if (scale > 1) {
+      scale = 1.08;
+    }
+    console.log('scale', scale);
     this.loadSplashImg();
-    this.loadImgList()
+    this.loadImgList();
     // this.loadNetworkInfo();
     // this.loadDeviceInfo();
     // this.loginAdmin();
@@ -58,7 +67,10 @@ class App extends Component {
       adjustsFontSizeToFit: true,
       minimumFontScale: scale,
     });
-    TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {defaultProps: false});
+    TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
+      defaultProps: false,
+      allowFontScaling: false,
+    });
   }
 
   loadSplashImg = () => {
@@ -95,7 +107,7 @@ class App extends Component {
 
   loadImgList = () => {
     // FastImage.preload(ImageList.map((u) => ({uri: u})))
-  }
+  };
 
   render() {
     return (

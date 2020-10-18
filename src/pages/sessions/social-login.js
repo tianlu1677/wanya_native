@@ -21,6 +21,9 @@ const SocialLogin = ({navigation, route}) => {
     });
   }, [navigation]);
 
+  const phoneLogin = () => {
+    navigation.navigate('PasswordLogin');
+  }
   const wechatLogin = async () => {
     console.log('wechatLogi11n');
     try {
@@ -114,8 +117,20 @@ const SocialLogin = ({navigation, route}) => {
             onPress={() => {
               wechatLogin();
             }}>
-            <Text style={styles.loginText} allowFontScaling={false}>
+            <Text style={styles.loginText} allowFontScaling={true}>
               微信登录
+            </Text>
+          </Pressable>
+        </View>
+
+        <View style={styles.phoneLoginContainer}>
+          <Pressable
+            style={styles.loginButton}
+            onPress={() => {
+              phoneLogin();
+            }}>
+            <Text style={styles.loginText} allowFontScaling={true}>
+              手机登录
             </Text>
           </Pressable>
         </View>
@@ -154,6 +169,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+
+  phoneLoginContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 105 + BOTTOM_HEIGHT,
+    left: 0,
+    right: 0,
+  },
+
   loginButton: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -170,7 +197,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
     letterSpacing: 1,
-    fontSize: 16,
+    fontSize: 14,
   },
 
   privateText: {

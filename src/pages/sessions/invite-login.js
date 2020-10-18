@@ -40,7 +40,7 @@ const InviteLogin = ({navigation, route}) => {
         />
       ),
       headerRight: () => (
-        <Pressable onPress={onVerifyInviteCode} style={{fontSize: 14, paddingRight: 5}}>
+        <Pressable onPress={onVerifyInviteCode} style={{paddingRight: 20}}>
           <Text style={{fontSize: 14, color: isValidCode ? 'white' : '#353535'}}>完成</Text>
         </Pressable>
       ),
