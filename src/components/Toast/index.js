@@ -57,7 +57,7 @@ class Toast extends Component {
       textStyle: {
         paddingLeft: 20,
         paddingRight: 20,
-        fontSize: 15,
+        fontSize: 13,
         letterSpacing: 1,
         fontWeight: '500',
         color: '#ffffff',
