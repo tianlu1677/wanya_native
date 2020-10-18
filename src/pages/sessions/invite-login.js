@@ -17,6 +17,7 @@ import Toast from '@/components/Toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
+import FinishBtn from './components/finishbtn'
 
 const InviteLogin = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
@@ -40,9 +41,10 @@ const InviteLogin = ({navigation, route}) => {
         />
       ),
       headerRight: () => (
-        <Pressable onPress={onVerifyInviteCode} style={{fontSize: 14, paddingRight: 5}}>
-          <Text style={{fontSize: 14, color: isValidCode ? 'white' : '#353535'}}>完成</Text>
-        </Pressable>
+        <FinishBtn
+          onPress={onVerifyInviteCode}
+          canClick={isValidCode}
+        />
       ),
     });
   }, [navigation, isValidCode]);

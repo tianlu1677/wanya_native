@@ -53,7 +53,7 @@ import FastImg from '@/components/FastImg'
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
-  const [accountList, setAccountList] = useState([]);
+  const [accountList, setAccountList] = useState([{id: 1, account: {avatar_url: 'http://baid.com/'}}, {id: 1, account: {avatar_url: 'http://baid.com/'}}]);
   const [shareModelVisible, setShareModelVisible] = useState(false);
   const [shareUri, setShareUri] = useState('');
   const dispatch = useDispatch();
@@ -145,35 +145,37 @@ const InviteDetail = ({navigation, route}) => {
       <AccountCardView>
         {accountList.map(invite => {
           return (
-            <Avator
-              size={40}
-              key={invite.id}
-              account={invite.account}
-              containerStyle={{marginRight: 15}}
-            />
+            <AccountWrapView>
+              <Avator
+                size={40}
+                key={invite.id}
+                account={invite.account}
+                // containerStyle={{marginRight: 15}}
+              />
+            </AccountWrapView>
           );
         })}
-        {accountList.length <= 0 &&
-          [1, 2, 3, 4].map(i => {
+        {(accountList.length <= 0 || accountList.length < 5) &&
+          [1, 2, 3, 4].slice(0, 4 - accountList.length).map(i => {
             return (
-              <TouchableOpacity
+              <AccountWrapView
                 key={i}
                 onPress={() => {
                   setShareModelVisible(true);
                 }}>
                 <Image
                   source={AddFriendImg}
-                  style={{width: 40, height: 40, borderRadius: 20, marginRight: 15}}
+                  style={{width: 40, height: 40, borderRadius: 20}}
                 />
-              </TouchableOpacity>
+              </AccountWrapView>
             );
           })}
-        <TouchableOpacity
+        <AccountWrapView
           onPress={() => {
             setShareModelVisible(true);
           }}>
           <Image source={AddFriendImg} style={{width: 40, height: 40, borderRadius: 20}} />
-        </TouchableOpacity>
+        </AccountWrapView>
       </AccountCardView>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
@@ -296,13 +298,20 @@ const AccountCardView = styled(View)`
   flex-direction: row;
   flex-wrap: wrap;
   margin-top: 45px;
-  align-content: flex-start;
   justify-content: flex-start;
   margin-left: 52px;
   margin-right: 52px;
   margin-bottom: 23px;
+  align-self: auto;
+  align-content: space-between;
 `;
 
+const AccountWrapView = styled(View)`
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  width: 20%;
+`
 const ModelWrap = styled(TouchableOpacity)`
   display: flex;
   flex: 1;

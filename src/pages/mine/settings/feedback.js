@@ -1,11 +1,19 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, TextInput, Text} from 'react-native';
+import {
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import {createFeedback} from '@/api/feedback_api';
-import { Button } from 'react-native-elements'
-import { BOTTOM_HEIGHT } from '@/utils/navbar';
-import Toast from '@/components/Toast'
+import {Button} from 'react-native-elements';
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import Toast from '@/components/Toast';
 
 const Feedback = ({navigation, route}) => {
   const [content, setContent] = useState('');
@@ -31,65 +39,79 @@ const Feedback = ({navigation, route}) => {
 
     console.log('dda', data);
     createFeedback(data);
-    Toast.show('反馈成功')
+    Toast.showError('反馈成功');
 
     setTimeout(() => {
       navigation.goBack();
     }, 1000);
   };
   const validForm = () => {
-    return content.length > 1
-  }
+    return content.length > 1;
+  };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <TitleView>
-        <Text>意见与反馈</Text>
-      </TitleView>
-      <ContentWrapView>
-        <ContentInput
-          caretHidden={false}
-          selectionColor={'blue'}
-          maxLength={1000}
-          onChangeText={text => {
-            setContent(text);
-          }}
-          multiline
-          // numberOfLines={10}
-          placeholder={'写下你在使用过程中遇到的问题或建议，如卡顿、闪退等，我们将第一时间响应。'}
-          placeholderTextColor={'#c2c2c2'}
-          defaultValue={content}
-        />
-      </ContentWrapView>
-
-      <TitleView>
-        <Text>联系方式</Text>
-      </TitleView>
-
-      <ContractWrapView>
-        <ContractInput
-          caretHidden={false}
-          selectionColor={'blue'}
-          maxLength={100}
-          onChangeText={text => {
-            setContact(text);
-          }}
-          placeholder={'写下您的微信或手机号'}
-          placeholderTextColor={'#c2c2c2'}
-          defaultValue={contact}
-        />
-      </ContractWrapView>
-
-      <Button
-        containerStyle={{...styles.publicBtnContainer, backgroundColor: validForm() ? 'black' : '#F8F8F8'}}
-        buttonStyle={{...styles.loginButton, backgroundColor: validForm() ? 'black' : '#F8F8F8'}}
-        titleStyle={validForm() ? styles.validTitle : styles.novalidTitle}
-        title="确定"
+    <View style={{flex: 1}}>
+      <TouchableWithoutFeedback
         onPress={() => {
-          sendFeedback();
-        }}
-      />
-    </SafeAreaView>
+          Keyboard.dismiss();
+        }}>
+        <View style={{flex: 1}}>
+          <TitleView>
+            <Text style={{fontSize: 14}}>意见与反馈</Text>
+          </TitleView>
+          <ContentWrapView>
+            <ContentInput
+              caretHidden={false}
+              selectionColor={'blue'}
+              maxLength={1000}
+              onChangeText={text => {
+                setContent(text);
+              }}
+              multiline
+              // numberOfLines={10}
+              placeholder={
+                '写下你在使用过程中遇到的问题或建议，如卡顿、闪退等，我们将第一时间响应。'
+              }
+              placeholderTextColor={'#c2c2c2'}
+              defaultValue={content}
+            />
+          </ContentWrapView>
+
+          <TitleView>
+            <Text>联系方式</Text>
+          </TitleView>
+
+          <ContractWrapView>
+            <ContractInput
+              caretHidden={false}
+              selectionColor={'blue'}
+              maxLength={100}
+              onChangeText={text => {
+                setContact(text);
+              }}
+              placeholder={'写下您的微信或手机号'}
+              placeholderTextColor={'#c2c2c2'}
+              defaultValue={contact}
+            />
+          </ContractWrapView>
+
+          <Button
+            containerStyle={{
+              ...styles.publicBtnContainer,
+            }}
+            buttonStyle={{
+              ...styles.saveButton,
+              backgroundColor: validForm() ? 'black' : '#F8F8F8',
+            }}
+            titleStyle={validForm() ? styles.validTitle : styles.novalidTitle}
+            title="确定"
+            onPress={() => {
+              sendFeedback();
+            }}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
   );
 };
 
@@ -99,11 +121,10 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     bottom: 0,
-    paddingBottom: BOTTOM_HEIGHT,
     left: 0,
     right: 0,
-    height: 50,
-    justifyContent: 'center',
+    paddingBottom: BOTTOM_HEIGHT,
+    backgroundColor: 'black',
   },
   saveButton: {
     fontSize: 28,
@@ -138,7 +159,7 @@ const ContentWrapView = styled(View)`
 `;
 
 const ContentInput = styled(TextInput)`
-  font-size: 14px;
+  font-size: 15px;
   height: 174px;
   line-height: 16px;
 `;
@@ -151,7 +172,7 @@ const ContractWrapView = styled(View)`
 `;
 
 const ContractInput = styled(TextInput)`
-  font-size: 14px;
+  font-size: 15px;
   height: 50px;
   line-height: 16px;
 `;

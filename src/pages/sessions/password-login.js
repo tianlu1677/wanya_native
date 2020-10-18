@@ -5,19 +5,17 @@ import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
 import styled from 'styled-components/native';
-import Helper from '../../utils/helper';
+import Helper from '@/utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {phoneSignIn} from '@/api/sign_api';
 import FinishBtn from "@/pages/sessions/components/finishbtn"
 
 var md5 = require('md5');
 
 const PhoneLogin = ({navigation, route}) => {
   const [phone, setPhone] = useState('');
-  const [phoneCode, setPhoneCode] = useState('');
-  const [downTime, setDownTime] = useState(0);
-  const [firstVerify, setFirstVerify] = useState(true);
-  const [verifyText, setVerifyText] = useState('获取验证码');
+  const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
 
@@ -39,86 +37,34 @@ const PhoneLogin = ({navigation, route}) => {
       ),
       headerRight: () => (
         <FinishBtn
-          onPress={onVerifyPhoneCode}
-          canClick={phoneCode.length === 6}
+          onPress={phoneLogin}
+          canClick={(password.length >= 6 && phone.length === 11) }
         />
       ),
     });
-  }, [navigation, phoneCode]);
+  }, [navigation, password, phone]);
 
-  const downTimeRunner = () => {
-    var timeo = 59;
-    var timeStop = setInterval(function () {
-      timeo--;
-      if (timeo >= 1) {
-        let text = `重新获取(${timeo}s)`;
-        setVerifyText(text);
-        setDownTime(timeo);
-      } else {
-        timeo = 0; //当减到0时赋值为0
-        clearInterval(timeStop); //清除定时器
-        setVerifyText(`重新获取  `);
-      }
-      setFirstVerify(false);
-      setDownTime(timeo);
-    }, 1000);
-  };
-
-  const onSendPhoneCode = () => {
-    if (!/^1[3456789]\d{9}$/.test(phone)) {
-      console.log('error phone');
-      Toast.showError('请输入正确的手机号');
-      return;
-    }
-    let timestamp = new Date().getTime();
-    let secret_key = `phone_${phone}_${timestamp}`;
-    let secret = md5(secret_key);
-    console.log(secret, md5(secret));
-    let data = {phone: phone, secret: secret, timestamp: timestamp};
-    downTimeRunner();
-
-    sendPhoneCode(data).then(res => {
-      if (res.status === 'success') {
-        console.log('发送成功');
-        setFirstVerify(false);
-      } else {
-        Toast.showError('请稍后重试');
-        console.log('failed');
-      }
-    });
-  };
-
-  const onVerifyPhoneCode = async () => {
-    console.log('xxxx', phone, phoneCode);
-    const token = await Helper.getData('socialToken');
-    let data = {phone: phone, phone_code: phoneCode, token: token};
-    const verifyResponse = await verifyPhoneCode(data);
-    console.log('verifyResponse', verifyResponse);
-    if (verifyResponse.error) {
-      Toast.showError(verifyResponse.error, {});
-    } else {
-      await Helper.setData('auth_token', token);
-      // Toast.showError('注册成功');
-      const accountInfo = await getCurrentAccount({token: token});
-      if (!accountInfo.account.had_invited) {
-        navigation.navigate('InviteLogin');
-      } else {
-        await Helper.setData('auth_token', token);
-        dispatch(dispatchSetAuthToken(token));
+  const phoneLogin = () => {
+    phoneSignIn({phone: phone, password: password}).then(async res => {
+      console.log('res', res);
+      if (res.status === 200) {
+        dispatch(dispatchSetAuthToken(res.token));
         dispatch(dispatchCurrentAccount());
         navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],
         });
+      } else {
+        Toast.showError('用户名或者密码错误')
       }
-    }
+    });
   };
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
       <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
-        <TitleText>绑定手机号</TitleText>
+        <TitleText>手机号登录</TitleText>
         <InputWrapView>
           <InputView>
             <Text
@@ -131,7 +77,7 @@ const PhoneLogin = ({navigation, route}) => {
                 color: 'white',
                 letterSpacing: 1,
               }}>
-              + 86
+              手机
             </Text>
             <TextInput
               autoFocus
@@ -151,44 +97,37 @@ const PhoneLogin = ({navigation, route}) => {
             />
           </InputView>
 
-          <InputView
-            style={{
-              justifyContent: 'space-between',
-            }}>
+          <InputView>
+            <Text
+              minimumFontScale={1}
+              style={{
+                fontSize: 15,
+                fontWeight: '600',
+                marginRight: 20,
+                lineHeight: 20,
+                color: 'white',
+                letterSpacing: 1,
+              }}>
+              密码
+            </Text>
             <TextInput
-              autoComplete="tel"
+              autoFocus
+              autoComplete={'tel'}
               caretHidden={false}
               selectionColor={'blue'}
-              keyboardType="numeric"
-              maxLength={6}
-              onChangeText={text => setPhoneCode(text)}
-              placeholder={'输入验证码'}
+              keyboardType={'numeric'}
+              maxLength={11}
+              onChangeText={text => {
+                setPassword(text);
+              }}
+              placeholder={'输入密码'}
               placeholderTextColor={'#353535'}
+              // textAlignVertical="top"
+              // value={'198271'}
               style={styles.inputContent}
-              clearButtonMode
             />
-            {firstVerify ? (
-              <Pressable
-                hitSlop={{top: 20, left: 10, right: 10, bottom: 20}}
-                onPress={() => {
-                  onSendPhoneCode();
-                }}>
-                <VerifyCodeText color="white">{verifyText}</VerifyCodeText>
-              </Pressable>
-            ) : (
-              <Pressable
-                hitSlop={{top: 20, left: 10, right: 10, bottom: 20}}
-                onPress={
-                  downTime > 0
-                    ? () => {}
-                    : () => {
-                        onSendPhoneCode();
-                      }
-                }>
-                <VerifyCodeText color={downTime ? '#353535' : 'white'}>{verifyText}</VerifyCodeText>
-              </Pressable>
-            )}
           </InputView>
+
         </InputWrapView>
       </View>
     </SafeAreaView>

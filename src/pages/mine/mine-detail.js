@@ -93,7 +93,10 @@ const MineDetail = ({navigation, route}) => {
     <View style={styles.wrapper}>
       <FocusAwareStatusBar barStyle="light-content" />
       <View style={styles.setting}>
-        <Pressable onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}>
+        <Pressable
+          onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}
+          hitSlop={{top: 10, left: 20}}
+        >
           <View style={styles.message_icon}>
             <IconFont name="notice" size={20} style={{marginRight: 9}} color="#fff" />
           </View>
@@ -104,7 +107,7 @@ const MineDetail = ({navigation, route}) => {
           >
           </BadgeMessage>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Settings')}>
+        <Pressable onPress={() => navigation.navigate('Settings')} hitSlop={{top: 10, right: 10}}>
           <IconFont name="settings" size={20} color="#fff" />
         </Pressable>
       </View>
@@ -222,7 +225,7 @@ const styles = StyleSheet.create({
     height: 20,
     position: 'absolute',
     right: 16,
-    top: 15 + BASIC_HEIGHT,
+    top: 12 + BASIC_HEIGHT,
     zIndex: 2,
     flexDirection: 'row',
   },

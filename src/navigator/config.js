@@ -197,6 +197,7 @@ const accountRouter = [
   {
     name: 'Feedback',
     component: Feedback,
+    safeArea: false,
     barColor: 'dark',
     options: {title: '反馈'},
   },

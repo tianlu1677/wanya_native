@@ -123,6 +123,13 @@ const TopicDetail = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
+      if(videoRef && videoRef.current) {
+        console.log('videoRef.current', videoRef.current)
+        // 是否继续播放
+        if(videoRef.current.state.isPlaying) {
+          videoRef.current.resume()
+        }
+      }
       return () => {
         videoRef && videoRef.current.pause();
       };
@@ -291,6 +298,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   linkImageCover: {
+    width: '100%',
     height: 167,
     flex: 1,
     borderRadius: 2,
