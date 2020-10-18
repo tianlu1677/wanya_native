@@ -15,7 +15,7 @@ const defaultState = {
     path: '',
   },
   commentTopic: {},
-  uploadProgress: 0,
+  uploadProgress: 100,
   location: {},
 };
 
@@ -34,8 +34,8 @@ export const homeReducer = (state = defaultState, action) => {
     case constants.ShareView:
       return {
         ...state,
-        shareContent: action.shareContent
-      }
+        shareContent: action.shareContent,
+      };
     case constants.SAVE_COMMENT_TOPIC:
       return {
         ...state,

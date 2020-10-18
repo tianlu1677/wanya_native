@@ -19,7 +19,7 @@ const HashtagList = props => {
       const topics = {
         ...savetopic,
         plan_content: savetopic.plan_content
-          ? `${savetopic.plan_content}#${item.name} `
+          ? `${savetopic.plan_content} #${item.name} `
           : `#${item.name} `,
       };
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});

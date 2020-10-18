@@ -21,10 +21,8 @@ const SingleItem = props => {
   const navigation = useNavigation();
   const width = Dimensions.get('window').width;
   const halfWidth = (width - 10) / 2; // 屏幕去掉两边后的宽度
-
   const {data} = props;
 
-  // console.log('data', props)
   const [praiseForm, setPraiseForm] = useState({
     praise: data.praise,
     praises_count: data.praises_count,
@@ -88,10 +86,11 @@ const SingleItem = props => {
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
-
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
         {props.isTop && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
-        {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选{data.is_top}</Text>}
+        {!props.isTop && data.excellent && (
+          <Text style={styles.excellentLabel}>精选{data.is_top}</Text>
+        )}
 
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
@@ -99,7 +98,7 @@ const SingleItem = props => {
           <Pressable style={{flexDirection: 'row', alignItems: 'center'}} onPress={onPraise}>
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
             <Text
-              style={{marginLeft: 5, color: praiseForm.praise ? '#000' : '#bdbdbd', fontSize: 12}}>
+              style={{marginLeft: 5, fontSize: 11, color: praiseForm.praise ? '#000' : '#bdbdbd'}}>
               {praiseForm.praises_count > 0 ? praiseForm.praises_count : ''}
             </Text>
           </Pressable>
@@ -130,7 +129,6 @@ const DoubleList = props => {
   const [leftPosts, setLeftPosts] = useState([]);
   const [rightPosts, setRightPosts] = useState([]);
 
-
   // listData.forEach((content) => {
   //   console.log('cccc', content)
   //   if(leftHeight <= rightHeight) {
@@ -143,7 +141,6 @@ const DoubleList = props => {
   // })
 
   const renderItem = ({item, index}) => {
-
     const leftPostList = listData.filter((v, i) => i % 2 === 0);
     const rightPostList = listData.filter((v, i) => i % 2 !== 0);
     return (
@@ -164,15 +161,15 @@ const DoubleList = props => {
   //首页推荐
   const indexLoadData = async (page = 1) => {
     setLoading(true);
-    let itemList = []
+    let itemList = [];
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
 
     // 加载首页置顶的
-    let top_posts_res = await getRecommendTopPosts()
-    itemList = top_posts_res.data.posts
-    itemList = itemList.map((item) => ({...item, is_top: true }))
+    let top_posts_res = await getRecommendTopPosts();
+    itemList = top_posts_res.data.posts;
+    itemList = itemList.map(item => ({...item, is_top: true}));
 
     setHeaders(res.headers);
     setListData(itemList.concat(data));
@@ -181,7 +178,7 @@ const DoubleList = props => {
 
   const onRefresh = (page = 1) => {
     // console.log('props', props)
-    if (props.type === 'recommend' && (page === 1 || !page) ) {
+    if (props.type === 'recommend' && (page === 1 || !page)) {
       indexLoadData(pagination(headers).nextPage);
     } else {
       loadData(page);
@@ -189,8 +186,8 @@ const DoubleList = props => {
   };
 
   useEffect(() => {
-    if(props.type === 'recommend') {
-      indexLoadData(1)
+    if (props.type === 'recommend') {
+      indexLoadData(1);
     } else {
       loadData();
     }

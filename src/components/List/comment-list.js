@@ -71,11 +71,9 @@ const CommentList = props => {
         <View style={cstyles.info}>
           <Avator account={item.account} size={25} />
           <Text style={cstyles.nickname}>{item.account.nickname}</Text>
-          <Pressable
-            onPress={() => onPraise(item, index)}
-            style={{marginLeft: 'auto', flexDirection: 'row'}}>
+          <Pressable onPress={() => onPraise(item, index)} style={cstyles.numWrap}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
-            <Text style={{marginLeft: 5, color: item.praise ? '#000' : '#bdbdbd', lineHeight: 16, textAlign: 'center'}}>
+            <Text style={[cstyles.numCount, {color: item.praise ? '#000' : '#bdbdbd'}]}>
               {item.praises_count > 0 ? item.praises_count : 0}
             </Text>
           </Pressable>
@@ -154,6 +152,18 @@ const cstyles = StyleSheet.create({
     color: '#9c9c9c',
     fontSize: 12,
   },
+  numWrap: {
+    marginLeft: 'auto',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+  },
+  numCount: {
+    marginLeft: 5,
+    textAlign: 'center',
+    fontSize: 14,
+  },
   comment: {
     marginLeft: 32,
   },
@@ -187,7 +197,7 @@ const cstyles = StyleSheet.create({
     color: '#bdbdbd',
     fontSize: 11,
     lineHeight: 19,
-    marginBottom: 6
+    marginBottom: 6,
   },
   separator: {
     borderBottomColor: '#ebebeb',

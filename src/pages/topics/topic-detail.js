@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback,useLayoutEffect} from 'react';
+import React, {useEffect, useState, useRef, useCallback, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -40,6 +40,8 @@ const TopicDetail = ({navigation, route}) => {
 
   const loadData = async () => {
     const res = await getTopic(topicId);
+    console.log(res.data.topic);
+
     setDetail(res.data.topic);
   };
 
@@ -122,8 +124,8 @@ const TopicDetail = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       return () => {
-        videoRef && videoRef.current.pause()
-      }
+        videoRef && videoRef.current.pause();
+      };
     }, [])
   );
 
@@ -179,11 +181,11 @@ const TopicDetail = ({navigation, route}) => {
         <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
           <StatusBar barStyle={'dark-content'} />
         </View>
-      <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
-        <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
-        <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
-      </Pressable>
-        </View>
+        <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
+          <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
+          <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
+        </Pressable>
+      </View>
     );
   };
 
@@ -214,13 +216,16 @@ const TopicDetail = ({navigation, route}) => {
               {detail.content_style === 'video' && renderVideo()}
               {detail.content_style === 'link' && renderLink()}
               {detail.content_style === 'img' && renderImg()}
-              {detail.content_style === 'img' && detail.excellent && <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>精选</Text>}
+              {detail.content_style === 'img' && detail.excellent && (
+                <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>
+                  精选
+                </Text>
+              )}
             </View>
 
-            {(detail.content_style === 'text') && (
+            {detail.content_style === 'text' && (
               <View style={{paddingTop: BASIC_HEIGHT + 5, paddingBottom: 16}}>
                 <StatusBar barStyle={'dark-content'} />
-
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
@@ -267,10 +272,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     marginTop: 5,
     backgroundColor: '#fff',
+    paddingBottom: 5,
   },
   linkWrap: {
     marginTop: 14,
-    backgroundColor: 'pink',
     marginRight: 14,
     marginLeft: 14,
     height: 167,
@@ -288,7 +293,7 @@ const styles = StyleSheet.create({
   linkImageCover: {
     height: 167,
     flex: 1,
-    borderRadius: 2
+    borderRadius: 2,
   },
   excellentLabel: {
     width: 30,

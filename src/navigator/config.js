@@ -77,7 +77,7 @@ const topicRouter = [
     options: {
       headerShown: false,
       title: false,
-      headerTransparent: true
+      headerTransparent: true,
     },
   },
   {
@@ -205,6 +205,7 @@ const accountRouter = [
 const commonRouter = [
   {
     name: 'ChooseCity',
+    barColor: 'dark',
     component: ChooseCity,
     options: {title: '选择城市'},
   },

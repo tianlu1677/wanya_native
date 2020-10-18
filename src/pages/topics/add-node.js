@@ -40,7 +40,7 @@ const NodeIndex = ({navigation}) => {
       headerLeft: () => null,
       headerRight: () => (
         <Pressable onPress={() => navigation.goBack()}>
-          <Text style={{color: '#bdbdbd'}}>取消</Text>
+          <Text style={styles.cancel}>取消</Text>
         </Pressable>
       ),
     });
@@ -136,6 +136,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
     marginLeft: 60,
+  },
+  cancel: {
+    paddingLeft: 5,
+    paddingRight: 5,
+    textAlign: 'center',
+    fontSize: 15,
+    color: '#bdbdbd',
   },
 });
 
