@@ -4,31 +4,15 @@ import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
 
 const Search = props => {
-  const [focus, setFocus] = useState(false);
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      // setFocus(true)
-      console.log('inputRef', inputRef)
-      // inputRef.current.focus()
-    }, 500)
-    return () => {
-      // setFocus(false)
-    };
-  }, []);
-
   return (
     <View style={[styles.wrapper, props.style]}>
       <View style={styles.inputContent}>
         <IconFont name="sousuo" size={12} color={'#7f7f81'} style={styles.icon} />
         <TextInput
-          ref={inputRef}
           style={styles.textInput}
           placeholder={props.placeholder}
           onChangeText={props.onChangeText}
           selectionColor={'blue'}
-          // autoFocus={true}
           clearButtonMode={'always'}
           textAlign={'left'}
           returnKeyType={'search'}
@@ -39,7 +23,7 @@ const Search = props => {
       </Pressable>
     </View>
   );
-};;
+};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -68,7 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ebebeb',
     borderRadius: 5,
     paddingLeft: 36,
-    fontSize: 12,
+    fontSize: 14,
   },
   cancel: {
     width: 66,

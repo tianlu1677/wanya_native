@@ -29,9 +29,7 @@ export const Header = props => {
       <Avator account={data.account} size={40} />
       <View style={hstyles.content}>
         <Pressable onPress={goAccountDetail}>
-          <Text style={hstyles.nameText} >
-            {data.account.nickname}
-          </Text>
+          <Text style={hstyles.nameText}>{data.account.nickname}</Text>
         </Pressable>
         <Pressable style={hstyles.infoView} onPress={goNodeDetail}>
           <Text style={hstyles.timeText}>{data.published_at_text}</Text>
@@ -51,7 +49,7 @@ export const Bottom = props => {
   const [praise, setPraise] = useState(props.data.praise);
   const [praiseCount, setPraiseCount] = useState(props.data.praises_count);
 
-  const [an, setAn] = useState('')
+  const [an, setAn] = useState('');
   const {data} = props;
 
   const onPraise = async () => {
@@ -76,11 +74,11 @@ export const Bottom = props => {
         break;
     }
     const count = praiseCount + (praise === true ? -1 : 1);
-    if(!praise) {
-      setAn(zoomOut)
-      Vibration.vibrate()
+    if (!praise) {
+      setAn(zoomOut);
+      Vibration.vibrate();
     } else {
-      setAn('')
+      setAn('');
     }
 
     setPraiseCount(count);
@@ -141,12 +139,12 @@ export const Bottom = props => {
   return (
     <View style={bstyles.botView}>
       <Pressable style={bstyles.botCon} onPress={onPraise}>
-      <Animatable.View animation={an} useNativeDriver easing="ease-out" iterationCount={1}>
-        <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
-      </Animatable.View>
-      <Animatable.Text  style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
-        {praiseCount > 0 ? praiseCount : ''}
-      </Animatable.Text>
+        <Animatable.View animation={an} useNativeDriver easing="ease-out" iterationCount={1}>
+          <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
+        </Animatable.View>
+        <Animatable.Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
+          {praiseCount > 0 ? praiseCount : ''}
+        </Animatable.Text>
       </Pressable>
       <View style={bstyles.botCon}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />
@@ -172,10 +170,7 @@ export const PlainContent = props => {
   };
 
   const AccountDetail = async nickname => {
-    console.log(nickname);
-    console.log(data);
     const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
-    console.log(res);
     navigation.push('AccountDetail', {accountId: res.data.account.id});
   };
 
@@ -224,6 +219,7 @@ const hstyles = StyleSheet.create({
   infoView: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 2,
   },
   timeText: {
     color: '#bdbdbd',

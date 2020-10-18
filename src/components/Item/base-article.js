@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     lineHeight: 25,
+    fontWeight: '500',
   },
   imageCover: {
     borderRadius: 2,

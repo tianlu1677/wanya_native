@@ -39,9 +39,6 @@ const AddHashTag = ({navigation}) => {
           onChangeText={text => setSearchKey(text)}
           onCancel={() => navigation.goBack()}
         />
-        <View style={pstyles.proWrapper}>
-          <Text style={pstyles.proTitle}>{searchKey ? '搜索到的话题' : '热门话题'}</Text>
-        </View>
         <HashtagList
           request={request}
           enableRefresh={false}
@@ -50,6 +47,11 @@ const AddHashTag = ({navigation}) => {
           style={styles.wrapper}
           searchKey={searchKey}
           loading={false}
+          ListHeaderComponent={
+            <View style={pstyles.proWrapper}>
+              <Text style={pstyles.proTitle}>{searchKey ? '搜索到的话题' : '热门话题'}</Text>
+            </View>
+          }
         />
       </View>
     </TouchableWithoutFeedback>

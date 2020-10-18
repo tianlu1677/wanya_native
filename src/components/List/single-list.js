@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
-import { View } from 'react-native';
+import {View} from 'react-native';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
 
@@ -11,7 +11,7 @@ const SingleList = props => {
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    console.log('ite', item.id)
+    // console.log('ite', item.id) 831
     if (item.item_type === 'Topic') {
       return <BaseTopic data={item.item} />;
     } else if (item.item_type === 'Article') {

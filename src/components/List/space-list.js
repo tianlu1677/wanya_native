@@ -74,11 +74,10 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 15,
-    lineHeight: 20,
   },
   address: {
     fontSize: 11,
-    lineHeight: 20,
+    marginTop: 8,
     color: '#bdbdbd',
   },
   separator: {

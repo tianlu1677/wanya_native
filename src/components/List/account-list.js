@@ -21,7 +21,7 @@ export const MentionsAccountList = props => {
     const topics = {
       ...savetopic,
       plan_content: savetopic.plan_content
-        ? `${savetopic.plan_content}@${item.nickname} `
+        ? `${savetopic.plan_content} @${item.nickname} `
         : `@${item.nickname} `,
       mention: savetopic.mention ? [...savetopic.mention, item] : [item],
     };
