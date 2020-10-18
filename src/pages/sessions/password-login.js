@@ -9,6 +9,7 @@ import Helper from '@/utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {phoneSignIn} from '@/api/sign_api';
+import FinishBtn from "@/pages/sessions/components/finishbtn"
 
 var md5 = require('md5');
 
@@ -35,18 +36,10 @@ const PhoneLogin = ({navigation, route}) => {
         />
       ),
       headerRight: () => (
-        <Pressable
-          onPress={() => {
-            phoneLogin();
-          }}
-          hitSlop={{left: 10, right: 10}}
-          style={{fontSize: 14, paddingRight: 20}}
-        >
-          <Text
-            style={{fontSize: 14, color: (password.length >= 6 && phone.length === 11) ? 'white' : '#353535'}}>
-            登录
-          </Text>
-        </Pressable>
+        <FinishBtn
+          onPress={phoneLogin}
+          canClick={(password.length >= 6 && phone.length === 11) }
+        />
       ),
     });
   }, [navigation, password, phone]);

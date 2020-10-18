@@ -100,8 +100,8 @@ const SocialLogin = ({navigation, route}) => {
           }}
           onPress={() => {
             console.log('xxx')
-            navigation.navigate('AdminPhoneLogin');
-            // navigation.navigate('InviteLogin');
+            // navigation.navigate('AdminPhoneLogin');
+            navigation.navigate('InviteLogin');
             // navigation.navigate('PhoneLogin');
           }}
         >

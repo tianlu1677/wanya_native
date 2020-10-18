@@ -8,6 +8,7 @@ import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import FinishBtn from "@/pages/sessions/components/finishbtn"
 
 var md5 = require('md5');
 
@@ -37,18 +38,10 @@ const PhoneLogin = ({navigation, route}) => {
         />
       ),
       headerRight: () => (
-        <Pressable
-          onPress={() => {
-            onVerifyPhoneCode();
-          }}
-          hitSlop={{left: 10, right: 10}}
-          style={{fontSize: 14, paddingRight: 20}}
-        >
-          <Text
-            style={{fontSize: 14, color: phoneCode.length === 6 ? 'white' : '#353535'}}>
-            确定
-          </Text>
-        </Pressable>
+        <FinishBtn
+          onPress={onVerifyPhoneCode}
+          canClick={phoneCode.length === 6}
+        />
       ),
     });
   }, [navigation, phoneCode]);

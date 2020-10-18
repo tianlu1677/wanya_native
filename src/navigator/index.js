@@ -207,9 +207,9 @@ function AuthStackList() {
       })}>
       <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
       <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
-      <AuthStack.Screen name="InviteLogin" component={InviteLogin} options={({route}) => ({})} />
-      <AuthStack.Screen name="PasswordLogin" component={PasswordLogin} options={({route}) => ({})} />
-      <AuthStack.Screen name="WebView" component={WebView} options={({route}) => ({})} />
+      <AuthStack.Screen name="InviteLogin" component={InviteLogin}/>
+      <AuthStack.Screen name="PasswordLogin" component={PasswordLogin} />
+      <AuthStack.Screen name="WebView" component={WebView} />
       <AuthStack.Screen
         name="AdminPhoneLogin"
         component={AdminPhoneLogin}
