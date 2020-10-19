@@ -5,6 +5,7 @@ import ViewShot from 'react-native-view-shot';
 import {uploadBase64File} from '@/api/asset_api';
 import * as WeChat from 'react-native-wechat-lib';
 import ImgToBase64 from 'react-native-image-base64';
+import CameraRoll from "@react-native-community/cameraroll";
 
 const image =
   'http://xinxuefile.meirixinxue.com/assets/2020/5cd7df33-c0e0-47bf-9ac8-d7479823d211.jpg';
@@ -44,6 +45,7 @@ const ViewShotPage = props => {
     console.log('viewShotRef', viewShotRef)
     viewShotRef.current.capture().then( async uri => {
       // CameraRoll.saveToCameraRoll(uri, "photo");
+      // return
       // console.log("do something with ", uri);
       // WeChat.shareLocalImage({
       //   imageUrl: uri,
@@ -71,8 +73,11 @@ const ViewShotPage = props => {
   };
 
   return (
-    <Modal>
-      <View style={{flex: 1}}>
+    <Modal
+      transparent={true}
+      animationType={'slide'}
+    >
+      <View style={{flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
         <ViewShot
           ref={viewShotRef}
           options={{format: 'jpg', quality: 0.9}}
@@ -88,6 +93,10 @@ const ViewShotPage = props => {
 };
 const styles = StyleSheet.create({
   wrapper: {
+    marginTop: 100,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 40,
     flex: 1,
     backgroundColor: '#ff193a',
     paddingLeft: 10,

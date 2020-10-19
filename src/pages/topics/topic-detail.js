@@ -248,6 +248,7 @@ const TopicDetail = ({navigation, route}) => {
       />
 
       <ViewShotPage />
+
       <ActionComment
         visible={visible}
         detail={detail}
