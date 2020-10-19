@@ -51,7 +51,7 @@ axios.interceptors.response.use(
         Toast.showError('请重新登录');
         RootNavigation.reset({
           index: 0,
-          routes: [{name: 'Recommend'}],
+          routes: [{name: 'SocialLogin'}],
         });
         return Promise.reject(error);
       // console.log('401, 未登录')

@@ -164,8 +164,12 @@ const NodeDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-      <BottomModal visible={showModal} cancleClick={() => setShowModal(false)} title={detail.name} >
-        <Text>{detail.desc}</Text>
+      <BottomModal
+        visible={showModal}
+        cancleClick={() => setShowModal(false)}
+        title={detail.name}
+        content={detail.desc}
+      >
       </BottomModal>
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
     </View>

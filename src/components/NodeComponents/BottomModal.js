@@ -31,7 +31,11 @@ const BottomModal = props => {
       onSwipeOut={() => cancel()}
       modalTitle={props.title ? <ModalTitle title={props.title} /> : false}>
       <ModalContent style={styles.content}>
-        {props.children}
+        {
+          props.content ? <Text style={styles.body}>{
+            props.content
+          }</Text> : props.children
+        }
       </ModalContent>
     </Modal.BottomModal>
   );
@@ -50,5 +54,15 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: 10,
     fontSize: 12,
+    lineHeight: 14,
+    color: '#222222',
+    backgroundColor: '#FAFAFA',
+    height: '100%'
+  },
+  body: {
+    fontSize: 16,
+    lineHeight: 20,
+    letterSpacing: 1,
+    color: '#222222',
   }
 });

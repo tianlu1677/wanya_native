@@ -13,7 +13,7 @@ import FinishBtn from "@/pages/sessions/components/finishbtn"
 
 var md5 = require('md5');
 
-const PhoneLogin = ({navigation, route}) => {
+const PasswordLogin = ({navigation, route}) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
@@ -177,4 +177,4 @@ const VerifyCodeText = styled(Text)`
   font-weight: 600;
   color: ${props => props.color};
 `;
-export default PhoneLogin;
+export default PasswordLogin;

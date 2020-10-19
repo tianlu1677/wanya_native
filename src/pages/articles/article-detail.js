@@ -69,8 +69,14 @@ const ArticleDetail = ({navigation, route}) => {
                 paddingLeft: 10,
                 paddingRight: 10,
               }}
+              enableExperimentalPercentWidth
+              allowFontScaling={true}
+              textSelectable
+              tagsStyles={{p: {fontSize: 16, lineHeight: 26, marginTop: 14, marginBottom: 14, letterSpacing: 1} }}
               imagesMaxWidth={Dimensions.get('window').width - 20}
-              baseFontStyle={{fontSize: 14, lineHeight: 0}}
+              imagesInitialDimensions={{width: Dimensions.get('window').width}}
+              baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
+              onLinkPress={(e) => {console.log('xxx', e)}}
               content={
                 detail &&
                 detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
