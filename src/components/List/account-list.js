@@ -175,7 +175,7 @@ export const AccountList = props => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params, account_type, right_text} = props.request;
-    console.log('xx', props.request);
+    // console.log('xx', props.request);
     let data = [];
     const res = await api({...params, page});
     if (account_type === 'account_recent_follow') {
@@ -201,7 +201,7 @@ export const AccountList = props => {
 
   useEffect(() => {
     loadData();
-  }, [props.request]);
+  }, []);
 
   return (
     <ScrollList
@@ -211,7 +211,7 @@ export const AccountList = props => {
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
-      {...props}
+      initialNumToRender={15}
       style={{backgroundColor: '#fff'}}
     />
   );

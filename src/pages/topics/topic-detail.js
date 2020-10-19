@@ -126,12 +126,12 @@ const TopicDetail = ({navigation, route}) => {
       if(videoRef && videoRef.current) {
         console.log('videoRef.current', videoRef.current)
         // 是否继续播放
-        if(videoRef.current.state.isPlaying) {
+        if(videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
           videoRef.current.resume()
         }
       }
       return () => {
-        videoRef && videoRef.current.pause();
+        videoRef && videoRef.current && videoRef.current.pause();
       };
     }, [])
   );
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    left: 35,
+    right: 20,
   },
 });
 

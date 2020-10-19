@@ -88,7 +88,7 @@ const NotifyIndex = ({navigation}) => {
 
   return (
     <View>
-      <WrapView>
+      <WrapView style={{marginTop: -15}}>
         <ItemView onPress={goPageMethod.bind(this, 'notify_praise')}>
           <CoverWrapView>
             <Image source={{uri: PraiseNoticeImg}} style={{width: 45, height: 45}} />

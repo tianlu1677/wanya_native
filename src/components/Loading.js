@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import Spinner from 'react-native-spinkit';
 
 const Loading = () => {
@@ -7,8 +7,9 @@ const Loading = () => {
   const type = Math.random(allTypes.length - 1).toFixed(1) * 10
   return (
     <View style={styles.loading}>
-      {/*<ActivityIndicator size="large" />*/}
+      {/*<ActivityIndicator size={'small'} />*/}
       <Spinner style={{}} isVisible={true} size={35} type={'Bounce'} color={'#BDBDBD'} />
+      <Text style={styles.text}>加载中...</Text>
     </View>
   );
 };
@@ -25,6 +26,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 999,
   },
+
+  text: {
+    marginTop: 10,
+    fontSize: 14,
+    color: '#BDBDBD'
+  }
 });
 
 export default Loading;

@@ -528,7 +528,7 @@ export default class VideoPlayer extends Component {
         {
           this.state.opacity > 0 && <ActivityIndicator
             animating
-            size="large"
+            size="small"
             color={'white'}
             style={[styles.activityIndicator, {opacity: this.state.opacity}]}
           />

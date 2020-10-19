@@ -278,7 +278,7 @@ const NewTopic = props => {
                         source={{uri: v.url}}
                         posterResizeMode={'center'}
                         controls={false}
-                        muted
+                        muted={false}
                         reportBandwidth
                         repeat
                         onFullscreenPlayerDidDismiss={() => {

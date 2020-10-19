@@ -11,7 +11,7 @@ import {getRecommendTopPosts} from '@/api/home_api';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
-
+import {RFValue } from '@/utils/response-fontsize'
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
@@ -89,7 +89,7 @@ const SingleItem = props => {
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
         {props.isTop && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
         {!props.isTop && data.excellent && (
-          <Text style={styles.excellentLabel}>精选{data.is_top}</Text>
+          <Text style={styles.excellentLabel}>精选</Text>
         )}
 
         <View style={styles.singleBottom}>
@@ -259,8 +259,8 @@ const styles = StyleSheet.create({
     marginRight: 3,
   },
   imageLabel: {
-    width: 32,
-    height: 16,
+    width: RFValue(33),
+    height: RFValue(16),
     position: 'absolute',
     left: 8,
     top: 8,

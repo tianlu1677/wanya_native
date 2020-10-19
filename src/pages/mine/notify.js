@@ -100,7 +100,7 @@ class Notify extends Component {
       <View>
         <SafeAreaView>
           <WrapView>
-            <ItemView onPress={this.goPageMethod.bind(this, 'notify_praise')}>
+            <ItemView style={{marginTop: -10}} onPress={this.goPageMethod.bind(this, 'notify_praise')}>
               <CoverWrapView>
                 <Image
                   source={{uri: PraiseNoticeImg}}
