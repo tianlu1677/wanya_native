@@ -1,41 +1,11 @@
-import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import React, {useRef} from 'react';
+import {View, Text, Modal, Button, Image, StyleSheet} from 'react-native';
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
-import {uploadBase64File} from "@/api/asset_api"
+import {uploadBase64File} from '@/api/asset_api';
 import * as WeChat from 'react-native-wechat-lib';
 import ImgToBase64 from 'react-native-image-base64';
 
-const takeImg = async () => {
-  console.log('viewShotRef', viewShotRef)
-  // viewShotRef.current.capture().then( async uri => {
-  //   console.log("do something with ", uri);
-  //   // WeChat.ShareLocalImage({
-  //   //   imageUrl: uri,
-  //   //   scene: 0
-  //   // })
-  //   let b = await ImgToBase64.getBase64String(uri)
-  //   console.log('b', b)
-  //   const a = "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAFCgAwAEAAAAAQAAAFAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIAFAAUAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/3QAEAAX/2gAMAwEAAhEDEQA/ANKiiiuMzCiiigAooooAKKKKACiiigD/0NKiiiuMzCiiigAooooAKKKKACiiigD/0dKiiiuMzCiiigAooooAKKKKACiiigD/0tKiiiuMzCiiigApdppUXcaztW1Y2bCGJN0mMnPRaxnOXNyQ3N6dNSV5bGiUIz7U2svS9ZNzOIZ1Csx4IrXkHelGpJT5JrUc6SS5ojKKKK3Oc//T0qKKK4zMKKKKAHxnDVh67ps8lwbiBDIrD5gOorZqTzMggjrXPNTjPngjopTVuWRzukaZcC5WaZDGqc89TXQvjHvSNIVkZcAYBz9aaTmnFVJT55aDqTjy8qCiiitzmP/Z"
-  //   console.log(encodeURIComponent(a)) // ok
-  //
-  //
-  //   const asset = await uploadBase64File({
-  //     file: encodeURIComponent(b),
-  //     assetable_type: 'Topic',
-  //     assetable_id: '932',
-  //     assetable_name: 'app_share_image'
-  //   })
-  //   console.log('assets', asset)
-  //   // WeChat.shareImage({
-  //   //   imageUrl: "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAFCgAwAEAAAAAQAAAFAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIAFAAUAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/3QAEAAX/2gAMAwEAAhEDEQA/ANKiiiuMzCiiigAooooAKKKKACiiigD/0NKiiiuMzCiiigAooooAKKKKACiiigD/0dKiiiuMzCiiigAooooAKKKKACiiigD/0tKiiiuMzCiiigApdppUXcaztW1Y2bCGJN0mMnPRaxnOXNyQ3N6dNSV5bGiUIz7U2svS9ZNzOIZ1Csx4IrXkHelGpJT5JrUc6SS5ojKKKK3Oc//T0qKKK4zMKKKKAHxnDVh67ps8lwbiBDIrD5gOorZqTzMggjrXPNTjPngjopTVuWRzukaZcC5WaZDGqc89TXQvjHvSNIVkZcAYBz9aaTmnFVJT55aDqTjy8qCiiitzmP/Z",
-  //   //   scene: 0
-  //   // }, (error)=> {
-  //   //   console.log('err', error)
-  //   // })
-  //   // CameraRoll.saveToCameraRoll(uri, "photo");
-  // });
-}
 const image =
   'http://xinxuefile.meirixinxue.com/assets/2020/5cd7df33-c0e0-47bf-9ac8-d7479823d211.jpg';
 const SharePage = () => {
@@ -46,7 +16,7 @@ const SharePage = () => {
         <View style={styles.headerInfo}>
           <View style={styles.info}>
             <Text style={styles.username}>七分</Text>
-            <Text style={styles.time}>刚刚 发布了一篇帖子</Text>
+            <Text style={styles.time}>刚刚 发布了一篇帖子1</Text>
           </View>
           <View style={styles.nodeWrap}>
             <IconFont name="node-solid" size={16} color="#fff" />
@@ -67,13 +37,53 @@ const SharePage = () => {
   );
 };
 
-const ViewShotPage = (props) => {
+const ViewShotPage = props => {
+  const viewShotRef = useRef(null);
+  const takeImg = async () => {
+    console.log('xxx');
+    console.log('viewShotRef', viewShotRef)
+    viewShotRef.current.capture().then( async uri => {
+      // CameraRoll.saveToCameraRoll(uri, "photo");
+      // console.log("do something with ", uri);
+      // WeChat.shareLocalImage({
+      //   imageUrl: uri,
+      //   scene: 0
+      // })
+      let b = await ImgToBase64.getBase64String(uri)
+      // console.log('b', b)
+      // const a = "/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAFCgAwAEAAAAAQAAAFAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIAFAAUAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/3QAEAAX/2gAMAwEAAhEDEQA/ANKiiiuMzCiiigAooooAKKKKACiiigD/0NKiiiuMzCiiigAooooAKKKKACiiigD/0dKiiiuMzCiiigAooooAKKKKACiiigD/0tKiiiuMzCiiigApdppUXcaztW1Y2bCGJN0mMnPRaxnOXNyQ3N6dNSV5bGiUIz7U2svS9ZNzOIZ1Csx4IrXkHelGpJT5JrUc6SS5ojKKKK3Oc//T0qKKK4zMKKKKAHxnDVh67ps8lwbiBDIrD5gOorZqTzMggjrXPNTjPngjopTVuWRzukaZcC5WaZDGqc89TXQvjHvSNIVkZcAYBz9aaTmnFVJT55aDqTjy8qCiiitzmP/Z"
+      // console.log(encodeURIComponent(a)) // ok
+      const asset_res = await uploadBase64File({
+        file: encodeURIComponent(b),
+        assetable_type: 'Topic',
+        assetable_id: '932',
+        assetable_name: 'app_share_image'
+      })
+      console.log('assets', asset_res)
+      WeChat.shareImage({
+        imageUrl: asset_res.asset.original_url,
+        scene: 0
+      }, (error)=> {
+        console.log('err', error)
+      })
+      // CameraRoll.saveToCameraRoll(uri, "photo");
+    });
+  };
+
   return (
-    <View style={{flex: 1}}>
-      <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 0.9}} style={{flex: 1}}>
-        <SharePage />
-      </ViewShot>
-    </View>
+    <Modal>
+      <View style={{flex: 1}}>
+        <ViewShot
+          ref={viewShotRef}
+          options={{format: 'jpg', quality: 0.9}}
+          style={{flex: 1}}>
+          <SharePage />
+        </ViewShot>
+        <View style={{flex: 1, position: 'absolute', bottom: 30, justifyContent: 'center'}}>
+          <Button title={'分享'} onPress={takeImg} />
+        </View>
+      </View>
+    </Modal>
   );
 };
 const styles = StyleSheet.create({

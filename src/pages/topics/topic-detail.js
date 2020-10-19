@@ -27,6 +27,7 @@ import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_a
 import {NAV_BAR_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
+import ViewShotPage from "@/components/SharePage"
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -245,6 +246,8 @@ const TopicDetail = ({navigation, route}) => {
           </>
         }
       />
+
+      <ViewShotPage />
       <ActionComment
         visible={visible}
         detail={detail}
