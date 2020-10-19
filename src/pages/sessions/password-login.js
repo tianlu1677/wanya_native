@@ -111,7 +111,6 @@ const PasswordLogin = ({navigation, route}) => {
               密码
             </Text>
             <TextInput
-              autoFocus
               autoComplete={'tel'}
               caretHidden={false}
               selectionColor={'blue'}
