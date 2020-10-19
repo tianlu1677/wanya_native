@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, Text, Modal, Button, Image, StyleSheet} from 'react-native';
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
@@ -40,6 +40,7 @@ const SharePage = () => {
 
 const ViewShotPage = props => {
   const viewShotRef = useRef(null);
+  const [shareModelVisible, setShareModelVisible] = useState(false);
   const takeImg = async () => {
     console.log('xxx');
     console.log('viewShotRef', viewShotRef)
@@ -76,8 +77,14 @@ const ViewShotPage = props => {
     <Modal
       transparent={true}
       animationType={'slide'}
+      visible={shareModelVisible}
     >
-      <View style={{flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+      <View
+        style={{flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+        onPress={() => {
+          setShareModelVisible(false);
+        }}
+      >
         <ViewShot
           ref={viewShotRef}
           options={{format: 'jpg', quality: 0.9}}

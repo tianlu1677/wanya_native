@@ -103,7 +103,9 @@ const ScrollList = props => {
       !refreshing && (
         <View style={[scrollStyle.footer, {minHeight: 300}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
-          <Text style={{color: '#DADADA', fontSize: 13}}>{props.emptyTitle || '暂时还没有内容哦'}</Text>
+          <Text style={{color: '#DADADA', fontSize: 13}}>
+            {props.emptyTitle || '暂时还没有内容哦'}
+          </Text>
         </View>
       )
     );
@@ -111,6 +113,21 @@ const ScrollList = props => {
 
   const renderSeparator = () => {
     return <View style={scrollStyle.separator} />;
+  };
+
+  const onScroll = event => {
+    if (refreshing || state === loadState.LOADING) {
+      return;
+    }
+    let y = event.nativeEvent.contentOffset.y;
+    let height = event.nativeEvent.layoutMeasurement.height;
+    let contentHeight = event.nativeEvent.contentSize.height;
+    console.log('offsetY-->' + y);
+    console.log('height-->' + height);
+    console.log('contentHeight-->' + contentHeight);
+    if (y <= -100) {
+      setRefreshing(true);
+    }
   };
 
   useEffect(() => {
@@ -135,8 +152,8 @@ const ScrollList = props => {
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
       renderItem={props.renderItem}
       keyExtractor={item => String(item[props.itemKey || 'id'])}
-      refreshing={refreshing ? refreshing : false}
-      onRefresh={enableRefresh ? onRefresh : null}
+      // refreshing={refreshing ? refreshing : false}
+      // onRefresh={enableRefresh ? onRefresh : null}
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       onEndReachedThreshold={0.2}
@@ -146,7 +163,8 @@ const ScrollList = props => {
       numColumns={props.numColumns || 1}
       horizontal={false}
       ListHeaderComponent={props.ListHeaderComponent || null}
-      onScroll={props.onScroll}
+      onScroll={onScroll}
+      scrollEventThrottle={50}
       scrollToOverflowEnabled={true}
       showsHorizontalScrollIndicator={false}
       onMomentumScrollBegin={props.onMomentumScrollBegin}
@@ -156,19 +174,18 @@ const ScrollList = props => {
       {...props.settings}
       // scrollIndicatorInsets={{right: 1}}
 
-      // refreshControl={
-      //   <RefreshControl
-      //     refreshing={refreshing ? refreshing : false}
-      //     onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
-      //     tintColor="black"
-      //     progressViewOffset={10}
-      //     style={{backgroundColor: 'white'}}
-      //
-      //     title={refreshing ? '努力加载中...' : '...'}
-      //   />
-      // }
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing ? refreshing : false}
+          onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
+          tintColor="black"
+          progressViewOffset={10}
+          style={{backgroundColor: 'white'}}
+          // colors={['red', 'yellow', 'green']}
+          title={refreshing ? '努力加载中...' : '...'}
+        />
+      }
       initialNumToRender={props.initialNumToRender || 10}
-
     />
   );
 };
