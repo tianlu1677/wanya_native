@@ -74,7 +74,7 @@ const CommentList = props => {
           <Pressable onPress={() => onPraise(item, index)} style={cstyles.numWrap}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
             <Text style={[cstyles.numCount, {color: item.praise ? '#000' : '#bdbdbd'}]}>
-              {item.praises_count > 0 ? item.praises_count : 0}
+              {item.praises_count > 0 ? item.praises_count : ''}
             </Text>
           </Pressable>
         </View>

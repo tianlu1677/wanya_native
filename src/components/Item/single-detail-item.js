@@ -244,7 +244,7 @@ export const ActionComment = props => {
               </Text>
             </Pressable>
             <Pressable
-              style={astyles.btnWrap}
+              style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
                 onShare();
               }}>
@@ -376,9 +376,9 @@ const astyles = StyleSheet.create({
     alignItems: 'center',
     borderTopColor: '#ebebeb',
     borderTopWidth: StyleSheet.hairlineWidth,
-    // marginBottom: BOTTOM_HEIGHT,
   },
   wrapBottomBtns: {
+    height: 57,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -398,9 +398,8 @@ const astyles = StyleSheet.create({
     fontSize: 13,
   },
   btnWrap: {
-    minWidth: 25,
+    minWidth: 50,
     flexDirection: 'row',
-    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
