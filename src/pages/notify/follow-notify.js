@@ -10,7 +10,7 @@ const FollowAccounts = ({navigation, route}) => {
     <AccountList
       request={{
         api: getAccountRecentFollowers,
-        params: {id: currentAccount.id},
+        params: {id: currentAccount.id, per_page: 15},
         account_type: 'account_recent_follow',
         right_text: '关注了你'
       }}

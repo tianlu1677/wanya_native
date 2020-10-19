@@ -138,8 +138,12 @@ const SpaceDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
-      <BottomModal visible={showModal} cancleClick={() => setShowModal(false)} title={detail.name} >
-        <Text>{detail.intro}</Text>
+      <BottomModal
+        visible={showModal}
+        cancleClick={() => setShowModal(false)}
+        title={detail.name}
+        content={detail.intro}
+      >
       </BottomModal>
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
       {/*<BottomSheetContent content={detail.intro} ref={sheetRef} />*/}

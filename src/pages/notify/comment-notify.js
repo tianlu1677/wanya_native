@@ -11,7 +11,7 @@ const CommentNotify = ({navigation}) => {
   const [headers, setHeaders] = useState({});
 
   const loadInfo = async (page = 1) => {
-    let params = {page: page, per_page: 20};
+    let params = {page: page, per_page: 15};
     let res_data = [];
     let headers = {};
     const res = await getReplyComments(params);
@@ -21,8 +21,8 @@ const CommentNotify = ({navigation}) => {
       return formatComment(comment);
     });
     headers = res.headers;
-    setData(res_data);
     setHeaders(headers);
+    setData(res_data);
     setLoading(false);
   };
 
@@ -96,16 +96,15 @@ const CommentNotify = ({navigation}) => {
   };
 
   return (
-
-      <ScrollList
-        onRefresh={loadInfo}
-        headers={headers}
-        data={data}
-        loading={loading}
-        renderItem={renderItem}
-        renderSeparator={() => <View />}
-      />
-
+    <ScrollList
+      onRefresh={loadInfo}
+      headers={headers}
+      data={data}
+      loading={loading}
+      renderItem={renderItem}
+      renderSeparator={() => <View />}
+      initialNumToRender={10}
+    />
   );
 };
 

@@ -167,7 +167,7 @@ const ScrollList = props => {
       //     title={refreshing ? '努力加载中...' : '...'}
       //   />
       // }
-      // initialNumToRender={8}
+      initialNumToRender={props.initialNumToRender || 10}
 
     />
   );

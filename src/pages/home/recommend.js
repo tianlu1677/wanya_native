@@ -13,6 +13,7 @@ import {dispatchBaseCurrentAccount} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
+import Helper from "@/utils/helper"
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -105,13 +106,13 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     backgroundColor: 'white',
-    paddingTop: BASIC_HEIGHT,
+    paddingTop: STATUS_BAR_HEIGHT,
   },
   message: {
     position: 'absolute',
     right: 4,
     zIndex: 100,
-    top: BASIC_HEIGHT + 22,
+    top: STATUS_BAR_HEIGHT + 22,
   },
   message_icon: {
     position: 'absolute',
