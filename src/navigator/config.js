@@ -60,6 +60,7 @@ import LabStorageIndex from '@/pages/labs/storageindex';
 import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
+import PasswordLogin from '@/pages/sessions/password-login';
 
 // 网页显示
 import WebView from '@/pages/webview/webview';
@@ -232,14 +233,7 @@ const searchRouter = [
   },
 ];
 
-export const routers = [
-  ...topicRouter,
-  ...articleRouter,
-  ...spaceRouter,
-  ...nodeRouter,
-  ...accountRouter,
-  ...commonRouter,
-  ...searchRouter,
+const authRouter = [
   {
     name: 'PhoneLogin',
     component: PhoneLogin,
@@ -260,6 +254,22 @@ export const routers = [
     options: {title: '输入邀请码'},
     safeArea: false,
   },
+  {
+    name: 'PasswordLogin',
+    component: PasswordLogin,
+    options: {title: '输入邀请码', headerShown: true},
+    safeArea: false,
+  },
+]
+export const routers = [
+  ...topicRouter,
+  ...articleRouter,
+  ...spaceRouter,
+  ...nodeRouter,
+  ...accountRouter,
+  ...commonRouter,
+  ...searchRouter,
+  ...authRouter,
   {
     name: 'InviteDetail',
     component: InviteDetail,

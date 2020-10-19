@@ -13,6 +13,7 @@ import {dispatchBaseCurrentAccount} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
+import Helper from "@/utils/helper"
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
