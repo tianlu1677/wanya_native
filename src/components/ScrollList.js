@@ -117,6 +117,9 @@ const ScrollList = props => {
   };
 
   const onScroll = event => {
+    if(!enableRefresh) {
+      return
+    }
     if (refreshing || state === loadState.LOADING) {
       return;
     }
