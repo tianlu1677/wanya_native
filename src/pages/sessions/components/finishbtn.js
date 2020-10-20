@@ -7,7 +7,7 @@ const FinishBtn = props => {
   };
 
   return (
-    <Pressable onPress={onPress} style={{paddingRight: 16}}>
+    <Pressable onPress={onPress} style={{paddingRight: 16}} hitSlop={{left: 20, top: 20, bottom: 20}}>
       <Text
         style={{
           fontSize: 14,
