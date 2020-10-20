@@ -41,12 +41,12 @@ const AddHashTag = ({navigation}) => {
         />
         <HashtagList
           request={request}
-          enableRefresh={false}
-          enableLoadMore={false}
+          enableRefresh={true}
+          enableLoadMore={true}
           type="add-hash-tag"
           style={styles.wrapper}
           searchKey={searchKey}
-          loading={false}
+          loading={true}
           ListHeaderComponent={
             <View style={pstyles.proWrapper}>
               <Text style={pstyles.proTitle}>{searchKey ? '搜索到的话题' : '热门话题'}</Text>

@@ -5,7 +5,7 @@ import ViewShot from 'react-native-view-shot';
 import {uploadBase64File} from '@/api/asset_api';
 import * as WeChat from 'react-native-wechat-lib';
 import ImgToBase64 from 'react-native-image-base64';
-import CameraRoll from "@react-native-community/cameraroll";
+// import CameraRoll from "@react-native-community/cameraroll";
 
 const image =
   'http://xinxuefile.meirixinxue.com/assets/2020/5cd7df33-c0e0-47bf-9ac8-d7479823d211.jpg';

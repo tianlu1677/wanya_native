@@ -31,20 +31,21 @@ const loadState = {
 
 const ScrollList = props => {
   const [height, setHeight] = useState(null);
-  const [enableLoadMore, setEnableLoadMore] = useState(true);
-  const [enableRefresh, setEnableRefresh] = useState(true);
+  const [enableLoadMore, setEnableLoadMore] = useState(props.enableLoadMore);
+  const [enableRefresh, setEnableRefresh] = useState(props.enableRefresh);
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [canRefresh, setCanRefresh] = useState(true);
 
   const onRefresh = () => {
-    console.log('onRefresh =============', state, refreshing);
+    console.log('onRefresh start =============', state, refreshing);
     if (refreshing || state === loadState.LOADING) {
       return;
     }
     setRefreshing(true);
     setState(loadState.LOADING);
-    console.log('onRefresh =============', state, refreshing);
+    console.log('onRefresh end =============', state, refreshing);
     try {
       props.onRefresh();
       // setRefreshing(false);
@@ -119,20 +120,22 @@ const ScrollList = props => {
     if (refreshing || state === loadState.LOADING) {
       return;
     }
+
     let y = event.nativeEvent.contentOffset.y;
-    let height = event.nativeEvent.layoutMeasurement.height;
-    let contentHeight = event.nativeEvent.contentSize.height;
-    console.log('offsetY-->' + y);
-    console.log('height-->' + height);
-    console.log('contentHeight-->' + contentHeight);
-    if (y <= -100) {
-      setRefreshing(true);
+    console.log('offsetY-->' + y, canRefresh);
+
+    if (canRefresh && y <= -80) {
+      setCanRefresh(false)
+      console.log('start onScroll');
+      onRefresh()
+    } else if (y>= 0) {
+      setCanRefresh(true)
     }
   };
 
   useEffect(() => {
-    setEnableLoadMore(props.enableLoadMore === false ? false : true);
-    setEnableRefresh(props.enableRefresh === false ? false : true);
+    // setEnableLoadMore(props.enableLoadMore === false ? false : true);
+    // setEnableRefresh(props.enableRefresh === false ? false : true);
     setRefreshing(props.loading || false);
   });
 
@@ -152,7 +155,7 @@ const ScrollList = props => {
       onLayout={e => setHeight(e.nativeEvent.layout.height)}
       renderItem={props.renderItem}
       keyExtractor={item => String(item[props.itemKey || 'id'])}
-      // refreshing={refreshing ? refreshing : false}
+      // refreshing={refreshing ? refreshing : null}
       // onRefresh={enableRefresh ? onRefresh : null}
       onEndReached={enableRefresh ? onEndReached : null}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
@@ -176,13 +179,13 @@ const ScrollList = props => {
 
       refreshControl={
         <RefreshControl
-          refreshing={refreshing ? refreshing : false}
-          onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
+          refreshing={(refreshing && enableRefresh) ? refreshing : false}
+          // onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
           tintColor="black"
           progressViewOffset={10}
           style={{backgroundColor: 'white'}}
           // colors={['red', 'yellow', 'green']}
-          title={refreshing ? '努力加载中...' : '...'}
+          title={enableRefresh ? (refreshing ? '努力加载中...' : '') : ''}
         />
       }
       initialNumToRender={props.initialNumToRender || 10}
@@ -208,7 +211,10 @@ const scrollStyle = StyleSheet.create({
     height: 9,
   },
 });
-
+ScrollList.defaultProps = {
+  enableLoadMore: true,
+  enableRefresh: true,
+}
 ScrollList.propTypes = {
   data: PropTypes.array.isRequired, //List接收的数据
   loading: PropTypes.bool, // loading 状态

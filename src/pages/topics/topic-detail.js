@@ -57,6 +57,9 @@ const TopicDetail = ({navigation, route}) => {
 
   useEffect(() => {
     loadData();
+    return () => {
+      setDetail(null)
+    }
   }, []);
 
   const renderImg = () => {
@@ -125,7 +128,7 @@ const TopicDetail = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       if(videoRef && videoRef.current) {
-        console.log('videoRef.current', videoRef.current)
+        // console.log('videoRef.current', videoRef.current)
         // 是否继续播放
         if(videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
           videoRef.current.resume()
@@ -320,7 +323,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    right: 20,
+    right: 15,
   },
 });
 

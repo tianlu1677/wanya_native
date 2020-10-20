@@ -33,7 +33,7 @@ export const MentionsAccountList = props => {
     return (
       <TouchableWithoutFeedback onPress={() => onPress(item)}>
         <View style={styles.follow}>
-          <Avator account={item} size={40} />
+          <Avator account={item} size={40} handleClick={() => onPress(item)} />
           <Text style={styles.nickname}>{item.nickname}</Text>
         </View>
       </TouchableWithoutFeedback>

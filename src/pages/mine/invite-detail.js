@@ -1,6 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useEffect, useRef} from 'react';
 import {
-  SafeAreaView,
   Modal,
   StyleSheet,
   StatusBar,
@@ -16,51 +15,20 @@ import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {Avator} from '@/components/NodeComponents';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
-import { useWindowDimensions } from 'react-native';
-
-
-// import Modal from 'react-native-modal';
-import InvitePoster from './components/invite-poster';
-import ViewShot from 'react-native-view-shot';
-
 import {getInviteCode, getAccountInviteList} from '../../api/account_api';
-import SafeAreaPlus from '@/components/SafeAreaPlus';
-import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {captureRef} from 'react-native-view-shot';
 import AddFriendImg from '@/assets/images/add-invite.png';
 import FastImg from '@/components/FastImg'
-//
-// function useCapture() {
-//   const captureViewRef = useRef();
-//
-//   function onCapture() {
-//     captureRef(captureViewRef, {
-//       format: "jpg",
-//       quality: 0.9
-//     }).then(
-//       uri => console.log('uri,', uri),
-//       error => alert("Oops, snapshot failed", error));
-//   }
-//
-//   return {
-//     captureViewRef,
-//     onCapture
-//   };
-// }
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
-  const [accountList, setAccountList] = useState([{id: 1, account: {avatar_url: 'http://baid.com/'}}, {id: 1, account: {avatar_url: 'http://baid.com/'}}]);
+  const [accountList, setAccountList] = useState([])
   const [shareModelVisible, setShareModelVisible] = useState(false);
   const [shareUri, setShareUri] = useState('');
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
-
-  // const refShot = useRef(null);
-  // const { captureViewRef, onCapture } = useCapture();
 
   useLayoutEffect(() => {
     navigation.setOptions({});
@@ -89,6 +57,7 @@ const InviteDetail = ({navigation, route}) => {
 
   //https://github.com/little-snow-fox/react-native-wechat-lib
   const shareFriend = e => {
+    console.log('shareUri', shareUri)
     // e.stopPropagation();
     WeChat.shareImage(
       {
@@ -163,7 +132,7 @@ const InviteDetail = ({navigation, route}) => {
                 onPress={() => {
                   setShareModelVisible(true);
                 }}>
-                <Image
+                <FastImg
                   source={AddFriendImg}
                   style={{width: 40, height: 40, borderRadius: 20}}
                 />
@@ -174,7 +143,7 @@ const InviteDetail = ({navigation, route}) => {
           onPress={() => {
             setShareModelVisible(true);
           }}>
-          <Image source={AddFriendImg} style={{width: 40, height: 40, borderRadius: 20}} />
+          <FastImg source={AddFriendImg} style={{width: 40, height: 40, borderRadius: 20}} />
         </AccountWrapView>
       </AccountCardView>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -306,7 +275,7 @@ const AccountCardView = styled(View)`
   align-content: space-between;
 `;
 
-const AccountWrapView = styled(View)`
+const AccountWrapView = styled(Pressable)`
   display: flex;
   flex-direction: row;
   align-content: center;
