@@ -8,7 +8,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
-import SharePageModal from '@/components/SharePageModal'
+import SharePageModal from '@/components/SharePageModal';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {dispatchShareItem} from '@/redux/actions';
 import * as WeChat from 'react-native-wechat-lib';
@@ -246,30 +246,29 @@ export const ActionComment = props => {
               </Text>
             </Pressable>
             <Pressable
-              style={astyles.btnWrap}
+              style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
-                setShareModelVisible(true)
+                setShareModelVisible(true);
               }}>
               <IconFont name="fenxiang" size={19} />
             </Pressable>
 
             <View style={{}}>
-            <SharePageModal
-              shareModelVisible={shareModelVisible}
-              onShowShare={(status) => setShareModelVisible(status)}
-              assetable={{
-                type: props.type,
-                id: props.detail.id,
-                assetable_name: 'app_share_image'
-              }}
-              pageShareContent={
-              {
-                account: props.detail.account,
-                node_name: props.detail.node.name,
-                content: props.detail.plain_content,
-                bg_img_url: props.detail.wx_share_image_url
-              }
-            }/>
+              <SharePageModal
+                shareModelVisible={shareModelVisible}
+                onShowShare={status => setShareModelVisible(status)}
+                assetable={{
+                  type: props.type,
+                  id: props.detail.id,
+                  assetable_name: 'app_share_image',
+                }}
+                pageShareContent={{
+                  account: props.detail.account,
+                  node_name: props.detail.node.name,
+                  content: props.detail.plain_content,
+                  bg_img_url: props.detail.wx_share_image_url,
+                }}
+              />
             </View>
           </View>
         </>
@@ -307,15 +306,17 @@ const hstyles = StyleSheet.create({
   },
   content: {
     marginLeft: 12,
+    paddingTop: 4,
   },
   nameText: {
-    lineHeight: 20,
-    marginBottom: 4,
     color: '#9c9c9c',
+    fontSize: 12,
+    lineHeight: 20,
   },
   timeText: {
-    color: '#9c9c9c',
+    color: '#bdbdbd',
     marginRight: 6,
+    fontSize: 11,
   },
   joinBtn: {
     paddingLeft: 12,
@@ -380,11 +381,13 @@ const pstyles = StyleSheet.create({
     lineHeight: 20,
   },
   formImage: {
-    width: 50,
-    height: 50,
+    width: 55,
+    height: 55,
     borderWidth: 3,
     borderColor: '#ffff00',
     marginLeft: 'auto',
+    borderRadius: 5,
+    overflow: 'hidden',
   },
 });
 
@@ -397,9 +400,9 @@ const astyles = StyleSheet.create({
     alignItems: 'center',
     borderTopColor: '#ebebeb',
     borderTopWidth: StyleSheet.hairlineWidth,
-    // marginBottom: BOTTOM_HEIGHT,
   },
   wrapBottomBtns: {
+    height: 57,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -419,9 +422,8 @@ const astyles = StyleSheet.create({
     fontSize: 13,
   },
   btnWrap: {
-    minWidth: 25,
+    minWidth: 50,
     flexDirection: 'row',
-    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,

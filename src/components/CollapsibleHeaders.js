@@ -4,8 +4,7 @@ import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 const windowHeight = Dimensions.get('window').height;
 
-const tabBarHeight = 48;
-const headerHeight = 50;
+const tabBarHeight = 55; //middle
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
@@ -82,7 +81,6 @@ const CollapsibleHeader = props => {
 
     return (
       <>
-        {/* Since TabBar is absolute positioned, we need to add space so push content down below it. Don't use FlatList padding as that breaks stickyHeaders */}
         <View style={{height: tabBarHeight}} />
         <Animated.FlatList
           scrollToOverflowEnabled
@@ -109,7 +107,7 @@ const CollapsibleHeader = props => {
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          decelerationRate="fast" // Since we prevent switching tabs during momentum, we want it to decelerate faster
+          decelerationRate="fast"
         />
       </>
     );
@@ -189,7 +187,7 @@ const CollapsibleHeader = props => {
     });
 
     return (
-      <Animated.View style={[localStyles.header, {opacity: opacity}]}>
+      <Animated.View style={[localStyles.header, {opacity: opacity, height: headerHeight}]}>
         <Text style={{color: '#fff'}}>标题</Text>
       </Animated.View>
     );
@@ -217,7 +215,6 @@ const localStyles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: headerHeight,
     position: 'absolute',
     top: 0,
     backgroundColor: '#000',

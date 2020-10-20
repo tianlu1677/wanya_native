@@ -8,7 +8,7 @@ import styled from 'styled-components/native';
 import Helper from '../../utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import FinishBtn from "@/pages/sessions/components/finishbtn"
+import FinishBtn from '@/pages/sessions/components/finishbtn';
 
 var md5 = require('md5');
 
@@ -38,10 +38,7 @@ const PhoneLogin = ({navigation, route}) => {
         />
       ),
       headerRight: () => (
-        <FinishBtn
-          onPress={onVerifyPhoneCode}
-          canClick={phoneCode.length === 6}
-        />
+        <FinishBtn onPress={onVerifyPhoneCode} canClick={phoneCode.length === 6} />
       ),
     });
   }, [navigation, phoneCode]);
@@ -57,7 +54,7 @@ const PhoneLogin = ({navigation, route}) => {
       } else {
         timeo = 0; //当减到0时赋值为0
         clearInterval(timeStop); //清除定时器
-        setVerifyText(`重新获取  `);
+        setVerifyText('重新获取  ');
       }
       setFirstVerify(false);
       setDownTime(timeo);
@@ -137,7 +134,7 @@ const PhoneLogin = ({navigation, route}) => {
               autoFocus
               autoComplete={'tel'}
               caretHidden={false}
-              selectionColor={'blue'}
+              selectionColor={'#ff193a'}
               keyboardType={'numeric'}
               maxLength={11}
               onChangeText={text => {
@@ -158,7 +155,7 @@ const PhoneLogin = ({navigation, route}) => {
             <TextInput
               autoComplete="tel"
               caretHidden={false}
-              selectionColor={'blue'}
+              selectionColor={'#ff193a'}
               keyboardType="numeric"
               maxLength={6}
               onChangeText={text => setPhoneCode(text)}

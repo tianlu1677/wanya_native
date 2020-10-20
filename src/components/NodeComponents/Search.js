@@ -12,7 +12,7 @@ const Search = props => {
           style={styles.textInput}
           placeholder={props.placeholder}
           onChangeText={props.onChangeText}
-          selectionColor={'blue'}
+          selectionColor={'#ff193a'}
           clearButtonMode={'always'}
           textAlign={'left'}
           returnKeyType={'search'}

@@ -53,7 +53,6 @@ export const TopicImageContent = props => {
     };
     dispatch(dispatchPreviewImage(data));
   };
-
   return imgStyle === 'single' ? (
     <Pressable
       style={{width: imgAttr.width / 2.0}}

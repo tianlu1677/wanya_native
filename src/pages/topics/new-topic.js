@@ -21,6 +21,8 @@ import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
 import {dispatchPreviewImage} from '@/redux/actions';
+import FastImg from '@/components/FastImg';
+
 const windowWidth = Dimensions.get('window').width;
 
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -37,6 +39,7 @@ const NewTopic = props => {
   // const defaultVideo = [
   //   {id: 1, url: 'http://xinxuefile.meirixinxue.com/assets/d479716443f6aca08c4e45135509bd03.mp4'},
   // ];
+
   const defaultVideo = [];
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState(defaultVideo);
@@ -253,8 +256,8 @@ const NewTopic = props => {
             ))}
             {videoSource.length === 0 && imageSource.length !== 9 && (
               <Pressable onPress={onImagePicker}>
-                <Image
-                  style={[styles.mediaWrap]}
+                <FastImg
+                  style={styles.mediaWrap}
                   source={require('@/assets/images/add-photo.png')}
                 />
               </Pressable>
@@ -306,7 +309,10 @@ const NewTopic = props => {
 
             {imageSource.length === 0 && videoSource.length === 0 && (
               <Pressable onPress={onVideoPicker}>
-                <Image style={styles.mediaWrap} source={require('@/assets/images/add-video.png')} />
+                <FastImg
+                  style={styles.mediaWrap}
+                  source={require('@/assets/images/add-video.png')}
+                />
               </Pressable>
             )}
           </View>
@@ -319,7 +325,7 @@ const NewTopic = props => {
             }
             onChangeText={onChangeContent}
             value={content}
-            selectionColor={'blue'}
+            selectionColor={'#ff193a'}
           />
           <View style={{flexDirection: 'row'}}>
             <Pressable
@@ -418,7 +424,7 @@ const styles = StyleSheet.create({
   content: {
     minHeight: 90,
     fontSize: 14,
-    lineHeight: 21,
+    lineHeight: 20,
     marginBottom: 20,
   },
   addTextNameWrap: {

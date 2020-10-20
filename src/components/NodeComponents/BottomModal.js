@@ -1,18 +1,8 @@
-import React, {useState} from 'react';
-import {Image, View, Pressable, Text, StyleSheet} from 'react-native';
-import Modal, {
-  ModalTitle,
-  ModalContent,
-  ModalFooter,
-  ModalButton,
-  SlideAnimation,
-  ScaleAnimation,
-} from 'react-native-modals';
+import React from 'react';
+import {Text, StyleSheet} from 'react-native';
+import Modal, {ModalTitle, ModalContent} from 'react-native-modals';
 
 const BottomModal = props => {
-  const [isVisible, setIsVisible] = useState(props.visible);
-  // console.log('prps', props, isVisible);
-
   const cancel = () => {
     props.cancleClick();
   };
@@ -31,17 +21,11 @@ const BottomModal = props => {
       onSwipeOut={() => cancel()}
       modalTitle={props.title ? <ModalTitle title={props.title} /> : false}>
       <ModalContent style={styles.content}>
-        {
-          props.content ? <Text style={styles.body}>{
-            props.content
-          }</Text> : props.children
-        }
+        {props.content ? <Text style={styles.body}>{props.content}</Text> : props.children}
       </ModalContent>
     </Modal.BottomModal>
   );
 };
-
-export default BottomModal;
 
 const styles = StyleSheet.create({
   container: {
@@ -57,12 +41,14 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     color: '#222222',
     backgroundColor: '#FAFAFA',
-    height: '100%'
+    height: '100%',
   },
   body: {
     fontSize: 16,
     lineHeight: 20,
     letterSpacing: 1,
     color: '#222222',
-  }
+  },
 });
+
+export default BottomModal;
