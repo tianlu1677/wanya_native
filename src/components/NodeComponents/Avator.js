@@ -23,7 +23,11 @@ const Avator = props => {
   };
 
   function goAccountDetail() {
-    props.handleClick && props.handleClick();
+    if (props.handleClick) {
+      props.handleClick();
+      return;
+    }
+
     if (props.account && props.account.id) {
       navigation.navigate('AccountDetail', {accountId: props.account.id});
       // if(currentAccountId && currentAccountId === props.account.id) {
@@ -45,11 +49,7 @@ const Avator = props => {
       {isShow && !!props.account.settled_type && props.account.settled_type !== 'single' && (
         <FastImg
           style={{...iconStyle, position: 'absolute', right: 0, bottom: 0}}
-          source={
-            props.account.settled_type === 'personal'
-              ? PersonImg
-              : BrandImg
-          }
+          source={props.account.settled_type === 'personal' ? PersonImg : BrandImg}
         />
       )}
     </Pressable>

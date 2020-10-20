@@ -8,6 +8,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
+import SharePageModal from '@/components/SharePageModal'
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {dispatchShareItem} from '@/redux/actions';
 import * as WeChat from 'react-native-wechat-lib';
@@ -106,6 +107,7 @@ export const ActionComment = props => {
   const [value, setValue] = useState(null);
   const [praise, setPraise] = useState(props.detail.praise);
   const [star, setStar] = useState(props.detail.star);
+  const [shareModelVisible, setShareModelVisible] = useState(false);
 
   const onCreateComment = v => {
     const commentTopic = {
@@ -211,7 +213,7 @@ export const ActionComment = props => {
 
     const shareContent = {...shareOptions, visible: true};
     // console.log('xxx', shareContent)
-    dispatch(dispatchShareItem(shareContent));
+    // dispatch(dispatchShareItem(shareContent));
     // WeChat.shareMiniProgram(shareOptions);
   };
 
@@ -246,10 +248,29 @@ export const ActionComment = props => {
             <Pressable
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
-                onShare();
+                setShareModelVisible(true)
               }}>
               <IconFont name="fenxiang" size={19} />
             </Pressable>
+
+            <View style={{}}>
+            <SharePageModal
+              shareModelVisible={shareModelVisible}
+              onShowShare={(status) => setShareModelVisible(status)}
+              assetable={{
+                type: props.type,
+                id: props.detail.id,
+                assetable_name: 'app_share_image'
+              }}
+              pageShareContent={
+              {
+                account: props.detail.account,
+                node_name: props.detail.node.name,
+                content: props.detail.plain_content,
+                bg_img_url: props.detail.wx_share_image_url
+              }
+            }/>
+            </View>
           </View>
         </>
       )}
