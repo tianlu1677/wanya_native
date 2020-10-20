@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
@@ -8,7 +8,6 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
-import BottomSheetContent from '@/components/BottomSheetContent';
 import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
@@ -18,7 +17,6 @@ import FastImg from '@/components/FastImg';
 const SpaceDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
   const dispatch = useDispatch();
-  const sheetRef = useRef(null);
   const [spaceId] = useState(route.params.spaceId);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('lasted');
@@ -27,16 +25,13 @@ const SpaceDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getSpaceDetail(spaceId);
     setDetail(res.data.space);
-
-    console.log('res', res.data.space)
     navigation.setOptions({
       title: res.data.space.name,
     });
   };
 
   const onShowIntro = () => {
-    setShowModal(true)
-    // sheetRef.current.snapTo();
+    setShowModal(true);
   };
 
   const LastedList = () => (
@@ -138,15 +133,15 @@ const SpaceDetail = ({navigation, route}) => {
         ]}
         onChange={key => setCurrentKey(key)}
       />
+
       <BottomModal
         visible={showModal}
         cancleClick={() => setShowModal(false)}
         title={detail.name}
         content={detail.intro}
-      >
-      </BottomModal>
+      />
+
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
-      {/*<BottomSheetContent content={detail.intro} ref={sheetRef} />*/}
     </View>
   ) : (
     <Loading />

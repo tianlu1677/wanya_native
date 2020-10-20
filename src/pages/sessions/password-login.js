@@ -9,7 +9,7 @@ import Helper from '@/utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {phoneSignIn} from '@/api/sign_api';
-import FinishBtn from "@/pages/sessions/components/finishbtn"
+import FinishBtn from '@/pages/sessions/components/finishbtn';
 
 var md5 = require('md5');
 
@@ -36,10 +36,7 @@ const PasswordLogin = ({navigation, route}) => {
         />
       ),
       headerRight: () => (
-        <FinishBtn
-          onPress={phoneLogin}
-          canClick={(password.length >= 6 && phone.length === 11) }
-        />
+        <FinishBtn onPress={phoneLogin} canClick={password.length >= 6 && phone.length === 11} />
       ),
     });
   }, [navigation, password, phone]);
@@ -55,7 +52,7 @@ const PasswordLogin = ({navigation, route}) => {
           routes: [{name: 'Recommend'}],
         });
       } else {
-        Toast.showError('用户名或者密码错误')
+        Toast.showError('用户名或者密码错误');
       }
     });
   };
@@ -83,7 +80,7 @@ const PasswordLogin = ({navigation, route}) => {
               autoFocus
               autoComplete={'tel'}
               caretHidden={false}
-              selectionColor={'blue'}
+              selectionColor={'#ff193a'}
               keyboardType={'numeric'}
               maxLength={11}
               onChangeText={text => {
@@ -113,7 +110,7 @@ const PasswordLogin = ({navigation, route}) => {
             <TextInput
               autoComplete={'tel'}
               caretHidden={false}
-              selectionColor={'blue'}
+              selectionColor={'#ff193a'}
               keyboardType={'numeric'}
               maxLength={11}
               onChangeText={text => {
@@ -126,7 +123,6 @@ const PasswordLogin = ({navigation, route}) => {
               style={styles.inputContent}
             />
           </InputView>
-
         </InputWrapView>
       </View>
     </SafeAreaView>

@@ -27,7 +27,7 @@ import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_a
 import {NAV_BAR_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
-import ViewShotPage from "@/components/SharePage"
+import ViewShotPage from '@/components/SharePage';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -41,8 +41,6 @@ const TopicDetail = ({navigation, route}) => {
 
   const loadData = async () => {
     const res = await getTopic(topicId);
-    console.log(res.data.topic);
-
     setDetail(res.data.topic);
   };
 
@@ -58,8 +56,8 @@ const TopicDetail = ({navigation, route}) => {
   useEffect(() => {
     loadData();
     return () => {
-      setDetail(null)
-    }
+      setDetail(null);
+    };
   }, []);
 
   const renderImg = () => {
@@ -127,11 +125,11 @@ const TopicDetail = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
-      if(videoRef && videoRef.current) {
+      if (videoRef && videoRef.current) {
         // console.log('videoRef.current', videoRef.current)
         // 是否继续播放
-        if(videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
-          videoRef.current.resume()
+        if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
+          videoRef.current.resume();
         }
       }
       return () => {
@@ -233,7 +231,6 @@ const TopicDetail = ({navigation, route}) => {
                 </Text>
               )}
             </View>
-
             {detail.content_style === 'text' && (
               <View style={{paddingTop: BASIC_HEIGHT + 5, paddingBottom: 16}}>
                 <StatusBar barStyle={'dark-content'} />

@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   textStyle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#fff',
     textAlign: 'center',
   },

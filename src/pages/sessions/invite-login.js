@@ -17,7 +17,7 @@ import Toast from '@/components/Toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
-import FinishBtn from './components/finishbtn'
+import FinishBtn from './components/finishbtn';
 
 const InviteLogin = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
@@ -40,12 +40,7 @@ const InviteLogin = ({navigation, route}) => {
           style={{width: 9, height: 15}}
         />
       ),
-      headerRight: () => (
-        <FinishBtn
-          onPress={onVerifyInviteCode}
-          canClick={isValidCode}
-        />
-      ),
+      headerRight: () => <FinishBtn onPress={onVerifyInviteCode} canClick={isValidCode} />,
     });
   }, [navigation, isValidCode]);
 
@@ -88,7 +83,7 @@ const InviteLogin = ({navigation, route}) => {
           <TextInput
             autoFocus
             caretHidden={false}
-            selectionColor={'blue'}
+            selectionColor={'#ff193a'}
             autoCapitalize={'characters'}
             maxLength={6}
             onChangeText={text => {

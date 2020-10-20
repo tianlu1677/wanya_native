@@ -72,14 +72,14 @@ const EditAccountContent = ({navigation, route}) => {
     <TouchableWithoutFeedback
       style={{flex: 1, backgroundColor: '#fafafa'}}
       onPress={() => {
-        Keyboard.dismiss()
+        Keyboard.dismiss();
       }}>
       <View style={{flex: 1, backgroundColor: '#fafafa'}}>
         <StatusBar barStyle="dark-content" />
         {editKey === 'nickname' && (
           <TextInput
             caretHidden={false}
-            selectionColor={'blue'}
+            selectionColor={'#ff193a'}
             maxLength={20}
             onChangeText={text => {
               setContent(text);
@@ -93,7 +93,7 @@ const EditAccountContent = ({navigation, route}) => {
         {editKey === 'intro' && (
           <TextInput
             caretHidden={false}
-            selectionColor={'blue'}
+            selectionColor={'#ff193a'}
             maxLength={40}
             multiline
             numberOfLines={10}

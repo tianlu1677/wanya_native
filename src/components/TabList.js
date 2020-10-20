@@ -73,34 +73,35 @@ const TabList = props => {
         centerContent={center}
         scrollEnabled={scrollEnabled}>
         {props.data.length > 0 &&
-        props.data.map((item, index) => {
-          return (
-            <Pressable
-              onPress={() => setIndex(item, index)}
-              onLayout={e => setLayout(e.nativeEvent.layout, index)}
-              key={item.key}
-              style={[tabBarStyle.tabItem]}>
-              <Text
-                style={[
-                  tabBarStyle[`tabItemText${size}`],
-                  currentIndex === index && tabBarStyle[`textActive${size}`],
-                ]}>
-                {item.title}
-              </Text>
-              <View
-                style={[
-                  tabBarStyle[`tabItemLine${size}`],
-                  currentIndex === index && tabBarStyle[`lineActive${size}`],
-                ]}
-              />
-            </Pressable>
-          );
-        })}
+          props.data.map((item, index) => {
+            return (
+              <Pressable
+                onPress={() => setIndex(item, index)}
+                onLayout={e => setLayout(e.nativeEvent.layout, index)}
+                key={item.key}
+                style={[tabBarStyle.tabItem]}>
+                <Text
+                  style={[
+                    tabBarStyle[`tabItemText${size}`],
+                    currentIndex === index && tabBarStyle[`textActive${size}`],
+                  ]}>
+                  {item.title}
+                </Text>
+                <View
+                  style={[
+                    tabBarStyle[`tabItemLine${size}`],
+                    currentIndex === index && tabBarStyle[`lineActive${size}`],
+                  ]}
+                />
+              </Pressable>
+            );
+          })}
       </ScrollView>
     </View>
   );
 };
 
+// middle 55
 const tabBarStyle = StyleSheet.create({
   tabWrap: {
     backgroundColor: '#fff',
@@ -111,7 +112,7 @@ const tabBarStyle = StyleSheet.create({
   },
   tabmiddle: {
     paddingTop: 11,
-    height: 45,
+    paddingBottom: 10,
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',

@@ -79,15 +79,15 @@ const CommentList = props => {
           </Pressable>
         </View>
         <Pressable style={cstyles.comment} onPress={() => choseAction(item)}>
-          <Text style={cstyles.text}>{item.content}</Text>
           {item.target_account_id && (
-            <View style={cstyles.more}>
+            <Text style={cstyles.more}>
               <Text style={cstyles.moreNickname}>{item.target_account_nickname}: </Text>
               <Text style={cstyles.moreText}>
                 {item.target_comment_content ? item.target_comment_content : '评论已删除'}
               </Text>
-            </View>
+            </Text>
           )}
+          <Text style={cstyles.text}>{item.content}</Text>
           <Text style={cstyles.reply}>
             {item.created_at_text} · 回复{' '}
             {item.child_comments_count ? item.child_comments_count : ''}
@@ -180,25 +180,23 @@ const cstyles = StyleSheet.create({
     backgroundColor: '#f2f3f5',
     color: '#bdbdbd',
     fontSize: 12,
-    flexDirection: 'row',
+    lineHeight: 20,
     marginBottom: 10,
   },
   moreNickname: {
     fontWeight: '500',
     color: '#bdbdbd',
     textAlign: 'justify',
-    fontSize: 12,
   },
   moreText: {
     color: '#bdbdbd',
     textAlign: 'justify',
-    fontSize: 12,
   },
   reply: {
     color: '#bdbdbd',
     fontSize: 11,
     lineHeight: 19,
-    marginBottom: 6,
+    marginBottom: 10,
   },
   separator: {
     borderBottomColor: '#ebebeb',
