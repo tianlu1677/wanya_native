@@ -131,9 +131,11 @@ const MineDetail = ({navigation, route}) => {
             </View>
             <Text style={styles.uid}>顽鸦号: {currentAccount.uid}</Text>
           </View>
-          <Text style={styles.invite} onPress={() => navigation.navigate('InviteDetail')}>
-            邀请好友
-          </Text>
+          <Pressable style={{marginLeft: 'auto', marginTop: 8}} onPress={() => navigation.navigate('InviteDetail')}>
+            <Text style={styles.invite}>
+              邀请好友
+            </Text>
+          </Pressable>
         </View>
         {currentAccount.settled_type && currentAccount.settled_type !== 'single' && (
           <View style={styles.settledWrap}>
@@ -261,8 +263,8 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     overflow: 'hidden',
     backgroundColor: '#fff',
-    marginTop: 5,
-    marginLeft: 'auto',
+
+
     fontWeight: '500',
   },
   settledWrap: {
