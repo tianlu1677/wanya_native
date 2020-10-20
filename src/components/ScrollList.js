@@ -169,7 +169,7 @@ const ScrollList = props => {
       numColumns={props.numColumns || 1}
       horizontal={false}
       ListHeaderComponent={props.ListHeaderComponent || null}
-      onScroll={onScroll}
+      // onScroll={onScroll}
       scrollEventThrottle={50}
       scrollToOverflowEnabled={true}
       showsHorizontalScrollIndicator={false}
@@ -183,9 +183,9 @@ const ScrollList = props => {
       refreshControl={
         <RefreshControl
           refreshing={(refreshing && enableRefresh) ? refreshing : false}
-          // onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
+          onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
           tintColor="black"
-          progressViewOffset={10}
+          // progressViewOffset={10}
           style={{backgroundColor: 'white'}}
           // colors={['red', 'yellow', 'green']}
           title={enableRefresh ? (refreshing ? '努力加载中...' : '') : ''}

@@ -82,6 +82,7 @@ const SingleItem = props => {
             style={{height: height, width: '100%', backgroundColor: '#F1F1F1'}}
           />
         )}
+        {/*<Text>{data.single_cover.link_url}</Text>*/}
         {data.has_video && <FastImg style={styles.videoPlay} source={VideoPlayImg} />}
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />

@@ -72,7 +72,7 @@ const ArticleDetail = ({navigation, route}) => {
               enableExperimentalPercentWidth
               allowFontScaling={true}
               textSelectable
-              tagsStyles={{p: {fontSize: 16, lineHeight: 26, marginTop: 14, marginBottom: 14, letterSpacing: 1} }}
+              tagsStyles={{p: {fontSize: 16, lineHeight: 26, marginTop: 10, marginBottom: 10, letterSpacing: 1} }}
               imagesMaxWidth={Dimensions.get('window').width - 20}
               imagesInitialDimensions={{width: Dimensions.get('window').width}}
               baseFontStyle={{lineHeight: 26, letterSpacing: 1}}

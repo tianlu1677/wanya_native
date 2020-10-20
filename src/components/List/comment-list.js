@@ -128,7 +128,7 @@ const CommentList = props => {
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={renderSeparator}
-      settings={{bounces: true, enableRefresh: false}}
+      settings={{bounces: false, enableRefresh: false}}
       style={{backgroundColor: '#fff'}}
       {...props}
     />

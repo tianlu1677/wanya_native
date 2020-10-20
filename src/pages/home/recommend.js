@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     backgroundColor: 'white',
-    paddingTop: BOTTOM_HEIGHT,
+    paddingTop: BOTTOM_HEIGHT + 5,
   },
   message: {
     position: 'absolute',
     right: 4,
     zIndex: 100,
-    top: BOTTOM_HEIGHT + 22,
+    top: BOTTOM_HEIGHT + 5 + 22,
   },
   message_icon: {
     position: 'absolute',

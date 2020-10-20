@@ -171,6 +171,7 @@ const TopicDetail = ({navigation, route}) => {
           posterResizeMode={'cover'}
           hideControlsOnStart
           pauseOnPress
+          muted={false}
           resizeMode={'cover'}
           autoplay={true}
           loop
