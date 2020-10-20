@@ -117,23 +117,23 @@ const ScrollList = props => {
   };
 
   const onScroll = event => {
-    if(!enableRefresh) {
-      return
-    }
-    if (refreshing || state === loadState.LOADING) {
-      return;
-    }
-
-    let y = event.nativeEvent.contentOffset.y;
-    console.log('offsetY-->' + y, canRefresh);
-
-    if (canRefresh && y <= -80) {
-      setCanRefresh(false)
-      console.log('start onScroll');
-      onRefresh()
-    } else if (y>= 0) {
-      setCanRefresh(true)
-    }
+    // if(!enableRefresh) {
+    //   return
+    // }
+    // if (refreshing || state === loadState.LOADING) {
+    //   return;
+    // }
+    //
+    // let y = event.nativeEvent.contentOffset.y;
+    // console.log('offsetY-->' + y, canRefresh);
+    //
+    // if (canRefresh && y <= -80) {
+    //   setCanRefresh(false)
+    //   console.log('start onScroll');
+    //   onRefresh()
+    // } else if (y>= 0) {
+    //   setCanRefresh(true)
+    // }
   };
 
   useEffect(() => {

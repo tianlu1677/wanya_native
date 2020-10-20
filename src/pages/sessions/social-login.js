@@ -101,8 +101,8 @@ const SocialLogin = ({navigation, route}) => {
           onPress={() => {
             console.log('xxx')
             // navigation.navigate('AdminPhoneLogin');
-            navigation.navigate('InviteLogin');
-            // navigation.navigate('PhoneLogin');
+            // navigation.navigate('InviteLogin');
+            navigation.navigate('PhoneLogin');
           }}
         >
           <Text
@@ -217,8 +217,8 @@ const styles = StyleSheet.create({
   },
 
   textContent: {
-    fontSize: 12,
-    color: 'white',
+    fontSize: 11,
+    color: '#BDBDBD',
   },
 });
 

@@ -169,7 +169,7 @@ const PhoneLogin = ({navigation, route}) => {
             />
             {firstVerify ? (
               <Pressable
-                hitSlop={{top: 20, left: 10, right: 10, bottom: 20}}
+                hitSlop={{top: 20, left: 10, right: 10, bottom: 15}}
                 onPress={() => {
                   onSendPhoneCode();
                 }}>
@@ -233,6 +233,7 @@ const InputView = styled(View)`
 `;
 
 const VerifyCodeText = styled(Text)`
+  margin-top: 5px;
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 600;
