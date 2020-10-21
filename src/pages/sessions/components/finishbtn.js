@@ -3,18 +3,18 @@ import {View, Text, Pressable} from 'react-native';
 
 const FinishBtn = props => {
   const onPress = () => {
-    props.onPress();
+    props.canClick && props.onPress();
   };
 
   return (
-    <Pressable onPress={onPress} style={{paddingRight: 16}} hitSlop={{left: 20, top: 20, bottom: 20}}>
+    <Pressable onPress={onPress} style={{paddingRight: 3}} hitSlop={{left: 20, top: 20, bottom: 20}}>
       <Text
         style={{
           fontSize: 14,
           fontWeight: '600',
           color: props.canClick ? 'white' : '#353535',
         }}>
-        {props.text || '完成'}
+        {props.text || '确定'}
       </Text>
     </Pressable>
   );
