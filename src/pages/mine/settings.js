@@ -149,13 +149,16 @@ const Settings = ({navigation, route}) => {
           <ItemTitle>实验室</ItemTitle>
           <ForwardRight />
         </ItemView>
+
+        <ItemView
+          style={[styles.bottomBorder1px, styles.nestLine]}
+          onPress={() => {
+            goPages('logout');
+          }}>
+          <ItemTitle>退出</ItemTitle>
+          <ForwardRight />
+        </ItemView>
       </View>
-      <LoginView
-        onPress={() => {
-          goPages('logout');
-        }}>
-        <ItemTitle>退出</ItemTitle>
-      </LoginView>
     </SafeAreaView>
   );
 };

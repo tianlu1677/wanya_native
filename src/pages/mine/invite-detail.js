@@ -116,7 +116,7 @@ const InviteDetail = ({navigation, route}) => {
           return (
             <AccountWrapView>
               <Avator
-                size={40}
+                size={45}
                 key={invite.id}
                 account={invite.account}
                 // containerStyle={{marginRight: 15}}
@@ -134,7 +134,7 @@ const InviteDetail = ({navigation, route}) => {
                 }}>
                 <FastImg
                   source={AddFriendImg}
-                  style={{width: 40, height: 40, borderRadius: 20}}
+                  style={{width: 45, height: 45, borderRadius: 20}}
                 />
               </AccountWrapView>
             );
@@ -143,7 +143,7 @@ const InviteDetail = ({navigation, route}) => {
           onPress={() => {
             setShareModelVisible(true);
           }}>
-          <FastImg source={AddFriendImg} style={{width: 40, height: 40, borderRadius: 20}} />
+          <FastImg source={AddFriendImg} style={{width: 45, height: 45, borderRadius: 20}} />
         </AccountWrapView>
       </AccountCardView>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -228,7 +228,7 @@ const CardView = styled(LinearGradient)`
 const CardTitleText = styled(Text)`
   font-size: 14px;
   font-weight: 400;
-  color: white;
+  color: #bdbdbd;
   letter-spacing: 1px;
   line-height: 20px;
   margin-left: 10px;
@@ -265,21 +265,16 @@ const DescText = styled(Text)`
 const AccountCardView = styled(View)`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   margin-top: 45px;
-  justify-content: flex-start;
+  justify-content: space-between;
   margin-left: 52px;
   margin-right: 52px;
   margin-bottom: 23px;
-  align-self: auto;
-  align-content: space-between;
+  align-items: center;
 `;
 
 const AccountWrapView = styled(Pressable)`
   display: flex;
-  flex-direction: row;
-  align-content: center;
-  width: 20%;
 `
 const ModelWrap = styled(TouchableOpacity)`
   display: flex;

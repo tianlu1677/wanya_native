@@ -235,7 +235,7 @@ const Navigation = () => {
           const state = savedStateString ? JSON.parse(savedStateString) : undefined;
 
           if (state !== undefined) {
-            console.log('state', state)
+            // console.log('state', state)
             setInitialState(state);
           }
         }

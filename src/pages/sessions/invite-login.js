@@ -40,7 +40,7 @@ const InviteLogin = ({navigation, route}) => {
           style={{width: 9, height: 15}}
         />
       ),
-      headerRight: () => <FinishBtn onPress={onVerifyInviteCode} canClick={isValidCode} />,
+      headerRight: () => <FinishBtn onPress={onVerifyInviteCode} text={'完成'} canClick={isValidCode} />,
     });
   }, [navigation, isValidCode]);
 

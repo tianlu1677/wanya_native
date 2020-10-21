@@ -14,7 +14,7 @@ import {uploadBase64File} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
 
 const SharePageModal = props => {
-  console.log('shareModelVisible', props)
+  // console.log('shareModelVisible', props)
   const [shareModelVisible, setShareModelVisible] = useState(props.shareModelVisible);
   const [shareUri, setShareUri] = useState('');
   const dispatch = useDispatch();

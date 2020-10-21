@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '500',
     letterSpacing: 1,
-    fontSize: 14,
+    fontSize: 15,
   },
 
   privateText: {

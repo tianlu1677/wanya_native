@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 4,
     zIndex: 100,
-    top: BOTTOM_HEIGHT + 5 + 22,
+    top: BOTTOM_HEIGHT + 3 + 22,
   },
   message_icon: {
     position: 'absolute',
