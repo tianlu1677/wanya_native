@@ -70,7 +70,7 @@ static void InitializeFlipper(UIApplication *application) {
   [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
 
   [UMConfigure setLogEnabled:YES];
-  [RNUMConfigure initWithAppkey:@"5d898ec9570df3adff00089a" channel:@"App Store"];
+  [RNUMConfigure initWithAppkey:@"5f32492fd30932215476edfe" channel:@"App Store"];
   [MobClick setScenarioType:E_UM_NORMAL];
   
   // Define UNUserNotificationCenter
