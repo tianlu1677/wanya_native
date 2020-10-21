@@ -53,7 +53,7 @@ const MentionAccounts = ({navigation}) => {
           enableLoadMore={false}
           enableRefresh={false}
           style={styles.wrapper}
-          loading={false}
+          loading={true}
         />
       </View>
     </TouchableWithoutFeedback>

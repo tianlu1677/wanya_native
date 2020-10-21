@@ -95,8 +95,10 @@ const SingleItem = props => {
 
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
-          <Text style={styles.singleName}>{data.account.nickname.toString().substr(0, 16)}</Text>
-          <Pressable style={{flexDirection: 'row', alignItems: 'center'}} onPress={onPraise}>
+          <Pressable style={{marginRight: 'auto'}} onPress={() => { navigation.push('AccountDetail', {accountId: data.account.id}) }}>
+            <Text style={styles.singleName}>{data.account.nickname && data.account.nickname.toString().substr(0, 16)}</Text>
+          </Pressable>
+          <Pressable style={{flexDirection: 'row', alignItems: 'center'}} hitSlop={{left: 5, top: 5, bottom: 5}} onPress={onPraise}>
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
             <Text
               style={{marginLeft: 5, fontSize: 11, color: praiseForm.praise ? '#000' : '#bdbdbd'}}>
@@ -250,7 +252,7 @@ const styles = StyleSheet.create({
     height: 17,
   },
   singleName: {
-    marginRight: 'auto',
+
     marginLeft: 5,
     color: '#bdbdbd',
     fontSize: 10,

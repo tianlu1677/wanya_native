@@ -13,6 +13,7 @@ class Toast extends Component {
         minWidth: 105,
         minHeight: 105,
         backgroundColor: 'rgba(30,30,30,.85)',
+        borderRadius: 2,
       },
       imgStyle: {
         width: 45,
@@ -20,6 +21,7 @@ class Toast extends Component {
       },
       textStyle: {
         marginTop: 10,
+        fontSize: 14,
       },
       position: this.position.CENTER,
       // imgSource: require('./icon_success.png'),
@@ -37,6 +39,7 @@ class Toast extends Component {
       textStyle: {
         fontSize: 14,
         top: 6,
+        letterSpacing: 1,
       },
       mask: true,
       duration: 0,

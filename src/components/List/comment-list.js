@@ -164,6 +164,7 @@ const cstyles = StyleSheet.create({
     marginLeft: 5,
     textAlign: 'center',
     fontSize: 14,
+    minWidth: 7,
   },
   comment: {
     marginLeft: 32,

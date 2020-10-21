@@ -180,6 +180,7 @@ class ToastContainer extends Component {
             {props.loading && <ActivityIndicator color="#fff" size={props.indicatorSize} />}
             {props.showText && (
               <Text
+                allowFontScaling={false}
                 style={[
                   styles.textStyle,
                   props.textStyle,
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.85)',
-    borderRadius: 5,
+    borderRadius: 2,
   },
   shadowStyle: {
     shadowColor: '#000',

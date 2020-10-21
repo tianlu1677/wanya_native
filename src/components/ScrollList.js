@@ -101,7 +101,7 @@ const ScrollList = props => {
   const renderEmpty = () => {
     // console.log('height', height)
     return (
-      !refreshing && (
+      !refreshing && pagin && (
         <View style={[scrollStyle.footer, {minHeight: 300}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
           <Text style={{color: '#DADADA', fontSize: 13}}>
@@ -188,7 +188,7 @@ const ScrollList = props => {
           // progressViewOffset={10}
           style={{backgroundColor: 'white'}}
           // colors={['red', 'yellow', 'green']}
-          title={enableRefresh ? (refreshing ? '努力加载中...' : '') : ''}
+          // title={enableRefresh ? (refreshing ? '努力加载中...' : '') : ''}
         />
       }
       initialNumToRender={props.initialNumToRender || 10}
