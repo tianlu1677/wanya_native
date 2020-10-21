@@ -33,7 +33,7 @@ const ArticleDetail = ({navigation, route}) => {
     Toast.showLoading('发送中');
     await createComment(data);
     Toast.hide();
-    Toast.show('发送成功啦');
+    Toast.show('评论成功啦');
     loadData();
   };
 
@@ -72,11 +72,21 @@ const ArticleDetail = ({navigation, route}) => {
               enableExperimentalPercentWidth
               allowFontScaling={true}
               textSelectable
-              tagsStyles={{p: {fontSize: 16, lineHeight: 26, marginTop: 14, marginBottom: 14, letterSpacing: 1} }}
+              tagsStyles={{
+                p: {
+                  fontSize: 16,
+                  lineHeight: 26,
+                  marginTop: 14,
+                  marginBottom: 14,
+                  letterSpacing: 1,
+                },
+              }}
               imagesMaxWidth={Dimensions.get('window').width - 20}
               imagesInitialDimensions={{width: Dimensions.get('window').width}}
               baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
-              onLinkPress={(e) => {console.log('xxx', e)}}
+              onLinkPress={e => {
+                console.log('xxx', e);
+              }}
               content={
                 detail &&
                 detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')

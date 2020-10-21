@@ -41,7 +41,7 @@ const AddHashTag = ({navigation}) => {
         />
         <HashtagList
           request={request}
-          enableRefresh={true}
+          enableRefresh={false}
           enableLoadMore={true}
           type="add-hash-tag"
           style={styles.wrapper}
