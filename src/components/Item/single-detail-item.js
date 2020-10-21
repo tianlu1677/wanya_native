@@ -248,7 +248,7 @@ export const ActionComment = props => {
             <Pressable
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
-                setShareModelVisible(true);
+                // setShareModelVisible(true);
               }}>
               <IconFont name="fenxiang" size={19} />
             </Pressable>
