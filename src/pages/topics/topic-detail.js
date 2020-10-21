@@ -24,7 +24,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {NAV_BAR_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT, BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import ViewShotPage from '@/components/SharePage';
@@ -188,7 +188,7 @@ const TopicDetail = ({navigation, route}) => {
     return (
       <View>
         <StatusBar barStyle={'dark-content'} />
-        <View style={{paddingTop: NAV_BAR_HEIGHT, paddingBottom: 16}}>
+        <View style={{paddingTop: BASIC_HEIGHT, marginTop: 10, paddingBottom: 16}}>
           <StatusBar barStyle={'dark-content'} />
         </View>
         <Pressable style={styles.linkWrap} onPress={goLinkDetail}>

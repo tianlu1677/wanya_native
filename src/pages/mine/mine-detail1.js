@@ -70,7 +70,7 @@ const MineDetail = ({navigation, route}) => {
   };
 
   const onPlay = () => {
-    Toast.show('顽力值代表你的影响力，顽力值越多收获就越多。');
+    Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多');
   };
 
   useEffect(() => {
