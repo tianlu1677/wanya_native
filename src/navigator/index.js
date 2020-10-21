@@ -145,7 +145,7 @@ function MainStackList() {
           fontSize: 16,
         },
         headerBackImage: () => (
-          <Image source={require('../assets/images/back.png')} style={{width: 12, height: 15}} />
+          <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15}} />
         ),
       })}>
       <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
