@@ -87,7 +87,7 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const onShowIntro = () => {
-    setShowModal(true)
+    setShowModal(true);
     // sheetRef.current.snapTo();
   };
 
@@ -98,12 +98,16 @@ const NodeDetail = ({navigation, route}) => {
   return detail ? (
     <View style={{...styles.wrapper}}>
       <GoBack />
-      <FastImg source={{uri: detail.backgroud_cover_url}} resizeMode={'cover'} style={styles.imageCover} />
+      <FastImg
+        source={{uri: detail.backgroud_cover_url}}
+        resizeMode={'cover'}
+        style={styles.imageCover}
+      />
       <View style={styles.imageCoverOpacity} />
       <View style={styles.header}>
         <View style={styles.nodeContent}>
           <View style={styles.nodeInfo}>
-            <Image style={styles.cover} source={{uri: detail.cover_url}} />
+            <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
             <View style={styles.nodewrap}>
               <Text style={styles.nodeName}>{detail.name}</Text>
               <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
@@ -169,8 +173,7 @@ const NodeDetail = ({navigation, route}) => {
         cancleClick={() => setShowModal(false)}
         title={detail.name}
         content={detail.desc}
-      >
-      </BottomModal>
+      />
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
     </View>
   ) : (
@@ -206,8 +209,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 400,
-    // backgroundColor: '#000',
-    // opacity: 0.5,
+    backgroundColor: '#000',
+    opacity: 0.5,
   },
   nodeContent: {
     flexDirection: 'row',

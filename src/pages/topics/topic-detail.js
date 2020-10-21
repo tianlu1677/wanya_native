@@ -49,7 +49,7 @@ const TopicDetail = ({navigation, route}) => {
     Toast.showLoading('发送中');
     await createComment(data);
     Toast.hide();
-    Toast.show('发送成功啦');
+    Toast.show('评论成功啦');
     loadData();
   };
 

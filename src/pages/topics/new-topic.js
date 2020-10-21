@@ -384,8 +384,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   media: {
-    width: 71,
-    height: 71,
+    width: mediaSize,
+    height: mediaSize,
   },
   mediaCloseWrap: {
     position: 'absolute',

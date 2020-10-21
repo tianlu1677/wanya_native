@@ -64,7 +64,7 @@ const TabList = props => {
         tabBarStyle.tabWrap,
         tabBarStyle[`tab${size}`],
         bottomLine ? tabBarStyle.bottomLine : null,
-        props.separator ? tabBarStyle.separator : null,
+        // props.separator ? tabBarStyle.separator : null,
       ]}>
       <ScrollView
         horizontal
