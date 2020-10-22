@@ -77,17 +77,21 @@ const Recommend = props => {
           onChange={key => setCurrentKey(key)}
         />
         <View style={styles.message}>
-          <BadgeMessage
-            value={UnreadMessageCount()}
-            containerStyle={{...styles.badgeContainer, right: UnreadMessageCount() > 99 ? 2 : 8}}
-            size={'small'}
-          />
+
           <Pressable
             style={styles.message_icon}
             hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
             onPress={() => props.navigation.navigate('NotifyIndex')}
           >
-            <IconFont name="notice" size={19} />
+            <View style={{position: 'relative'}}>
+              <IconFont name="notice" size={20} />
+
+            </View>
+            <BadgeMessage
+              value={UnreadMessageCount()}
+              containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
+              size={'small'}
+            />
           </Pressable>
         </View>
       </View>
@@ -97,9 +101,7 @@ const Recommend = props => {
 
 const styles = StyleSheet.create({
   badgeContainer: {
-    height: 18,
     position: 'absolute',
-    right: 8,
     top: -5,
   },
   wrapper: {

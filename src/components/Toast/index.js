@@ -32,8 +32,8 @@ class Toast extends Component {
   static showLoading(message, options = {}) {
     this.show(message, {
       containerStyle: {
-        minWidth: 90,
-        minHeight: 80,
+        minWidth: '30%',
+        minHeight: 100,
         backgroundColor: 'rgba(30,30,30,.85)',
       },
       textStyle: {

@@ -8,7 +8,7 @@ import {
   TextInput,
   Text,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {createFeedback} from '@/api/feedback_api';
 import {Button} from 'react-native-elements';
@@ -18,29 +18,24 @@ import Toast from '@/components/Toast';
 const Feedback = ({navigation, route}) => {
   const [content, setContent] = useState('');
   const [contact, setContact] = useState('');
-  const [accountId, setAccountId] = useState('');
+  const currentAccount = useSelector(state => state.account.currentBaseInfo);
+
 
   const dispatch = useDispatch();
 
   const sendFeedback = () => {
-    // const { content, contact } = this.state
     if (content.length < 1) {
-      // Taro.showToast({
-      //   title: '请输入反馈内容',
-      //   icon: 'none'
-      // })
       return;
     }
     let data = {
       content: content,
       contact: contact,
-      account_id: '',
+      account_id: currentAccount.id,
     };
 
-    console.log('dda', data);
+    // console.log('dda', data);
     createFeedback(data);
     Toast.showError('反馈成功');
-
     setTimeout(() => {
       navigation.goBack();
     }, 1000);

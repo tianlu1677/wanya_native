@@ -22,9 +22,7 @@ const MineDetail = ({navigation, route}) => {
   const [accountId] = useState(currentAccount.id);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
-
   const dispatch = useDispatch();
-
   const loadData = async () => {
     dispatch(dispatchCurrentAccount())
     // const res = await getAccount(accountId);
@@ -96,13 +94,14 @@ const MineDetail = ({navigation, route}) => {
         <Pressable
           onPress={() => navigation.navigate('NotifyIndex')} style={styles.message}
           hitSlop={{top: 10, left: 20}}
+          style={{marginRight: 16}}
         >
           <View style={styles.message_icon}>
-            <IconFont name="notice" size={20} style={{marginRight: 9}} color="#fff" />
+            <IconFont name="notice" size={20} style={{}} color="#fff" />
           </View>
           <BadgeMessage
             value={UnreadMessageCount()}
-            containerStyle={{position: 'absolute', right: UnreadMessageCount() > 9 ? -6 : 3, top: -5}}
+            containerStyle={{position: 'absolute', left: UnreadMessageCount() > 9 ? 8 : 14, top: -5}}
             size={'small'}
           >
           </BadgeMessage>
