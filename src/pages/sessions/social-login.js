@@ -40,7 +40,8 @@ const SocialLogin = ({navigation, route}) => {
         return;
       }
       let accountInfo = userInfoRes.account;
-      Helper.setData('socialToken', accountInfo.token);
+      console.log('accountInfo', accountInfo);
+      await Helper.setData('socialToken', accountInfo.token);
       // 有手机且已验证码，跳转到首页
       if (accountInfo.had_phone && accountInfo.had_invited) {
         await Helper.setData('auth_token', accountInfo.token);

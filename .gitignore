@@ -65,3 +65,7 @@ ios/Podfile.lock
 *.zip
 
 wanya_apps/*
+ios/*.cer
+ios/*.p12
+ios/*.certSigningRequest
+ios/AdHoc_com.vanyah.ios.mobileprovision

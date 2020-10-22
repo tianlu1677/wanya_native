@@ -61,7 +61,7 @@ const PhoneLogin = ({navigation, route}) => {
     }, 1000);
   };
 
-  const onSendPhoneCode = () => {
+  const onSendPhoneCode = async () => {
     if (!/^1[3456789]\d{9}$/.test(phone)) {
       console.log('error phone');
       Toast.showError('请输入正确的手机号');
@@ -70,8 +70,9 @@ const PhoneLogin = ({navigation, route}) => {
     let timestamp = new Date().getTime();
     let secret_key = `phone_${phone}_${timestamp}`;
     let secret = md5(secret_key);
+    const token = await Helper.getData('socialToken');
     console.log(secret, md5(secret));
-    let data = {phone: phone, secret: secret, timestamp: timestamp};
+    let data = {phone: phone, secret: secret, timestamp: timestamp, token: token};
     downTimeRunner();
 
     sendPhoneCode(data).then(res => {
