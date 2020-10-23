@@ -73,14 +73,14 @@ const PhoneLogin = ({navigation, route}) => {
     const token = await Helper.getData('socialToken');
     console.log(secret, md5(secret));
     let data = {phone: phone, secret: secret, timestamp: timestamp, token: token};
-    downTimeRunner();
 
     sendPhoneCode(data).then(res => {
       if (res.status === 'success') {
         console.log('发送成功');
+        downTimeRunner();
         setFirstVerify(false);
       } else {
-        Toast.showError('请稍后重试');
+        Toast.showError(res.error);
         console.log('failed');
       }
     });

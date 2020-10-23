@@ -23,7 +23,7 @@ const Feedback = ({navigation, route}) => {
 
   const dispatch = useDispatch();
 
-  const sendFeedback = () => {
+  const sendFeedback = async () => {
     if (content.length < 1) {
       return;
     }
@@ -34,7 +34,7 @@ const Feedback = ({navigation, route}) => {
     };
 
     // console.log('dda', data);
-    createFeedback(data);
+    await createFeedback(data);
     Toast.showError('反馈成功');
     setTimeout(() => {
       navigation.goBack();
