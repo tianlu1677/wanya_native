@@ -155,7 +155,7 @@ export const Bottom = props => {
         onPress={() => {
           onShare();
         }}>
-        <IconFont name="fenxiang" size={18} style={{marginLeft: 'auto'}} />
+        <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
       </Pressable>
     </View>
   );

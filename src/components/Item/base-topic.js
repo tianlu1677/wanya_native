@@ -103,7 +103,7 @@ export const TopicLinkContent = props => {
 
   return (
     <View style={styles.linkWrap}>
-      <FastImg source={{uri: props.data.topic_link.cover_url}} style={{flex: 1, height: 167}} />
+      <FastImg source={{uri: props.data.topic_link.cover_url}} style={{flex: 1, height: 167, width: '100%'}} />
       <View style={styles.linkTitleBg}>
         <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
       </View>
@@ -200,6 +200,8 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     height: 64,
+    color: 'white',
+    // backgroundColor: 'rgba(0,0,0,0.1)',
   },
   linkTitle: {
     padding: 11,

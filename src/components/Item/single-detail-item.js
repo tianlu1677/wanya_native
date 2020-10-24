@@ -252,7 +252,7 @@ export const ActionComment = props => {
                 navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id})
                 // setShareModelVisible(true);
               }}>
-              <IconFont name="fenxiang" size={19} />
+              <IconFont name="zhuanfa" size={19} />
             </Pressable>
 
             {/*<View style={{}}>*/}
