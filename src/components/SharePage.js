@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {View, Text, Modal, Button, Dimensions, Image, StyleSheet} from 'react-native';
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
@@ -23,16 +23,26 @@ const ViewShotPage = props => {
   const [imgHeight, setimgHeight] = useState(300);
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
-  Image.getSize(bg_img_url, (width, height) => {
-    const maxWidth = screenWidth - 40;
-    if (width > maxWidth) {
-      setimgWidth(maxWidth);
-      setimgHeight(height * (maxWidth / width));
-    } else {
-      setimgWidth(width);
-      setimgHeight(height);
+  const loadCoverStyle = () => {
+    if (!bg_img_url) {
+      return;
     }
-  });
+    Image.getSize(bg_img_url, (width, height) => {
+      const maxWidth = screenWidth - 40;
+      if (width > maxWidth) {
+        setimgWidth(maxWidth);
+        setimgHeight(height * (maxWidth / width));
+      } else {
+        setimgWidth(width);
+        setimgHeight(height);
+      }
+    });
+  };
+
+  useEffect(() => {
+    loadCoverStyle();
+    return () => {};
+  }, [bg_img_url])
 
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
@@ -62,7 +72,7 @@ const ViewShotPage = props => {
                 <Image source={PlayVideoImg} style={styles.playVideo} />
               )}
             </View>
-            <Text style={styles.text}>{content} #将小游戏作 为中心化入</Text>
+            <Text style={styles.text}>{content}</Text>
             <View style={styles.footer}>
               <Image style={styles.shareLogo} source={require('@/assets/images/share-wanya.png')} />
               <Image style={styles.shareqrImg} source={{uri: qrcode_url}} />

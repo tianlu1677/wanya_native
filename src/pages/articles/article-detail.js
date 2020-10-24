@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, KeyboardAvoidingView, Platform, Dimensions} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
@@ -8,9 +8,12 @@ import Toast from '@/components/Toast';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
+import {dispatchArticleDetail} from '@/redux/actions';
 import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 
 const ArticleDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
+
   const currentAccount = useSelector(state => state.account.currentAccount);
 
   const [articleId] = useState(route.params.articleId);
@@ -26,6 +29,7 @@ const ArticleDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getArticle(7 || articleId);
     setDetail(res.data.article);
+    dispatch(dispatchArticleDetail(res.data.article))
   };
 
   const publishComment = async data => {

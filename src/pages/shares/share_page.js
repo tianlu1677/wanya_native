@@ -60,14 +60,15 @@ const SharePageModal = props => {
         content_style: topic.content_style,
         qrcode_url: topic.qrcode_url
       });
-      console.log('shareContent', shareContent);
+      // console.log('shareContent', shareContent);
     } else if (item_type === 'Article') {
+      // console.log('article', article.intro)
       setShareContent({
         account: article.account,
         node_name: article.node.name,
-        content: article.plain_content,
+        content: article.intro,
         bg_img_url: article.wx_share_image_url ? article.wx_share_image_url.split('?')[0] : '',
-        desc: '刚刚 发布了一篇帖子',
+        desc: '刚刚 发布了一篇文章',
         content_style: '',
         qrcode_url: article.qrcode_url
       });
