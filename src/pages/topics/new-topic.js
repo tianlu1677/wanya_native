@@ -283,6 +283,7 @@ const NewTopic = props => {
                         controls={false}
                         muted={false}
                         reportBandwidth
+                        ignoreSilentSwitch="ignore"
                         repeat
                         onFullscreenPlayerDidDismiss={() => {
                           videoRef.current.seek(0);
@@ -386,6 +387,7 @@ const styles = StyleSheet.create({
   media: {
     width: mediaSize,
     height: mediaSize,
+    backgroundColor: 'black',
   },
   mediaCloseWrap: {
     position: 'absolute',

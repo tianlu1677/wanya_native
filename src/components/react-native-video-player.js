@@ -522,6 +522,7 @@ export default class VideoPlayer extends Component {
           source={video}
           resizeMode={resizeMode}
           hideShutterView={true}
+          ignoreSilentSwitch="ignore"
           onFullscreenPlayerDidDismiss={this.onFullscreenPlayerDidDismiss}
           // fullscreenOrientation={'landscape'}
         />
