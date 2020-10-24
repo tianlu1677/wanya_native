@@ -24,6 +24,7 @@ import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
+import {RFValue} from '@/utils/response-fontsize';
 
 const HEADER_HEIGHT = 283;
 const NodeDetail = ({navigation, route}) => {
