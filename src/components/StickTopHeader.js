@@ -11,7 +11,7 @@ const StickTopHeader = props => {
       // blurAmount={40}
     >
       <TopHeader
-        LeftButton={props.showLeftButton ? null : () => <View />}
+        LeftButton={props.showLeftButton ? () => <View /> : null }
         Title={() => (
           <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>{props.title}</Text>
         )}

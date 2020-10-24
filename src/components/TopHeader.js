@@ -67,7 +67,7 @@ const TopHeader = props => {
 export default TopHeader;
 TopHeader.propTypes = {
   // Title: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  LeftButton: PropTypes.object,
+  // LeftButton: PropTypes.object,
   RightButton: PropTypes.object,
   isAtRoot: PropTypes.bool,
 };

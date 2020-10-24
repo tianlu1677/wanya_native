@@ -92,7 +92,7 @@ const CollapsibleHeader = props => {
             useNativeDriver: true,
           })}
           onRefresh={false}
-          // bounces={false}
+          bounces={false}
           // refreshing={true}
           onMomentumScrollBegin={onMomentumScrollBegin}
           onScrollEndDrag={onScrollEndDrag}
@@ -141,6 +141,7 @@ const CollapsibleHeader = props => {
           current={props.currentKey}
           tabChange={tab => props.onKeyChange(tab.key)}
           size={props.size}
+          lazy={true}
           bottomLine={props.bottomLine}
           {...innerProps}
         />
