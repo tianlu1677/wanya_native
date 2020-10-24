@@ -43,7 +43,7 @@ const TopHeader = props => {
               }}>
               <Icon
                 name="chevron-back-outline"
-                size={30}
+                size={22}
                 color="white"
                 iconStyle={{marginRight: 1}}
               />

@@ -20,12 +20,13 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
-import BottomSheetContent from '@/components/BottomSheetContent';
-import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
+import CollapsibleHeader from '@/components/CollapsibleHeaders';
+import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
+import TopHeader from '@/components/TopHeader'
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -149,13 +150,20 @@ const NodeDetail = ({navigation, route}) => {
     )
   }
 
+  const StickTopHeader = () => {
+    return (<View style={{flex: 1, backgroundColor: 'black'}}>
+        <TopHeader Title={() => (<Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>{detail.name}</Text>)} />
+      </View>
+    )
+  }
+
   return detail ? (
     <View style={{...styles.wrapper}}>
-      <Header />
-
-      <TabViewList
+      <CollapsibleHeader
+        tabBarHeight={NAV_BAR_HEIGHT}
+        headerHeight={283}
         currentKey={currentKey}
-        separator={true}
+        onKeyChange={key => setCurrentKey(key)}
         tabData={[
           {
             key: 'publish',
@@ -178,8 +186,16 @@ const NodeDetail = ({navigation, route}) => {
             component: TopicListPage,
           },
         ]}
-        onChange={key => setCurrentKey(key)}
+        renderHeader={<Header />}
+        renderTopHeader={<StickTopHeader />}
+        // <View style={[styles.headerRow, {height: props.headerHeight}]}>
+        //   <View style={styles.headerCol}>
+        //     <Text style={styles.text}>Collapsible Header</Text>
+        //   </View>
+        // </View>
+        separator={true}
       />
+
       <BottomModal
         visible={showModal}
         cancleClick={() => setShowModal(false)}
@@ -187,6 +203,43 @@ const NodeDetail = ({navigation, route}) => {
         content={detail.desc}
       />
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
+
+      {/*<Header />*/}
+
+      {/*<TabViewList*/}
+      {/*  currentKey={currentKey}*/}
+      {/*  separator={true}*/}
+      {/*  tabData={[*/}
+      {/*    {*/}
+      {/*      key: 'publish',*/}
+      {/*      title: '动态',*/}
+      {/*      component: PublishListPage,*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      key: 'posts',*/}
+      {/*      title: '帖子',*/}
+      {/*      component: PostsListPage,*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      key: 'article',*/}
+      {/*      title: '文章',*/}
+      {/*      component: ArticleListPage,*/}
+      {/*    },*/}
+      {/*    {*/}
+      {/*      key: 'hashTag',*/}
+      {/*      title: '话题',*/}
+      {/*      component: TopicListPage,*/}
+      {/*    },*/}
+      {/*  ]}*/}
+      {/*  onChange={key => setCurrentKey(key)}*/}
+      {/*/>*/}
+      {/*<BottomModal*/}
+      {/*  visible={showModal}*/}
+      {/*  cancleClick={() => setShowModal(false)}*/}
+      {/*  title={detail.name}*/}
+      {/*  content={detail.desc}*/}
+      {/*/>*/}
+      {/*<JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />*/}
     </View>
   ) : (
     <Loading />

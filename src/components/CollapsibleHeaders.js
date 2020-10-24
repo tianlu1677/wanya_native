@@ -2,9 +2,10 @@ import React, {useEffect, useRef} from 'react';
 import {Animated, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
+import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 
 const tabBarHeight = 45; // tabbar middle高度
-const titleHeight = 80; // 标题高度
+const titleHeight = NAVIGATION_BAR_HEIGHT; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
@@ -88,6 +89,9 @@ const CollapsibleHeader = props => {
           onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
             useNativeDriver: true,
           })}
+          onRefresh={false}
+          // bounces={false}
+          // refreshing={true}
           onMomentumScrollBegin={onMomentumScrollBegin}
           onScrollEndDrag={onScrollEndDrag}
           onMomentumScrollEnd={onMomentumScrollEnd}
@@ -187,7 +191,7 @@ const CollapsibleHeader = props => {
 
     return (
       <Animated.View style={[localStyles.header, {opacity: opacity, height: titleHeight}]}>
-        <Text style={{color: '#fff'}}>标题</Text>
+        {props.renderTopHeader}
       </Animated.View>
     );
   };
@@ -215,9 +219,9 @@ const localStyles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 0,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // // backgroundColor: '#000',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });
 
