@@ -155,8 +155,7 @@ export const Bottom = props => {
         onPress={() => {
           onShare();
         }}
-        hitSlop={{left: 10, right: 10, top: 5}}
-      >
+        hitSlop={{left: 10, right: 10, top: 5}}>
         <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
       </Pressable>
     </View>
@@ -192,7 +191,7 @@ export const PlainContent = props => {
                   {v.content}&nbsp;
                 </Text>
               )}
-              {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content}</Text>}
+              {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content} </Text>}
             </Text>
           );
         })
