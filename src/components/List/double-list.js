@@ -73,6 +73,17 @@ const SingleItem = props => {
     }
   });
 
+  const IsTopIcon = () => {
+    return (
+      <View style={styles.isTopLabel}>
+        <View style={{flexDirection: 'row', position: 'relative'}}>
+          <Text style={styles.topText}>置顶</Text>
+          <View style={styles.sanjia} />
+        </View>
+      </View>
+    )
+  }
+
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
@@ -88,7 +99,7 @@ const SingleItem = props => {
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
-        {props.isTop && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
+        {props.isTop && <IsTopIcon />}
         {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
@@ -292,6 +303,42 @@ const styles = StyleSheet.create({
     left: 8,
     top: 8,
   },
+
+  topText: {
+    width: 30,
+    height: 16,
+    // flex: 1,
+    textAlign: 'center',
+    lineHeight: 16,
+    backgroundColor: '#FFFF00',
+    borderRadius: 2,
+    overflow: 'hidden',
+    color: 'black',
+    fontSize: 10,
+    alignItems: 'center',
+  },
+  //  sanjia
+  isTopLabel: {
+    position: 'absolute',
+    left: 8,
+    top: 8,
+  },
+  sanjia: {
+    position: 'absolute',
+    right: -15,
+    top: 0,
+    width:0,
+    height:0,
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    borderTopWidth: 8,
+    borderLeftWidth: 8,
+    borderRightWidth: 8,
+    borderBottomWidth: 8,
+    borderLeftColor:'#FFFF00',//右箭头颜色
+    borderBottomColor:'transparent',//上箭头颜色
+    borderRightColor: 'transparent'//左箭头颜色
+  }
 });
 
 export default DoubleList;

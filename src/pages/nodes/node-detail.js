@@ -26,7 +26,7 @@ import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
-import TopHeader from '@/components/TopHeader'
+import StickTopHeader from '@/components/StickTopHeader'
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -150,12 +150,6 @@ const NodeDetail = ({navigation, route}) => {
     )
   }
 
-  const StickTopHeader = () => {
-    return (<View style={{flex: 1, backgroundColor: 'black'}}>
-        <TopHeader Title={() => (<Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>{detail.name}</Text>)} />
-      </View>
-    )
-  }
 
   return detail ? (
     <View style={{...styles.wrapper}}>
@@ -187,12 +181,7 @@ const NodeDetail = ({navigation, route}) => {
           },
         ]}
         renderHeader={<Header />}
-        renderTopHeader={<StickTopHeader />}
-        // <View style={[styles.headerRow, {height: props.headerHeight}]}>
-        //   <View style={styles.headerCol}>
-        //     <Text style={styles.text}>Collapsible Header</Text>
-        //   </View>
-        // </View>
+        renderTopHeader={<StickTopHeader title={detail.name} />}
         separator={true}
       />
 

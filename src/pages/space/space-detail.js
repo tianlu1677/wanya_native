@@ -13,7 +13,8 @@ import FastImg from '@/components/FastImg';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-
+import TopHeader from "@/components/TopHeader"
+import StickTopHeader from '@/components/StickTopHeader'
 const HEADER_HEIGHT = 275;
 
 const SpaceDetail = ({navigation, route}) => {
@@ -73,6 +74,7 @@ const SpaceDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
+
   return detail ? (
     <View style={styles.wrapper}>
       <GoBack />
@@ -81,6 +83,7 @@ const SpaceDetail = ({navigation, route}) => {
         headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
+        renderTopHeader={<StickTopHeader title={detail.name} />}
         tabData={[
           {
             key: 'lasted',

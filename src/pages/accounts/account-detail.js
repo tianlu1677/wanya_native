@@ -2,7 +2,7 @@ import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import IconFont from '@/iconfont';
 import {useSelector, useDispatch} from 'react-redux';
-import {Avator, PlayScore, GoBack} from '@/components/NodeComponents';
+import {Avator, PlayScore, GoBack, BadgeMessage} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -10,6 +10,7 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {AccountDetailBgImg} from '@/utils/default-image';
+import StickTopHeader from '@/components/StickTopHeader'
 import {
   getAccount,
   getAccountPosts,
@@ -17,6 +18,11 @@ import {
   unfollowAccount,
   getAccountArticles,
 } from '@/api/account_api';
+import CollapsibleHeader from '@/components/CollapsibleHeaders';
+import {BASIC_HEIGHT} from '@/utils/navbar';
+import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
+
+const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
 const AccountDetail = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
@@ -85,89 +91,98 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
+  const Header = () => {
+    return (
+      <View style={{flex: 1}}>
+        <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
+          <View
+            style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
+            <Avator account={account} size={51} isShowSettledIcon={false} />
+            <View style={{marginLeft: 8}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.nickname}>{account.nickname}</Text>
+                {account.settled_type !== 'single' && (
+                  <Image
+                    style={{width: 16, height: 16, marginLeft: 7}}
+                    source={
+                      account.settled_type === 'personal'
+                        ? require('@/assets/images/personal.png')
+                        : require('@/assets/images/brand.png')
+                    }
+                  />
+                )}
+              </View>
+              <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
+            </View>
+            {currentAccount.id !== account.id && (
+              <Text
+                style={[styles.follow, account.followed && {color: '#BDBDBD'}]}
+                onPress={onFollow}>
+                {account.followed && account.following
+                  ? '互相关注'
+                  : account.followed
+                  ? '已关注'
+                  : '关注'}
+              </Text>
+            )}
+          </View>
+          {account.settled_type !== 'single' && (
+            <View style={styles.settledWrap}>
+              <Image
+                style={{width: 16, height: 16, marginRight: 3}}
+                source={
+                  account.settled_type === 'personal'
+                    ? require('@/assets/images/personal.png')
+                    : require('@/assets/images/brand.png')
+                }
+              />
+              <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
+            </View>
+          )}
+          <View style={styles.introWrap}>
+            <View style={{marginRight: 'auto'}}>
+              <View style={{flexDirection: 'row', marginBottom: 8}}>
+                {account.gender === 'man' && (
+                  <IconFont name="man" size={13} style={styles.maleIcon} />
+                )}
+                {account.gender === 'woman' && (
+                  <IconFont name="woman" size={13} style={styles.maleIcon} />
+                )}
+                <Text style={styles.tag}>{account.age || '18'}岁</Text>
+                <Text style={styles.tag}>{account.province || '未知街区'}</Text>
+              </View>
+              <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
+            </View>
+            <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
+          </View>
+          <View style={styles.numberWrap}>
+            <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
+              <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
+              <Text style={styles.numberTitle}>动态</Text>
+            </Pressable>
+            <Pressable style={styles.numberItem} onPress={goFollowList}>
+              <Text style={styles.numberCount}>{account.nodes_count}</Text>
+              <Text style={styles.numberTitle}>圈子</Text>
+            </Pressable>
+            <Pressable style={styles.numberItem} onPress={goFollowAccounts}>
+              <Text style={styles.numberCount}>{account.following_count}</Text>
+              <Text style={styles.numberTitle}>关注</Text>
+            </Pressable>
+            <Pressable style={styles.numberItem} onPress={goFollowerAccounts}>
+              <Text style={styles.numberCount}>{account.followers_count}</Text>
+              <Text style={styles.numberTitle}>粉丝</Text>
+            </Pressable>
+          </View>
+        </ImageBackground>
+      </View>
+    );
+  };
+
   return account ? (
     <View style={styles.wrapper}>
       <GoBack />
-      <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
-        <View
-          style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
-          <Avator account={account} size={51} isShowSettledIcon={false} />
-          <View style={{marginLeft: 8}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.nickname}>{account.nickname}</Text>
-              {account.settled_type !== 'single' && (
-                <Image
-                  style={{width: 16, height: 16, marginLeft: 7}}
-                  source={
-                    account.settled_type === 'personal'
-                      ? require('@/assets/images/personal.png')
-                      : require('@/assets/images/brand.png')
-                  }
-                />
-              )}
-            </View>
-            <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
-          </View>
-          {
-            currentAccount.id !== account.id && <Text style={[styles.follow, account.followed && {color: '#BDBDBD'}]} onPress={onFollow}>
-              {account.followed && account.following
-                ? '互相关注'
-                : account.followed
-                  ? '已关注'
-                  : '关注'}
-            </Text>
-          }
-        </View>
-        {account.settled_type !== 'single' && (
-          <View style={styles.settledWrap}>
-            <Image
-              style={{width: 16, height: 16, marginRight: 3}}
-              source={
-                account.settled_type === 'personal'
-                  ? require('@/assets/images/personal.png')
-                  : require('@/assets/images/brand.png')
-              }
-            />
-            <Text style={styles.settled}>顽鸦认证：{account.settled_name}</Text>
-          </View>
-        )}
-        <View style={styles.introWrap}>
-          <View style={{marginRight: 'auto'}}>
-            <View style={{flexDirection: 'row', marginBottom: 8}}>
-              {account.gender === 'man' && (
-                <IconFont name="man" size={13} style={styles.maleIcon} />
-              )}
-              {account.gender === 'woman' && (
-                <IconFont name="woman" size={13} style={styles.maleIcon} />
-              )}
-              <Text style={styles.tag}>{account.age || '18'}岁</Text>
-              <Text style={styles.tag}>{account.province || '未知街区'}</Text>
-            </View>
-            <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
-          </View>
-          <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
-        </View>
-        <View style={styles.numberWrap}>
-          <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-            <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
-            <Text style={styles.numberTitle}>动态</Text>
-          </Pressable>
-          <Pressable style={styles.numberItem} onPress={goFollowList}>
-            <Text style={styles.numberCount}>{account.nodes_count}</Text>
-            <Text style={styles.numberTitle}>圈子</Text>
-          </Pressable>
-          <Pressable style={styles.numberItem} onPress={goFollowAccounts}>
-            <Text style={styles.numberCount}>{account.following_count}</Text>
-            <Text style={styles.numberTitle}>关注</Text>
-          </Pressable>
-          <Pressable style={styles.numberItem} onPress={goFollowerAccounts}>
-            <Text style={styles.numberCount}>{account.followers_count}</Text>
-            <Text style={styles.numberTitle}>粉丝</Text>
-          </Pressable>
-        </View>
-      </ImageBackground>
-      <TabViewList
-        separator={true}
+      <CollapsibleHeader
+        headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
         tabData={[
           {
@@ -192,6 +207,8 @@ const AccountDetail = ({navigation, route}) => {
           },
         ]}
         onChange={key => setCurrentKey(key)}
+        renderTopHeader={<StickTopHeader title={account.nickname} />}
+        renderHeader={<Header />}
       />
     </View>
   ) : (

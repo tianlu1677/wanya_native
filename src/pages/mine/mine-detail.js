@@ -15,6 +15,7 @@ import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
+import StickTopHeader from '@/components/StickTopHeader'
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
@@ -86,6 +87,16 @@ const MineDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
+  // const StickTopHeader = () => {
+  //   return (<View style={{flex: 1, backgroundColor: 'black'}}>
+  //       <TopHeader
+  //         LeftButton={() => <View />}
+  //         Title={() => (<Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>{currentAccount.nickname}</Text>)}
+  //       />
+  //     </View>
+  //   )
+  // }
+
   return currentAccount ? (
     <View style={{flex: 1}}>
       <CollapsibleHeader
@@ -114,6 +125,7 @@ const MineDetail = ({navigation, route}) => {
             component: ArticleListPage,
           },
         ]}
+        renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={false} />}
         renderHeader={
           <>
             <FocusAwareStatusBar barStyle="light-content" />
