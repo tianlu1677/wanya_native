@@ -102,6 +102,7 @@ export const PublishRelated = props => {
 };
 
 export const ActionComment = props => {
+  const navigation = useNavigation()
   const comment = useSelector(state => state.home.commentTopic);
   const dispatch = useDispatch();
   const [value, setValue] = useState(null);
@@ -248,28 +249,29 @@ export const ActionComment = props => {
             <Pressable
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
+                navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id})
                 // setShareModelVisible(true);
               }}>
               <IconFont name="fenxiang" size={19} />
             </Pressable>
 
-            <View style={{}}>
-              <SharePageModal
-                shareModelVisible={shareModelVisible}
-                onShowShare={status => setShareModelVisible(status)}
-                assetable={{
-                  type: props.type,
-                  id: props.detail.id,
-                  assetable_name: 'app_share_image',
-                }}
-                pageShareContent={{
-                  account: props.detail.account,
-                  node_name: props.detail.node.name,
-                  content: props.detail.plain_content,
-                  bg_img_url: props.detail.wx_share_image_url,
-                }}
-              />
-            </View>
+            {/*<View style={{}}>*/}
+            {/*  <SharePageModal*/}
+            {/*    shareModelVisible={shareModelVisible}*/}
+            {/*    onShowShare={status => setShareModelVisible(status)}*/}
+            {/*    assetable={{*/}
+            {/*      type: props.type,*/}
+            {/*      id: props.detail.id,*/}
+            {/*      assetable_name: 'app_share_image',*/}
+            {/*    }}*/}
+            {/*    pageShareContent={{*/}
+            {/*      account: props.detail.account,*/}
+            {/*      node_name: props.detail.node.name,*/}
+            {/*      content: props.detail.plain_content,*/}
+            {/*      bg_img_url: props.detail.wx_share_image_url,*/}
+            {/*    }}*/}
+            {/*  />*/}
+            {/*</View>*/}
           </View>
         </>
       )}

@@ -11,11 +11,13 @@ import {
   CURRENT_ACCOUNT_SUCCESS,
   PREVIEW_IMAGES,
   BASE_CURRENT_ACCOUNT_SUCCESS,
-  ShareView,
+  ARTICLE_DETAIL_SUCCESS,
+  TOPIC_DELETE_SUCCESS,
+  ShareView, TOPIC_DETAIL_SUCCESS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
-import Helper from "@/utils/helper"
+import Helper from '@/utils/helper';
 
 // 当前用户
 export const dispatchCurrentAccount = () => async dispatch => {
@@ -23,12 +25,12 @@ export const dispatchCurrentAccount = () => async dispatch => {
   dispatch({type: CURRENT_ACCOUNT_SUCCESS, account: res.account});
 };
 
-export const dispatchBaseCurrentAccount = () => async (dispatch) => {
+export const dispatchBaseCurrentAccount = () => async dispatch => {
   const res = await getCurrentAccountBaseInfo();
-  console.log('dispatchBaseCurrentAccount', res)
+  console.log('dispatchBaseCurrentAccount', res);
   dispatch({
     type: BASE_CURRENT_ACCOUNT_SUCCESS,
-    account: res.account
+    account: res.account,
   });
 };
 
@@ -76,15 +78,15 @@ export const changeProgress = value => {
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
   // console.log('dispatchSetAuthToken', token);
-  dispatchCurrentAccount()
-  Helper.setData('auth_token', token)
+  dispatchCurrentAccount();
+  Helper.setData('auth_token', token);
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
 };
 // 预览图片
 export const dispatchPreviewImage = (previewImageData = {}) => async dispatch => {
   dispatch({
     type: PREVIEW_IMAGES,
-    previewImageData: previewImageData
+    previewImageData: previewImageData,
   });
 };
 
@@ -92,10 +94,25 @@ export const dispatchPreviewImage = (previewImageData = {}) => async dispatch =>
 export const dispatchShareItem = (shareContent = {}) => async dispatch => {
   dispatch({
     type: ShareView,
-    shareContent: shareContent
+    shareContent: shareContent,
   });
 };
 
+// 文章详情
+export const dispatchArticleDetail = (article = {}) => async dispatch => {
+  dispatch({
+    type: ARTICLE_DETAIL_SUCCESS,
+    article: article,
+  });
+};
+// 帖子详情
+export const dispatchTopicDetail = (topic = {}) => async dispatch => {
+  // console.log('TOPIC_DELETE_SUCCESS', topic)
+  dispatch({
+    type: TOPIC_DETAIL_SUCCESS,
+    topic: topic,
+  });
+};
 
 // // new topic
 // export const dispathSaveNewTopic = value => {
