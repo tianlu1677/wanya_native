@@ -29,13 +29,9 @@ const ViewShotPage = props => {
     }
     Image.getSize(bg_img_url, (width, height) => {
       const maxWidth = screenWidth - 40;
-      if (width > maxWidth) {
-        setimgWidth(maxWidth);
-        setimgHeight(height * (maxWidth / width));
-      } else {
-        setimgWidth(width);
-        setimgHeight(height);
-      }
+      setimgWidth(maxWidth);
+      setimgHeight(height * (maxWidth / width));
+      // console.log('x', imgWidth, imgHeight);
     });
   };
 
@@ -145,8 +141,8 @@ const styles = StyleSheet.create({
     // minHeight: 300,
     // maxHeight: 260,
     backgroundColor: 'pink',
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
   },
   playVideo: {
     position: 'absolute',
