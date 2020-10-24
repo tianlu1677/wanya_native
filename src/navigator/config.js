@@ -65,10 +65,11 @@ import PasswordLogin from '@/pages/sessions/password-login';
 // 网页显示
 import WebView from '@/pages/webview/webview';
 
+import SharePage from '@/pages/shares/share_page'; //分享
+
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
-import SharePage from '@/components/SharePage'; //分享
 
 const topicRouter = [
   {
@@ -220,7 +221,8 @@ const commonRouter = [
   {
     name: 'SharePage',
     component: SharePage,
-    options: {title: '分享'},
+    safeArea: false,
+    options: {title: '分享', headerShown: false},
   },
 ];
 

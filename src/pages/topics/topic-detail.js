@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import VideoPlayerContent from '@/components/react-native-video-player';
 import {useNavigation} from '@react-navigation/native';
-import {dispatchBaseCurrentAccount, dispatchPreviewImage} from '@/redux/actions';
+import {dispatchBaseCurrentAccount, dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
@@ -42,6 +42,7 @@ const TopicDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getTopic(topicId);
     setDetail(res.data.topic);
+    dispatch(dispatchTopicDetail(res.data.topic))
   };
 
   const publishComment = async data => {
