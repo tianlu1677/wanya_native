@@ -56,10 +56,6 @@ export const MentionsAccountList = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  useEffect(() => {
-    loadData();
   }, [props.request]);
 
   return (
@@ -175,11 +171,9 @@ export const AccountList = props => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params, account_type, right_text} = props.request;
-    // console.log('xx', props.request);
     let data = [];
     const res = await api({...params, page});
     if (account_type === 'account_recent_follow') {
-      // console.log('res', res);
       data = res.data.follows;
       data = data.map(follow => ({
         ...follow.account,
@@ -189,15 +183,10 @@ export const AccountList = props => {
     } else {
       data = res.data.accounts;
     }
-    // data = res.data.accounts;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
   };
-
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
 
   useEffect(() => {
     loadData();

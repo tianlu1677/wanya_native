@@ -177,7 +177,7 @@ export const PlainContent = props => {
   };
 
   return (
-    <Text numberOfLines={props.numberOfLines} style={[props.style, cstyles.plainWrap]}>
+    <Text numberOfLines={props.numberOfLines} style={[cstyles.plainWrap, props.style]}>
       {data.hashtag_content_json ? (
         data.hashtag_content_json.map((v, index) => {
           return (

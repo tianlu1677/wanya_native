@@ -4,15 +4,17 @@ import {useSelector, useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
 import {PlayScore, Avator, JoinActivity, GoBack, BottomModal} from '@/components/NodeComponents';
-import SingleList from '@/components/List/single-list';
-import DoubleList from '@/components/List/double-list';
-import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
+import CollapsibleHeader from '@/components/CollapsibleHeaders';
+import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
+
+const HEADER_HEIGHT = 275;
 
 const SpaceDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -28,10 +30,6 @@ const SpaceDetail = ({navigation, route}) => {
     navigation.setOptions({
       title: res.data.space.name,
     });
-  };
-
-  const onShowIntro = () => {
-    setShowModal(true);
   };
 
   const LastedList = () => (
@@ -78,47 +76,11 @@ const SpaceDetail = ({navigation, route}) => {
   return detail ? (
     <View style={styles.wrapper}>
       <GoBack />
-      <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
-      <View style={styles.imageCoverOpacity} />
-      <Pressable onPress={onPreview} style={styles.header}>
-        <View style={styles.info}>
-          <View>
-            <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
-              {detail.name}
-            </Text>
-            <Text style={styles.intro} onPress={onShowIntro}>
-              <Text>
-                {detail.intro
-                  ? detail.intro.length > 20
-                    ? `${detail.intro.substring(0, 20)}...`
-                    : detail.intro
-                  : '暂无简介'}
-              </Text>{' '}
-              | <Text>{detail.medias.length}张图片</Text>
-            </Text>
-          </View>
-          <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
-            <Avator account={detail.account} size={30} handleClick={goAccountDetail} />
-          </Pressable>
-        </View>
-        <View style={styles.address}>
-          <IconFont name="space-point" size={15} color={'#fff'} />
-          <Text style={styles.addressText}>{detail.address}</Text>
-        </View>
-        <View style={styles.descWrap}>
-          <View style={styles.tagsWrap}>
-            {detail.tag_list.map((v, index) => (
-              <Text key={index} style={styles.tags}>
-                {v}
-              </Text>
-            ))}
-          </View>
-          <PlayScore score={detail.play_score} onPress={onPlay} />
-        </View>
-      </Pressable>
-      <TabViewList
+      <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
+      <CollapsibleHeader
+        headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
-        separator={true}
+        onKeyChange={key => setCurrentKey(key)}
         tabData={[
           {
             key: 'lasted',
@@ -131,17 +93,56 @@ const SpaceDetail = ({navigation, route}) => {
             component: HotList,
           },
         ]}
-        onChange={key => setCurrentKey(key)}
+        renderHeader={
+          <>
+            <GoBack />
+            <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
+            <View style={styles.imageCoverOpacity} />
+            <Pressable onPress={onPreview} style={styles.header}>
+              <View style={styles.info}>
+                <View>
+                  <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
+                    {detail.name}
+                  </Text>
+                  <Text style={styles.intro} onPress={() => setShowModal(true)}>
+                    <Text>
+                      {detail.intro
+                        ? detail.intro.length > 20
+                          ? `${detail.intro.substring(0, 20)}...`
+                          : detail.intro
+                        : '暂无简介'}
+                    </Text>{' '}
+                    | <Text>{detail.medias.length}张图片</Text>
+                  </Text>
+                </View>
+                <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
+                  <Avator account={detail.account} size={30} handleClick={goAccountDetail} />
+                </Pressable>
+              </View>
+              <View style={styles.address}>
+                <IconFont name="space-point" size={15} color={'#fff'} />
+                <Text style={styles.addressText}>{detail.address}</Text>
+              </View>
+              <View style={styles.descWrap}>
+                <View style={styles.tagsWrap}>
+                  {detail.tag_list.map((v, index) => (
+                    <Text key={index} style={styles.tags}>
+                      {v}
+                    </Text>
+                  ))}
+                </View>
+                <PlayScore score={detail.play_score} onPress={onPlay} />
+              </View>
+            </Pressable>
+            <BottomModal
+              visible={showModal}
+              cancleClick={() => setShowModal(false)}
+              title={detail.name}
+              content={detail.intro}
+            />
+          </>
+        }
       />
-
-      <BottomModal
-        visible={showModal}
-        cancleClick={() => setShowModal(false)}
-        title={detail.name}
-        content={detail.intro}
-      />
-
-      <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
     </View>
   ) : (
     <Loading />
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     paddingRight: 24,
     paddingTop: NAVIGATION_BAR_HEIGHT + 2,
-    minHeight: 275,
+    height: 275,
     position: 'relative',
   },
   imageCover: {

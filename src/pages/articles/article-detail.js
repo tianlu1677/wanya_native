@@ -29,7 +29,7 @@ const ArticleDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getArticle(7 || articleId);
     setDetail(res.data.article);
-    dispatch(dispatchArticleDetail(res.data.article))
+    dispatch(dispatchArticleDetail(res.data.article));
   };
 
   const publishComment = async data => {
@@ -53,11 +53,10 @@ const ArticleDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: 'white'}}>
+      style={{flex: 1, backgroundColor: '#fff'}}>
       <CommentList
         style={styles.wrapper}
         detail={detail}
-        enableLoadMore={false}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
         type="Article"
         changeVisible={value => setVisible(value)}
@@ -76,11 +75,21 @@ const ArticleDetail = ({navigation, route}) => {
               enableExperimentalPercentWidth
               allowFontScaling={true}
               textSelectable
-              tagsStyles={{p: {fontSize: 16, lineHeight: 26, marginTop: 10, marginBottom: 10, letterSpacing: 1} }}
+              tagsStyles={{
+                p: {
+                  fontSize: 16,
+                  lineHeight: 26,
+                  marginTop: 10,
+                  marginBottom: 10,
+                  letterSpacing: 1,
+                },
+              }}
               imagesMaxWidth={Dimensions.get('window').width - 20}
               imagesInitialDimensions={{width: Dimensions.get('window').width}}
               baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
-              onLinkPress={(e) => {console.log('xxx', e)}}
+              onLinkPress={e => {
+                console.log('xxx', e);
+              }}
               content={
                 detail &&
                 detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
@@ -107,9 +116,7 @@ const ArticleDetail = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
+  wrapper: {},
   title: {
     fontSize: 20,
     paddingTop: 8,

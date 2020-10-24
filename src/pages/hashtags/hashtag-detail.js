@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getHashtagPosts} from '@/api/hashtag_api';
 import {GoBack, JoinActivity} from '@/components/NodeComponents';
 import * as action from '@/redux/constants';

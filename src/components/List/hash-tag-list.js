@@ -58,15 +58,10 @@ const HashtagList = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  useEffect(() => {
-    loadData();
   }, [props.request]);
 
   return (
     <ScrollList
-      style={styles.wraper}
       data={listData}
       loading={loading}
       headers={headers}
@@ -79,10 +74,6 @@ const HashtagList = props => {
 };
 
 const styles = StyleSheet.create({
-  wraper: {
-    backgroundColor: '#fff',
-    flex: 1,
-  },
   hashtagWrap: {
     backgroundColor: 'white',
     flexDirection: 'row',

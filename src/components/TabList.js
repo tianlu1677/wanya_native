@@ -87,12 +87,10 @@ const TabList = props => {
                   ]}>
                   {item.title}
                 </Text>
-                <View
-                  style={[
-                    tabBarStyle[`tabItemLine${size}`],
-                    currentIndex === index && tabBarStyle[`lineActive${size}`],
-                  ]}
-                />
+
+                {currentIndex === index && (
+                  <View style={[currentIndex === index && tabBarStyle[`lineActive${size}`]]} />
+                )}
               </Pressable>
             );
           })}
@@ -111,9 +109,9 @@ const tabBarStyle = StyleSheet.create({
     paddingBottom: 9,
   },
   tabmiddle: {
-    paddingTop: 11,
-    paddingBottom: 10,
     height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
@@ -123,38 +121,43 @@ const tabBarStyle = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   tabItemTextbig: {
     fontSize: 15,
     paddingTop: 15,
+    color: '#7f7f81',
   },
   tabItemTextmiddle: {
     fontSize: 14,
+    color: '#7f7f81',
   },
   textActivebig: {
     fontSize: 18,
     paddingTop: 12,
+    color: '#000',
+    fontWeight: '500',
   },
   textActivemiddle: {
-    fontSize: 14,
+    fontSize: 16,
+    color: '#000',
+    fontWeight: '500',
   },
   lineActivebig: {
-    backgroundColor: '#000',
-    marginTop: 6,
-  },
-  lineActivemiddle: {
-    backgroundColor: '#000',
-    marginTop: 6,
-  },
-  tabItemLinebig: {
     width: 22,
     height: 3,
-    backgroundColor: 'transparent',
+    backgroundColor: '#000',
+    marginTop: 6,
+    borderRadius: 4,
+    overflow: 'hidden',
   },
-  tabItemLinemiddle: {
-    width: 15,
+  lineActivemiddle: {
+    width: 14,
     height: 3,
-    backgroundColor: 'transparent',
+    backgroundColor: '#000',
+    marginTop: 5,
+    borderRadius: 4,
+    overflow: 'hidden',
   },
   separator: {
     borderBottomColor: '#FAFAFA',

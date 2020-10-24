@@ -8,10 +8,7 @@ import {searchApi} from '@/api/search_api';
 
 const AddHashTag = ({navigation}) => {
   const [searchKey, setSearchKey] = useState(null);
-  const [request, setRequest] = useState({
-    api: getHashtagList,
-    params: {name_cont: searchKey},
-  });
+  const [request, setRequest] = useState(null);
 
   useEffect(() => {
     if (searchKey) {
@@ -39,20 +36,19 @@ const AddHashTag = ({navigation}) => {
           onChangeText={text => setSearchKey(text)}
           onCancel={() => navigation.goBack()}
         />
-        <HashtagList
-          request={request}
-          enableRefresh={false}
-          enableLoadMore={true}
-          type="add-hash-tag"
-          style={styles.wrapper}
-          searchKey={searchKey}
-          loading={false}
-          ListHeaderComponent={
-            <View style={pstyles.proWrapper}>
-              <Text style={pstyles.proTitle}>{searchKey ? '搜索到的话题' : '热门话题'}</Text>
-            </View>
-          }
-        />
+
+        {request && (
+          <HashtagList
+            request={request}
+            enableRefresh={false}
+            type="add-hash-tag"
+            ListHeaderComponent={
+              <View style={pstyles.proWrapper}>
+                <Text style={pstyles.proTitle}>{searchKey ? '搜索到的话题' : '热门话题'}</Text>
+              </View>
+            }
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
