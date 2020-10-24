@@ -178,45 +178,45 @@ export const ActionComment = props => {
   };
 
   // 分享
-  const onShare = () => {
-    console.log('onShare', props);
-    const {detail} = props;
-    // const detail = data.detail
-    let shareOptions = {
-      title: '顽鸦',
-      userName: 'gh_c2b50fe8e928',
-      webpageUrl: '',
-      path: '',
-      thumbImageUrl: detail.wx_share_image_url,
-      scene: 0,
-    };
-    switch (props.type) {
-      case 'Article':
-        shareOptions = {
-          ...shareOptions,
-          title: detail.plain_content,
-          path: '/pages/articles/article-detail?article_id=' + detail.id,
-          thumbImageUrl: detail.wx_share_image_url,
-        };
-        break;
-      case 'Topic':
-        shareOptions = {
-          ...shareOptions,
-          title: detail.plain_content,
-          path: '/pages/topics/topic-detail?topic_id=' + detail.id,
-          thumbImageUrl: detail.wx_share_image_url,
-        };
-        break;
-      default:
-        shareOptions;
-        break;
-    }
-
-    const shareContent = {...shareOptions, visible: true};
-    // console.log('xxx', shareContent)
-    // dispatch(dispatchShareItem(shareContent));
-    // WeChat.shareMiniProgram(shareOptions);
-  };
+  // const onShare = () => {
+  //   console.log('onShare', props);
+  //   const {detail} = props;
+  //   // const detail = data.detail
+  //   let shareOptions = {
+  //     title: '顽鸦',
+  //     userName: 'gh_c2b50fe8e928',
+  //     webpageUrl: '',
+  //     path: '',
+  //     thumbImageUrl: detail.wx_share_image_url,
+  //     scene: 0,
+  //   };
+  //   switch (props.type) {
+  //     case 'Article':
+  //       shareOptions = {
+  //         ...shareOptions,
+  //         title: detail.plain_content,
+  //         path: '/pages/articles/article-detail?article_id=' + detail.id,
+  //         thumbImageUrl: detail.wx_share_image_url,
+  //       };
+  //       break;
+  //     case 'Topic':
+  //       shareOptions = {
+  //         ...shareOptions,
+  //         title: detail.plain_content,
+  //         path: '/pages/topics/topic-detail?topic_id=' + detail.id,
+  //         thumbImageUrl: detail.wx_share_image_url,
+  //       };
+  //       break;
+  //     default:
+  //       shareOptions;
+  //       break;
+  //   }
+  //
+  //   const shareContent = {...shareOptions, visible: true};
+  //   // console.log('xxx', shareContent)
+  //   // dispatch(dispatchShareItem(shareContent));
+  //   // WeChat.shareMiniProgram(shareOptions);
+  // };
 
   useEffect(() => {
     setValue(null);
@@ -247,6 +247,7 @@ export const ActionComment = props => {
               </Text>
             </Pressable>
             <Pressable
+              hitSlop={{right: 20, left: 5}}
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
                 navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id})

@@ -13,8 +13,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
-import {dispatchShareItem} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
+import Toast from "@/components/Toast"
 import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
 import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
 import {DefaultLog} from '@/utils/default-image';
@@ -92,10 +92,12 @@ const SharePageModal = props => {
   };
 
   const shareFriend = e => {
+    Toast.showLoading('正在分享...')
     console.log('shareUri', shareUri);
     if (!shareUri) {
       takeImg();
     }
+    Toast.hide()
     WeChat.shareImage(
       {
         imageUrl: shareUri,
@@ -107,9 +109,11 @@ const SharePageModal = props => {
     );
   };
   const shareTimeline = () => {
+    Toast.showLoading('正在分享...')
     if (!shareUri) {
       takeImg();
     }
+    Toast.hide()
     WeChat.shareImage(
       {
         imageUrl: shareUri,
@@ -131,7 +135,9 @@ const SharePageModal = props => {
           style={{display: 'flex', alignItems: 'center'}}
           onPress={() => {
             shareFriend();
-          }}>
+          }}
+          hitSlop={{left: 40, right: 10, top: 20, bottom: 10}}
+        >
           <FastImg source={ShareFriendImg} style={{width: 28, height: 22}} resizeMode={'contain'} />
           <ShareText>微信好友</ShareText>
         </Pressable>
@@ -139,7 +145,9 @@ const SharePageModal = props => {
           style={{display: 'flex', alignItems: 'center'}}
           onPress={() => {
             shareTimeline();
-          }}>
+          }}
+          hitSlop={{left: 10, right: 50, top: 20, bottom: 10}}
+        >
           <FastImg source={ShareTimeImg} style={{width: 20, height: 20}} />
           <ShareText>分享朋友圈</ShareText>
         </TouchableOpacity>

@@ -154,7 +154,9 @@ export const Bottom = props => {
         style={{marginLeft: 'auto'}}
         onPress={() => {
           onShare();
-        }}>
+        }}
+        hitSlop={{left: 10, right: 10, top: 5}}
+      >
         <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
       </Pressable>
     </View>
