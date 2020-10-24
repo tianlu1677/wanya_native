@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     marginLeft: 17,
     marginRight: 17,
     paddingTop: 15,
-    // minHeight: 200,
+    minHeight: 150,
     letterSpacing: 1,
     textAlign: 'justify',
   },
