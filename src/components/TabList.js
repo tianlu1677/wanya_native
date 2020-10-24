@@ -89,7 +89,12 @@ const TabList = props => {
                 </Text>
 
                 {currentIndex === index && (
-                  <View style={[currentIndex === index && tabBarStyle[`lineActive${size}`]]} />
+                  <View
+                    style={[
+                      tabBarStyle.tabLine,
+                      currentIndex === index && tabBarStyle[`lineActive${size}`],
+                    ]}
+                  />
                 )}
               </Pressable>
             );
@@ -105,11 +110,13 @@ const tabBarStyle = StyleSheet.create({
     backgroundColor: '#fff',
   },
   tabbig: {
-    paddingTop: 8,
-    paddingBottom: 9,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: 'pink',
   },
   tabmiddle: {
-    height: 45,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -125,16 +132,16 @@ const tabBarStyle = StyleSheet.create({
   },
   tabItemTextbig: {
     fontSize: 15,
-    paddingTop: 15,
     color: '#7f7f81',
+    position: 'relative',
   },
   tabItemTextmiddle: {
     fontSize: 14,
     color: '#7f7f81',
+    position: 'relative',
   },
   textActivebig: {
     fontSize: 18,
-    paddingTop: 12,
     color: '#000',
     fontWeight: '500',
   },
@@ -142,6 +149,10 @@ const tabBarStyle = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     fontWeight: '500',
+  },
+  tabLine: {
+    position: 'absolute',
+    bottom: 8,
   },
   lineActivebig: {
     width: 22,

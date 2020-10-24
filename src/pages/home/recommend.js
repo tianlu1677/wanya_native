@@ -13,7 +13,7 @@ import {dispatchBaseCurrentAccount} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
-import Helper from "@/utils/helper"
+import Helper from '@/utils/helper';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -47,7 +47,7 @@ const Recommend = props => {
 
   useEffect(() => {
     dispatch(dispatchCurrentAccount());
-  }, [])
+  }, []);
 
   return (
     <SafeAreaPlus style={{flex: 1}} edges={['right', 'left']}>
@@ -77,15 +77,12 @@ const Recommend = props => {
           onChange={key => setCurrentKey(key)}
         />
         <View style={styles.message}>
-
           <Pressable
             style={styles.message_icon}
             hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
-            onPress={() => props.navigation.navigate('NotifyIndex')}
-          >
+            onPress={() => props.navigation.navigate('NotifyIndex')}>
             <View style={{position: 'relative'}}>
               <IconFont name="notice" size={20} />
-
             </View>
             <BadgeMessage
               value={UnreadMessageCount()}
@@ -108,7 +105,8 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     backgroundColor: 'white',
-    paddingTop: BOTTOM_HEIGHT + 5,
+    // paddingTop: BOTTOM_HEIGHT + 5,
+    paddingTop: BOTTOM_HEIGHT + 10,
   },
   message: {
     position: 'absolute',
