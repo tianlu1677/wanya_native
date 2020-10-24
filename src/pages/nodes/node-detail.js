@@ -96,52 +96,63 @@ const NodeDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  return detail ? (
-    <View style={{...styles.wrapper}}>
-      <GoBack />
-      <FastImg
-        source={{uri: detail.backgroud_cover_url}}
-        resizeMode={'cover'}
-        style={styles.imageCover}
-      />
-      <View style={styles.imageCoverOpacity} />
-      <View style={styles.header}>
-        <View style={styles.nodeContent}>
-          <View style={styles.nodeInfo}>
-            <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
-            <View style={styles.nodewrap}>
-              <Text style={styles.nodeName}>{detail.name}</Text>
-              <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+  const Header = () => {
+    return (
+      <View style={{position: 'relative'}}>
+        <View>
+          <GoBack />
+          <FastImg
+            source={{uri: detail.backgroud_cover_url}}
+            resizeMode={'cover'}
+            style={styles.imageCover}
+          />
+          <View style={styles.imageCoverOpacity} />
+        </View>
+
+        <View style={styles.header}>
+          <View style={styles.nodeContent}>
+            <View style={styles.nodeInfo}>
+              <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
+              <View style={styles.nodewrap}>
+                <Text style={styles.nodeName}>{detail.name}</Text>
+                <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.descWrap}>
-          <Text style={styles.nodeDesc} numberOfLines={2} onPress={onShowIntro}>
-            {detail.desc}
-          </Text>
-          <PlayScore score={detail.play_score} onPress={onPlay} />
-        </View>
-        <Pressable
-          onPress={goJoinAccounts}
-          style={{position: 'absolute', bottom: 22, left: 15, right: 15}}>
-          <BlurView
-            style={styles.accountInfo}
-            blurType="light"
-            blurAmount={10}
-            reducedTransparencyFallbackColor="#white">
-            <JoinAccounts accounts={detail.accounts} size={25} />
-            <Text style={styles.count}>
-              {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
+          <View style={styles.descWrap}>
+            <Text style={styles.nodeDesc} numberOfLines={2} onPress={onShowIntro}>
+              {detail.desc}
             </Text>
-            <JoinButton
-              join={detail.followed}
-              text={detail.followed ? '已加入' : '加入'}
-              onPress={onFollowNode}
-            />
-          </BlurView>
-        </Pressable>
+            <PlayScore score={detail.play_score} onPress={onPlay} />
+          </View>
+          <Pressable
+            onPress={goJoinAccounts}
+            style={{position: 'absolute', bottom: 22, left: 15, right: 15}}>
+            <BlurView
+              style={styles.accountInfo}
+              blurType="light"
+              blurAmount={10}
+              reducedTransparencyFallbackColor="#white">
+              <JoinAccounts accounts={detail.accounts} size={25} />
+              <Text style={styles.count}>
+                {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
+              </Text>
+              <JoinButton
+                join={detail.followed}
+                text={detail.followed ? '已加入' : '加入'}
+                onPress={onFollowNode}
+              />
+            </BlurView>
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.separator} />
+    )
+  }
+
+  return detail ? (
+    <View style={{...styles.wrapper}}>
+      <Header />
+
       <TabViewList
         currentKey={currentKey}
         separator={true}
@@ -190,8 +201,8 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 16,
-    minHeight: 283,
     paddingTop: NAVIGATION_BAR_HEIGHT + 1,
+    height: 283,
     position: 'relative',
   },
   imageCover: {
@@ -201,7 +212,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
     zIndex: -1,
   },
   imageCoverOpacity: {
@@ -209,7 +219,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    height: 283,
     backgroundColor: '#000',
     opacity: 0.5,
   },
