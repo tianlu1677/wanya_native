@@ -50,12 +50,15 @@ const SharePageModal = props => {
 
   const loadShareData = () => {
     if (item_type === 'Topic') {
-      console.log('topic', topic);
+      // console.log('topic', topic);
       setShareContent({
         account: topic.account,
         node_name: topic.node.name,
         content: topic.plain_content,
-        bg_img_url: topic.wx_share_img,
+        bg_img_url: topic.wx_share_image_url ? topic.wx_share_image_url.split('?')[0] : '',
+        desc: '刚刚 发布了一篇帖子',
+        content_style: topic.content_style,
+        qrcode_url: topic.qrcode_url
       });
       console.log('shareContent', shareContent);
     } else if (item_type === 'Article') {
@@ -63,7 +66,10 @@ const SharePageModal = props => {
         account: article.account,
         node_name: article.node.name,
         content: article.plain_content,
-        bg_img_url: article.wx_share_image_url,
+        bg_img_url: article.wx_share_image_url ? article.wx_share_image_url.split('?')[0] : '',
+        desc: '刚刚 发布了一篇帖子',
+        content_style: '',
+        qrcode_url: article.qrcode_url
       });
     } else {
       console.log('no support');
@@ -116,7 +122,7 @@ const SharePageModal = props => {
 
   return (
     <ModelWrap>
-      <ScrollView>
+      <ScrollView style={{flex: 1, marginBottom: 90}} showsVerticalScrollIndicator={false}>
         <ViewShotPage pageShareContent={shareContent} viewShotRef={viewShotRef} />
       </ScrollView>
       <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
@@ -155,10 +161,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const ModelWrap = styled(TouchableOpacity)`
+const ModelWrap = styled(View)`
   display: flex;
   flex: 1;
   justify-content: flex-end;
+  background-color: #ff193a;
 `;
 
 const ShareCardView = styled(View)`

@@ -221,7 +221,6 @@ const commonRouter = [
   {
     name: 'SharePage',
     component: SharePage,
-    barColor: 'dark',
     safeArea: false,
     options: {title: '分享', headerShown: false},
   },
