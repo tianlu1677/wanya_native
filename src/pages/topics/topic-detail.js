@@ -244,7 +244,7 @@ const TopicDetail = ({navigation, route}) => {
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
             <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
-              <PlainContent data={detail} />
+              <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
             </View>
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
@@ -324,6 +324,11 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     right: 15,
+  },
+  multiLineText: {
+    fontSize: 14,
+    lineHeight: 23,
+    color: '#000',
   },
 });
 
