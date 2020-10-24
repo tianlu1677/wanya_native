@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Animated,
   Text,
   RefreshControl,
   FlatList,
@@ -30,30 +29,24 @@ const loadState = {
 };
 
 const ScrollList = props => {
-  const [height, setHeight] = useState(null);
-  const [enableLoadMore, setEnableLoadMore] = useState(props.enableLoadMore);
-  const [enableRefresh, setEnableRefresh] = useState(props.enableRefresh);
+  const [enableLoadMore] = useState(props.enableLoadMore === false ? false : true);
+  const [enableRefresh] = useState(props.enableRefresh === false ? false : true);
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [canRefresh, setCanRefresh] = useState(true);
 
   const onRefresh = () => {
     console.log('onRefresh start =============', state, refreshing);
     if (refreshing || state === loadState.LOADING) {
       return;
     }
-    setRefreshing(true);
-    setState(loadState.LOADING);
     console.log('onRefresh end =============', state, refreshing);
     try {
+      setState(loadState.LOADING);
       props.onRefresh();
-      // setRefreshing(false);
     } catch {
       setState(loadState.ERROR);
-      setRefreshing(false);
     }
-    setRefreshing(false);
   };
 
   const onEndReached = () => {
@@ -65,15 +58,12 @@ const ScrollList = props => {
     if (refreshing || state === loadState.LOADING) {
       return;
     }
-    setRefreshing(true);
     setState(loadState.LOADING);
     console.log('onEndReached ===============', pagin, refreshing);
 
     try {
       props.onRefresh(pagin.nextPage);
-      // setRefreshing(false);
     } catch {
-      setRefreshing(false);
       setState(loadState.ERROR);
     }
   };
@@ -99,7 +89,6 @@ const ScrollList = props => {
   };
 
   const renderEmpty = () => {
-    // console.log('height', height)
     return (
       !refreshing &&
       pagin && (
@@ -117,32 +106,6 @@ const ScrollList = props => {
     return <View style={scrollStyle.separator} />;
   };
 
-  const onScroll = event => {
-    // if(!enableRefresh) {
-    //   return
-    // }
-    // if (refreshing || state === loadState.LOADING) {
-    //   return;
-    // }
-    //
-    // let y = event.nativeEvent.contentOffset.y;
-    // console.log('offsetY-->' + y, canRefresh);
-    //
-    // if (canRefresh && y <= -80) {
-    //   setCanRefresh(false)
-    //   console.log('start onScroll');
-    //   onRefresh()
-    // } else if (y>= 0) {
-    //   setCanRefresh(true)
-    // }
-  };
-
-  useEffect(() => {
-    // setEnableLoadMore(props.enableLoadMore === false ? false : true);
-    // setEnableRefresh(props.enableRefresh === false ? false : true);
-    setRefreshing(props.loading || false);
-  });
-
   useEffect(() => {
     setState(loadState.SUCCESS);
     setPagin(pagination(props.headers));
@@ -155,44 +118,29 @@ const ScrollList = props => {
   return (
     <FlatList
       ref={props.getRref}
-      data={props.data}
-      onLayout={e => setHeight(e.nativeEvent.layout.height)}
-      renderItem={props.renderItem}
-      keyExtractor={item => String(item[props.itemKey || 'id'])}
-      // refreshing={refreshing ? refreshing : null}
-      // onRefresh={enableRefresh ? onRefresh : null}
-      onEndReached={enableRefresh ? onEndReached : null}
-      ListFooterComponent={enableLoadMore ? renderFooter : null}
-      onEndReachedThreshold={0.2}
-      ListEmptyComponent={renderEmpty}
-      ItemSeparatorComponent={props.renderSeparator || renderSeparator}
-      style={[scrollStyle.containter, props.style]}
-      numColumns={props.numColumns || 1}
       horizontal={false}
+      contentContainerStyle={[scrollStyle.containter, props.style]}
+      keyExtractor={item => String(item[props.itemKey || 'id'])}
+      renderItem={props.renderItem}
+      ItemSeparatorComponent={props.renderSeparator || renderSeparator}
+      data={props.data}
+      onEndReached={enableLoadMore ? onEndReached : null}
+      onEndReachedThreshold={0.2}
+      ListFooterComponent={enableLoadMore ? renderFooter : null}
       ListHeaderComponent={props.ListHeaderComponent || null}
-      // onScroll={onScroll}
-      scrollEventThrottle={50}
-      scrollToOverflowEnabled={true}
-      showsHorizontalScrollIndicator={false}
-      onMomentumScrollBegin={props.onMomentumScrollBegin}
-      onScrollEndDrag={props.onScrollEndDrag}
-      onMomentumScrollEnd={props.onMomentumScrollEnd}
-      contentContainerStyle={props.contentContainerStyle}
-      {...props.settings}
-      // scrollIndicatorInsets={{right: 1}}
-
+      ListEmptyComponent={renderEmpty}
+      numColumns={props.numColumns || 1}
       refreshControl={
-        <RefreshControl
-          refreshing={refreshing && enableRefresh ? refreshing : false}
-          onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
-          tintColor="black"
-          // progressViewOffset={10}
-          style={{backgroundColor: 'white'}}
-          // colors={['red', 'yellow', 'green']}
-          // title={enableRefresh ? (refreshing ? '努力加载中...' : '') : ''}
-        />
+        enableRefresh ? (
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={enableRefresh ? onRefresh.bind(this) : null}
+            tintColor="black"
+            style={{backgroundColor: 'white'}}
+            title={'努力加载中...'}
+          />
+        ) : null
       }
-      initialNumToRender={props.initialNumToRender || 10}
     />
   );
 };
@@ -215,10 +163,7 @@ const scrollStyle = StyleSheet.create({
     height: 9,
   },
 });
-ScrollList.defaultProps = {
-  enableLoadMore: true,
-  enableRefresh: true,
-};
+
 ScrollList.propTypes = {
   data: PropTypes.array.isRequired, //List接收的数据
   loading: PropTypes.bool, // loading 状态

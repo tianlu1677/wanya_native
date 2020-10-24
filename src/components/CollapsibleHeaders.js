@@ -8,6 +8,8 @@ const titleHeight = 80; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
+  console.log(headerHeight);
+
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
     index: index,
@@ -80,7 +82,7 @@ const CollapsibleHeader = props => {
     };
 
     return (
-      <>
+      <View>
         <View style={{flex: 1, height: tabBarHeight}} />
         <Animated.FlatList
           scrollToOverflowEnabled
@@ -109,7 +111,7 @@ const CollapsibleHeader = props => {
           showsHorizontalScrollIndicator={false}
           decelerationRate="fast"
         />
-      </>
+      </View>
     );
   };
 
@@ -158,7 +160,7 @@ const CollapsibleHeader = props => {
           height: 0,
           width: Dimensions.get('window').width,
         }}
-        style={{flex: 1, backgroundColor: '#fff', zIndex: -1}}
+        style={{flex: 1, zIndex: -1, backgroundColor: '#fff'}}
       />
     );
   };

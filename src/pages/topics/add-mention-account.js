@@ -9,12 +9,7 @@ import {ProWrapper as pstyles} from '@/styles/baseCommon';
 
 const MentionAccounts = ({navigation}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
-
-  const [request, setRequest] = useState({
-    api: getAccountFollowings,
-    params: {id: currentAccount.id},
-  });
-
+  const [request, setRequest] = useState(null);
   const [searchKey, setSearchKey] = useState(null);
 
   useEffect(() => {
@@ -48,13 +43,7 @@ const MentionAccounts = ({navigation}) => {
         <View style={pstyles.proWrapper}>
           <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
         </View>
-        <MentionsAccountList
-          request={request}
-          enableLoadMore={false}
-          enableRefresh={false}
-          style={styles.wrapper}
-          loading={true}
-        />
+        {request && <MentionsAccountList request={request} enableRefresh={false} />}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -63,7 +52,6 @@ const MentionAccounts = ({navigation}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   search: {
     paddingLeft: 14,

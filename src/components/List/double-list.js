@@ -11,7 +11,7 @@ import {getRecommendTopPosts} from '@/api/home_api';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
-import {RFValue } from '@/utils/response-fontsize'
+import {RFValue} from '@/utils/response-fontsize';
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
@@ -89,19 +89,29 @@ const SingleItem = props => {
         )}
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
         {props.isTop && <FastImg source={{uri: topImage}} style={styles.imageLabel} />}
-        {!props.isTop && data.excellent && (
-          <Text style={styles.excellentLabel}>精选</Text>
-        )}
-
+        {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
-          <Pressable style={{marginRight: 'auto'}} onPress={() => { navigation.push('AccountDetail', {accountId: data.account.id}) }}>
-            <Text style={styles.singleName}>{data.account.nickname && data.account.nickname.toString().substr(0, 16)}</Text>
+          <Pressable
+            style={{marginRight: 'auto'}}
+            onPress={() => {
+              navigation.push('AccountDetail', {accountId: data.account.id});
+            }}>
+            <Text style={styles.singleName}>
+              {data.account.nickname && data.account.nickname.toString().substr(0, 16)}
+            </Text>
           </Pressable>
-          <Pressable style={{flexDirection: 'row', alignItems: 'center'}} hitSlop={{left: 5, top: 5, bottom: 5}} onPress={onPraise}>
+          <Pressable
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            hitSlop={{left: 5, top: 5, bottom: 5}}
+            onPress={onPraise}>
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
             <Text
-              style={{marginLeft: 5, fontSize: 11, color: praiseForm.praise ? '#000' : '#bdbdbd'}}>
+              style={{marginLeft: 5, fontSize: 10, color: praiseForm.praise ? '#000' : '#bdbdbd'}}>
               {praiseForm.praises_count > 0 ? praiseForm.praises_count : ''}
             </Text>
           </Pressable>
@@ -252,7 +262,6 @@ const styles = StyleSheet.create({
     height: 17,
   },
   singleName: {
-
     marginLeft: 5,
     color: '#bdbdbd',
     fontSize: 10,

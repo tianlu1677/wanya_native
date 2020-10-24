@@ -72,7 +72,7 @@ const CitySelect = ({navigation}) => {
         style={styles.wrapper}
         getRref={refs => setScrollRef(refs)}
         enableLoadMore={false}
-        enableRefresh={false}
+        // enableRefresh={false}
         data={cities}
         itemKey={'title'}
         renderItem={({item}) => {

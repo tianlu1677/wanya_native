@@ -113,23 +113,17 @@ const CommentList = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  useEffect(() => {
-    loadData();
   }, [props.detail]);
 
   return (
     <ScrollList
       data={listData}
-      loading={false}
+      loading={loading}
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={renderSeparator}
-      settings={{bounces: false, enableRefresh: false}}
-      style={{backgroundColor: '#fff'}}
       {...props}
     />
   );

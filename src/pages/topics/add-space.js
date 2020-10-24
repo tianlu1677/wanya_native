@@ -78,7 +78,7 @@ const AddSpace = props => {
           }}
           onPress={onPress}
           enableLoadMore={false}
-          enableRefresh={false}
+          // enableRefresh={false}
           style={styles.wrapper}
         />
       </View>

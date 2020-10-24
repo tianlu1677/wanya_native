@@ -299,10 +299,10 @@ const NewTopic = props => {
                   </>
                 ) : (
                   <View style={[styles.media, styles.progress]}>
-                    <View style={styles.progressWrap}>
-                      <Text style={styles.proNum}>{uploadProgress}</Text>
-                      <Text style={styles.proPercent}>%</Text>
-                    </View>
+                    {/* <View style={styles.progressWrap}> */}
+                    <Text style={styles.proNum}>{uploadProgress}</Text>
+                    <Text style={styles.proPercent}>%</Text>
+                    {/* </View> */}
                   </View>
                 )}
               </Pressable>
@@ -402,14 +402,17 @@ const styles = StyleSheet.create({
     height: 15,
   },
   progress: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000',
   },
   progressWrap: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // position: 'relative',
+    // backgroundColor: 'pink',
+    // flexWrap: 'nowrap',
   },
   proNum: {
     color: '#fff',
@@ -419,9 +422,11 @@ const styles = StyleSheet.create({
   proPercent: {
     color: '#fff',
     fontSize: 10,
-    position: 'absolute',
-    right: -10,
-    bottom: 3,
+    marginTop: 8,
+    marginLeft: 2,
+    // position: 'absolute',
+    // right: -11,
+    // bottom: 3,
   },
   content: {
     minHeight: 90,
