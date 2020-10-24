@@ -2,9 +2,9 @@ import React, {useEffect, useRef} from 'react';
 import {Animated, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
-const windowHeight = Dimensions.get('window').height;
 
-const tabBarHeight = 55; //middle
+const tabBarHeight = 45; // tabbar middle高度
+const titleHeight = 80; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
@@ -75,13 +75,13 @@ const CollapsibleHeader = props => {
     const i = navigationState.routes.findIndex(v => v.key === route.key);
     const renderItem = tabData[i].component;
     const contentContainerStyle = {
-      paddingTop: headerHeight,
-      minHeight: windowHeight - tabBarHeight,
+      paddingTop: headerHeight + tabBarHeight,
+      zIndex: 100,
     };
 
     return (
       <>
-        <View style={{height: tabBarHeight}} />
+        <View style={{flex: 1, height: tabBarHeight}} />
         <Animated.FlatList
           scrollToOverflowEnabled
           scrollEventThrottle={16}
@@ -116,7 +116,7 @@ const CollapsibleHeader = props => {
   const renderTabBarWithWrapper = innerProps => {
     const y = scrollY.interpolate({
       inputRange: [0, headerHeight],
-      outputRange: [headerHeight, 50],
+      outputRange: [headerHeight, titleHeight],
       extrapolateRight: 'clamp',
     });
 
@@ -136,7 +136,6 @@ const CollapsibleHeader = props => {
           tabChange={tab => props.onKeyChange(tab.key)}
           size={props.size}
           bottomLine={props.bottomLine}
-          separator={props.separator}
           {...innerProps}
         />
       </Animated.View>
@@ -173,7 +172,7 @@ const CollapsibleHeader = props => {
 
     return (
       <Animated.View
-        style={[localStyles.headerContent, {height: headerHeight}, {transform: [{translateY: y}]}]}>
+        style={[localStyles.headerContent, {transform: [{translateY: y}], height: headerHeight}]}>
         {props.renderHeader}
       </Animated.View>
     );
@@ -187,7 +186,7 @@ const CollapsibleHeader = props => {
     });
 
     return (
-      <Animated.View style={[localStyles.header, {opacity: opacity, height: headerHeight}]}>
+      <Animated.View style={[localStyles.header, {opacity: opacity, height: titleHeight}]}>
         <Text style={{color: '#fff'}}>标题</Text>
       </Animated.View>
     );
@@ -206,11 +205,10 @@ const CollapsibleHeader = props => {
 
 const localStyles = StyleSheet.create({
   headerContent: {
-    top: 0,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
     position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
     zIndex: -1,
   },
   header: {

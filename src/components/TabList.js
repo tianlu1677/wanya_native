@@ -101,7 +101,7 @@ const TabList = props => {
   );
 };
 
-// middle 55
+// middle 45
 const tabBarStyle = StyleSheet.create({
   tabWrap: {
     backgroundColor: '#fff',
@@ -113,6 +113,7 @@ const tabBarStyle = StyleSheet.create({
   tabmiddle: {
     paddingTop: 11,
     paddingBottom: 10,
+    height: 45,
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',

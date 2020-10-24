@@ -1,19 +1,20 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, Image, Text, Button} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import styled from 'styled-components/native';
-import TabViewList from '@/components/TabView';
-import SingleList from '@/components/List/single-list';
-import DoubleList from '@/components/List/double-list';
-
+import React, {useState} from 'react';
+import {StyleSheet, View, Text} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getHashtagPosts} from '@/api/hashtag_api';
 import {GoBack, JoinActivity} from '@/components/NodeComponents';
-import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
+import FastImg from '@/components/FastImg';
+import SingleList from '@/components/List/single-list';
+import DoubleList from '@/components/List/double-list';
+import CollapsibleHeader from '@/components/CollapsibleHeaders';
 
 const rightLogo =
   'http://file.meirixinxue.com/assets/2020/77963058-7b42-46ea-bc6b-f969e81bbdfd.png';
 const bgLogo = 'http://file.meirixinxue.com/assets/2020/ef47c0d6-39c2-4e99-988d-86332a12449e.jpg';
+
+const HEADER_HEIGHT = 164;
 
 const HashtagDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -47,15 +48,11 @@ const HashtagDetail = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <GoBack />
-      <View style={{paddingTop: NAV_BAR_HEIGHT, backgroundColor: '#ff8d00'}} />
-      <HeadView>
-        <BgCoverImage source={{uri: bgLogo}} />
-        <RightCoverImage source={{uri: rightLogo}} style={{top: STATUS_BAR_HEIGHT + 5}} />
-        <HashtagText style={{top: NAV_BAR_HEIGHT}}>#{hashtag}</HashtagText>
-      </HeadView>
-      <TabViewList
+      <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
+      <CollapsibleHeader
+        headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
-        separator={true}
+        onKeyChange={key => setCurrentKey(key)}
         tabData={[
           {
             key: 'published_order',
@@ -68,45 +65,51 @@ const HashtagDetail = ({navigation, route}) => {
             component: HotList,
           },
         ]}
-        onChange={key => setCurrentKey(key)}
+        renderHeader={
+          <View style={styles.header}>
+            <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
+            <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
+            <Text style={styles.hashtagText}>#{hashtag}</Text>
+          </View>
+        }
       />
-      <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
     </View>
   );
 };
 
-const HeadView = styled(View)`
-  position: relative;
-  height: 137px;
-  background-color: #ff8d00;
-`;
-const BgCoverImage = styled(Image)`
-  height: 137px;
-  position: absolute;
-  left: 0;
-  right: 0;
-`;
-
-const RightCoverImage = styled(Image)`
-  height: 60px;
-  width: 60px;
-  position: absolute;
-  right: 0;
-  top: 0;
-`;
-
-const HashtagText = styled(Text)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin-left: 15px;
-  margin-right: 90px;
-  font-size: 25px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  letter-spacing: 1px;
-  z-index: 100;
-`;
+const styles = StyleSheet.create({
+  header: {
+    flex: 1,
+    position: 'relative',
+    height: HEADER_HEIGHT,
+    backgroundColor: '#ff8d00',
+  },
+  imageCover: {
+    height: HEADER_HEIGHT,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+  },
+  rightCoverImage: {
+    height: 60,
+    width: 60,
+    position: 'absolute',
+    right: 0,
+    top: STATUS_BAR_HEIGHT + 5,
+  },
+  hashtagText: {
+    position: 'absolute',
+    top: 53,
+    left: 0,
+    right: 0,
+    marginLeft: 15,
+    marginRight: 90,
+    fontSize: 25,
+    fontWeight: '600',
+    color: '#fff',
+    letterSpacing: 1,
+    zIndex: 2,
+  },
+});
 
 export default HashtagDetail;

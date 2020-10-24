@@ -101,7 +101,8 @@ const ScrollList = props => {
   const renderEmpty = () => {
     // console.log('height', height)
     return (
-      !refreshing && pagin && (
+      !refreshing &&
+      pagin && (
         <View style={[scrollStyle.footer, {minHeight: 300}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
           <Text style={{color: '#DADADA', fontSize: 13}}>
@@ -182,7 +183,7 @@ const ScrollList = props => {
 
       refreshControl={
         <RefreshControl
-          refreshing={(refreshing && enableRefresh) ? refreshing : false}
+          refreshing={refreshing && enableRefresh ? refreshing : false}
           onRefresh={enableRefresh ? onRefresh : null} //(()=>this.onRefresh)或者通过bind来绑定this引用来调用方法
           tintColor="black"
           // progressViewOffset={10}
@@ -217,7 +218,7 @@ const scrollStyle = StyleSheet.create({
 ScrollList.defaultProps = {
   enableLoadMore: true,
   enableRefresh: true,
-}
+};
 ScrollList.propTypes = {
   data: PropTypes.array.isRequired, //List接收的数据
   loading: PropTypes.bool, // loading 状态

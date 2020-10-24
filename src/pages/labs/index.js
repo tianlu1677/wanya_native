@@ -5,10 +5,10 @@ import DoubleList from '@/components/List/double-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {getRecommendPosts, getFollowedPosts} from '@/api/home_api';
 
-const HEADER_HEIGHT = 144;
-const TAB_BAR_HEIGHT = 48;
+// const HEADER_HEIGHT = 144;
+const TAB_BAR_HEIGHT = 55;
 
-const CollapsibleHeaderExample = () => {
+const CollapsibleHeaderExample = props => {
   const [currentKey, setCurrentKey] = useState('article');
 
   const renderTabOne = () => {
@@ -22,7 +22,7 @@ const CollapsibleHeaderExample = () => {
   return (
     <CollapsibleHeader
       tabBarHeight={TAB_BAR_HEIGHT}
-      headerHeight={HEADER_HEIGHT}
+      headerHeight={props.headerHeight}
       currentKey={currentKey}
       onKeyChange={key => setCurrentKey(key)}
       tabData={[
@@ -37,13 +37,12 @@ const CollapsibleHeaderExample = () => {
           component: renderTabTwo,
         },
       ]}
-      renderHeader={
-        <View style={styles.headerRow}>
-          <View style={styles.headerCol}>
-            <Text style={styles.text}>Collapsible Header</Text>
-          </View>
-        </View>
-      }
+      renderHeader={props.renderHeader}
+      // <View style={[styles.headerRow, {height: props.headerHeight}]}>
+      //   <View style={styles.headerCol}>
+      //     <Text style={styles.text}>Collapsible Header</Text>
+      //   </View>
+      // </View>
       separator={true}
     />
   );
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   headerRow: {
-    height: HEADER_HEIGHT,
+    // height: HEADER_HEIGHT,
     flexDirection: 'row',
     backgroundColor: '#429BB8',
   },

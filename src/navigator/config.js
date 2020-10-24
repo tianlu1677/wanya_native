@@ -262,7 +262,7 @@ const authRouter = [
     options: {title: '输入邀请码', headerShown: true},
     safeArea: false,
   },
-]
+];
 export const routers = [
   ...topicRouter,
   ...articleRouter,

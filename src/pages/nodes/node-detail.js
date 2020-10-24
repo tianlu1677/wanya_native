@@ -25,7 +25,7 @@ import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
-import { RFValue } from '@/utils/response-fontsize';
+import {RFValue} from '@/utils/response-fontsize';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 400,
+    bottom: 0,
     backgroundColor: '#000',
     opacity: 0.5,
   },
