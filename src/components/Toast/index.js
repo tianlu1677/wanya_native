@@ -37,7 +37,7 @@ class Toast extends Component {
         backgroundColor: 'rgba(30,30,30,.85)',
       },
       textStyle: {
-        fontSize: 14,
+        fontSize: 12,
         top: 6,
         letterSpacing: 1,
       },

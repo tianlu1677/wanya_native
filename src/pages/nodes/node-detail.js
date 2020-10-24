@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
   },
   accountInfo: {
-    height: 45,
+    height: RFValue(45),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
