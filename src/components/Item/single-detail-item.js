@@ -239,7 +239,7 @@ export const ActionComment = props => {
             <Pressable style={astyles.btnWrap} onPress={() => onCreate('star')}>
               <IconFont
                 name={star ? 'star-solid' : 'blank-star'}
-                size={19}
+                size={22}
                 color={star ? '#f4ea2a' : '#bdbdbd'}
               />
               <Text style={[astyles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
@@ -252,7 +252,7 @@ export const ActionComment = props => {
                 navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id})
                 // setShareModelVisible(true);
               }}>
-              <IconFont name="zhuanfa" size={19} />
+              <IconFont name="zhuanfa" size={18} />
             </Pressable>
 
             {/*<View style={{}}>*/}

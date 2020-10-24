@@ -7,6 +7,8 @@ import ImgToBase64 from 'react-native-image-base64';
 import {Avator} from '@/components/NodeComponents';
 import {DefaultLog} from '@/utils/default-image';
 import PlayVideoImg from '@/assets/images/play-video.png';
+import RedLogoImg from '@/assets/images/red-logo.png';
+import WanyaShareWordImg from '@/assets/images/wanya_share_word.png';
 // import CameraRoll from "@react-native-community/cameraroll";
 
 const ViewShotPage = props => {
@@ -48,6 +50,12 @@ const ViewShotPage = props => {
             <View style={styles.avator}>
               <Avator size={50} account={{...account, id: null}} />
             </View>
+
+            <View style={{flex: 1, flexDirection: 'row', position: 'absolute', right: 3, top: -22}}>
+              <Image source={RedLogoImg} style={{borderRadius: 18, height: 18, width: 18}} />
+              <Text style={{fontSize: 12, lineHeight: 18, marginLeft: 6, color: '#ab0019', fontWeight: 'bold'}}>顽鸦</Text>
+            </View>
+
             <View style={styles.headerInfo}>
               <View style={styles.info}>
                 <Text style={styles.username}>{account && account.nickname}</Text>
