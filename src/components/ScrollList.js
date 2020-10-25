@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
+import Loading from '@/components/Loading';
 
 export const pagination = (headers = {}) => {
   const currentPage = Number(headers['x-current-page']);
@@ -114,6 +115,11 @@ const ScrollList = props => {
   useEffect(() => {
     setRefreshing(props.loading);
   }, [props.loading]);
+
+  // 不下拉的页面添加loading
+  if (props.enableRefresh === false && pagin && pagin.page === 1 && props.loading) {
+    return <Loading />;
+  }
 
   return (
     <FlatList
