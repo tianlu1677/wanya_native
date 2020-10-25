@@ -102,7 +102,7 @@ export const PublishRelated = props => {
 };
 
 export const ActionComment = props => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const comment = useSelector(state => state.home.commentTopic);
   const dispatch = useDispatch();
   const [value, setValue] = useState(null);
@@ -250,7 +250,7 @@ export const ActionComment = props => {
               hitSlop={{right: 20, left: 5}}
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
-                navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id})
+                navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
                 // setShareModelVisible(true);
               }}>
               <IconFont name="zhuanfa" size={18} />
@@ -433,7 +433,7 @@ const astyles = StyleSheet.create({
   },
   btnText: {
     marginLeft: 5,
-    fontSize: 14,
+    fontSize: 12,
     minWidth: 5,
   },
   input: {

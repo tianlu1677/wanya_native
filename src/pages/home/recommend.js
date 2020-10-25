@@ -15,6 +15,8 @@ import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import Helper from '@/utils/helper';
 
+console.log(STATUS_BAR_HEIGHT);
+
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
   const dispatch = useDispatch();
