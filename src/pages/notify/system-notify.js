@@ -31,7 +31,7 @@ const SystemNotify = ({navigation}) => {
   };
 
   const formatNotify = notify => {
-    console.log('noti', notify)
+    console.log('noti', notify);
     let image_url = '';
     let has_video = false;
     let content = '';
@@ -45,7 +45,7 @@ const SystemNotify = ({navigation}) => {
     } else if (notify.target_type === 'Article') {
       image_url = notify.article.cover_url;
       content = notify.article.title;
-    } else if (notify.target_type === null){
+    } else if (notify.target_type === null) {
       content = 'nothing';
     } else {
       content = '已删除';
@@ -99,6 +99,7 @@ const SystemNotify = ({navigation}) => {
         loading={loading}
         renderItem={renderItem}
         // height={1200}
+        enableRefresh={false}
         renderSeparator={() => <View />}
       />
     </SafeAreaView>

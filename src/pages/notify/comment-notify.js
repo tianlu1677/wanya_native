@@ -102,6 +102,7 @@ const CommentNotify = ({navigation}) => {
       data={data}
       loading={loading}
       renderItem={renderItem}
+      enableRefresh={false}
       renderSeparator={() => <View />}
       initialNumToRender={10}
     />

@@ -19,7 +19,7 @@ const PraiseNotify = ({navigation}) => {
   const [headers, setHeaders] = useState({});
 
   useEffect(() => {
-    loadInfo()
+    loadInfo();
   }, []);
 
   const loadInfo = async (page = 1) => {
@@ -27,17 +27,15 @@ const PraiseNotify = ({navigation}) => {
     let res_data = [];
     let headers = {};
     const res = await getPraiseNotifies(params);
-    res_data = params.page === 1
-        ? res.data.inside_notifies
-        : data.concat(res.data.inside_notifies);
+    res_data = params.page === 1 ? res.data.inside_notifies : data.concat(res.data.inside_notifies);
 
     res_data = res_data.map(notify => {
       return formatNotify(notify);
     });
     headers = res.headers;
-    setData(res_data)
-    setHeaders(headers)
-    setLoading(false)
+    setData(res_data);
+    setHeaders(headers);
+    setLoading(false);
   };
 
   const formatNotify = notify => {
@@ -89,7 +87,9 @@ const PraiseNotify = ({navigation}) => {
         notify_type={notify.message_detail}
         time={notify.created_at_text}
         item={notify.item}
-        handleClickRight={() => { goInsideNotify(notify)} }
+        handleClickRight={() => {
+          goInsideNotify(notify);
+        }}
       />
     );
   };
@@ -102,6 +102,7 @@ const PraiseNotify = ({navigation}) => {
         data={data}
         loading={loading}
         renderItem={renderItem}
+        enableRefresh={false}
         // height={1200}
         renderSeparator={() => <View />}
       />

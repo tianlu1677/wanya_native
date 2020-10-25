@@ -95,6 +95,7 @@ const MentionNotify = ({navigation}) => {
         loading={loading}
         renderItem={renderItem}
         // height={1200}
+        enableRefresh={false}
         renderSeparator={() => <View />}
       />
     </SafeAreaView>
