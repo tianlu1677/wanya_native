@@ -13,6 +13,8 @@ import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {RFValue} from '@/utils/response-fontsize';
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
+import ExcellentImage from '@/assets/images/excellent.png';
+import TopImage from '@/assets/images/top.png';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
 
@@ -81,8 +83,8 @@ const SingleItem = props => {
           <View style={styles.sanjia} />
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
@@ -99,8 +101,25 @@ const SingleItem = props => {
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
-        {props.isTop && <IsTopIcon />}
-        {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+
+        {props.isTop && (
+          <FastImg
+            source={TopImage}
+            style={{width: 32, height: 16, position: 'absolute', top: 8, left: 8}}
+            resizeMode={'contain'}
+          />
+        )}
+
+        {!props.isTop && data.excellent && (
+          <FastImg
+            source={ExcellentImage}
+            style={{width: 32, height: 19, position: 'absolute', top: 8, left: 8}}
+            resizeMode={'contain'}
+          />
+        )}
+
+        {/* {props.isTop && <IsTopIcon />} */}
+        {/* {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>} */}
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
           <Pressable
@@ -327,18 +346,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -15,
     top: 0,
-    width:0,
-    height:0,
+    width: 0,
+    height: 0,
     borderStyle: 'solid',
     borderColor: 'transparent',
     borderTopWidth: 8,
     borderLeftWidth: 8,
     borderRightWidth: 8,
     borderBottomWidth: 8,
-    borderLeftColor:'#FFFF00',//右箭头颜色
-    borderBottomColor:'transparent',//上箭头颜色
-    borderRightColor: 'transparent'//左箭头颜色
-  }
+    borderLeftColor: '#FFFF00', //右箭头颜色
+    borderBottomColor: 'transparent', //上箭头颜色
+    borderRightColor: 'transparent', //左箭头颜色
+  },
 });
 
 export default DoubleList;

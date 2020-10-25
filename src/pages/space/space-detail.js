@@ -13,8 +13,8 @@ import FastImg from '@/components/FastImg';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-import TopHeader from "@/components/TopHeader"
-import StickTopHeader from '@/components/StickTopHeader'
+import TopHeader from '@/components/TopHeader';
+import StickTopHeader from '@/components/StickTopHeader';
 const HEADER_HEIGHT = 275;
 
 const SpaceDetail = ({navigation, route}) => {
@@ -74,11 +74,10 @@ const SpaceDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-
   return detail ? (
     <View style={styles.wrapper}>
       <GoBack />
-      <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
+      <JoinActivity type={'node'} text={'立即打卡'} handleClick={joinNewTopic} />
       <CollapsibleHeader
         headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}

@@ -26,7 +26,7 @@ import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
-import StickTopHeader from '@/components/StickTopHeader'
+import StickTopHeader from '@/components/StickTopHeader';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -147,9 +147,8 @@ const NodeDetail = ({navigation, route}) => {
           </Pressable>
         </View>
       </View>
-    )
-  }
-
+    );
+  };
 
   return detail ? (
     <View style={{...styles.wrapper}}>
@@ -275,7 +274,8 @@ const styles = StyleSheet.create({
   cover: {
     width: 69,
     height: 69,
-    borderRadius: 2,
+    borderRadius: 5,
+    overflow: 'hidden',
     marginRight: 16,
     marginLeft: 1,
     borderWidth: 3,

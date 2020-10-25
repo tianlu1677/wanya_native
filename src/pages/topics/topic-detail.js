@@ -7,13 +7,11 @@ import {
   StatusBar,
   StyleSheet,
   Pressable,
-  Image,
   Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import VideoPlayerContent from '@/components/react-native-video-player';
-import {useNavigation} from '@react-navigation/native';
 import {
   dispatchBaseCurrentAccount,
   dispatchTopicDetail,
@@ -32,6 +30,7 @@ import {NAV_BAR_HEIGHT, BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import ViewShotPage from '@/components/SharePage';
+import LinearGradient from 'react-native-linear-gradient';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -190,6 +189,8 @@ const TopicDetail = ({navigation, route}) => {
         title: detail.topic_link.title,
       });
     };
+    console.log(detail);
+
     return (
       <View>
         <StatusBar barStyle={'dark-content'} />
@@ -197,8 +198,14 @@ const TopicDetail = ({navigation, route}) => {
           <StatusBar barStyle={'dark-content'} />
         </View>
         <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
-          <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
           <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
+          <LinearGradient
+            style={styles.titleWrapper}
+            start={{x: 0, y: 0}}
+            end={{x: 0, y: 1}}
+            colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
+            <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
+          </LinearGradient>
         </Pressable>
       </View>
     );
@@ -295,14 +302,19 @@ const styles = StyleSheet.create({
     height: 167,
     position: 'relative',
   },
-  linkTitle: {
+  titleWrapper: {
+    height: 64,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     padding: 11,
+  },
+  linkTitle: {
     fontSize: 16,
     fontWeight: '500',
     color: '#fff',
     lineHeight: 22,
-    zIndex: 2,
-    position: 'absolute',
   },
   linkImageCover: {
     width: '100%',
