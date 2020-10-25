@@ -42,7 +42,7 @@ const ViewShotPage = props => {
 
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
-      <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 0.8}} style={{flex: 1}}>
+      <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 1}} style={{flex: 1}}>
         <View style={styles.wrapper}>
           <View style={styles.content}>
             <View style={styles.avator}>

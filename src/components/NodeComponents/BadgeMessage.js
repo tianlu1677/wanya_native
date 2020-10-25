@@ -6,7 +6,7 @@ const BadgeMessage = props => {
   const {size, value, containerStyle} = props;
   const warpStyle = styles[`${size}Wrap`];
   const isBig = value > 99;
-  const bigger = value >= 1 && value < 10 ? 1 : value > 99 ? 2 : 1.4;
+  const bigger = value >= 1 && value < 10 ? 1 : value > 99 ? 1.8 : 1.4;
 
   return (
     <View style={containerStyle}>
@@ -42,9 +42,12 @@ const styles = StyleSheet.create({
   smallContent: {
     fontSize: 9,
     color: '#ffffff',
+    textAlign: 'center',
+    marginLeft: 2
   },
 
   middleWrap: {
+    display: 'flex',
     width: 18,
     height: 18,
     lineHeight: 18,
@@ -55,6 +58,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   middleContent: {
+    textAlign: 'center',
     fontSize: 11,
     color: '#ffffff',
   },

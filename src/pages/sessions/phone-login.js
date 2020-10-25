@@ -162,7 +162,7 @@ const PhoneLogin = ({navigation, route}) => {
               onChangeText={text => setPhoneCode(text)}
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
-              style={{...styles.inputContent, width: '80%'}}
+              style={{...styles.inputContent, width: '70%'}}
               clearButtonMode
             />
             {firstVerify ? (
