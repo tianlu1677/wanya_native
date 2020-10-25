@@ -40,8 +40,9 @@ const NodeList = props => {
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
-      {...props}
       style={styles.wrapper}
+      enableRefresh={false}
+      {...props}
     />
   );
 };
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
+    // backgroundColor: 'pink',
     paddingLeft: 16,
     paddingRight: 16,
   },

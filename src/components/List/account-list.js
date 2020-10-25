@@ -201,7 +201,8 @@ export const AccountList = props => {
       renderItem={renderItem}
       renderSeparator={renderSeparator}
       initialNumToRender={15}
-      style={{backgroundColor: '#fff'}}
+      // style={{backgroundColor: '#fff'}}
+      enableRefresh={false}
     />
   );
 };

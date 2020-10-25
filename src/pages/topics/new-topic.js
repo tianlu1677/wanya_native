@@ -136,9 +136,9 @@ const NewTopic = props => {
       return false;
     }
 
-    const waitTime = (ms) => {
-      return new Promise((resolve) => setTimeout(resolve, ms))
-    }
+    const waitTime = ms => {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    };
     const data = {
       type: 'single',
       medias: imageSource.map(v => v.url),
@@ -159,7 +159,7 @@ const NewTopic = props => {
     Toast.showLoading('正在发布中...');
     try {
       const res = await createTopic(data);
-      await waitTime(1500)
+      await waitTime(1500);
       Toast.hide();
       navigation.dispatch(
         CommonActions.reset({
@@ -259,11 +259,13 @@ const NewTopic = props => {
               </View>
             ))}
             {videoSource.length === 0 && imageSource.length !== 9 && (
-              <Pressable onPress={onImagePicker}>
-                <FastImg
-                  style={styles.mediaWrap}
-                  source={require('@/assets/images/add-photo.png')}
-                />
+              <Pressable
+                onPress={onImagePicker}
+                style={[
+                  styles.mediaWrap,
+                  {marginRight: imageSource.length > 0 && imageSource.length % 3 === 0 ? 0 : 10},
+                ]}>
+                <FastImg style={styles.media} source={require('@/assets/images/add-photo.png')} />
               </Pressable>
             )}
 
@@ -391,7 +393,6 @@ const styles = StyleSheet.create({
   media: {
     width: mediaSize,
     height: mediaSize,
-    backgroundColor: 'black',
   },
   mediaCloseWrap: {
     position: 'absolute',
