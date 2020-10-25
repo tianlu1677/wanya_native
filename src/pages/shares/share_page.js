@@ -142,7 +142,7 @@ const SharePageModal = props => {
         <ViewShotPage pageShareContent={shareContent} viewShotRef={viewShotRef} />
       </ScrollView>
       <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
-        <Pressable
+        <TouchableOpacity
           style={{display: 'flex', alignItems: 'center'}}
           onPress={() => {
             shareFriend();
@@ -150,7 +150,7 @@ const SharePageModal = props => {
           hitSlop={{left: 40, right: 10, top: 20, bottom: 10}}>
           <FastImg source={ShareFriendImg} style={{width: 28, height: 22}} resizeMode={'contain'} />
           <ShareText>微信好友</ShareText>
-        </Pressable>
+        </TouchableOpacity>
         <TouchableOpacity
           style={{display: 'flex', alignItems: 'center'}}
           onPress={() => {

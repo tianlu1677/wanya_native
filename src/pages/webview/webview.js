@@ -1,5 +1,5 @@
 import React, {Component, useEffect} from 'react';
-import {View, Text, ActivityIndicator, Image} from 'react-native';
+import {View, Text, StatusBar, ActivityIndicator, Image} from 'react-native';
 import {WebView} from 'react-native-webview';
 import BackImg from '@/assets/images/back.png'
 import BackWhiteImg from '@/assets/images/back-white.png'
@@ -25,13 +25,16 @@ const WebViewPage = ({route, navigation}) => {
   }, [navigation, route]);
 
   return (
-    <WebView
-      originWhitelist={['*']}
-      source={{uri: sourceUrl}}
-      startInLoadingState={false}
-      // renderLoading={() => <ActivityIndicator />}
-    />
+    <View style={{flex: 1}}>
+      <StatusBar barStyle={bgColor === 'black' ? 'light-content' : 'dark-content'} />
+      <WebView
+        originWhitelist={['*']}
+        source={{uri: sourceUrl}}
+        startInLoadingState={false}
+        // renderLoading={() => <ActivityIndicator />}
+      />
+    </View>
   );
-};;
+};
 
 export default WebViewPage;
