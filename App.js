@@ -22,6 +22,7 @@ import * as WeChat from 'react-native-wechat-lib';
 import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
+import { prosettings } from '@/api/settings_api'
 
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
@@ -56,6 +57,7 @@ class App extends Component {
     console.log('scale', scale);
     this.loadSplashImg();
     this.loadImgList();
+    this.loadSettings()
     // this.loadNetworkInfo();
     // this.loadDeviceInfo();
     // this.loginAdmin();
@@ -78,6 +80,13 @@ class App extends Component {
       RNBootSplash.hide({duration: 10});
     }, 1500);
   };
+
+  loadSettings = () => {
+    prosettings().then((res) => {
+      // console.log('re', JSON.stringify(res))
+      Helper.setData('settings', JSON.stringify(res))
+    })
+  }
 
   loginAdmin = () => {};
 

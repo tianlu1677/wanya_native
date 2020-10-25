@@ -123,6 +123,7 @@ const CommentList = props => {
       headers={headers}
       renderItem={renderItem}
       enableRefresh={false}
+      bounces={false}
       renderSeparator={renderSeparator}
       {...props}
     />

@@ -9,20 +9,16 @@ import {DefaultLog} from '@/utils/default-image';
 import PlayVideoImg from '@/assets/images/play-video.png';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
 import WanyaShareWordImg from '@/assets/images/wanya_share_word.png';
+import Helper from '@/utils/helper';
+import {prosettings} from '@/api/settings_api';
+
 // import CameraRoll from "@react-native-community/cameraroll";
 
 const ViewShotPage = props => {
-  const {
-    account,
-    node_name,
-    bg_img_url,
-    content,
-    qrcode_url,
-    content_style,
-    desc,
-  } = props.pageShareContent;
+  const {account, node_name, bg_img_url, content, content_style, desc} = props.pageShareContent;
   const [imgWidth, setimgWidth] = useState(300);
   const [imgHeight, setimgHeight] = useState(300);
+  const [qrcode_url, setQrcode_url] = useState('');
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
   const loadCoverStyle = () => {
@@ -30,17 +26,19 @@ const ViewShotPage = props => {
       return;
     }
     Image.getSize(bg_img_url, (width, height) => {
-      const maxWidth = screenWidth - 40;
+      const maxWidth = screenWidth - 20;
       setimgWidth(maxWidth);
       setimgHeight(height * (maxWidth / width));
-      // console.log('x', imgWidth, imgHeight);
+    });
+    prosettings().then(res => {
+      setQrcode_url(res.share_page_qrcode_img_url);
     });
   };
 
   useEffect(() => {
     loadCoverStyle();
     return () => {};
-  }, [bg_img_url])
+  }, [bg_img_url]);
 
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
@@ -51,7 +49,8 @@ const ViewShotPage = props => {
               <Avator size={50} account={{...account, id: null}} />
             </View>
 
-            <View style={{flex: 1, flexDirection: 'row', position: 'absolute', right: 3, top: -28}}>
+            <View
+              style={{flex: 1, flexDirection: 'row', position: 'absolute', right: 10, top: -24}}>
               <Image source={ShareLogoImg} style={{height: 20, width: 58}} />
             </View>
 
@@ -66,13 +65,13 @@ const ViewShotPage = props => {
               </View>
             </View>
             <View>
-              {
-                bg_img_url && <Image
+              {bg_img_url && (
+                <Image
                   style={[styles.cover, {width: imgWidth, height: imgHeight}]}
                   resizeMode={'contain'}
                   source={{uri: bg_img_url}}
                 />
-              }
+              )}
               {content_style === 'video' && (
                 <Image source={PlayVideoImg} style={styles.playVideo} />
               )}
@@ -80,7 +79,11 @@ const ViewShotPage = props => {
             <Text style={styles.text}>{content}</Text>
             <View style={styles.footer}>
               <Image style={styles.shareLogo} source={require('@/assets/images/share-wanya.png')} />
-              <Image style={styles.shareqrImg} source={{uri: qrcode_url}} />
+              {qrcode_url ? (
+                <Image style={styles.shareqrImg} source={{uri: qrcode_url}} />
+              ) : (
+                <View />
+              )}
             </View>
           </View>
         </View>
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     marginRight: 18,
     marginTop: 31,
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   info: {
     color: '#fff',
@@ -128,6 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 20,
     fontSize: 12,
+    marginTop: 9,
   },
   time: {
     color: '#fff',
@@ -182,8 +186,8 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   shareLogo: {
-    width: 216,
-    height: 82,
+    width: 190,
+    height: 300/(790 / 190),
   },
   shareqrImg: {
     height: 95,

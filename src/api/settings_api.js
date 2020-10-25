@@ -27,6 +27,16 @@ export async function saveToAsset(data = {}) {
   return res.data;
 }
 
+// 基础的配置信息
+export async function prosettings(data = {}) {
+  const res = await request({
+    url: '/api/v1/settings/prosettings',
+    method: 'GET',
+    data: data,
+  });
+  return res.data;
+}
+
 // 记录系统信息b
 export async function uploadSystemInfo(data = {system_detail: ''}) {
   const res = await request({

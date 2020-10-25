@@ -130,6 +130,7 @@ const ScrollList = props => {
       ListHeaderComponent={props.ListHeaderComponent || null}
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
+      bounces={props.bounces}
       refreshControl={
         enableRefresh ? (
           <RefreshControl

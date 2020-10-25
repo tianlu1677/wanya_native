@@ -9,6 +9,7 @@ import FastImg from '@/components/FastImg';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
+import StickTopHeader from '@/components/StickTopHeader';
 
 const rightLogo =
   'http://file.meirixinxue.com/assets/2020/77963058-7b42-46ea-bc6b-f969e81bbdfd.png';
@@ -65,6 +66,7 @@ const HashtagDetail = ({navigation, route}) => {
             component: HotList,
           },
         ]}
+        renderTopHeader={<StickTopHeader title={'#' + hashtag} />}
         renderHeader={
           <View style={styles.header}>
             <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
