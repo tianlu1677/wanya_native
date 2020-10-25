@@ -44,7 +44,7 @@ const TopHeader = props => {
               <Icon
                 name="chevron-back-outline"
                 size={22}
-                color="white"
+                color={props.leftButtonColor || 'white'}
                 iconStyle={{marginRight: 1}}
               />
             </TouchableOpacity>

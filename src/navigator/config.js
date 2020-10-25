@@ -125,7 +125,7 @@ const articleRouter = [
     component: ArticleDetail,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '文章详情', headerShown: true},
+    options: {title: '文章详情', headerShown: false},
   },
   {
     name: 'HashtagDetail',
