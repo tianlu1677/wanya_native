@@ -22,6 +22,7 @@ import {DefaultLog} from '@/utils/default-image';
 import ViewShotPage from '@/components/SharePage';
 import {uploadBase64File} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
+import Loading from "@/components/Loading"
 
 const SharePageModal = props => {
   const defaultShareContent = {
@@ -35,6 +36,7 @@ const SharePageModal = props => {
   const item_id = route.params.item_id;
   const [shareUri, setShareUri] = useState('');
   const [shareContent, setShareContent] = useState({});
+  const [loadingView, setLoadingView] = useState(true);
   const topic = useSelector(state => state.topic.topicDetail);
   const article = useSelector(state => state.article.articleDetail);
 
@@ -76,6 +78,10 @@ const SharePageModal = props => {
     } else {
       console.log('no support');
     }
+
+    setTimeout(() => {
+      setLoadingView(false)
+    }, 500)
   };
 
   const takeImg = async () => {
@@ -134,7 +140,10 @@ const SharePageModal = props => {
 
   return (
     <ModelWrap>
-      <ScrollView style={{flex: 1, marginBottom: 90}} showsVerticalScrollIndicator={false}>
+      {
+        loadingView ? <Loading /> : <View />
+      }
+      <ScrollView style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : ''}} showsVerticalScrollIndicator={false}>
         <ViewShotPage pageShareContent={shareContent} viewShotRef={viewShotRef} />
       </ScrollView>
       <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
