@@ -158,7 +158,7 @@ const cstyles = StyleSheet.create({
   numCount: {
     marginLeft: 5,
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: 12,
     minWidth: 7,
   },
   comment: {

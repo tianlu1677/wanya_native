@@ -105,7 +105,7 @@ const SingleItem = props => {
         {props.isTop && (
           <FastImg
             source={TopImage}
-            style={{width: 32, height: 16, position: 'absolute', top: 8, left: 8}}
+            style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
           />
         )}
@@ -113,7 +113,7 @@ const SingleItem = props => {
         {!props.isTop && data.excellent && (
           <FastImg
             source={ExcellentImage}
-            style={{width: 32, height: 19, position: 'absolute', top: 8, left: 8}}
+            style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
           />
         )}
