@@ -27,7 +27,7 @@ const ArticleDetail = ({navigation, route}) => {
   }, [navigation, detail]);
 
   const loadData = async () => {
-    const res = await getArticle(7 || articleId);
+    const res = await getArticle(articleId);
     setDetail(res.data.article);
     dispatch(dispatchArticleDetail(res.data.article));
   };
@@ -59,17 +59,17 @@ const ArticleDetail = ({navigation, route}) => {
         detail={detail}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
         type="Article"
-        // style={{flex: 1}}
         changeVisible={value => setVisible(value)}
         deleteComment={deleteArticleComment}
         ListHeaderComponent={
           <>
             <Text style={styles.title}>{detail.title}</Text>
-            <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
+            <View style={{marginBottom: 20}}>
+              <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
+            </View>
             <RichHtml
               containerStyle={{
-                backgroundColor: 'white',
-                paddingTop: 20,
+                backgroundColor: '#fff',
                 paddingLeft: 10,
                 paddingRight: 10,
               }}
@@ -93,6 +93,7 @@ const ArticleDetail = ({navigation, route}) => {
               }}
               content={
                 detail &&
+                detail.content &&
                 detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
               }
             />

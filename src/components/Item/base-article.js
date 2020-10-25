@@ -5,12 +5,12 @@ import {Header, Bottom} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import LinearGradient from 'react-native-linear-gradient';
 
-const BaseTopic = props => {
+const BaseArticle = props => {
   const {data} = props;
   const navigation = useNavigation();
 
   const goArticleDetail = () => {
-    navigation.push('ArticleDetail', {topicId: data.id});
+    navigation.push('ArticleDetail', {articleId: data.id});
   };
 
   return (
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BaseTopic;
+export default BaseArticle;
