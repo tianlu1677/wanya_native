@@ -65,13 +65,13 @@ const ViewShotPage = props => {
               </View>
             </View>
             <View>
-              {bg_img_url && (
+              {bg_img_url ? (
                 <Image
                   style={[styles.cover, {width: imgWidth, height: imgHeight}]}
                   resizeMode={'cover'}
                   source={{uri: bg_img_url}}
                 />
-              )}
+              ) : <View />}
               {content_style === 'video' && (
                 <Image source={PlayVideoImg} style={styles.playVideo} />
               )}
