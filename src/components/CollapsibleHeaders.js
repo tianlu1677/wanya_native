@@ -191,8 +191,8 @@ const CollapsibleHeader = props => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     });
-    console.log('opacity', titleHeight)
-    console.log('opacity', opacity)
+    console.log('opacity', titleHeight);
+    console.log('opacity', opacity);
     return (
       <Animated.View style={[localStyles.header, {opacity: opacity, height: titleHeight}]}>
         {props.renderTopHeader}
@@ -221,9 +221,6 @@ const localStyles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 0,
-    // // backgroundColor: '#000',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
 });
 

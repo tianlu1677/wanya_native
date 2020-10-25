@@ -155,7 +155,7 @@ const DoubleSingle = props => {
   const {data} = props;
 
   return (
-    <View style={[styles.singleWrap, {marginLeft: props.index === 0 ? 0 : 5}]}>
+    <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
       {data.map((v, index) => {
         return <SingleItem key={v.id} data={v.item} isTop={v.is_top} type={v.item_type} />;
       })}
@@ -258,13 +258,15 @@ DoubleList.propTypes = {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: '#fff',
-    paddingLeft: 5,
-    paddingRight: 5,
+    // backgroundColor: 'pink',
+    // paddingLeft: 5,
+    // paddingRight: 5,
   },
   singleWrap: {
     flex: 1,
     backgroundColor: '#fff',
+    marginRight: 5,
+    marginLeft: 5,
   },
   videoPlay: {
     width: 16,
