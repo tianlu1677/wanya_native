@@ -68,7 +68,7 @@ const ViewShotPage = props => {
               {bg_img_url && (
                 <Image
                   style={[styles.cover, {width: imgWidth, height: imgHeight}]}
-                  resizeMode={'contain'}
+                  resizeMode={'cover'}
                   source={{uri: bg_img_url}}
                 />
               )}
