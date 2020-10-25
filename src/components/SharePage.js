@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   shareLogo: {
+    marginTop: 10,
     width: 190,
     height: 300/(790 / 190),
   },

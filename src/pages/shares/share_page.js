@@ -92,11 +92,11 @@ const SharePageModal = props => {
     });
   };
 
-  const shareFriend = e => {
+  const shareFriend = async () => {
     Toast.showLoading('正在分享...');
     console.log('shareUri', shareUri);
     if (!shareUri) {
-      takeImg();
+      await takeImg();
     }
 
     setTimeout(() => {
@@ -112,10 +112,10 @@ const SharePageModal = props => {
       }
     );
   };
-  const shareTimeline = () => {
+  const shareTimeline = async () => {
     Toast.showLoading('正在分享...');
     if (!shareUri) {
-      takeImg();
+      await takeImg();
     }
     setTimeout(() => {
       Toast.hide();
