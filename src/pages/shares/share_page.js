@@ -99,15 +99,12 @@ const SharePageModal = props => {
   };
 
   const shareFriend = async () => {
-    Toast.showLoading('正在分享...');
+    Toast.showLoading('正在生成分享图片...');
     console.log('shareUri', shareUri);
     if (!shareUri) {
       await takeImg();
-    }
-
-    setTimeout(() => {
       Toast.hide();
-    }, 1200);
+    }
     WeChat.shareImage(
       {
         imageUrl: shareUri,
@@ -119,13 +116,11 @@ const SharePageModal = props => {
     );
   };
   const shareTimeline = async () => {
-    Toast.showLoading('正在分享...');
+    Toast.showLoading('正在生成分享图片...');
     if (!shareUri) {
       await takeImg();
-    }
-    setTimeout(() => {
       Toast.hide();
-    }, 1200);
+    }
     WeChat.shareImage(
       {
         imageUrl: shareUri,
