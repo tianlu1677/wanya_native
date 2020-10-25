@@ -1,5 +1,14 @@
 import React, {useState, useLayoutEffect, useCallback} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+  Pressable,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
@@ -15,7 +24,7 @@ import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
-import StickTopHeader from '@/components/StickTopHeader'
+import StickTopHeader from '@/components/StickTopHeader';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
@@ -125,7 +134,7 @@ const MineDetail = ({navigation, route}) => {
             component: ArticleListPage,
           },
         ]}
-        renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={false} />}
+        renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={true} />}
         renderHeader={
           <>
             <FocusAwareStatusBar barStyle="light-content" />
@@ -249,13 +258,14 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: 'white',
+    zIndex: 100,
   },
   setting: {
     height: 20,
     position: 'absolute',
     right: 16,
-    top: 12 + BASIC_HEIGHT,
-    zIndex: 2,
+    top: 50 + BASIC_HEIGHT,
+    zIndex: 100,
     flexDirection: 'row',
   },
   header: {
@@ -350,7 +360,9 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   message: {
-    marginRight: 10,
+    marginRight: 16,
+    zIndex: 1000,
+    // backgroundColor: 'red'
     // position: 'absolute',
     // right: 16,
     // zIndex: 2,
@@ -362,7 +374,6 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     // top: 0,
     // right: 30,
-    // zIndex: -1,
   },
 });
 

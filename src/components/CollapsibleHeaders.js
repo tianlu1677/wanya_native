@@ -191,7 +191,8 @@ const CollapsibleHeader = props => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     });
-
+    console.log('opacity', titleHeight)
+    console.log('opacity', opacity)
     return (
       <Animated.View style={[localStyles.header, {opacity: opacity, height: titleHeight}]}>
         {props.renderTopHeader}
@@ -201,11 +202,9 @@ const CollapsibleHeader = props => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={{flex: 1}}>
-        {renderTabView()}
-        {renderHeader()}
-        {renderHeaderWithWrapper()}
-      </View>
+      {renderHeader()}
+      {renderTabView()}
+      {renderHeaderWithWrapper()}
     </View>
   );
 };

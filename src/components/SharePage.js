@@ -52,7 +52,7 @@ const ViewShotPage = props => {
             </View>
 
             <View style={{flex: 1, flexDirection: 'row', position: 'absolute', right: 3, top: -28}}>
-              <Image source={ShareLogoImg} style={{height: 29, width: 70}} />
+              <Image source={ShareLogoImg} style={{height: 20, width: 58}} />
             </View>
 
             <View style={styles.headerInfo}>
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // height: '100%',
     backgroundColor: '#ff193a',
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 40,
     paddingBottom: 16,
   },

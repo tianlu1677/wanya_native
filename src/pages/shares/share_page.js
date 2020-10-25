@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Text,
+  Alert,
   Pressable,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -119,13 +120,13 @@ const SharePageModal = props => {
     setTimeout(() => {
       Toast.hide();
     }, 1200);
-    Toast.hide();
     WeChat.shareImage(
       {
         imageUrl: shareUri,
         scene: 1,
       },
       error => {
+        Alert.error('error', error)
         console.log('err', error);
       }
     );
