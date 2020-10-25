@@ -136,6 +136,9 @@ const NewTopic = props => {
       return false;
     }
 
+    const waitTime = (ms) => {
+      return new Promise((resolve) => setTimeout(resolve, ms))
+    }
     const data = {
       type: 'single',
       medias: imageSource.map(v => v.url),
@@ -156,6 +159,7 @@ const NewTopic = props => {
     Toast.showLoading('正在发布中...');
     try {
       const res = await createTopic(data);
+      await waitTime(1500)
       Toast.hide();
       navigation.dispatch(
         CommonActions.reset({
