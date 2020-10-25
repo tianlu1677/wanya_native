@@ -22,6 +22,9 @@ const ViewShotPage = props => {
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
   const loadCoverStyle = () => {
+    prosettings().then(res => {
+      setQrcode_url(res.share_page_qrcode_img_url);
+    });
     if (!bg_img_url) {
       return;
     }
@@ -30,15 +33,12 @@ const ViewShotPage = props => {
       setimgWidth(maxWidth);
       setimgHeight(height * (maxWidth / width));
     });
-    prosettings().then(res => {
-      setQrcode_url(res.share_page_qrcode_img_url);
-    });
   };
 
   useEffect(() => {
     loadCoverStyle();
-    return () => {};
-  }, [bg_img_url]);
+    // return () => {};
+  }, [content]);
 
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
