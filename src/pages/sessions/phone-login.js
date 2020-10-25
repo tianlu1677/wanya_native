@@ -41,7 +41,7 @@ const PhoneLogin = ({navigation, route}) => {
         <FinishBtn onPress={onVerifyPhoneCode} canClick={phoneCode.length === 6} />
       ),
     });
-  }, [navigation, phoneCode]);
+  }, [navigation, phoneCode, phone]);
 
   const downTimeRunner = () => {
     var timeo = 59;
