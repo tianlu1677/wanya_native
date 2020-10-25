@@ -26,14 +26,21 @@ const MediasPicker = WrapperComponent => {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
         maxRetries: 1,
-        type: file.uploadType,
+        type: 'multipart',
         field: 'file',
+        parameters: {
+          width: file.width,
+          height: file.height,
+          fsize: file.size,
+          category: 'image'
+        },
         headers: {
           'content-type': 'application/octet-stream',
           token: token,
         },
         path: file.uri,
       };
+      console.log('uploadOptions', uploadOptions)
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
