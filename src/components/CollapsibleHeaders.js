@@ -165,6 +165,7 @@ const CollapsibleHeader = props => {
           height: 0,
           width: Dimensions.get('window').width,
         }}
+        lazy={true}
         style={{flex: 1, zIndex: -1, backgroundColor: '#fff'}}
       />
     );
