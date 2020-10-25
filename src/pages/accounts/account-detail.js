@@ -206,7 +206,7 @@ const AccountDetail = ({navigation, route}) => {
             component: ArticleListPage,
           },
         ]}
-        onChange={key => setCurrentKey(key)}
+        onKeyChange={key => setCurrentKey(key)}
         renderTopHeader={<StickTopHeader title={account.nickname} />}
         renderHeader={<Header />}
       />

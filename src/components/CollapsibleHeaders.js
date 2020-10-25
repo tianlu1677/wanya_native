@@ -113,7 +113,7 @@ const CollapsibleHeader = props => {
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          decelerationRate="fast"
+          // decelerationRate="fast"
         />
       </View>
     );
