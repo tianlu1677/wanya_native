@@ -96,16 +96,6 @@ const MineDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  // const StickTopHeader = () => {
-  //   return (<View style={{flex: 1, backgroundColor: 'black'}}>
-  //       <TopHeader
-  //         LeftButton={() => <View />}
-  //         Title={() => (<Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>{currentAccount.nickname}</Text>)}
-  //       />
-  //     </View>
-  //   )
-  // }
-
   return currentAccount ? (
     <View style={{flex: 1}}>
       <CollapsibleHeader
@@ -136,7 +126,7 @@ const MineDetail = ({navigation, route}) => {
         ]}
         renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={true} />}
         renderHeader={
-          <>
+          <View style={{flex: 1}}>
             <FocusAwareStatusBar barStyle="light-content" />
             <View style={styles.setting}>
               <Pressable
@@ -245,7 +235,7 @@ const MineDetail = ({navigation, route}) => {
                 </Pressable>
               </View>
             </ImageBackground>
-          </>
+          </View>
         }
       />
     </View>
@@ -264,8 +254,8 @@ const styles = StyleSheet.create({
     height: 20,
     position: 'absolute',
     right: 16,
-    top: 50 + BASIC_HEIGHT,
-    zIndex: 100,
+    top: 12 + BASIC_HEIGHT,
+    zIndex: 1000,
     flexDirection: 'row',
   },
   header: {

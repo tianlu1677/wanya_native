@@ -215,7 +215,7 @@ const localStyles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    zIndex: -1,
+    zIndex: 2,
   },
   header: {
     width: '100%',
