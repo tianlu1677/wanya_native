@@ -145,7 +145,7 @@ const PhoneLogin = ({navigation, route}) => {
               placeholderTextColor={'#353535'}
               // textAlignVertical="top"
               // value={'198271'}
-              style={styles.inputContent}
+              style={{...styles.inputContent, width: '100%'}}
             />
           </InputView>
 
@@ -162,12 +162,12 @@ const PhoneLogin = ({navigation, route}) => {
               onChangeText={text => setPhoneCode(text)}
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
-              style={styles.inputContent}
+              style={{...styles.inputContent, width: '80%'}}
               clearButtonMode
             />
             {firstVerify ? (
               <Pressable
-                hitSlop={{top: 20, left: 10, right: 10, bottom: 15}}
+                hitSlop={{top: 30, left: 20, right: 10, bottom: 15}}
                 onPress={() => {
                   onSendPhoneCode();
                 }}>
