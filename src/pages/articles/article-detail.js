@@ -52,7 +52,7 @@ const ArticleDetail = ({navigation, route}) => {
 
   return detail ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={STATUS_BAR_HEIGHT + NAVIGATION_BAR_HEIGHT}
+      keyboardVerticalOffset={NAVIGATION_BAR_HEIGHT}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
       <CommentList
