@@ -7,6 +7,7 @@ import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import IconFont from '@/iconfont';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {dispatchPreviewImage} from '@/redux/actions';
+import LinearGradient from 'react-native-linear-gradient';
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -92,21 +93,22 @@ export const TopicVideoContent = props => {
 };
 
 export const TopicLinkContent = props => {
-  // const navigation = useNavigation();
-
-  // const goLinkDetail = () => {
-  //   navigation.push('WebView', {
-  //     sourceUrl: props.data.topic_link.raw_link,
-  //     title: props.data.topic_link.title,
-  //   });
-  // };
-
   return (
     <View style={styles.linkWrap}>
-      <FastImg source={{uri: props.data.topic_link.cover_url}} style={{flex: 1, height: 167, width: '100%'}} />
-      <View style={styles.linkTitleBg}>
+      <FastImg
+        source={{uri: props.data.topic_link.cover_url}}
+        style={{flex: 1, height: 167, width: '100%'}}
+      />
+      <LinearGradient
+        style={styles.titleWrapper}
+        start={{x: 0, y: 0}}
+        end={{x: 0, y: 1}}
+        colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
         <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
-      </View>
+      </LinearGradient>
+      {/* <View style={styles.linkTitleBg}>
+        <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
+      </View> */}
     </View>
   );
 };
@@ -194,22 +196,20 @@ const styles = StyleSheet.create({
     marginTop: -15,
     marginLeft: -15,
   },
-  linkTitleBg: {
+  titleWrapper: {
     position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     height: 64,
-    color: 'white',
-    // backgroundColor: 'rgba(0,0,0,0.1)',
+    padding: 11,
   },
   linkTitle: {
-    padding: 11,
     fontSize: 16,
     fontWeight: '500',
     color: '#fff',
     lineHeight: 22,
-    zIndex: 2,
+    textAlign: 'justify',
   },
   excellentLabel: {
     width: 30,

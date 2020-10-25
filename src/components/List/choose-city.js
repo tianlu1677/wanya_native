@@ -67,12 +67,11 @@ const CitySelect = ({navigation}) => {
   }, [navigation]);
 
   return cities ? (
-    <>
+    <View style={styles.wrapper}>
       <ScrollList
-        style={styles.wrapper}
         getRref={refs => setScrollRef(refs)}
         enableLoadMore={false}
-        // enableRefresh={false}
+        enableRefresh={false}
         data={cities}
         itemKey={'title'}
         renderItem={({item}) => {
@@ -135,7 +134,7 @@ const CitySelect = ({navigation}) => {
           </Text>
         ))}
       </View>
-    </>
+    </View>
   ) : (
     <Loading />
   );

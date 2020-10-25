@@ -66,14 +66,11 @@ const HashtagDetail = ({navigation, route}) => {
           },
         ]}
         renderHeader={
-          <>
-            <View style={styles.header}>
-              <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
-              <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
-              <Text style={styles.hashtagText}>#{hashtag}</Text>
-            </View>
-            <View style={styles.imageCoverOpacity} />
-          </>
+          <View style={styles.header}>
+            <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
+            <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
+            <Text style={styles.hashtagText}>#{hashtag}</Text>
+          </View>
         }
       />
     </View>
@@ -86,15 +83,6 @@ const styles = StyleSheet.create({
     height: HEADER_HEIGHT,
     backgroundColor: '#ff8d00',
     position: 'relative',
-  },
-  imageCoverOpacity: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#000',
-    opacity: 0.5,
   },
   imageCover: {
     height: HEADER_HEIGHT,
