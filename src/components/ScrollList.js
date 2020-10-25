@@ -117,9 +117,9 @@ const ScrollList = props => {
   }, [props.loading]);
 
   // 不下拉的页面添加loading
-  if (props.enableRefresh === false && pagin && pagin.page === 1 && props.loading) {
-    return <Loading />;
-  }
+  // if (props.enableRefresh === false && pagin && pagin.page === 1 && props.loading) {
+  //   return <Loading />;
+  // }
 
   return (
     <FlatList
