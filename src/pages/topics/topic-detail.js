@@ -225,7 +225,6 @@ const TopicDetail = ({navigation, route}) => {
         color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
       />
       <CommentList
-        style={styles.wrapper}
         type="Topic"
         detail={detail}
         enableLoadMore={false}
@@ -274,9 +273,6 @@ const TopicDetail = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // flex: 1,
-  },
   title: {
     fontSize: 20,
     paddingTop: 8,

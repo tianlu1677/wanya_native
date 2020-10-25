@@ -131,6 +131,7 @@ const ScrollList = props => {
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
+      scrollIndicatorInsets={{right: 1}}
       refreshControl={
         enableRefresh ? (
           <RefreshControl

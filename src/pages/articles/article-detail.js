@@ -9,7 +9,7 @@ import {getArticleCommentList, createComment, deleteComment} from '@/api/comment
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {dispatchArticleDetail} from '@/redux/actions';
-import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
+import {STATUS_BAR_HEIGHT, NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -52,13 +52,14 @@ const ArticleDetail = ({navigation, route}) => {
 
   return detail ? (
     <KeyboardAvoidingView
+      keyboardVerticalOffset={STATUS_BAR_HEIGHT + NAVIGATION_BAR_HEIGHT}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
       <CommentList
-        style={styles.wrapper}
         detail={detail}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
         type="Article"
+        // style={{flex: 1}}
         changeVisible={value => setVisible(value)}
         deleteComment={deleteArticleComment}
         ListHeaderComponent={
@@ -116,7 +117,6 @@ const ArticleDetail = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {},
   title: {
     fontSize: 20,
     paddingTop: 8,
