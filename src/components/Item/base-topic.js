@@ -1,4 +1,4 @@
-import React, {useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Image, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -8,6 +8,7 @@ import IconFont from '@/iconfont';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {dispatchPreviewImage} from '@/redux/actions';
 import LinearGradient from 'react-native-linear-gradient';
+import FastImageGif from '@/components/FastImageGif';
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -84,11 +85,16 @@ export const TopicVideoContent = props => {
   );
 
   return (
-    <FastImg
-      source={{uri: single_cover.link_url}}
-      style={{...styles.imageCover, ...{width: videoAttr.width / 2, height: videoAttr.height / 2}}}>
+    <View style={{flex: 1, width: videoAttr.width / 2, height: videoAttr.height / 2}}>
+      <FastImageGif
+        gif_url={single_cover.link_url}
+        source={{uri: single_cover.cover_url}}
+        style={{
+          ...styles.imageCover,
+          ...{width: videoAttr.width / 2, height: videoAttr.height / 2},
+        }}/>
       <Image style={styles.playImage} source={VideoPlayImg} />
-    </FastImg>
+    </View>
   );
 };
 
@@ -153,8 +159,7 @@ const BaseTopic = props => {
       <Bottom data={data} type="topic" />
     </Pressable>
   );
-};;
-
+};
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,

@@ -21,7 +21,7 @@ const FastImgGif = props => {
       setTimeout(() => {
         console.log('gif_url', props.gif_url, props.source.uri)
         setSource({uri: props.gif_url});
-      }, 600)
+      }, 800)
     }
   };
 

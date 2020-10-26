@@ -145,11 +145,11 @@ const TopicDetail = ({navigation, route}) => {
   const renderVideo = () => {
     const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     const {width, height} = detail.media_video;
-    const videoWidth = screenWidth;
+    let videoWidth = screenWidth;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-    if (videoHeight > 350) {
-      videoHeight = 350;
-    }
+    // if (videoHeight > 375) {
+    //   videoHeight = 375;
+    // }
 
     return (
       <View style={{backgroundColor: 'black'}}>
@@ -170,7 +170,7 @@ const TopicDetail = ({navigation, route}) => {
           videoWidth={videoWidth}
           videoHeight={videoHeight}
           poster={`${detail.video_content_m3u8}?vframe/jpg/offset/0/rotate/auto`}
-          posterResizeMode={'cover'}
+          posterResizeMode={'contain'}
           hideControlsOnStart
           pauseOnPress
           muted={false}
@@ -189,7 +189,7 @@ const TopicDetail = ({navigation, route}) => {
         title: detail.topic_link.title,
       });
     };
-    console.log(detail);
+    // console.log(detail);
 
     return (
       <View>

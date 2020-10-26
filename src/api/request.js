@@ -53,7 +53,8 @@ axios.interceptors.response.use(
           index: 0,
           routes: [{name: 'SocialLogin'}],
         });
-        return Promise.reject(error);
+        break;
+      // return Promise.reject(error);
       // console.log('401, 未登录')
       // if (error.response.data.error === 'Your account is locked.') {
       //   storeData('lock_user', true);
