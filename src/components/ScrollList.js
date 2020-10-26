@@ -77,7 +77,7 @@ const ScrollList = props => {
     switch (state) {
       case loadState.LOADING:
         footer = (
-          <View style={{height: 100, backgroundColor: 'red', flex: 1, justifyContent: 'center'}}>
+          <View style={{height: 100, backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center'}}>
             <ActivityIndicator size="small" />
           </View>
         );
@@ -113,8 +113,8 @@ const ScrollList = props => {
   useEffect(() => {
     setTimeout(() => {
       setState(loadState.SUCCESS);
-    }, 120)
-    setPagin(pagination(props.headers));
+      setPagin(pagination(props.headers));
+    }, 500)
   }, [props.headers]);
 
   useEffect(() => {
@@ -164,7 +164,7 @@ const ScrollList = props => {
       // onScrollEndDrag={onScrollEndDrag}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       onEndReached={enableLoadMore ? onEndReached : null}
-      onEndReachedThreshold={0.2}
+      onEndReachedThreshold={0.1}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       ListHeaderComponent={props.ListHeaderComponent || null}
       ListEmptyComponent={renderEmpty}

@@ -15,6 +15,7 @@ import {RFValue} from '@/utils/response-fontsize';
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
+import FastImageGif from '@/components/FastImageGif'
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
 
@@ -90,8 +91,9 @@ const SingleItem = props => {
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
         {data.single_cover.cover_url && (
-          <FastImg
+          <FastImageGif
             source={{uri: data.single_cover.cover_url}}
+            gif_url={data.single_cover.link_url}
             style={{height: height, width: '100%', backgroundColor: '#F1F1F1'}}
           />
         )}
@@ -199,6 +201,7 @@ const DoubleList = props => {
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
+    setHeaders(res.headers);
   };
 
   //首页推荐

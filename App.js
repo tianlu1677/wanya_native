@@ -12,6 +12,14 @@ import {
   Image,
 } from 'react-native';
 import CodePush from 'react-native-code-push';
+import {
+  check,
+  requestMultiple,
+  checkMultiple,
+  request,
+  PERMISSIONS,
+  RESULTS,
+} from 'react-native-permissions';
 
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';
@@ -22,7 +30,7 @@ import * as WeChat from 'react-native-wechat-lib';
 import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
-import { prosettings } from '@/api/settings_api'
+import {prosettings} from '@/api/settings_api';
 
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
@@ -57,7 +65,8 @@ class App extends Component {
     console.log('scale', scale);
     this.loadSplashImg();
     this.loadImgList();
-    this.loadSettings()
+    this.loadSettings();
+    this.checkPermission()
     // this.loadNetworkInfo();
     // this.loadDeviceInfo();
     // this.loginAdmin();
@@ -82,11 +91,25 @@ class App extends Component {
   };
 
   loadSettings = () => {
-    prosettings().then((res) => {
+    prosettings().then(res => {
       // console.log('re', JSON.stringify(res))
-      Helper.setData('settings', JSON.stringify(res))
-    })
-  }
+      Helper.setData('settings', JSON.stringify(res));
+    });
+  };
+
+  checkPermission = () => {
+    checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]).then(statuses => {
+      console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+      console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+
+      requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]).then(
+        statuses => {
+          console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+          console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+        }
+      );
+    });
+  };
 
   loginAdmin = () => {};
 
