@@ -34,6 +34,9 @@ const ScrollList = props => {
   const [enableRefresh] = useState(props.enableRefresh === false ? false : true);
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
+  const [startPull, setStartPull] = useState(false);
+  const [currentY, setCurrentY] = useState(0);
+  const [title, setTitle] = useState('努力加载中...');
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
@@ -74,7 +77,7 @@ const ScrollList = props => {
     switch (state) {
       case loadState.LOADING:
         footer = (
-          <View style={{height: 60, backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center'}}>
+          <View style={{height: 100, backgroundColor: 'red', flex: 1, justifyContent: 'center'}}>
             <ActivityIndicator size="small" />
           </View>
         );
@@ -108,7 +111,9 @@ const ScrollList = props => {
   };
 
   useEffect(() => {
-    setState(loadState.SUCCESS);
+    setTimeout(() => {
+      setState(loadState.SUCCESS);
+    }, 120)
     setPagin(pagination(props.headers));
   }, [props.headers]);
 
@@ -121,6 +126,30 @@ const ScrollList = props => {
   //   return <Loading />;
   // }
 
+  const onscroll = (event) => {
+    console.log('startPull', startPull)
+    if(startPull) {
+      return
+    }
+    const y = event.nativeEvent.contentOffset.y;
+
+    setCurrentY(y)
+    console.log(event.nativeEvent.contentOffset.y);
+  }
+
+  const onScrollEndDrag = (e) => {
+    if (currentY < -85) {
+      setStartPull(true)
+      setTitle('释放后请求数据....')
+      onRefresh();
+      setStartPull(false)
+    } else {
+      setTitle('下拉加载')
+      // setStartPull(false)
+    }
+    console.log('xxxx, onScrollEndDrag', e)
+  }
+
   return (
     <FlatList
       ref={props.getRref}
@@ -130,6 +159,10 @@ const ScrollList = props => {
       renderItem={props.renderItem}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
       data={props.data}
+      // scrollEventThrottle={47}
+      // onScroll={onscroll}
+      // onScrollEndDrag={onScrollEndDrag}
+      // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       onEndReached={enableLoadMore ? onEndReached : null}
       onEndReachedThreshold={0.2}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
@@ -141,11 +174,11 @@ const ScrollList = props => {
       refreshControl={
         enableRefresh ? (
           <RefreshControl
-            refreshing={props.loading}
+            refreshing={!!refreshing}
             onRefresh={enableRefresh ? onRefresh.bind(this) : null}
             tintColor="black"
             style={{backgroundColor: 'white'}}
-            title={'努力加载中...'}
+            title={title}
           />
         ) : null
       }
@@ -171,6 +204,16 @@ const scrollStyle = StyleSheet.create({
     height: 9,
   },
 });
+
+ScrollList.defaultProps = {
+  data: [],
+  loading: true,
+  headers: {},
+  bounces: true,
+  enableLoadMore: true,
+  enableRefresh: true,
+  emptyTitle: '暂时还没有内容哦'
+}
 
 ScrollList.propTypes = {
   data: PropTypes.array.isRequired, //List接收的数据

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect } from 'react';
 import {View, Text, Image, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -69,7 +69,7 @@ export const TopicImageContent = props => {
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       {medias.map((media, index) => (
         <Pressable onPress={() => onPreview(index)} key={media}>
-          <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
+          <Image key={media} source={{uri: media}} style={styles.imageMulti} />
         </Pressable>
       ))}
     </ScrollView>
@@ -125,6 +125,11 @@ const BaseTopic = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
+  // useEffect(() => {
+  //  console.log('rending....', props.data.id)
+  // }, []);
+  //
+
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" />
@@ -148,7 +153,7 @@ const BaseTopic = props => {
       <Bottom data={data} type="topic" />
     </Pressable>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   postSlide: {

@@ -89,13 +89,13 @@ const SingleItem = props => {
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
-        {data.single_cover.link_url && (
+        {data.single_cover.cover_url && (
           <FastImg
-            source={{uri: data.single_cover.link_url}}
+            source={{uri: data.single_cover.cover_url}}
             style={{height: height, width: '100%', backgroundColor: '#F1F1F1'}}
           />
         )}
-        {/*<Text>{data.single_cover.link_url}</Text>*/}
+        {/*<Text>{data.single_cover.cover_url}</Text>*/}
         {data.has_video && <FastImg style={styles.videoPlay} source={VideoPlayImg} />}
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
