@@ -178,7 +178,7 @@ const AccountDetail = ({navigation, route}) => {
     );
   };
 
-  return account ? (
+  return account.id ? (
     <View style={styles.wrapper}>
       <GoBack />
       <CollapsibleHeader
