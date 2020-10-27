@@ -20,9 +20,9 @@ import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
 import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
 import {DefaultLog} from '@/utils/default-image';
 import ViewShotPage from '@/components/SharePage';
-import {uploadBase64File} from '@/api/asset_api';
+import {uploadBase64File, getShareUrl} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
-import Loading from "@/components/Loading"
+import Loading from '@/components/Loading';
 
 const SharePageModal = props => {
   const defaultShareContent = {
@@ -51,6 +51,17 @@ const SharePageModal = props => {
     loadShareData();
   }, []);
 
+  useEffect(() => {
+    loadRemoteShareUrl()
+  }, []);
+
+  const loadRemoteShareUrl = async () => {
+    const shareRes = await getShareUrl({item_id: item_id, item_type: item_type});
+    if (shareRes.share_url) {
+      setShareUri(shareRes.share_url);
+    }
+  };
+
   const loadShareData = () => {
     if (item_type === 'Topic') {
       // console.log('topic', topic);
@@ -58,7 +69,9 @@ const SharePageModal = props => {
         account: topic.account,
         node_name: topic.node.name,
         content: topic.plain_content,
-        bg_img_url: topic.wx_share_image_url ? topic.wx_share_image_url.split('?')[0] : '',
+        bg_img_url: topic.wx_share_image_url
+          ? `${topic.wx_share_image_url.split('?')[0]}?imageView2/0/interlace/1/w/1000/format/jpg`
+          : '',
         desc: '刚刚 发布了一篇帖子',
         content_style: topic.content_style,
         qrcode_url: topic.qrcode_url,
@@ -80,20 +93,25 @@ const SharePageModal = props => {
     }
 
     setTimeout(() => {
-      setLoadingView(false)
-    }, 500)
+      setLoadingView(false);
+    }, 1000);
   };
 
   const takeImg = async () => {
     viewShotRef.current.capture().then(async uri => {
       let localUri = await ImgToBase64.getBase64String(uri);
+      // console.log('x', uri)
+      // const shareRes = await getShareUrl({item_id: item_id, item_type: item_type})
+      // console.log('shareRes', shareRes)
+      // setShareUri("data:image/jpg;base64," +localUri);
+      // console.log('x', uri)
       const asset_res = await uploadBase64File({
         file: encodeURIComponent(localUri),
         assetable_type: assetable.type,
         assetable_id: assetable.id,
         assetable_name: assetable.assetable_name || 'app_share_image',
       });
-      console.log('assets', asset_res);
+      // console.log('assets', asset_res);
       setShareUri(asset_res.asset.original_url);
     });
   };
@@ -105,6 +123,10 @@ const SharePageModal = props => {
       await takeImg();
       Toast.hide();
     }
+    setTimeout(() => {
+      Toast.hide();
+    }, 5000);
+    console.log('shareUri', shareUri);
     WeChat.shareImage(
       {
         imageUrl: shareUri,
@@ -121,13 +143,16 @@ const SharePageModal = props => {
       await takeImg();
       Toast.hide();
     }
+    setTimeout(() => {
+      Toast.hide();
+    }, 5000);
     WeChat.shareImage(
       {
         imageUrl: shareUri,
         scene: 1,
       },
       error => {
-        Alert.error('error', error)
+        Alert.error('error', error);
         console.log('err', error);
       }
     );
@@ -135,10 +160,10 @@ const SharePageModal = props => {
 
   return (
     <ModelWrap>
-      {
-        loadingView ? <Loading /> : <View />
-      }
-      <ScrollView style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : ''}} showsVerticalScrollIndicator={false}>
+      {loadingView ? <Loading /> : <View />}
+      <ScrollView
+        style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : ''}}
+        showsVerticalScrollIndicator={false}>
         <ViewShotPage pageShareContent={shareContent} viewShotRef={viewShotRef} />
       </ScrollView>
       <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>

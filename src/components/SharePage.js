@@ -2,6 +2,7 @@ import React, {useRef, useState, useEffect} from 'react';
 import {View, Text, Modal, Button, Dimensions, Image, StyleSheet} from 'react-native';
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
+import FastImg from '@/components/FastImg'
 import {uploadBase64File} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
 import {Avator} from '@/components/NodeComponents';
@@ -13,32 +14,36 @@ import Helper from '@/utils/helper';
 import {prosettings} from '@/api/settings_api';
 
 // import CameraRoll from "@react-native-community/cameraroll";
+const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
 const ViewShotPage = props => {
-  const {account, node_name, bg_img_url, content, content_style, desc} = props.pageShareContent;
-  const [imgWidth, setimgWidth] = useState(300);
+  const {account, node_name, height, width, bg_img_url, content, content_style, desc} = props.pageShareContent;
+  const [imgWidth, setimgWidth] = useState(screenWidth-20);
   const [imgHeight, setimgHeight] = useState(300);
   const [qrcode_url, setQrcode_url] = useState('');
-  const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+  // const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
   const loadCoverStyle = () => {
-    prosettings().then(res => {
-      setQrcode_url(res.share_page_qrcode_img_url);
-    });
     if (!bg_img_url) {
       return;
     }
+    Image.prefetch(bg_img_url);
+    console.log('bg_img_url', bg_img_url)
     Image.getSize(bg_img_url, (width, height) => {
       const maxWidth = screenWidth - 20;
-      setimgWidth(maxWidth);
       setimgHeight(height * (maxWidth / width));
     });
   };
 
   useEffect(() => {
     loadCoverStyle();
-    // return () => {};
   }, [content]);
+
+  useEffect(() => {
+    prosettings().then(res => {
+      setQrcode_url(res.share_page_qrcode_img_url);
+    });
+  }, []);
 
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
@@ -64,23 +69,23 @@ const ViewShotPage = props => {
                 <Text style={styles.nodeName}>{node_name}</Text>
               </View>
             </View>
-            <View>
+            <View style={{width: '100%'}}>
               {bg_img_url ? (
-                <Image
-                  style={[styles.cover, {width: imgWidth, height: imgHeight}]}
+                <FastImg
+                  style={{...styles.cover, ...{width: imgWidth, height: imgHeight}}}
                   resizeMode={'cover'}
                   source={{uri: bg_img_url}}
                 />
               ) : <View />}
               {content_style === 'video' && (
-                <Image source={PlayVideoImg} style={styles.playVideo} />
+                <FastImg source={PlayVideoImg} style={styles.playVideo} />
               )}
             </View>
             <Text style={styles.text}>{content}</Text>
             <View style={styles.footer}>
-              <Image style={styles.shareLogo} source={require('@/assets/images/share-wanya.png')} />
+              <FastImg style={styles.shareLogo} source={require('@/assets/images/share-wanya.png')} />
               {qrcode_url ? (
-                <Image style={styles.shareqrImg} source={{uri: qrcode_url}} />
+                <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
               ) : (
                 <View />
               )}
@@ -154,7 +159,7 @@ const styles = StyleSheet.create({
     // minHeight: 300,
     // maxHeight: 260,
     backgroundColor: 'pink',
-    // width: '100%',
+    width: '100%',
     // height: '100%',
   },
   playVideo: {

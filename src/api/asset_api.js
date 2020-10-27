@@ -31,3 +31,13 @@ export async function uploadBase64File(data = {file: ''}) {
   return res.data
 }
 
+
+// 获取到已分享过的url地址
+export async function getShareUrl(data = {item_id: '', item_type: ''}) {
+  const res = await request({
+    url: '/api/v1/share_pages/share_url',
+    method: 'GET',
+    data: data
+  })
+  return res.data
+}

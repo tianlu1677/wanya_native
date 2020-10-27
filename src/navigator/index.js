@@ -276,9 +276,9 @@ const Navigation = () => {
 
   return (
     <NavigationContainer
-    // ref={navigationRef}
-    // initialState={initialState}
-    // onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
+      ref={navigationRef}
+      initialState={initialState}
+      onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
     >
       <>{!login.auth_token ? AuthStackList() : MainStackList()}</>
     </NavigationContainer>
