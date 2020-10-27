@@ -54,7 +54,7 @@ const ScrollList = props => {
   };
 
   const onEndReached = () => {
-    if (!pagin.hasMore) {
+    if (!pagin || !pagin.hasMore) {
       setState(loadState.EMPTY);
       return;
     }

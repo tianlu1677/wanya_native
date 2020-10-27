@@ -55,6 +55,11 @@ export const TopicImageContent = props => {
     };
     dispatch(dispatchPreviewImage(data));
   };
+
+  if(!single_cover.cover_url) {
+    return <View />
+  }
+
   return imgStyle === 'single' ? (
     <Pressable
       style={{width: imgAttr.width / 2.0}}
@@ -70,7 +75,7 @@ export const TopicImageContent = props => {
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       {medias.map((media, index) => (
         <Pressable onPress={() => onPreview(index)} key={media}>
-          <Image key={media} source={{uri: media}} style={styles.imageMulti} />
+          <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
         </Pressable>
       ))}
     </ScrollView>
@@ -93,7 +98,7 @@ export const TopicVideoContent = props => {
           ...styles.imageCover,
           ...{width: videoAttr.width / 2, height: videoAttr.height / 2},
         }}/>
-      <Image style={styles.playImage} source={VideoPlayImg} />
+      <FastImg style={styles.playImage} source={VideoPlayImg} />
     </View>
   );
 };

@@ -13,7 +13,7 @@ const StickTopHeader = props => {
       <TopHeader
         LeftButton={props.showLeftButton ? () => <View /> : null }
         Title={() => (
-          <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>{props.title}</Text>
+          <Text style={{color: 'white', fontSize: 16, fontWeight: '600', marginTop: 5}}>{props.title}</Text>
         )}
       />
     </BlurView>
