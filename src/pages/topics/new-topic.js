@@ -10,8 +10,10 @@ import {
   Pressable,
   Dimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 // import SyanImagePicker from 'react-native-syan-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, CommonActions} from '@react-navigation/native';
@@ -98,26 +100,46 @@ const NewTopic = props => {
     //   console.log('error', error)
     //   console.log('res', res)
     // });
-    props.videoPick(
-      {
-        MaxSecond: 500,
-        MinSecond: 1,
-        recordVideoSecond: 500,
-        videoCount: 1,
-        allowTakeVideo: false,
-      },
-      async (err, res) => {
-        if (err) {
-          console.log('uploader error', err, res);
-          return;
-        }
-        console.log('res', res);
-        setVideoSource([...res]);
-        const result = await props.uploadVideo(res[0], dispatch);
-        setVideoSource([result.asset]);
-        dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-      }
-    );
+    // props.videoPick(
+    //   {
+    //     MaxSecond: 2,
+    //     MinSecond: 1,
+    //     recordVideoSecond: 2,
+    //     videoCount: 1,
+    //     allowTakeVideo: false,
+    //   },
+    //   async (err, res) => {
+    //     if (err) {
+    //       console.log('uploader error', err, res);
+    //       return;
+    //     }
+    //     console.log('res', res);
+    //     setVideoSource([...res]);
+    //     const result = await props.uploadVideo(res[0], dispatch);
+    //     setVideoSource([result.asset]);
+    //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+    //   }
+    // );
+    ImagePicker.openPicker({
+      mediaType: "video",
+      writeTempFile: false,
+      smartAlbums: ['Videos'],
+      loadingLabelText: '导出视频中, 请稍等...',
+      sortOrder: 'desc',
+    }).then(async (video) => {
+      console.log(video);
+      let videoSourceContent = {
+        uri: video.path,
+        height: video.height,
+        width: video.width,
+        duration: video.duration
+      };
+      setVideoSource([videoSourceContent]);
+      const result = await props.uploadVideo(videoSourceContent, dispatch);
+      setVideoSource([result.asset]);
+      dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+      // Alert.alert(JSON.stringify(video))
+    });
   };
 
   const deleteMedia = index => {

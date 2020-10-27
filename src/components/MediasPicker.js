@@ -117,7 +117,7 @@ const MediasPicker = WrapperComponent => {
         },
         useUtf8Charset: true,
       };
-
+      console.log('uploadVideo options', uploadOptions)
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
