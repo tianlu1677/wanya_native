@@ -68,6 +68,7 @@ static void InitializeFlipper(UIApplication *application) {
 
   // Register WebP format support
   [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
+//  [SDWebImageCodersManager.sharedInstance addCoder:SDWebImageGIFCoder.sharedCoder];
 
   [UMConfigure setLogEnabled:YES];
   [RNUMConfigure initWithAppkey:@"5f32492fd30932215476edfe" channel:@"App Store"];

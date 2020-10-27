@@ -79,13 +79,20 @@ const NewTopic = props => {
       }
     });
   };
-
+  //TODO 限制描述
   const onVideoPicker = () => {
     props.removeAllPhoto();
-    props.videoPick({}, async (err, res) => {
+    props.videoPick({
+      MaxSecond: 3,
+      MinSecond: 1,
+      recordVideoSecond: 60,
+      videoCount: 1
+    }, async (err, res) => {
       if (err) {
+        console.log('uploader error', err)
         return;
       }
+      console.log('res')
       setVideoSource([...res]);
       const result = await props.uploadVideo(res[0], dispatch);
       setVideoSource([result.asset]);
@@ -282,7 +289,7 @@ const NewTopic = props => {
                         videoRef.current.presentFullscreenPlayer();
                       }}>
                       <Video
-                        style={styles.media}
+                        style={{...styles.media, backgroundColor: 'black'}}
                         ref={videoRef}
                         source={{uri: v.url}}
                         posterResizeMode={'center'}

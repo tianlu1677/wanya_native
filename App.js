@@ -102,10 +102,11 @@ class App extends Component {
       console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
       console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
 
-      requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]).then(
+      requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.LOCATION_WHEN_IN_USE, PERMISSIONS.IOS.PHOTO_LIBRARY]).then(
         statuses => {
           console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
           console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+          console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
         }
       );
     });

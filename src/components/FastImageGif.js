@@ -19,32 +19,36 @@ const FastImgGif = props => {
     if (props.gif_url && props.source.uri) {
       // Image.prefetch(props.gif_url);
       setTimeout(() => {
-        console.log('gif_url', props.gif_url, props.source.uri)
+        console.log('gif_url', props.gif_url, props.source.uri);
         setSource({uri: props.gif_url});
-      }, 800)
+      }, 800);
     }
   };
 
   return (
-    // <FastImage
-    //   style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
-    //   source={{...source, priority: FastImage.priority.low, cache: FastImage.cacheControl.immutable}}
-    //   resizeMode={resizeMode}
-    //   // tintColor={'gray'}
-    //   onLoad={e => {
-    //     onLoad(e);
-    //   }}
-    //   onLoadEnd={e => {
-    //     onGif(e);
-    //   }}
-    // />
-    <Image
+    <FastImage
       style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
-      loadingIndicatorSource={require('../assets/images/red-logo.png')}
+      source={{
+        ...props.source,
+        priority: FastImage.priority.low,
+        cache: FastImage.cacheControl.immutable,
+      }}
       resizeMode={resizeMode}
-      source={source}
-      onLoad={onGif}
+      // tintColor={'gray'}
+      // onLoad={e => {
+      //   onLoad(e);
+      // }}
+      // onLoadEnd={e => {
+      //   onGif(e);
+      // }}
     />
+    // <Image
+    //   style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
+    //   loadingIndicatorSource={require('../assets/images/red-logo.png')}
+    //   resizeMode={resizeMode}
+    //   source={source}
+    //   onLoad={onGif}
+    // />
   );
 };
 

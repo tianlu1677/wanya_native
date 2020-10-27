@@ -8,6 +8,7 @@ import {
   Image,
   Linking,
   Platform,
+  View,
   ActivityIndicator,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -38,6 +39,7 @@ import WebView from '@/pages/webview/webview';
 import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
 import BackImg from '@/assets/images/back.png';
+import ViewShotPage from "@/components/SharePage"
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -153,7 +155,9 @@ function MainStackList() {
           fontSize: 16,
         },
         headerBackImage: () => (
-          <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15}} />
+          <View style={{paddingRight: 20, paddingTop: 10}}>
+            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 10}} />
+          </View>
         ),
       })}>
       <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
