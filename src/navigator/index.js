@@ -155,7 +155,7 @@ function MainStackList() {
           fontSize: 16,
         },
         headerBackImage: () => (
-          <View style={{paddingRight: 20, paddingTop: 10}}>
+          <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
             <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 10}} />
           </View>
         ),

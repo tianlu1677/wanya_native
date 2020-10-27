@@ -74,6 +74,8 @@
 	<string>$(PRODUCT_NAME) 位置使用</string>
 	<key>UIRequiresPersistentWiFi</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) 请允许访问相册以选取图片</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Ionicons.ttf</string>

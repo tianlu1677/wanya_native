@@ -11,6 +11,8 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
+// import SyanImagePicker from 'react-native-syan-image-picker';
+
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, CommonActions} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -63,6 +65,7 @@ const NewTopic = props => {
     props.removeAllPhoto();
     const options = {
       imageCount: 9 - imageSource.length,
+      isCamera: false
     };
     props.imagePick(options, async (err, res) => {
       if (err) {
@@ -82,22 +85,39 @@ const NewTopic = props => {
   //TODO 限制描述
   const onVideoPicker = () => {
     props.removeAllPhoto();
-    props.videoPick({
-      MaxSecond: 3,
-      MinSecond: 1,
-      recordVideoSecond: 60,
-      videoCount: 1
-    }, async (err, res) => {
-      if (err) {
-        console.log('uploader error', err)
-        return;
+    // SyanImagePicker.openVideoPicker({
+    //   allowTakeVideo: false,
+    //   MaxSecond: 500,
+    //   MinSecond: 0,
+    //   scaleEnabled: false,
+    //   recordVideoSecond: 500,
+    //   videoCount: 1,
+    //   compress: false,
+    //   videoMaximumDuration: 500
+    // }, (error, res) => {
+    //   console.log('error', error)
+    //   console.log('res', res)
+    // });
+    props.videoPick(
+      {
+        MaxSecond: 500,
+        MinSecond: 1,
+        recordVideoSecond: 500,
+        videoCount: 1,
+        allowTakeVideo: false,
+      },
+      async (err, res) => {
+        if (err) {
+          console.log('uploader error', err, res);
+          return;
+        }
+        console.log('res', res);
+        setVideoSource([...res]);
+        const result = await props.uploadVideo(res[0], dispatch);
+        setVideoSource([result.asset]);
+        dispatch({type: action.UPLOAD_PROGRESS, value: ''});
       }
-      console.log('res')
-      setVideoSource([...res]);
-      const result = await props.uploadVideo(res[0], dispatch);
-      setVideoSource([result.asset]);
-      dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-    });
+    );
   };
 
   const deleteMedia = index => {

@@ -91,6 +91,7 @@ const MediasPicker = WrapperComponent => {
 
     const videoPick = (option = {}, callback) => {
       const options = {...option};
+      console.log('updaload', options)
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
