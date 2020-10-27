@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     paddingLeft: 11,
     paddingRight: 11,
     paddingTop: 7,
+    borderRadius: 2,
   },
   titleText: {
     color: 'white',

@@ -56,8 +56,8 @@ export const TopicImageContent = props => {
     dispatch(dispatchPreviewImage(data));
   };
 
-  if(!single_cover.cover_url) {
-    return <View />
+  if (!single_cover.cover_url) {
+    return <View />;
   }
 
   return imgStyle === 'single' ? (
@@ -97,7 +97,8 @@ export const TopicVideoContent = props => {
         style={{
           ...styles.imageCover,
           ...{width: videoAttr.width / 2, height: videoAttr.height / 2},
-        }}/>
+        }}
+      />
       <FastImg style={styles.playImage} source={VideoPlayImg} />
     </View>
   );
@@ -218,6 +219,7 @@ const styles = StyleSheet.create({
     top: 0,
     height: 64,
     padding: 11,
+    borderRadius: 2,
   },
   linkTitle: {
     fontSize: 16,
