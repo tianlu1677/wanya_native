@@ -2,7 +2,7 @@ import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
 import IconFont from '@/iconfont';
 import {useSelector, useDispatch} from 'react-redux';
-import {Avator, PlayScore, GoBack, BadgeMessage} from '@/components/NodeComponents';
+import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -10,7 +10,7 @@ import ArticleList from '@/components/List/article-list';
 import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {AccountDetailBgImg} from '@/utils/default-image';
-import StickTopHeader from '@/components/StickTopHeader'
+import StickTopHeader from '@/components/StickTopHeader';
 import {
   getAccount,
   getAccountPosts,
@@ -28,6 +28,8 @@ const AccountDetail = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
+  const [showModal, setShowModal] = useState(false);
+
   const currentAccount = useSelector(state => state.account.currentAccount);
 
   useLayoutEffect(() => {
@@ -151,7 +153,9 @@ const AccountDetail = ({navigation, route}) => {
                 <Text style={styles.tag}>{account.age || '18'}岁</Text>
                 <Text style={styles.tag}>{account.province || '未知街区'}</Text>
               </View>
-              <Text style={styles.intro}>{account.intro || '这个人很懒，还没有填写简介'}</Text>
+              <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
+                {account.intro || '这个人很懒，还没有填写简介'}
+              </Text>
             </View>
             <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
           </View>
@@ -209,6 +213,12 @@ const AccountDetail = ({navigation, route}) => {
         onKeyChange={key => setCurrentKey(key)}
         renderTopHeader={<StickTopHeader title={account.nickname} />}
         renderHeader={<Header />}
+      />
+      <BottomModal
+        visible={showModal}
+        cancleClick={() => setShowModal(false)}
+        title="简介"
+        content={currentAccount.intro}
       />
     </View>
   ) : (
@@ -289,6 +299,8 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: '#fff',
     fontSize: 11,
+    paddingRight: 80,
+    textAlign: 'justify',
   },
   numberWrap: {
     flexDirection: 'row',

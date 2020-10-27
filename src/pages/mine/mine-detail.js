@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import {Avator, BadgeMessage, PlayScore} from '@/components/NodeComponents';
+import {Avator, BadgeMessage, PlayScore, BottomModal} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
@@ -33,6 +33,8 @@ const MineDetail = ({navigation, route}) => {
   const currentBaseInfo = useSelector(state => state.account.currentBaseInfo);
   const [accountId] = useState(currentAccount.id);
   const [currentKey, setCurrentKey] = useState('publish');
+  const [showModal, setShowModal] = useState(false);
+
   const dispatch = useDispatch();
   const loadData = async () => {
     dispatch(dispatchCurrentAccount());
@@ -206,8 +208,10 @@ const MineDetail = ({navigation, route}) => {
                     <Text style={styles.tag}>{currentAccount.age || '18'}岁</Text>
                     <Text style={styles.tag}>{currentAccount.province || '未知街区'}</Text>
                   </View>
-                  <Text style={styles.intro}>
+                  <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
                     {currentAccount.intro || '这个人很懒，还没有填写简介'}
+                    这个人很懒，还没有填写简介这个人很懒，还没有填写简介这个人很懒，还没有填写简介这个人很懒，还没有填写简介
+                    这个人很懒，还没有填写简介这个人很懒，还没有填写简介
                   </Text>
                 </View>
                 <PlayScore
@@ -237,6 +241,12 @@ const MineDetail = ({navigation, route}) => {
             </ImageBackground>
           </View>
         }
+      />
+      <BottomModal
+        visible={showModal}
+        cancleClick={() => setShowModal(false)}
+        title="简介"
+        content={currentAccount.intro}
       />
     </View>
   ) : (
@@ -326,6 +336,8 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: '#fff',
     fontSize: 11,
+    paddingRight: 80,
+    textAlign: 'justify',
   },
   numberWrap: {
     flexDirection: 'row',

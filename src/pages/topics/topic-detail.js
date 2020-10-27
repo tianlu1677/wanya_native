@@ -147,9 +147,6 @@ const TopicDetail = ({navigation, route}) => {
     const {width, height} = detail.media_video;
     let videoWidth = screenWidth;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-    // if (videoHeight > 375) {
-    //   videoHeight = 375;
-    // }
 
     return (
       <View style={{backgroundColor: 'black'}}>
@@ -305,6 +302,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 11,
+    borderRadius: 2,
   },
   linkTitle: {
     fontSize: 16,
