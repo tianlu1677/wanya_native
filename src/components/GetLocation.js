@@ -14,6 +14,12 @@ const GetLocation = ({children, handleClick, style}) => {
   const getLocation = async () => {
     const answer = await checkPermission();
     // console.log('xxxxxxxxx', hadPermission)
+
+    if (answer === 'WAIT') {
+      console.log('等待授权中');
+      return;
+    }
+
     if (!answer) {
       console.log('没权限');
       handleClick && handleClick({error: '没有权限'});
@@ -50,8 +56,9 @@ const GetLocation = ({children, handleClick, style}) => {
         console.log('The permission has not been requested / is denied but requestable');
         request(iosLocationPermission).then(result => {
           console.log('result', result);
+          getLocation();
         });
-        break;
+        return 'WAIT';
       case RESULTS.GRANTED:
         //拥有此权限
         console.log('The permission is granted');
