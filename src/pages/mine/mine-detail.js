@@ -1,14 +1,5 @@
 import React, {useState, useLayoutEffect, useCallback} from 'react';
-import {
-  View,
-  Text,
-  Button,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-  Pressable,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {Avator, BadgeMessage, PlayScore, BottomModal} from '@/components/NodeComponents';
@@ -25,6 +16,7 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import StickTopHeader from '@/components/StickTopHeader';
+import FastImg from '@/components/FastImg';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
@@ -154,7 +146,12 @@ const MineDetail = ({navigation, route}) => {
                 <IconFont name="settings" size={20} color="#fff" />
               </Pressable>
             </View>
-            <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
+            <FastImg
+              source={{uri: AccountDetailBgImg}}
+              resizeMode={'cover'}
+              style={styles.imageCover}
+            />
+            <View style={styles.header}>
               <View
                 style={[
                   styles.userWrap,
@@ -165,7 +162,7 @@ const MineDetail = ({navigation, route}) => {
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.nickname}>{currentAccount.nickname}</Text>
                     {currentAccount.settled_type !== 'single' && (
-                      <Image
+                      <FastImg
                         style={{width: 16, height: 16, marginLeft: 5}}
                         source={
                           currentAccount.settled_type === 'personal'
@@ -185,7 +182,7 @@ const MineDetail = ({navigation, route}) => {
               </View>
               {currentAccount.settled_type && currentAccount.settled_type !== 'single' && (
                 <View style={styles.settledWrap}>
-                  <Image
+                  <FastImg
                     style={{width: 16, height: 16, marginRight: 3}}
                     source={
                       currentAccount.settled_type === 'personal'
@@ -238,7 +235,7 @@ const MineDetail = ({navigation, route}) => {
                   <Text style={styles.numberTitle}>粉丝</Text>
                 </Pressable>
               </View>
-            </ImageBackground>
+            </View>
           </View>
         }
       />
@@ -269,10 +266,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   header: {
+    flex: 1,
     paddingLeft: 19,
     paddingRight: 16,
     paddingTop: 40 + BASIC_HEIGHT,
     height: 270 + BASIC_HEIGHT,
+  },
+  imageCover: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    width: '100%',
+    flex: 1,
+    height: HEADER_HEIGHT,
   },
   userWrap: {
     flexDirection: 'row',

@@ -1,13 +1,12 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, Image, StyleSheet, ImageBackground, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import IconFont from '@/iconfont';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
-import TabViewList from '@/components/TabView';
 import Toast from '@/components/Toast';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import StickTopHeader from '@/components/StickTopHeader';
@@ -20,7 +19,7 @@ import {
 } from '@/api/account_api';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {BASIC_HEIGHT} from '@/utils/navbar';
-import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
+import FastImg from '@/components/FastImg';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
@@ -96,7 +95,12 @@ const AccountDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{flex: 1}}>
-        <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
+        <FastImg
+          source={{uri: AccountDetailBgImg}}
+          resizeMode={'cover'}
+          style={styles.imageCover}
+        />
+        <View style={styles.header}>
           <GoBack />
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
@@ -105,7 +109,7 @@ const AccountDetail = ({navigation, route}) => {
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.nickname}>{account.nickname}</Text>
                 {account.settled_type !== 'single' && (
-                  <Image
+                  <FastImg
                     style={{width: 16, height: 16, marginLeft: 7}}
                     source={
                       account.settled_type === 'personal'
@@ -131,7 +135,7 @@ const AccountDetail = ({navigation, route}) => {
           </View>
           {account.settled_type !== 'single' && (
             <View style={styles.settledWrap}>
-              <Image
+              <FastImg
                 style={{width: 16, height: 16, marginRight: 3}}
                 source={
                   account.settled_type === 'personal'
@@ -178,14 +182,13 @@ const AccountDetail = ({navigation, route}) => {
               <Text style={styles.numberTitle}>粉丝</Text>
             </Pressable>
           </View>
-        </ImageBackground>
+        </View>
       </View>
     );
   };
 
   return account.id ? (
     <View style={styles.wrapper}>
-
       <CollapsibleHeader
         headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
@@ -236,6 +239,15 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingTop: 68,
     height: 290,
+  },
+  imageCover: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    width: '100%',
+    flex: 1,
+    height: HEADER_HEIGHT,
   },
   userWrap: {
     flexDirection: 'row',
