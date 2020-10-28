@@ -87,7 +87,7 @@ const CollapsibleHeader = props => {
         <View style={{flex: 1, height: tabBarHeight}} />
         <Animated.FlatList
           scrollToOverflowEnabled
-          scrollEventThrottle={16}
+          scrollEventThrottle={26}
           onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
             useNativeDriver: true,
           })}

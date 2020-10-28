@@ -210,8 +210,6 @@ const MineDetail = ({navigation, route}) => {
                   </View>
                   <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
                     {currentAccount.intro || '这个人很懒，还没有填写简介'}
-                    这个人很懒，还没有填写简介这个人很懒，还没有填写简介这个人很懒，还没有填写简介这个人很懒，还没有填写简介
-                    这个人很懒，还没有填写简介这个人很懒，还没有填写简介
                   </Text>
                 </View>
                 <PlayScore

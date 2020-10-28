@@ -71,7 +71,7 @@ const SharePageModal = props => {
         node_name: topic.node.name,
         content: topic.plain_content,
         bg_img_url: topic.wx_share_image_url
-          ? `${topic.wx_share_image_url.split('?')[0]}?imageView2/0/interlace/1/w/1000/format/jpg`
+          ? `${topic.wx_share_image_url.split('?')[0]}?imageView2/0/interlace/1/format/jpg`
           : '',
         desc: '刚刚 发布了一篇帖子',
         content_style: topic.content_style,
