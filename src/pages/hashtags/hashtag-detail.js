@@ -25,7 +25,7 @@ const HashtagDetail = ({navigation, route}) => {
   const PublishList = () => {
     const request = {
       api: getHashtagPosts,
-      params: {hashtag: '滑板', hashtag_name: '滑板', type: 'published_order'},
+      params: {hashtag: hashtag, hashtag_name: hashtag, type: 'published_order'},
     };
     return <SingleList request={request} />;
   };
@@ -33,7 +33,7 @@ const HashtagDetail = ({navigation, route}) => {
   const HotList = () => {
     const request = {
       api: getHashtagPosts,
-      params: {hashtag: '滑板', hashtag_name: '滑板', type: 'hot_order'},
+      params: {hashtag: hashtag, hashtag_name: hashtag, type: 'hot_order'},
     };
     return <DoubleList request={request} />;
   };
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   hashtagText: {
     position: 'absolute',
-    top: 53,
+    top: 53 + STATUS_BAR_HEIGHT,
     left: 0,
     right: 0,
     marginLeft: 15,
