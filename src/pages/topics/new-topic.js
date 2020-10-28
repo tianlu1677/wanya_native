@@ -125,7 +125,7 @@ const NewTopic = props => {
       writeTempFile: false,
       smartAlbums: ['Videos'],
       loadingLabelText: '导出视频中, 请稍等...',
-      sortOrder: 'desc',
+      sortOrder: 'asc',
     }).then(async (video) => {
       console.log(video);
       let videoSourceContent = {

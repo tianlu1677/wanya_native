@@ -72,7 +72,7 @@ class AnimatedPullToRefresh extends React.Component {
     animationBackgroundColor: 'white',
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(
         this,
@@ -131,6 +131,7 @@ class AnimatedPullToRefresh extends React.Component {
           Animated.timing(this.state.initAnimationProgress, {
             toValue: 1,
             duration: 1000,
+            // useNativeDriver: true,
           }),
         ]).start(() => {
           this.state.initAnimationProgress.setValue(0);
@@ -140,6 +141,7 @@ class AnimatedPullToRefresh extends React.Component {
       } else if (this.state.refreshHeight._value <= 0) {
         Animated.spring(this.state.refreshHeight, {
           toValue: 0,
+          // useNativeDriver: true,
         }).start();
       }
 
@@ -171,10 +173,12 @@ class AnimatedPullToRefresh extends React.Component {
       Animated.timing(this.state.finalAnimationProgress, {
         toValue: 1,
         duration: 1000,
+        // useNativeDriver: true,
       }),
       Animated.spring(this.state.refreshHeight, {
         toValue: 0,
         bounciness: 12,
+        // useNativeDriver: true,
       }),
     ]).start(() => {
       this.state.finalAnimationProgress.setValue(0);
@@ -201,6 +205,9 @@ class AnimatedPullToRefresh extends React.Component {
   render() {
     const onScrollEvent = event => {
       this.state.scrollY.setValue(event.nativeEvent.contentOffset.y);
+      // Animated.event([{nativeEvent: {contentOffset: {y: event.nativeEvent.contentOffset.y}}}], {
+      //   useNativeDriver: true,
+      // })
     };
 
     const animateHeight = this.state.refreshHeight.interpolate({
@@ -274,10 +281,12 @@ class AnimatedPullToRefresh extends React.Component {
         <ScrollView
           ref="scrollComponentRef"
           scrollEnabled={this.state.isScrollFree}
+          scrollEventThrottle={60}
           onScroll={onScrollEvent}
           onTouchEnd={() => {
             this.isScrolledToTop();
           }}
+          onEndReached={() => {console.log('xxxxxxxxxxxxxxxxxxx')}}
           onScrollEndDrag={() => {
             this.isScrolledToTop();
           }}>
@@ -285,6 +294,7 @@ class AnimatedPullToRefresh extends React.Component {
             {React.cloneElement(this.props.contentView, {
               scrollEnabled: false,
               ref: 'scrollComponentRef',
+              onEndReached: () => {console.log('xxxxx')}
             })}
           </Animated.View>
         </ScrollView>

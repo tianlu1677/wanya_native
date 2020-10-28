@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,12 @@ import {
   ActivityIndicator,
   StyleSheet,
   Image,
+  Animated,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
 import Loading from '@/components/Loading';
+import PullToRefresh from '@/components/AnimatedPullToRefresh';
 
 export const pagination = (headers = {}) => {
   const currentPage = Number(headers['x-current-page']);
@@ -29,15 +31,18 @@ const loadState = {
   ERROR: 4, //加载失败
 };
 
+const MinHeight = 85;
+const MaxHeight = 200;
+
 const ScrollList = props => {
   const [enableLoadMore] = useState(props.enableLoadMore === false ? false : true);
   const [enableRefresh] = useState(props.enableRefresh === false ? false : true);
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
-  const [startPull, setStartPull] = useState(false);
   const [currentY, setCurrentY] = useState(0);
   const [title, setTitle] = useState('努力加载中...');
   const [refreshing, setRefreshing] = useState(false);
+  const [isFree, setIsFree] = useState(true);
 
   const onRefresh = () => {
     console.log('onRefresh start =============', state, refreshing);
@@ -48,6 +53,8 @@ const ScrollList = props => {
     try {
       setState(loadState.LOADING);
       props.onRefresh();
+      setCurrentY(0);
+      setIsFree(true)
     } catch {
       setState(loadState.ERROR);
     }
@@ -77,7 +84,8 @@ const ScrollList = props => {
     switch (state) {
       case loadState.LOADING:
         footer = (
-          <View style={{height: 100, backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center'}}>
+          <View
+            style={{height: 100, backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center'}}>
             <ActivityIndicator size="small" />
           </View>
         );
@@ -114,11 +122,13 @@ const ScrollList = props => {
     setTimeout(() => {
       setState(loadState.SUCCESS);
       setPagin(pagination(props.headers));
-    }, 500)
+    }, 2000);
   }, [props.headers]);
 
   useEffect(() => {
-    setRefreshing(props.loading);
+    setTimeout(() => {
+      setRefreshing(props.loading);
+    }, 300);
   }, [props.loading]);
 
   // 不下拉的页面添加loading
@@ -126,32 +136,35 @@ const ScrollList = props => {
   //   return <Loading />;
   // }
 
-  const onscroll = (event) => {
-    console.log('startPull', startPull)
-    if(startPull) {
-      return
-    }
-    const y = event.nativeEvent.contentOffset.y;
-
-    setCurrentY(y)
-    console.log(event.nativeEvent.contentOffset.y);
-  }
-
-  const onScrollEndDrag = (e) => {
-    if (currentY < -85) {
-      setStartPull(true)
-      setTitle('释放后请求数据....')
+  const onRelease = event => {
+    console.log('event', event.nativeEvent);
+    console.log('currentY', currentY);
+    // console.log('scrollY', scrollY);
+    if (currentY < -MinHeight && currentY >= -MaxHeight && isFree) {
+      // setTitle('加载中....');
+      setIsFree(false);
       onRefresh();
-      setStartPull(false)
     } else {
-      setTitle('下拉加载')
-      // setStartPull(false)
+      setTitle('下拉加载');
     }
-    console.log('xxxx, onScrollEndDrag', e)
-  }
+  };
+
+  const onscroll = event => {
+    const {nativeEvent} = event;
+    const {contentOffset} = nativeEvent;
+    const {y} = contentOffset;
+    // console.log('y', y);
+    // console.log('title努力加载数据', title);
+    if (y < -MinHeight && y >= -MaxHeight && !refreshing) {
+      setTitle('放开刷新...');
+      setCurrentY(y);
+    } else if (y < 0 && !refreshing) {
+    } else {
+    }
+  };
 
   return (
-    <FlatList
+    <Animated.FlatList
       ref={props.getRref}
       horizontal={false}
       contentContainerStyle={[scrollStyle.containter, props.style]}
@@ -159,8 +172,11 @@ const ScrollList = props => {
       renderItem={props.renderItem}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
       data={props.data}
-      // scrollEventThrottle={47}
-      // onScroll={onscroll}
+      scrollEventThrottle={60}
+      // onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+      //   useNativeDriver: true,
+      // })}
+      onScroll={onscroll}
       // onScrollEndDrag={onScrollEndDrag}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       onEndReached={enableLoadMore ? onEndReached : null}
@@ -170,12 +186,12 @@ const ScrollList = props => {
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
-      scrollIndicatorInsets={{right: 1}}
+      onResponderRelease={onRelease}
       refreshControl={
         enableRefresh ? (
           <RefreshControl
             refreshing={!!refreshing}
-            onRefresh={enableRefresh ? onRefresh.bind(this) : null}
+            // onRefresh={enableRefresh ? onRefresh.bind(this) : null}
             tintColor="black"
             style={{backgroundColor: 'white'}}
             title={title}
@@ -212,8 +228,8 @@ ScrollList.defaultProps = {
   bounces: true,
   enableLoadMore: true,
   enableRefresh: true,
-  emptyTitle: '暂时还没有内容哦'
-}
+  emptyTitle: '暂时还没有内容哦',
+};
 
 ScrollList.propTypes = {
   data: PropTypes.array.isRequired, //List接收的数据
