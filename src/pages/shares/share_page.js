@@ -52,11 +52,12 @@ const SharePageModal = props => {
   }, []);
 
   useEffect(() => {
-    loadRemoteShareUrl()
-  }, []);
+    loadRemoteShareUrl();
+  }, [item_type, item_id]);
 
   const loadRemoteShareUrl = async () => {
     const shareRes = await getShareUrl({item_id: item_id, item_type: item_type});
+    console.log('assetable', assetable);
     if (shareRes.share_url) {
       setShareUri(shareRes.share_url);
     }
@@ -98,57 +99,54 @@ const SharePageModal = props => {
   };
 
   const takeImg = async () => {
-    viewShotRef.current.capture().then(async uri => {
+    let asset = {};
+    await viewShotRef.current.capture().then(async uri => {
       let localUri = await ImgToBase64.getBase64String(uri);
-      // console.log('x', uri)
-      // const shareRes = await getShareUrl({item_id: item_id, item_type: item_type})
-      // console.log('shareRes', shareRes)
-      // setShareUri("data:image/jpg;base64," +localUri);
-      // console.log('x', uri)
       const asset_res = await uploadBase64File({
         file: encodeURIComponent(localUri),
-        assetable_type: assetable.type,
-        assetable_id: assetable.id,
+        assetable_type: assetable.assetable_type,
+        assetable_id: assetable.assetable_id,
         assetable_name: assetable.assetable_name || 'app_share_image',
       });
-      // console.log('assets', asset_res);
-      setShareUri(asset_res.asset.original_url);
+      asset = asset_res;
+      // console.log('assets', asset_res.asset.original_url);
+      // await setShareUri(asset_res.asset.original_url);
     });
+    return asset;
   };
 
   const shareFriend = async () => {
     Toast.showLoading('正在生成分享图片...');
-    console.log('shareUri', shareUri);
-    if (!shareUri) {
-      await takeImg();
+    let share_url = shareUri;
+    if (!share_url || share_url === '') {
+      const asset_res = await takeImg();
+      share_url = asset_res.asset.original_url;
       Toast.hide();
     }
-    setTimeout(() => {
-      Toast.hide();
-    }, 5000);
-    console.log('shareUri', shareUri);
+
     WeChat.shareImage(
       {
-        imageUrl: shareUri,
+        imageUrl: share_url,
         scene: 0,
       },
       error => {
+        Toast.showError('分享失败');
         console.log('err', error);
       }
     );
+    Toast.hide();
   };
   const shareTimeline = async () => {
     Toast.showLoading('正在生成分享图片...');
-    if (!shareUri) {
-      await takeImg();
+    let share_url = shareUri;
+    if (!share_url || share_url === '') {
+      const asset_res = await takeImg();
+      share_url = asset_res.asset.original_url;
       Toast.hide();
     }
-    setTimeout(() => {
-      Toast.hide();
-    }, 5000);
     WeChat.shareImage(
       {
-        imageUrl: shareUri,
+        imageUrl: share_url,
         scene: 1,
       },
       error => {
@@ -156,6 +154,7 @@ const SharePageModal = props => {
         console.log('err', error);
       }
     );
+    Toast.hide();
   };
 
   return (

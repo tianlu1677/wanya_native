@@ -100,8 +100,8 @@ const NodeDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{position: 'relative'}}>
+        <GoBack />
         <View>
-          <GoBack />
           <FastImg
             source={{uri: detail.backgroud_cover_url}}
             resizeMode={'cover'}

@@ -97,6 +97,7 @@ const AccountDetail = ({navigation, route}) => {
     return (
       <View style={{flex: 1}}>
         <ImageBackground source={{uri: AccountDetailBgImg}} style={styles.header}>
+          <GoBack />
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
             <Avator account={account} size={51} isShowSettledIcon={false} />
@@ -184,7 +185,7 @@ const AccountDetail = ({navigation, route}) => {
 
   return account.id ? (
     <View style={styles.wrapper}>
-      <GoBack />
+
       <CollapsibleHeader
         headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
