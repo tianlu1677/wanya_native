@@ -12,10 +12,13 @@ const NodeIndex = ({navigation}) => {
   const [active, setActive] = useState(0);
   const scrollRef = useRef(null);
 
-  const loadData = async () => {
+  const loadCategoryData = async () => {
     const category = await getCategoryList();
-    const node = await getNodeIndex();
     setCategories(category);
+  };
+
+  const loadNodeData = async () => {
+    const node = await getNodeIndex();
     setNodes(node);
   };
 
@@ -31,7 +34,8 @@ const NodeIndex = ({navigation}) => {
   };
 
   useEffect(() => {
-    loadData();
+    loadNodeData();
+    loadCategoryData();
   }, []);
 
   useLayoutEffect(() => {
