@@ -1,7 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, {useState, useEffect, useMemo} from 'react';
-import {View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import {getFollowedPosts} from '@/api/home_api';
+
+const mineHeight = 90;
 
 const pagination = (headers = {}) => {
   const currentPage = Number(headers['x-current-page']);
@@ -16,6 +26,8 @@ const list = () => {
   const [data, setdata] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagin, setPagin] = useState(null); //{hasMore: true, nextPage: 2, page: 1, total: 643}
+  const [currentY, setCurrentY] = useState(0);
+  const [loadTitle, setLoadTitle] = useState('下拉刷新');
 
   const loadData = async (page = 1) => {
     setLoading(true);
@@ -78,22 +90,40 @@ const list = () => {
     loadData(pagin.nextPage);
   };
 
+  const onScroll = event => {
+    console.log(event.nativeEvent.contentOffset.y);
+    const {y} = event.nativeEvent.contentOffset;
+    if (y < -mineHeight) {
+      console.log('松开刷新');
+      setLoadTitle('松开刷新');
+    }
+    setCurrentY(y);
+
+    // const {nativeEvent} = event;
+    // const {contentOffset} = nativeEvent;
+  };
+
+  const onRelease = event => {
+    console.log('event', event.nativeEvent.locationX);
+    // console.log('currentY', currentY);
+    // console.log('scrollY', scrollY);
+    // if (currentY < -MinHeight && currentY >= -MaxHeight && isFree) {
+    //   // setTitle('加载中....');
+    //   setIsFree(false);
+    //   onRefresh();
+    // } else {
+    //   setTitle('下拉加载');
+    // }
+  };
+
   useEffect(() => {
     loadData();
   }, []);
 
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
-
-  // useEffect(() => {
-  //   console.log(loading);
-  // }, [loading]);
-
   const FlatListMemo = useMemo(() => {
     return (
       <View style={{flex: 1, backgroundColor: 'pink'}}>
-        <FlatList
+        <Animated.FlatList
           horizontal={false}
           data={data}
           extraData={loading}
@@ -103,9 +133,11 @@ const list = () => {
           ListFooterComponent={ListFooterComponent}
           onEndReached={onEndReachedloadData}
           onEndReachedThreshold={0.1}
+          onScroll={onScroll}
+          onResponderRelease={onRelease}
           refreshControl={
             <RefreshControl
-              title={'loading'}
+              title={currentY < -mineHeight ? '下拉刷新' : '松开刷新'}
               colors={'#000'}
               refreshing={loading}
               onRefresh={loadData}
