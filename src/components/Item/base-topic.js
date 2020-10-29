@@ -99,7 +99,7 @@ export const TopicVideoContent = props => {
           ...{width: videoAttr.width / 2, height: videoAttr.height / 2},
         }}
       />
-      <FastImg style={styles.playImage} source={VideoPlayImg} />
+      <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
     </View>
   );
 };

@@ -30,8 +30,8 @@ const FastImgGif = props => {
       style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
       source={{
         ...props.source,
-        priority: FastImage.priority.low,
-        cache: FastImage.cacheControl.immutable,
+        // priority: FastImage.priority.low,
+        // cache: FastImage.cacheControl.immutable,
       }}
       resizeMode={resizeMode}
       // tintColor={'gray'}
