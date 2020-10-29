@@ -71,6 +71,8 @@ import SharePage from '@/pages/shares/share_page'; //分享
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
 
+import List from '@/pages/list';
+
 const topicRouter = [
   {
     name: 'TopicDetail',
@@ -115,7 +117,6 @@ const topicRouter = [
     name: 'AddNode',
     barColor: 'dark',
     component: AddNode,
-    // options: {title: '选择圈子'},
   },
 ];
 
@@ -360,5 +361,11 @@ export const routers = [
     safeArea: false,
     component: EditAccountContent,
     options: {title: '编辑信息'},
+  },
+  {
+    name: 'list',
+    safeArea: false,
+    component: List,
+    options: {title: '列表'},
   },
 ];

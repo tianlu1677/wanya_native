@@ -141,6 +141,14 @@ const Settings = ({navigation, route}) => {
           <ItemTitle>检测更新</ItemTitle>
           <ForwardRight />
         </ItemView>
+        <ItemView
+          style={[styles.bottomBorder1px, styles.nestLine]}
+          onPress={() => {
+            navigation.navigate('list');
+          }}>
+          <ItemTitle>实验室</ItemTitle>
+          <ForwardRight />
+        </ItemView>
         {/*<ItemView*/}
         {/*  style={[styles.bottomBorder1px, styles.nestLine]}*/}
         {/*  onPress={() => {*/}
