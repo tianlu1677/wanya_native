@@ -13,6 +13,7 @@
     "@babel/plugin-proposal-decorators": "^7.10.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
     "@expo/react-native-action-sheet": "^3.8.0",
+    "@invertase/react-native-apple-authentication": "^2.1.0",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/cameraroll": "^4.0.1",

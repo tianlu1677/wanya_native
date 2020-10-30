@@ -187,6 +187,7 @@ const ScrollList = props => {
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
       removeClippedSubviews
+      windowSize={props.windowSize || 3}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}
