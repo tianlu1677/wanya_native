@@ -67,14 +67,14 @@ const SingleItem = props => {
     setPraiseForm(params);
   };
 
-  useEffect(() => {
-    if (data.single_cover.height) {
-      const h = data.single_cover
-        ? (data.single_cover.height * halfWidth) / data.single_cover.width
-        : 500;
-      setheight(h);
-    }
-  });
+  // useEffect(() => {
+  //   if (data.single_cover.height) {
+  //     const h = data.single_cover
+  //       ? (data.single_cover.height * halfWidth) / data.single_cover.width
+  //       : 500;
+  //     setheight(h);
+  //   }
+  // });
 
   const IsTopIcon = () => {
     return (
@@ -94,7 +94,7 @@ const SingleItem = props => {
           <FastImageGif
             source={{uri: data.single_cover.cover_url}}
             gif_url={data.single_cover.link_url}
-            style={{height: height, width: halfWidth, backgroundColor: '#F1F1F1'}}
+            style={{height: (data.single_cover.height * halfWidth) / data.single_cover.width, width: halfWidth, backgroundColor: '#F1F1F1'}}
           />
         )}
         {/*<Text>{data.single_cover.cover_url}</Text>*/}
@@ -249,7 +249,7 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItem}
       numColumns={2}
-      settings={{initialNumToRender: 10}}
+      settings={{initialNumToRender: 10, windowSize: 2}}
       style={styles.wrapper}
       {...props}
     />
