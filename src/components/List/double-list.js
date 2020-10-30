@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
@@ -94,29 +94,31 @@ const SingleItem = props => {
           <FastImageGif
             source={{uri: data.single_cover.cover_url}}
             gif_url={data.single_cover.link_url}
-            style={{height: height, width: '100%', backgroundColor: '#F1F1F1'}}
+            style={{height: height, width: halfWidth, backgroundColor: '#F1F1F1'}}
           />
         )}
         {/*<Text>{data.single_cover.cover_url}</Text>*/}
-        {data.has_video && <FastImg style={styles.videoPlay} source={VideoPlayImg} />}
+        {data.has_video && <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />}
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
         {props.isTop && (
-          <FastImg
+          <Image
             source={TopImage}
             style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
+            resizeMethod={'resize'}
           />
         )}
 
         {!props.isTop && data.excellent && (
-          <FastImg
+          <Image
             source={ExcellentImage}
             style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
+            resizeMethod={'resize'}
           />
         )}
 
@@ -247,6 +249,7 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItem}
       numColumns={2}
+      settings={{initialNumToRender: 10}}
       style={styles.wrapper}
       {...props}
     />

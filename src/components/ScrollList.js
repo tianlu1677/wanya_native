@@ -176,7 +176,7 @@ const ScrollList = props => {
       // onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
       //   useNativeDriver: true,
       // })}
-      onScroll={onscroll}
+      // onScroll={onscroll}
       // onScrollEndDrag={onScrollEndDrag}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       onEndReached={enableLoadMore ? onEndReached : null}
@@ -186,12 +186,15 @@ const ScrollList = props => {
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
-      onResponderRelease={onRelease}
+      removeClippedSubviews
+      // debug
+      {...props.settings}
+      // onResponderRelease={onRelease}
       refreshControl={
         enableRefresh ? (
           <RefreshControl
             refreshing={!!refreshing}
-            // onRefresh={enableRefresh ? onRefresh.bind(this) : null}
+            onRefresh={enableRefresh ? onRefresh.bind(this) : null}
             tintColor="black"
             style={{backgroundColor: 'white'}}
             title={title}
