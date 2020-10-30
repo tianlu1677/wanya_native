@@ -14,7 +14,15 @@ import {
 } from 'react-native';
 // import SyanImagePicker from 'react-native-syan-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import PermissionModal from './PhotoPermission';
+import {
+  check,
+  requestMultiple,
+  checkMultiple,
+  request,
+  RESULTS,
+  PERMISSIONS,
+} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, CommonActions} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -47,6 +55,7 @@ const NewTopic = props => {
   const defaultVideo = [];
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState(defaultVideo);
+  const [permissionModal, setPermissionModal] = useState(false); // 显示权限页面
 
   const [content, setContent] = useState(savetopic.plan_content);
 
@@ -63,11 +72,38 @@ const NewTopic = props => {
     navigation.navigate('AddSpace');
   };
 
-  const onImagePicker = () => {
+  const checkPermission = async () => {
+    const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY)
+    if (status === RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === RESULTS.DENIED) {
+      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+        console.log('result', result);
+      });
+      return true;
+    }
+
+    if (status === RESULTS.BLOCKED) {
+      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+        console.log('result', result);
+      });
+      setPermissionModal(true);
+      return false;
+    }
+  };
+
+  const onImagePicker = async () => {
+    // console.log('checkPermission()', await checkPermission())
+    const hasPermission = await checkPermission()
+    if (!hasPermission) {
+      return;
+    }
     props.removeAllPhoto();
     const options = {
       imageCount: 9 - imageSource.length,
-      isCamera: false
+      isCamera: false,
     };
     props.imagePick(options, async (err, res) => {
       if (err) {
@@ -85,8 +121,12 @@ const NewTopic = props => {
     });
   };
   //TODO 限制描述
-  const onVideoPicker = () => {
-    props.removeAllPhoto();
+  const onVideoPicker = async () => {
+    const hasPermission =  await checkPermission()
+    if (!hasPermission) {
+      return;
+    }
+
     // SyanImagePicker.openVideoPicker({
     //   allowTakeVideo: false,
     //   MaxSecond: 500,
@@ -121,18 +161,19 @@ const NewTopic = props => {
     //   }
     // );
     ImagePicker.openPicker({
-      mediaType: "video",
+      mediaType: 'video',
       writeTempFile: false,
       smartAlbums: ['Videos'],
       loadingLabelText: '导出视频中, 请稍等...',
       sortOrder: 'asc',
-    }).then(async (video) => {
+    }).then(async video => {
       console.log(video);
+      props.removeAllPhoto();
       let videoSourceContent = {
         uri: video.path,
         height: video.height,
         width: video.width,
-        duration: video.duration
+        duration: video.duration,
       };
       setVideoSource([videoSourceContent]);
       const result = await props.uploadVideo(videoSourceContent, dispatch);
@@ -280,6 +321,12 @@ const NewTopic = props => {
           Keyboard.dismiss();
         }}>
         <View style={styles.wrapper}>
+          <PermissionModal
+            visible={permissionModal}
+            cancleClick={() => {
+              setPermissionModal(false);
+            }}
+          />
           <View style={styles.mediaCon}>
             {/* picture */}
             {imageSource.map((v, index) => (
