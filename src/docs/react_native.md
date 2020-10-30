@@ -92,6 +92,8 @@ setTimeout(function () {
 - https://styled-components.com/docs/basics
 
 
+# git config core.ignorecase false
+
 
 
 可能会用到的
