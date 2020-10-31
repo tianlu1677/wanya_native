@@ -3,14 +3,9 @@ import {View, Text, Modal, Button, Dimensions, Image, StyleSheet} from 'react-na
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
 import FastImg from '@/components/FastImg'
-import {uploadBase64File} from '@/api/asset_api';
-import ImgToBase64 from 'react-native-image-base64';
 import {Avator} from '@/components/NodeComponents';
-import {DefaultLog} from '@/utils/default-image';
 import PlayVideoImg from '@/assets/images/play-video.png';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
-import WanyaShareWordImg from '@/assets/images/wanya_share_word.png';
-import Helper from '@/utils/helper';
 import {prosettings} from '@/api/settings_api';
 
 // import CameraRoll from "@react-native-community/cameraroll";
