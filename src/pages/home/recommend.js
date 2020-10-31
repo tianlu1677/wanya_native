@@ -14,6 +14,7 @@ import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import Helper from '@/utils/helper';
+import WaterFlowList from '@/components/List/waterflow-list'
 
 console.log(STATUS_BAR_HEIGHT);
 
@@ -24,6 +25,7 @@ const Recommend = props => {
 
   const RecommendList = () => {
     return <DoubleList settings={{removeClippedSubviews: false}} request={{api: getRecommendPosts}} type="recommend" />;
+    // return <WaterFlowList settings={{removeClippedSubviews: false}} request={{api: getRecommendPosts}} type="recommend" />;
   };
 
   const FollowList = () => {

@@ -155,6 +155,8 @@ const Columns = <T extends {
     clear,
     addIteming,
   }));
+  // [[], []]
+
 
   return (
     <FlatList
