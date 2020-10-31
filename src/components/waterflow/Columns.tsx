@@ -160,7 +160,7 @@ const Columns = <T extends {
 
   return (
     <FlatList
-      data={columns}
+      data={columns} // [[],[]]
       keyExtractor={(columnItem: T) => `item-${columnItem._keyForItem_}`}
       onScroll={props.onEndReached}
       removeClippedSubviews={true}

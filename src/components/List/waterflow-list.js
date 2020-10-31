@@ -177,7 +177,10 @@ const DoubleSingle = props => {
     </View>
   );
 };
-
+// [leftHeight, rightHeigt] = [10 + 40, 30]
+// [[{id: 1,}, {id: 3}], [{id: 2}]]
+// listData= [{id: 1,}, {id: 2,}, {id: 3}]
+// listData.map {}
 const numColumns = 2
 const WaterFlowList = props => {
   const [loading, setLoading] = useState(true);
