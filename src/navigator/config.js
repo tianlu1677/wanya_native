@@ -71,7 +71,7 @@ import SharePage from '@/pages/shares/share_page'; //分享
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
 
-import List from '@/pages/list';
+import List from '@/pages/lottileList/list';
 
 const topicRouter = [
   {
