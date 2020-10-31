@@ -29,9 +29,8 @@ const SingleList = props => {
     []
   );
 
-
   const loadData = async (page = 1) => {
-    console.log('loadding', loading);
+    // console.log('loadding', loading);
     setLoading(true);
 
     const {api, params} = props.request;
