@@ -54,7 +54,7 @@ const ScrollList = props => {
       setState(loadState.LOADING);
       props.onRefresh();
       setCurrentY(0);
-      setIsFree(true)
+      setIsFree(true);
     } catch {
       setState(loadState.ERROR);
     }
@@ -81,23 +81,48 @@ const ScrollList = props => {
 
   const renderFooter = () => {
     let footer = null;
-    switch (state) {
-      case loadState.LOADING:
-        footer = (
-          <View
-            style={{height: 100, backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center'}}>
-            <ActivityIndicator size="small" />
-          </View>
-        );
-        break;
-      case loadState.EMPTY:
-        // footer = <Text>数据已全部完成</Text>;
-        break;
-      case loadState.ERROR:
-        footer = <Text onPress={onRefresh}>点击重新加载</Text>;
-        break;
+
+    if (pagin && pagin.hasMore) {
+      footer = (
+        <View
+          style={{
+            height: 70,
+            backgroundColor: '#fafafa',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <ActivityIndicator
+            size={'small'}
+            animating={true}
+            color={'#000'}
+            style={{marginBottom: 5}}
+          />
+          <Text>正在加载更多</Text>
+        </View>
+      );
     }
+
     return footer;
+
+    // let footer = null;
+    // switch (state) {
+    //   case loadState.LOADING:
+    //     footer = (
+    //       <View
+    //         style={{height: 100, backgroundColor: '#FAFAFA', flex: 1, justifyContent: 'center'}}>
+    //         <ActivityIndicator size="small" />
+    //       </View>
+    //     );
+    //     break;
+    //   case loadState.EMPTY:
+    //     // footer = <Text>数据已全部完成</Text>;
+    //     break;
+    //   case loadState.ERROR:
+    //     footer = <Text onPress={onRefresh}>点击重新加载</Text>;
+    //     break;
+    // }
+    // return footer;
   };
 
   const renderEmpty = () => {
