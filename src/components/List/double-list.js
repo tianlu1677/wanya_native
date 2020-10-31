@@ -249,7 +249,7 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItem}
       numColumns={2}
-      settings={{initialNumToRender: 10, windowSize: 2}}
+      settings={{initialNumToRender: 10, windowSize: 2, ...props.settings}}
       style={styles.wrapper}
       {...props}
     />

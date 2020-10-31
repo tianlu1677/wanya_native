@@ -23,7 +23,7 @@ const Recommend = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
 
   const RecommendList = () => {
-    return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
+    return <DoubleList settings={{removeClippedSubviews: false}} request={{api: getRecommendPosts}} type="recommend" />;
   };
 
   const FollowList = () => {
