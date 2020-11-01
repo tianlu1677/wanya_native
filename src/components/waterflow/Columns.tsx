@@ -6,64 +6,71 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import { isPromise } from './utils';
-import { Colunm } from './Column';
+import {isPromise} from './utils';
+import {Colunm} from './Column';
 
 // @ts-ignore
 interface IFlatListProps<T> extends FlatListProps<T> {
-  data?: any
-  renderItem?: any
+  data?: any;
+  renderItem?: any;
 }
 
 export interface IColumnsProps<T> {
-  asyncHeightForItem?: (item: T) => Promise<number>
-  numColumns: number
-  heightForItem?: (item: T) => number
-  data: T[]
-  renderItem: ({ item, index }: { item: T, index: number }) => JSX.Element
-  keyForItem: (item: T) => string
-  onEndReached: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
+  asyncHeightForItem?: (item: T) => Promise<number>;
+  numColumns: number;
+  heightForItem?: (item: T) => number;
+  data: T[];
+  renderItem: ({item, index}: {item: T; index: number}) => JSX.Element;
+  keyForItem: (item: T) => string;
+  onEndReached: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 
-  columnsFlatListProps?: IFlatListProps<T>
-  columnFlatListProps?: IFlatListProps<T>
+  columnsFlatListProps?: IFlatListProps<T>;
+  columnFlatListProps?: IFlatListProps<T>;
 }
 export interface IColumnsHandles {
-  clear: () => void
-  addIteming: boolean
+  clear: () => void;
+  addIteming: boolean;
 }
 
-const Columns = <T extends {
-  offsetTop: number
-  itemHeight: number
-  onLayout: any
-  _keyForItem_: any
-}>({ columnsFlatListProps, ...props }: IColumnsProps<T>, ref: typeof React.useRef) => {
-  const { numColumns } = props;
+const Columns = <
+  T extends {
+    offsetTop: number;
+    itemHeight: number;
+    onLayout: any;
+    _keyForItem_: any;
+  }
+>(
+  {columnsFlatListProps, ...props}: IColumnsProps<T>,
+  ref: typeof React.useRef
+) => {
+  const {numColumns} = props;
 
-  const [addIteming, setAddIteming] = React.useState(false)
+  const [addIteming, setAddIteming] = React.useState(false);
   const [columns, setColumns] = React.useState<T[][]>(
     Array(numColumns)
       .fill('')
-      .map(() => []),
+      .map(() => [])
   );
   const columnsHeight = React.useMemo(() => Array(numColumns).fill(0), [numColumns]);
-  const keysList = React.useMemo<string[]>(() => [], [])
+  const keysList = React.useMemo<string[]>(() => [], []);
   const heightForItemAddItems = (data: T[]) => {
     let tempColumns = Array(numColumns)
       .fill([])
-      .map(() => [] as T[])
+      .map(() => [] as T[]);
     for (const item of data) {
       item._keyForItem_ = props.keyForItem(item);
       // 已经渲染则跳过
-      if (checkIsExist(item._keyForItem_)) { continue }
+      if (checkIsExist(item._keyForItem_)) {
+        continue;
+      }
       // 获取总高度最小列
-      const addItemValue = addItem(item)
-      const height = props.heightForItem!(item)
+      const addItemValue = addItem(item);
+      const height = props.heightForItem!(item);
       columnsHeight[addItemValue.minColumnsIndex] += height;
-      tempColumns = addItemValue.tempColumns
+      tempColumns = addItemValue.tempColumns;
     }
-    return setColumns(tempColumns)
-  }
+    return setColumns(tempColumns);
+  };
 
   const addItems = (data: T[], isSyncHeightForItem: boolean = false): any => {
     if (data.length === 0) {
@@ -78,7 +85,7 @@ const Columns = <T extends {
       return addItems(data);
     }
 
-    const { tempColumns } = addItem(item, addItems.bind(addItems, data), isSyncHeightForItem);
+    const {tempColumns} = addItem(item, addItems.bind(addItems, data), isSyncHeightForItem);
     setColumns(tempColumns);
   };
 
@@ -86,16 +93,14 @@ const Columns = <T extends {
     const tempColumns = [...columns];
 
     // 获取总高度最小列
-    const minColumnsIndex = [...columnsHeight].indexOf(
-      Math.min.apply(Math, [...columnsHeight]),
-    );
+    const minColumnsIndex = [...columnsHeight].indexOf(Math.min.apply(Math, [...columnsHeight]));
 
     // 获取当前renderItem高度,获取后渲染下一个renderItem,直到全部渲染完毕
     if (typeof cb === 'function') {
       item.onLayout = async (e: LayoutChangeEvent) => {
         // 触发一次后销毁
-        item.onLayout = null
-        let height = 0
+        item.onLayout = null;
+        let height = 0;
         // 如果heightForItem为Promise则使用heightForItem返回的高度
         if (isSyncHeightForItem) {
           height = await props.asyncHeightForItem!(item);
@@ -104,50 +109,54 @@ const Columns = <T extends {
         }
         columnsHeight[minColumnsIndex] += height;
         cb();
-      }
-    };
+      };
+    }
 
     const currentColumn = tempColumns[minColumnsIndex];
     currentColumn.push(item);
-    return { tempColumns, minColumnsIndex }
+    return {tempColumns, minColumnsIndex};
   };
 
   // 清除所有renderItem
   const clear = () => {
     for (let index = 0; index < columnsHeight.length; index++) {
-      columnsHeight[index] = 0
+      columnsHeight[index] = 0;
     }
-    keysList.splice(0, keysList.length)
+    keysList.splice(0, keysList.length);
     setColumns(
       Array(numColumns)
         .fill([])
-        .map(() => []),
+        .map(() => [])
     );
   };
 
   // 通过 _keyForItem_ 检查是否已经渲染
   const checkIsExist = React.useCallback(
     (key: string) => {
-      const check = keysList.indexOf(key) !== -1
+      const check = keysList.indexOf(key) !== -1;
       // 如果未渲染则保存key
       if (!check) {
-        keysList.push(key)
+        keysList.push(key);
       }
-      return check
+      return check;
     },
-    [columns, keysList],
-  )
+    [columns, keysList]
+  );
 
   React.useEffect(() => {
-    if (!props.data.length) { return }
-    if (typeof props.heightForItem === 'function') {
-      if (props.asyncHeightForItem) {
-        addItems(props.data.slice(), true);
-        return
-      }
-      heightForItemAddItems(props.data.slice())
-      return
+    if (!props.data.length) {
+      return;
     }
+    // if (typeof props.heightForItem === 'function') {
+    //   if (props.asyncHeightForItem) {
+    //     addItems(props.data.slice(), true);
+    //     return;
+    //   }
+    //   heightForItemAddItems(props.data.slice());
+    //   return;
+    // }
+    console.log(props.data.slice());
+
     addItems(props.data.slice());
   }, [props.data]);
 
@@ -157,6 +166,7 @@ const Columns = <T extends {
   }));
   // [[], []]
 
+  console.log(columns);
 
   return (
     <FlatList
@@ -166,17 +176,24 @@ const Columns = <T extends {
       removeClippedSubviews={true}
       {...columnsFlatListProps}
       numColumns={props.numColumns}
-      renderItem={({ item, index }: { item: T, index: number }) => {
-        return <Colunm
-          columnFlatListProps={props.columnFlatListProps}
-          key={`column-${index}`}
-          listKey={`column-${index}`}
-          keyExtractor={(columnItem: T) => `item-${columnItem._keyForItem_}`}
-          data={item}
-          renderItem={props.renderItem}
-        />
+      renderItem={({item, index}: {item: T; index: number}) => {
+        console.log(item);
+
+        return (
+          <Colunm
+            columnFlatListProps={props.columnFlatListProps}
+            key={`column-${index}`}
+            listKey={`column-${index}`}
+            keyExtractor={(columnItem: T) => `item-${columnItem._keyForItem_}`}
+            data={item}
+            renderItem={props.renderItem}
+          />
+        );
       }}
     />
-  )
-}
-export default React.forwardRef(Columns as React.RefForwardingComponent<IColumnsHandles, IColumnsProps<any>>)
+  );
+};
+export default React.forwardRef(Columns as React.RefForwardingComponent<
+  IColumnsHandles,
+  IColumnsProps<any>
+>);
