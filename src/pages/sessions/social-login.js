@@ -9,6 +9,7 @@ import {appWechatSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -23,7 +24,7 @@ const SocialLogin = ({navigation, route}) => {
 
   const phoneLogin = () => {
     navigation.navigate('PasswordLogin');
-  }
+  };
   const wechatLogin = async () => {
     console.log('wechatLogi11n');
     try {
@@ -68,6 +69,72 @@ const SocialLogin = ({navigation, route}) => {
     }
   };
 
+  // 苹果登录的请求
+  const onAppleButtonPress = async updateCredentialStateForUser => {
+    console.warn('Beginning Apple Authentication');
+
+    // start a login request
+
+    // {"authorizationCode": "c3c7f5d477b0e41ecbfb10d45f33e4c80.0.nruwt.zrZ-xHe1Pop43QMUFWxotw",
+    // "authorizedScopes": [], "email": null,
+    // "fullName": {"familyName": null, "givenName": null, "middleName": null, "namePrefix": null, "nameSuffix": null, "nickname": null},
+    // "identityToken": "eyJraWQiOiI4NkQ4OEtmIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLnZhbnlhaC5pb3MiLCJleHAiOjE2MDQwNzAzMTEsImlhdCI6MTYwMzk4MzkxMSwic3ViIjoiMDAxNDYzLjQxMDkyOGY2ZDA0MDQ2Y2I5MWI4OWY0MzAwMjc2Y2JjLjE0NTkiLCJub25jZSI6IjZmNDdhZTUzMzdlNzgzYmVkYTJkOTJlYWVjMTg3ZDYxZjA4ZjMzODVkMmI0MTk4YzViMmZmN2I1MTEyYjdmMzYiLCJjX2hhc2giOiJieE5aVXcybHM4eVJGZlhkVmpsUUtBIiwiZW1haWwiOiJ0aWFubHUxNjc3QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjoidHJ1ZSIsImF1dGhfdGltZSI6MTYwMzk4MzkxMSwibm9uY2Vfc3VwcG9ydGVkIjp0cnVlfQ.bu8WUXxSuNNc7XLB6jBulrn2kb-PYdZ5Zv6a9SCI7OX_7h0O5ROzOZa28POf_FHQxYqBeayEGOqe5kMMBOXZNY4Uv2pCxPZsr9XD1Fv5PttExX8g5lyMFYkoFj-HHP_eyzklIisAXpk5GTS7s0Wb0wg4Ri2jnP67PRNkzRHCS-qoWM9rzB8Vj_5UOsjejeYX0b67CazyNgAC0Jn38tLzGI1ZP8vTdtOuyjRa_IjJVtvRy6lUe7Tk5LKcq9Y2TCe-HSCwT9g5wncV-zZef8Et2GgJi0xqpnWPZOE-ZxVYD9cOSj1JzSR-UGFoc1w0QMmcwwzwMB26eXvqXSqYlm10nw", "nonce": ".NEl7LGpr8DjnjCeb4QjpRyCKJULJJ2Y",
+    // "realUserStatus": 1, "state": null, "user": "001463.410928f6d04046cb91b89f4300276cbc.1459"
+    // }
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
+      const {
+        user,
+        email,
+        nonce,
+        identityToken,
+        realUserStatus /* etc */,
+      } = appleAuthRequestResponse;
+
+      // get current authentication state for user
+      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user
+      );
+      // realUserStatus
+      // use credentialState response to ensure the user is authenticated
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        console.log('goood');
+        // user is authenticated
+      }
+      // fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+      //   updateCredentialStateForUser(`Error: ${error.code}`),
+      // );
+
+      // if (identityToken) {
+      //   // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+      //   console.log(nonce, identityToken);
+      // } else {
+      //   // no token - failed sign-in?
+      // }
+
+      // console.log('realUserStatus', realUserStatus)
+
+      // if (realUserStatus === AppleAuthRealUserStatus.LIKELY_REAL) {
+      //   console.log("I'm a real person!");
+      // }
+
+      console.warn(`Apple Authentication Completed, ${user}, ${email}`);
+    } catch (error) {
+      if (error.code === appleAuth.Error.CANCELED) {
+        console.warn('User canceled Apple Sign in.');
+      } else {
+        console.error(error);
+      }
+    }
+  };
+
   const goPages = type => {
     if (type === 'private') {
       navigation.navigate('WebView', {
@@ -90,6 +157,18 @@ const SocialLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%'}}
         resizeMode={'cover'}>
+        <View style={[styles.loginContainer, {bottom: 300}]}>
+          <AppleButton
+            buttonStyle={AppleButton.Type.WHITE_OUTLINE}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={styles.loginButton}
+            cornerRadius={10}
+            textStyle={styles.loginText}
+            leftView={<Text />}
+            onPress={onAppleButtonPress}
+          />
+        </View>
+
         <Pressable
           style={{
             position: 'absolute',
@@ -100,16 +179,12 @@ const SocialLogin = ({navigation, route}) => {
             height: 10,
           }}
           onPress={() => {
-            console.log('xxx')
+            console.log('xxx');
             // navigation.navigate('AdminPhoneLogin');
             // navigation.navigate('InviteLogin');
             navigation.navigate('PhoneLogin');
-          }}
-        >
-          <Text
-            style={{color: 'black'}}>
-            去别的页面
-          </Text>
+          }}>
+          <Text style={{color: 'black'}}>去别的页面</Text>
         </Pressable>
 
         <View style={styles.loginContainer}>
@@ -141,8 +216,7 @@ const SocialLogin = ({navigation, route}) => {
             onPress={() => {
               goPages('user');
             }}
-            hitSlop={{top: 10, bottom: 10}}
-          >
+            hitSlop={{top: 10, bottom: 10}}>
             <Text style={styles.textContent}>《用户协议》</Text>
           </Pressable>
           <Text style={styles.textContent}>和</Text>
