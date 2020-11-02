@@ -180,19 +180,19 @@ const SocialLogin = ({navigation, route}) => {
             </Text>
           </Pressable>
         </View>
-        {/*{*/}
-        {/*  __DEV__ ?  <View style={{...styles.phoneLoginContainer, bottom: 260}}>*/}
-        {/*    <Pressable*/}
-        {/*      style={styles.loginButton}*/}
-        {/*      onPress={() => {*/}
-        {/*        phoneLogin();*/}
-        {/*      }}>*/}
-        {/*      <Text style={styles.loginText} allowFontScaling={true}>*/}
-        {/*        手机登录*/}
-        {/*      </Text>*/}
-        {/*    </Pressable>*/}
-        {/*  </View> : <View/>*/}
-        {/*}*/}
+        {
+          __DEV__ ?  <View style={{...styles.phoneLoginContainer, bottom: 260}}>
+            <Pressable
+              style={styles.loginButton}
+              onPress={() => {
+                phoneLogin();
+              }}>
+              <Text style={styles.loginText} allowFontScaling={true}>
+                手机登录
+              </Text>
+            </Pressable>
+          </View> : <View/>
+        }
         <View style={[styles.phoneLoginContainer]}>
           <AppleButton
             buttonStyle={AppleButton.Type.WHITE_OUTLINE}

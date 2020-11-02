@@ -39,6 +39,16 @@ const codePushOptions = {
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
 import ShareItem from '@/components/ShareItem';
+import Toast from "@/components/Toast"
+
+
+const unsubscribe = NetInfo.addEventListener(state => {
+  console.log("Connection type", state.type);
+  console.log("Connection ", state);
+  console.log("Is connected?", state.isConnected);
+  Toast.showError('error', state.type)
+  Toast.showError('error', JSON.stringify(state))
+});
 
 class App extends Component {
   constructor(props) {
@@ -57,7 +67,7 @@ class App extends Component {
     this.loadImgList();
     this.loadSettings();
     this.checkPermission()
-    // this.loadNetworkInfo();
+    this.loadNetworkInfo();
     // this.loadDeviceInfo();
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
@@ -105,16 +115,17 @@ class App extends Component {
   loginAdmin = () => {};
 
   loadNetworkInfo = () => {
-    // const unsubscribe = NetInfo.addEventListener(state => {
-    //   console.log("Connection type", state.type);
-    //   console.log("Connection ", state);
-    //   console.log("Is connected?", state.isConnected);
-    // });
+
     // NetInfo.fetch().then(state => {
     //   console.log("Connection type", state.type);
     //   console.log("Is connected?", state.isConnected);
     // });
   };
+
+  componentWillUnmount() {
+    unsubscribe();
+  }
+
 
   loadDeviceInfo = () => {
     DeviceInfo.getApiLevel().then(apiLevel => {
