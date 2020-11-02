@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import {
   View,
   RefreshControl,
@@ -20,7 +20,6 @@ import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
-import {flat} from '@/components/waterflow/utils';
 
 const SingleItem = props => {
   const navigation = useNavigation();
@@ -28,7 +27,7 @@ const SingleItem = props => {
   const halfWidth = (width - 10 - 5) / 2; // 屏幕去掉两边后的宽度
   const {data} = props;
 
-  const [praiseForm, setPraiseForm] = useState({
+  const [praiseForm] = useState({
     praise: data.praise,
     praises_count: data.praises_count,
   });
@@ -45,7 +44,7 @@ const SingleItem = props => {
   };
 
   return (
-    <Pressable key={data.id} onPress={() => onGoDetail(data)}>
+    <Pressable onPress={() => onGoDetail(data)}>
       {data.single_cover.cover_url && (
         <FastImageGif
           source={{uri: data.single_cover.cover_url}}
@@ -116,57 +115,72 @@ const SingleItem = props => {
   );
 };
 
+const DoubleListColunm = props => {
+  return (
+    <FlatList
+      {...props}
+      windowSize={3}
+      style={{marginRight: 5}}
+      removeClippedSubviews={true}
+      keyExtractor={item => `item-${item.id}`}
+      renderItem={({item, index}) => {
+        return (
+          <View key={item.id} onLayout={item.onLayout}>
+            {props.renderItem({item, index})}
+          </View>
+        );
+      }}
+    />
+  );
+};
+
 const DoubleLists = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderItem = ({item, index}) => {
-    return <SingleItem key={item.id} data={item.item} isTop={item.is_top} type={item.item_type} />;
-  };
+  const [columns, setColumns] = useState(
+    Array(2)
+      .fill('')
+      .map(() => [])
+  );
+  const columnsHeight = useMemo(() => Array(2).fill(0), [2]);
+  const keysList = useMemo(() => [], []);
 
   //首页推荐
-  const indexLoadData = async (page = 1) => {
+  const indexLoadData = async (page = 1, onRefresh = false) => {
     setLoading(true);
-    let itemList = [];
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
-    // 加载首页置顶的
-    let top_posts_res = await getRecommendTopPosts({...params, page});
 
+    // 加载首页置顶的
+    let itemList = [];
+    let top_posts_res = await getRecommendTopPosts();
     itemList = top_posts_res.data.posts;
     itemList = itemList.map(item => ({...item, is_top: true}));
 
+    const loadData = onRefresh ? [...itemList, ...data] : [...itemList, ...listData, ...data];
     setHeaders(res.headers);
-    setListData(itemList.concat(data));
+    setListData(loadData);
     setLoading(false);
   };
 
-  const onRefresh = (page = 1) => {
-    const pagin = pagination(headers);
-    indexLoadData(pagin.nextPage);
-  };
-
-  const onEndReached = () => {
-    const pagin = pagination(headers);
-    indexLoadData(pagin.nextPage);
-    console.log('laod ending');
-  };
+  const renderItem = ({item, index}) => (
+    <SingleItem key={item.id} data={item.item} isTop={item.is_top} type={item.item_type} />
+  );
 
   const renderFooter = () => {
     const pagin = pagination(headers);
+    const storeData = columns.flat();
+    if (storeData.length !== listData.length) {
+      // 还未加载完
+      return null;
+    }
+
     if (pagin && pagin.hasMore) {
       return (
-        <View
-          style={{
-            height: 140,
-            backgroundColor: '#fafafa',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingBottom: 70,
-          }}>
+        <View style={styles.listFooter}>
           <ActivityIndicator
             size={'small'}
             animating={true}
@@ -181,18 +195,119 @@ const DoubleLists = props => {
     }
   };
 
+  const addItem = (item, cb) => {
+    const tempColumns = [...columns];
+    // 获取总高度最小列
+    const minColumnsIndex = [...columnsHeight].indexOf(Math.min.apply(Math, [...columnsHeight]));
+    // 获取当前renderItem高度,获取后渲染下一个renderItem,直到全部渲染完毕
+    if (typeof cb === 'function') {
+      item.onLayout = async e => {
+        // 触发一次后销毁
+        item.onLayout = null;
+        const height = e.nativeEvent.layout.height;
+        columnsHeight[minColumnsIndex] += height;
+        cb();
+      };
+    }
+    const currentColumn = tempColumns[minColumnsIndex];
+    currentColumn.push(item);
+    return {tempColumns, minColumnsIndex};
+  };
+
+  // 通过 id 检查是否已经渲染
+  const checkIsExist = React.useCallback(
+    key => {
+      const check = keysList.includes(key);
+      // 如果未渲染则保存key
+      if (!check) {
+        keysList.push(key);
+      }
+      return check;
+    },
+    [columns, keysList]
+  );
+
+  const addItems = (data, isSyncHeightForItem = false) => {
+    const item = data.shift();
+    item._keyForItem_ = item.id;
+    // 已经渲染则跳过
+    if (checkIsExist(item._keyForItem_)) {
+      return addItems(data);
+    }
+    const {tempColumns} = addItem(item, addItems.bind(addItems, data), isSyncHeightForItem);
+    setColumns(tempColumns);
+  };
+
+  // 清除所有renderItem
+  const clear = () => {
+    for (let index = 0; index < columnsHeight.length; index++) {
+      columnsHeight[index] = 0;
+    }
+    keysList.splice(0, keysList.length);
+    setColumns(
+      Array(2)
+        .fill([])
+        .map(() => [])
+    );
+  };
+
+  const onEndReached = () => {
+    const storeData = columns.flat();
+    if (storeData.length === listData.length) {
+      const pagin = pagination(headers);
+      indexLoadData(pagin.nextPage);
+      console.log('加载更多');
+    }
+  };
+
+  const onRefresh = () => {
+    console.log('下拉刷新');
+    const pagin = pagination(headers);
+    indexLoadData(pagin.nextPage, true);
+  };
+
   useEffect(() => {
-    indexLoadData(1);
+    indexLoadData();
   }, []);
 
+  useEffect(() => {
+    if (!listData.length) {
+      return;
+    }
+
+    addItems(listData.slice());
+  }, [listData]);
+
   return (
-    <DoubleListColumns
-      data={listData}
-      keyForItem={item => item.id}
+    <FlatList
+      data={columns}
       numColumns={2}
+      windowSize={20}
+      removeClippedSubviews={false}
+      onEndReachedThreshold={0.2}
       onEndReached={onEndReached}
-      renderItem={renderItem}
-      refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}
+      refreshControl={
+        <RefreshControl
+          refreshing={loading}
+          onRefresh={() => {
+            clear();
+            onRefresh();
+          }}
+        />
+      }
+      ListFooterComponent={renderFooter}
+      keyExtractor={(item, index) => `item-${index}`}
+      style={{flex: 1, paddingLeft: 5, paddingRight: 5}}
+      renderItem={({item, index}) => {
+        return (
+          <DoubleListColunm
+            listKey={`column-${index}`}
+            key={`column-${index}`}
+            data={item}
+            renderItem={renderItem}
+          />
+        );
+      }}
     />
   );
 };
@@ -234,143 +349,14 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     fontSize: 10,
   },
+  listFooter: {
+    height: 140,
+    backgroundColor: '#fafafa',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 70,
+  },
 });
 
 export default DoubleLists;
-
-const DoubleListColumns = props => {
-  const {numColumns} = props;
-  const [storeData, setStoreData] = useState([]);
-  const [columns, setColumns] = useState(
-    Array(numColumns)
-      .fill('')
-      .map(() => [])
-  );
-
-  const columnsHeight = useMemo(() => Array(numColumns).fill(0), [numColumns]);
-  const keysList = useMemo(() => [], []);
-
-  const addItem = (item: T, cb?: () => typeof addItems, isSyncHeightForItem: boolean = false) => {
-    const tempColumns = [...columns];
-
-    // 获取总高度最小列
-    const minColumnsIndex = [...columnsHeight].indexOf(Math.min.apply(Math, [...columnsHeight]));
-
-    // 获取当前renderItem高度,获取后渲染下一个renderItem,直到全部渲染完毕
-    if (typeof cb === 'function') {
-      item.onLayout = async (e: LayoutChangeEvent) => {
-        // 触发一次后销毁
-        item.onLayout = null;
-        const height = e.nativeEvent.layout.height;
-        columnsHeight[minColumnsIndex] += height;
-        cb();
-      };
-    }
-
-    const currentColumn = tempColumns[minColumnsIndex];
-    currentColumn.push(item);
-    return {tempColumns, minColumnsIndex};
-  };
-
-  const addItems = (data, isSyncHeightForItem: boolean = false): any => {
-    if (data.length === 0) {
-      return;
-    }
-    const item = data.shift();
-
-    item._keyForItem_ = props.keyForItem(item);
-    // 已经渲染则跳过
-    if (checkIsExist(item._keyForItem_)) {
-      return addItems(data);
-    }
-
-    const {tempColumns, minColumnsIndex} = addItem(
-      item,
-      addItems.bind(addItems, data),
-      isSyncHeightForItem
-    );
-
-    console.log(columnsHeight[minColumnsIndex]);
-    console.log(Dimensions.get('window').height);
-
-    if (columnsHeight[minColumnsIndex] <= Dimensions.get('window').height) {
-      const store = JSON.parse(JSON.stringify(tempColumns));
-      setStoreData(store);
-      console.log(store);
-      // console.log('set tempColumns');
-    }
-
-    setColumns(tempColumns);
-  };
-
-  // 通过 _keyForItem_ 检查是否已经渲染
-  const checkIsExist = React.useCallback(
-    (key: string) => {
-      const check = keysList.indexOf(key) !== -1;
-      // 如果未渲染则保存key
-      if (!check) {
-        keysList.push(key);
-      }
-      return check;
-    },
-    [columns, keysList]
-  );
-
-  const onEndReached = () => {
-    console.log(storeData);
-
-    console.log('onEndReached');
-    return false;
-  };
-
-  useEffect(() => {
-    if (!props.data.length) {
-      return;
-    }
-    addItems(props.data.slice());
-  }, [props.data]);
-
-  return (
-    <FlatList
-      {...props}
-      data={columns}
-      removeClippedSubviews={false}
-      onEndReachedThreshold={0.2}
-      onEndReached={onEndReached}
-      windowSize={20}
-      columnWrapperStyle={{flex: 1}}
-      style={{flex: 1, paddingLeft: 5, paddingRight: 5, backgroundColor: 'green'}}
-      keyExtractor={(columnItem, index) => `item-${index}`}
-      renderItem={({item, index}: {item: T, index: number}) => {
-        return (
-          <View style={{flex: 1, backgroundColor: 'pink'}} key={`column-${index}`}>
-            <DoubleListColunm
-              listKey={`column-${index}`}
-              data={item}
-              renderItem={props.renderItem}
-            />
-          </View>
-        );
-      }}
-    />
-  );
-};
-
-const DoubleListColunm = props => {
-  return (
-    <FlatList
-      {...props}
-      windowSize={3}
-      style={{marginRight: 5, backgroundColor: 'yellow'}}
-      removeClippedSubviews={true}
-      keyExtractor={columnItem => `item-${columnItem._keyForItem_}`}
-      renderItem={({item, index}) => {
-        return (
-          <View key={item._keyForItem_} onLayout={item.onLayout}>
-            {props.renderItem({item, index})}
-          </View>
-        );
-      }}
-    />
-  );
-};
