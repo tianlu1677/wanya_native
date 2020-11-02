@@ -5,11 +5,12 @@ import styled from 'styled-components/native';
 import {useDispatch} from 'react-redux';
 import Helper from '../../utils/helper';
 import * as WeChat from 'react-native-wechat-lib';
-import {appWechatSignIn} from '@/api/sign_api';
+import {appWechatSignIn, appAppleSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
+import Toast from '@/components/Toast';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -25,8 +26,39 @@ const SocialLogin = ({navigation, route}) => {
   const phoneLogin = () => {
     navigation.navigate('PasswordLogin');
   };
+  // 跳转逻辑
+  const verifyLoginStep = async userInfoRes => {
+    if (userInfoRes.error) {
+      Toast.showError(userInfoRes.error);
+      console.log('error', userInfoRes.error);
+      return;
+    }
+    let accountInfo = userInfoRes.account;
+    console.log('accountInfo', accountInfo);
+    await Helper.setData('socialToken', accountInfo.token);
+    // 有手机且已验证码，跳转到首页
+    if (accountInfo.had_phone && accountInfo.had_invited) {
+      await Helper.setData('auth_token', accountInfo.token);
+      dispatch(dispatchSetAuthToken(accountInfo.token));
+      dispatch(dispatchCurrentAccount());
+
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Recommend'}],
+      });
+    }
+    // 没有手机跳转到手机
+    if (!accountInfo.had_phone) {
+      navigation.navigate('PhoneLogin');
+      return;
+    }
+    // 有手机，没有验证码跳转到验证码
+    if (accountInfo.had_phone && !accountInfo.had_invited) {
+      navigation.navigate('InviteLogin');
+      return;
+    }
+  };
   const wechatLogin = async () => {
-    console.log('wechatLogi11n');
     try {
       const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
       let signData = {
@@ -35,35 +67,7 @@ const SocialLogin = ({navigation, route}) => {
         // source: 'vanyah_app'
       };
       const userInfoRes = await appWechatSignIn(signData);
-      console.log('userInfoRes', userInfoRes);
-      if (userInfoRes.error) {
-        console.log('error', userInfoRes.error);
-        return;
-      }
-      let accountInfo = userInfoRes.account;
-      console.log('accountInfo', accountInfo);
-      await Helper.setData('socialToken', accountInfo.token);
-      // 有手机且已验证码，跳转到首页
-      if (accountInfo.had_phone && accountInfo.had_invited) {
-        await Helper.setData('auth_token', accountInfo.token);
-        dispatch(dispatchSetAuthToken(accountInfo.token));
-        dispatch(dispatchCurrentAccount());
-
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Recommend'}],
-        });
-      }
-      // 没有手机跳转到手机
-      if (!accountInfo.had_phone) {
-        navigation.navigate('PhoneLogin');
-        return;
-      }
-      // 有手机，没有验证码跳转到验证码
-      if (accountInfo.had_phone && !accountInfo.had_invited) {
-        navigation.navigate('InviteLogin');
-        return;
-      }
+      await verifyLoginStep(userInfoRes);
     } catch (e) {
       console.error(e);
     }
@@ -71,10 +75,8 @@ const SocialLogin = ({navigation, route}) => {
 
   // 苹果登录的请求
   const onAppleButtonPress = async updateCredentialStateForUser => {
-    console.warn('Beginning Apple Authentication');
-
+    // console.warn('Beginning Apple Authentication');
     // start a login request
-
     // {"authorizationCode": "c3c7f5d477b0e41ecbfb10d45f33e4c80.0.nruwt.zrZ-xHe1Pop43QMUFWxotw",
     // "authorizedScopes": [], "email": null,
     // "fullName": {"familyName": null, "givenName": null, "middleName": null, "namePrefix": null, "nameSuffix": null, "nickname": null},
@@ -88,49 +90,38 @@ const SocialLogin = ({navigation, route}) => {
       });
 
       console.log('appleAuthRequestResponse', appleAuthRequestResponse);
-
       const {
         user,
         email,
         nonce,
+        fullName,
         identityToken,
         realUserStatus /* etc */,
       } = appleAuthRequestResponse;
 
-      // get current authentication state for user
-      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
       const credentialState = await appleAuth.getCredentialStateForUser(
         appleAuthRequestResponse.user
       );
       // realUserStatus
       // use credentialState response to ensure the user is authenticated
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        console.log('goood');
-        // user is authenticated
+      if (credentialState === appleAuth.State.AUTHORIZED && realUserStatus === 1) {
+        const data = {
+          email: email,
+          user_id: user,
+          identity_token: identityToken,
+          nickname: fullName.nickname || fullName.failyName,
+        };
+        console.log('post', data);
+        const accountInfo = await appAppleSignIn(data);
+        await verifyLoginStep(accountInfo);
+      } else {
+        Toast.showError('您的苹果登录已失效，请重新尝试');
       }
-      // fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
-      //   updateCredentialStateForUser(`Error: ${error.code}`),
-      // );
-
-      // if (identityToken) {
-      //   // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-      //   console.log(nonce, identityToken);
-      // } else {
-      //   // no token - failed sign-in?
-      // }
-
-      // console.log('realUserStatus', realUserStatus)
-
-      // if (realUserStatus === AppleAuthRealUserStatus.LIKELY_REAL) {
-      //   console.log("I'm a real person!");
-      // }
-
-      console.warn(`Apple Authentication Completed, ${user}, ${email}`);
     } catch (error) {
       if (error.code === appleAuth.Error.CANCELED) {
-        console.warn('User canceled Apple Sign in.');
+        Toast.showError('您取消了苹果登录');
       } else {
-        console.error(error);
+        Toast.showError('您的苹果登录失败');
       }
     }
   };
@@ -152,10 +143,10 @@ const SocialLogin = ({navigation, route}) => {
     }
   };
   return (
-    <View>
+    <View style={{backgroundColor: 'black'}}>
       <ImageBackground
         source={require('../../assets/images/social-login.jpg')}
-        style={{width: '100%', height: '100%'}}
+        style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
         <View style={[styles.loginContainer, {bottom: 300}]}>
           <AppleButton

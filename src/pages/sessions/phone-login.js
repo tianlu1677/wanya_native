@@ -163,7 +163,7 @@ const PhoneLogin = ({navigation, route}) => {
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
               style={{...styles.inputContent, width: '70%'}}
-              clearButtonMode
+              clearButtonMode={'always'}
             />
             {firstVerify ? (
               <Pressable
