@@ -4,16 +4,11 @@ import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
 import {
   Text,
-  StatusBar,
   TextInput,
   Dimensions,
-  SafeAreaView,
-  StyleSheet,
-  Image,
 } from 'react-native';
 import CodePush from 'react-native-code-push';
 import {
-  check,
   requestMultiple,
   checkMultiple,
   request,
@@ -24,7 +19,6 @@ import {
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
-import Config from 'react-native-config';
 import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
 import NotifyService from '@/notifyservice/NotifyService';
@@ -41,10 +35,6 @@ const codePushOptions = {
   // MANUAL 手动检查
   checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
-
-// Config.API_URL; // 'https://myapi.com'
-// Config.GOOGLE_MAPS_API_KEY; // 'abcdefgh'
-//
 // https://github.com/react-native-community/react-native-device-info#installation
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';

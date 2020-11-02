@@ -8,7 +8,7 @@ import * as WeChat from 'react-native-wechat-lib';
 import {appWechatSignIn, appAppleSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, SCALE} from '@/utils/navbar';
 import {AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
 import Toast from '@/components/Toast';
 
@@ -148,17 +148,6 @@ const SocialLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
-        <View style={[styles.loginContainer, {bottom: 300}]}>
-          <AppleButton
-            buttonStyle={AppleButton.Type.WHITE_OUTLINE}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={styles.loginButton}
-            cornerRadius={10}
-            textStyle={styles.loginText}
-            leftView={<Text />}
-            onPress={onAppleButtonPress}
-          />
-        </View>
 
         <Pressable
           style={{
@@ -184,23 +173,37 @@ const SocialLogin = ({navigation, route}) => {
             onPress={() => {
               wechatLogin();
             }}>
-            <Text style={styles.loginText} allowFontScaling={true}>
+            <Text style={styles.loginText}>
               微信登录
             </Text>
           </Pressable>
         </View>
+        {
+          __DEV__ ?  <View style={{...styles.phoneLoginContainer, bottom: 260}}>
+            <Pressable
+              style={styles.loginButton}
+              onPress={() => {
+                phoneLogin();
+              }}>
+              <Text style={styles.loginText} allowFontScaling={true}>
+                手机登录
+              </Text>
+            </Pressable>
+          </View> : <View/>
+        }
+        <View style={[styles.phoneLoginContainer]}>
+          <AppleButton
+            buttonStyle={AppleButton.Type.WHITE_OUTLINE}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{...styles.loginButton, backgroundColor: 'black', borderRadius: 2}}
+            cornerRadius={2}
 
-        <View style={styles.phoneLoginContainer}>
-          <Pressable
-            style={styles.loginButton}
-            onPress={() => {
-              phoneLogin();
-            }}>
-            <Text style={styles.loginText} allowFontScaling={true}>
-              手机登录
-            </Text>
-          </Pressable>
+            // textStyle={{...styles.loginText}}
+            leftView={<Text />}
+            onPress={onAppleButtonPress}
+          />
         </View>
+
         <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
           <Text style={styles.textContent}>我已阅读并同意</Text>
           <Pressable
@@ -234,6 +237,7 @@ const styles = StyleSheet.create({
     bottom: 165 + BOTTOM_HEIGHT,
     left: 0,
     right: 0,
+    backgroundColor: 'black',
   },
 
   phoneLoginContainer: {
