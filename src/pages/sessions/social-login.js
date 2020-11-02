@@ -36,6 +36,7 @@ const SocialLogin = ({navigation, route}) => {
     let accountInfo = userInfoRes.account;
     console.log('accountInfo', accountInfo);
     await Helper.setData('socialToken', accountInfo.token);
+    Toast.hide();
     // 有手机且已验证码，跳转到首页
     if (accountInfo.had_phone && accountInfo.had_invited) {
       await Helper.setData('auth_token', accountInfo.token);
@@ -102,6 +103,7 @@ const SocialLogin = ({navigation, route}) => {
       const credentialState = await appleAuth.getCredentialStateForUser(
         appleAuthRequestResponse.user
       );
+      Toast.showError('正在登录中...');
       // realUserStatus
       // use credentialState response to ensure the user is authenticated
       if (credentialState === appleAuth.State.AUTHORIZED && realUserStatus === 1) {
@@ -178,24 +180,24 @@ const SocialLogin = ({navigation, route}) => {
             </Text>
           </Pressable>
         </View>
-        {
-          __DEV__ ?  <View style={{...styles.phoneLoginContainer, bottom: 260}}>
-            <Pressable
-              style={styles.loginButton}
-              onPress={() => {
-                phoneLogin();
-              }}>
-              <Text style={styles.loginText} allowFontScaling={true}>
-                手机登录
-              </Text>
-            </Pressable>
-          </View> : <View/>
-        }
+        {/*{*/}
+        {/*  __DEV__ ?  <View style={{...styles.phoneLoginContainer, bottom: 260}}>*/}
+        {/*    <Pressable*/}
+        {/*      style={styles.loginButton}*/}
+        {/*      onPress={() => {*/}
+        {/*        phoneLogin();*/}
+        {/*      }}>*/}
+        {/*      <Text style={styles.loginText} allowFontScaling={true}>*/}
+        {/*        手机登录*/}
+        {/*      </Text>*/}
+        {/*    </Pressable>*/}
+        {/*  </View> : <View/>*/}
+        {/*}*/}
         <View style={[styles.phoneLoginContainer]}>
           <AppleButton
             buttonStyle={AppleButton.Type.WHITE_OUTLINE}
             buttonType={AppleButton.Type.SIGN_IN}
-            style={{...styles.loginButton, backgroundColor: 'black', borderRadius: 2}}
+            style={{...styles.loginButton, backgroundColor: 'black'}}
             cornerRadius={2}
 
             // textStyle={{...styles.loginText}}
