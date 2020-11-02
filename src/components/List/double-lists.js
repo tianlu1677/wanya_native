@@ -258,6 +258,9 @@ const DoubleLists = props => {
   );
 
   const addItems = (data, isSyncHeightForItem = false) => {
+    if (data.length === 0) {
+      return;
+    }
     const item = data.shift();
     item._keyForItem_ = item.id;
     // 已经渲染则跳过
