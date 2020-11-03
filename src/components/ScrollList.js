@@ -197,13 +197,14 @@ const ScrollList = props => {
       renderItem={props.renderItem}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
       data={props.data}
-      scrollEventThrottle={60}
+      // scrollEventThrottle={60}
       // onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
       //   useNativeDriver: true,
       // })}
       // onScroll={onscroll}
       // onScrollEndDrag={onScrollEndDrag}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
+      // contentInset={{top: 50}}
       onEndReached={enableLoadMore ? onEndReached : null}
       onEndReachedThreshold={0.1}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
@@ -211,7 +212,7 @@ const ScrollList = props => {
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
-      removeClippedSubviews
+      removeClippedSubviews={false}
       windowSize={props.windowSize || 3}
       // debug
       {...props.settings}
@@ -232,7 +233,9 @@ const ScrollList = props => {
 };
 
 const scrollStyle = StyleSheet.create({
-  containter: {},
+  containter: {
+    // marginTop: 20
+  },
   footer: {
     alignItems: 'center',
     justifyContent: 'center',
