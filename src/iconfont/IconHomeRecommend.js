@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconHomeRecommend = ({ size, color, ...rest }) => {
+let IconHomeRecommend = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -19,4 +19,6 @@ IconHomeRecommend.defaultProps = {
   size: 16,
 };
 
-export default React.memo ? React.memo(IconHomeRecommend) : IconHomeRecommend;
+IconHomeRecommend = React.memo ? React.memo(IconHomeRecommend) : IconHomeRecommend;
+
+export default IconHomeRecommend;

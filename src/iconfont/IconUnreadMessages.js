@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconUnreadMessages = ({ size, color, ...rest }) => {
+let IconUnreadMessages = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -19,4 +19,6 @@ IconUnreadMessages.defaultProps = {
   size: 16,
 };
 
-export default React.memo ? React.memo(IconUnreadMessages) : IconUnreadMessages;
+IconUnreadMessages = React.memo ? React.memo(IconUnreadMessages) : IconUnreadMessages;
+
+export default IconUnreadMessages;

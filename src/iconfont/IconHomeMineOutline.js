@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconHomeMineOutline = ({ size, color, ...rest }) => {
+let IconHomeMineOutline = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1048 1024" width={size} height={size} {...rest}>
       <Path
@@ -19,4 +19,6 @@ IconHomeMineOutline.defaultProps = {
   size: 16,
 };
 
-export default React.memo ? React.memo(IconHomeMineOutline) : IconHomeMineOutline;
+IconHomeMineOutline = React.memo ? React.memo(IconHomeMineOutline) : IconHomeMineOutline;
+
+export default IconHomeMineOutline;

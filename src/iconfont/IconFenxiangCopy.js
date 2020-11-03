@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconFenxiangCopy = ({ size, color, ...rest }) => {
+let IconFenxiangCopy = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -23,4 +23,6 @@ IconFenxiangCopy.defaultProps = {
   size: 16,
 };
 
-export default React.memo ? React.memo(IconFenxiangCopy) : IconFenxiangCopy;
+IconFenxiangCopy = React.memo ? React.memo(IconFenxiangCopy) : IconFenxiangCopy;
+
+export default IconFenxiangCopy;

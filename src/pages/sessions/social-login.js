@@ -11,6 +11,7 @@ import {BaseApiUrl} from '@/utils/config';
 import {BOTTOM_HEIGHT, SCALE} from '@/utils/navbar';
 import {AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
 import Toast from '@/components/Toast';
+import IconFont from '@/iconfont';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -106,7 +107,7 @@ const SocialLogin = ({navigation, route}) => {
       Toast.showError('正在登录中...');
       // realUserStatus
       // use credentialState response to ensure the user is authenticated
-      if (credentialState === appleAuth.State.AUTHORIZED && realUserStatus === 1) {
+      if (credentialState === appleAuth.State.AUTHORIZED) {
         const data = {
           email: email,
           user_id: user,
@@ -123,7 +124,7 @@ const SocialLogin = ({navigation, route}) => {
       if (error.code === appleAuth.Error.CANCELED) {
         Toast.showError('您取消了苹果登录');
       } else {
-        Toast.showError('您的苹果登录失败');
+        Toast.showError(`您的苹果登录失败${error}`);
       }
     }
   };
@@ -150,60 +151,66 @@ const SocialLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
-
-        <Pressable
+        <View
           style={{
+            flex: 1,
             position: 'absolute',
-            backgroundColor: 'black',
-            top: 39,
-            right: 10,
-            width: 30,
-            height: 10,
-          }}
-          onPress={() => {
-            console.log('xxx');
-            // navigation.navigate('AdminPhoneLogin');
-            // navigation.navigate('InviteLogin');
-            navigation.navigate('PhoneLogin');
+            bottom: 91 + BOTTOM_HEIGHT,
+            left: 0,
+            right: 0,
           }}>
-          <Text style={{color: 'black'}}>去别的页面</Text>
-        </Pressable>
-
-        <View style={styles.loginContainer}>
           <Pressable
-            style={styles.loginButton}
+            style={{
+              position: 'absolute',
+              backgroundColor: 'black',
+              top: 39,
+              right: 10,
+              width: 30,
+              height: 10,
+            }}
             onPress={() => {
-              wechatLogin();
+              console.log('xxx');
+              // navigation.navigate('AdminPhoneLogin');
+              // navigation.navigate('InviteLogin');
+              navigation.navigate('PhoneLogin');
             }}>
-            <Text style={styles.loginText}>
-              微信登录
-            </Text>
+            <Text style={{color: 'black'}}>去别的页面</Text>
           </Pressable>
-        </View>
-        {
-          __DEV__ ?  <View style={{...styles.phoneLoginContainer, bottom: 260}}>
+
+          <View style={styles.loginContainer}>
+            <Pressable
+              style={styles.loginButton}
+              onPress={() => {
+                wechatLogin();
+              }}>
+              <IconFont name={'weixin1'} />
+              <Text style={styles.loginText}>通过微信登录</Text>
+            </Pressable>
+          </View>
+          <View style={{...styles.phoneLoginContainer}}>
             <Pressable
               style={styles.loginButton}
               onPress={() => {
                 phoneLogin();
               }}>
+              <IconFont name={'shouji'} />
               <Text style={styles.loginText} allowFontScaling={true}>
-                手机登录
+                通过手机登录
               </Text>
             </Pressable>
-          </View> : <View/>
-        }
-        <View style={[styles.phoneLoginContainer]}>
-          <AppleButton
-            buttonStyle={AppleButton.Type.WHITE_OUTLINE}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={{...styles.loginButton, backgroundColor: 'black'}}
-            cornerRadius={2}
+          </View>
 
-            // textStyle={{...styles.loginText}}
-            leftView={<Text />}
-            onPress={onAppleButtonPress}
-          />
+          <View style={[styles.phoneLoginContainer]}>
+            <AppleButton
+              buttonStyle={AppleButton.Type.WHITE_OUTLINE}
+              buttonType={AppleButton.Type.SIGN_IN}
+              style={{...styles.loginButton, backgroundColor: 'black'}}
+              cornerRadius={2}
+              // textStyle={{...styles.loginText}}
+              leftView={<Text />}
+              onPress={onAppleButtonPress}
+            />
+          </View>
         </View>
 
         <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
@@ -235,10 +242,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: 165 + BOTTOM_HEIGHT,
-    left: 0,
-    right: 0,
     backgroundColor: 'black',
   },
 
@@ -247,10 +250,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: 105 + BOTTOM_HEIGHT,
-    left: 0,
-    right: 0,
   },
 
   loginButton: {
@@ -263,6 +262,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'white',
     borderRadius: 2,
+    marginTop: 10
   },
 
   loginText: {
@@ -270,6 +270,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 1,
     fontSize: 15,
+    marginLeft: 5,
   },
 
   privateText: {
