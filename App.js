@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   Dimensions,
+  Alert,
 } from 'react-native';
 import CodePush from 'react-native-code-push';
 import {
@@ -42,12 +43,13 @@ import ShareItem from '@/components/ShareItem';
 import Toast from "@/components/Toast"
 
 
+
 const unsubscribe = NetInfo.addEventListener(state => {
   console.log("Connection type", state.type);
   console.log("Connection ", state);
   console.log("Is connected?", state.isConnected);
-  Toast.showError('error', state.type)
-  Toast.showError('error', JSON.stringify(state))
+  // Toast.showError( `${state.type}`)
+  // Alert.alert(JSON.stringify(state))
 });
 
 class App extends Component {

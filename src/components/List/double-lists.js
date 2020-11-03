@@ -33,12 +33,13 @@ const SingleItem = props => {
   });
 
   const onGoDetail = v => {
+    console.log('data', data)
     switch (props.type) {
       case 'Topic':
         navigation.push('TopicDetail', {topicId: data.id});
         break;
       case 'Article':
-        navigation.navigate('ArticleDetail', {topicId: data.id});
+        navigation.navigate('ArticleDetail', {articleId: data.id});
         break;
     }
   };

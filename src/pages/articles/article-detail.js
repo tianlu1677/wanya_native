@@ -10,7 +10,7 @@ import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {dispatchArticleDetail} from '@/redux/actions';
 import {STATUS_BAR_HEIGHT, NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
-import TopHeader from '@/components/TopHeader'
+import TopHeader from '@/components/TopHeader';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ const ArticleDetail = ({navigation, route}) => {
 
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
+  const [loadingContent, setLoadingContent] = useState(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const ArticleDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getArticle(articleId);
     setDetail(res.data.article);
+    onHTMLParsed();
     dispatch(dispatchArticleDetail(res.data.article));
   };
 
@@ -47,6 +49,22 @@ const ArticleDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const onHTMLParsed = (dom, RNElements) => {
+    setLoadingContent(true);
+    // Find the index of the first paragraph
+    // const ad = {
+    //   wrapper: "View",
+    //   tagName: "mycustomblock",
+    //   attribs: {},
+    //   parent: false,
+    //   parentTag: false,
+    //   nodeIndex: 4,
+    // };
+    // // Insert the component
+    // RNElements.splice(4, 0, ad);
+    // return RNElements;
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -56,10 +74,14 @@ const ArticleDetail = ({navigation, route}) => {
       keyboardVerticalOffset={0}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
-      <TopHeader Title={detail.title} leftButtonColor={'black'} statusBar={{
-        barStyle: 'dark-content',
-        hidden: false,
-      }} />
+      <TopHeader
+        Title={detail.title}
+        leftButtonColor={'black'}
+        statusBar={{
+          barStyle: 'dark-content',
+          hidden: false,
+        }}
+      />
       <CommentList
         detail={detail}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
@@ -96,11 +118,9 @@ const ArticleDetail = ({navigation, route}) => {
               onLinkPress={e => {
                 console.log('xxx', e);
               }}
-              content={
-                detail &&
-                detail.content &&
-                detail.content.replace(/\.<img/gi, '<img style="max-width:"100%";height:auto" ')
-              }
+              images_info={detail.images_info}
+              onHTMLParsed={onHTMLParsed}
+              content={detail.content}
             />
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
