@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {
   View,
   RefreshControl,
@@ -35,7 +35,6 @@ const SingleItem = props => {
   });
 
   const onGoDetail = v => {
-    console.log('data', data);
     switch (props.type) {
       case 'Topic':
         navigation.push('TopicDetail', {topicId: data.id});
@@ -47,7 +46,6 @@ const SingleItem = props => {
   };
 
   const onPraise = async () => {
-    console.log('pro', data);
     switch (type) {
       case 'Article':
         if (praiseForm.praise) {

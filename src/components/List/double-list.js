@@ -105,10 +105,10 @@ const SingleItem = props => {
         {data.has_video && (
           <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
         )}
-        {data.type === 'Topic' && (
+        {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
-        {data.type === 'Article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+        {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
         {props.isTop && (
           <Image
