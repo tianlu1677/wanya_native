@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Pressable, Modal} from 'react-native';
+import {StyleSheet, Alert, Text, View, Pressable, Modal} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
 
@@ -17,7 +17,14 @@ const GetLocation = ({children, handleClick, style}) => {
 
     if (!answer) {
       console.log('没权限');
-      setVisible(true);
+      Alert.alert('授权后才能设置场地位置', '', [
+        {
+          text: '取消',
+          onPress: () => onCancel(),
+        },
+
+        {text: '去设置', onPress: () => onOpenSetting()},
+      ]);
       return;
     }
 

@@ -1,5 +1,15 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {Pressable, ScrollView, StyleSheet, View, TextInput, Text, Button} from 'react-native';
+import {
+  Pressable,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  Button,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {reportContent} from '@/api/secure_check';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
@@ -48,60 +58,65 @@ const Report = ({navigation, route}) => {
     console.log('res', res);
     Toast.showError('反馈成功');
     setTimeout(() => {
-      navigation.goBack()
-    }, 500)
+      navigation.goBack();
+    }, 500);
   };
   return (
-    <View style={styles.container}>
-      <View style={{height: 10, backgroundColor: '#FAFAFA'}} />
-      <ScrollView
-        keyboardDismissMode={'on-drag'}
-        keyboardShouldPersistTaps='never'
-      >
-        {messages.map((message, index) => {
-          return (
-            <View key={message}>
-              <Pressable
-                onPress={() => {
-                  setReason(message);
-                }}
-                style={{
-                  ...styles.cell,
-                  borderBottomWidth:
-                    reason === otherMessage && (messagesLength - 1)===index ? 0 : StyleSheet.hairlineWidth,
-                }}>
-                <View>
-                  <Text style={styles.text}>{message}</Text>
-                </View>
-                <View style={{justifyContent: 'center', marginRight: 14}}>
-                  {message === reason ? <IconFont name={'chose-success'} size={16} /> : <Text />}
-                </View>
-              </Pressable>
-            </View>
-          );
-        })}
-        {reason === messages[messages.length - 1] && (
-          <TextInput
-            caretHidden={false}
-            selectionColor={'#ff193a'}
-            maxLength={100}
-            onChangeText={text => {
-              setMoreReason(text);
-            }}
-            multiline
-            numberOfLines={10}
-            placeholder={'输入举报理由，100字以内'}
-            placeholderTextColor={'#C2C2C2'}
-            defaultValue={''}
-            style={{marginLeft: 14, marginRight: 14}}
-          />
-        )}
-      </ScrollView>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1, backgroundColor: '#fff'}}
+    >
+      <View style={styles.container}>
+        <View style={{height: 10, backgroundColor: '#FAFAFA'}} />
+        <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps="never">
+          {messages.map((message, index) => {
+            return (
+              <View key={message}>
+                <Pressable
+                  onPress={() => {
+                    setReason(message);
+                  }}
+                  style={{
+                    ...styles.cell,
+                    borderBottomWidth:
+                      reason === otherMessage && messagesLength - 1 === index
+                        ? 0
+                        : StyleSheet.hairlineWidth,
+                  }}>
+                  <View>
+                    <Text style={styles.text}>{message}</Text>
+                  </View>
+                  <View style={{justifyContent: 'center', marginRight: 14}}>
+                    {message === reason ? <IconFont name={'chose-success'} size={16} /> : <Text />}
+                  </View>
+                </Pressable>
+              </View>
+            );
+          })}
+          {/*{reason === messages[messages.length - 1] && (*/}
+            <TextInput
+              caretHidden={false}
+              selectionColor={'#ff193a'}
+              maxLength={100}
+              onChangeText={text => {
+                setMoreReason(text);
+              }}
+              multiline
+              onFouce
+              numberOfLines={10}
+              placeholder={'输入举报理由，100字以内'}
+              placeholderTextColor={'#C2C2C2'}
+              defaultValue={''}
+              style={{marginLeft: 14, marginRight: 14, paddingBottom: 100}}
+            />
 
-      <Pressable style={styles.saveBtn} onPress={onSubmit}>
-        <Text style={styles.saveBtnText}>确定</Text>
-      </Pressable>
-    </View>
+        </ScrollView>
+
+        <Pressable style={styles.saveBtn} onPress={onSubmit}>
+          <Text style={styles.saveBtnText}>确定</Text>
+        </Pressable>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -113,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     position: 'relative',
     flex: 1,
-    paddingBottom: 100
+    paddingBottom: 100,
   },
   cell: {
     flex: 1,
@@ -131,7 +146,7 @@ const styles = StyleSheet.create({
     lineHeight: 50,
   },
   saveBtn: {
-    height: 100,
+    height: 50,
     position: 'absolute',
     bottom: 0,
     left: 0,

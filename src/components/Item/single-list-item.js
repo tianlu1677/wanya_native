@@ -73,23 +73,24 @@ export const Bottom = props => {
   const {data} = props;
 
   const onPraise = async () => {
+    // console.log('props.type', props.type)
     switch (props.type) {
-      case 'Article':
+      case 'article':
         if (praise) {
           await destroyArticleAction({id: data.id, type: 'praise'});
-          setPraise(!praise);
+          setPraise(false);
         } else {
           await createArticleAction({id: data.id, type: 'praise'});
-          setPraise(!praise);
+          setPraise(true);
         }
         break;
-      case 'Topic':
+      case 'topic':
         if (praise) {
           await destroyTopicAction({id: data.id, type: 'praise'});
-          setPraise(!praise);
+          setPraise(false);
         } else {
           await createTopicAction({id: data.id, type: 'praise'});
-          setPraise(!praise);
+          setPraise(true);
         }
         break;
     }
