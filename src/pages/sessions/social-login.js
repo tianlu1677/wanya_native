@@ -194,7 +194,7 @@ const SocialLogin = ({navigation, route}) => {
                 phoneLogin();
               }}>
               <IconFont name={'shouji'} />
-              <Text style={styles.loginText} allowFontScaling={true}>
+              <Text style={styles.loginText}>
                 通过手机登录
               </Text>
             </Pressable>

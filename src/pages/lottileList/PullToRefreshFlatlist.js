@@ -67,7 +67,6 @@ function PullToRefreshFlatlist({
     if (y <= -refreshHeight && y >= -(refreshHeight + 10)) {
       // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
-
     setYOffset(y);
   }
 

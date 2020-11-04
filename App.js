@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
-import {
-  Text,
-  TextInput,
-  Dimensions,
-  Alert,
-} from 'react-native';
+import {Text, TextInput, Dimensions, Modal, Alert, View} from 'react-native';
 import CodePush from 'react-native-code-push';
 import {
   requestMultiple,
@@ -26,7 +21,8 @@ import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
-
+import {NetworkConsumer} from 'react-native-offline';
+import NetworkErrorModal from "@/components/NetworkErrorModal"
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
 const codePushOptions = {
@@ -40,22 +36,14 @@ const codePushOptions = {
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
 import ShareItem from '@/components/ShareItem';
-import Toast from "@/components/Toast"
-
-
-
-const unsubscribe = NetInfo.addEventListener(state => {
-  console.log("Connection type", state.type);
-  console.log("Connection ", state);
-  console.log("Is connected?", state.isConnected);
-  // Toast.showError( `${state.type}`)
-  // Alert.alert(JSON.stringify(state))
-});
+import Toast from '@/components/Toast';
 
 class App extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      netInfoErr: false
+    }
     this.notif = new NotifyService();
   }
 
@@ -68,7 +56,7 @@ class App extends Component {
     this.loadSplashImg();
     this.loadImgList();
     this.loadSettings();
-    this.checkPermission()
+    this.checkPermission();
     this.loadNetworkInfo();
     // this.loadDeviceInfo();
     // this.loginAdmin();
@@ -104,30 +92,37 @@ class App extends Component {
       console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
       console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
 
-      requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.LOCATION_WHEN_IN_USE, PERMISSIONS.IOS.PHOTO_LIBRARY]).then(
-        statuses => {
-          console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-          console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
-          console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-        }
-      );
+      requestMultiple([
+        PERMISSIONS.IOS.CAMERA,
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        PERMISSIONS.IOS.PHOTO_LIBRARY,
+      ]).then(statuses => {
+        console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+        console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+        console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+      });
     });
   };
 
   loginAdmin = () => {};
 
   loadNetworkInfo = () => {
-
-    // NetInfo.fetch().then(state => {
-    //   console.log("Connection type", state.type);
-    //   console.log("Is connected?", state.isConnected);
-    // });
+    this.networdunsubscribe = NetInfo.addEventListener(state => {
+      if (state.isConnected) {
+        this.setState({
+          netInfoErr: false
+        })
+      } else {
+        this.setState({
+          netInfoErr: true
+        })
+      }
+    });
   };
 
   componentWillUnmount() {
-    unsubscribe();
+    this.networdunsubscribe && this.networdunsubscribe();
   }
-
 
   loadDeviceInfo = () => {
     DeviceInfo.getApiLevel().then(apiLevel => {
@@ -151,6 +146,10 @@ class App extends Component {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Navigation />
+            <NetworkErrorModal
+              visible={this.state.netInfoErr}
+              handleCancel={() => { this.setState({netInfoErr: false})}}
+            />
             <ImagePreview />
             <ShareItem />
           </PersistGate>

@@ -13,11 +13,10 @@ const RichHTML = props => {
       const findImg = images_info.find(x => x.url === htmlAttribs.src);
       return (
         <View style={{flex: 1}} key={htmlAttribs.src}>
-          <Text>{JSON.stringify(findImg)}</Text>
           <FastImg
             source={{uri: htmlAttribs.src}}
             style={{width: imageWidth, height: (imageWidth * findImg.height) / findImg.width}}
-            resizeMode={'contain'}
+            resizeMode={'cover'}
             tintColor={'gray'}
           />
         </View>
