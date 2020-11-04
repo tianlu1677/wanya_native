@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    height: 64,
+    // height: 64,
     padding: 11,
     borderRadius: 2,
   },
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#fff',
     lineHeight: 22,
-    textAlign: 'justify',
+    // textAlign: 'justify',
   },
   excellentLabel: {
     width: 30,
