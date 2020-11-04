@@ -149,9 +149,7 @@ const ScrollList = props => {
   }, [props.headers]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setRefreshing(props.loading);
-    }, 300);
+    setRefreshing(props.loading);
   }, [props.loading]);
 
   // 不下拉的页面添加loading
@@ -212,7 +210,7 @@ const ScrollList = props => {
       bounces={props.bounces}
       removeClippedSubviews={false}
       windowSize={5}
-      progressViewOffset={1}
+      // progressViewOffset={1}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}

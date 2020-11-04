@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import TabList from './TabList';
 
 const initialLayout = {
-  height: 400,
+  height: 0,
   width: Dimensions.get('window').width,
 };
 

@@ -75,11 +75,7 @@ const ArticleDetail = ({navigation, route}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
       <TopHeader
-        Title={
-          detail.title && detail.title.toString().length > 10
-            ? `${detail.title.toString().substr(0, 10)}...`
-            : detail.title
-        }
+        Title={detail.title}
         leftButtonColor={'black'}
         statusBar={{
           barStyle: 'dark-content',
