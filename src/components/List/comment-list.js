@@ -89,7 +89,10 @@ const CommentList = props => {
         <View style={cstyles.info}>
           <Avator account={item.account} size={25} />
           <Text style={cstyles.nickname}>{item.account.nickname}</Text>
-          <Pressable onPress={() => onPraise(item, index)} style={cstyles.numWrap}>
+          <Pressable
+            onPress={() => onPraise(item, index)}
+            style={cstyles.numWrap}
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
             <Text style={[cstyles.numCount, {color: item.praise ? '#000' : '#bdbdbd'}]}>
               {item.praises_count > 0 ? item.praises_count : ''}
@@ -115,7 +118,7 @@ const CommentList = props => {
               onPress={onReportClick}
               hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
               style={{marginLeft: 'auto'}}>
-              <IconFont name="gengduo" color="#bdbdbd" size={20} />
+              <IconFont name="gengduo" color="#bdbdbd" size={16} />
             </Pressable>
           </View>
         </Pressable>
@@ -185,7 +188,6 @@ const cstyles = StyleSheet.create({
     marginLeft: 5,
     textAlign: 'center',
     fontSize: 12,
-    minWidth: 7,
   },
   comment: {
     marginLeft: 32,

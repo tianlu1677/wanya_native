@@ -114,6 +114,8 @@ const AccountDetail = ({navigation, route}) => {
     return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
+  // console.log(account);
+
   useEffect(() => {
     loadData();
   }, []);
