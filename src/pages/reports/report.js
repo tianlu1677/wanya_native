@@ -37,7 +37,7 @@ const Report = ({navigation, route}) => {
     '血腥暴力',
     '赌博',
     '故意引起冲突',
-    '其他问题',
+    // '其他问题',
   ];
   const messagesLength = messages.length;
   const otherMessage = messages[messagesLength - 1];
@@ -94,7 +94,7 @@ const Report = ({navigation, route}) => {
           })}
           {/*{reason === messages[messages.length - 1] && (*/}
         </ScrollView>
-        <TextInput
+        {/* <TextInput
           caretHidden={false}
           selectionColor={'#ff193a'}
           maxLength={100}
@@ -108,7 +108,7 @@ const Report = ({navigation, route}) => {
           placeholderTextColor={'#C2C2C2'}
           defaultValue={''}
           style={{marginLeft: 14, marginRight: 14, paddingBottom: 100}}
-        />
+        /> */}
         <Pressable style={styles.saveBtn} onPress={onSubmit}>
           <Text style={styles.saveBtnText}>确定</Text>
         </Pressable>
