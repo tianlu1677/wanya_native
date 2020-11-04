@@ -144,10 +144,8 @@ const ScrollList = props => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setState(loadState.SUCCESS);
-      setPagin(pagination(props.headers));
-    }, 2000);
+    setState(loadState.SUCCESS);
+    setPagin(pagination(props.headers));
   }, [props.headers]);
 
   useEffect(() => {
@@ -206,14 +204,14 @@ const ScrollList = props => {
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
       onEndReached={enableLoadMore ? onEndReached : null}
-      onEndReachedThreshold={0.1}
+      onEndReachedThreshold={0.2}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       ListHeaderComponent={props.ListHeaderComponent || null}
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
       removeClippedSubviews={false}
-      windowSize={props.windowSize || 3}
+      windowSize={5}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}

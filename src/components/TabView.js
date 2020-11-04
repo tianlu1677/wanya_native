@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import TabList from './TabList';
 
 const initialLayout = {
-  height: 0,
+  height: 400,
   width: Dimensions.get('window').width,
 };
 
@@ -54,7 +54,8 @@ const TabViewIndex = props => {
         onIndexChange={onIndexChange}
         initialLayout={initialLayout}
         tabBarPosition={props.tabBarPosition || 'top'}
-        lazy={props.lazy || true}
+        lazy={props.lazy}
+        swipeVelocityImpact={0.1}
         swipeEnabled={props.swipeEnabled || true}
         renderLazyPlaceholder={() => <View style={{flex: 1}}><Text>Loading</Text></View>}
         // lazyPreloadDistance={props.lazyPreloadDistance || 10}

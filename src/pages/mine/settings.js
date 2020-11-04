@@ -49,7 +49,8 @@ const Settings = ({navigation, route}) => {
         });
         break;
       case 'lab':
-        navigation.navigate('LabIndex');
+        navigation.navigate('Report');
+
         break;
       case 'checkupdate':
         // Toast.showError('正在检测更新，请稍等')
@@ -144,7 +145,7 @@ const Settings = ({navigation, route}) => {
         <ItemView
           style={[styles.bottomBorder1px, styles.nestLine]}
           onPress={() => {
-            navigation.navigate('list');
+            navigation.navigate('Report');
           }}>
           <ItemTitle>实验室</ItemTitle>
           <ForwardRight />

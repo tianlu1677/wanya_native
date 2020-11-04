@@ -67,6 +67,8 @@ import WebView from '@/pages/webview/webview';
 
 import SharePage from '@/pages/shares/share_page'; //分享
 
+// 举报
+import Report from '@/pages/reports/report'
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
@@ -225,6 +227,13 @@ const commonRouter = [
     safeArea: false,
     barColor: 'dark',
     options: {title: '分享', headerShown: true},
+  },
+  {
+    name: 'Report',
+    component: Report,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '举报', headerShown: true},
   },
 ];
 

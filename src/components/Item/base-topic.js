@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {View, Text, Image, FlatList, TouchableOpacity, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';

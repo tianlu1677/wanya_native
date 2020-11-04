@@ -151,7 +151,7 @@ const DoubleListColunm = props => {
       {...props}
       windowSize={3}
       style={{marginRight: 5}}
-      removeClippedSubviews={true}
+      removeClippedSubviews={false}
       keyExtractor={item => `item-${item.id}`}
       renderItem={({item, index}) => {
         return (
