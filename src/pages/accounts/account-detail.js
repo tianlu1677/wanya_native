@@ -222,7 +222,7 @@ const AccountDetail = ({navigation, route}) => {
         visible={showModal}
         cancleClick={() => setShowModal(false)}
         title="简介"
-        content={currentAccount.intro}
+        content={account.intro}
       />
     </View>
   ) : (
@@ -280,7 +280,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   settledWrap: {
-    marginBottom: 21,
+    // marginBottom: 21,
+    marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
   numberWrap: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 18,
+    bottom: 15,
     left: 20,
   },
   numberItem: {
