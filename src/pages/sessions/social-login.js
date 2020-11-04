@@ -61,6 +61,8 @@ const SocialLogin = ({navigation, route}) => {
     }
   };
   const wechatLogin = async () => {
+    // navigation.navigate('PhoneLogin')
+    // return
     try {
       const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
       let signData = {
@@ -147,6 +149,24 @@ const SocialLogin = ({navigation, route}) => {
   };
   return (
     <View style={{backgroundColor: 'black'}}>
+      {/*<Pressable*/}
+      {/*  style={{*/}
+      {/*    position: 'absolute',*/}
+      {/*    backgroundColor: 'red',*/}
+      {/*    top: 50,*/}
+      {/*    right: 20,*/}
+      {/*    width: 30,*/}
+      {/*    height: 100,*/}
+      {/*  }}*/}
+      {/*  onPress={() => {*/}
+      {/*    console.log('xxx');*/}
+      {/*    // navigation.navigate('AdminPhoneLogin');*/}
+      {/*    // navigation.navigate('InviteLogin');*/}
+      {/*    navigation.navigate('PhoneLogin');*/}
+      {/*  }}>*/}
+      {/*  <Text style={{color: 'white', fontSize: 30}}>去别的页面</Text>*/}
+      {/*</Pressable>*/}
+
       <ImageBackground
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
@@ -159,23 +179,7 @@ const SocialLogin = ({navigation, route}) => {
             left: 0,
             right: 0,
           }}>
-          <Pressable
-            style={{
-              position: 'absolute',
-              backgroundColor: 'black',
-              top: 39,
-              right: 10,
-              width: 30,
-              height: 10,
-            }}
-            onPress={() => {
-              console.log('xxx');
-              // navigation.navigate('AdminPhoneLogin');
-              // navigation.navigate('InviteLogin');
-              navigation.navigate('PhoneLogin');
-            }}>
-            <Text style={{color: 'black'}}>去别的页面</Text>
-          </Pressable>
+
 
           <View style={styles.loginContainer}>
             <Pressable

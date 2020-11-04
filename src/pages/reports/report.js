@@ -41,8 +41,8 @@ const Report = ({navigation, route}) => {
     const data = {
       reason: reason,
       more_reason: moreReason,
-      report_type: 'Topic',
-      report_type_id: '1',
+      report_type: report_type,
+      report_type_id: report_type_id,
     };
     const res = await reportContent(data);
     console.log('res', res);

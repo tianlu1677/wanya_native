@@ -31,7 +31,8 @@ export const Header = props => {
       },
       buttonIndex => {
         if (buttonIndex === 1) {
-          navigation.push('Report', {report_type: props.type, report_type_id: props.detail.id});
+          // console.log('data', data.id)
+          navigation.push('Report', {report_type: props.type, report_type_id: data.id});
         }
       }
     );
