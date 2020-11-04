@@ -1,15 +1,15 @@
 import React, {Component, useState, useLayoutEffect, useEffect, useRef} from 'react';
 import {StyleSheet, View, TouchableOpacity, Image, Text, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import * as WeChat from 'react-native-wechat-lib';
 import Modal, {ModalTitle, ModalContent} from 'react-native-modals';
+import {openSettings} from 'react-native-permissions';
+
 import IconFont from '@/iconfont';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
 
 const NetworkErrorModal = props => {
   const dispatch = useDispatch();
   const {visible} = props;
-  const title = '无网络链接';
+  const title = '无网络连接';
   const cancel = () => {
     console.log('cancel')
     props.handleCancel && props.handleCancel();
@@ -32,7 +32,7 @@ const NetworkErrorModal = props => {
           <IconFont name={'wuwangluo'} color={'#BDBDBD'} size={100} />
         </View>
         <Text style={styles.tip}>请检查你的网络连接状态</Text>
-        <Text style={styles.tip}>或在【设置】里查看</Text>
+        <Text style={styles.tip}>或在【<Text onPress={openSettings}>设置</Text>】里查看</Text>
       </ModalContent>
     </Modal.BottomModal>
   );
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FAFAFA',
-    marginBottom: 200,
+    paddingBottom: 180,
   },
   tip: {
     fontSize: 14,

@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Modal, {ModalTitle, ModalContent} from 'react-native-modals';
-import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
+import {openSettings} from 'react-native-permissions';
 const PermissionModal = props => {
   const [photo_permission, setPhotoPermission] = useState(false);
 
   const goToSettings = () => {
-    console.log('xxxx')
+    // console.log('xxxx')
     openSettings().catch(() => console.warn('cannot open settings'));
   };
 
@@ -28,7 +28,7 @@ const PermissionModal = props => {
       onSwipeOut={() => cancel()}
       modalTitle={false}>
       <ModalContent style={styles.content}>
-        <View style={{flex: 1,}}>
+        <View style={{flex: 1}}>
           <View style={styles.decArea}>
             <Text style={styles.title}>没有相机权限</Text>
             <Text style={styles.subtitle}>
@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#3C3D57',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 34,
   },
   subtitle: {
     color: '#7A7DA1',
-    fontSize: 18,
+    fontSize: 16,
     marginVertical: 3,
   },
   boldStyle: {
@@ -79,18 +79,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 19,
     width: '100%',
-    height: 60,
+    height: 50,
     left: 0,
     right: 0,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderRadius: 10,
+    borderRadius: 4,
     backgroundColor: 'black',
   },
   addWeightBtnTxt: {
     color: '#fff',
-    fontSize: 21,
+    fontSize: 18,
+    fontWeight: '600'
   },
   content: {
     paddingTop: 10,
