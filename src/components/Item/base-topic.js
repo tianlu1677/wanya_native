@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, Image, FlatList, TouchableOpacity, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {View, Text, Image, FlatList, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -143,7 +143,7 @@ const BaseTopic = props => {
   //
 
   return (
-    <TouchableOpacity style={styles.postSlide} onPress={goTopicDetail}>
+    <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" />
       {data.content_style === 'text' ? (
         <View style={{paddingTop: 13}} />
@@ -163,7 +163,7 @@ const BaseTopic = props => {
         </Pressable>
       )}
       <Bottom data={data} type="topic" />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 const styles = StyleSheet.create({
