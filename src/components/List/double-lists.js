@@ -20,14 +20,16 @@ import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
+import {createArticleAction, destroyArticleAction} from "@/api/article_api"
+import {createTopicAction, destroyTopicAction} from "@/api/topic_api"
 
 const SingleItem = props => {
   const navigation = useNavigation();
   const width = Dimensions.get('window').width;
   const halfWidth = (width - 10 - 5) / 2; // 屏幕去掉两边后的宽度
-  const {data} = props;
+  const {data, type} = props;
 
-  const [praiseForm] = useState({
+  const [praiseForm, setPraiseForm] = useState({
     praise: data.praise,
     praises_count: data.praises_count,
   });
@@ -42,6 +44,32 @@ const SingleItem = props => {
         navigation.navigate('ArticleDetail', {articleId: data.id});
         break;
     }
+  };
+
+  const onPraise = async () => {
+    console.log('pro', data)
+    switch (type) {
+      case 'Article':
+        if (praiseForm.praise) {
+          await destroyArticleAction({id: data.id, type: 'praise'});
+        } else {
+          await createArticleAction({id: data.id, type: 'praise'});
+        }
+        break;
+      case 'Topic':
+        if (praiseForm.praise) {
+          await destroyTopicAction({id: data.id, type: 'praise'});
+        } else {
+          await createTopicAction({id: data.id, type: 'praise'});
+        }
+        break;
+    }
+    const praiseCount = praiseForm.praises_count + (praiseForm.praise === true ? -1 : 1);
+    const params = {
+      praise: !praiseForm.praise,
+      praises_count: praiseCount,
+    };
+    setPraiseForm(params);
   };
 
   return (
@@ -104,6 +132,7 @@ const SingleItem = props => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
+          onPress={onPraise}
           hitSlop={{left: 5, top: 5, bottom: 5}}>
           <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
           <Text
