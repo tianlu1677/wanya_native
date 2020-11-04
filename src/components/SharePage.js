@@ -78,7 +78,7 @@ const ViewShotPage = props => {
             </View>
             <Text style={styles.text}>{content}</Text>
             <View style={styles.footer}>
-              <FastImg style={styles.shareLogo} source={require('@/assets/images/share-wanya.png')} />
+              <FastImg style={styles.shareLogo} source={require('@/assets/images/sharewanyalog.png')} />
               {qrcode_url ? (
                 <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
               ) : (
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 20,
+    marginTop: 10
   },
   nodeName: {
     color: '#fff',
