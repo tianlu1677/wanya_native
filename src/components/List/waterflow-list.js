@@ -110,10 +110,10 @@ const SingleItem = props => {
         {data.has_video && (
           <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
         )}
-        {data.type === 'topic' && (
+        {data.type === 'Topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
-        {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+        {data.type === 'Article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
         {props.isTop && (
           <Image
@@ -181,7 +181,7 @@ const DoubleSingle = props => {
 // [[{id: 1,}, {id: 3}], [{id: 2}]]
 // listData= [{id: 1,}, {id: 2,}, {id: 3}]
 // listData.map {}
-const numColumns = 2
+const numColumns = 2;
 const WaterFlowList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
@@ -280,49 +280,47 @@ const WaterFlowList = props => {
   }, []);
 
   return (
-
-      <WaterFlow
-        ref={WaterFlowRef}
-        data={listData}
-        keyForItem={item => item.id}
-        numColumns={2}
-        onEndReached={onRefresh}
-        /** 允许 heightForItem 为异步函数 */
-        // asyncHeightForItem={async item => {
-        //   let height = 0
-        //   try {
-        //     height = await (new Promise<number>((resolve, reject) => {
-        //       Image.getSize(item.image_path, (_, imageHeight) => {
-        //         resolve(imageHeight)
-        //       }, reject)
-        //     }))
-        //   } catch (err) { console.log({ err }); }
-        //   return height;
-        // }}
-        /** 如果高度已知则传此方法 */
-        // heightForItem={item => {
-        //   return item.height;
-        // }}
-        columnFlatListProps={{
-          style: {},
-        }}
-        columnsFlatListProps={{
-          refreshControl: (
-            <RefreshControl
-              style={{zIndex: 10}}
-              refreshing={loading}
-              onRefresh={() => {
-                WaterFlowRef.current?.clear();
-                loadData();
-              }}
-              tintColor={'gray'}
-            />
-          ),
-          style: {paddingLeft: 5, paddingRight: 5},
-        }}
-        renderItem={renderItem}
-      />
-
+    <WaterFlow
+      ref={WaterFlowRef}
+      data={listData}
+      keyForItem={item => item.id}
+      numColumns={2}
+      onEndReached={onRefresh}
+      /** 允许 heightForItem 为异步函数 */
+      // asyncHeightForItem={async item => {
+      //   let height = 0
+      //   try {
+      //     height = await (new Promise<number>((resolve, reject) => {
+      //       Image.getSize(item.image_path, (_, imageHeight) => {
+      //         resolve(imageHeight)
+      //       }, reject)
+      //     }))
+      //   } catch (err) { console.log({ err }); }
+      //   return height;
+      // }}
+      /** 如果高度已知则传此方法 */
+      // heightForItem={item => {
+      //   return item.height;
+      // }}
+      columnFlatListProps={{
+        style: {},
+      }}
+      columnsFlatListProps={{
+        refreshControl: (
+          <RefreshControl
+            style={{zIndex: 10}}
+            refreshing={loading}
+            onRefresh={() => {
+              WaterFlowRef.current?.clear();
+              loadData();
+            }}
+            tintColor={'gray'}
+          />
+        ),
+        style: {paddingLeft: 5, paddingRight: 5},
+      }}
+      renderItem={renderItem}
+    />
   );
 };
 

@@ -70,12 +70,12 @@ const AccountDetail = ({navigation, route}) => {
   const onReportClick = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['拉黑', '举报'],
-        cancelButtonIndex: 0,
+        options: ['取消', '拉黑', '举报'],
         destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
       },
       buttonIndex => {
-        if (buttonIndex === 0) {
+        if (buttonIndex === 1) {
           const data = {
             reason: '拉黑',
             report_type: 'Account',
@@ -84,7 +84,7 @@ const AccountDetail = ({navigation, route}) => {
           reportContent(data).then(res => {
             Toast.showError('已拉黑', {duration: 500});
           });
-        } else if (buttonIndex === 1) {
+        } else if (buttonIndex === 2) {
           navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
         }
       }
@@ -128,13 +128,11 @@ const AccountDetail = ({navigation, route}) => {
         />
         <View style={styles.header}>
           <GoBack />
-          <Pressable onPress={onReportClick}>
-            <IconFont
-              name="ziyuan"
-              color="#fff"
-              size={20}
-              style={[styles.report, {top: Math.max(getStatusBarHeight(), 20)}]}
-            />
+          <Pressable
+            onPress={onReportClick}
+            style={styles.report}
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+            <IconFont name="ziyuan" color="#fff" size={20} />
           </Pressable>
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
@@ -272,6 +270,11 @@ const styles = StyleSheet.create({
   report: {
     position: 'absolute',
     right: 16,
+    height: 44,
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    top: Math.max(getStatusBarHeight(), 20),
   },
   header: {
     paddingLeft: 19,

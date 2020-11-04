@@ -15,7 +15,7 @@ import {RFValue} from '@/utils/response-fontsize';
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
-import FastImageGif from '@/components/FastImageGif'
+import FastImageGif from '@/components/FastImageGif';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
 
@@ -94,15 +94,21 @@ const SingleItem = props => {
           <FastImageGif
             source={{uri: data.single_cover.cover_url}}
             gif_url={data.single_cover.link_url}
-            style={{height: (data.single_cover.height * halfWidth) / data.single_cover.width, width: halfWidth, backgroundColor: '#F1F1F1'}}
+            style={{
+              height: (data.single_cover.height * halfWidth) / data.single_cover.width,
+              width: halfWidth,
+              backgroundColor: '#F1F1F1',
+            }}
           />
         )}
         {/*<Text>{data.single_cover.cover_url}</Text>*/}
-        {data.has_video && <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />}
-        {data.type === 'topic' && (
+        {data.has_video && (
+          <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
+        )}
+        {data.type === 'Topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
-        {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+        {data.type === 'Article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
         {props.isTop && (
           <Image

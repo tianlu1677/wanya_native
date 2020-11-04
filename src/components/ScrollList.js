@@ -40,7 +40,7 @@ const ScrollList = props => {
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
   const [currentY, setCurrentY] = useState(0);
-  const [title, setTitle] = useState('努力加载中...');
+  // const [title, setTitle] = useState('努力加载中...');
   const [refreshing, setRefreshing] = useState(false);
   const [isFree, setIsFree] = useState(true);
 
@@ -98,7 +98,7 @@ const ScrollList = props => {
             color={'#000'}
             style={{marginBottom: 5}}
           />
-          <Text>正在加载更多</Text>
+          <Text style={{fontSize: 12, color: '#bdbdbd'}}>正在加载更多</Text>
         </View>
       );
     }
@@ -168,7 +168,7 @@ const ScrollList = props => {
       setIsFree(false);
       onRefresh();
     } else {
-      setTitle('下拉加载');
+      // setTitle('下拉加载');
     }
   };
 
@@ -179,7 +179,7 @@ const ScrollList = props => {
     // console.log('y', y);
     // console.log('title努力加载数据', title);
     if (y < -MinHeight && y >= -MaxHeight && !refreshing) {
-      setTitle('放开刷新...');
+      // setTitle('放开刷新...');
       setCurrentY(y);
     } else if (y < 0 && !refreshing) {
     } else {
@@ -222,7 +222,6 @@ const ScrollList = props => {
             onRefresh={enableRefresh ? onRefresh.bind(this) : null}
             tintColor="black"
             style={{backgroundColor: 'white'}}
-            title={title}
           />
         ) : null
       }

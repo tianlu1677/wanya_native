@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Vibration} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Vibration, ActionSheetIOS} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -8,9 +8,7 @@ import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
 import * as Animatable from 'react-native-animatable';
-
-import * as WeChat from 'react-native-wechat-lib';
-import {dispatchPreviewImage, dispatchShareItem} from '@/redux/actions';
+import {dispatchShareItem} from '@/redux/actions';
 
 export const Header = props => {
   const {data} = props;
@@ -22,6 +20,21 @@ export const Header = props => {
 
   const goAccountDetail = () => {
     navigation.push('AccountDetail', {accountId: data.account.id});
+  };
+
+  const onReportClick = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['取消', '举报'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          navigation.push('Report', {report_type: props.type, report_type_id: props.detail.id});
+        }
+      }
+    );
   };
 
   return (
@@ -37,9 +50,15 @@ export const Header = props => {
           <Text style={hstyles.nodeName}>{data.node_name}</Text>
         </Pressable>
       </View>
-      <Text style={hstyles.joinBtn} onPress={goNodeDetail}>
+      <Pressable
+        onPress={onReportClick}
+        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+        style={{marginLeft: 'auto'}}>
+        <IconFont name="gengduo" color="#bdbdbd" size={20} />
+      </Pressable>
+      {/* <Text style={hstyles.joinBtn} onPress={goNodeDetail}>
         进入圈子
-      </Text>
+      </Text> */}
     </View>
   );
 };
@@ -54,7 +73,7 @@ export const Bottom = props => {
 
   const onPraise = async () => {
     switch (props.type) {
-      case 'article':
+      case 'Article':
         if (praise) {
           await destroyArticleAction({id: data.id, type: 'praise'});
           setPraise(!praise);
@@ -63,7 +82,7 @@ export const Bottom = props => {
           setPraise(!praise);
         }
         break;
-      case 'topic':
+      case 'Topic':
         if (praise) {
           await destroyTopicAction({id: data.id, type: 'praise'});
           setPraise(!praise);
@@ -94,7 +113,7 @@ export const Bottom = props => {
       scene: 0,
     };
     switch (props.type) {
-      case 'article':
+      case 'Article':
         shareOptions = {
           ...shareOptions,
           title: data.plain_content,
@@ -102,7 +121,7 @@ export const Bottom = props => {
           thumbImageUrl: data.wx_share_image_url,
         };
         break;
-      case 'topic':
+      case 'Topic':
         shareOptions = {
           ...shareOptions,
           title: data.plain_content,

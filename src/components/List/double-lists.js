@@ -88,14 +88,14 @@ const SingleItem = props => {
       {data.has_video && (
         <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
       )}
-      {data.type === 'topic' && (
+      {data.type === 'Topic' && (
         <PlainContent
           data={data}
           style={[styles.multiLineText, {width: halfWidth - 15}]}
           numberOfLines={2}
         />
       )}
-      {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+      {data.type === 'Article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
       {props.isTop && (
         <Image

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ActionSheetIOS, Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -10,6 +11,8 @@ import * as action from '@/redux/constants';
 
 const CommentList = props => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const {showActionSheetWithOptions} = useActionSheet();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const [loading, setLoading] = useState(true);
@@ -65,6 +68,21 @@ const CommentList = props => {
     setListData([...listData]);
   };
 
+  const onReportClick = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['取消', '举报'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          navigation.push('Report', {report_type: props.type, report_type_id: props.detail.id});
+        }
+      }
+    );
+  };
+
   const renderItem = ({item, index}) => {
     return (
       <View key={item.id} style={[cstyles.wrapper, props.style]}>
@@ -88,10 +106,18 @@ const CommentList = props => {
             </Text>
           )}
           <Text style={cstyles.text}>{item.content}</Text>
-          <Text style={cstyles.reply}>
-            {item.created_at_text} · 回复{' '}
-            {item.child_comments_count ? item.child_comments_count : ''}
-          </Text>
+          <View style={cstyles.replyWrap}>
+            <Text style={cstyles.reply}>
+              {item.created_at_text} · 回复{' '}
+              {item.child_comments_count ? item.child_comments_count : ''}
+            </Text>
+            <Pressable
+              onPress={onReportClick}
+              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+              style={{marginLeft: 'auto'}}>
+              <IconFont name="gengduo" color="#bdbdbd" size={20} />
+            </Pressable>
+          </View>
         </Pressable>
       </View>
     );
@@ -188,11 +214,15 @@ const cstyles = StyleSheet.create({
     color: '#bdbdbd',
     textAlign: 'justify',
   },
+  replyWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   reply: {
     color: '#bdbdbd',
     fontSize: 11,
     lineHeight: 19,
-    marginBottom: 10,
   },
   separator: {
     borderBottomColor: '#ebebeb',
