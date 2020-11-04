@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, ActionSheetIOS, TouchableOpacity} from 'react-native';
 import IconFont from '@/iconfont';
 import {useSelector} from 'react-redux';
 import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
@@ -20,6 +20,7 @@ import {
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {BASIC_HEIGHT} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
@@ -65,6 +66,22 @@ const AccountDetail = ({navigation, route}) => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
   };
 
+  const onReportClick = () => {
+    const options = {
+      options: ['拉黑', '举报'],
+      cancelButtonIndex: 0,
+      destructiveButtonIndex: 1,
+    };
+
+    ActionSheetIOS.showActionSheetWithOptions(options, buttonIndex => {
+      if (buttonIndex === 0) {
+        console.log('拉黑');
+      } else if (buttonIndex === 1) {
+        console.log('举报');
+      }
+    });
+  };
+
   const PublishList = () => {
     return (
       <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
@@ -102,6 +119,7 @@ const AccountDetail = ({navigation, route}) => {
         />
         <View style={styles.header}>
           <GoBack />
+
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
             <Avator account={account} size={51} isShowSettledIcon={false} />
@@ -121,6 +139,17 @@ const AccountDetail = ({navigation, route}) => {
               </View>
               <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
             </View>
+            <Pressable onPress={onReportClick}>
+              <IconFont
+                name="ziyuan"
+                color="#fff"
+                size={20}
+                style={[
+                  styles.more,
+                  {width: 100, backgroundColor: 'pink', top: Math.max(getStatusBarHeight(), 20)},
+                ]}
+              />
+            </Pressable>
             {currentAccount.id !== account.id && (
               <Text
                 style={[styles.follow, account.followed && {color: '#BDBDBD'}]}
@@ -233,6 +262,11 @@ const AccountDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+  },
+  more: {
+    // position: 'absolute',
+    right: 16,
+    zIndex: 200,
   },
   header: {
     paddingLeft: 19,

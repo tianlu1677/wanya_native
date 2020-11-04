@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import IconZiyuan from './IconZiyuan';
 import IconGengduo from './IconGengduo';
 import IconWeixin1 from './IconWeixin1';
 import IconShouji from './IconShouji';
@@ -75,146 +76,148 @@ import IconUnreadMessages from './IconUnreadMessages';
 
 let IconFont = ({ name, ...rest }) => {
   switch (name) {
+    case 'ziyuan':
+      return <IconZiyuan key="1" {...rest} />;
     case 'gengduo':
-      return <IconGengduo key="1" {...rest} />;
+      return <IconGengduo key="2" {...rest} />;
     case 'weixin1':
-      return <IconWeixin1 key="2" {...rest} />;
+      return <IconWeixin1 key="3" {...rest} />;
     case 'shouji':
-      return <IconShouji key="3" {...rest} />;
+      return <IconShouji key="4" {...rest} />;
     case 'wuwangluo':
-      return <IconWuwangluo key="4" {...rest} />;
+      return <IconWuwangluo key="5" {...rest} />;
     case 'close':
-      return <IconClose key="5" {...rest} />;
+      return <IconClose key="6" {...rest} />;
     case 'home-recommend':
-      return <IconHomeRecommend key="6" {...rest} />;
+      return <IconHomeRecommend key="7" {...rest} />;
     case 'home-recommend-outline':
-      return <IconHomeRecommendOutline key="7" {...rest} />;
+      return <IconHomeRecommendOutline key="8" {...rest} />;
     case 'home-newtopic':
-      return <IconHomeNewtopic key="8" {...rest} />;
+      return <IconHomeNewtopic key="9" {...rest} />;
     case 'home-mine-outline':
-      return <IconHomeMineOutline key="9" {...rest} />;
+      return <IconHomeMineOutline key="10" {...rest} />;
     case 'home-mine':
-      return <IconHomeMine key="10" {...rest} />;
+      return <IconHomeMine key="11" {...rest} />;
     case 'notice':
-      return <IconNotice key="11" {...rest} />;
+      return <IconNotice key="12" {...rest} />;
     case 'weixin':
-      return <IconWeixin key="12" {...rest} />;
+      return <IconWeixin key="13" {...rest} />;
     case 'search':
-      return <IconSearch key="13" {...rest} />;
+      return <IconSearch key="14" {...rest} />;
     case 'space-point':
-      return <IconSpacePoint key="14" {...rest} />;
+      return <IconSpacePoint key="15" {...rest} />;
     case 'upper':
-      return <IconUpper key="15" {...rest} />;
+      return <IconUpper key="16" {...rest} />;
     case 'down':
-      return <IconDown key="16" {...rest} />;
+      return <IconDown key="17" {...rest} />;
     case 'calendar':
-      return <IconCalendar key="17" {...rest} />;
+      return <IconCalendar key="18" {...rest} />;
     case 'people':
-      return <IconPeople key="18" {...rest} />;
+      return <IconPeople key="19" {...rest} />;
     case 'baomingcanjia':
-      return <IconBaomingcanjia key="19" {...rest} />;
+      return <IconBaomingcanjia key="20" {...rest} />;
     case 'double-circle':
-      return <IconDoubleCircle key="20" {...rest} />;
+      return <IconDoubleCircle key="21" {...rest} />;
     case 'white-circle':
-      return <IconWhiteCircle key="21" {...rest} />;
+      return <IconWhiteCircle key="22" {...rest} />;
     case 'backdown':
-      return <IconBackdown key="22" {...rest} />;
+      return <IconBackdown key="23" {...rest} />;
     case 'didian':
-      return <IconDidian key="23" {...rest} />;
+      return <IconDidian key="24" {...rest} />;
     case 'plus':
-      return <IconPlus key="24" {...rest} />;
+      return <IconPlus key="25" {...rest} />;
     case 'arrow-right':
-      return <IconArrowRight key="25" {...rest} />;
+      return <IconArrowRight key="26" {...rest} />;
     case 'fenxiang-2':
-      return <IconFenxiang2 key="26" {...rest} />;
+      return <IconFenxiang2 key="27" {...rest} />;
     case 'at':
-      return <IconAt key="27" {...rest} />;
+      return <IconAt key="28" {...rest} />;
     case 'hashtag':
-      return <IconHashtag key="28" {...rest} />;
+      return <IconHashtag key="29" {...rest} />;
     case 'question':
-      return <IconQuestion key="29" {...rest} />;
+      return <IconQuestion key="30" {...rest} />;
     case 'man':
-      return <IconMan key="30" {...rest} />;
+      return <IconMan key="31" {...rest} />;
     case 'woman':
-      return <IconWoman key="31" {...rest} />;
+      return <IconWoman key="32" {...rest} />;
     case 'yaogunshoushi':
-      return <IconYaogunshoushi key="32" {...rest} />;
+      return <IconYaogunshoushi key="33" {...rest} />;
     case 'node-solid':
-      return <IconNodeSolid key="33" {...rest} />;
+      return <IconNodeSolid key="34" {...rest} />;
     case 'blank-node':
-      return <IconBlankNode key="34" {...rest} />;
+      return <IconBlankNode key="35" {...rest} />;
     case 'quanzi2':
-      return <IconQuanzi2 key="35" {...rest} />;
+      return <IconQuanzi2 key="36" {...rest} />;
     case 'comment':
-      return <IconComment key="36" {...rest} />;
+      return <IconComment key="37" {...rest} />;
     case 'unlike':
-      return <IconUnlike key="37" {...rest} />;
+      return <IconUnlike key="38" {...rest} />;
     case 'zhuanfa':
-      return <IconZhuanfa key="38" {...rest} />;
+      return <IconZhuanfa key="39" {...rest} />;
     case 'like':
-      return <IconLike key="39" {...rest} />;
+      return <IconLike key="40" {...rest} />;
     case 'takephoto':
-      return <IconTakephoto key="40" {...rest} />;
+      return <IconTakephoto key="41" {...rest} />;
     case 'chose-success':
-      return <IconChoseSuccess key="41" {...rest} />;
+      return <IconChoseSuccess key="42" {...rest} />;
     case 'sousuo':
-      return <IconSousuo key="42" {...rest} />;
+      return <IconSousuo key="43" {...rest} />;
     case 'settings':
-      return <IconSettings key="43" {...rest} />;
+      return <IconSettings key="44" {...rest} />;
     case 'kecheng3':
-      return <IconKecheng3 key="44" {...rest} />;
+      return <IconKecheng3 key="45" {...rest} />;
     case 'kecheng2':
-      return <IconKecheng2 key="45" {...rest} />;
+      return <IconKecheng2 key="46" {...rest} />;
     case 'tianjia':
-      return <IconTianjia key="46" {...rest} />;
+      return <IconTianjia key="47" {...rest} />;
     case 'biaoqian':
-      return <IconBiaoqian key="47" {...rest} />;
+      return <IconBiaoqian key="48" {...rest} />;
     case 'biaoqian1':
-      return <IconBiaoqian1 key="48" {...rest} />;
+      return <IconBiaoqian1 key="49" {...rest} />;
     case 'duigou':
-      return <IconDuigou key="49" {...rest} />;
+      return <IconDuigou key="50" {...rest} />;
     case 'tianjia1':
-      return <IconTianjia1 key="50" {...rest} />;
+      return <IconTianjia1 key="51" {...rest} />;
     case 'kecheng':
-      return <IconKecheng key="51" {...rest} />;
+      return <IconKecheng key="52" {...rest} />;
     case 'kecheng1':
-      return <IconKecheng1 key="52" {...rest} />;
+      return <IconKecheng1 key="53" {...rest} />;
     case 'fenxiang-copy':
-      return <IconFenxiangCopy key="53" {...rest} />;
+      return <IconFenxiangCopy key="54" {...rest} />;
     case 'fenxiang':
-      return <IconFenxiang key="54" {...rest} />;
+      return <IconFenxiang key="55" {...rest} />;
     case 'blackpraise':
-      return <IconBlackpraise key="55" {...rest} />;
+      return <IconBlackpraise key="56" {...rest} />;
     case 'learncount':
-      return <IconLearncount key="56" {...rest} />;
+      return <IconLearncount key="57" {...rest} />;
     case 'pinglunanniu':
-      return <IconPinglunanniu key="57" {...rest} />;
+      return <IconPinglunanniu key="58" {...rest} />;
     case 'coursegonewtopic':
-      return <IconCoursegonewtopic key="58" {...rest} />;
+      return <IconCoursegonewtopic key="59" {...rest} />;
     case 'blank-star':
-      return <IconBlankStar key="59" {...rest} />;
+      return <IconBlankStar key="60" {...rest} />;
     case 'arrow-left':
-      return <IconArrowLeft key="60" {...rest} />;
+      return <IconArrowLeft key="61" {...rest} />;
     case 'icon':
-      return <IconIcon key="61" {...rest} />;
+      return <IconIcon key="62" {...rest} />;
     case 'star':
-      return <IconStar key="62" {...rest} />;
+      return <IconStar key="63" {...rest} />;
     case 'arrow-down':
-      return <IconArrowDown key="63" {...rest} />;
+      return <IconArrowDown key="64" {...rest} />;
     case 'black-dot':
-      return <IconBlackDot key="64" {...rest} />;
+      return <IconBlackDot key="65" {...rest} />;
     case 'cancel':
-      return <IconCancel key="65" {...rest} />;
+      return <IconCancel key="66" {...rest} />;
     case 'comments':
-      return <IconComments key="66" {...rest} />;
+      return <IconComments key="67" {...rest} />;
     case 'datetime':
-      return <IconDatetime key="67" {...rest} />;
+      return <IconDatetime key="68" {...rest} />;
     case 'praise-solid':
-      return <IconPraiseSolid key="68" {...rest} />;
+      return <IconPraiseSolid key="69" {...rest} />;
     case 'star-solid':
-      return <IconStarSolid key="69" {...rest} />;
+      return <IconStarSolid key="70" {...rest} />;
     case 'unread-messages':
-      return <IconUnreadMessages key="70" {...rest} />;
+      return <IconUnreadMessages key="71" {...rest} />;
   }
 
   return null;
