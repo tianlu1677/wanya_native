@@ -77,7 +77,7 @@ const ArticleDetail = ({navigation, route}) => {
       <TopHeader
         Title={
           detail.title && detail.title.toString().length > 10
-            ? detail.title.toString().substr(0, 10)
+            ? `${detail.title.toString().substr(0, 10)}...`
             : detail.title
         }
         leftButtonColor={'black'}
