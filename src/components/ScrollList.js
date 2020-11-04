@@ -127,8 +127,9 @@ const ScrollList = props => {
 
   const renderEmpty = () => {
     return (
-      !refreshing &&
-      pagin && (
+      !props.loading &&
+      pagin &&
+      props.data.length === 0 && (
         <View style={[scrollStyle.footer, {minHeight: 300}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
           <Text style={{color: '#DADADA', fontSize: 13}}>

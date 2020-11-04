@@ -25,8 +25,14 @@ const Recommend = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
 
   const RecommendList = () => {
-    return <DoubleLists request={{api: getRecommendPosts}} type="recommend" />;
-    // return <DoubleList settings={{removeClippedSubviews: false}} request={{api: getRecommendPosts}} type="recommend" />;
+    // return <DoubleLists request={{api: getRecommendPosts}} type="recommend" />;
+    return (
+      <DoubleList
+        settings={{removeClippedSubviews: false}}
+        request={{api: getRecommendPosts}}
+        type="recommend"
+      />
+    );
     // return (
     //   <WaterFlowList
     //     settings={{removeClippedSubviews: false}}

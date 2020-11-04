@@ -37,7 +37,7 @@ const Report = ({navigation, route}) => {
     '血腥暴力',
     '赌博',
     '故意引起冲突',
-    '其他问题',
+    // '其他问题',
   ];
   const messagesLength = messages.length;
   const otherMessage = messages[messagesLength - 1];
@@ -64,8 +64,7 @@ const Report = ({navigation, route}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff'}}
-    >
+      style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
         <View style={{height: 10, backgroundColor: '#FAFAFA'}} />
         <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps="never">
@@ -94,24 +93,22 @@ const Report = ({navigation, route}) => {
             );
           })}
           {/*{reason === messages[messages.length - 1] && (*/}
-            <TextInput
-              caretHidden={false}
-              selectionColor={'#ff193a'}
-              maxLength={100}
-              onChangeText={text => {
-                setMoreReason(text);
-              }}
-              multiline
-              onFouce
-              numberOfLines={10}
-              placeholder={'输入举报理由，100字以内'}
-              placeholderTextColor={'#C2C2C2'}
-              defaultValue={''}
-              style={{marginLeft: 14, marginRight: 14, paddingBottom: 100}}
-            />
-
         </ScrollView>
-
+        {/* <TextInput
+          caretHidden={false}
+          selectionColor={'#ff193a'}
+          maxLength={100}
+          onChangeText={text => {
+            setMoreReason(text);
+          }}
+          multiline
+          onFouce
+          numberOfLines={10}
+          placeholder={'输入举报理由，100字以内'}
+          placeholderTextColor={'#C2C2C2'}
+          defaultValue={''}
+          style={{marginLeft: 14, marginRight: 14, paddingBottom: 100}}
+        /> */}
         <Pressable style={styles.saveBtn} onPress={onSubmit}>
           <Text style={styles.saveBtnText}>确定</Text>
         </Pressable>
