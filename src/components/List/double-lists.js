@@ -20,8 +20,8 @@ import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
-import {createArticleAction, destroyArticleAction} from "@/api/article_api"
-import {createTopicAction, destroyTopicAction} from "@/api/topic_api"
+import {createArticleAction, destroyArticleAction} from '@/api/article_api';
+import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 
 const SingleItem = props => {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ const SingleItem = props => {
   });
 
   const onGoDetail = v => {
-    console.log('data', data)
+    console.log('data', data);
     switch (props.type) {
       case 'Topic':
         navigation.push('TopicDetail', {topicId: data.id});
@@ -47,7 +47,7 @@ const SingleItem = props => {
   };
 
   const onPraise = async () => {
-    console.log('pro', data)
+    console.log('pro', data);
     switch (type) {
       case 'Article':
         if (praiseForm.praise) {
@@ -217,7 +217,7 @@ const DoubleLists = props => {
             color={'#000'}
             style={{marginBottom: 5}}
           />
-          <Text>正在加载更多</Text>
+          <Text style={{fontSize: 12, color: '#bdbdbd'}}>正在加载更多</Text>
         </View>
       );
     } else {

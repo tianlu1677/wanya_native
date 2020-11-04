@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import Geolocation from 'react-native-geolocation-service';
@@ -73,13 +73,13 @@ const GetLocation = ({children, handleClick, style}) => {
   };
 
   return (
-    <TouchableOpacity
+    <Pressable
       style={style}
       onPress={() => {
         getLocation();
       }}>
       {children}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
