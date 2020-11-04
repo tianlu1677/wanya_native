@@ -218,7 +218,7 @@ const ScrollList = props => {
       refreshControl={
         enableRefresh ? (
           <RefreshControl
-            refreshing={!!refreshing}
+            refreshing={!!props.loading}
             onRefresh={enableRefresh ? onRefresh.bind(this) : null}
             tintColor="black"
             style={{backgroundColor: 'white'}}
