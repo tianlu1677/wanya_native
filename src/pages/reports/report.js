@@ -46,6 +46,7 @@ const Report = ({navigation, route}) => {
     console.log('onSubmit', reason);
     if (!reason) {
       Toast.showError('请选择一个选项，进行举报');
+      return;
     }
 
     const data = {
@@ -62,15 +63,12 @@ const Report = ({navigation, route}) => {
     }, 500);
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff'}}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
       <View style={styles.container}>
-        <View style={{height: 10, backgroundColor: '#FAFAFA'}} />
         <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps="never">
           {messages.map((message, index) => {
             return (
-              <View key={message}>
+              <View key={message} style={{backgroundColor: '#fff'}}>
                 <Pressable
                   onPress={() => {
                     setReason(message);
@@ -122,7 +120,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     letterSpacing: 1,
-    backgroundColor: 'white',
     position: 'relative',
     flex: 1,
     paddingBottom: 100,

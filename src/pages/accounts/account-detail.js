@@ -114,7 +114,8 @@ const AccountDetail = ({navigation, route}) => {
     return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
-  // console.log(account);
+  console.log(account);
+  console.log(account.intro.replace(/(\r\n|\n|\r)/gm, ''));
 
   useEffect(() => {
     loadData();
@@ -194,7 +195,7 @@ const AccountDetail = ({navigation, route}) => {
                 <Text style={styles.tag}>{account.province || '未知街区'}</Text>
               </View>
               <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
-                {account.intro || '这个人很懒，还没有填写简介'}
+                {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'}
               </Text>
             </View>
             <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
