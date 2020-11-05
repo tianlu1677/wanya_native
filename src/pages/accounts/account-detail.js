@@ -114,9 +114,6 @@ const AccountDetail = ({navigation, route}) => {
     return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
-  console.log(account);
-  console.log(account.intro.replace(/(\r\n|\n|\r)/gm, ''));
-
   useEffect(() => {
     loadData();
   }, []);
