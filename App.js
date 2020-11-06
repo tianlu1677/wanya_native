@@ -21,7 +21,6 @@ import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
-import {NetworkConsumer} from 'react-native-offline';
 import NetworkErrorModal from "@/components/NetworkErrorModal"
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 

@@ -165,7 +165,7 @@ const DoubleSingle = props => {
 };
 
 const DoubleList = props => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
@@ -276,9 +276,8 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItemMemo}
       numColumns={2}
-      settings={{initialNumToRender: 10, windowSize: 2, ...props.settings}}
+      settings={{initialNumToRender: 10, windowSize: 4, ...props.settings}}
       style={styles.wrapper}
-      {...props}
     />
   );
 };
