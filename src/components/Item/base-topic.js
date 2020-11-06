@@ -141,7 +141,7 @@ const BaseTopic = props => {
   //  console.log('rending....', props.data.id)
   // }, []);
   //
-  console.log('topic.......', data.id)
+  // console.log('topic.......', data.id)
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" />

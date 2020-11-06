@@ -76,7 +76,7 @@ class App extends Component {
   loadSplashImg = () => {
     setTimeout(() => {
       RNBootSplash.hide({duration: 10});
-    }, 1500);
+    }, 1000);
   };
 
   loadSettings = () => {
@@ -132,7 +132,6 @@ class App extends Component {
     });
 
     let bundleId = DeviceInfo.getBundleId();
-    // console.log('bundleId', bundleId)
   };
 
   loadImgList = () => {

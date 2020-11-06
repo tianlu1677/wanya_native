@@ -250,23 +250,18 @@ const DoubleList = props => {
   };
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function fetchData() {
+    const loadFirstData = async () => {
       if (props.type === 'recommend') {
-        if (isMounted) {
-          await indexLoadData(1);
-        }
+        await indexLoadData(1);
       } else {
-        await loadData();
+        loadData();
       }
-    }
-
-    fetchData();
+    };
+    loadFirstData();
 
     return () => {
-      isMounted = false;
-    };
+    }
+
   }, []);
 
   return (

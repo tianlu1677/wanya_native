@@ -119,14 +119,15 @@ function HomeTabList() {
   );
 }
 
+const Render = props => {
+  return <HomeTabList {...props} />;
+};
+
 function MainStackList() {
-  const Render = props => {
-    return <HomeTabList {...props} />;
-  };
 
   return (
     <MainStack.Navigator
-      initialRouteName="Recommend"
+      initialRouteName="Recommend1"
       headerMode="screen"
       screenOptions={({route}) => ({
         headerStyle: {
@@ -159,7 +160,7 @@ function MainStackList() {
           </View>
         ),
       })}>
-      <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
+      <MainStack.Screen name="Recommend1" component={Render} options={{headerShown: false}} />
       {routers.map(route => {
         const render = props => {
           const Components = route.component;
