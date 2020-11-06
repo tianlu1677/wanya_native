@@ -18,7 +18,7 @@ const Root = () => (
   </NetworkProvider>
 );
 
-AppRegistry.registerComponent(appName, () => Root);
+AppRegistry.registerComponent(appName, () => App);
 
 import Store from './src/utils/export_storage';
 import Helper from './src/utils/helper';

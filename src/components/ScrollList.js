@@ -210,7 +210,7 @@ const ScrollList = props => {
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
       removeClippedSubviews={false}
-      windowSize={5}
+      windowSize={4}
       // progressViewOffset={1}
       // debug
       {...props.settings}

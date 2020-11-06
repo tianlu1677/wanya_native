@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, ScrllView, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
@@ -12,6 +12,7 @@ import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {RFValue} from '@/utils/response-fontsize';
+
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
@@ -76,17 +77,7 @@ const SingleItem = props => {
   //   }
   // });
 
-  const IsTopIcon = () => {
-    return (
-      <View style={styles.isTopLabel}>
-        <View style={{flexDirection: 'row', position: 'relative'}}>
-          <Text style={styles.topText}>置顶</Text>
-          <View style={styles.sanjia} />
-        </View>
-      </View>
-    );
-  };
-
+  console.log('xxxxxxxx', data.id)
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
@@ -177,21 +168,44 @@ const DoubleList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const [leftHeight, setLeftHeight] = useState(0);
-  const [rightHeight, setRightHeight] = useState(0);
-  const [leftPosts, setLeftPosts] = useState([]);
-  const [rightPosts, setRightPosts] = useState([]);
 
-  // listData.forEach((content) => {
-  //   console.log('cccc', content)
-  //   if(leftHeight <= rightHeight) {
-  //     setLeftHeight(leftHeight + content.item.single_cover.height)
-  //     setLeftPosts(leftPosts + [content])
-  //   } else {
-  //     setRightHeight(rightHeight + content.item.single_cover.height)
-  //     setRightPosts(rightPosts + [content])
-  //   }
-  // })
+  const compare = () => {
+    return true
+  }
+  const Child = React.memo(({item}) => {
+    // console.log('child item', item)
+    return <SingleItem key={item.id} data={item.item} isTop={item.is_top} type={item.item_type} />;
+  }, compare);
+
+  const WrapChild = useCallback(({item}) => {
+    return <Child key={item.id} item={item} />
+  },[])
+
+  const renderItemMemo = useCallback(
+    ({item, index}) => {
+      const leftPostList = listData.filter((v, i) => i % 2 === 0);
+      const rightPostList = listData.filter((v, i) => i % 2 !== 0);
+      return (
+        <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
+          {(item === 1 ? leftPostList : rightPostList).map((v, index) => {
+            return <WrapChild item={v}/>
+          })}
+        </View>
+      );
+    },
+    [listData]
+  );
+  //
+  // const DoubleSingleMemo = useCallback(({data}) => {
+  //   (
+  //     <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
+  //       {data.map((v, index) => {
+  //         return <SingleItem key={v.id} data={v.item} isTop={v.is_top} type={v.item_type} />;
+  //       })}
+  //     </View>
+  //   ),
+  //     [];
+  // });
 
   const renderItem = ({item, index}) => {
     const leftPostList = listData.filter((v, i) => i % 2 === 0);
@@ -216,18 +230,22 @@ const DoubleList = props => {
   const indexLoadData = async (page = 1) => {
     setLoading(true);
     let itemList = [];
-    const {api, params} = props.request;
-    const res = await api({...params, page});
-    const data = res.data.posts;
 
     // 加载首页置顶的
     let top_posts_res = await getRecommendTopPosts();
     itemList = top_posts_res.data.posts;
     itemList = itemList.map(item => ({...item, is_top: true}));
 
-    setHeaders(res.headers);
+    const {api, params} = props.request;
+    const res = await api({...params, page});
+    // console.log('xxxxxx', api, params)
+    // console.log('xxxxxx', res, res.data.posts)
+    const data = res.data.posts;
+    // const data = [];
     setListData(itemList.concat(data));
     setLoading(false);
+    setHeaders(res.headers);
+
   };
 
   const onRefresh = (page = 1) => {
@@ -247,13 +265,16 @@ const DoubleList = props => {
     }
   }, []);
 
+  const renderSimple = ({item}) => {
+    return <SingleItem key={item.id} data={item.item} isTop={item.is_top} type={item.item_type} />;
+  };
   return (
     <ScrollList
       data={listData.length === 0 ? [] : [1, 2]}
       loading={loading}
       onRefresh={onRefresh}
       headers={headers}
-      renderItem={renderItem}
+      renderItem={renderItemMemo}
       numColumns={2}
       settings={{initialNumToRender: 10, windowSize: 2, ...props.settings}}
       style={styles.wrapper}
@@ -270,6 +291,7 @@ DoubleList.propTypes = {
 
 const styles = StyleSheet.create({
   wrapper: {
+    // width: '40%'
     // backgroundColor: 'pink',
     // paddingLeft: 5,
     // paddingRight: 5,
