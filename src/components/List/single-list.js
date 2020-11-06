@@ -57,7 +57,7 @@ const SingleList = props => {
       headers={headers}
       renderItem={renderItemMemo}
       style={{backgroundColor: '#FAFAFA'}}
-      settings={{initialNumToRender: 6, onEndReachedThreshold: 0.2 }}
+      settings={{initialNumToRender: 6, onEndReachedThreshold: 0.2, windowSize: 8}}
       {...props}
     />
   );
