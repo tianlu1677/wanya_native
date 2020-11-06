@@ -28,7 +28,6 @@ const Recommend = props => {
     // return <DoubleLists request={{api: getRecommendPosts}} type="recommend" />;
     return (
       <DoubleList
-        settings={{removeClippedSubviews: false}}
         request={{api: getRecommendPosts}}
         type="recommend"
       />

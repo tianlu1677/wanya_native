@@ -126,7 +126,7 @@ const SocialLogin = ({navigation, route}) => {
       if (error.code === appleAuth.Error.CANCELED) {
         Toast.showError('您取消了苹果登录');
       } else {
-        Toast.showError(`您的苹果登录失败${error}`);
+        Toast.showError(`您的苹果登录失败, 请稍后重试。`);
       }
     }
   };

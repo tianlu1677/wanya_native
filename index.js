@@ -20,13 +20,3 @@ React.$Store = Store;
 React.$Helper = Helper;
 
 // React.$lodash = require('lodash');
-
-if (!__DEV__) {
-  global.console = {
-    info: () => {},
-    log: () => {},
-    warn: () => {},
-    debug: () => {},
-    error: () => {},
-  };
-}

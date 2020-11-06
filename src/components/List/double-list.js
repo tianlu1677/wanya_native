@@ -204,7 +204,6 @@ const DoubleList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
-    setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
     setHeaders(res.headers);
@@ -218,14 +217,16 @@ const DoubleList = props => {
     let top_posts_res = await getRecommendTopPosts();
     itemList = top_posts_res.data.posts;
     itemList = itemList.map(item => ({...item, is_top: true}));
-
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
-    setListData(itemList.concat(data));
-    setLoading(false);
-    setHeaders(res.headers);
+    itemList = itemList.concat(data);
+    setListData(itemList);
 
+    setTimeout(() => {
+      setLoading(false);
+      setHeaders(res.headers);
+    }, 500)
   };
 
   const onRefresh = (page = 1) => {

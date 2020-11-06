@@ -88,6 +88,7 @@ const CollapsibleHeader = props => {
         <Animated.FlatList
           scrollToOverflowEnabled
           scrollEventThrottle={16}
+          useNativeDriver={true}
           onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
             useNativeDriver: true,
           })}
