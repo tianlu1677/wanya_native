@@ -134,22 +134,22 @@ const Settings = ({navigation, route}) => {
           <ItemTitle>邀请码</ItemTitle>
           <ForwardRight />
         </ItemView>
-        <ItemView
-          style={[styles.bottomBorder1px, styles.nestLine]}
-          onPress={() => {
-            goPages('checkupdate');
-          }}>
-          <ItemTitle>检测更新10:28</ItemTitle>
-          <ForwardRight />
-        </ItemView>
-        <ItemView
-          style={[styles.bottomBorder1px, styles.nestLine]}
-          onPress={() => {
-            navigation.navigate('LabIndex');
-          }}>
-          <ItemTitle>实验室</ItemTitle>
-          <ForwardRight />
-        </ItemView>
+        {/*<ItemView*/}
+        {/*  style={[styles.bottomBorder1px, styles.nestLine]}*/}
+        {/*  onPress={() => {*/}
+        {/*    goPages('checkupdate');*/}
+        {/*  }}>*/}
+        {/*  <ItemTitle>检测更新10:28</ItemTitle>*/}
+        {/*  <ForwardRight />*/}
+        {/*</ItemView>*/}
+        {/*<ItemView*/}
+        {/*  style={[styles.bottomBorder1px, styles.nestLine]}*/}
+        {/*  onPress={() => {*/}
+        {/*    navigation.navigate('LabIndex');*/}
+        {/*  }}>*/}
+        {/*  <ItemTitle>实验室</ItemTitle>*/}
+        {/*  <ForwardRight />*/}
+        {/*</ItemView>*/}
         {/*<ItemView*/}
         {/*  style={[styles.bottomBorder1px, styles.nestLine]}*/}
         {/*  onPress={() => {*/}
