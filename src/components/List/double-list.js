@@ -12,7 +12,7 @@ import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {RFValue} from '@/utils/response-fontsize';
-
+import {debounce, throttle} from 'lodash'
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
@@ -30,18 +30,18 @@ const SingleItem = props => {
   });
 
   const onGoDetail = v => {
-    switch (props.type) {
+    switch (props.item_type) {
       case 'Topic':
         navigation.push('TopicDetail', {topicId: data.id});
         break;
       case 'Article':
-        navigation.navigate('ArticleDetail', {topicId: data.id});
+        navigation.navigate('ArticleDetail', {articleId: data.id});
         break;
     }
   };
 
   const onPraise = async () => {
-    console.log('onPraise', props.data)
+    // console.log('onPraise', props.data)
 
     switch (props.item_type) {
       case 'Article':
@@ -76,7 +76,7 @@ const SingleItem = props => {
   //   }
   // });
 
-  console.log('double list', data.id)
+  // console.log('double list', data.id)
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
@@ -164,12 +164,13 @@ const DoubleList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const compare = () => {
+  const compare = (pre, next) => {
+    // console.log(pre, next)
     return true
   }
   const Child = React.memo(({item}) => {
     // console.log('child item', item)
-    return <SingleItem data={item.item} isTop={item.is_top} item_type={item.item_type} />;
+    return <SingleItem data={item.item} key={`singleitem-${item.id}`} isTop={item.is_top} item_type={item.item_type} />;
   }, compare);
 
   const WrapChild = useCallback(({item}) => {
@@ -237,23 +238,33 @@ const DoubleList = props => {
     }
   };
 
-  useEffect(() => {
-    if (props.type === 'recommend') {
-      indexLoadData(1);
-    } else {
-      loadData();
+  useEffect( () => {
+    let isMounted = true;
+    async function fetchData() {
+      if (props.type === 'recommend') {
+        if(isMounted) {
+          await indexLoadData(1);
+        }
+      } else {
+        await loadData();
+      }
     }
+    fetchData()
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
     <ScrollList
       data={listData.length === 0 ? [] : [1, 2]}
       loading={loading}
-      onRefresh={onRefresh}
+      onRefresh={throttle(onRefresh, 300)}
       headers={headers}
       renderItem={renderItemMemo}
       numColumns={2}
-      settings={{onEndReachedThreshold: 0.1, initialNumToRender: 5, windowSize: 8, ...props.settings}}
+      settings={{onEndReachedThreshold: 0.05, initialNumToRender: 5, windowSize: 8, ...props.settings}}
       style={styles.wrapper}
     />
   );

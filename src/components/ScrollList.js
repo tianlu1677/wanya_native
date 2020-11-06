@@ -40,6 +40,7 @@ const ScrollList = props => {
   const [enableRefresh] = useState(props.enableRefresh === false ? false : true);
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
+  const [finishContent, setFinishContent] = useState(false);
   // const [currentY, setCurrentY] = useState(0);
   // const [title, setTitle] = useState('努力加载中...');
   const [refreshing, setRefreshing] = useState(false);
@@ -65,6 +66,9 @@ const ScrollList = props => {
     if (!pagin || !pagin.hasMore) {
       setState(loadState.EMPTY);
       return;
+    }
+    if(!finishContent) {
+      return
     }
 
     if (refreshing || state === loadState.LOADING) {
@@ -201,10 +205,12 @@ const ScrollList = props => {
       //   useNativeDriver: true,
       // })}
       // onScroll={onscroll}
-      // onScrollEndDrag={onScrollEndDrag}
+      onScrollEndDrag={() => {
+        setFinishContent(true)
+      }}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
-      onEndReached={enableLoadMore ? throttle(onEndReached, 600) : null}
+      onEndReached={enableLoadMore ? throttle(onEndReached, 500) : null}
       onEndReachedThreshold={0.2}
       // maxToRenderPerBatch={1} // 增量渲染最大数量
       // updateCellsBatchingPeriod={3000}
@@ -220,6 +226,10 @@ const ScrollList = props => {
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}
+      onContentSizeChange={() => {
+        // console.log('finish...')
+        setFinishContent(true)
+      }}
       refreshControl={
         enableRefresh ? (
           <RefreshControl
