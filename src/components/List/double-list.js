@@ -12,7 +12,8 @@ import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {RFValue} from '@/utils/response-fontsize';
-import {debounce, throttle} from 'lodash'
+import {debounce, throttle} from 'lodash';
+
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
@@ -166,16 +167,23 @@ const DoubleList = props => {
 
   const compare = (pre, next) => {
     // console.log(pre, next)
-    return true
-  }
+    return true;
+  };
   const Child = React.memo(({item}) => {
     // console.log('child item', item)
-    return <SingleItem data={item.item} key={`singleitem-${item.id}`} isTop={item.is_top} item_type={item.item_type} />;
+    return (
+      <SingleItem
+        data={item.item}
+        key={`singleitem-${item.id}`}
+        isTop={item.is_top}
+        item_type={item.item_type}
+      />
+    );
   }, compare);
 
   const WrapChild = useCallback(({item}) => {
-    return <Child key={item.id} item={item} />
-  }, [])
+    return <Child key={item.id} item={item} />;
+  }, []);
 
   const renderItemMemo = useCallback(
     ({item, index}) => {
@@ -184,7 +192,7 @@ const DoubleList = props => {
       return (
         <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
           {(item === 1 ? leftPostList : rightPostList).map((v, index) => {
-            return <WrapChild key={`wrapchild-${v.id}`} item={v}/>
+            return <WrapChild key={`wrapchild-${v.id}`} item={v} />;
           })}
         </View>
       );
@@ -201,7 +209,9 @@ const DoubleList = props => {
   };
 
   const loadData = async (page = 1) => {
-    setLoading(true);
+    if (page === 1) {
+      setLoading(true);
+    }
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
@@ -212,7 +222,8 @@ const DoubleList = props => {
 
   //首页推荐
   const indexLoadData = async (page = 1) => {
-    if(page === 1) {
+    console.log('page', page);
+    if (page === 1) {
       setLoading(true);
     }
     let itemList = [];
@@ -238,18 +249,20 @@ const DoubleList = props => {
     }
   };
 
-  useEffect( () => {
+  useEffect(() => {
     let isMounted = true;
+
     async function fetchData() {
       if (props.type === 'recommend') {
-        if(isMounted) {
+        if (isMounted) {
           await indexLoadData(1);
         }
       } else {
         await loadData();
       }
     }
-    fetchData()
+
+    fetchData();
 
     return () => {
       isMounted = false;
@@ -264,7 +277,12 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItemMemo}
       numColumns={2}
-      settings={{onEndReachedThreshold: 0.05, initialNumToRender: 5, windowSize: 8, ...props.settings}}
+      settings={{
+        onEndReachedThreshold: 0.05,
+        initialNumToRender: 5,
+        windowSize: 8,
+        ...props.settings,
+      }}
       style={styles.wrapper}
     />
   );
