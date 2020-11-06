@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
-import {debounce} from 'lodash'
+import {debounce, throttle} from 'lodash'
 import Loading from '@/components/Loading';
 import PullToRefresh from '@/components/AnimatedPullToRefresh';
 
@@ -72,7 +72,6 @@ const ScrollList = props => {
     }
     setState(loadState.LOADING);
     console.log('onEndReached ===============', pagin, refreshing);
-
     try {
       props.onRefresh(pagin.nextPage);
     } catch {
@@ -81,14 +80,7 @@ const ScrollList = props => {
   };
 
   const renderFooter = () => {
-    let footer = (<View
-      style={{
-        height: 70,
-        backgroundColor: 'white',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }} />)
+    let footer = null;
 
     if (pagin && pagin.hasMore) {
       footer = (
@@ -212,7 +204,7 @@ const ScrollList = props => {
       // onScrollEndDrag={onScrollEndDrag}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
-      onEndReached={enableLoadMore ? debounce(onEndReached, 300) : null}
+      onEndReached={enableLoadMore ? throttle(onEndReached, 600) : null}
       onEndReachedThreshold={0.2}
       // maxToRenderPerBatch={1} // 增量渲染最大数量
       // updateCellsBatchingPeriod={3000}

@@ -34,7 +34,9 @@ const SingleList = props => {
   });
 
   const loadData = async (page = 1) => {
-    setLoading(true);
+    if( page === 1 ) {
+      setLoading(true);
+    }
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;

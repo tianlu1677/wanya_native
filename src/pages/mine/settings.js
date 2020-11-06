@@ -139,7 +139,7 @@ const Settings = ({navigation, route}) => {
           onPress={() => {
             goPages('checkupdate');
           }}>
-          <ItemTitle>检测更新</ItemTitle>
+          <ItemTitle>检测更新10:28</ItemTitle>
           <ForwardRight />
         </ItemView>
         <ItemView

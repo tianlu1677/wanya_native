@@ -211,7 +211,9 @@ const DoubleList = props => {
 
   //首页推荐
   const indexLoadData = async (page = 1) => {
-    setLoading(true);
+    if(page === 1) {
+      setLoading(true);
+    }
     let itemList = [];
     // 加载首页置顶的
     let top_posts_res = await getRecommendTopPosts();
@@ -222,11 +224,8 @@ const DoubleList = props => {
     const data = res.data.posts;
     itemList = itemList.concat(data);
     setListData(itemList);
-
-    setTimeout(() => {
-      setLoading(false);
-      setHeaders(res.headers);
-    }, 500)
+    setHeaders(res.headers);
+    setLoading(false);
   };
 
   const onRefresh = (page = 1) => {
@@ -254,7 +253,7 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItemMemo}
       numColumns={2}
-      settings={{initialNumToRender: 5, windowSize: 8, ...props.settings}}
+      settings={{onEndReachedThreshold: 0.1, initialNumToRender: 5, windowSize: 8, ...props.settings}}
       style={styles.wrapper}
     />
   );
