@@ -1,50 +1,144 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {StyleSheet,Pressable, Button, FlatList, View, Text} from 'react-native';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {getRecommendPosts, getFollowedPosts} from '@/api/home_api';
-
+import BaseTopic from '@/components/Item/base-topic';
+import BaseArticle from '@/components/Item/base-article';
+import RenderItemMemo from './memItem';
 // const HEADER_HEIGHT = 144;
 const TAB_BAR_HEIGHT = 55;
 
 const CollapsibleHeaderExample = props => {
-  const [currentKey, setCurrentKey] = useState('article');
+  const [data, setData] = useState([]);
+  const [number, setNumber] = useState(1);
 
-  const renderTabOne = () => {
-    return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
+  let data1 = [
+    {
+      id: 1,
+      content: 'aa',
+    },
+    {
+      id: 2,
+      content: 'aa',
+    },
+    {
+      id: 3,
+      content: 'aa',
+    },
+    {
+      id: 4,
+      content: 'aa',
+    },
+    {
+      id: 5,
+      content: 'aa',
+    },
+    {
+      id: 6,
+      content: 'aa',
+    },
+    {
+      id: 7,
+      content: 'aa',
+    },
+    {
+      id: 8,
+      content: 'aa',
+    },
+    {
+      id: 9,
+      content: 'aa',
+    },
+    {
+      id: 10,
+      content: 'aa',
+    },
+  ];
+
+  useEffect(() => {
+    setData(data1);
+  }, []);
+
+  const add = () => {
+    const newdata = [
+      {
+        id: Math.random(),
+        content: Math.random(),
+      },
+    ];
+    setData([...data, ...newdata]);
   };
 
-  const renderTabTwo = () => {
-    return <SingleList request={{api: getFollowedPosts}} />;
+  // function renderItem({item}) {
+  //   console.log('reding', item);
+  //   return (
+  //     <View style={{height: 100, backgroundColor: 'green'}}>
+  //       <Text>{item.content}</Text>
+  //
+  //     </View>
+  //   );
+  // }
+
+  const renderItem1 = useCallback(({item}) => {
+    return <Child item={item} />;
+  }, []);
+  const renderItem = ({item}) => {
+    return <RenderItemMemo item={item} ></RenderItemMemo>
+  }
+
+  const Child1 = ({item}) => {
+    console.log('ite', item.id)
+    return (
+      <View style={{height: 100, backgroundColor: 'green'}}>
+        <Text>{item.content}</Text>
+        <Button
+          title={'add'}
+          onPress={() => {
+            // add();
+            setNumber(number + 1);
+          }}
+          style={{marginTop: 100, backgroundColor: 'white'}}
+        />
+      </View>
+    );
   };
+
+  const Child = React.memo(({item}) => {
+    console.log('item', item.id);
+    return (
+      <View style={{height: 100, backgroundColor: 'green'}}>
+        <Text>{item.content}</Text>
+        <Button
+          title={'add'}
+          onPress={() => {
+            add();
+            // setNumber(number + 1);
+          }}
+          style={{marginTop: 100, backgroundColor: 'white'}}
+        />
+      </View>
+    );
+  });
+
+  // const keyExtractor = useCallback(item => item.id, []);
+  const keyExtractor = (item) => {
+    return item.id
+  }
 
   return (
-    <CollapsibleHeader
-      tabBarHeight={TAB_BAR_HEIGHT}
-      headerHeight={props.headerHeight}
-      currentKey={currentKey}
-      onKeyChange={key => setCurrentKey(key)}
-      tabData={[
-        {
-          key: 'article',
-          title: '动态',
-          component: renderTabOne,
-        },
-        {
-          key: 'contacts',
-          title: '帖子',
-          component: renderTabTwo,
-        },
-      ]}
-      renderHeader={props.renderHeader}
-      // <View style={[styles.headerRow, {height: props.headerHeight}]}>
-      //   <View style={styles.headerCol}>
-      //     <Text style={styles.text}>Collapsible Header</Text>
-      //   </View>
-      // </View>
-      separator={true}
-    />
+    <View style={{flex: 1}}>
+      <Pressable
+        title={'add'}
+        onPress={() => {
+          add();
+          // setNumber(number + 1);
+        }}
+        style={{marginTop: 0, height: 100, backgroundColor: 'red'}}
+      />
+      <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}  style={{marginTop: 100}}/>
+    </View>
   );
 };
 

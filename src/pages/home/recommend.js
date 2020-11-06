@@ -25,14 +25,14 @@ const Recommend = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
 
   const RecommendList = () => {
-    // return <DoubleLists request={{api: getRecommendPosts}} type="recommend" />;
-    return (
-      <DoubleList
-        settings={{removeClippedSubviews: false}}
-        request={{api: getRecommendPosts}}
-        type="recommend"
-      />
-    );
+    return <DoubleLists request={{api: getRecommendPosts}} type="recommend" />;
+    // return (
+    //   <DoubleList
+    //     settings={{removeClippedSubviews: false}}
+    //     request={{api: getRecommendPosts}}
+    //     type="recommend"
+    //   />
+    // );
     // return (
     //   <WaterFlowList
     //     settings={{removeClippedSubviews: false}}
@@ -76,11 +76,7 @@ const Recommend = props => {
           lazy={true}
           currentKey={currentKey}
           tabData={[
-            {
-              key: 'recommend',
-              title: '推荐',
-              component: RecommendList,
-            },
+
             {
               key: 'follow',
               title: '关注',

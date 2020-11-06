@@ -145,7 +145,7 @@ const Settings = ({navigation, route}) => {
         <ItemView
           style={[styles.bottomBorder1px, styles.nestLine]}
           onPress={() => {
-            navigation.navigate('Report');
+            navigation.navigate('LabIndex');
           }}>
           <ItemTitle>实验室</ItemTitle>
           <ForwardRight />

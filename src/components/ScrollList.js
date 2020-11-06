@@ -226,7 +226,7 @@ const ScrollList = props => {
         ) : null
       }
     />
-  );
+  )
 };
 
 const scrollStyle = StyleSheet.create({
