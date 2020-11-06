@@ -19,14 +19,11 @@ import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
-
+const width = Dimensions.get('window').width;
+const halfWidth = (width - 10) / 2; // 屏幕去掉两边后的宽度
 const SingleItem = props => {
-  const [height, setheight] = useState(200);
   const navigation = useNavigation();
-  const width = Dimensions.get('window').width;
-  const halfWidth = (width - 10) / 2; // 屏幕去掉两边后的宽度
   const {data} = props;
-
   const [praiseForm, setPraiseForm] = useState({
     praise: data.praise,
     praises_count: data.praises_count,
@@ -44,19 +41,21 @@ const SingleItem = props => {
   };
 
   const onPraise = async () => {
+    console.log('onPraise', props.data)
+
     switch (props.item_type) {
       case 'Article':
         if (praiseForm.praise) {
-          await destroyArticleAction({id: props.detail.id, type: 'praise'});
+          await destroyArticleAction({id: data.id, type: 'praise'});
         } else {
-          await createArticleAction({id: props.detail.id, type: 'praise'});
+          await createArticleAction({id: data.id, type: 'praise'});
         }
         break;
       case 'Topic':
         if (praiseForm.praise) {
           await destroyTopicAction({id: data.id, type: 'praise'});
         } else {
-          await createTopicAction({id: data.id, type: 'type'});
+          await createTopicAction({id: data.id, type: 'praise'});
         }
         break;
     }
@@ -77,7 +76,7 @@ const SingleItem = props => {
   //   }
   // });
 
-  console.log('xxxxxxxx', data.id)
+  console.log('double list', data.id)
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
@@ -94,7 +93,7 @@ const SingleItem = props => {
         )}
         {/*<Text>{data.single_cover.cover_url}</Text>*/}
         {data.has_video && (
-          <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
+          <FastImg resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
         )}
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
@@ -102,7 +101,7 @@ const SingleItem = props => {
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
         {props.isTop && (
-          <Image
+          <FastImg
             source={TopImage}
             style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
@@ -111,7 +110,7 @@ const SingleItem = props => {
         )}
 
         {!props.isTop && data.excellent && (
-          <Image
+          <FastImg
             source={ExcellentImage}
             style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
@@ -133,11 +132,7 @@ const SingleItem = props => {
             </Text>
           </Pressable>
           <Pressable
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            style={styles.likewrap}
             hitSlop={{left: 5, top: 5, bottom: 5}}
             onPress={onPraise}>
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
@@ -158,7 +153,7 @@ const DoubleSingle = props => {
   return (
     <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
       {data.map((v, index) => {
-        return <SingleItem key={v.id} data={v.item} isTop={v.is_top} type={v.item_type} />;
+        return <SingleItem key={v.id} data={v.item} isTop={v.is_top} item_type={v.item_type} />;
       })}
     </View>
   );
@@ -174,12 +169,12 @@ const DoubleList = props => {
   }
   const Child = React.memo(({item}) => {
     // console.log('child item', item)
-    return <SingleItem key={item.id} data={item.item} isTop={item.is_top} type={item.item_type} />;
+    return <SingleItem data={item.item} isTop={item.is_top} item_type={item.item_type} />;
   }, compare);
 
   const WrapChild = useCallback(({item}) => {
     return <Child key={item.id} item={item} />
-  },[])
+  }, [])
 
   const renderItemMemo = useCallback(
     ({item, index}) => {
@@ -188,24 +183,13 @@ const DoubleList = props => {
       return (
         <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
           {(item === 1 ? leftPostList : rightPostList).map((v, index) => {
-            return <WrapChild item={v}/>
+            return <WrapChild key={`wrapchild-${v.id}`} item={v}/>
           })}
         </View>
       );
     },
     [listData]
   );
-  //
-  // const DoubleSingleMemo = useCallback(({data}) => {
-  //   (
-  //     <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
-  //       {data.map((v, index) => {
-  //         return <SingleItem key={v.id} data={v.item} isTop={v.is_top} type={v.item_type} />;
-  //       })}
-  //     </View>
-  //   ),
-  //     [];
-  // });
 
   const renderItem = ({item, index}) => {
     const leftPostList = listData.filter((v, i) => i % 2 === 0);
@@ -230,7 +214,6 @@ const DoubleList = props => {
   const indexLoadData = async (page = 1) => {
     setLoading(true);
     let itemList = [];
-
     // 加载首页置顶的
     let top_posts_res = await getRecommendTopPosts();
     itemList = top_posts_res.data.posts;
@@ -238,10 +221,7 @@ const DoubleList = props => {
 
     const {api, params} = props.request;
     const res = await api({...params, page});
-    // console.log('xxxxxx', api, params)
-    // console.log('xxxxxx', res, res.data.posts)
     const data = res.data.posts;
-    // const data = [];
     setListData(itemList.concat(data));
     setLoading(false);
     setHeaders(res.headers);
@@ -265,9 +245,6 @@ const DoubleList = props => {
     }
   }, []);
 
-  const renderSimple = ({item}) => {
-    return <SingleItem key={item.id} data={item.item} isTop={item.is_top} type={item.item_type} />;
-  };
   return (
     <ScrollList
       data={listData.length === 0 ? [] : [1, 2]}
@@ -276,7 +253,7 @@ const DoubleList = props => {
       headers={headers}
       renderItem={renderItemMemo}
       numColumns={2}
-      settings={{initialNumToRender: 10, windowSize: 4, ...props.settings}}
+      settings={{initialNumToRender: 5, windowSize: 8, ...props.settings}}
       style={styles.wrapper}
     />
   );
@@ -294,6 +271,11 @@ const styles = StyleSheet.create({
     // backgroundColor: 'pink',
     // paddingLeft: 5,
     // paddingRight: 5,
+  },
+  likewrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   singleWrap: {
     flex: 1,

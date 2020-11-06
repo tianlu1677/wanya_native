@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
+import {debounce} from 'lodash'
 import Loading from '@/components/Loading';
 import PullToRefresh from '@/components/AnimatedPullToRefresh';
 
@@ -185,12 +186,14 @@ const ScrollList = props => {
     }
   };
 
+  const keyExtractor = useCallback(item => String(item[props.itemKey || 'id']), []);
+
   return (
     <Animated.FlatList
       ref={props.getRref}
       horizontal={false}
       contentContainerStyle={[scrollStyle.containter, props.style]}
-      keyExtractor={item => String(item[props.itemKey || 'id'])}
+      keyExtractor={keyExtractor}
       renderItem={props.renderItem}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
       data={props.data}
@@ -202,15 +205,18 @@ const ScrollList = props => {
       // onScrollEndDrag={onScrollEndDrag}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
-      onEndReached={enableLoadMore ? onEndReached : null}
+      onEndReached={enableLoadMore ? debounce(onEndReached, 100) : null}
       onEndReachedThreshold={0.2}
+      // maxToRenderPerBatch={1} // 增量渲染最大数量
+      // updateCellsBatchingPeriod={3000}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
       ListHeaderComponent={props.ListHeaderComponent || null}
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
+      initialNumToRender={1}
       removeClippedSubviews={false}
-      windowSize={4}
+      windowSize={6}
       // progressViewOffset={1}
       // debug
       {...props.settings}
