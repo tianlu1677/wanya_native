@@ -27,7 +27,7 @@ export const dispatchCurrentAccount = () => async dispatch => {
 
 export const dispatchBaseCurrentAccount = () => async dispatch => {
   const res = await getCurrentAccountBaseInfo();
-  console.log('dispatchBaseCurrentAccount', res);
+  // console.log('dispatchBaseCurrentAccount', res);
   dispatch({
     type: BASE_CURRENT_ACCOUNT_SUCCESS,
     account: res.account,
