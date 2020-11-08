@@ -11,7 +11,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+// import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -158,27 +158,28 @@ const NewTopic = props => {
     //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
     //   }
     // );
-    ImagePicker.openPicker({
-      mediaType: 'video',
-      writeTempFile: false,
-      smartAlbums: ['Videos'],
-      loadingLabelText: '导出视频中, 请稍等...',
-      sortOrder: 'asc',
-    }).then(async video => {
-      console.log(video);
-      props.removeAllPhoto();
-      let videoSourceContent = {
-        uri: video.path,
-        height: video.height,
-        width: video.width,
-        duration: video.duration,
-      };
-      setVideoSource([videoSourceContent]);
-      const result = await props.uploadVideo(videoSourceContent, dispatch);
-      setVideoSource([result.asset]);
-      dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-      // Alert.alert(JSON.stringify(video))
-    });
+
+    // ImagePicker.openPicker({
+    //   mediaType: 'video',
+    //   writeTempFile: false,
+    //   smartAlbums: ['Videos'],
+    //   loadingLabelText: '导出视频中, 请稍等...',
+    //   sortOrder: 'asc',
+    // }).then(async video => {
+    //   console.log(video);
+    //   props.removeAllPhoto();
+    //   let videoSourceContent = {
+    //     uri: video.path,
+    //     height: video.height,
+    //     width: video.width,
+    //     duration: video.duration,
+    //   };
+    //   setVideoSource([videoSourceContent]);
+    //   const result = await props.uploadVideo(videoSourceContent, dispatch);
+    //   setVideoSource([result.asset]);
+    //   dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+    //   // Alert.alert(JSON.stringify(video))
+    // });
   };
 
   const deleteMedia = index => {
