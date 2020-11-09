@@ -1,11 +1,13 @@
 import request from './request';
 
 // 保存用户的devicetoken列表
-export async function syncDeviceToken(data = {platform: '', device_token: '', app_sytem_info: ''}) {
+export async function syncDeviceToken(
+  data = {platform: '', device_token: '', app_system_info: ''}
+) {
   const res = await request({
     url: `/api/v1/app_devices`,
     method: 'POST',
-    params: data,
+    data: data,
   });
   return res.data;
 }

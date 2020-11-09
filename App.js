@@ -111,7 +111,8 @@ class App extends Component {
   // 通知相关内容
   onRegister = response => {
     console.log('onRegister', response.token);
-    syncDeviceToken({device_token: response.token, platform: response.os});
+    const data = {device_token: response.token, platform: response.os}
+    syncDeviceToken(data);
   };
 
   // 接受到通知
