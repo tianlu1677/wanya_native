@@ -28,7 +28,7 @@ const SocialLogin = ({navigation, route}) => {
     navigation.navigate('PasswordLogin');
   };
   // 跳转逻辑
-  const verifyLoginStep = async userInfoRes => {
+  const verifyLoginStep = async(userInfoRes, loginType = 'wechatLogin') => {
     if (userInfoRes.error) {
       Toast.showError(userInfoRes.error);
       console.log('error', userInfoRes.error);
@@ -118,7 +118,7 @@ const SocialLogin = ({navigation, route}) => {
         };
         console.log('post', data);
         const accountInfo = await appAppleSignIn(data);
-        await verifyLoginStep(accountInfo);
+        await verifyLoginStep(accountInfo, 'appleLogin');
       } else {
         Toast.showError('您的苹果登录已失效，请重新尝试');
       }
@@ -152,11 +152,12 @@ const SocialLogin = ({navigation, route}) => {
       {/*<Pressable*/}
       {/*  style={{*/}
       {/*    position: 'absolute',*/}
-      {/*    backgroundColor: 'red',*/}
-      {/*    top: 50,*/}
+      {/*    backgroundColor: 'white',*/}
+      {/*    top: 100,*/}
       {/*    right: 20,*/}
       {/*    width: 30,*/}
       {/*    height: 100,*/}
+      {/*    zIndex: 100*/}
       {/*  }}*/}
       {/*  onPress={() => {*/}
       {/*    console.log('xxx');*/}
