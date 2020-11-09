@@ -208,9 +208,9 @@ const ScrollList = props => {
       onScrollEndDrag={() => {
         setFinishContent(true)
       }}
-      onScrollBeginDrag={() => {
-        setFinishContent(false)
-      }}
+      // onScrollBeginDrag={() => {
+      //   setFinishContent(false)
+      // }}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
       onEndReached={enableLoadMore ? throttle(onEndReached, 500) : null}
