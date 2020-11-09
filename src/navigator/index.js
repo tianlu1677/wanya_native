@@ -127,7 +127,7 @@ function MainStackList() {
 
   return (
     <MainStack.Navigator
-      initialRouteName="Recommend1"
+      initialRouteName="Recommend"
       headerMode="screen"
       screenOptions={({route}) => ({
         headerStyle: {
@@ -160,7 +160,7 @@ function MainStackList() {
           </View>
         ),
       })}>
-      <MainStack.Screen name="Recommend1" component={Render} options={{headerShown: false}} />
+      <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
       {routers.map(route => {
         const render = props => {
           const Components = route.component;
