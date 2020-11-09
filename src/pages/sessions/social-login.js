@@ -51,7 +51,7 @@ const SocialLogin = ({navigation, route}) => {
     }
     // 没有手机跳转到手机
     if (!accountInfo.had_phone) {
-      navigation.navigate('PhoneLogin');
+      navigation.navigate('PhoneLogin', {loginType: loginType});
       return;
     }
     // 有手机，没有验证码跳转到验证码

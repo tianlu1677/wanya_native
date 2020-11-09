@@ -11,7 +11,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import FinishBtn from '@/pages/sessions/components/finishbtn';
 
 var md5 = require('md5');
-
+const appleLogin = 'appleLogin'
 const PhoneLogin = ({navigation, route}) => {
   const loginType = route.params?.loginType || 'wechatLogin';
   const [phone, setPhone] = useState('');
@@ -48,12 +48,12 @@ const PhoneLogin = ({navigation, route}) => {
           {skip && phone.length <= 0 ? (
             <FinishBtn
               onPress={skipPhone}
-              textColor={'#3535354'}
+              textColor={'#353535'}
               text={'跳过'}
               canClick={true}
             />
           ) : (
-            <FinishBtn onPress={onVerifyPhoneCode} canClick={phoneCode.length === 6} />
+            <FinishBtn onPress={onVerifyPhoneCode} canClick={phone.length > 0} />
           )}
         </View>
         // <FinishBtn onPress={onVerifyPhoneCode} canClick={phoneCode.length === 6} />
@@ -61,8 +61,21 @@ const PhoneLogin = ({navigation, route}) => {
     });
   }, [navigation, phoneCode, phone, skip]);
 
-  const skipPhone = () => {
-    navigation.navigate('InviteLogin');
+  const skipPhone = async () => {
+    const token = await Helper.getData('socialToken');
+    // Toast.showError('注册成功');
+    const accountInfo = await getCurrentAccount({token: token});
+    if (!accountInfo.account.had_invited) {
+      navigation.navigate('InviteLogin');
+    } else {
+      await Helper.setData('auth_token', token);
+      dispatch(dispatchSetAuthToken(token));
+      dispatch(dispatchCurrentAccount());
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Recommend'}],
+      });
+    }
   }
 
   const downTimeRunner = () => {
@@ -109,7 +122,9 @@ const PhoneLogin = ({navigation, route}) => {
   };
 
   const onVerifyPhoneCode = async () => {
+    console.log('xxxxxxxxx')
     if (!/^1[3456789]\d{9}$/.test(phone)) {
+
       Toast.showError('请输入正确的手机号');
       return;
     }
