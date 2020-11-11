@@ -145,6 +145,10 @@ class App extends Component {
 
   loadNetworkInfo = () => {
     this.networdunsubscribe = NetInfo.addEventListener(state => {
+      // console.log('state', state)
+      if(this.state.netInfoErr === !state.isConnected ) {
+        return
+      }
       if (state.isConnected) {
         this.setState({
           netInfoErr: false,
