@@ -49,13 +49,13 @@ const AuthStack = createStackNavigator();
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'; // 存储上次打开的位置
 
 const TabBar = props => (
-  <VibrancyView
+  <BlurView
     style={styles.blurView}
     blurType="light"
     blurAmount={80}
     reducedTransparencyFallbackColor="#white">
     <BottomTabBar {...props} />
-  </VibrancyView>
+  </BlurView>
 );
 
 function HomeTabList() {
