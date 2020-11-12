@@ -78,7 +78,7 @@ const InviteLogin = ({navigation, route}) => {
     <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
       <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
-        <TitleText>内测邀请</TitleText>
+        <TitleText>邀请码邀请</TitleText>
         <InputWrapView>
           <TextInput
             autoFocus
@@ -95,7 +95,7 @@ const InviteLogin = ({navigation, route}) => {
             value={inviteCode}
             style={styles.inviteCode}
           />
-          <Text style={styles.inviteCodeDesc}>顽鸦社区尚处于内测阶段，登录需邀请码</Text>
+          <Text style={styles.inviteCodeDesc}>顽鸦社区为了更好的使用体验，登录需邀请码</Text>
         </InputWrapView>
       </View>
     </SafeAreaView>

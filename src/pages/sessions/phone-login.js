@@ -1,4 +1,4 @@
-import React, {Component, useState, useLayoutEffect} from 'react';
+import React, {Component, useEffect, useState, useLayoutEffect} from 'react';
 import {StyleSheet, StatusBar, View, TextInput, Pressable, Text, Button, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
@@ -11,15 +11,21 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import FinishBtn from '@/pages/sessions/components/finishbtn';
 
 var md5 = require('md5');
-
+const appleLogin = 'appleLogin'
 const PhoneLogin = ({navigation, route}) => {
+  const loginType = route.params?.loginType || 'wechatLogin';
   const [phone, setPhone] = useState('');
+  const [skip, setSkip] = useState(false);
   const [phoneCode, setPhoneCode] = useState('');
   const [downTime, setDownTime] = useState(0);
   const [firstVerify, setFirstVerify] = useState(true);
   const [verifyText, setVerifyText] = useState('获取验证码');
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    setSkip(loginType === 'appleLogin')
+  }, []);
+  //
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -31,17 +37,46 @@ const PhoneLogin = ({navigation, route}) => {
         shadowOpacity: 0,
         borderBottomWidth: 0,
       },
-      headerBackImage: () => (
+      1: () => (
         <Image
           source={require('../../assets/images/back-white.png')}
           style={{width: 9, height: 15}}
         />
       ),
       headerRight: () => (
-        <FinishBtn onPress={onVerifyPhoneCode} canClick={phoneCode.length === 6} />
+        <View>
+          {skip && phone.length <= 0 ? (
+            <FinishBtn
+              onPress={skipPhone}
+              textColor={'#353535'}
+              text={'跳过'}
+              canClick={true}
+            />
+          ) : (
+            <FinishBtn onPress={onVerifyPhoneCode} canClick={phone.length > 0} />
+          )}
+        </View>
+        // <FinishBtn onPress={onVerifyPhoneCode} canClick={phoneCode.length === 6} />
       ),
     });
-  }, [navigation, phoneCode, phone]);
+  }, [navigation, phoneCode, phone, skip]);
+
+  const skipPhone = async () => {
+    const token = await Helper.getData('socialToken');
+    // Toast.showError('注册成功');
+    const accountInfo = await getCurrentAccount({token: token});
+    if (!accountInfo.account.had_invited) {
+      navigation.navigate('InviteLogin');
+    } else {
+      await Helper.setData('auth_token', token);
+      dispatch(dispatchSetAuthToken(token));
+      dispatch(dispatchCurrentAccount());
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Recommend'}],
+      });
+    }
+  }
 
   const downTimeRunner = () => {
     var timeo = 59;
@@ -87,11 +122,17 @@ const PhoneLogin = ({navigation, route}) => {
   };
 
   const onVerifyPhoneCode = async () => {
-    console.log('xxxx', phone, phoneCode);
+    console.log('xxxxxxxxx')
+    if (!/^1[3456789]\d{9}$/.test(phone)) {
+
+      Toast.showError('请输入正确的手机号');
+      return;
+    }
+    // console.log('xxxx', phone, phoneCode);
     const token = await Helper.getData('socialToken');
     let data = {phone: phone, phone_code: phoneCode, token: token};
     const verifyResponse = await verifyPhoneCode(data);
-    console.log('verifyResponse', verifyResponse);
+    // console.log('verifyResponse', verifyResponse);
     if (verifyResponse.error) {
       Toast.showError(verifyResponse.error, {});
     } else {
@@ -191,7 +232,7 @@ const PhoneLogin = ({navigation, route}) => {
       </View>
     </SafeAreaView>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   //底部默认样式

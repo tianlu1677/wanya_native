@@ -12,7 +12,7 @@ const FinishBtn = props => {
         style={{
           fontSize: 14,
           fontWeight: '600',
-          color: props.canClick ? 'white' : '#353535',
+          color: props.textColor || (props.canClick ? 'white' : '#353535'),
         }}>
         {props.text || '确定'}
       </Text>

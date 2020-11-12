@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
-import {debounce} from 'lodash'
+import {debounce, throttle} from 'lodash'
 import Loading from '@/components/Loading';
 import PullToRefresh from '@/components/AnimatedPullToRefresh';
 
@@ -40,10 +40,11 @@ const ScrollList = props => {
   const [enableRefresh] = useState(props.enableRefresh === false ? false : true);
   const [state, setState] = useState(loadState.NORMAL);
   const [pagin, setPagin] = useState(null);
-  const [currentY, setCurrentY] = useState(0);
+  const [finishContent, setFinishContent] = useState(false);
+  // const [currentY, setCurrentY] = useState(0);
   // const [title, setTitle] = useState('努力加载中...');
   const [refreshing, setRefreshing] = useState(false);
-  const [isFree, setIsFree] = useState(true);
+  // const [isFree, setIsFree] = useState(true);
 
   const onRefresh = () => {
     console.log('onRefresh start =============', state, refreshing);
@@ -54,8 +55,8 @@ const ScrollList = props => {
     try {
       setState(loadState.LOADING);
       props.onRefresh();
-      setCurrentY(0);
-      setIsFree(true);
+      // setCurrentY(0);
+      // setIsFree(true);
     } catch {
       setState(loadState.ERROR);
     }
@@ -66,13 +67,15 @@ const ScrollList = props => {
       setState(loadState.EMPTY);
       return;
     }
+    if(!finishContent) {
+      return
+    }
 
     if (refreshing || state === loadState.LOADING) {
       return;
     }
     setState(loadState.LOADING);
     console.log('onEndReached ===============', pagin, refreshing);
-
     try {
       props.onRefresh(pagin.nextPage);
     } catch {
@@ -159,32 +162,32 @@ const ScrollList = props => {
   //   return <Loading />;
   // }
 
-  const onRelease = event => {
-    console.log('event', event.nativeEvent);
-    console.log('currentY', currentY);
-    // console.log('scrollY', scrollY);
-    if (currentY < -MinHeight && currentY >= -MaxHeight && isFree) {
-      // setTitle('加载中....');
-      setIsFree(false);
-      onRefresh();
-    } else {
-      // setTitle('下拉加载');
-    }
-  };
+  // const onRelease = event => {
+  //   console.log('event', event.nativeEvent);
+  //   console.log('currentY', currentY);
+  //   // console.log('scrollY', scrollY);
+  //   if (currentY < -MinHeight && currentY >= -MaxHeight && isFree) {
+  //     // setTitle('加载中....');
+  //     setIsFree(false);
+  //     onRefresh();
+  //   } else {
+  //     // setTitle('下拉加载');
+  //   }
+  // };
 
-  const onscroll = event => {
-    const {nativeEvent} = event;
-    const {contentOffset} = nativeEvent;
-    const {y} = contentOffset;
-    // console.log('y', y);
-    // console.log('title努力加载数据', title);
-    if (y < -MinHeight && y >= -MaxHeight && !refreshing) {
-      // setTitle('放开刷新...');
-      setCurrentY(y);
-    } else if (y < 0 && !refreshing) {
-    } else {
-    }
-  };
+  // const onscroll = event => {
+  //   const {nativeEvent} = event;
+  //   const {contentOffset} = nativeEvent;
+  //   const {y} = contentOffset;
+  //   // console.log('y', y);
+  //   // console.log('title努力加载数据', title);
+  //   if (y < -MinHeight && y >= -MaxHeight && !refreshing) {
+  //     // setTitle('放开刷新...');
+  //     setCurrentY(y);
+  //   } else if (y < 0 && !refreshing) {
+  //   } else {
+  //   }
+  // };
 
   const keyExtractor = useCallback(item => String(item[props.itemKey || 'id']), []);
 
@@ -202,10 +205,15 @@ const ScrollList = props => {
       //   useNativeDriver: true,
       // })}
       // onScroll={onscroll}
-      // onScrollEndDrag={onScrollEndDrag}
+      onScrollEndDrag={() => {
+        setFinishContent(true)
+      }}
+      // onScrollBeginDrag={() => {
+      //   setFinishContent(false)
+      // }}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
-      onEndReached={enableLoadMore ? debounce(onEndReached, 100) : null}
+      onEndReached={enableLoadMore ? throttle(onEndReached, 500) : null}
       onEndReachedThreshold={0.2}
       // maxToRenderPerBatch={1} // 增量渲染最大数量
       // updateCellsBatchingPeriod={3000}
@@ -214,17 +222,21 @@ const ScrollList = props => {
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}
       bounces={props.bounces}
-      initialNumToRender={1}
+      initialNumToRender={6}
       removeClippedSubviews={false}
       windowSize={6}
       // progressViewOffset={1}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}
+      onContentSizeChange={() => {
+        // console.log('finish...')
+        setFinishContent(true)
+      }}
       refreshControl={
         enableRefresh ? (
           <RefreshControl
-            refreshing={!!props.loading}
+            refreshing={refreshing}
             onRefresh={enableRefresh ? onRefresh.bind(this) : null}
             tintColor="black"
             style={{backgroundColor: 'white'}}

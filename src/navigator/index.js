@@ -119,10 +119,11 @@ function HomeTabList() {
   );
 }
 
+const Render = props => {
+  return <HomeTabList {...props} />;
+};
+
 function MainStackList() {
-  const Render = props => {
-    return <HomeTabList {...props} />;
-  };
 
   return (
     <MainStack.Navigator

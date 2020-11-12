@@ -28,7 +28,7 @@ const SocialLogin = ({navigation, route}) => {
     navigation.navigate('PasswordLogin');
   };
   // 跳转逻辑
-  const verifyLoginStep = async userInfoRes => {
+  const verifyLoginStep = async(userInfoRes, loginType = 'wechatLogin') => {
     if (userInfoRes.error) {
       Toast.showError(userInfoRes.error);
       console.log('error', userInfoRes.error);
@@ -51,7 +51,7 @@ const SocialLogin = ({navigation, route}) => {
     }
     // 没有手机跳转到手机
     if (!accountInfo.had_phone) {
-      navigation.navigate('PhoneLogin');
+      navigation.navigate('PhoneLogin', {loginType: loginType});
       return;
     }
     // 有手机，没有验证码跳转到验证码
@@ -118,7 +118,7 @@ const SocialLogin = ({navigation, route}) => {
         };
         console.log('post', data);
         const accountInfo = await appAppleSignIn(data);
-        await verifyLoginStep(accountInfo);
+        await verifyLoginStep(accountInfo, 'appleLogin');
       } else {
         Toast.showError('您的苹果登录已失效，请重新尝试');
       }
@@ -126,7 +126,7 @@ const SocialLogin = ({navigation, route}) => {
       if (error.code === appleAuth.Error.CANCELED) {
         Toast.showError('您取消了苹果登录');
       } else {
-        Toast.showError(`您的苹果登录失败${error}`);
+        Toast.showError(`您的苹果登录失败, 请稍后重试。`);
       }
     }
   };
@@ -152,11 +152,12 @@ const SocialLogin = ({navigation, route}) => {
       {/*<Pressable*/}
       {/*  style={{*/}
       {/*    position: 'absolute',*/}
-      {/*    backgroundColor: 'red',*/}
-      {/*    top: 50,*/}
+      {/*    backgroundColor: 'white',*/}
+      {/*    top: 100,*/}
       {/*    right: 20,*/}
       {/*    width: 30,*/}
       {/*    height: 100,*/}
+      {/*    zIndex: 100*/}
       {/*  }}*/}
       {/*  onPress={() => {*/}
       {/*    console.log('xxx');*/}

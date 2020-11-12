@@ -21,9 +21,14 @@ import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
-import NetworkErrorModal from "@/components/NetworkErrorModal"
+import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
+import NetworkErrorModal from '@/components/NetworkErrorModal';
+
+import * as RootNavigation from '@/navigator/root-navigation';
+
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
+const queryString = require('query-string');
 const codePushOptions = {
   // 设置检查更新的频率
   // ON_APP_RESUME APP恢复到前台的时候
@@ -41,9 +46,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      netInfoErr: false
-    }
-    this.notif = new NotifyService();
+      netInfoErr: false,
+    };
   }
 
   componentDidMount() {
@@ -57,6 +61,7 @@ class App extends Component {
     this.loadSettings();
     this.checkPermission();
     this.loadNetworkInfo();
+    this.notif = new NotifyService(this.onRegister, this.onNotification);
     // this.loadDeviceInfo();
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
@@ -76,7 +81,7 @@ class App extends Component {
   loadSplashImg = () => {
     setTimeout(() => {
       RNBootSplash.hide({duration: 10});
-    }, 1500);
+    }, 1000);
   };
 
   loadSettings = () => {
@@ -103,18 +108,55 @@ class App extends Component {
     });
   };
 
-  loginAdmin = () => {};
+  // 通知相关内容
+  onRegister = response => {
+    console.log('onRegister', response.token);
+    const data = {device_token: response.token, platform: response.os}
+    syncDeviceToken(data);
+  };
+
+  // 接受到通知
+  // NotificationHandler: {"badge": undefined, "data": {"TopicDetail": "1", "actionIdentifier": "com.apple.UNNotificationDefaultActionIdentifier", "aps": {"alert": "哈哈哈", "badge": 1, "mutable-content": 1, "sound": "default", "url": "https://baidu.com"}, "d": "uukbzq5160490651243410", "p": 0, "screen": "AccountDetail", "userInteraction": 1}, "finish": [Function finish], "foreground": true, "id": undefined, "message": "哈哈哈", "soundName": undefined, "title": null, "userInteraction": true}
+  async onNotification(notification) {
+    try {
+      console.log('onNotification:', notification);
+      const auth_token = await Helper.getData('auth_token');
+      if (!auth_token) {
+        return;
+      }
+      const data = notification.data;
+      const params = data.params;
+      const screen = data.screen;
+      if (!params || !screen) {
+        return;
+      }
+      const screen_params = queryString.parse(data.params);
+      // debugger
+      console.log('params', params, screen);
+      RootNavigation.navigate(data.screen, screen_params);
+    } catch (e) {
+      console.log('error', e);
+    }
+    // 已登录的情况下
+    // 未登录的情况下
+    // foreground 已在前台的情况下
+    // 不在前台运行的情况下
+  }
 
   loadNetworkInfo = () => {
     this.networdunsubscribe = NetInfo.addEventListener(state => {
+      // console.log('state', state)
+      if(this.state.netInfoErr === !state.isConnected ) {
+        return
+      }
       if (state.isConnected) {
         this.setState({
-          netInfoErr: false
-        })
+          netInfoErr: false,
+        });
       } else {
         this.setState({
-          netInfoErr: true
-        })
+          netInfoErr: true,
+        });
       }
     });
   };
@@ -132,7 +174,6 @@ class App extends Component {
     });
 
     let bundleId = DeviceInfo.getBundleId();
-    // console.log('bundleId', bundleId)
   };
 
   loadImgList = () => {
@@ -147,7 +188,9 @@ class App extends Component {
             <Navigation />
             <NetworkErrorModal
               visible={this.state.netInfoErr}
-              handleCancel={() => { this.setState({netInfoErr: false})}}
+              handleCancel={() => {
+                this.setState({netInfoErr: false});
+              }}
             />
             <ImagePreview />
             <ShareItem />

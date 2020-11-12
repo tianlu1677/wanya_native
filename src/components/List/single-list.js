@@ -34,7 +34,9 @@ const SingleList = props => {
   });
 
   const loadData = async (page = 1) => {
-    setLoading(true);
+    if( page === 1 ) {
+      setLoading(true);
+    }
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
@@ -55,7 +57,8 @@ const SingleList = props => {
       headers={headers}
       renderItem={renderItemMemo}
       style={{backgroundColor: '#FAFAFA'}}
-      settings={{initialNumToRender: 6, onEndReachedThreshold: 0.1}}
+      settings={{initialNumToRender: 6, onEndReachedThreshold: 0.25, windowSize: 8}}
+      {...props}
     />
   );
 };

@@ -45,12 +45,17 @@ const PasswordLogin = ({navigation, route}) => {
     phoneSignIn({phone: phone, password: password}).then(async res => {
       console.log('res', res);
       if (res.status === 200) {
+        await Helper.setData('auth_token', res.token);
         dispatch(dispatchSetAuthToken(res.token));
         dispatch(dispatchCurrentAccount());
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Recommend'}],
-        });
+        Toast.showError('登录成功');
+        setTimeout(() => {
+          Toast.hide();
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Recommend'}],
+          });
+        }, 1000);
       } else {
         Toast.showError('用户名或者密码错误');
       }
