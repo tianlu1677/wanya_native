@@ -27,7 +27,7 @@ const FastImgGif = props => {
 
   return (
     <FastImage
-      style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
+      style={{width: 10, height: 10, borderRadius: 2, ...props.style}}
       source={{
         ...props.source,
         // priority: FastImage.priority.low,

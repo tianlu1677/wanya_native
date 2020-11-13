@@ -1,6 +1,6 @@
-import React, {Component, useState, useLayoutEffect, useEffect, useSelector} from 'react';
+import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import {contentBlank} from '../../styles/commonStyles';
@@ -13,6 +13,8 @@ import {BaseApiUrl} from '@/utils/config';
 // import ListItem from '@/components/ListItem';
 
 const Settings = ({navigation, route}) => {
+  const currentAccount = useSelector(state => state.account.currentAccount);
+
   // const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
 
@@ -49,7 +51,8 @@ const Settings = ({navigation, route}) => {
         });
         break;
       case 'lab':
-        navigation.navigate('LabIndex');
+        navigation.navigate('Report');
+
         break;
       case 'checkupdate':
         // Toast.showError('正在检测更新，请稍等')
@@ -133,22 +136,27 @@ const Settings = ({navigation, route}) => {
           <ItemTitle>邀请码</ItemTitle>
           <ForwardRight />
         </ItemView>
-        <ItemView
-          style={[styles.bottomBorder1px, styles.nestLine]}
-          onPress={() => {
-            goPages('checkupdate');
-          }}>
-          <ItemTitle>检测更新</ItemTitle>
-          <ForwardRight />
-        </ItemView>
-        {/*<ItemView*/}
-        {/*  style={[styles.bottomBorder1px, styles.nestLine]}*/}
-        {/*  onPress={() => {*/}
-        {/*    goPages('lab');*/}
-        {/*  }}>*/}
-        {/*  <ItemTitle>实验室</ItemTitle>*/}
-        {/*  <ForwardRight />*/}
-        {/*</ItemView>*/}
+
+        {currentAccount.role === 'admin' && (
+          <ItemView
+            style={[styles.bottomBorder1px, styles.nestLine]}
+            onPress={() => {
+              goPages('checkupdate');
+            }}>
+            <ItemTitle>检测更新</ItemTitle>
+            <ForwardRight />
+          </ItemView>
+        )}
+        {currentAccount.role === 'admin' && (
+          <ItemView
+            style={[styles.bottomBorder1px, styles.nestLine]}
+            onPress={() => {
+              navigation.navigate('LabIndex');
+            }}>
+            <ItemTitle>实验室</ItemTitle>
+            <ForwardRight />
+          </ItemView>
+        )}
         <ItemView
           style={[styles.bottomBorder1px, styles.nestLine]}
           onPress={() => {

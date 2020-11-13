@@ -1,6 +1,5 @@
 // 首页
 import {CardStyleInterpolators, HeaderStyleInterpolators} from '@react-navigation/stack';
-import Recommend from '@/pages/home/recommend';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
@@ -67,9 +66,13 @@ import WebView from '@/pages/webview/webview';
 
 import SharePage from '@/pages/shares/share_page'; //分享
 
+// 举报
+import Report from '@/pages/reports/report'
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
+
+import List from '@/pages/lottileList/list';
 
 const topicRouter = [
   {
@@ -115,7 +118,6 @@ const topicRouter = [
     name: 'AddNode',
     barColor: 'dark',
     component: AddNode,
-    // options: {title: '选择圈子'},
   },
 ];
 
@@ -224,6 +226,13 @@ const commonRouter = [
     safeArea: false,
     barColor: 'dark',
     options: {title: '分享', headerShown: true},
+  },
+  {
+    name: 'Report',
+    component: Report,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '举报', headerShown: true},
   },
 ];
 
@@ -360,5 +369,11 @@ export const routers = [
     safeArea: false,
     component: EditAccountContent,
     options: {title: '编辑信息'},
+  },
+  {
+    name: 'list',
+    safeArea: false,
+    component: List,
+    options: {title: '列表'},
   },
 ];

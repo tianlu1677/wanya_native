@@ -7,12 +7,12 @@ const FinishBtn = props => {
   };
 
   return (
-    <Pressable onPress={onPress} style={{paddingRight: 3}} hitSlop={{left: 20, top: 20, bottom: 20}}>
+    <Pressable onPress={onPress} style={{paddingRight: 10}} hitSlop={{left: 20, top: 20, bottom: 20}}>
       <Text
         style={{
           fontSize: 14,
           fontWeight: '600',
-          color: props.canClick ? 'white' : '#353535',
+          color: props.textColor || (props.canClick ? 'white' : '#353535'),
         }}>
         {props.text || '确定'}
       </Text>

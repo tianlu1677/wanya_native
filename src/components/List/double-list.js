@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, ScrllView, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
@@ -12,50 +12,51 @@ import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {RFValue} from '@/utils/response-fontsize';
+import {debounce, throttle} from 'lodash';
+
 const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
-import FastImageGif from '@/components/FastImageGif'
+import FastImageGif from '@/components/FastImageGif';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
-
+const width = Dimensions.get('window').width;
+const halfWidth = (width - 10) / 2; // 屏幕去掉两边后的宽度
 const SingleItem = props => {
-  const [height, setheight] = useState(200);
   const navigation = useNavigation();
-  const width = Dimensions.get('window').width;
-  const halfWidth = (width - 10) / 2; // 屏幕去掉两边后的宽度
   const {data} = props;
-
   const [praiseForm, setPraiseForm] = useState({
     praise: data.praise,
     praises_count: data.praises_count,
   });
 
   const onGoDetail = v => {
-    switch (props.type) {
+    switch (props.item_type) {
       case 'Topic':
         navigation.push('TopicDetail', {topicId: data.id});
         break;
       case 'Article':
-        navigation.navigate('ArticleDetail', {topicId: data.id});
+        navigation.navigate('ArticleDetail', {articleId: data.id});
         break;
     }
   };
 
   const onPraise = async () => {
+    // console.log('onPraise', props.data)
+
     switch (props.item_type) {
       case 'Article':
         if (praiseForm.praise) {
-          await destroyArticleAction({id: props.detail.id, type: 'praise'});
+          await destroyArticleAction({id: data.id, type: 'praise'});
         } else {
-          await createArticleAction({id: props.detail.id, type: 'praise'});
+          await createArticleAction({id: data.id, type: 'praise'});
         }
         break;
       case 'Topic':
         if (praiseForm.praise) {
           await destroyTopicAction({id: data.id, type: 'praise'});
         } else {
-          await createTopicAction({id: data.id, type: 'type'});
+          await createTopicAction({id: data.id, type: 'praise'});
         }
         break;
     }
@@ -67,26 +68,16 @@ const SingleItem = props => {
     setPraiseForm(params);
   };
 
-  useEffect(() => {
-    if (data.single_cover.height) {
-      const h = data.single_cover
-        ? (data.single_cover.height * halfWidth) / data.single_cover.width
-        : 500;
-      setheight(h);
-    }
-  });
+  // useEffect(() => {
+  //   if (data.single_cover.height) {
+  //     const h = data.single_cover
+  //       ? (data.single_cover.height * halfWidth) / data.single_cover.width
+  //       : 500;
+  //     setheight(h);
+  //   }
+  // });
 
-  const IsTopIcon = () => {
-    return (
-      <View style={styles.isTopLabel}>
-        <View style={{flexDirection: 'row', position: 'relative'}}>
-          <Text style={styles.topText}>置顶</Text>
-          <View style={styles.sanjia} />
-        </View>
-      </View>
-    );
-  };
-
+  // console.log('double list', data.id)
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
       <View style={{backgroundColor: 'white'}}>
@@ -94,18 +85,24 @@ const SingleItem = props => {
           <FastImageGif
             source={{uri: data.single_cover.cover_url}}
             gif_url={data.single_cover.link_url}
-            style={{height: height, width: halfWidth, backgroundColor: '#F1F1F1'}}
+            style={{
+              height: (data.single_cover.height * halfWidth) / data.single_cover.width,
+              width: halfWidth,
+              backgroundColor: '#F1F1F1',
+            }}
           />
         )}
         {/*<Text>{data.single_cover.cover_url}</Text>*/}
-        {data.has_video && <Image resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />}
+        {data.has_video && (
+          <FastImg resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
+        )}
         {data.type === 'topic' && (
           <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
         )}
         {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
         {props.isTop && (
-          <Image
+          <FastImg
             source={TopImage}
             style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
@@ -114,7 +111,7 @@ const SingleItem = props => {
         )}
 
         {!props.isTop && data.excellent && (
-          <Image
+          <FastImg
             source={ExcellentImage}
             style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
             resizeMode={'contain'}
@@ -136,11 +133,7 @@ const SingleItem = props => {
             </Text>
           </Pressable>
           <Pressable
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            style={styles.likewrap}
             hitSlop={{left: 5, top: 5, bottom: 5}}
             onPress={onPraise}>
             <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
@@ -161,31 +154,51 @@ const DoubleSingle = props => {
   return (
     <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
       {data.map((v, index) => {
-        return <SingleItem key={v.id} data={v.item} isTop={v.is_top} type={v.item_type} />;
+        return <SingleItem key={v.id} data={v.item} isTop={v.is_top} item_type={v.item_type} />;
       })}
     </View>
   );
 };
 
 const DoubleList = props => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const [leftHeight, setLeftHeight] = useState(0);
-  const [rightHeight, setRightHeight] = useState(0);
-  const [leftPosts, setLeftPosts] = useState([]);
-  const [rightPosts, setRightPosts] = useState([]);
 
-  // listData.forEach((content) => {
-  //   console.log('cccc', content)
-  //   if(leftHeight <= rightHeight) {
-  //     setLeftHeight(leftHeight + content.item.single_cover.height)
-  //     setLeftPosts(leftPosts + [content])
-  //   } else {
-  //     setRightHeight(rightHeight + content.item.single_cover.height)
-  //     setRightPosts(rightPosts + [content])
-  //   }
-  // })
+  const compare = (pre, next) => {
+    // console.log(pre, next)
+    return true;
+  };
+  const Child = React.memo(({item}) => {
+    // console.log('child item', item)
+    return (
+      <SingleItem
+        data={item.item}
+        key={`singleitem-${item.id}`}
+        isTop={item.is_top}
+        item_type={item.item_type}
+      />
+    );
+  }, compare);
+
+  const WrapChild = useCallback(({item}) => {
+    return <Child key={item.id} item={item} />;
+  }, []);
+
+  const renderItemMemo = useCallback(
+    ({item, index}) => {
+      const leftPostList = listData.filter((v, i) => i % 2 === 0);
+      const rightPostList = listData.filter((v, i) => i % 2 !== 0);
+      return (
+        <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
+          {(item === 1 ? leftPostList : rightPostList).map((v, index) => {
+            return <WrapChild key={`wrapchild-${v.id}`} item={v} />;
+          })}
+        </View>
+      );
+    },
+    [listData]
+  );
 
   const renderItem = ({item, index}) => {
     const leftPostList = listData.filter((v, i) => i % 2 === 0);
@@ -196,11 +209,12 @@ const DoubleList = props => {
   };
 
   const loadData = async (page = 1) => {
-    setLoading(true);
+    if (page === 1) {
+      setLoading(true);
+    }
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = res.data.posts;
-    setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
     setHeaders(res.headers);
@@ -208,19 +222,21 @@ const DoubleList = props => {
 
   //首页推荐
   const indexLoadData = async (page = 1) => {
-    setLoading(true);
+    console.log('page', page);
+    if (page === 1) {
+      setLoading(true);
+    }
     let itemList = [];
-    const {api, params} = props.request;
-    const res = await api({...params, page});
-    const data = res.data.posts;
-
     // 加载首页置顶的
     let top_posts_res = await getRecommendTopPosts();
     itemList = top_posts_res.data.posts;
     itemList = itemList.map(item => ({...item, is_top: true}));
-
+    const {api, params} = props.request;
+    const res = await api({...params, page});
+    const data = res.data.posts;
+    itemList = itemList.concat(data);
+    setListData(itemList);
     setHeaders(res.headers);
-    setListData(itemList.concat(data));
     setLoading(false);
   };
 
@@ -234,24 +250,35 @@ const DoubleList = props => {
   };
 
   useEffect(() => {
-    if (props.type === 'recommend') {
-      indexLoadData(1);
-    } else {
-      loadData();
+    const loadFirstData = async () => {
+      if (props.type === 'recommend') {
+        await indexLoadData(1);
+      } else {
+        loadData();
+      }
+    };
+    loadFirstData();
+
+    return () => {
     }
+
   }, []);
 
   return (
     <ScrollList
       data={listData.length === 0 ? [] : [1, 2]}
       loading={loading}
-      onRefresh={onRefresh}
+      onRefresh={throttle(onRefresh, 300)}
       headers={headers}
-      renderItem={renderItem}
+      renderItem={renderItemMemo}
       numColumns={2}
-      settings={{initialNumToRender: 10}}
+      settings={{
+        onEndReachedThreshold: 0.05,
+        initialNumToRender: 5,
+        windowSize: 8,
+        ...props.settings,
+      }}
       style={styles.wrapper}
-      {...props}
     />
   );
 };
@@ -264,9 +291,15 @@ DoubleList.propTypes = {
 
 const styles = StyleSheet.create({
   wrapper: {
+    // width: '40%'
     // backgroundColor: 'pink',
     // paddingLeft: 5,
     // paddingRight: 5,
+  },
+  likewrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   singleWrap: {
     flex: 1,

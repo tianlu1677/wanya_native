@@ -2,18 +2,9 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
-import {
-  Text,
-  StatusBar,
-  TextInput,
-  Dimensions,
-  SafeAreaView,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import {Text, TextInput, Dimensions, Modal, Alert, View} from 'react-native';
 import CodePush from 'react-native-code-push';
 import {
-  check,
   requestMultiple,
   checkMultiple,
   request,
@@ -24,16 +15,20 @@ import {
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
-import Config from 'react-native-config';
 import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
 import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
+import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
+import NetworkErrorModal from '@/components/NetworkErrorModal';
+
+import * as RootNavigation from '@/navigator/root-navigation';
 
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
+const queryString = require('query-string');
 const codePushOptions = {
   // 设置检查更新的频率
   // ON_APP_RESUME APP恢复到前台的时候
@@ -41,20 +36,18 @@ const codePushOptions = {
   // MANUAL 手动检查
   checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
-
-// Config.API_URL; // 'https://myapi.com'
-// Config.GOOGLE_MAPS_API_KEY; // 'abcdefgh'
-//
 // https://github.com/react-native-community/react-native-device-info#installation
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
 import ShareItem from '@/components/ShareItem';
+import Toast from '@/components/Toast';
 
 class App extends Component {
   constructor(props) {
     super(props);
-
-    this.notif = new NotifyService();
+    this.state = {
+      netInfoErr: false,
+    };
   }
 
   componentDidMount() {
@@ -66,8 +59,9 @@ class App extends Component {
     this.loadSplashImg();
     this.loadImgList();
     this.loadSettings();
-    this.checkPermission()
-    // this.loadNetworkInfo();
+    this.checkPermission();
+    this.loadNetworkInfo();
+    this.notif = new NotifyService(this.onRegister, this.onNotification);
     // this.loadDeviceInfo();
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
@@ -87,7 +81,7 @@ class App extends Component {
   loadSplashImg = () => {
     setTimeout(() => {
       RNBootSplash.hide({duration: 10});
-    }, 1500);
+    }, 1000);
   };
 
   loadSettings = () => {
@@ -102,29 +96,74 @@ class App extends Component {
       console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
       console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
 
-      requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.LOCATION_WHEN_IN_USE, PERMISSIONS.IOS.PHOTO_LIBRARY]).then(
-        statuses => {
-          console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-          console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
-          console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-        }
-      );
+      requestMultiple([
+        PERMISSIONS.IOS.CAMERA,
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        PERMISSIONS.IOS.PHOTO_LIBRARY,
+      ]).then(statuses => {
+        console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+        console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+        console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+      });
     });
   };
 
-  loginAdmin = () => {};
+  // 通知相关内容
+  onRegister = response => {
+    console.log('onRegister', response.token);
+    const data = {device_token: response.token, platform: response.os}
+    syncDeviceToken(data);
+  };
+
+  // 接受到通知
+  // NotificationHandler: {"badge": undefined, "data": {"TopicDetail": "1", "actionIdentifier": "com.apple.UNNotificationDefaultActionIdentifier", "aps": {"alert": "哈哈哈", "badge": 1, "mutable-content": 1, "sound": "default", "url": "https://baidu.com"}, "d": "uukbzq5160490651243410", "p": 0, "screen": "AccountDetail", "userInteraction": 1}, "finish": [Function finish], "foreground": true, "id": undefined, "message": "哈哈哈", "soundName": undefined, "title": null, "userInteraction": true}
+  async onNotification(notification) {
+    try {
+      console.log('onNotification:', notification);
+      const auth_token = await Helper.getData('auth_token');
+      if (!auth_token) {
+        return;
+      }
+      const data = notification.data;
+      const params = data.params;
+      const screen = data.screen;
+      if (!params || !screen) {
+        return;
+      }
+      const screen_params = queryString.parse(data.params);
+      // debugger
+      console.log('params', params, screen);
+      RootNavigation.navigate(data.screen, screen_params);
+    } catch (e) {
+      console.log('error', e);
+    }
+    // 已登录的情况下
+    // 未登录的情况下
+    // foreground 已在前台的情况下
+    // 不在前台运行的情况下
+  }
 
   loadNetworkInfo = () => {
-    // const unsubscribe = NetInfo.addEventListener(state => {
-    //   console.log("Connection type", state.type);
-    //   console.log("Connection ", state);
-    //   console.log("Is connected?", state.isConnected);
-    // });
-    // NetInfo.fetch().then(state => {
-    //   console.log("Connection type", state.type);
-    //   console.log("Is connected?", state.isConnected);
-    // });
+    this.networdunsubscribe = NetInfo.addEventListener(state => {
+      // console.log('state', state)
+      if(this.state.netInfoErr === !state.isConnected ) {
+        return
+      }
+      if (state.isConnected) {
+        this.setState({
+          netInfoErr: false,
+        });
+      } else {
+        this.setState({
+          netInfoErr: true,
+        });
+      }
+    });
   };
+
+  componentWillUnmount() {
+    this.networdunsubscribe && this.networdunsubscribe();
+  }
 
   loadDeviceInfo = () => {
     DeviceInfo.getApiLevel().then(apiLevel => {
@@ -135,7 +174,6 @@ class App extends Component {
     });
 
     let bundleId = DeviceInfo.getBundleId();
-    // console.log('bundleId', bundleId)
   };
 
   loadImgList = () => {
@@ -148,6 +186,12 @@ class App extends Component {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Navigation />
+            <NetworkErrorModal
+              visible={this.state.netInfoErr}
+              handleCancel={() => {
+                this.setState({netInfoErr: false});
+              }}
+            />
             <ImagePreview />
             <ShareItem />
           </PersistGate>

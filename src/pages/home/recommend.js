@@ -14,8 +14,10 @@ import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import Helper from '@/utils/helper';
+import WaterFlowList from '@/components/List/waterflow-list';
+import DoubleLists from '@/components/List/double-lists';
 
-console.log(STATUS_BAR_HEIGHT);
+// console.log(STATUS_BAR_HEIGHT);
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -23,7 +25,20 @@ const Recommend = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
 
   const RecommendList = () => {
-    return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
+    // return <DoubleLists request={{api: getRecommendPosts}} type="recommend" />;
+    return (
+      <DoubleList
+        request={{api: getRecommendPosts}}
+        type="recommend"
+      />
+    );
+    // // return (
+    //   <WaterFlowList
+    //     settings={{removeClippedSubviews: false}}
+    //     request={{api: getRecommendPosts}}
+    //     type="recommend"
+    //   />
+    // );
   };
 
   const FollowList = () => {

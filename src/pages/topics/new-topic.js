@@ -10,11 +10,10 @@ import {
   Pressable,
   Dimensions,
   ScrollView,
-  Alert,
 } from 'react-native';
-// import SyanImagePicker from 'react-native-syan-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import PermissionModal from './PhotoPermission';
+import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, CommonActions} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -47,6 +46,7 @@ const NewTopic = props => {
   const defaultVideo = [];
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState(defaultVideo);
+  const [permissionModal, setPermissionModal] = useState(false); // 显示权限页面
 
   const [content, setContent] = useState(savetopic.plan_content);
 
@@ -57,17 +57,51 @@ const NewTopic = props => {
   };
 
   const getLocation = res => {
+    if (res === false) {
+      // 拒绝权限
+      dispatch({type: action.GET_LOCATION, value: {}});
+    }
+
     if (res.position && res.position.coords) {
+      // 获取到权限信息
       dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
     }
+
     navigation.navigate('AddSpace');
   };
 
-  const onImagePicker = () => {
+  const checkPermission = async () => {
+    const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+    if (status === RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === RESULTS.DENIED) {
+      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+        console.log('result', result);
+      });
+      return true;
+    }
+
+    if (status === RESULTS.BLOCKED) {
+      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+        console.log('result', result);
+      });
+      setPermissionModal(true);
+      return false;
+    }
+  };
+
+  const onImagePicker = async () => {
+    // console.log('checkPermission()', await checkPermission())
+    const hasPermission = await checkPermission();
+    if (!hasPermission) {
+      return;
+    }
     props.removeAllPhoto();
     const options = {
       imageCount: 9 - imageSource.length,
-      isCamera: false
+      isCamera: false,
     };
     props.imagePick(options, async (err, res) => {
       if (err) {
@@ -85,8 +119,12 @@ const NewTopic = props => {
     });
   };
   //TODO 限制描述
-  const onVideoPicker = () => {
-    props.removeAllPhoto();
+  const onVideoPicker = async () => {
+    const hasPermission = await checkPermission();
+    if (!hasPermission) {
+      return;
+    }
+
     // SyanImagePicker.openVideoPicker({
     //   allowTakeVideo: false,
     //   MaxSecond: 500,
@@ -121,18 +159,19 @@ const NewTopic = props => {
     //   }
     // );
     ImagePicker.openPicker({
-      mediaType: "video",
+      mediaType: 'video',
       writeTempFile: false,
       smartAlbums: ['Videos'],
       loadingLabelText: '导出视频中, 请稍等...',
       sortOrder: 'asc',
-    }).then(async (video) => {
+    }).then(async video => {
       console.log(video);
+      props.removeAllPhoto();
       let videoSourceContent = {
         uri: video.path,
         height: video.height,
         width: video.width,
-        duration: video.duration
+        duration: video.duration,
       };
       setVideoSource([videoSourceContent]);
       const result = await props.uploadVideo(videoSourceContent, dispatch);
@@ -280,6 +319,12 @@ const NewTopic = props => {
           Keyboard.dismiss();
         }}>
         <View style={styles.wrapper}>
+          <PermissionModal
+            visible={permissionModal}
+            cancleClick={() => {
+              setPermissionModal(false);
+            }}
+          />
           <View style={styles.mediaCon}>
             {/* picture */}
             {imageSource.map((v, index) => (
@@ -415,6 +460,22 @@ const NewTopic = props => {
           </View>
         </View>
       </TouchableWithoutFeedback>
+      {/* <Modal
+        transparent={true}
+        visible={true}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>授权后才能设置场地位置</Text>
+            <View style={styles.modalBtnWrap}>
+              <Text style={styles.modalBtn}>取消</Text>
+              <Text style={styles.modalBtn}>去设置</Text>
+            </View>
+          </View>
+        </View>
+      </Modal> */}
     </ScrollView>
   );
 };

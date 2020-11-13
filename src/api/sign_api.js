@@ -19,3 +19,12 @@ export async function appWechatSignIn(data = {code: '', app_id: '', source: ''})
   })
   return res.data
 }
+
+export async function appAppleSignIn(data = {user_id: '', identity_token: '', nickname: ''}) {
+  const res = await request({
+    url: '/api/sessions/app_apple_login.json',
+    method: 'POST',
+    data: data
+  })
+  return res.data
+}

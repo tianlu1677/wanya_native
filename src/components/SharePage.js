@@ -3,14 +3,9 @@ import {View, Text, Modal, Button, Dimensions, Image, StyleSheet} from 'react-na
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
 import FastImg from '@/components/FastImg'
-import {uploadBase64File} from '@/api/asset_api';
-import ImgToBase64 from 'react-native-image-base64';
 import {Avator} from '@/components/NodeComponents';
-import {DefaultLog} from '@/utils/default-image';
 import PlayVideoImg from '@/assets/images/play-video.png';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
-import WanyaShareWordImg from '@/assets/images/wanya_share_word.png';
-import Helper from '@/utils/helper';
 import {prosettings} from '@/api/settings_api';
 
 // import CameraRoll from "@react-native-community/cameraroll";
@@ -83,7 +78,7 @@ const ViewShotPage = props => {
             </View>
             <Text style={styles.text}>{content}</Text>
             <View style={styles.footer}>
-              <FastImg style={styles.shareLogo} source={require('@/assets/images/share-wanya.png')} />
+              <FastImg style={styles.shareLogo} source={require('@/assets/images/sharewanyalog.png')} />
               {qrcode_url ? (
                 <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
               ) : (
@@ -148,6 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 20,
+    marginTop: 10
   },
   nodeName: {
     color: '#fff',

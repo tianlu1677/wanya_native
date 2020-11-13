@@ -29,8 +29,6 @@ export async function getCurrentAccount() {
   return res.data;
 }
 
-
-
 // 更新用户头像昵称等数据
 export async function syncAccountInfo(data = {}) {
   const res = await request({

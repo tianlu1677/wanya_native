@@ -53,7 +53,7 @@ const TopHeader = props => {
         {Title ?
           <View style={styles.title}>
             {Title && typeof Title === 'string' ? (
-              <Text style={styles.titleText}>{Title}</Text>
+              <Text numberOfLines={1} style={styles.titleText}>{Title}</Text>
             ) : (
               <Title />
             )}

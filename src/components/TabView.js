@@ -54,7 +54,8 @@ const TabViewIndex = props => {
         onIndexChange={onIndexChange}
         initialLayout={initialLayout}
         tabBarPosition={props.tabBarPosition || 'top'}
-        lazy={props.lazy || true}
+        lazy={props.lazy}
+        swipeVelocityImpact={0.1}
         swipeEnabled={props.swipeEnabled || true}
         renderLazyPlaceholder={() => <View style={{flex: 1}}><Text>Loading</Text></View>}
         // lazyPreloadDistance={props.lazyPreloadDistance || 10}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, ActionSheetIOS, TouchableOpacity} from 'react-native';
 import IconFont from '@/iconfont';
 import {useSelector} from 'react-redux';
 import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
@@ -20,6 +20,8 @@ import {
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {BASIC_HEIGHT} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {reportContent} from '@/api/secure_check';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
@@ -65,6 +67,30 @@ const AccountDetail = ({navigation, route}) => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
   };
 
+  const onReportClick = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['取消', '拉黑', '举报'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          const data = {
+            reason: '拉黑',
+            report_type: 'Account',
+            report_type_id: accountId,
+          };
+          reportContent(data).then(res => {
+            Toast.showError('已拉黑', {duration: 500});
+          });
+        } else if (buttonIndex === 2) {
+          navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
+        }
+      }
+    );
+  };
+
   const PublishList = () => {
     return (
       <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
@@ -102,6 +128,12 @@ const AccountDetail = ({navigation, route}) => {
         />
         <View style={styles.header}>
           <GoBack />
+          <Pressable
+            onPress={onReportClick}
+            style={styles.report}
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+            <IconFont name="ziyuan" color="#fff" size={20} />
+          </Pressable>
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
             <Avator account={account} size={51} isShowSettledIcon={false} />
@@ -121,6 +153,7 @@ const AccountDetail = ({navigation, route}) => {
               </View>
               <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
             </View>
+
             {currentAccount.id !== account.id && (
               <Text
                 style={[styles.follow, account.followed && {color: '#BDBDBD'}]}
@@ -159,7 +192,7 @@ const AccountDetail = ({navigation, route}) => {
                 <Text style={styles.tag}>{account.province || '未知街区'}</Text>
               </View>
               <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
-                {account.intro || '这个人很懒，还没有填写简介'}
+                {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'}
               </Text>
             </View>
             <PlayScore score={account.play_score} style={{marginLeft: 'auto'}} onPress={onPlay} />
@@ -222,7 +255,7 @@ const AccountDetail = ({navigation, route}) => {
         visible={showModal}
         cancleClick={() => setShowModal(false)}
         title="简介"
-        content={currentAccount.intro}
+        content={account.intro}
       />
     </View>
   ) : (
@@ -233,6 +266,15 @@ const AccountDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+  },
+  report: {
+    position: 'absolute',
+    right: 16,
+    height: 44,
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    top: Math.max(getStatusBarHeight(), 20),
   },
   header: {
     paddingLeft: 19,
@@ -280,7 +322,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   settledWrap: {
-    marginBottom: 21,
+    // marginBottom: 21,
+    marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -318,7 +361,7 @@ const styles = StyleSheet.create({
   numberWrap: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 18,
+    bottom: 15,
     left: 20,
   },
   numberItem: {

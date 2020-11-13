@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconQuanzi2 = ({ size, color, ...rest }) => {
+let IconQuanzi2 = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1024 1024" width={size} height={size} {...rest}>
       <Path
@@ -19,4 +19,6 @@ IconQuanzi2.defaultProps = {
   size: 16,
 };
 
-export default React.memo ? React.memo(IconQuanzi2) : IconQuanzi2;
+IconQuanzi2 = React.memo ? React.memo(IconQuanzi2) : IconQuanzi2;
+
+export default IconQuanzi2;

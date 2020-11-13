@@ -119,10 +119,11 @@ function HomeTabList() {
   );
 }
 
+const Render = props => {
+  return <HomeTabList {...props} />;
+};
+
 function MainStackList() {
-  const Render = props => {
-    return <HomeTabList {...props} />;
-  };
 
   return (
     <MainStack.Navigator
@@ -148,7 +149,6 @@ function MainStackList() {
         },
         headerRightContainerStyle: {
           paddingRight: 15,
-          paddingLeft: 15,
         },
         headerTitleStyle: {
           fontWeight: 'bold',
@@ -156,7 +156,7 @@ function MainStackList() {
         },
         headerBackImage: () => (
           <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
-            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 10}} />
+            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 0}} />
           </View>
         ),
       })}>

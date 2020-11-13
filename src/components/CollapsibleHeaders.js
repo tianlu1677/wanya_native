@@ -9,7 +9,7 @@ const titleHeight = NAVIGATION_BAR_HEIGHT; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
-  console.log(headerHeight);
+  // console.log(headerHeight);
 
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
@@ -88,6 +88,7 @@ const CollapsibleHeader = props => {
         <Animated.FlatList
           scrollToOverflowEnabled
           scrollEventThrottle={16}
+          useNativeDriver={true}
           onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
             useNativeDriver: true,
           })}

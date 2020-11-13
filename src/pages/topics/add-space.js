@@ -74,6 +74,7 @@ const AddSpace = props => {
               longitude: home.location.longitude,
               name_cont: searchKey,
               city: home.location.chooseCity,
+              currentcity: home.location.chooseCity
             },
           }}
           onPress={onPress}

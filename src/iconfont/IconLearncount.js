@@ -4,7 +4,7 @@ import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 import { getIconColor } from './helper';
 
-const IconLearncount = ({ size, color, ...rest }) => {
+let IconLearncount = ({ size, color, ...rest }) => {
   return (
     <Svg viewBox="0 0 1056 1024" width={size} height={size} {...rest}>
       <Path
@@ -23,4 +23,6 @@ IconLearncount.defaultProps = {
   size: 16,
 };
 
-export default React.memo ? React.memo(IconLearncount) : IconLearncount;
+IconLearncount = React.memo ? React.memo(IconLearncount) : IconLearncount;
+
+export default IconLearncount;
