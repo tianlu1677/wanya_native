@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">wanya_native</string>
+    <string name="app_name">顽鸦</string>
     <string moduleConfig="true" name="CodePushDeploymentKey"></string>
 </resources>
