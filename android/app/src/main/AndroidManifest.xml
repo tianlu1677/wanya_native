@@ -39,6 +39,15 @@
         </intent-filter>
         </activity>
 
+        <!--微信-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:label="@string/app_name"
+            android:exported="true"
+            android:taskAffinity="com.wanya_native"
+            android:launchMode="singleTask"
+        />
+
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 
