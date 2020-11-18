@@ -14,6 +14,7 @@ import TopicDetail from '@/pages/topics/topic-detail';
 import ArticleDetail from '@/pages/articles/article-detail';
 
 // 圈子
+import NodeIndex from '@/pages/nodes/node-index';
 import NodeDetail from '@/pages/nodes/node-detail';
 
 // 场地
@@ -67,7 +68,7 @@ import WebView from '@/pages/webview/webview';
 import SharePage from '@/pages/shares/share_page'; //分享
 
 // 举报
-import Report from '@/pages/reports/report'
+import Report from '@/pages/reports/report';
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
@@ -150,6 +151,11 @@ const spaceRouter = [
 ];
 
 const nodeRouter = [
+  {
+    name: 'NodeIndex',
+    component: NodeIndex,
+    safeArea: false,
+  },
   {
     name: 'NodeDetail',
     component: NodeDetail,

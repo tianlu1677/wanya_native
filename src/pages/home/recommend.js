@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, SafeAreaView, StyleSheet, StatusBar, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
@@ -7,17 +7,14 @@ import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/api/home_api';
-import {STATUS_BAR_HEIGHT, BOTTOM_HEIGHT, BASIC_HEIGHT} from '@/utils/navbar';
+import {getNodeIndex} from '@/api/node_api';
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
-import Helper from '@/utils/helper';
-import WaterFlowList from '@/components/List/waterflow-list';
-import DoubleLists from '@/components/List/double-lists';
-
-// console.log(STATUS_BAR_HEIGHT);
+import FastImg from '@/components/FastImg';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -25,28 +22,20 @@ const Recommend = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
 
   const RecommendList = () => {
-    // return <DoubleLists request={{api: getRecommendPosts}} type="recommend" />;
-    return (
-      <DoubleList
-        request={{api: getRecommendPosts}}
-        type="recommend"
-      />
-    );
-    // // return (
-    //   <WaterFlowList
-    //     settings={{removeClippedSubviews: false}}
-    //     request={{api: getRecommendPosts}}
-    //     type="recommend"
-    //   />
-    // );
+    return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
   };
 
   const FollowList = () => {
     return <SingleList request={{api: getFollowedPosts}} />;
   };
 
-  const LastedList = () => {
-    return <SingleList request={{api: getRecommendLatestPosts}} />;
+  const NodeList = () => {
+    return (
+      <SingleList
+        request={{api: getRecommendLatestPosts}}
+        ListHeaderComponent={<NodeScrollView {...props} />}
+      />
+    );
   };
 
   const UnreadMessageCount = () => {
@@ -87,8 +76,8 @@ const Recommend = props => {
             },
             {
               key: 'lasted',
-              title: '最新',
-              component: LastedList,
+              title: '圈子',
+              component: NodeList,
             },
           ]}
           onChange={key => setCurrentKey(key)}
@@ -113,6 +102,39 @@ const Recommend = props => {
   );
 };
 
+const NodeScrollView = props => {
+  const [data, setData] = useState([]);
+
+  const loadNodeData = async () => {
+    const node = await getNodeIndex();
+    setData(node);
+  };
+
+  useEffect(() => {
+    loadNodeData();
+  }, []);
+
+  return (
+    <ScrollView horizontal showsHorizontalScrollIndicator style={styles.nodeView}>
+      {data.length > 0 &&
+        data.map(node => {
+          return (
+            <Pressable
+              key={node.id}
+              style={styles.nodeWrap}
+              onPress={() => props.navigation.push('NodeIndex')}>
+              {/* onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}> */}
+              <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
+              <Text style={styles.nodeName} numberOfLines={1}>
+                {node.name}
+              </Text>
+            </Pressable>
+          );
+        })}
+    </ScrollView>
+  );
+};
+
 const styles = StyleSheet.create({
   badgeContainer: {
     position: 'absolute',
@@ -122,7 +144,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     backgroundColor: 'white',
-    // paddingTop: BOTTOM_HEIGHT + 5,
     paddingTop: BOTTOM_HEIGHT + 10,
   },
   message: {
@@ -136,6 +157,26 @@ const styles = StyleSheet.create({
     top: 0,
     right: 18,
     zIndex: -1,
+  },
+  nodeView: {
+    backgroundColor: '#fff',
+    paddingLeft: 14,
+    paddingTop: 7,
+    paddingBottom: 7,
+    marginBottom: 9,
+  },
+  nodeWrap: {
+    width: 50,
+    marginRight: 15,
+  },
+  nodeImg: {
+    width: 50,
+    height: 50,
+  },
+  nodeName: {
+    fontSize: 11,
+    lineHeight: 22,
+    marginTop: 5,
   },
 });
 

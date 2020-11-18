@@ -129,8 +129,8 @@ const BaseTopic = props => {
   const {data} = props;
   const navigation = useNavigation();
 
-  const goSpaceDetail = () => {
-    navigation.push('SpaceDetail', {spaceId: data.space.id});
+  const goNodeDetail = () => {
+    navigation.push('NodeDetail', {nodeId: data.node_id});
   };
 
   const goTopicDetail = () => {
@@ -156,12 +156,15 @@ const BaseTopic = props => {
         </View>
       )}
       <PlainContent data={data} style={styles.multiLineText} numberOfLines={5} />
-      {data.space && (
-        <Pressable style={styles.spaceWrapper} onPress={goSpaceDetail}>
-          <IconFont name="space-point" size={14} color={'#45ea6a'} />
-          <Text style={styles.spaceText}>{data.space.name}</Text>
+      <Text style={{}}>
+        <Pressable style={styles.infoView} onPress={goNodeDetail}>
+          <Text>
+            <IconFont name="node-solid" size={12} color={'#000'} />
+            <Text style={styles.nodeName}>{data.node_name}</Text>
+          </Text>
         </Pressable>
-      )}
+      </Text>
+
       <Bottom data={data} type="topic" />
     </Pressable>
   );
@@ -242,6 +245,27 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 12,
     top: 23,
+  },
+  infoView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    marginTop: 2,
+    backgroundColor: '#EFEFEF',
+    height: 25,
+    borderRadius: 13,
+    paddingHorizontal: 10,
+  },
+  timeText: {
+    color: '#bdbdbd',
+    marginRight: 6,
+    fontSize: 11,
+  },
+  nodeName: {
+    fontWeight: '500',
+    fontSize: 12,
+    marginLeft: 4,
   },
 });
 

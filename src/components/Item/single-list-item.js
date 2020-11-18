@@ -14,12 +14,12 @@ export const Header = props => {
   const {data} = props;
   const navigation = useNavigation();
 
-  const goNodeDetail = () => {
-    navigation.push('NodeDetail', {nodeId: data.node_id});
-  };
-
   const goAccountDetail = () => {
     navigation.push('AccountDetail', {accountId: data.account.id});
+  };
+
+  const goSpaceDetail = () => {
+    navigation.push('SpaceDetail', {spaceId: data.space.id});
   };
 
   const onReportClick = () => {
@@ -31,7 +31,6 @@ export const Header = props => {
       },
       buttonIndex => {
         if (buttonIndex === 1) {
-          // console.log('data', data.id)
           navigation.push('Report', {report_type: props.type, report_type_id: data.id});
         }
       }
@@ -44,12 +43,24 @@ export const Header = props => {
       <View style={hstyles.content}>
         <Pressable onPress={goAccountDetail}>
           <Text style={hstyles.nameText}>{data.account.nickname}</Text>
+          <View style={hstyles.info}>
+            <Text style={hstyles.timeText}>{data.published_at_text}</Text>
+            {data.space && (
+              <Pressable
+                style={hstyles.spaceWrapper}
+                onPress={goSpaceDetail}
+                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                <IconFont name="space-point" size={11} color={'#9C9C9C'} />
+                <Text style={hstyles.spaceText}>{data.space.name}</Text>
+              </Pressable>
+            )}
+          </View>
         </Pressable>
-        <Pressable style={hstyles.infoView} onPress={goNodeDetail}>
+        {/* <Pressable style={hstyles.infoView} onPress={goNodeDetail}>
           <Text style={hstyles.timeText}>{data.published_at_text}</Text>
           <IconFont name="node-solid" size={12} color={'#000'} />
           <Text style={hstyles.nodeName}>{data.node_name}</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
       <Pressable
         onPress={onReportClick}
@@ -237,6 +248,22 @@ const hstyles = StyleSheet.create({
     color: '#9c9c9c',
     fontSize: 12,
     lineHeight: 20,
+  },
+  info: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+    // backgroundColor: 'pink',
+  },
+  spaceWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 5,
+  },
+  spaceText: {
+    color: '#9C9C9C',
+    marginLeft: 4,
+    fontSize: 11,
   },
   infoView: {
     flexDirection: 'row',
