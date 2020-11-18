@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ActionSheetIOS, Pressable} from 'react-native';
+import {View, Text, Platform, Alert, StyleSheet, ActionSheetIOS, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import { ActionSheet } from 'react-native-cross-actionsheet'
+
 import {useSelector, useDispatch} from 'react-redux';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -19,11 +21,27 @@ const CommentList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
+  const choseReplyComment = (v) => {
+    const comment = {
+      placeholder: `回复: @${v.account.nickname}`,
+      comment_type: 'comment',
+      commentable_type: props.type,
+      commentable_id: props.detail.id,
+      content: '',
+      target_comment_id: v.id,
+    };
+    dispatch({type: action.SAVE_COMMENT_TOPIC, value: comment});
+    props.changeVisible(true);
+  }
   const choseAction = v => {
     let options = {
       options: ['取消', '回复'],
       cancelButtonIndex: 0,
     };
+
+    let androidOptions = [
+      { text: '回复', onPress: () => choseReplyComment(v) },
+    ]
 
     if (v.account.id === currentAccount.id) {
       options = {
@@ -31,25 +49,39 @@ const CommentList = props => {
         destructiveButtonIndex: 2,
         cancelButtonIndex: 0,
       };
+      androidOptions = [
+        { text: '回复', tintColor: 'red', onPress: () => choseReplyComment(v) },
+        { text: '删除', destructive: true, onPress: () => props.deleteComment(v.id) },
+      ]
     }
 
     // 区分删除和回复
-    ActionSheetIOS.showActionSheetWithOptions(options, buttonIndex => {
-      if (buttonIndex === 1) {
-        const comment = {
-          placeholder: `回复: @${v.account.nickname}`,
-          comment_type: 'comment',
-          commentable_type: props.type,
-          commentable_id: props.detail.id,
-          content: '',
-          target_comment_id: v.id,
-        };
-        dispatch({type: action.SAVE_COMMENT_TOPIC, value: comment});
-        props.changeVisible(true);
-      } else if (buttonIndex === 2) {
-        props.deleteComment(v.id);
-      }
-    });
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(options, buttonIndex => {
+        if (buttonIndex === 1) {
+          const comment = {
+            placeholder: `回复: @${v.account.nickname}`,
+            comment_type: 'comment',
+            commentable_type: props.type,
+            commentable_id: props.detail.id,
+            content: '',
+            target_comment_id: v.id,
+          };
+          dispatch({type: action.SAVE_COMMENT_TOPIC, value: comment});
+          props.changeVisible(true);
+        } else if (buttonIndex === 2) {
+          props.deleteComment(v.id);
+        }
+      });
+    }
+
+    if (Platform.OS === 'android') {
+      ActionSheet.options({
+        options: androidOptions,
+        cancel: {text: '取消',  onPress: () => console.log('cancel') },
+        tintColor: '#080808'
+      })
+    }
   };
 
   const onPraise = async (item, index) => {
@@ -69,18 +101,35 @@ const CommentList = props => {
   };
 
   const onReportClick = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['取消', '举报'],
-        destructiveButtonIndex: 1,
-        cancelButtonIndex: 0,
-      },
-      buttonIndex => {
-        if (buttonIndex === 1) {
-          navigation.push('Report', {report_type: props.type, report_type_id: props.detail.id});
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['取消', '举报'],
+          destructiveButtonIndex: 1,
+          cancelButtonIndex: 0,
+        },
+        buttonIndex => {
+          if (buttonIndex === 1) {
+            navigation.push('Report', {report_type: props.type, report_type_id: props.detail.id});
+          }
         }
-      }
-    );
+      );
+    } else {
+      Alert.alert('举报该帖子', '', [
+        {
+          text: '举报',
+          onPress: () => {
+            navigation.push('Report', {report_type: props.type, report_type_id: props.detail.id});
+          },
+        },
+        {
+          text: '取消',
+          onPress: () => {
+            console.log('xxxx');
+          },
+        },
+      ]);
+    }
   };
 
   const renderItem = ({item, index}) => {

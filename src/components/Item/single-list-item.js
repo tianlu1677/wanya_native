@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Vibration, ActionSheetIOS} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  Alert,
+  Pressable,
+  Vibration,
+  ActionSheetIOS,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -23,19 +32,36 @@ export const Header = props => {
   };
 
   const onReportClick = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['取消', '举报'],
-        destructiveButtonIndex: 1,
-        cancelButtonIndex: 0,
-      },
-      buttonIndex => {
-        if (buttonIndex === 1) {
-          // console.log('data', data.id)
-          navigation.push('Report', {report_type: props.type, report_type_id: data.id});
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['取消', '举报'],
+          destructiveButtonIndex: 1,
+          cancelButtonIndex: 0,
+        },
+        buttonIndex => {
+          if (buttonIndex === 1) {
+            // console.log('data', data.id)
+            navigation.push('Report', {report_type: props.type, report_type_id: data.id});
+          }
         }
-      }
-    );
+      );
+    } else {
+      Alert.alert('举报该帖子', '', [
+        {
+          text: '举报',
+          onPress: () => {
+            navigation.push('Report', {report_type: props.type, report_type_id: data.id});
+          },
+        },
+        {
+          text: '取消',
+          onPress: () => {
+            console.log('xxxx');
+          },
+        },
+      ]);
+    }
   };
 
   return (
@@ -97,7 +123,7 @@ export const Bottom = props => {
     const count = praiseCount + (praise === true ? -1 : 1);
     if (!praise) {
       setAn(zoomOut);
-      Vibration.vibrate();
+      // Vibration.vibrate();
     } else {
       setAn('');
     }
