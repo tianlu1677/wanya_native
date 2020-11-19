@@ -549,6 +549,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     marginBottom: 20,
+    padding: 0,
   },
   addTextNameWrap: {
     width: 63,

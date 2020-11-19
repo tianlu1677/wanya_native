@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   editInput: {
     color: 'black',
     marginTop: 15,
+    padding: 0,
     paddingLeft: 14,
     backgroundColor: 'white',
     fontWeight: '600',
@@ -135,10 +136,12 @@ const styles = StyleSheet.create({
 
   multiLine: {
     color: 'black',
+    padding: 0,
     marginTop: 15,
     paddingLeft: 14,
     backgroundColor: 'white',
-    // fontWeight: '600',
+    paddingTop: 15,
+    textAlignVertical: 'top',
     height: 172,
     fontSize: 18,
     lineHeight: 22,

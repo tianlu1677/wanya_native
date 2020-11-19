@@ -149,24 +149,24 @@ const SocialLogin = ({navigation, route}) => {
   };
   return (
     <View style={{backgroundColor: 'black'}}>
-      <Pressable
-        style={{
-          position: 'absolute',
-          backgroundColor: 'white',
-          top: 100,
-          right: 20,
-          width: 30,
-          height: 100,
-          zIndex: 100
-        }}
-        onPress={() => {
-          console.log('xxx');
-          // navigation.navigate('AdminPhoneLogin');
-          navigation.navigate('InviteLogin');
-          // navigation.navigate('PhoneLogin');
-        }}>
-        <Text style={{color: 'white', fontSize: 30}}>去别的页面</Text>
-      </Pressable>
+      {/*<Pressable*/}
+      {/*  style={{*/}
+      {/*    position: 'absolute',*/}
+      {/*    backgroundColor: 'white',*/}
+      {/*    top: 100,*/}
+      {/*    right: 20,*/}
+      {/*    width: 30,*/}
+      {/*    height: 100,*/}
+      {/*    zIndex: 100*/}
+      {/*  }}*/}
+      {/*  onPress={() => {*/}
+      {/*    console.log('xxx');*/}
+      {/*    // navigation.navigate('AdminPhoneLogin');*/}
+      {/*    navigation.navigate('InviteLogin');*/}
+      {/*    // navigation.navigate('PhoneLogin');*/}
+      {/*  }}>*/}
+      {/*  <Text style={{color: 'white', fontSize: 30}}>去别的页面</Text>*/}
+      {/*</Pressable>*/}
 
       <ImageBackground
         source={require('../../assets/images/social-login.jpg')}
