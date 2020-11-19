@@ -162,14 +162,7 @@ const PhoneLogin = ({navigation, route}) => {
           <InputView>
             <Text
               minimumFontScale={1}
-              style={{
-                fontSize: 15,
-                fontWeight: '600',
-                marginRight: 20,
-                lineHeight: 20,
-                color: 'white',
-                letterSpacing: 1,
-              }}>
+              style={styles.leftText}>
               + 86
             </Text>
             <TextInput
@@ -242,12 +235,22 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     letterSpacing: 1,
   },
+  leftText: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginRight: 20,
+    lineHeight: 27,
+    height: 27,
+    color: 'white',
+    letterSpacing: 1,
+  },
   inputContent: {
     fontSize: 15,
     letterSpacing: 1,
     color: '#FFFFFF',
     fontWeight: '600',
     minWidth: 200,
+    padding: 0
   },
 });
 
@@ -263,7 +266,7 @@ const InputWrapView = styled(View)`
 `;
 const InputView = styled(View)`
   margin-top: 20px;
-  padding-bottom: 12px;
+  padding-bottom: 6px;
   flex-direction: row;
   justify-content: flex-start;
   font-size: 30px;
