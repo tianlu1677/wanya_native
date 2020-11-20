@@ -9,8 +9,13 @@ const ArticleList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderItem = ({item}) => {
-    return <BaseArticle data={item} key={item.id} />;
+  const onRemove = index => {
+    listData.splice(index, 1);
+    setListData([...listData]);
+  };
+
+  const renderItem = ({item, index}) => {
+    return <BaseArticle data={item} key={item.id} onRemove={() => onRemove(index)} />;
   };
 
   const loadData = async (page = 1) => {

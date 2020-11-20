@@ -35,15 +35,19 @@ const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const videoRef = useRef(null);
   const currentAccount = useSelector(state => state.account.currentAccount);
-
   const [topicId] = useState(route.params.topicId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
 
   const loadData = async () => {
     const res = await getTopic(topicId);
-    setDetail(res.data.topic);
-    dispatch(dispatchTopicDetail(res.data.topic));
+    if (res.data.status === 404) {
+      Toast.show('该帖子已删除');
+      navigation.goBack();
+    } else {
+      setDetail(res.data.topic);
+      dispatch(dispatchTopicDetail(res.data.topic));
+    }
   };
 
   const publishComment = async data => {

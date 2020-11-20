@@ -7,7 +7,7 @@ import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/api/home_api';
-import {getNodeIndex} from '@/api/node_api';
+import {getFollowNodeIndex} from '@/api/node_api';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount} from '@/redux/actions';
@@ -29,11 +29,27 @@ const Recommend = props => {
     return <SingleList request={{api: getFollowedPosts}} />;
   };
 
+  // const NodeList = () => {
+  //   return <SingleList request={{api: getFollowedPosts}} />;
+  // };
+
   const NodeList = () => {
     return (
       <SingleList
-        request={{api: getRecommendLatestPosts}}
+        type="node-recommend"
+        request={{api: getRecommendPosts}}
         ListHeaderComponent={<NodeScrollView {...props} />}
+        renderEmpty={
+          <View style={styles.emptyWrap}>
+            <View style={styles.emptyTextWrap}>
+              <Text style={styles.emptyText}>你还没有加入圈子</Text>
+              <Text style={styles.emptyText}>点击发现更多圈子</Text>
+            </View>
+            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NotifyIndex')}>
+              发现更多圈子
+            </Text>
+          </View>
+        }
       />
     );
   };
@@ -103,11 +119,12 @@ const Recommend = props => {
 };
 
 const NodeScrollView = props => {
+  const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const [data, setData] = useState([]);
 
   const loadNodeData = async () => {
-    const node = await getNodeIndex();
-    setData(node);
+    const res = await getFollowNodeIndex({account_id: currentAccount.id});
+    setData(res.data.nodes);
   };
 
   useEffect(() => {
@@ -122,8 +139,7 @@ const NodeScrollView = props => {
             <Pressable
               key={node.id}
               style={styles.nodeWrap}
-              onPress={() => props.navigation.push('NodeIndex')}>
-              {/* onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}> */}
+              onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}>
               <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
               <Text style={styles.nodeName} numberOfLines={1}>
                 {node.name}
@@ -131,6 +147,12 @@ const NodeScrollView = props => {
             </Pressable>
           );
         })}
+      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
+        {/* <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} /> */}
+        <Text style={styles.nodeName} numberOfLines={1}>
+          全部圈子
+        </Text>
+      </Pressable>
     </ScrollView>
   );
 };
@@ -177,6 +199,31 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 22,
     marginTop: 5,
+  },
+  emptyWrap: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  emptyTextWrap: {
+    flexDirection: 'column',
+    marginTop: 110,
+  },
+  emptyText: {
+    lineHeight: 23,
+    fontSize: 14,
+    textAlign: 'center',
+    color: '#BDBDBD',
+  },
+  moreNode: {
+    width: 243,
+    height: 45,
+    lineHeight: 45,
+    backgroundColor: '#000',
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginTop: 20,
+    color: '#fff',
+    textAlign: 'center',
   },
 });
 

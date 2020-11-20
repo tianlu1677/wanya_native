@@ -176,47 +176,6 @@ export const ActionComment = props => {
     }
   };
 
-  // 分享
-  // const onShare = () => {
-  //   console.log('onShare', props);
-  //   const {detail} = props;
-  //   // const detail = data.detail
-  //   let shareOptions = {
-  //     title: '顽鸦',
-  //     userName: 'gh_c2b50fe8e928',
-  //     webpageUrl: '',
-  //     path: '',
-  //     thumbImageUrl: detail.wx_share_image_url,
-  //     scene: 0,
-  //   };
-  //   switch (props.type) {
-  //     case 'Article':
-  //       shareOptions = {
-  //         ...shareOptions,
-  //         title: detail.plain_content,
-  //         path: '/pages/articles/article-detail?article_id=' + detail.id,
-  //         thumbImageUrl: detail.wx_share_image_url,
-  //       };
-  //       break;
-  //     case 'Topic':
-  //       shareOptions = {
-  //         ...shareOptions,
-  //         title: detail.plain_content,
-  //         path: '/pages/topics/topic-detail?topic_id=' + detail.id,
-  //         thumbImageUrl: detail.wx_share_image_url,
-  //       };
-  //       break;
-  //     default:
-  //       shareOptions;
-  //       break;
-  //   }
-  //
-  //   const shareContent = {...shareOptions, visible: true};
-  //   // console.log('xxx', shareContent)
-  //   // dispatch(dispatchShareItem(shareContent));
-  //   // WeChat.shareMiniProgram(shareOptions);
-  // };
-
   useEffect(() => {
     setValue(null);
   }, [props.visible]);
@@ -250,28 +209,9 @@ export const ActionComment = props => {
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
                 navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
-                // setShareModelVisible(true);
               }}>
               <IconFont name="zhuanfa" size={18} />
             </Pressable>
-
-            {/*<View style={{}}>*/}
-            {/*  <SharePageModal*/}
-            {/*    shareModelVisible={shareModelVisible}*/}
-            {/*    onShowShare={status => setShareModelVisible(status)}*/}
-            {/*    assetable={{*/}
-            {/*      type: props.type,*/}
-            {/*      id: props.detail.id,*/}
-            {/*      assetable_name: 'app_share_image',*/}
-            {/*    }}*/}
-            {/*    pageShareContent={{*/}
-            {/*      account: props.detail.account,*/}
-            {/*      node_name: props.detail.node.name,*/}
-            {/*      content: props.detail.plain_content,*/}
-            {/*      bg_img_url: props.detail.wx_share_image_url,*/}
-            {/*    }}*/}
-            {/*  />*/}
-            {/*</View>*/}
           </View>
         </>
       )}
@@ -323,12 +263,13 @@ const hstyles = StyleSheet.create({
   spaceWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 5,
+    marginLeft: 6,
   },
   spaceText: {
     color: '#9C9C9C',
     marginLeft: 4,
     fontSize: 11,
+    fontWeight: '400',
   },
   timeText: {
     color: '#bdbdbd',

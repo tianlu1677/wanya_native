@@ -1,7 +1,6 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
-import {View, FlatList, RefreshControl} from 'react-native';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
 
@@ -10,20 +9,16 @@ const SingleList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderItem = ({item}) => {
-    // console.log('ite', item.id);
-    if (item.item_type === 'Topic') {
-      return <BaseTopic data={item.item} />;
-    } else if (item.item_type === 'Article') {
-      return <BaseArticle data={item.item} />;
-    }
+  const onRemove = index => {
+    listData.splice(index, 1);
+    setListData([...listData]);
   };
 
-  const renderItemMemo = useCallback(({item}) => <Child item={item} />, []);
+  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, []);
 
-  const Child = React.memo(({item}) => {
+  const Child = React.memo(({item, index}) => {
     return item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} />
+      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
     ) : (
       <BaseArticle data={item.item} />
     );
@@ -50,6 +45,7 @@ const SingleList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItemMemo}
+      // listData.length === 0 && type === 'node-recommend' flex:1
       style={{backgroundColor: '#FAFAFA'}}
       settings={{initialNumToRender: 6, onEndReachedThreshold: 0.25, windowSize: 8}}
       {...props}

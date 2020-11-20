@@ -1,10 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, KeyboardAvoidingView, Platform, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions,
+  Pressable,
+  ActionSheetIOS,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
+import IconFont from '@/iconfont';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
@@ -49,6 +59,21 @@ const ArticleDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const onReportClick = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['取消', '举报'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      async buttonIndex => {
+        if (buttonIndex === 1) {
+          navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
+        }
+      }
+    );
+  };
+
   const onHTMLParsed = (dom, RNElements) => {
     setLoadingContent(true);
     // Find the index of the first paragraph
@@ -69,7 +94,7 @@ const ArticleDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  return detail ? (
+  return detail && currentAccount ? (
     <KeyboardAvoidingView
       keyboardVerticalOffset={0}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -81,6 +106,16 @@ const ArticleDetail = ({navigation, route}) => {
           barStyle: 'dark-content',
           hidden: false,
         }}
+        RightButton={() =>
+          detail.account_id !== currentAccount.id ? null : (
+            <Pressable
+              onPress={onReportClick}
+              style={styles.report}
+              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <IconFont name="ziyuan" color="#000" size={20} />
+            </Pressable>
+          )
+        }
       />
       <CommentList
         detail={detail}

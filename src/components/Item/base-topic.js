@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {View, Text, Image, FlatList, StyleSheet, ScrollView, Pressable} from 'react-native';
+import React from 'react';
+import {View, Text, Image, StyleSheet, ScrollView, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -9,6 +9,7 @@ import VideoPlayImg from '@/assets/images/video-play.png';
 import {dispatchPreviewImage} from '@/redux/actions';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImageGif from '@/components/FastImageGif';
+// import {getTopic, deleteTopic} from '@/api/topic_api';
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -118,9 +119,6 @@ export const TopicLinkContent = props => {
         colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
         <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
       </LinearGradient>
-      {/* <View style={styles.linkTitleBg}>
-        <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
-      </View> */}
     </View>
   );
 };
@@ -137,14 +135,9 @@ const BaseTopic = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
-  // useEffect(() => {
-  //  console.log('rending....', props.data.id)
-  // }, []);
-  //
-  // console.log('topic.......', data.id)
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
-      <Header data={data} type="topic" />
+      <Header data={data} type="topic" onRemove={props.onRemove} />
       {data.content_style === 'text' ? (
         <View style={{paddingTop: 13}} />
       ) : (
@@ -156,15 +149,12 @@ const BaseTopic = props => {
         </View>
       )}
       <PlainContent data={data} style={styles.multiLineText} numberOfLines={5} />
-      <Text style={{}}>
-        <Pressable style={styles.infoView} onPress={goNodeDetail}>
-          <Text>
-            <IconFont name="node-solid" size={12} color={'#000'} />
-            <Text style={styles.nodeName}>{data.node_name}</Text>
-          </Text>
-        </Pressable>
-      </Text>
-
+      <Pressable style={styles.infoViewWrap} onPress={goNodeDetail}>
+        <View style={styles.infoView}>
+          <IconFont name="node-solid" size={12} color={'#000'} />
+          <Text style={styles.nodeName}>{data.node_name}</Text>
+        </View>
+      </Pressable>
       <Bottom data={data} type="topic" />
     </Pressable>
   );
@@ -184,17 +174,6 @@ const styles = StyleSheet.create({
     color: '#ff8d00',
     paddingLeft: 2,
     paddingRight: 2,
-  },
-  spaceWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 6,
-  },
-  spaceText: {
-    color: '#45ea6a',
-    marginLeft: 6,
-    fontSize: 14,
-    lineHeight: 20,
   },
   imageMulti: {
     width: 167,
@@ -220,7 +199,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    // height: 64,
     padding: 11,
     borderRadius: 2,
   },
@@ -229,7 +207,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#fff',
     lineHeight: 22,
-    // textAlign: 'justify',
   },
   excellentLabel: {
     width: 30,
@@ -246,21 +223,19 @@ const styles = StyleSheet.create({
     left: 12,
     top: 23,
   },
+  infoViewWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 6,
+  },
   infoView: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    flexShrink: 0,
-    marginTop: 2,
     backgroundColor: '#EFEFEF',
     height: 25,
     borderRadius: 13,
     paddingHorizontal: 10,
-  },
-  timeText: {
-    color: '#bdbdbd',
-    marginRight: 6,
-    fontSize: 11,
   },
   nodeName: {
     fontWeight: '500',
