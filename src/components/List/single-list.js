@@ -19,30 +19,24 @@ const SingleList = props => {
     }
   };
 
-  const renderItemMemo = useCallback(
-    ({item}) =>
-      <Child item={item}/>,
-    []
-  );
+  const renderItemMemo = useCallback(({item}) => <Child item={item} />, []);
 
   const Child = React.memo(({item}) => {
     return item.item_type === 'Topic' ? (
       <BaseTopic data={item.item} />
     ) : (
       <BaseArticle data={item.item} />
-    )
+    );
   });
 
   const loadData = async (page = 1) => {
-    if( page === 1 ) {
-      setLoading(true);
-    }
+    setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setListData(page === 1 ? data : [...listData, ...data]);
-    setLoading(false);
     setHeaders(res.headers);
+    setLoading(false);
   };
 
   useEffect(() => {
