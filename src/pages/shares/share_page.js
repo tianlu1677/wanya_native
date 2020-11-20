@@ -73,7 +73,7 @@ const SharePageModal = props => {
         bg_img_url: topic.wx_share_image_url
           ? `${topic.wx_share_image_url.split('?')[0]}?imageView2/0/interlace/1/format/jpg`
           : '',
-        desc: '刚刚 发布了一篇帖子',
+        desc: `${topic.published_at_text} 发布了一篇帖子`,
         content_style: topic.content_style,
         qrcode_url: topic.qrcode_url,
       });
@@ -85,7 +85,7 @@ const SharePageModal = props => {
         node_name: article.node.name,
         content: article.intro,
         bg_img_url: article.wx_share_image_url ? article.wx_share_image_url.split('?')[0] : '',
-        desc: '刚刚 发布了一篇文章',
+        desc: `${article.published_at_text} 发布了一篇文章`,
         content_style: '',
         qrcode_url: article.qrcode_url,
       });

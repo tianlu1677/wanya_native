@@ -23,6 +23,7 @@ const CollapsibleHeader = props => {
   const listRefArr = useRef([]);
   const listOffset = useRef({});
   const isListGliding = useRef(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current // 透明度
 
   useEffect(() => {
     scrollY.addListener(({value}) => {
@@ -82,9 +83,18 @@ const CollapsibleHeader = props => {
       zIndex: 100,
     };
 
+    const opacity1 = scrollY.interpolate({
+      inputRange: [0, headerHeight - 30],
+      outputRange: [0.8, 0],
+      extrapolate: 'clamp',
+    });
+
     return (
-      <View>
-        <View style={{flex: 1, height: tabBarHeight}} />
+      <View style={{backgroundColor: 'white'}}>
+        {/*<Animated.View style={{backgroundColor: 'yellow', opacity: opacity1, zIndex: -1, position: 'absolute', top: 0, left: 0, right: 0, height: 200 }} >*/}
+        {/*  <Text style={{paddingTop: 40, textAlign: 'center', fontSize: 40}}>顽鸦你所相见</Text>*/}
+        {/*</Animated.View>*/}
+        <View style={{flex: 1, height: tabBarHeight, backgroundColor: 'white'}} />
         <Animated.FlatList
           scrollToOverflowEnabled
           scrollEventThrottle={16}
@@ -93,7 +103,7 @@ const CollapsibleHeader = props => {
             useNativeDriver: true,
           })}
           onRefresh={false}
-          bounces={false}
+          bounces={true}
           // refreshing={true}
           onMomentumScrollBegin={onMomentumScrollBegin}
           onScrollEndDrag={onScrollEndDrag}
@@ -133,6 +143,7 @@ const CollapsibleHeader = props => {
       position: 'absolute',
       transform: [{translateY: y}],
       width: '100%',
+      backgroundColor: 'white'
     };
 
     return (
@@ -193,6 +204,8 @@ const CollapsibleHeader = props => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     });
+
+
     // console.log('opacity', titleHeight);
     // console.log('opacity', opacity);
     return (

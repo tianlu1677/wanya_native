@@ -145,6 +145,23 @@ const InviteDetail = ({navigation, route}) => {
           }}>
           <FastImg source={AddFriendImg} style={{width: 45, height: 45, borderRadius: 20}} />
         </AccountWrapView>
+
+
+         {(accountList.length >= 5 && accountList.length % 5 !== 0) &&
+          [1, 2, 3, 4, 5].slice(0, 4 - accountList.length % 5).map(i => {
+            return (
+              <AccountWrapView
+                key={i}
+                onPress={() => {
+                  setShareModelVisible(true);
+                }}>
+                <FastImg
+                  source={AddFriendImg}
+                  style={{width: 45, height: 45, borderRadius: 20}}
+                />
+              </AccountWrapView>
+            );
+          })}        
       </AccountCardView>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
@@ -266,7 +283,9 @@ const AccountCardView = styled(View)`
   display: flex;
   flex-direction: row;
   margin-top: 45px;
-  justify-content: space-between;
+  justify-content: space-between;  
+  align-content: center;
+  flex-wrap: wrap;
   margin-left: 52px;
   margin-right: 52px;
   margin-bottom: 23px;
@@ -275,6 +294,9 @@ const AccountCardView = styled(View)`
 
 const AccountWrapView = styled(Pressable)`
   display: flex;
+  marginBottom: 18px;
+  paddingLeft: 5px;
+  paddingRight: 5px;
 `
 const ModelWrap = styled(TouchableOpacity)`
   display: flex;
