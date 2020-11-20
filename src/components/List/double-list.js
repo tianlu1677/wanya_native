@@ -21,7 +21,7 @@ import FastImageGif from '@/components/FastImageGif';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
 const width = Dimensions.get('window').width;
-const halfWidth = (width - 10) / 2; // 屏幕去掉两边后的宽度
+const halfWidth = (width - 15) / 2; // 屏幕去掉两边后的宽度
 const SingleItem = props => {
   const navigation = useNavigation();
   const {data} = props;
@@ -148,17 +148,17 @@ const SingleItem = props => {
   );
 };
 
-const DoubleSingle = props => {
-  const {data} = props;
-
-  return (
-    <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
-      {data.map((v, index) => {
-        return <SingleItem key={v.id} data={v.item} isTop={v.is_top} item_type={v.item_type} />;
-      })}
-    </View>
-  );
-};
+// const DoubleSingle = props => {
+//   const {data} = props;
+//
+//   return (
+//     <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
+//       {data.map((v, index) => {
+//         return <SingleItem key={v.id} data={v.item} isTop={v.is_top} item_type={v.item_type} />;
+//       })}
+//     </View>
+//   );
+// };
 
 const DoubleList = props => {
   const [loading, setLoading] = useState(false);
@@ -190,7 +190,7 @@ const DoubleList = props => {
       const leftPostList = listData.filter((v, i) => i % 2 === 0);
       const rightPostList = listData.filter((v, i) => i % 2 !== 0);
       return (
-        <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
+        <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 0}]}>
           {(item === 1 ? leftPostList : rightPostList).map((v, index) => {
             return <WrapChild key={`wrapchild-${v.id}`} item={v} />;
           })}
@@ -200,13 +200,13 @@ const DoubleList = props => {
     [listData]
   );
 
-  const renderItem = ({item, index}) => {
-    const leftPostList = listData.filter((v, i) => i % 2 === 0);
-    const rightPostList = listData.filter((v, i) => i % 2 !== 0);
-    return (
-      <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostList} index={index} />
-    );
-  };
+  // const renderItem = ({item, index}) => {
+  //   const leftPostList = listData.filter((v, i) => i % 2 === 0);
+  //   const rightPostList = listData.filter((v, i) => i % 2 !== 0);
+  //   return (
+  //     <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostList} index={index} />
+  //   );
+  // };
 
   const loadData = async (page = 1) => {
     if (page === 1) {
@@ -293,8 +293,10 @@ const styles = StyleSheet.create({
   wrapper: {
     // width: '40%'
     // backgroundColor: 'pink',
-    // paddingLeft: 5,
-    // paddingRight: 5,
+    justifyContent: 'space-between',
+    // alignItems: 'baseline',
+    paddingLeft: 5,
+    paddingRight: 0,
   },
   likewrap: {
     flexDirection: 'row',
@@ -304,8 +306,9 @@ const styles = StyleSheet.create({
   singleWrap: {
     flex: 1,
     backgroundColor: '#fff',
-    marginRight: 5,
-    marginLeft: 5,
+    // marginRight: 5,
+    // marginLeft: '0.5%',
+    // marginRight: '1%',
   },
   videoPlay: {
     width: 16,

@@ -140,8 +140,10 @@ export const Bottom = props => {
       thumbImageUrl: data.wx_share_image_url,
       scene: 0,
     };
+
+    // console.log('props.type', props.type)
     switch (props.type) {
-      case 'Article':
+      case 'article':
         shareOptions = {
           ...shareOptions,
           title: data.plain_content,
@@ -149,7 +151,7 @@ export const Bottom = props => {
           thumbImageUrl: data.wx_share_image_url,
         };
         break;
-      case 'Topic':
+      case 'topic':
         shareOptions = {
           ...shareOptions,
           title: data.plain_content,

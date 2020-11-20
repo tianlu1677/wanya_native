@@ -203,6 +203,7 @@ const CommentList = props => {
       enableRefresh={false}
       bounces={false}
       renderSeparator={renderSeparator}
+      settings={{showsVerticalScrollIndicator: false}}
       {...props}
     />
   );
@@ -210,6 +211,7 @@ const CommentList = props => {
 
 const cstyles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     paddingTop: 16,
     paddingLeft: 16,
     paddingRight: 16,

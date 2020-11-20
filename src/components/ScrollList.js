@@ -67,9 +67,9 @@ const ScrollList = props => {
       setState(loadState.EMPTY);
       return;
     }
-    if(!finishContent) {
-      return
-    }
+    // if(!finishContent) {
+    //   return
+    // }
 
     if (refreshing || state === loadState.LOADING) {
       return;
