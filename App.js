@@ -23,6 +23,7 @@ import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
 import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
 import NetworkErrorModal from '@/components/NetworkErrorModal';
+import PushUtil from '@/utils/umeng_push_util'
 
 import * as RootNavigation from '@/navigator/root-navigation';
 
@@ -76,6 +77,10 @@ class App extends Component {
       defaultProps: false,
       allowFontScaling: false,
     });
+
+    PushUtil.addTag('normal',(code,remain) =>{
+      console.log('code', code, remain)
+    })
   }
 
   loadSplashImg = () => {
