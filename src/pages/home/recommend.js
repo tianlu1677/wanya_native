@@ -6,7 +6,12 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
-import {getRecommendPosts, getFollowedPosts, getRecommendLatestPosts} from '@/api/home_api';
+import {
+  getRecommendPosts,
+  getFollowedPosts,
+  getRecommendLatestPosts,
+  getFollowedNodePosts,
+} from '@/api/home_api';
 import {getFollowNodeIndex} from '@/api/node_api';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
@@ -15,6 +20,7 @@ import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import FastImg from '@/components/FastImg';
+import {AllNodeImg} from '@/utils/default-image';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -37,7 +43,7 @@ const Recommend = props => {
     return (
       <SingleList
         type="node-recommend"
-        request={{api: getRecommendPosts}}
+        request={{api: getFollowedNodePosts}}
         ListHeaderComponent={<NodeScrollView {...props} />}
         renderEmpty={
           <View style={styles.emptyWrap}>
@@ -148,7 +154,7 @@ const NodeScrollView = props => {
           );
         })}
       <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
-        {/* <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} /> */}
+        <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
         <Text style={styles.nodeName} numberOfLines={1}>
           全部圈子
         </Text>
