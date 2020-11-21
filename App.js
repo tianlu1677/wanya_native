@@ -82,7 +82,7 @@ class App extends Component {
       console.log('code1', code, remain)
       // Alert.alert(`${code} ${remain}`)
     })
-    // PushUtil.addAlias('dddd', 'good_user',(code) =>{
+    // PushUtil.addAlias('dddd', 'login_user',(code) =>{
     //   console.log('alias', code)      
     // })
   }
@@ -130,9 +130,9 @@ class App extends Component {
     try {
       console.log('onNotification:', notification);
       const auth_token = await Helper.getData('auth_token');
-      if (!auth_token) {
-        return;
-      }
+      // if (!auth_token) {
+      //   return;
+      // }
       const data = notification.data;
       const params = data.params;
       const screen = data.screen;
@@ -144,7 +144,7 @@ class App extends Component {
       console.log('params', params, screen);
       RootNavigation.navigate(data.screen, screen_params);
     } catch (e) {
-      console.log('error', e);
+      console.log('error', e);      
     }
     // 已登录的情况下
     // 未登录的情况下
