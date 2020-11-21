@@ -139,7 +139,7 @@ class App extends Component {
       if (!params || !screen) {
         return;
       }
-      const screen_params = queryString.parse(data.params);
+      const screen_params = queryString.parse(data.params, {parseNumbers: true});
       // debugger
       console.log('params', params, screen);
       RootNavigation.navigate(data.screen, screen_params);
