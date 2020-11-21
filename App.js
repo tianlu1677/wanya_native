@@ -79,8 +79,12 @@ class App extends Component {
     });
 
     PushUtil.addTag('normal',(code,remain) =>{
-      console.log('code', code, remain)
+      console.log('code1', code, remain)
+      // Alert.alert(`${code} ${remain}`)
     })
+    // PushUtil.addAlias('dddd', 'good_user',(code) =>{
+    //   console.log('alias', code)      
+    // })
   }
 
   loadSplashImg = () => {
