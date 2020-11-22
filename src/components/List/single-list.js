@@ -46,8 +46,10 @@ const SingleList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItemMemo}
-      // listData.length === 0 && type === 'node-recommend' flex:1
-      style={{backgroundColor: '#FAFAFA'}}
+      style={{
+        backgroundColor: '#FAFAFA',
+        flex: listData.length === 0 && props.renderEmpty ? 1 : 0,
+      }}
       settings={{initialNumToRender: 6, onEndReachedThreshold: 0.25, windowSize: 8}}
       {...props}
     />

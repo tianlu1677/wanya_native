@@ -81,9 +81,13 @@ export const Header = props => {
               onStar();
             }
             if (props.type === 'topic') {
-              await deleteTopic(data.id);
-              Toast.show('已删除');
-              props.onRemove();
+              try {
+                await deleteTopic(data.id);
+                Toast.show('已删除');
+                props.onRemove();
+              } catch (err) {
+                Toast.error('删除失败，请稍后再试');
+              }
             }
           } else {
             navigation.push('Report', {report_type: props.type, report_type_id: data.id});
