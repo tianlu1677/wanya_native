@@ -227,7 +227,7 @@ const ScrollList = props => {
       initialNumToRender={6}
       removeClippedSubviews={false}
       windowSize={6}
-      // progressViewOffset={1}
+      progressViewOffset={1}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}
