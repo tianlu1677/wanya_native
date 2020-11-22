@@ -21,6 +21,7 @@ import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
+import Helper from '@/utils/helper';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
