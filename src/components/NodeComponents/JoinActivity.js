@@ -3,7 +3,8 @@ import {Text, View, Image, PixelRatio, StyleSheet, Pressable} from 'react-native
 // import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
 import PropTypes from 'prop-types';
-import {BlurView} from '@/components/NodeComponents';
+import BlurView from './BlurViewComponent';
+// import {BlurView} from '@/components/NodeComponents';
 
 export const JoinActivity = props => {
   let type = props.type || 'photo';

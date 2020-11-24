@@ -73,15 +73,16 @@ class App extends Component {
       adjustsFontSizeToFit: true,
       minimumFontScale: scale,
     });
+    Text.defaultProps.sytle = { 'color': 'black'}
     TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
       defaultProps: false,
       allowFontScaling: false,
     });
 
-    PushUtil.addTag('normal',(code,remain) =>{
-      console.log('code1', code, remain)
-      // Alert.alert(`${code} ${remain}`)
-    })
+    // PushUtil.addTag('normal',(code,remain) =>{
+    //   console.log('code1', code, remain)
+    //   // Alert.alert(`${code} ${remain}`)
+    // })
     // PushUtil.addAlias('dddd', 'login_user',(code) =>{
     //   console.log('alias', code)      
     // })
