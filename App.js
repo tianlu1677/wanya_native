@@ -23,6 +23,7 @@ import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
 import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
 import NetworkErrorModal from '@/components/NetworkErrorModal';
+import PushUtil from '@/utils/umeng_push_util'
 
 import * as RootNavigation from '@/navigator/root-navigation';
 
@@ -76,6 +77,14 @@ class App extends Component {
       defaultProps: false,
       allowFontScaling: false,
     });
+
+    PushUtil.addTag('normal',(code,remain) =>{
+      console.log('code1', code, remain)
+      // Alert.alert(`${code} ${remain}`)
+    })
+    // PushUtil.addAlias('dddd', 'login_user',(code) =>{
+    //   console.log('alias', code)      
+    // })
   }
 
   loadSplashImg = () => {
@@ -121,21 +130,21 @@ class App extends Component {
     try {
       console.log('onNotification:', notification);
       const auth_token = await Helper.getData('auth_token');
-      if (!auth_token) {
-        return;
-      }
+      // if (!auth_token) {
+      //   return;
+      // }
       const data = notification.data;
       const params = data.params;
       const screen = data.screen;
       if (!params || !screen) {
         return;
       }
-      const screen_params = queryString.parse(data.params);
+      const screen_params = queryString.parse(data.params, {parseNumbers: true});
       // debugger
       console.log('params', params, screen);
       RootNavigation.navigate(data.screen, screen_params);
     } catch (e) {
-      console.log('error', e);
+      console.log('error', e);      
     }
     // 已登录的情况下
     // 未登录的情况下

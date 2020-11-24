@@ -6,7 +6,8 @@
 #import <React/RCTLinkingManager.h>
 #import "SDImageCodersManager.h"
 #import <SDWebImageWebPCoder/SDImageWebPCoder.h>
-
+#import <UserNotifications/UserNotifications.h>
+#import <UMPush/UMessage.h>
 #import "RNUMConfigure.h"
 #import "UMAnalyticsModule.h"
 #import "UMPushModule.h"
@@ -73,6 +74,19 @@ static void InitializeFlipper(UIApplication *application) {
   [UMConfigure setLogEnabled:YES];
   [RNUMConfigure initWithAppkey:@"5f32492fd30932215476edfe" channel:@"App Store"];
   [MobClick setScenarioType:E_UM_NORMAL];
+  
+  UMessageRegisterEntity * entity = [[UMessageRegisterEntity alloc] init];
+  entity.types = UMessageAuthorizationOptionBadge|UMessageAuthorizationOptionAlert|UMessageAuthorizationOptionSound;
+  [UNUserNotificationCenter currentNotificationCenter].delegate=self;
+
+  [UMessage registerForRemoteNotificationsWithLaunchOptions:launchOptions Entity:nil completionHandler:^(BOOL granted, NSError * _Nullable error) {
+    if (granted) {
+      NSLog(@"deviceToken+++++++++");
+    } else {
+      
+    }
+  }];
+
   
   // Define UNUserNotificationCenter
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
