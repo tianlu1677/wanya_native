@@ -128,7 +128,7 @@ const PhoneLogin = ({navigation, route}) => {
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
       <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
-        <Text style={styles.titleText}>绑定手机号</Text>
+        <Text style={styles.titleText}>手机号注册</Text>
         <View style={styles.inputWrap}>
           <View style={styles.inputView}>
             <Text
@@ -204,7 +204,9 @@ const PhoneLogin = ({navigation, route}) => {
               onChangeText={text => setPassword(text)}
               style={{...styles.inputContent, width: '70%'}}
             />
-            <Pressable onPress={() => setPasswordHidden(!passwordHidden)}>
+            <Pressable
+              onPress={() => setPasswordHidden(!passwordHidden)}
+              hitSlop={{top: 20, left: 20, right: 20, bottom: 20}}>
               {passwordHidden ? (
                 <IconFont name={'yincang'} size={14} color={'white'} />
               ) : (
@@ -270,7 +272,8 @@ const styles = StyleSheet.create({
   tips: {
     color: '#353535',
     lineHeight: 20,
-    marginTop: 6,
+    marginTop: 8,
+    fontSize: 12,
   },
 });
 

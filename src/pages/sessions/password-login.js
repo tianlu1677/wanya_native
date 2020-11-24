@@ -72,7 +72,7 @@ const PasswordLogin = ({navigation, route}) => {
 
   const downTimeRunner = () => {
     var timeo = 59;
-    var timeStop = setInterval(function() {
+    var timeStop = setInterval(function () {
       timeo--;
       if (timeo >= 1) {
         let text = `重新获取(${timeo}s)`;
@@ -226,7 +226,9 @@ const PasswordLogin = ({navigation, route}) => {
                 style={{...styles.inputContent, width: '70%'}}
                 clearButtonMode={'always'}
               />
-              <Pressable onPress={() => setPasswordHidden(!passwordHidden)}>
+              <Pressable
+                onPress={() => setPasswordHidden(!passwordHidden)}
+                hitSlop={{top: 20, left: 20, right: 20, bottom: 20}}>
                 {passwordHidden ? (
                   <IconFont name={'yincang'} size={14} color={'white'} />
                 ) : (
@@ -260,11 +262,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     minWidth: 200,
   },
-  loginType: {
-    color: '#fff',
-    lineHeight: 20,
-    marginTop: 7,
-  },
   titleText: {
     letterSpacing: 1,
     fontSize: 25,
@@ -297,6 +294,12 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: 'white',
     letterSpacing: 1,
+  },
+  loginType: {
+    color: '#fff',
+    lineHeight: 20,
+    marginTop: 8,
+    fontSize: 12,
   },
 });
 

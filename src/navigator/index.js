@@ -39,7 +39,7 @@ import WebView from '@/pages/webview/webview';
 import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
 import BackImg from '@/assets/images/back.png';
-import ViewShotPage from "@/components/SharePage"
+import ViewShotPage from '@/components/SharePage';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -124,7 +124,6 @@ const Render = props => {
 };
 
 function MainStackList() {
-
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
@@ -156,7 +155,10 @@ function MainStackList() {
         },
         headerBackImage: () => (
           <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
-            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 0}} />
+            <Image
+              source={require('../assets/images/back.png')}
+              style={{width: 9, height: 15, paddingLeft: 0}}
+            />
           </View>
         ),
       })}>
