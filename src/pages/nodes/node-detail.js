@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {BlurView} from '@react-native-community/blur';
+// import {BlurView} from '@react-native-community/blur';
 import Loading from '@/components/Loading';
 import TabViewList from '@/components/TabView';
 import {
@@ -11,6 +11,7 @@ import {
   JoinActivity,
   GoBack,
   BottomModal,
+  BlurView
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';

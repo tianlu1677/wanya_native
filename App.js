@@ -106,6 +106,19 @@ class App extends Component {
         console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
       });
     });
+
+    checkMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
+      // console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+      // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+
+      requestMultiple([
+        PERMISSIONS.ANDROID.CAMERA,
+      ]).then(statuses => {
+        console.log('Camera', statuses[PERMISSIONS.ANDROID.CAMERA]);
+        // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+        // console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+      });
+    });
   };
 
   // 通知相关内容

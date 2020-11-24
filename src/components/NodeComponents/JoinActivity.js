@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text, View, Image, PixelRatio, StyleSheet, Pressable} from 'react-native';
-import {BlurView, VibrancyView} from '@react-native-community/blur';
+// import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
 import PropTypes from 'prop-types';
-import AddPhoto from '@/assets/images/add-photo.png';
+import {BlurView} from '@/components/NodeComponents';
 
 export const JoinActivity = props => {
   let type = props.type || 'photo';
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     width: 140,
     borderRadius: 22,
     flexDirection: 'row',
+    overflow: 'hidden'
   },
 
   leftBtn: {
