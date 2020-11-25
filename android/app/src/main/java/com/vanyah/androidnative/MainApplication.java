@@ -1,4 +1,4 @@
-package com.wanya_native;
+package com.vanyah.androidnative;
 
 import com.theweflex.react.WeChatPackage; // Add this line
 
@@ -65,7 +65,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.wanya_native.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.vanyah.androidnative.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

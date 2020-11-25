@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.wanya_native"
+        applicationId "com.vanyah.androidnative"
         vectorDrawables.useSupportLibrary = true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

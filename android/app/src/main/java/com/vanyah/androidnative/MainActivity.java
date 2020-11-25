@@ -1,4 +1,4 @@
-package com.wanya_native;
+package com.vanyah.androidnative;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.zoontek.rnbootsplash.RNBootSplash;
