@@ -68,7 +68,22 @@ const Recommend = props => {
 
   return (
     <SafeAreaPlus style={{flex: 1}} edges={['right', 'left']}>
-      <FocusAwareStatusBar barStyle="dark-content" />
+      <View style={styles.message}>
+        <Pressable
+          style={styles.message_icon}
+          hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
+          onPress={() => props.navigation.navigate('NotifyIndex')}>
+          <View style={{position: 'relative'}}>
+            <IconFont name="notice" size={20} />
+          </View>
+          <BadgeMessage
+            value={UnreadMessageCount()}
+            containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
+            size={'small'}
+          />
+        </Pressable>
+      </View>
+      <FocusAwareStatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.wrapper}>
         <TabViewList
           size="big"
@@ -93,21 +108,7 @@ const Recommend = props => {
           ]}
           onChange={key => setCurrentKey(key)}
         />
-        <View style={styles.message}>
-          <Pressable
-            style={styles.message_icon}
-            hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
-            onPress={() => props.navigation.navigate('NotifyIndex')}>
-            <View style={{position: 'relative'}}>
-              <IconFont name="notice" size={20} />
-            </View>
-            <BadgeMessage
-              value={UnreadMessageCount()}
-              containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
-              size={'small'}
-            />
-          </Pressable>
-        </View>
+
       </View>
     </SafeAreaPlus>
   );
@@ -127,15 +128,18 @@ const styles = StyleSheet.create({
   },
   message: {
     position: 'absolute',
-    right: 4,
-    zIndex: 100,
+    right: 0,
+    width: 100,
+    zIndex: 200,
+    elevation: 100,
+    flex: 1,
     top: BOTTOM_HEIGHT + 3 + 22,
   },
   message_icon: {
     position: 'absolute',
     top: 0,
     right: 18,
-    zIndex: -1,
+    zIndex: 100,
   },
 });
 

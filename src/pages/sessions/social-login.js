@@ -162,8 +162,8 @@ const SocialLogin = ({navigation, route}) => {
       {/*  onPress={() => {*/}
       {/*    console.log('xxx');*/}
       {/*    // navigation.navigate('AdminPhoneLogin');*/}
-      {/*    // navigation.navigate('InviteLogin');*/}
-      {/*    navigation.navigate('PhoneLogin');*/}
+      {/*    navigation.navigate('InviteLogin');*/}
+      {/*    // navigation.navigate('PhoneLogin');*/}
       {/*  }}>*/}
       {/*  <Text style={{color: 'white', fontSize: 30}}>去别的页面</Text>*/}
       {/*</Pressable>*/}

@@ -22,8 +22,8 @@ import NewTopic from '@/pages/topics/new-topic';
 import {HeaderBackButton} from '@react-navigation/stack';
 import Helper from '@/utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
-
-import {BlurView, VibrancyView} from '@react-native-community/blur';
+import { BlurView } from '@/components/NodeComponents';
+// import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Recommend from '@/pages/home/recommend';
@@ -39,7 +39,7 @@ import WebView from '@/pages/webview/webview';
 import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
 import BackImg from '@/assets/images/back.png';
-import ViewShotPage from "@/components/SharePage"
+import ViewShotPage from '@/components/SharePage';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -49,13 +49,13 @@ const AuthStack = createStackNavigator();
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'; // 存储上次打开的位置
 
 const TabBar = props => (
-  <VibrancyView
+  <BlurView
     style={styles.blurView}
     blurType="light"
     blurAmount={80}
     reducedTransparencyFallbackColor="#white">
     <BottomTabBar {...props} />
-  </VibrancyView>
+  </BlurView>
 );
 
 function HomeTabList() {
@@ -94,9 +94,10 @@ function HomeTabList() {
         tabStyle: {display: 'flex', justifyContent: 'center', lineHeight: 55},
         showLabel: false,
         style: {
-          backgroundColor: 'transparent',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
           borderTopWidth: 0,
           height: 55,
+          borderRadius: 30
         },
       }}>
       <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{}} />
@@ -124,7 +125,6 @@ const Render = props => {
 };
 
 function MainStackList() {
-
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
@@ -156,7 +156,10 @@ function MainStackList() {
         },
         headerBackImage: () => (
           <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
-            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 0}} />
+            <Image
+              source={require('../assets/images/back.png')}
+              style={{width: 9, height: 15, paddingLeft: 0}}
+            />
           </View>
         ),
       })}>
@@ -169,7 +172,7 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor={'red'}
+                  backgroundColor="white"
                 />
               )}
               <Components {...props} />
@@ -179,7 +182,7 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor={'red'}
+                  backgroundColor="#0996AE"
                 />
               )}
               <Components {...props} />
@@ -294,9 +297,9 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 28,
   },
-  bottomTabBar: {
-    backgroundColor: 'transparent',
-  },
+  // bottomTabBar: {
+  //   backgroundColor: 'transparent',
+  // },
 });
 
 export default Navigation;

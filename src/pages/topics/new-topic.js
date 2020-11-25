@@ -11,8 +11,9 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-// import ImagePicker from 'react-native-image-crop-picker';
+
 import ImagePicker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -168,8 +169,7 @@ const NewTopic = props => {
       setVideoSource([result.asset]);
       dispatch({type: action.UPLOAD_PROGRESS, value: ''});
     });
-
-    // react-native-image-crop-picker
+    
     // ImagePicker.openPicker({
     //   mediaType: 'video',
     //   writeTempFile: false,
@@ -559,6 +559,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     marginBottom: 20,
+    padding: 0,
   },
   addTextNameWrap: {
     width: 63,
