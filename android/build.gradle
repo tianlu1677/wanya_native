@@ -42,3 +42,7 @@ ext {
     targetSdkVersion    = 29
     buildToolsVersion   = "29.0.2"
 }
+
+// project.ext {
+//     excludeAppGlideModule = true
+// }

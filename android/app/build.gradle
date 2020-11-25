@@ -134,7 +134,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
     }
     splits {
         abi {
@@ -153,10 +153,10 @@ android {
         }
 
         release {
-            storeFile file(MYAPP_RELEASE_STORE_FILE)
-            storePassword MYAPP_RELEASE_STORE_PASSWORD
-            keyAlias MYAPP_RELEASE_KEY_ALIAS
-            keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            storeFile file('wanyah.keystore')
+            storePassword '123456'
+            keyAlias 'wanyahandroid'
+            keyPassword '123456'
         }
     }
     buildTypes {
