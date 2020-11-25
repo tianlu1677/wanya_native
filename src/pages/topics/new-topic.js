@@ -12,6 +12,8 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+
+import ImagePicker from 'react-native-image-picker';
 // import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
@@ -163,6 +165,15 @@ const NewTopic = props => {
     //   }
     // );
 
+    // react-native-image-picker
+    ImagePicker.launchImageLibrary({mediaType: 'video'}, async video => {
+      console.log(video);
+      setVideoSource([video]);
+      const result = await props.uploadVideo(video, dispatch);
+      setVideoSource([result.asset]);
+      dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+    });
+    
     // ImagePicker.openPicker({
     //   mediaType: 'video',
     //   writeTempFile: false,
@@ -182,7 +193,6 @@ const NewTopic = props => {
     //   const result = await props.uploadVideo(videoSourceContent, dispatch);
     //   setVideoSource([result.asset]);
     //   dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-    //   // Alert.alert(JSON.stringify(video))
     // });
   };
 
