@@ -1,9 +1,7 @@
 package com.wanya_native;
-
-        import android.os.Bundle;
-
-        import com.facebook.react.ReactActivity;
-        import com.zoontek.rnbootsplash.RNBootSplash;
+import android.os.Bundle;
+import com.facebook.react.ReactActivity;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactActivity {
 

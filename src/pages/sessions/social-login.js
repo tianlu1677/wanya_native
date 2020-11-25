@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect} from 'react';
-import {StyleSheet, View, Text, ImageBackground, Pressable} from 'react-native';
+import {StyleSheet, StatusBar, View, Text, ImageBackground, Pressable} from 'react-native';
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
 import {useDispatch} from 'react-redux';
@@ -149,6 +149,11 @@ const SocialLogin = ({navigation, route}) => {
   };
   return (
     <View style={{backgroundColor: 'black'}}>
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor="transparent"
+      />
       {/*<Pressable*/}
       {/*  style={{*/}
       {/*    position: 'absolute',*/}

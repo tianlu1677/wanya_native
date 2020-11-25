@@ -155,7 +155,7 @@ const PhoneLogin = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <View style={styles.phoneContainer}>
         <TitleText>绑定手机号</TitleText>
         <InputWrapView>
