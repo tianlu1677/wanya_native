@@ -10,6 +10,7 @@ import {
   Pressable,
   Dimensions,
   ScrollView,
+  Platform,
 } from 'react-native';
 // import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import PermissionModal from './PhotoPermission';
@@ -71,7 +72,8 @@ const NewTopic = props => {
   };
 
   const checkPermission = async () => {
-    const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+    const imagePermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
+    const status = await check(imagePermission);
     if (status === RESULTS.GRANTED) {
       return true;
     }
@@ -107,6 +109,8 @@ const NewTopic = props => {
       if (err) {
         return;
       }
+
+      console.log('res', res)
       const allImage = [...imageSource, ...res];
       setImageSource([...allImage]);
       for (let [index, file] of new Map(allImage.map((item, i) => [i, item]))) {

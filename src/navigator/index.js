@@ -137,6 +137,7 @@ function MainStackList() {
           shadowOpacity: 0,
           borderBottomWidth: 0,
           borderTopWidth: 0,
+          paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight.toFixed(1),
           // borderBottomColor: 'red',
           // justifyContent: 'center',
           // alignItems: 'center'
@@ -155,7 +156,7 @@ function MainStackList() {
           fontSize: 16,
         },
         headerBackImage: () => (
-          <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
+          <View style={{flex: 1, paddingRight: 20}}>
             <Image
               source={require('../assets/images/back.png')}
               style={{width: 9, height: 15, paddingLeft: 0}}
@@ -172,7 +173,8 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor="white"
+                  translucent
+                  backgroundColor="transparent"
                 />
               )}
               <Components {...props} />
@@ -182,7 +184,8 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor="#0996AE"
+                  translucent
+                  backgroundColor="transparent"
                 />
               )}
               <Components {...props} />

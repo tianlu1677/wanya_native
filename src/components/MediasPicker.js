@@ -21,7 +21,10 @@ const MediasPicker = WrapperComponent => {
     };
 
     const uploadImage = async file => {
+      console.log('file', file)
       const token = await Helper.getData('auth_token');
+      const path = file.uri.replace('file://', '');
+      console.log('filepath', path)
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
@@ -29,16 +32,16 @@ const MediasPicker = WrapperComponent => {
         type: 'multipart',
         field: 'file',
         parameters: {
-          width: file.width,
-          height: file.height,
-          fsize: file.size,
+          width: file.width.toString(),
+          height: file.height.toString(),
+          fsize: file.size.toString(),
           category: 'image'
         },
         headers: {
           'content-type': 'application/octet-stream',
           token: token,
         },
-        path: file.uri,
+        path: path,
       };
       console.log('uploadOptions', uploadOptions)
       return new Promise((resolve, reject) => {
@@ -59,6 +62,7 @@ const MediasPicker = WrapperComponent => {
 
     const uploadAvatar = async file => {
       const token = await Helper.getData('auth_token');
+      const path = file.uri.replace('file://', '');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/mine/accounts/${file.account_id}`,
         method: 'POST',
@@ -69,7 +73,7 @@ const MediasPicker = WrapperComponent => {
           'content-type': 'application/octet-stream',
           token: token,
         },
-        path: file.uri,
+        path: path,
       };
 
       console.log('xxx', uploadOptions);

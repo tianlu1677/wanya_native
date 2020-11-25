@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StatusBar, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {Avator, BadgeMessage, PlayScore, BottomModal} from '@/components/NodeComponents';
@@ -26,6 +26,16 @@ const MineDetail = ({navigation, route}) => {
   const [accountId] = useState(currentAccount.id);
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+      headerStyle: {
+        backgroundColor: 'red',
+        paddingTop: 40
+      }
+    });
+  }, [navigation]);
 
   const dispatch = useDispatch();
   const loadData = async () => {
@@ -121,7 +131,7 @@ const MineDetail = ({navigation, route}) => {
         renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={true} />}
         renderHeader={
           <View style={{flex: 1}}>
-            <FocusAwareStatusBar barStyle="light-content" />
+            <FocusAwareStatusBar barStyle="light-content" translucent backgroundColor={'transparent'}  />
             <View style={styles.setting}>
               <Pressable
                 onPress={() => navigation.navigate('NotifyIndex')}

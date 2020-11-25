@@ -279,8 +279,8 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 68,
-    height: 290,
+    paddingTop: 40 + BASIC_HEIGHT,
+    height: 270 + BASIC_HEIGHT,
   },
   imageCover: {
     position: 'absolute',
