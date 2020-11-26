@@ -34,6 +34,7 @@ const MineDetail = props => {
   const [showModal, setShowModal] = useState(false);
 
   const dispatch = useDispatch();
+
   const loadData = async () => {
     dispatch(dispatchCurrentAccount());
   };
@@ -66,7 +67,7 @@ const MineDetail = props => {
             imageCount: 1,
             isCrop: true,
             CropW: screenW * 1,
-            CropH: screenW * 1,
+            CropH: HEADER_HEIGHT,
             isCamera: false,
           };
           props.imagePick(options, async (err, res) => {
@@ -82,7 +83,7 @@ const MineDetail = props => {
             });
             dispatch(dispatchCurrentAccount());
             Toast.hide();
-            Toast.show('已更换', {duration: 500});
+            Toast.show('已完成', {duration: 500});
           });
         }
       }
@@ -91,7 +92,7 @@ const MineDetail = props => {
 
   const onPreview = () => {
     const data = {
-      images: [{url: currentAccount.avatar_url}],
+      images: [{url: currentAccount.avatar_url.split('?')[0]}],
       visible: true,
       index: 0,
     };
@@ -204,6 +205,7 @@ const MineDetail = props => {
               resizeMode={'cover'}
               style={styles.imageCover}
             />
+            <View style={[styles.imageCover, styles.imageCoverOpacity]} />
             <Pressable style={styles.header} onPress={onChangeImage}>
               <View
                 style={[
@@ -329,13 +331,16 @@ const styles = StyleSheet.create({
     height: 270 + BASIC_HEIGHT,
   },
   imageCover: {
+    width: '100%',
+    height: HEADER_HEIGHT,
     position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
-    width: '100%',
-    flex: 1,
-    height: HEADER_HEIGHT,
+  },
+  imageCoverOpacity: {
+    backgroundColor: '#000',
+    opacity: 0.3,
   },
   userWrap: {
     flexDirection: 'row',

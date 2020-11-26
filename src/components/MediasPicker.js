@@ -64,6 +64,8 @@ const MediasPicker = WrapperComponent => {
         method: 'POST',
         maxRetries: 1,
         type: file.uploadType,
+        quality: 100,
+        minimumCompressSize: 800,
         field: file.keyParams ? file.keyParams : 'account[avatar]',
         headers: {
           'content-type': 'application/octet-stream',

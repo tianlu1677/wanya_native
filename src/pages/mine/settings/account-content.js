@@ -58,7 +58,7 @@ const AccountContent = props => {
       if (err) {
         return;
       }
-      Toast.showLoading('更新中...');
+      Toast.showLoading('更换中...');
       await props.uploadAvatar({
         uploadType: 'multipart',
         account_id: currentAccount.id,
@@ -67,7 +67,7 @@ const AccountContent = props => {
       });
       dispatch(dispatchCurrentAccount());
       Toast.hide();
-      Toast.show('已更新', {duration: 500});
+      Toast.show('已完成', {duration: 500});
     });
   };
 
