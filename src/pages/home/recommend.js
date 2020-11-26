@@ -6,22 +6,15 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  getRecommendPosts,
-  getFollowedPosts,
-  getRecommendLatestPosts,
-  getFollowedNodePosts,
-} from '@/api/home_api';
-import {getFollowNodeIndex} from '@/api/node_api';
+import {getRecommendPosts, getFollowedPosts, getFollowedNodePosts} from '@/api/home_api';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
-import {dispatchBaseCurrentAccount} from '@/redux/actions';
+import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
-import Helper from '@/utils/helper';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -35,10 +28,6 @@ const Recommend = props => {
   const FollowList = () => {
     return <SingleList request={{api: getFollowedPosts}} />;
   };
-
-  // const NodeList = () => {
-  //   return <SingleList request={{api: getFollowedPosts}} />;
-  // };
 
   const NodeList = () => {
     return (
@@ -126,22 +115,18 @@ const Recommend = props => {
 };
 
 const NodeScrollView = props => {
+  const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
-  const [data, setData] = useState([]);
-
-  const loadNodeData = async () => {
-    const res = await getFollowNodeIndex({account_id: currentAccount.id});
-    setData(res.data.nodes);
-  };
+  const nodes = useSelector(state => state.home.followNodes);
 
   useEffect(() => {
-    loadNodeData();
+    dispatch(dispathUpdateNodes(currentAccount.id));
   }, []);
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator style={styles.nodeView}>
-      {data.length > 0 &&
-        data.map(node => {
+      {nodes.length > 0 &&
+        nodes.map(node => {
           return (
             <Pressable
               key={node.id}

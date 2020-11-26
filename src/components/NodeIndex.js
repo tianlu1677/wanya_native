@@ -1,25 +1,24 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {dispathUpdateNodes} from '@/redux/actions';
 import {getCategoryList} from '@/api/category_api';
-import {getNodeIndex} from '@/api/node_api';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
 
 const NodeIndex = ({type}) => {
+  const dispatch = useDispatch();
+  const scrollRef = useRef(null);
+  const nodes = useSelector(state => state.home.nodes);
+
+  console.log(nodes);
   const [categories, setCategories] = useState(null);
-  const [nodes, setNodes] = useState(null);
   const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(0);
-  const scrollRef = useRef(null);
 
   const loadCategoryData = async () => {
     const category = await getCategoryList();
     setCategories(category);
-  };
-
-  const loadNodeData = async () => {
-    const node = await getNodeIndex();
-    setNodes(node);
   };
 
   const setLayout = (layout, index) => {
@@ -34,8 +33,8 @@ const NodeIndex = ({type}) => {
   };
 
   useEffect(() => {
-    loadNodeData();
     loadCategoryData();
+    dispatch(dispathUpdateNodes());
   }, []);
 
   return categories && nodes ? (
@@ -63,7 +62,7 @@ const NodeIndex = ({type}) => {
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
                   <View key={node.id}>
-                    <NodeItem node={node} key={node.id} type={type} />
+                    <NodeItem node={{...node}} key={node.id} type={type} />
                     <Text style={styles.separator} />
                   </View>
                 ))}

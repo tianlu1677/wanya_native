@@ -9,7 +9,6 @@ import VideoPlayImg from '@/assets/images/video-play.png';
 import {dispatchPreviewImage} from '@/redux/actions';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImageGif from '@/components/FastImageGif';
-// import {getTopic, deleteTopic} from '@/api/topic_api';
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -148,7 +147,7 @@ const BaseTopic = props => {
           {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         </View>
       )}
-      <PlainContent data={data} style={styles.multiLineText} numberOfLines={5} />
+      <PlainContent data={data} numberOfLines={5} />
       <Pressable style={styles.infoViewWrap} onPress={goNodeDetail}>
         <View style={styles.infoView}>
           <IconFont name="node-solid" size={12} color={'#000'} />
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
   infoViewWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 6,
+    marginTop: 10,
   },
   infoView: {
     flexDirection: 'row',
@@ -238,8 +237,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   nodeName: {
-    fontWeight: '500',
-    fontSize: 12,
+    fontSize: 11,
     marginLeft: 4,
   },
 });

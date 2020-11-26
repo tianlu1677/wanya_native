@@ -154,6 +154,7 @@ const nodeRouter = [
   {
     name: 'NodeIndex',
     component: NodeIndex,
+    barColor: 'dark',
     safeArea: false,
   },
   {

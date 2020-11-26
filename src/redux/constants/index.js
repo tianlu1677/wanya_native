@@ -180,3 +180,7 @@ export const SAVE_COMMENT_TOPIC = 'SAVE_COMMENT_TOPIC'; // 帖子评论
 export const UPLOAD_PROGRESS = 'UPLOAD_PROGRESS'; // 视频上传进度
 export const CHOOSE_CITY = 'CHOOSE_CITY'; // 视频上传进度
 export const GET_LOCATION = 'GET_LOCATION'; // 经纬度
+
+//recommend
+export const UPDATE_NODES = 'UPDATE_NODES'; //更新全部圈子数据
+export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //更新关注圈子数据

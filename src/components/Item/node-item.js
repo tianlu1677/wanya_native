@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
@@ -13,9 +13,10 @@ import Toast from '@/components/Toast';
 const NodeItem = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {node, type} = props;
+
   const home = useSelector(state => state.home);
   const [followed, setFollowed] = useState(props.node.followed);
-  const {node, type} = props;
 
   const onFollowNode = async () => {
     if (node.followed) {
@@ -26,9 +27,9 @@ const NodeItem = props => {
 
     if (type === 'node-index') {
       if (followed) {
-        Toast.show('已成功加入', {duration: 500});
-      } else {
         Toast.show('已取消加入', {duration: 500});
+      } else {
+        Toast.show('已成功加入', {duration: 500});
       }
     }
 
@@ -46,6 +47,10 @@ const NodeItem = props => {
       navigation.push('NodeDetail', {nodeId: node.id});
     }
   };
+
+  useEffect(() => {
+    setFollowed(props.node.followed);
+  }, [props]);
 
   return (
     <Pressable onPress={goNodeDetail}>

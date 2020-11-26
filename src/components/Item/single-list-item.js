@@ -183,7 +183,6 @@ export const Bottom = props => {
       scene: 0,
     };
 
-    // console.log('props.type', props.type)
     switch (props.type) {
       case 'article':
         shareOptions = {
@@ -302,10 +301,8 @@ const hstyles = StyleSheet.create({
     paddingTop: 4,
   },
   nameText: {
-    color: '#9c9c9c',
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '400',
   },
   info: {
     flexDirection: 'row',

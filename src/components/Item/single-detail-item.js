@@ -77,9 +77,6 @@ export const PublishRelated = props => {
           ))}
         </View>
       )}
-
-      <View style={{backgroundColor: '#FAFAFA', height: 9}} />
-
       {data.node && (
         <Pressable style={pstyles.fromWrapper} onPress={goNodeDetail}>
           <View>
@@ -253,7 +250,6 @@ const hstyles = StyleSheet.create({
   nameText: {
     fontSize: 12,
     lineHeight: 20,
-    fontWeight: '500',
   },
   info: {
     flexDirection: 'row',
