@@ -1,19 +1,11 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  Alert,
-  Pressable,
-  Vibration,
-  ActionSheetIOS,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Vibration, ActionSheetIOS} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
-import {useDispatch} from 'react-redux';
-import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
+import Toast from '@/components/Toast';
+import {useDispatch, useSelector} from 'react-redux';
+import {createTopicAction, destroyTopicAction, deleteTopic} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
 import * as Animatable from 'react-native-animatable';
@@ -22,46 +14,90 @@ import {dispatchShareItem} from '@/redux/actions';
 export const Header = props => {
   const {data} = props;
   const navigation = useNavigation();
-
-  const goNodeDetail = () => {
-    navigation.push('NodeDetail', {nodeId: data.node_id});
-  };
+  const currentAccount = useSelector(state => state.account.currentAccount);
+  const [star, setstar] = useState(data.star);
 
   const goAccountDetail = () => {
     navigation.push('AccountDetail', {accountId: data.account.id});
   };
 
+  const goSpaceDetail = () => {
+    navigation.push('SpaceDetail', {spaceId: data.space.id});
+  };
+
+  const onStar = async () => {
+    const params = {id: data.id, type: 'star'};
+    switch (props.type) {
+      case 'topic':
+        if (star) {
+          await destroyTopicAction(params);
+        } else {
+          await createTopicAction(params);
+        }
+        break;
+      case 'article':
+        if (star) {
+          await destroyArticleAction(params);
+        } else {
+          await createArticleAction(params);
+        }
+        break;
+    }
+    setstar(!star);
+    Toast.show(star ? '已取消收藏' : '已收藏');
+  };
+
+  const getOptions = () => {
+    const isCurrentSelf = data.account.id === currentAccount.id;
+    let options = [];
+    if (isCurrentSelf) {
+      switch (props.type) {
+        case 'topic':
+          options = ['取消', '删除', star ? '取消收藏' : '收藏'];
+          break;
+        case 'article':
+          options = ['取消', star ? '取消收藏' : '收藏'];
+          break;
+      }
+    } else {
+      options = ['取消', '举报'];
+    }
+    return options;
+  };
+
   const onReportClick = () => {
-    if (Platform.OS === 'ios') {
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          options: ['取消', '举报'],
-          destructiveButtonIndex: 1,
-          cancelButtonIndex: 0,
-        },
-        buttonIndex => {
-          if (buttonIndex === 1) {
-            // console.log('data', data.id)
+    const isCurrentTopic = data.account.id === currentAccount.id;
+    const options = getOptions();
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: options,
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      async buttonIndex => {
+        if (buttonIndex === 1) {
+          if (isCurrentTopic) {
+            if (props.type === 'article') {
+              onStar();
+            }
+            if (props.type === 'topic') {
+              try {
+                await deleteTopic(data.id);
+                Toast.show('已删除');
+                props.onRemove();
+              } catch (err) {
+                Toast.error('删除失败，请稍后再试');
+              }
+            }
+          } else {
             navigation.push('Report', {report_type: props.type, report_type_id: data.id});
           }
         }
-      );
-    } else {
-      Alert.alert('举报该帖子', '', [
-        {
-          text: '举报',
-          onPress: () => {
-            navigation.push('Report', {report_type: props.type, report_type_id: data.id});
-          },
-        },
-        {
-          text: '取消',
-          onPress: () => {
-            console.log('xxxx');
-          },
-        },
-      ]);
-    }
+        if (buttonIndex === 2) {
+          onStar();
+        }
+      }
+    );
   };
 
   return (
@@ -70,11 +106,18 @@ export const Header = props => {
       <View style={hstyles.content}>
         <Pressable onPress={goAccountDetail}>
           <Text style={hstyles.nameText}>{data.account.nickname}</Text>
-        </Pressable>
-        <Pressable style={hstyles.infoView} onPress={goNodeDetail}>
-          <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-          <IconFont name="node-solid" size={12} color={'#000'} />
-          <Text style={hstyles.nodeName}>{data.node_name}</Text>
+          <View style={hstyles.info}>
+            <Text style={hstyles.timeText}>{data.published_at_text}</Text>
+            {data.space && (
+              <Pressable
+                style={hstyles.spaceWrapper}
+                onPress={goSpaceDetail}
+                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                <IconFont name="space-point" size={11} color={'#9C9C9C'} />
+                <Text style={hstyles.spaceText}>{data.space.name}</Text>
+              </Pressable>
+            )}
+          </View>
         </Pressable>
       </View>
       <Pressable
@@ -91,43 +134,42 @@ export const Header = props => {
 };
 
 export const Bottom = props => {
+  const {data} = props;
   const dispatch = useDispatch();
   const [praise, setPraise] = useState(props.data.praise);
   const [praiseCount, setPraiseCount] = useState(props.data.praises_count);
-
   const [an, setAn] = useState('');
-  const {data} = props;
 
   const onPraise = async () => {
-    // console.log('props.type', props.type)
+    let res = null;
     switch (props.type) {
       case 'article':
         if (praise) {
-          await destroyArticleAction({id: data.id, type: 'praise'});
-          setPraise(false);
+          res = await destroyArticleAction({id: data.id, type: 'praise'});
         } else {
-          await createArticleAction({id: data.id, type: 'praise'});
-          setPraise(true);
+          res = await createArticleAction({id: data.id, type: 'praise'});
         }
         break;
       case 'topic':
         if (praise) {
-          await destroyTopicAction({id: data.id, type: 'praise'});
-          setPraise(false);
+          res = await destroyTopicAction({id: data.id, type: 'praise'});
         } else {
-          await createTopicAction({id: data.id, type: 'praise'});
-          setPraise(true);
+          res = await createTopicAction({id: data.id, type: 'praise'});
         }
         break;
     }
+    if (res.data.status === 404) {
+      Toast.show('该帖子已删除');
+      return false;
+    }
+    setPraise(!praise);
     const count = praiseCount + (praise === true ? -1 : 1);
     if (!praise) {
       setAn(zoomOut);
-      // Vibration.vibrate();
+      Vibration.vibrate();
     } else {
       setAn('');
     }
-
     setPraiseCount(count);
   };
 
@@ -141,7 +183,6 @@ export const Bottom = props => {
       scene: 0,
     };
 
-    // console.log('props.type', props.type)
     switch (props.type) {
       case 'article':
         shareOptions = {
@@ -166,7 +207,6 @@ export const Bottom = props => {
 
     const shareContent = {...shareOptions, visible: true};
     dispatch(dispatchShareItem(shareContent));
-    // WeChat.shareMiniProgram(shareOptions);
   };
   const zoomOut = {
     0: {
@@ -182,7 +222,6 @@ export const Bottom = props => {
       scale: 1,
     },
     duration: 600,
-    // delay: 2000
   };
 
   return (
@@ -262,24 +301,28 @@ const hstyles = StyleSheet.create({
     paddingTop: 4,
   },
   nameText: {
-    color: '#9c9c9c',
     fontSize: 12,
     lineHeight: 20,
   },
-  infoView: {
+  info: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 2,
   },
   timeText: {
     color: '#bdbdbd',
-    marginRight: 6,
     fontSize: 11,
   },
-  nodeName: {
-    fontWeight: '500',
-    fontSize: 12,
+  spaceWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 6,
+  },
+  spaceText: {
+    color: '#9C9C9C',
     marginLeft: 4,
+    fontSize: 11,
+    fontWeight: '400',
   },
   joinBtn: {
     width: 75,
