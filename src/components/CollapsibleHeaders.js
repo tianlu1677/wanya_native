@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated, Dimensions, StyleSheet, View, Text} from 'react-native';
+import {Animated, Platform, StatusBar, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
@@ -28,6 +28,12 @@ const CollapsibleHeader = props => {
   useEffect(() => {
     scrollY.addListener(({value}) => {
       listOffset.current[currentKey] = value;
+      if(value > 80) {
+        StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
+      } else {
+        StatusBar.setBackgroundColor('transparent');
+      }
+      // console.log('x', value)
     });
     return () => {
       scrollY.removeAllListeners();

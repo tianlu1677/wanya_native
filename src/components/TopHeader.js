@@ -108,5 +108,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     height: STATUS_BAR_HEIGHT,
+
   },
 });

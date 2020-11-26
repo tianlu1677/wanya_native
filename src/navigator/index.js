@@ -131,13 +131,14 @@ function MainStackList() {
       headerMode="screen"
       screenOptions={({route}) => ({
         headerStyle: {
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'red',
           // height: 54,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
           borderTopWidth: 0,
-          paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight.toFixed(1),
+          // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight.toFixed(1),
           // borderBottomColor: 'red',
           // justifyContent: 'center',
           // alignItems: 'center'

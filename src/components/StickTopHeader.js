@@ -12,6 +12,7 @@ const StickTopHeader = props => {
       // blurAmount={40}
     >
       <TopHeader
+        statusBar={{barStyle: 'light-content', translucent: true, backgroundColor: 'transparent'}}
         headerStyles={{backgroundColor: 'rgba(1,1,1,0.8)'}}
         LeftButton={props.showLeftButton ? () => <View /> : null }
         Title={() => (
