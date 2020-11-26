@@ -7,7 +7,7 @@ import TopHeader from '@/components/TopHeader';
 const StickTopHeader = props => {
   return (
     <BlurView
-      style={{flex: 1, zIndex: 100}}
+      style={{flex: 1, zIndex: 9999}}
       // blurType="light"
       // blurAmount={40}
     >

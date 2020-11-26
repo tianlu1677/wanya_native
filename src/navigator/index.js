@@ -132,7 +132,7 @@ function MainStackList() {
       screenOptions={({route}) => ({
         headerStyle: {
           // backgroundColor: 'white',
-          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'red',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
           // height: 54,
           elevation: 0,
           shadowOpacity: 0,

@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     width: 140,
     borderRadius: 22,
     flexDirection: 'row',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: 'rgba(1,1,1, 0.7)'
   },
 
   leftBtn: {

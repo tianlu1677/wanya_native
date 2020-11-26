@@ -17,7 +17,7 @@ const BlurViewComponent = props => {
       ) : (
         <View
           {...props}
-          style={[props.style, {flex: 1, backgroundColor: 'rgba(1,1,1, 0.8)'}]}
+          style={[{flex: 1, backgroundColor: 'rgba(1,1,1, 0.4)'}, props.style]}
         >
           {props.children}
         </View>
