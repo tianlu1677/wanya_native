@@ -14,7 +14,7 @@ var md5 = require('md5');
 
 const LoginTypes = {
   CODE: 'code',
-  PASSWORD: 'password', //6-16位
+  PASSWORD: 'password', //8-16位
 };
 
 const PasswordLogin = ({navigation, route}) => {
@@ -47,14 +47,13 @@ const PasswordLogin = ({navigation, route}) => {
       params = {phone: phone, password: password};
       res = await phoneSignIn(params);
     }
-
     if (res.account) {
       await Helper.setData('auth_token', res.account.token);
-      dispatch(dispatchSetAuthToken(res.account.token));
-      dispatch(dispatchCurrentAccount());
       Toast.showError('登录成功');
       setTimeout(() => {
         Toast.hide();
+        dispatch(dispatchSetAuthToken(res.account.token));
+        dispatch(dispatchCurrentAccount());
         navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],
@@ -126,7 +125,7 @@ const PasswordLogin = ({navigation, route}) => {
       }
 
       if (loginType === LoginTypes.PASSWORD) {
-        return phone.length === 11 && password.length >= 6 && password.length <= 16;
+        return phone.length === 11 && password.length >= 8 && password.length <= 16;
       }
     };
 
@@ -237,10 +236,16 @@ const PasswordLogin = ({navigation, route}) => {
               </Pressable>
             </View>
           )}
-
-          <Text style={styles.loginType} onPress={onLoginTypeClick}>
-            {loginType === LoginTypes.CODE ? '密码登录' : '验证码登录'}
-          </Text>
+          <View style={styles.loginTypeWrap}>
+            <Text style={styles.loginType} onPress={onLoginTypeClick}>
+              {loginType === LoginTypes.CODE ? '密码登录' : '验证码登录'}
+            </Text>
+            <Text
+              style={[styles.loginType, {marginLeft: 'auto'}]}
+              onPress={() => navigation.navigate('PhoneLogin', {type: 'register'})}>
+              手机号注册
+            </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -295,10 +300,14 @@ const styles = StyleSheet.create({
     color: 'white',
     letterSpacing: 1,
   },
+  loginTypeWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 8,
+  },
   loginType: {
     color: '#fff',
     lineHeight: 20,
-    marginTop: 8,
     fontSize: 12,
   },
 });

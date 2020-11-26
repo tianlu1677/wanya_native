@@ -22,6 +22,7 @@ const PhoneLogin = ({navigation, route}) => {
   const [firstVerify, setFirstVerify] = useState(true);
   const [verifyText, setVerifyText] = useState('获取验证码');
   const [passwordHidden, setPasswordHidden] = useState(true);
+  const [isRegister] = useState(route.params?.type || null);
 
   const downTimeRunner = () => {
     var timeo = 59;
@@ -100,7 +101,7 @@ const PhoneLogin = ({navigation, route}) => {
       return (
         phone.length === 11 &&
         phoneCode.length === 6 &&
-        password.length >= 6 &&
+        password.length >= 8 &&
         password.length <= 16
       );
     };
@@ -114,7 +115,7 @@ const PhoneLogin = ({navigation, route}) => {
         shadowOpacity: 0,
         borderBottomWidth: 0,
       },
-      1: () => (
+      headerBackImage: () => (
         <Image
           source={require('../../assets/images/back-white.png')}
           style={{width: 9, height: 15}}
@@ -128,7 +129,7 @@ const PhoneLogin = ({navigation, route}) => {
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
       <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
-        <Text style={styles.titleText}>手机号注册</Text>
+        <Text style={styles.titleText}>{isRegister ? '手机号注册' : '绑定手机号'}</Text>
         <View style={styles.inputWrap}>
           <View style={styles.inputView}>
             <Text
@@ -214,7 +215,7 @@ const PhoneLogin = ({navigation, route}) => {
               )}
             </Pressable>
           </View>
-          <Text style={styles.tips}>6-16位数字、英文、符号中的任意两类</Text>
+          <Text style={styles.tips}>8-16位数字、英文、符号中的任意两类</Text>
         </View>
       </View>
     </SafeAreaView>
