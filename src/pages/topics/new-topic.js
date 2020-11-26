@@ -125,19 +125,22 @@ const NewTopic = props => {
     if (!hasPermission) {
       return;
     }
-
+    // console.log('staring')
     // SyanImagePicker.openVideoPicker({
     //   allowTakeVideo: false,
-    //   MaxSecond: 500,
-    //   MinSecond: 0,
-    //   scaleEnabled: false,
-    //   recordVideoSecond: 500,
+    //   // MaxSecond: 500,
+    //   // MinSecond: 0,
+    //   // scaleEnabled: false,
+    //   // recordVideoSecond: 500,
     //   videoCount: 1,
+    //   quality: 100,
     //   compress: false,
-    //   videoMaximumDuration: 500
+    //   minimumCompressSize: 1000000
+    //   // videoMaximumDuration: 500
     // }, (error, res) => {
     //   console.log('error', error)
     //   console.log('res', res)
+    //   console.log('end')
     // });
     // props.videoPick(
     //   {
