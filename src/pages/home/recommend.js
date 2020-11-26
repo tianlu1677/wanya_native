@@ -100,7 +100,7 @@ const Recommend = props => {
             hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
             onPress={() => props.navigation.navigate('NotifyIndex')}>
             <View style={{position: 'relative'}}>
-              <IconFont name="notice" size={20} />
+              <IconFont name="notice" color={'white'} size={20} />
             </View>
             <BadgeMessage
               value={UnreadMessageCount()}
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     paddingTop: BOTTOM_HEIGHT + 10,
   },
   message: {
