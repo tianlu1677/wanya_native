@@ -157,6 +157,8 @@ const ContentInput = styled(TextInput)`
   font-size: 15px;
   height: 174px;
   line-height: 16px;
+  paddingTop: 10;
+  text-align-vertical: top;
 `;
 
 const ContractWrapView = styled(View)`

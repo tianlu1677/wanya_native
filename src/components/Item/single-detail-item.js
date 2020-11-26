@@ -379,9 +379,10 @@ const astyles = StyleSheet.create({
     height: 35,
     alignItems: 'center',
     backgroundColor: '#f2f3f5',
-    paddingLeft: 19,
     borderRadius: 15,
     overflow: 'hidden',
+    padding: 0,
+    paddingLeft: 19,
   },
   sendBtn: {
     width: 60,

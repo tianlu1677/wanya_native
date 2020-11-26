@@ -11,7 +11,8 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+// import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
+import ImagePicker from 'react-native-image-picker';
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -124,19 +125,22 @@ const NewTopic = props => {
     if (!hasPermission) {
       return;
     }
-
+    // console.log('staring')
     // SyanImagePicker.openVideoPicker({
     //   allowTakeVideo: false,
-    //   MaxSecond: 500,
-    //   MinSecond: 0,
-    //   scaleEnabled: false,
-    //   recordVideoSecond: 500,
+    //   // MaxSecond: 500,
+    //   // MinSecond: 0,
+    //   // scaleEnabled: false,
+    //   // recordVideoSecond: 500,
     //   videoCount: 1,
+    //   quality: 100,
     //   compress: false,
-    //   videoMaximumDuration: 500
+    //   minimumCompressSize: 1000000
+    //   // videoMaximumDuration: 500
     // }, (error, res) => {
     //   console.log('error', error)
     //   console.log('res', res)
+    //   console.log('end')
     // });
     // props.videoPick(
     //   {
@@ -158,27 +162,55 @@ const NewTopic = props => {
     //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
     //   }
     // );
-    ImagePicker.openPicker({
-      mediaType: 'video',
-      writeTempFile: false,
-      smartAlbums: ['Videos'],
-      loadingLabelText: '导出视频中, 请稍等...',
-      sortOrder: 'asc',
-    }).then(async video => {
-      console.log(video);
-      props.removeAllPhoto();
-      let videoSourceContent = {
-        uri: video.path,
-        height: video.height,
-        width: video.width,
-        duration: video.duration,
-      };
-      setVideoSource([videoSourceContent]);
-      const result = await props.uploadVideo(videoSourceContent, dispatch);
-      setVideoSource([result.asset]);
-      dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-      // Alert.alert(JSON.stringify(video))
-    });
+
+
+    ImagePicker.launchImageLibrary(
+      {
+        mediaType: 'video',
+        videoQuality: 'low',
+      },
+      async response => {
+        if (response.didCancel) {
+          return;
+        }
+        console.log('response', response)
+        // return
+        const video = response;
+        props.removeAllPhoto();
+        let videoSourceContent = {
+          uri: video.origURL, //video.uri.replace('file://', ''),
+          // height: video.height,
+          // width: video.width,
+          // duration: video.duration,
+        };
+        setVideoSource([videoSourceContent]);
+        const result = await props.uploadVideo(videoSourceContent, dispatch);
+        setVideoSource([result.asset]);
+        dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+        // Alert.alert(JSON.stringify(video))
+      }
+    );
+    // ImagePicker.openPicker({
+    //   mediaType: 'video',
+    //   writeTempFile: false,
+    //   smartAlbums: ['Videos'],
+    //   loadingLabelText: '导出视频中, 请稍等...',
+    //   sortOrder: 'asc',
+    // }).then(async video => {
+    //   console.log(video);
+    //   props.removeAllPhoto();
+    //   let videoSourceContent = {
+    //     uri: video.path,
+    //     height: video.height,
+    //     width: video.width,
+    //     duration: video.duration,
+    //   };
+    //   setVideoSource([videoSourceContent]);
+    //   const result = await props.uploadVideo(videoSourceContent, dispatch);
+    //   setVideoSource([result.asset]);
+    //   dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+    //   // Alert.alert(JSON.stringify(video))
+    // });
   };
 
   const deleteMedia = index => {
@@ -548,6 +580,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     marginBottom: 20,
+    padding: 0,
   },
   addTextNameWrap: {
     width: 63,

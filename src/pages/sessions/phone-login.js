@@ -1,28 +1,82 @@
-import React, {useState, useLayoutEffect} from 'react';
-import {StyleSheet, StatusBar, View, TextInput, Pressable, Text, Image} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, {Component, useEffect, useState, useLayoutEffect} from 'react';
+import {StyleSheet, StatusBar, View, TextInput, Pressable, Text, Button, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
-import IconFont from '@/iconfont';
-import Helper from '@/utils/helper';
+import styled from 'styled-components/native';
+import Helper from '../../utils/helper';
+import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import FinishBtn from '@/pages/sessions/components/finishbtn';
 
 var md5 = require('md5');
-
+const appleLogin = 'appleLogin'
 const PhoneLogin = ({navigation, route}) => {
-  const dispatch = useDispatch();
-
+  const loginType = route.params?.loginType || 'wechatLogin';
   const [phone, setPhone] = useState('');
+  const [skip, setSkip] = useState(false);
   const [phoneCode, setPhoneCode] = useState('');
-  const [password, setPassword] = useState('');
   const [downTime, setDownTime] = useState(0);
   const [firstVerify, setFirstVerify] = useState(true);
   const [verifyText, setVerifyText] = useState('获取验证码');
-  const [passwordHidden, setPasswordHidden] = useState(true);
-  const [isRegister] = useState(route.params?.type || null);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setSkip(loginType === 'appleLogin')
+  }, []);
+  //
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      title: false,
+      headerStyle: {
+        backgroundColor: 'black',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+      },
+      1: () => (
+        <Image
+          source={require('../../assets/images/back-white.png')}
+          style={{width: 9, height: 15}}
+        />
+      ),
+      headerRight: () => (
+        <View>
+          {skip && phone.length <= 0 ? (
+            <FinishBtn
+              onPress={skipPhone}
+              textColor={'#353535'}
+              text={'跳过'}
+              canClick={true}
+            />
+          ) : (
+            <FinishBtn onPress={onVerifyPhoneCode} canClick={phone.length > 0} />
+          )}
+        </View>
+        // <FinishBtn onPress={onVerifyPhoneCode} canClick={phoneCode.length === 6} />
+      ),
+    });
+  }, [navigation, phoneCode, phone, skip]);
+
+  const skipPhone = async () => {
+    const token = await Helper.getData('socialToken');
+    // Toast.showError('注册成功');
+    const accountInfo = await getCurrentAccount({token: token});
+    if (!accountInfo.account.had_invited) {
+      navigation.navigate('InviteLogin');
+    } else {
+      await Helper.setData('auth_token', token);
+      dispatch(dispatchSetAuthToken(token));
+      dispatch(dispatchCurrentAccount());
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Recommend'}],
+      });
+    }
+  }
 
   const downTimeRunner = () => {
     var timeo = 59;
@@ -44,13 +98,16 @@ const PhoneLogin = ({navigation, route}) => {
 
   const onSendPhoneCode = async () => {
     if (!/^1[3456789]\d{9}$/.test(phone)) {
+      console.log('error phone');
       Toast.showError('请输入正确的手机号');
       return;
     }
     let timestamp = new Date().getTime();
-    let secret = md5(`phone_${phone}_${timestamp}`);
+    let secret_key = `phone_${phone}_${timestamp}`;
+    let secret = md5(secret_key);
     const token = await Helper.getData('socialToken');
-    let data = {phone, secret, timestamp, token, send_code_type: 'binding'};
+    console.log(secret, md5(secret));
+    let data = {phone: phone, secret: secret, timestamp: timestamp, token: token};
 
     sendPhoneCode(data).then(res => {
       if (res.status === 'success') {
@@ -65,22 +122,22 @@ const PhoneLogin = ({navigation, route}) => {
   };
 
   const onVerifyPhoneCode = async () => {
+    console.log('xxxxxxxxx')
     if (!/^1[3456789]\d{9}$/.test(phone)) {
+
       Toast.showError('请输入正确的手机号');
       return;
     }
-
-    if (!/^(?!(?:[0-9]+|[a-zA-Z]+|[!-\/:-@\[-`{-~]+)$)[!-~]+$/g.test(password)) {
-      Toast.showError('密码格式有误');
-      return;
-    }
+    // console.log('xxxx', phone, phoneCode);
     const token = await Helper.getData('socialToken');
-    const data = {phone, phone_code: phoneCode, password: password, token};
-    const res = await verifyPhoneCode(data);
-    if (res.error) {
-      Toast.showError(res.error, {});
+    let data = {phone: phone, phone_code: phoneCode, token: token};
+    const verifyResponse = await verifyPhoneCode(data);
+    // console.log('verifyResponse', verifyResponse);
+    if (verifyResponse.error) {
+      Toast.showError(verifyResponse.error, {});
     } else {
       await Helper.setData('auth_token', token);
+      // Toast.showError('注册成功');
       const accountInfo = await getCurrentAccount({token: token});
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
@@ -96,52 +153,16 @@ const PhoneLogin = ({navigation, route}) => {
     }
   };
 
-  useLayoutEffect(() => {
-    const isCanClick = () => {
-      return (
-        phone.length === 11 &&
-        phoneCode.length === 6 &&
-        password.length >= 8 &&
-        password.length <= 16
-      );
-    };
-
-    navigation.setOptions({
-      headerBackTitleVisible: false,
-      title: false,
-      headerStyle: {
-        backgroundColor: 'black',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-      },
-      headerBackImage: () => (
-        <Image
-          source={require('../../assets/images/back-white.png')}
-          style={{width: 9, height: 15}}
-        />
-      ),
-      headerRight: () => <FinishBtn onPress={onVerifyPhoneCode} canClick={isCanClick()} />,
-    });
-  }, [navigation, phone, phoneCode, password]);
-
   return (
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
       <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
-        <Text style={styles.titleText}>{isRegister ? '手机号注册' : '绑定手机号'}</Text>
-        <View style={styles.inputWrap}>
-          <View style={styles.inputView}>
+        <TitleText>绑定手机号</TitleText>
+        <InputWrapView>
+          <InputView>
             <Text
               minimumFontScale={1}
-              style={{
-                fontSize: 15,
-                fontWeight: '600',
-                marginRight: 20,
-                lineHeight: 20,
-                color: 'white',
-                letterSpacing: 1,
-              }}>
+              style={styles.leftText}>
               + 86
             </Text>
             <TextInput
@@ -156,10 +177,16 @@ const PhoneLogin = ({navigation, route}) => {
               }}
               placeholder={'输入手机号'}
               placeholderTextColor={'#353535'}
+              // textAlignVertical="top"
+              // value={'198271'}
               style={{...styles.inputContent, width: '100%'}}
             />
-          </View>
-          <View style={styles.inputView}>
+          </InputView>
+
+          <InputView
+            style={{
+              justifyContent: 'space-between',
+            }}>
             <TextInput
               autoComplete="tel"
               caretHidden={false}
@@ -175,8 +202,10 @@ const PhoneLogin = ({navigation, route}) => {
             {firstVerify ? (
               <Pressable
                 hitSlop={{top: 30, left: 20, right: 10, bottom: 15}}
-                onPress={onSendPhoneCode}>
-                <Text style={styles.verifyCodeText}>{verifyText}</Text>
+                onPress={() => {
+                  onSendPhoneCode();
+                }}>
+                <VerifyCodeText color="white">{verifyText}</VerifyCodeText>
               </Pressable>
             ) : (
               <Pressable
@@ -188,39 +217,15 @@ const PhoneLogin = ({navigation, route}) => {
                         onSendPhoneCode();
                       }
                 }>
-                <Text style={[styles.verifyCodeText, {color: downTime ? '#353535' : 'white'}]}>
-                  {verifyText}
-                </Text>
+                <VerifyCodeText color={downTime ? '#353535' : 'white'}>{verifyText}</VerifyCodeText>
               </Pressable>
             )}
-          </View>
-          <View style={styles.inputView}>
-            <TextInput
-              autoComplete="password"
-              selectionColor={'#ff193a'}
-              placeholderTextColor={'#353535'}
-              placeholder={'设置密码'}
-              maxLength={16}
-              secureTextEntry={passwordHidden}
-              onChangeText={text => setPassword(text)}
-              style={{...styles.inputContent, width: '70%'}}
-            />
-            <Pressable
-              onPress={() => setPasswordHidden(!passwordHidden)}
-              hitSlop={{top: 20, left: 20, right: 20, bottom: 20}}>
-              {passwordHidden ? (
-                <IconFont name={'yincang'} size={14} color={'white'} />
-              ) : (
-                <IconFont name={'kejian'} size={14} color={'white'} />
-              )}
-            </Pressable>
-          </View>
-          <Text style={styles.tips}>8-16位数字、英文、符号中的任意两类</Text>
-        </View>
+          </InputView>
+        </InputWrapView>
       </View>
     </SafeAreaView>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   //底部默认样式
@@ -230,52 +235,50 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     letterSpacing: 1,
   },
+  leftText: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginRight: 20,
+    lineHeight: 27,
+    height: 27,
+    color: 'white',
+    letterSpacing: 1,
+  },
   inputContent: {
     fontSize: 15,
     letterSpacing: 1,
     color: '#FFFFFF',
     fontWeight: '600',
     minWidth: 200,
-  },
-  titleText: {
-    letterSpacing: 1,
-    fontSize: 25,
-    color: 'white',
-    fontWeight: '900',
-  },
-  inputWrap: {
-    paddingTop: 38,
-    fontSize: 30,
-  },
-  inputView: {
-    marginTop: 20,
-    paddingBottom: 12,
-    flexDirection: 'row',
-    fontSize: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: '#353535',
-    justifyContent: 'space-between',
-  },
-  verifyCodeText: {
-    fontSize: 12,
-    letterSpacing: 1,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  inputNumber: {
-    fontSize: 15,
-    fontWeight: '600',
-    marginRight: 20,
-    lineHeight: 20,
-    color: 'white',
-    letterSpacing: 1,
-  },
-  tips: {
-    color: '#353535',
-    lineHeight: 20,
-    marginTop: 8,
-    fontSize: 12,
+    padding: 0
   },
 });
 
+const TitleText = styled(Text)`
+  letter-spacing: 1px;
+  font-size: 25px;
+  color: white;
+  font-weight: 900;
+`;
+const InputWrapView = styled(View)`
+  padding-top: 38px;
+  font-size: 30px;
+`;
+const InputView = styled(View)`
+  margin-top: 20px;
+  padding-bottom: 6px;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 30px;
+  border-bottom-width: 1px;
+  border-bottom-color: #353535;
+`;
+
+const VerifyCodeText = styled(Text)`
+  margin-top: 5px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: ${props => props.color};
+`;
 export default PhoneLogin;
