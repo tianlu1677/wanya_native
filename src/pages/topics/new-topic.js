@@ -76,12 +76,13 @@ const NewTopic = props => {
   const checkPermission = async () => {
     const imagePermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
     const status = await check(imagePermission);
+    console.log('imagePermission', status)
     if (status === RESULTS.GRANTED) {
       return true;
     }
 
     if (status === RESULTS.DENIED) {
-      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+      request(imagePermission).then(result => {
         console.log('result', result);
       });
       return true;
@@ -131,49 +132,29 @@ const NewTopic = props => {
       return;
     }
 
-    // SyanImagePicker.openVideoPicker({
-    //   allowTakeVideo: false,
-    //   MaxSecond: 500,
-    //   MinSecond: 0,
-    //   scaleEnabled: false,
-    //   recordVideoSecond: 500,
-    //   videoCount: 1,
-    //   compress: false,
-    //   videoMaximumDuration: 500
-    // }, (error, res) => {
-    //   console.log('error', error)
-    //   console.log('res', res)
-    // });
-    // props.videoPick(
-    //   {
-    //     MaxSecond: 2,
-    //     MinSecond: 1,
-    //     recordVideoSecond: 2,
-    //     videoCount: 1,
-    //     allowTakeVideo: false,
-    //   },
-    //   async (err, res) => {
-    //     if (err) {
-    //       console.log('uploader error', err, res);
-    //       return;
-    //     }
-    //     console.log('res', res);
-    //     setVideoSource([...res]);
-    //     const result = await props.uploadVideo(res[0], dispatch);
-    //     setVideoSource([result.asset]);
-    //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-    //   }
-    // );
+    if(Platform.OS !== 'ios') {
+      props.removeAllPhoto();
+      props.videoPick({}, async (err, res) => {
+        if (err) {
+          return;
+        }
+        setVideoSource([...res]);
+        const result = await props.uploadVideo(res[0], dispatch);
+        setVideoSource([result.asset]);
+        dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+      });
+    }
 
     // react-native-image-picker
-    ImagePicker.launchImageLibrary({mediaType: 'video'}, async video => {
-      console.log(video);
-      setVideoSource([video]);
-      const result = await props.uploadVideo(video, dispatch);
-      setVideoSource([result.asset]);
-      dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-    });
-    
+    if(Platform.OS === 'ios') {
+      ImagePicker.launchImageLibrary({mediaType: 'video'}, async video => {
+        console.log(video);
+        setVideoSource([video]);
+        const result = await props.uploadVideo(video, dispatch);
+        setVideoSource([result.asset]);
+        dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+      });
+    }
     // ImagePicker.openPicker({
     //   mediaType: 'video',
     //   writeTempFile: false,

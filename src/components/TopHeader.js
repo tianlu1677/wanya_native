@@ -33,7 +33,7 @@ const TopHeader = props => {
             <LeftButton />
           ) : (
             <TouchableOpacity
-              style={{marginLeft: 10}}
+              style={{marginLeft: 10,}}
               onPress={() => {
                 if (!navigation.canGoBack() || isAtRoot) {
                   navigation.openDrawer();

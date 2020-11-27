@@ -101,9 +101,11 @@ const MediasPicker = WrapperComponent => {
 
     const uploadVideo = async (file, dispatch) => {
       const res = await getUploadFileToken({ftype: 'mp4'});
+      // console.log('re', res)
+      const path = file.uri.replace('file://', '');
       let uploadOptions = {
         url: res.qiniu_region,
-        path: file.uri,
+        path: path,
         method: 'POST',
         type: 'multipart',
         field: 'file',
