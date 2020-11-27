@@ -40,7 +40,7 @@ package-lock.json
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
+
 !debug.keystore
 ios/bundle/
 # fastlane
