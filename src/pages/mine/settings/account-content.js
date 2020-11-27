@@ -11,10 +11,10 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MediasPicker from '@/components/MediasPicker';
 import Toast from '@/components/Toast';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
-const AccountContent = (props) => {
-  const navigation = props.navigation
+const AccountContent = props => {
+  const navigation = props.navigation;
   const [gender, setGender] = useState('');
   const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [birthday, setBirthday] = useState('');
@@ -29,7 +29,7 @@ const AccountContent = (props) => {
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
     }, [])
-  )
+  );
 
   const ForwardRight = () => {
     return <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />;
@@ -38,19 +38,19 @@ const AccountContent = (props) => {
   const onImagePicker = () => {
     const options = {
       imageCount: 1,
-      isRecordSelected: false
+      isRecordSelected: false,
     };
     props.imagePick(options, async (err, res) => {
       if (err) {
         return;
       }
       // setImageSource([...res]);
-      Toast.showLoading('上传中...')
+      Toast.showLoading('上传中...');
       for (let [index, file] of new Map(res.map((item, i) => [i, item]))) {
         const result = await props.uploadAvatar({
           uploadType: 'multipart',
           account_id: currentAccount.id,
-          ...file
+          ...file,
         });
         dispatch(dispatchCurrentAccount());
         // console.log('res', currentAccount)
@@ -60,6 +60,10 @@ const AccountContent = (props) => {
   };
 
   const setGenderValue = async value => {
+    console.log('xxxx', value)
+    if(value.toString().length <= 0) {
+      return
+    }
     setGender(value);
     await syncAccountInfo({id: currentAccount.id, gender: value});
     dispatch(dispatchCurrentAccount());
@@ -77,6 +81,7 @@ const AccountContent = (props) => {
     return (
       <RNPickerSelect
         onValueChange={value => setGenderValue(value)}
+        fixAndroidTouchableBug
         placeholder={{
           label: '请选择',
           value: '',
@@ -116,7 +121,7 @@ const AccountContent = (props) => {
         });
         break;
       case 'avatar':
-        onImagePicker()
+        onImagePicker();
         break;
       default:
         console.log('not');
@@ -163,10 +168,7 @@ const AccountContent = (props) => {
         }}>
         <ItemTitle>性别</ItemTitle>
         <ItemWrap>
-          <ItemTitle>
-            {/*{currentAccount.gender_text}*/}
-            <GenderDropdown />
-          </ItemTitle>
+          <GenderDropdown />
           <ForwardRight />
         </ItemWrap>
       </ItemView>
@@ -232,14 +234,20 @@ const pickerSelectStyles = StyleSheet.create({
     paddingTop: 5,
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'black',
-    borderRadius: 8,
+    fontSize: 10,
+    // paddingHorizontal: 10,
+    // paddingVertical: 8,
+    // borderWidth: StyleSheet.hairlineWidth,
+    // borderColor: 'black',
+    // borderRadius: 8,
+    width: 150,
+    flex: 1,
+    marginLeft: 100,
+    // justifyContent: 'center',
     color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    backgroundColor: 'white',
+    marginRight: -100,
+    paddingRight: 0, // to ensure the text is never behind the icon
   },
 });
 
@@ -263,7 +271,7 @@ const ItemView = styled(Pressable)`
 
 const ItemTitle = styled(Text)`
   font-size: 14px;
-  font-weight: 400;  
+  font-weight: 400;
 `;
 
 export default MediasPicker(AccountContent);

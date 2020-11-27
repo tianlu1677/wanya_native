@@ -67,7 +67,7 @@ const SocialLogin = ({navigation, route}) => {
       const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
       let signData = {
         code: codeRes.code,
-        app_id: codeRes.appid,
+        app_id: codeRes.appid || 'wx17b69998e914b8f0',
         // source: 'vanyah_app'
       };
       const userInfoRes = await appWechatSignIn(signData);

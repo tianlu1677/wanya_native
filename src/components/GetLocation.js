@@ -89,7 +89,7 @@ const GetLocation = ({children, handleClick, style}) => {
         }}>
         {children}
       </Pressable>
-      <Modal transparent={visible} visible={visible}>
+      <Modal transparent={visible} statusBarTranslucent visible={visible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>授权后才能设置场地位置</Text>

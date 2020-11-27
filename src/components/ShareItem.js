@@ -35,8 +35,11 @@ const ShareItem = () => {
     <Modal
       animationType=""
       transparent={true}
+      statusBarTranslucent
       visible={shareContent.visible}
-      onRequestClose={() => {}}>
+      onRequestClose={() => {
+        dispatch(dispatchShareItem({...shareContent, visible: false}))
+      }}>
       <ModelWrap
         onPress={() => {
           dispatch(dispatchShareItem({...shareContent, visible: false}));
