@@ -10,11 +10,14 @@ const SingleList = props => {
   const [listData, setListData] = useState([]);
 
   const onRemove = index => {
-    listData.splice(index, 1);
-    setListData([...listData]);
+    const data = JSON.parse(JSON.stringify(listData));
+    data.splice(index, 1);
+    setListData([...data]);
   };
 
-  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, []);
+  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, [
+    listData,
+  ]);
 
   const Child = React.memo(({item, index}) => {
     return item.item_type === 'Topic' ? (
@@ -25,7 +28,9 @@ const SingleList = props => {
   });
 
   const loadData = async (page = 1) => {
-    setLoading(true);
+    if (page === 1) {
+      setLoading(true);
+    }
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;

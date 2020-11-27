@@ -15,7 +15,7 @@ const NodeIndex = ({navigation}) => {
       account_id: currentAccount.id,
       account_nickname: currentAccount.nickname,
     });
-    Toast.show('敬请期待', {duration: 1000});
+    Toast.showError('敬请期待', {duration: 1000});
   };
 
   useLayoutEffect(() => {

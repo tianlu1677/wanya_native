@@ -42,7 +42,7 @@ const Recommend = props => {
               <Text style={styles.emptyText}>你还没有加入圈子</Text>
               <Text style={styles.emptyText}>点击发现更多圈子</Text>
             </View>
-            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NotifyIndex')}>
+            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
               发现更多圈子
             </Text>
           </View>
@@ -70,7 +70,7 @@ const Recommend = props => {
 
   return (
     <View style={{flex: 1}}>
-      <SafeAreaView style={{flex: 0, backgroundColor: 'black' }} edges={['top']} />
+      <SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />
       <FocusAwareStatusBar barStyle="dark-content" />
       <View style={styles.wrapper}>
         <TabViewList

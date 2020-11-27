@@ -11,7 +11,6 @@ const NodeIndex = ({type}) => {
   const scrollRef = useRef(null);
   const nodes = useSelector(state => state.home.nodes);
 
-  console.log(nodes);
   const [categories, setCategories] = useState(null);
   const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(0);

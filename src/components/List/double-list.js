@@ -259,9 +259,7 @@ const DoubleList = props => {
     };
     loadFirstData();
 
-    return () => {
-    }
-
+    return () => {};
   }, []);
 
   return (
