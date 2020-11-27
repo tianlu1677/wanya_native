@@ -276,6 +276,7 @@ const DoubleList = props => {
         onEndReachedThreshold: 0.05,
         initialNumToRender: 5,
         windowSize: 8,
+        progressViewOffset: 0,
         ...props.settings,
       }}
       style={styles.wrapper}

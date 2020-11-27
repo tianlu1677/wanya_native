@@ -7,7 +7,7 @@ import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRecommendPosts, getFollowedPosts, getFollowedNodePosts} from '@/api/home_api';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
@@ -15,6 +15,7 @@ import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import SafeAreaPlus from '@/components/SafeAreaPlus';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -68,7 +69,8 @@ const Recommend = props => {
   }, []);
 
   return (
-    <SafeAreaPlus style={{flex: 1}} edges={['right', 'left']}>
+    <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 0, backgroundColor: 'black' }} edges={['top']} />
       <FocusAwareStatusBar barStyle="dark-content" />
       <View style={styles.wrapper}>
         <TabViewList
@@ -110,7 +112,7 @@ const Recommend = props => {
           </Pressable>
         </View>
       </View>
-    </SafeAreaPlus>
+    </View>
   );
 };
 
@@ -157,14 +159,14 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
-    backgroundColor: 'black',
-    paddingTop: BOTTOM_HEIGHT + 10,
+    backgroundColor: 'white',
+    // paddingTop: BOTTOM_HEIGHT + 10,
   },
   message: {
     position: 'absolute',
     right: 4,
     zIndex: 100,
-    top: BOTTOM_HEIGHT + 3 + 22,
+    top: STATUS_BAR_HEIGHT,
   },
   message_icon: {
     position: 'absolute',
