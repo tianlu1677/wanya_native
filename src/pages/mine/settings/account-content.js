@@ -67,7 +67,7 @@ const AccountContent = props => {
       });
       dispatch(dispatchCurrentAccount());
       Toast.hide();
-      Toast.show('已完成', {duration: 500});
+      Toast.showError('已完成', {duration: 500});
     });
   };
 

@@ -134,10 +134,13 @@ const AccountDetail = ({navigation, route}) => {
     return (
       <View style={{flex: 1}}>
         <FastImg
-          source={{uri: AccountDetailBgImg}}
+          source={{
+            uri: account.background_img_url ? account.background_img_url : AccountDetailBgImg,
+          }}
           resizeMode={'cover'}
           style={styles.imageCover}
         />
+        <View style={[styles.imageCover, styles.imageCoverOpacity]} />
         <View style={styles.header}>
           <GoBack />
           <Pressable
@@ -302,6 +305,10 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     height: HEADER_HEIGHT,
+  },
+  imageCoverOpacity: {
+    backgroundColor: '#000',
+    opacity: 0.5,
   },
   userWrap: {
     flexDirection: 'row',

@@ -83,7 +83,7 @@ const MineDetail = props => {
             });
             dispatch(dispatchCurrentAccount());
             Toast.hide();
-            Toast.show('已完成', {duration: 500});
+            Toast.showError('已完成', {duration: 500});
           });
         }
       }
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   },
   imageCoverOpacity: {
     backgroundColor: '#000',
-    opacity: 0.3,
+    opacity: 0.5,
   },
   userWrap: {
     flexDirection: 'row',
