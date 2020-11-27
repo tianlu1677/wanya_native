@@ -22,6 +22,7 @@ import NewTopic from '@/pages/topics/new-topic';
 import {HeaderBackButton} from '@react-navigation/stack';
 import Helper from '@/utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
+import LabIndex from '@/pages/labs/index';
 
 import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
@@ -39,7 +40,7 @@ import WebView from '@/pages/webview/webview';
 import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
 import BackImg from '@/assets/images/back.png';
-import ViewShotPage from "@/components/SharePage"
+import ViewShotPage from '@/components/SharePage';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -63,7 +64,7 @@ function HomeTabList() {
   return (
     <Tab.Navigator
       tabBar={TabBar}
-      initialRouteName={'Recommend'}
+      initialRouteName={'LabIndex'}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let icon_list = {
@@ -99,6 +100,7 @@ function HomeTabList() {
           height: 55,
         },
       }}>
+      <Tab.Screen key={'LabIndex'} name={'LabIndex'} component={LabIndex} options={{}} />
       <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{}} />
       <Tab.Screen
         key={'GoNewTopic'}
@@ -124,41 +126,43 @@ const Render = props => {
 };
 
 function MainStackList() {
-
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
       headerMode="screen"
       screenOptions={({route}) => ({
-        headerStyle: {
-          backgroundColor: 'white',
-          // height: 54,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-          // borderBottomColor: 'red',
-          // justifyContent: 'center',
-          // alignItems: 'center'
-        },
-        headerBackTitleVisible: false,
-        headerTintColor: 'black',
-        leftButtonStyle: {},
-        headerLeftContainerStyle: {
-          paddingLeft: 15,
-        },
-        headerRightContainerStyle: {
-          paddingRight: 15,
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 16,
-        },
-        headerBackImage: () => (
-          <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
-            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 0}} />
-          </View>
-        ),
+        // headerStyle: {
+        //   backgroundColor: 'white',
+        //   // height: 54,
+        //   elevation: 0,
+        //   shadowOpacity: 0,
+        //   borderBottomWidth: 0,
+        //   borderTopWidth: 0,
+        //   // borderBottomColor: 'red',
+        //   // justifyContent: 'center',
+        //   // alignItems: 'center'
+        // },
+        // headerBackTitleVisible: false,
+        // headerTintColor: 'black',
+        // leftButtonStyle: {},
+        // headerLeftContainerStyle: {
+        //   paddingLeft: 15,
+        // },
+        // headerRightContainerStyle: {
+        //   paddingRight: 15,
+        // },
+        // headerTitleStyle: {
+        //   fontWeight: 'bold',
+        //   fontSize: 16,
+        // },
+        // headerBackImage: () => (
+        //   <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
+        //     <Image
+        //       source={require('../assets/images/back.png')}
+        //       style={{width: 9, height: 15, paddingLeft: 0}}
+        //     />
+        //   </View>
+        // ),
       })}>
       <MainStack.Screen name="Recommend" component={Render} options={{headerShown: false}} />
       {routers.map(route => {
