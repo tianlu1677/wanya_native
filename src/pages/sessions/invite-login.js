@@ -112,7 +112,9 @@ const styles = StyleSheet.create({
   },
   inviteCode: {
     color: 'white',
-    paddingBottom: 6,
+    // paddingBottom: 6,
+    padding: 0,
+    marginBottom: 6,
     letterSpacing: 1,
     borderBottomWidth: StyleSheet.hairlineWidth,
     fontWeight: '700',

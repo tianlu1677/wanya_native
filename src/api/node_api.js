@@ -36,7 +36,7 @@ export const getFollowNodeIndex = async params => {
     method: 'GET',
     data: params,
   });
-  return res;
+  return res.data.nodes;
 };
 
 // 圈子加入用户
@@ -46,7 +46,7 @@ export const getRecentAccounts = async params => {
     method: 'GET',
     params,
   });
-  return res;
+  return res.data.nodes;
 };
 
 // export async function getFollowNodeIndex(params = {account_id: ''}) {

@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, ActionSheetIOS, TouchableOpacity} from 'react-native';
-import IconFont from '@/iconfont';
-import {useSelector} from 'react-redux';
+import {View, Text, StyleSheet, Pressable, ActionSheetIOS} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
 import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
+import IconFont from '@/iconfont';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
@@ -26,6 +27,8 @@ import {reportContent} from '@/api/secure_check';
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
 const AccountDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
+
   const [accountId] = useState(route.params.accountId);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
@@ -91,6 +94,15 @@ const AccountDetail = ({navigation, route}) => {
     );
   };
 
+  const onPreview = () => {
+    const data = {
+      images: [{url: account.avatar_url}],
+      visible: true,
+      index: 0,
+    };
+    dispatch(dispatchPreviewImage(data));
+  };
+
   const PublishList = () => {
     return (
       <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
@@ -122,10 +134,13 @@ const AccountDetail = ({navigation, route}) => {
     return (
       <View style={{flex: 1}}>
         <FastImg
-          source={{uri: AccountDetailBgImg}}
+          source={{
+            uri: account.background_img_url ? account.background_img_url : AccountDetailBgImg,
+          }}
           resizeMode={'cover'}
           style={styles.imageCover}
         />
+        <View style={[styles.imageCover, styles.imageCoverOpacity]} />
         <View style={styles.header}>
           <GoBack />
           <Pressable
@@ -136,7 +151,7 @@ const AccountDetail = ({navigation, route}) => {
           </Pressable>
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
-            <Avator account={account} size={51} isShowSettledIcon={false} />
+            <Avator account={account} size={50} isShowSettledIcon={false} handleClick={onPreview} />
             <View style={{marginLeft: 8}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.nickname}>{account.nickname}</Text>
@@ -290,6 +305,10 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     height: HEADER_HEIGHT,
+  },
+  imageCoverOpacity: {
+    backgroundColor: '#000',
+    opacity: 0.5,
   },
   userWrap: {
     flexDirection: 'row',

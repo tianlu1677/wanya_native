@@ -39,7 +39,7 @@ import WebView from '@/pages/webview/webview';
 import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
 import BackImg from '@/assets/images/back.png';
-import ViewShotPage from "@/components/SharePage"
+import ViewShotPage from '@/components/SharePage';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -49,13 +49,13 @@ const AuthStack = createStackNavigator();
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'; // 存储上次打开的位置
 
 const TabBar = props => (
-  <VibrancyView
+  <BlurView
     style={styles.blurView}
     blurType="light"
     blurAmount={80}
     reducedTransparencyFallbackColor="#white">
     <BottomTabBar {...props} />
-  </VibrancyView>
+  </BlurView>
 );
 
 function HomeTabList() {
@@ -124,7 +124,6 @@ const Render = props => {
 };
 
 function MainStackList() {
-
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
@@ -155,8 +154,11 @@ function MainStackList() {
           fontSize: 16,
         },
         headerBackImage: () => (
-          <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
-            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 0}} />
+          <View style={{flex: 1, paddingRight: 20}}>
+            <Image
+              source={require('../assets/images/back.png')}
+              style={{width: 9, height: 15, paddingLeft: 0}}
+            />
           </View>
         ),
       })}>

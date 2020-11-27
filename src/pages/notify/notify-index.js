@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useCallback} from 'react';
+import React, {Component, useEffect, useCallback, useLayoutEffect} from 'react';
 import {StyleSheet, View, Text, Image, Pressable, Button} from 'react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import styled from 'styled-components/native';
@@ -66,7 +66,7 @@ const NotifyIndex = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(dispatchCurrentAccount())
+      dispatch(dispatchCurrentAccount());
     }, [])
   );
 
@@ -189,7 +189,7 @@ const NotifyIndex = ({navigation}) => {
             <NotifyContentDesc style={{marginLeft: -3}}>
               ⚡️
               {unread_system_messages_count > 0
-                ? `有${unread_system_messages_count}条新的推荐`
+                ? `有${unread_system_messages_count}条新的消息`
                 : '查看消息通知'}{' '}
             </NotifyContentDesc>
           </NotifyContentView>
@@ -197,7 +197,7 @@ const NotifyIndex = ({navigation}) => {
       </WrapView>
     </View>
   );
-};;
+};
 
 const styles = StyleSheet.create({
   badgeContainer: {

@@ -68,6 +68,9 @@ export const brandlImg =
 export const FollowImg =
   'http://xinxuefile.meirixinxue.com/assets/2020/d4fba193-3848-4ae1-8298-46607492a356.png';
 
+export const AllNodeImg =
+  'http://file.meirixinxue.com/assets/2020/536525d2-24fd-42c4-93f7-2d97f06bcb22.jpg';
+
 export const ImageList = [
   DefaultLog,
   brandlImg,
@@ -79,5 +82,5 @@ export const ImageList = [
   LogoImg,
   AccountDetailBgImg,
   MineSystemNoticeUserImg,
-  MineMentionNoticeUserImg
-]
+  MineMentionNoticeUserImg,
+];

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback, useLayoutEffect} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {
   View,
   Text,
@@ -8,44 +8,46 @@ import {
   StyleSheet,
   Pressable,
   Dimensions,
+  ActionSheetIOS,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import VideoPlayerContent from '@/components/react-native-video-player';
-import {
-  dispatchBaseCurrentAccount,
-  dispatchTopicDetail,
-  dispatchPreviewImage,
-} from '@/redux/actions';
+import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
+import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import CommentList from '@/components/List/comment-list';
 import {PlainContent} from '@/components/Item/single-list-item';
 import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
-import {getTopic} from '@/api/topic_api';
+import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {NAV_BAR_HEIGHT, BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
-import ViewShotPage from '@/components/SharePage';
 import LinearGradient from 'react-native-linear-gradient';
+
+const {width: screenWidth} = Dimensions.get('window');
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const videoRef = useRef(null);
   const currentAccount = useSelector(state => state.account.currentAccount);
-
   const [topicId] = useState(route.params.topicId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
 
-  const videoRef = useRef(null);
-
   const loadData = async () => {
     const res = await getTopic(topicId);
-    setDetail(res.data.topic);
-    dispatch(dispatchTopicDetail(res.data.topic));
+    if (res.data.status === 404) {
+      Toast.show('该帖子已删除');
+      navigation.goBack();
+    } else {
+      setDetail(res.data.topic);
+      dispatch(dispatchTopicDetail(res.data.topic));
+    }
   };
 
   const publishComment = async data => {
@@ -57,15 +59,53 @@ const TopicDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const deleteTopicComment = async id => {
+    await deleteComment(id);
+    loadData();
+  };
+
+  const onReportClick = () => {
+    const isCurrentTopic = detail.account_id === currentAccount.id;
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: isCurrentTopic ? ['取消', '删除'] : ['取消', '举报'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      async buttonIndex => {
+        if (buttonIndex === 1) {
+          if (isCurrentTopic) {
+            // 删除
+            await deleteTopic(detail.id);
+            Toast.show('已删除');
+            navigation.goBack();
+          } else {
+            navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
+          }
+        }
+      }
+    );
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (videoRef && videoRef.current) {
+        // 是否继续播放
+        if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
+          videoRef.current.resume();
+        }
+      }
+      return () => {
+        videoRef && videoRef.current && videoRef.current.pause();
+      };
+    }, [])
+  );
+
   useEffect(() => {
     loadData();
-    return () => {
-      // setDetail(null);
-    };
   }, []);
 
   const renderImg = () => {
-    const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     let {medias, media_images} = detail;
     let maxHeight = 100;
     (media_images || []).map(img => {
@@ -74,10 +114,6 @@ const TopicDetail = ({navigation, route}) => {
         maxHeight = imgHeight;
       }
     });
-
-    // if (maxHeight > 1000) {
-    //   maxHeight = 750;
-    // }
 
     media_images = (media_images || []).map(img => {
       let imgHeight = (screenWidth / img.width) * img.height;
@@ -90,7 +126,7 @@ const TopicDetail = ({navigation, route}) => {
 
     const onPreview = index => {
       const data = {
-        images: detail.medias.map(v => {
+        images: medias.map(v => {
           return {url: v.split('?')[0]};
         }),
         visible: true,
@@ -100,54 +136,34 @@ const TopicDetail = ({navigation, route}) => {
     };
 
     return (
-      <View>
-        {/*<GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'white'} />*/}
-        <Swiper
-          index={0}
-          loop={false}
-          activeDotColor={'yellow'}
-          dotColor={'white'}
-          style={{height: maxHeight, backgroundColor: 'black'}}
-          showsPagination={detail.media_images.length > 0}>
-          {media_images.map((media, index) => (
-            <Pressable
-              onPress={() => onPreview(index)}
+      <Swiper
+        index={0}
+        loop={false}
+        activeDotColor={'yellow'}
+        dotColor={'white'}
+        style={{height: maxHeight, backgroundColor: 'black'}}
+        showsPagination={detail.media_images.length > 0}>
+        {media_images.map((media, index) => (
+          <Pressable
+            onPress={() => onPreview(index)}
+            key={media.image_url}
+            style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
+            <FastImg
               key={media.image_url}
-              style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
-              <FastImg
-                key={media.image_url}
-                source={{uri: media.image_url}}
-                style={{width: screenWidth, height: media.imgHeight}}
-                mode={'contain'}
-              />
-            </Pressable>
-          ))}
-        </Swiper>
-      </View>
+              source={{uri: media.image_url}}
+              style={{width: screenWidth, height: media.imgHeight}}
+              mode={'contain'}
+            />
+          </Pressable>
+        ))}
+      </Swiper>
     );
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      if (videoRef && videoRef.current) {
-        // console.log('videoRef.current', videoRef.current)
-        // 是否继续播放
-        if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
-          videoRef.current.resume();
-        }
-      }
-      return () => {
-        videoRef && videoRef.current && videoRef.current.pause();
-      };
-    }, [])
-  );
-
   const renderVideo = () => {
-    const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
     const {width, height} = detail.media_video;
     let videoWidth = screenWidth;
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-
     return (
       <View style={{backgroundColor: 'black'}}>
         {detail.excellent && (
@@ -186,7 +202,6 @@ const TopicDetail = ({navigation, route}) => {
         title: detail.topic_link.title,
       });
     };
-    // console.log(detail);
 
     return (
       <View>
@@ -208,19 +223,20 @@ const TopicDetail = ({navigation, route}) => {
     );
   };
 
-  const deleteTopicComment = async id => {
-    await deleteComment(id);
-    loadData();
-  };
-
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff'}}>
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
       <GoBack
         name={navigation.canGoBack() ? '' : 'home-recommend'}
         color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
       />
+      <Pressable
+        onPress={onReportClick}
+        style={styles.report}
+        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+        <IconFont name="ziyuan" color="#fff" size={20} />
+      </Pressable>
       <CommentList
         type="Topic"
         detail={detail}
@@ -270,6 +286,16 @@ const TopicDetail = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  report: {
+    position: 'absolute',
+    right: 16,
+    height: 44,
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    top: Math.max(getStatusBarHeight(), 20),
+    zIndex: 1,
+  },
   title: {
     fontSize: 20,
     paddingTop: 8,
@@ -329,7 +355,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    right: 15,
+    // right: 15,
+    left: 40,
   },
   multiLineText: {
     fontSize: 14,

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
@@ -9,8 +9,13 @@ const TopicList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderItem = ({item}) => {
-    return <BaseTopic data={item} key={item.id} />;
+  const onRemove = index => {
+    listData.splice(index, 1);
+    setListData([...listData]);
+  };
+
+  const renderItem = ({item, index}) => {
+    return <BaseTopic data={item} key={item.id} onRemove={() => onRemove(index)} />;
   };
 
   const loadData = async (page = 1) => {

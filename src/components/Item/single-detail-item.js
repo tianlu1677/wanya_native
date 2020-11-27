@@ -8,10 +8,6 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
-import SharePageModal from '@/components/SharePageModal';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
-import {dispatchShareItem} from '@/redux/actions';
-import * as WeChat from 'react-native-wechat-lib';
 
 export const PublishAccount = props => {
   const {data} = props;
@@ -20,6 +16,10 @@ export const PublishAccount = props => {
 
   const goAccountDetail = () => {
     navigation.push('AccountDetail', {accountId: data.account.id});
+  };
+
+  const goSpaceDetail = () => {
+    navigation.push('SpaceDetail', {spaceId: data.space.id});
   };
 
   const onFollow = async () => {
@@ -36,7 +36,18 @@ export const PublishAccount = props => {
       <Avator account={data.account} size={40} />
       <Pressable style={hstyles.content} onPress={goAccountDetail}>
         <Text style={hstyles.nameText}>{data.account.nickname}</Text>
-        <Text style={hstyles.timeText}>{data.published_at_text}</Text>
+        <View style={hstyles.info}>
+          <Text style={hstyles.timeText}>{data.published_at_text}</Text>
+          {data.space && (
+            <Pressable
+              style={hstyles.spaceWrapper}
+              onPress={goSpaceDetail}
+              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <IconFont name="space-point" size={11} color={'#9C9C9C'} />
+              <Text style={hstyles.spaceText}>{data.space.name}</Text>
+            </Pressable>
+          )}
+        </View>
       </Pressable>
       {props.showFollow && (
         <Text style={[hstyles.joinBtn, {color: followed ? '#bdbdbd' : '#000'}]} onPress={onFollow}>
@@ -55,19 +66,8 @@ export const PublishRelated = props => {
     navigation.push('NodeDetail', {nodeId: data.node.id});
   };
 
-  const goSpaceDetail = () => {
-    navigation.push('SpaceDetail', {spaceId: data.space.id});
-  };
-
   return (
     <>
-      {data.space && (
-        <Pressable style={pstyles.spaceWrapper} onPress={goSpaceDetail}>
-          <IconFont name="space-point" size={16} color={'#45ea6a'} />
-          <Text style={pstyles.spaceText}>{data.space.name}</Text>
-        </Pressable>
-      )}
-
       {data.tag_list.length > 0 && (
         <View style={pstyles.tagsWrapper}>
           {data.tag_list.map((v, index) => (
@@ -77,9 +77,6 @@ export const PublishRelated = props => {
           ))}
         </View>
       )}
-
-      <View style={{backgroundColor: '#FAFAFA', height: 9}} />
-
       {data.node && (
         <Pressable style={pstyles.fromWrapper} onPress={goNodeDetail}>
           <View>
@@ -108,7 +105,6 @@ export const ActionComment = props => {
   const [value, setValue] = useState(null);
   const [praise, setPraise] = useState(props.detail.praise);
   const [star, setStar] = useState(props.detail.star);
-  const [shareModelVisible, setShareModelVisible] = useState(false);
 
   const onCreateComment = v => {
     const commentTopic = {
@@ -177,47 +173,6 @@ export const ActionComment = props => {
     }
   };
 
-  // 分享
-  // const onShare = () => {
-  //   console.log('onShare', props);
-  //   const {detail} = props;
-  //   // const detail = data.detail
-  //   let shareOptions = {
-  //     title: '顽鸦',
-  //     userName: 'gh_c2b50fe8e928',
-  //     webpageUrl: '',
-  //     path: '',
-  //     thumbImageUrl: detail.wx_share_image_url,
-  //     scene: 0,
-  //   };
-  //   switch (props.type) {
-  //     case 'Article':
-  //       shareOptions = {
-  //         ...shareOptions,
-  //         title: detail.plain_content,
-  //         path: '/pages/articles/article-detail?article_id=' + detail.id,
-  //         thumbImageUrl: detail.wx_share_image_url,
-  //       };
-  //       break;
-  //     case 'Topic':
-  //       shareOptions = {
-  //         ...shareOptions,
-  //         title: detail.plain_content,
-  //         path: '/pages/topics/topic-detail?topic_id=' + detail.id,
-  //         thumbImageUrl: detail.wx_share_image_url,
-  //       };
-  //       break;
-  //     default:
-  //       shareOptions;
-  //       break;
-  //   }
-  //
-  //   const shareContent = {...shareOptions, visible: true};
-  //   // console.log('xxx', shareContent)
-  //   // dispatch(dispatchShareItem(shareContent));
-  //   // WeChat.shareMiniProgram(shareOptions);
-  // };
-
   useEffect(() => {
     setValue(null);
   }, [props.visible]);
@@ -251,28 +206,9 @@ export const ActionComment = props => {
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
                 navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
-                // setShareModelVisible(true);
               }}>
               <IconFont name="zhuanfa" size={18} />
             </Pressable>
-
-            {/*<View style={{}}>*/}
-            {/*  <SharePageModal*/}
-            {/*    shareModelVisible={shareModelVisible}*/}
-            {/*    onShowShare={status => setShareModelVisible(status)}*/}
-            {/*    assetable={{*/}
-            {/*      type: props.type,*/}
-            {/*      id: props.detail.id,*/}
-            {/*      assetable_name: 'app_share_image',*/}
-            {/*    }}*/}
-            {/*    pageShareContent={{*/}
-            {/*      account: props.detail.account,*/}
-            {/*      node_name: props.detail.node.name,*/}
-            {/*      content: props.detail.plain_content,*/}
-            {/*      bg_img_url: props.detail.wx_share_image_url,*/}
-            {/*    }}*/}
-            {/*  />*/}
-            {/*</View>*/}
           </View>
         </>
       )}
@@ -312,13 +248,27 @@ const hstyles = StyleSheet.create({
     paddingTop: 4,
   },
   nameText: {
-    color: '#9c9c9c',
     fontSize: 12,
     lineHeight: 20,
   },
+  info: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 3,
+  },
+  spaceWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 6,
+  },
+  spaceText: {
+    color: '#9C9C9C',
+    marginLeft: 4,
+    fontSize: 11,
+    fontWeight: '400',
+  },
   timeText: {
     color: '#bdbdbd',
-    marginRight: 6,
     fontSize: 11,
   },
   joinBtn: {
@@ -334,18 +284,6 @@ const hstyles = StyleSheet.create({
 });
 
 const pstyles = StyleSheet.create({
-  spaceWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 16,
-    marginBottom: 18,
-  },
-  spaceText: {
-    color: '#45ea6a',
-    marginLeft: 6,
-    fontSize: 14,
-    lineHeight: 20,
-  },
   tagsWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -441,9 +379,10 @@ const astyles = StyleSheet.create({
     height: 35,
     alignItems: 'center',
     backgroundColor: '#f2f3f5',
-    paddingLeft: 19,
     borderRadius: 15,
     overflow: 'hidden',
+    padding: 0,
+    paddingLeft: 19,
   },
   sendBtn: {
     width: 60,

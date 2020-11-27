@@ -64,7 +64,6 @@ const TabList = props => {
         tabBarStyle.tabWrap,
         tabBarStyle[`tab${size}`],
         bottomLine ? tabBarStyle.bottomLine : null,
-        // props.separator ? tabBarStyle.separator : null,
       ]}>
       <ScrollView
         horizontal
@@ -113,7 +112,7 @@ const tabBarStyle = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'pink',
+    backgroundColor: '#000',
   },
   tabmiddle: {
     height: 50,
@@ -142,7 +141,7 @@ const tabBarStyle = StyleSheet.create({
   },
   textActivebig: {
     fontSize: 18,
-    color: '#000',
+    color: '#fff',
     fontWeight: '500',
   },
   textActivemiddle: {
@@ -157,7 +156,7 @@ const tabBarStyle = StyleSheet.create({
   lineActivebig: {
     width: 22,
     height: 3,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     marginTop: 6,
     borderRadius: 4,
     overflow: 'hidden',

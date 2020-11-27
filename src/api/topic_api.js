@@ -49,6 +49,15 @@ export const destroyTopicAction = async params => {
   return res;
 };
 
+// 删除帖子
+export const deleteTopic = async id => {
+  const res = await request({
+    url: `/api/v1/topics/${id}`,
+    method: 'DELETE',
+  });
+  return res.data;
+};
+
 //话题列表
 export async function getNodeTopicList(params) {
   const res = await request({
@@ -75,15 +84,6 @@ export async function updateTopic(id, data = {}) {
     url: `/api/v1/topics/${id}`,
     method: 'PUT',
     data: data,
-  });
-  return res.data;
-}
-
-// 删除帖子
-export async function deleteTopic(id) {
-  const res = await request({
-    url: `/api/v1/topics/${id}`,
-    method: 'DELETE',
   });
   return res.data;
 }

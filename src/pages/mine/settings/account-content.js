@@ -1,8 +1,16 @@
-import React, {Component, useState, useLayoutEffect, useEffect, useCallback} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, View, Pressable, Image, Text} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  View,
+  Pressable,
+  Image,
+  Text,
+  Dimensions,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
-import Helper from '@/utils/helper';
 import {dispatchCurrentAccount} from '../../../redux/actions';
 import {syncAccountInfo} from '@/api/mine_api';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,10 +19,11 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MediasPicker from '@/components/MediasPicker';
 import Toast from '@/components/Toast';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+const {width: screenW} = Dimensions.get('window');
 
-const AccountContent = (props) => {
-  const navigation = props.navigation
+const AccountContent = props => {
+  const navigation = props.navigation;
   const [gender, setGender] = useState('');
   const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [birthday, setBirthday] = useState('');
@@ -29,33 +38,36 @@ const AccountContent = (props) => {
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
     }, [])
-  )
+  );
 
   const ForwardRight = () => {
     return <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />;
   };
 
   const onImagePicker = () => {
+    props.removeAllPhoto();
     const options = {
       imageCount: 1,
-      isRecordSelected: false
+      isCrop: true,
+      CropW: screenW * 1,
+      CropH: screenW * 1,
+      isCamera: false,
     };
+
     props.imagePick(options, async (err, res) => {
       if (err) {
         return;
       }
-      // setImageSource([...res]);
-      Toast.showLoading('上传中...')
-      for (let [index, file] of new Map(res.map((item, i) => [i, item]))) {
-        const result = await props.uploadAvatar({
-          uploadType: 'multipart',
-          account_id: currentAccount.id,
-          ...file
-        });
-        dispatch(dispatchCurrentAccount());
-        // console.log('res', currentAccount)
-      }
+      Toast.showLoading('更换中...');
+      await props.uploadAvatar({
+        uploadType: 'multipart',
+        account_id: currentAccount.id,
+        keyParams: 'account[avatar]',
+        ...res[0],
+      });
+      dispatch(dispatchCurrentAccount());
       Toast.hide();
+      Toast.showError('已完成', {duration: 500});
     });
   };
 
@@ -116,7 +128,7 @@ const AccountContent = (props) => {
         });
         break;
       case 'avatar':
-        onImagePicker()
+        onImagePicker();
         break;
       default:
         console.log('not');
@@ -263,7 +275,7 @@ const ItemView = styled(Pressable)`
 
 const ItemTitle = styled(Text)`
   font-size: 14px;
-  font-weight: 400;  
+  font-weight: 400;
 `;
 
 export default MediasPicker(AccountContent);
