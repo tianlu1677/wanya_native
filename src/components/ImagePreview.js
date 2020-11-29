@@ -15,10 +15,9 @@ import IconFont from '@/iconfont';
 const ImagePreview = () => {
   const dispatch = useDispatch();
   const previewImageData = useSelector(state => state.home.previewImageData);
-  const [allSize] = useState(previewImageData.images.length);
 
   const HeaderContent = ({currentShowIndex}) => {
-    // console.log('props', currentShowIndex);
+    let allSizeCount = previewImageData.images.length;
     return (
       <View style={{position: 'absolute', zIndex: -1, width: '100%', top: 50}}>
         <Pressable
@@ -31,9 +30,9 @@ const ImagePreview = () => {
             <IconFont name={'close'} size={15} color={'white'} />
           </View>
           <View style={{flex: 1}}>
-            {allSize > 0 && (
+            {allSizeCount > 0 && (
               <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>
-                {currentShowIndex + 1}/{allSize}
+                {currentShowIndex + 1}/{allSizeCount}
               </Text>
             )}
           </View>
@@ -78,7 +77,7 @@ const ImagePreview = () => {
             onOpen(false);
           }}
           renderImage={props => <FastImg {...props} />}
-          renderHeader={currentShowIndex => <HeaderContent currentShowIndex={currentShowIndex} />}
+          renderHeader={(currentShowIndex, allSize) => <HeaderContent currentShowIndex={currentShowIndex} allSize={allSize} />}
           index={previewImageData.index}
           imageUrls={previewImageData.images}
           enableSwipeDown
