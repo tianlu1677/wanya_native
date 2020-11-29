@@ -71,7 +71,7 @@ const Recommend = props => {
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />
-      <FocusAwareStatusBar barStyle="dark-content" />
+      <FocusAwareStatusBar barStyle="light-content" />
       <View style={styles.wrapper}>
         <TabViewList
           size="big"
