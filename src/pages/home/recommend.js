@@ -79,14 +79,14 @@ const Recommend = props => {
           currentKey={currentKey}
           tabData={[
             {
-              key: 'recommend',
-              title: '推荐',
-              component: RecommendList,
-            },
-            {
               key: 'follow',
               title: '关注',
               component: FollowList,
+            },
+            {
+              key: 'recommend',
+              title: '推荐',
+              component: RecommendList,
             },
             {
               key: 'lasted',
@@ -121,12 +121,14 @@ const NodeScrollView = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const nodes = useSelector(state => state.home.followNodes);
 
-  useEffect(() => {
-    dispatch(dispathUpdateNodes(currentAccount.id));
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(dispathUpdateNodes(currentAccount.id));
+    }, [])
+  );
 
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator style={styles.nodeView}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
       {nodes.length > 0 &&
         nodes.map(node => {
           return (
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 4,
     zIndex: 100,
-    top: STATUS_BAR_HEIGHT,
+    top: STATUS_BAR_HEIGHT - 2,
   },
   message_icon: {
     position: 'absolute',
@@ -186,8 +188,8 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   nodeImg: {
-    width: 50,
-    height: 50,
+    width: 55,
+    height: 55,
   },
   nodeName: {
     fontSize: 11,
