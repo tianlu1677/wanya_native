@@ -26,6 +26,16 @@ export async function verifyPhoneCode(data = {phone: '', phone_code: ''}) {
   });
   return res.data;
 }
+// 手机注册用户
+export async function phoneRegisterAccount(data = {phone: '', phone_code: '', password: ''}) {
+  const res = await request({
+    url: '/api/v1/phones',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
 
 export async function verifyInviteCode(data = {invite_code: ''}) {
   const res = await request({

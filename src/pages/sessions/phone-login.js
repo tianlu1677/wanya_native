@@ -3,7 +3,7 @@ import {StyleSheet, StatusBar, View, TextInput, Pressable, Text, Image} from 're
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
-import {sendPhoneCode, verifyPhoneCode} from '@/api/phone_sign_api';
+import {sendPhoneCode, verifyPhoneCode, phoneRegisterAccount} from '@/api/phone_sign_api';
 import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
@@ -50,7 +50,13 @@ const PhoneLogin = ({navigation, route}) => {
     let timestamp = new Date().getTime();
     let secret = md5(`phone_${phone}_${timestamp}`);
     const token = await Helper.getData('socialToken');
-    let data = {phone, secret, timestamp, token, send_code_type: 'binding'};
+    let data = {
+      phone,
+      secret,
+      timestamp,
+      token,
+      send_code_type: isRegister ? 'register' : 'binding',
+    };
 
     sendPhoneCode(data).then(res => {
       if (res.status === 'success') {
@@ -76,17 +82,25 @@ const PhoneLogin = ({navigation, route}) => {
     }
     const token = await Helper.getData('socialToken');
     const data = {phone, phone_code: phoneCode, password: password, token};
-    const res = await verifyPhoneCode(data);
+    let res = {};
+
+    if (isRegister) {
+      console.log('data', data, isRegister);
+      res = await phoneRegisterAccount(data);
+    } else {
+      res = await verifyPhoneCode(data);
+    }
+    console.log('res', res)
     if (res.error) {
       Toast.showError(res.error, {});
     } else {
-      await Helper.setData('auth_token', token);
-      const accountInfo = await getCurrentAccount({token: token});
+      await Helper.setData('socialToken', res.account.token);
+      const accountInfo = await getCurrentAccount({token: res.account.token});
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
       } else {
-        await Helper.setData('auth_token', token);
-        dispatch(dispatchSetAuthToken(token));
+        await Helper.setData('auth_token', res.account.token);
+        dispatch(dispatchSetAuthToken(res.account.token));
         dispatch(dispatchCurrentAccount());
         navigation.reset({
           index: 0,
@@ -185,8 +199,8 @@ const PhoneLogin = ({navigation, route}) => {
                   downTime > 0
                     ? () => {}
                     : () => {
-                      onSendPhoneCode();
-                    }
+                        onSendPhoneCode();
+                      }
                 }>
                 <Text style={[styles.verifyCodeText, {color: downTime ? '#353535' : 'white'}]}>
                   {verifyText}
