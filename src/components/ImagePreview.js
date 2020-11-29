@@ -30,7 +30,7 @@ const ImagePreview = () => {
             <IconFont name={'close'} size={15} color={'white'} />
           </View>
           <View style={{flex: 1}}>
-            {allSizeCount > 0 && (
+            {allSizeCount > 1 && (
               <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>
                 {currentShowIndex + 1}/{allSizeCount}
               </Text>
