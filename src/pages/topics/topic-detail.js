@@ -24,7 +24,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BASIC_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT, BOTTOM_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -136,27 +136,30 @@ const TopicDetail = ({navigation, route}) => {
     };
 
     return (
-      <Swiper
-        index={0}
-        loop={false}
-        activeDotColor={'yellow'}
-        dotColor={'white'}
-        style={{height: maxHeight, backgroundColor: 'black'}}
-        showsPagination={detail.media_images.length > 0}>
-        {media_images.map((media, index) => (
-          <Pressable
-            onPress={() => onPreview(index)}
-            key={media.image_url}
-            style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
-            <FastImg
+      <View>
+        <View style={{height: BOTTOM_HEIGHT, backgroundColor: 'black'}} />
+        <Swiper
+          index={0}
+          loop={false}
+          activeDotColor={'yellow'}
+          dotColor={'white'}
+          style={{height: maxHeight, backgroundColor: 'black'}}
+          showsPagination={detail.media_images.length > 0}>
+          {media_images.map((media, index) => (
+            <Pressable
+              onPress={() => onPreview(index)}
               key={media.image_url}
-              source={{uri: media.image_url}}
-              style={{width: screenWidth, height: media.imgHeight}}
-              mode={'contain'}
-            />
-          </Pressable>
-        ))}
-      </Swiper>
+              style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
+              <FastImg
+                key={media.image_url}
+                source={{uri: media.image_url}}
+                style={{width: screenWidth, height: media.imgHeight}}
+                mode={'contain'}
+              />
+            </Pressable>
+          ))}
+        </Swiper>
+      </View>
     );
   };
 
@@ -166,6 +169,7 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
+        <View style={{height: BOTTOM_HEIGHT, backgroundColor: 'black'}} />
         {detail.excellent && (
           <Text
             style={{
