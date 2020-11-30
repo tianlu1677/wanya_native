@@ -36,7 +36,9 @@ const ScrollList = props => {
   const RenderFooter = () => {
     let footer = null;
     if (enableLoadMore && pagin.hasMore && props.data.length > 0) {
-      footer = (
+      footer = props.ListFooterComponent ? (
+        props.ListFooterComponent
+      ) : (
         <View style={styles.footerWrap}>
           <ActivityIndicator animating={true} color={'#000'} />
           <Text style={styles.footerText}>正在加载更多</Text>
