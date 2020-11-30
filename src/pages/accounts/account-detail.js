@@ -265,6 +265,7 @@ const AccountDetail = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
+    position: 'relative',
     flex: 1,
   },
   report: {

@@ -21,7 +21,7 @@ const TopHeader = props => {
   const navigation = useNavigation();
   const route = useRoute();
   return (
-    <View>
+    <View style={{}}>
       {props.statusBar.hidden ? null : (
         <View style={styles.statusBar}>
           <StatusBar {...props.statusBar} />

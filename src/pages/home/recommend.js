@@ -71,10 +71,10 @@ const Recommend = props => {
 
   return (
     <>
-      <View style={{flex: 1, zIndex: -1, backgroundColor: 'white'}} edges={['right', 'left']}>
+      <View style={{flex: 1, zIndex: -1, backgroundColor: 'white'}}>
         <FocusAwareStatusBar
           barStyle="dark-content"
-          translucent={true}
+          translucent={false}
           backgroundColor={'transparent'}
         />
         <View style={styles.wrapper}>
