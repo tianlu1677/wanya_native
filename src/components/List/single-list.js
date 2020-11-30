@@ -34,10 +34,9 @@ const SingleList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
-
     setListData(page === 1 ? data : [...listData, ...data]);
-    setHeaders(res.headers);
     setLoading(false);
+    setHeaders(res.headers);
   };
 
   useEffect(() => {

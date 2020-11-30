@@ -197,7 +197,11 @@ const ScrollList = props => {
     <Animated.FlatList
       ref={props.getRref}
       horizontal={false}
-      contentContainerStyle={[scrollStyle.containter, props.style]}
+      contentContainerStyle={[
+        scrollStyle.containter,
+        props.style,
+        {flex: props.data.length === 0 ? 1 : 0},
+      ]}
       keyExtractor={keyExtractor}
       renderItem={props.renderItem}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}

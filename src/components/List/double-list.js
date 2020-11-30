@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: halfWidth,
     marginRight: 5,
+    marginTop: 10,
   },
   videoPlay: {
     width: 16,

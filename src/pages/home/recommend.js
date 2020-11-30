@@ -162,15 +162,15 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     backgroundColor: 'white',
-    // paddingTop: BOTTOM_HEIGHT + 10,
   },
   message: {
     position: 'absolute',
     right: 4,
     zIndex: 100,
-    top: STATUS_BAR_HEIGHT - 2,
+    top: 15,
   },
   message_icon: {
+    height: 20,
     position: 'absolute',
     top: 0,
     right: 18,
@@ -179,20 +179,20 @@ const styles = StyleSheet.create({
   nodeView: {
     backgroundColor: '#fff',
     paddingLeft: 14,
-    paddingTop: 7,
+    paddingTop: 12,
     paddingBottom: 7,
     marginBottom: 9,
   },
   nodeWrap: {
-    width: 50,
+    width: 56,
     marginRight: 15,
   },
   nodeImg: {
-    width: 55,
-    height: 55,
+    width: 56,
+    height: 56,
   },
   nodeName: {
-    fontSize: 11,
+    fontSize: 10,
     lineHeight: 22,
     marginTop: 5,
   },
