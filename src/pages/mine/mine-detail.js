@@ -312,7 +312,7 @@ const MineDetail = props => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     zIndex: 100,
   },
   setting: {

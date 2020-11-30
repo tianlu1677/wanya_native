@@ -65,6 +65,7 @@ const MediasPicker = WrapperComponent => {
         maxRetries: 1,
         type: file.uploadType,
         quality: 100,
+        isGif: true, // 头像更换，背景图上传
         minimumCompressSize: 800,
         field: file.keyParams ? file.keyParams : 'account[avatar]',
         headers: {

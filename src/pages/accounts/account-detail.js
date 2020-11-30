@@ -143,12 +143,14 @@ const AccountDetail = ({navigation, route}) => {
         <View style={[styles.imageCover, styles.imageCoverOpacity]} />
         <View style={styles.header}>
           <GoBack />
-          <Pressable
-            onPress={onReportClick}
-            style={styles.report}
-            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-            <IconFont name="ziyuan" color="#fff" size={20} />
-          </Pressable>
+          {account.id !== currentAccount.id && (
+            <Pressable
+              onPress={onReportClick}
+              style={styles.report}
+              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <IconFont name="ziyuan" color="#fff" size={20} />
+            </Pressable>
+          )}
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
             <Avator account={account} size={50} isShowSettledIcon={false} handleClick={onPreview} />

@@ -44,7 +44,7 @@ export const Header = props => {
         break;
     }
     setstar(!star);
-    Toast.show(star ? '已取消收藏' : '已收藏');
+    Toast.showError(star ? '已取消收藏' : '已收藏');
   };
 
   const getOptions = () => {
@@ -83,7 +83,7 @@ export const Header = props => {
             if (props.type === 'topic') {
               try {
                 await deleteTopic(data.id);
-                Toast.show('已删除');
+                Toast.showError('已删除');
                 props.onRemove();
               } catch (err) {
                 Toast.error('删除失败，请稍后再试');
@@ -159,7 +159,7 @@ export const Bottom = props => {
         break;
     }
     if (res.data.status === 404) {
-      Toast.show('该帖子已删除');
+      Toast.showError('该帖子已删除');
       return false;
     }
     setPraise(!praise);
