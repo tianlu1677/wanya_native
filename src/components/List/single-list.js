@@ -19,22 +19,21 @@ const SingleList = props => {
     }
   };
 
-  const renderItemMemo = useCallback(
-    ({item}) =>
-      <Child item={item}/>,
-    []
-  );
+  const renderItemMemo = useCallback(({item}) => <Child item={item} />, []);
 
   const Child = React.memo(({item}) => {
+    if (item.id === 955) {
+      console.log(item.id);
+    }
     return item.item_type === 'Topic' ? (
       <BaseTopic data={item.item} />
     ) : (
       <BaseArticle data={item.item} />
-    )
+    );
   });
 
   const loadData = async (page = 1) => {
-    if( page === 1 ) {
+    if (page === 1) {
       setLoading(true);
     }
     const {api, params} = props.request;
