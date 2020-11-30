@@ -24,7 +24,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BASIC_HEIGHT, BOTTOM_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -137,7 +137,7 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View>
-        <View style={{height: BOTTOM_HEIGHT, backgroundColor: 'black'}} />
+        <View style={{height: BOTTOM_HEIGHT > 0 ? (BOTTOM_HEIGHT + 5) : 0, backgroundColor: 'black'}} />
         <Swiper
           index={0}
           loop={false}
@@ -169,7 +169,7 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
-        <View style={{height: BOTTOM_HEIGHT, backgroundColor: 'black'}} />
+        <View style={{height: BOTTOM_HEIGHT > 0 ? (BOTTOM_HEIGHT + 5) : 0, backgroundColor: 'black'}} />
         {detail.excellent && (
           <Text
             style={{
