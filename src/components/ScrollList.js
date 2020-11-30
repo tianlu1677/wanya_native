@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {EmptyImg} from '@/utils/default-image';
-import {debounce, throttle} from 'lodash'
+import {debounce, throttle} from 'lodash';
 import Loading from '@/components/Loading';
 import PullToRefresh from '@/components/AnimatedPullToRefresh';
 
@@ -63,13 +63,14 @@ const ScrollList = props => {
   };
 
   const onEndReached = () => {
+    console.log('onEndReached');
     if (!pagin || !pagin.hasMore) {
       setState(loadState.EMPTY);
       return;
     }
-    if(!finishContent) {
-      return
-    }
+    // if(!finishContent) {
+    //   return
+    // }
 
     if (refreshing || state === loadState.LOADING) {
       return;
@@ -85,7 +86,6 @@ const ScrollList = props => {
 
   const renderFooter = () => {
     let footer = null;
-
     if (pagin && pagin.hasMore) {
       footer = (
         <View
@@ -133,14 +133,17 @@ const ScrollList = props => {
     return (
       !props.loading &&
       pagin &&
-      props.data.length === 0 && (
+      props.data.length === 0 &&
+      (props.renderEmpty ? (
+        props.renderEmpty
+      ) : (
         <View style={[scrollStyle.footer, {minHeight: 300}]}>
           <Image style={scrollStyle.emptyImg} source={{uri: EmptyImg}} />
           <Text style={{color: '#DADADA', fontSize: 13}}>
             {props.emptyTitle || '暂时还没有内容哦'}
           </Text>
         </View>
-      )
+      ))
     );
   };
 
@@ -191,6 +194,7 @@ const ScrollList = props => {
 
   const keyExtractor = useCallback(item => String(item[props.itemKey || 'id']), []);
 
+  console.log(enableLoadMore);
   return (
     <Animated.FlatList
       ref={props.getRref}
@@ -206,7 +210,7 @@ const ScrollList = props => {
       // })}
       // onScroll={onscroll}
       onScrollEndDrag={() => {
-        setFinishContent(true)
+        setFinishContent(true);
       }}
       // onScrollBeginDrag={() => {
       //   setFinishContent(false)
@@ -225,13 +229,13 @@ const ScrollList = props => {
       initialNumToRender={6}
       removeClippedSubviews={false}
       windowSize={6}
-      // progressViewOffset={1}
+      progressViewOffset={1}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}
       onContentSizeChange={() => {
         // console.log('finish...')
-        setFinishContent(true)
+        setFinishContent(true);
       }}
       refreshControl={
         enableRefresh ? (
@@ -244,7 +248,7 @@ const ScrollList = props => {
         ) : null
       }
     />
-  )
+  );
 };
 
 const scrollStyle = StyleSheet.create({

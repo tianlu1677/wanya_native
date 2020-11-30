@@ -7,7 +7,8 @@ import ScrollList from './ScrollList';
 
 export const SingleList = props => {
   const [loading, setLoading] = useState(true);
-  const [headers, setHeaders] = useState({'x-current-page': 1});
+  // const [headers, setHeaders] = useState({'x-current-page': 1});
+  const [headers, setHeaders] = useState(null);
   const [listData, setListData] = useState([]);
 
   const loadData = async (page = 1) => {
@@ -44,6 +45,7 @@ export const SingleList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={RenderItem}
+      // enableRefresh={false}
     />
   );
 };

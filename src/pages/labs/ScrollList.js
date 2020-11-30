@@ -18,7 +18,6 @@ const ScrollList = props => {
   const [enableRefresh, setEnableRefresh] = useState(true);
   const [enableLoadMore] = useState(props.enableLoadMore === false ? false : true);
   const [pagin, setPagin] = useState({page: 1, nextPage: 2, hasMore: false, total: 0});
-  const [finishContent, setFinishContent] = useState(false);
 
   const RenderEmpty = () => {
     let empty = null;
@@ -26,7 +25,7 @@ const ScrollList = props => {
       empty = (
         <View style={styles.emptyWrap}>
           <FastImg source={{uri: EmptyImg}} style={styles.emptyImage} />
-          <Text style={styles.emptyText}>{'暂时还没有内容哦'}</Text>
+          <Text style={styles.emptyText}>{props.emptyTitle || '暂时还没有内容哦'}</Text>
         </View>
       );
     }
@@ -40,7 +39,7 @@ const ScrollList = props => {
         props.ListFooterComponent
       ) : (
         <View style={styles.footerWrap}>
-          <ActivityIndicator animating={true} color={'#000'} />
+          <ActivityIndicator animating={true} color={'#000'} size="small" />
           <Text style={styles.footerText}>正在加载更多</Text>
         </View>
       );
@@ -66,25 +65,32 @@ const ScrollList = props => {
   };
 
   const onEndReached = () => {
-    if (finishContent && props.loading === false) {
+    if (props.loading === false) {
       props.onRefresh(pagin.nextPage);
     }
   };
 
   useEffect(() => {
     if (props.headers) {
-      if (pagination(props.headers).nextPage === 2 && props.enableRefresh === false) {
-        setEnableRefresh(false); //只有不下拉加载会render两遍
-      }
       setPagin(pagination(props.headers));
     }
   }, [props.headers]);
 
+  useEffect(() => {
+    if (props.headers) {
+      const nextPage = pagination(props.headers).nextPage;
+      if (nextPage === 2 && props.enableRefresh === false) {
+        setEnableRefresh(false); //只有不下拉加载会render两遍
+      }
+    }
+    // loading最后执行
+  }, [props.loading]);
+
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, props.style]}>
       <Animated.FlatList
+        ref={props.getRref}
         horizontal={false}
-        bounces={props.bounces || true}
         initialNumToRender={6}
         removeClippedSubviews={false}
         windowSize={6}
@@ -99,8 +105,7 @@ const ScrollList = props => {
         ListHeaderComponent={props.ListHeaderComponent || null}
         onEndReachedThreshold={0.2}
         onEndReached={enableLoadMore ? throttle(onEndReached, 500) : null}
-        onScrollEndDrag={() => setFinishContent(true)}
-        contentContainerStyle={{flex: props.data.length === 0 ? 1 : 0}} //导致不能滑动 //为了empty居中
+        contentContainerStyle={{flex: props.data.length === 0 ? 1 : 0}} //flex:1 页面不能滑动 //为了empty居中
         refreshControl={
           enableRefresh ? (
             <RefreshControl
@@ -129,7 +134,6 @@ ScrollList.propTypes = {
   emptyTitle: PropTypes.string, //数据为空时提示
   renderSeparator: PropTypes.func, // 分割线 默认9px #D3D3D3
   ListHeaderComponent: PropTypes.object, // header 头部
-  bounce: PropTypes.bool, //?
   settings: PropTypes.object, // 一些其他的默认限制
 };
 
@@ -137,16 +141,14 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: 'green',
-    height: '100%',
   },
   spearator: {
     height: 9,
-    backgroundColor: '#D3D3D3',
+    backgroundColor: '#fafafa',
   },
   footerWrap: {
     height: 70,
-    backgroundColor: '#F08080',
+    backgroundColor: '#fafafa',
     alignItems: 'center',
     justifyContent: 'center',
   },
