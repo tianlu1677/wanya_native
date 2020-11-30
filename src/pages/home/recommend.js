@@ -70,7 +70,7 @@ const Recommend = props => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={{height: STATUS_BAR_HEIGHT + 5, backgroundColor: 'black'}} />
+      <View style={{height: BOTTOM_HEIGHT + 8, backgroundColor: 'black'}} />
       {/*<SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />*/}
       <FocusAwareStatusBar barStyle="light-content" />
       <View style={styles.wrapper}>
