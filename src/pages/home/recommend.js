@@ -193,9 +193,10 @@ const styles = StyleSheet.create({
     height: 56,
   },
   nodeName: {
-    fontSize: 10,
+    fontSize: 11,
     lineHeight: 22,
     marginTop: 5,
+    textAlign: 'center',
   },
   emptyWrap: {
     flex: 1,

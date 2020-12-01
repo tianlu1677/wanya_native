@@ -90,7 +90,7 @@ const PhoneLogin = ({navigation, route}) => {
     } else {
       res = await verifyPhoneCode(data);
     }
-    console.log('res', res)
+    console.log('res', res);
     if (res.error) {
       Toast.showError(res.error, {});
     } else {
@@ -265,6 +265,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingBottom: 12,
     flexDirection: 'row',
+    alignItems: 'flex-end',
     fontSize: 30,
     borderBottomWidth: 1,
     borderBottomColor: '#353535',

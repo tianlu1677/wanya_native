@@ -136,8 +136,10 @@ const TopicDetail = ({navigation, route}) => {
     };
 
     return (
-      <View>
-        <View style={{height: BOTTOM_HEIGHT > 0 ? (BOTTOM_HEIGHT + 5) : 0, backgroundColor: 'black'}} />
+      <View style={{flex: 1}}>
+        <View
+          style={{height: BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0, backgroundColor: 'black'}}
+        />
         <Swiper
           index={0}
           loop={false}
@@ -169,7 +171,9 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
-        <View style={{height: BOTTOM_HEIGHT > 0 ? (BOTTOM_HEIGHT + 5) : 0, backgroundColor: 'black'}} />
+        <View
+          style={{height: BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0, backgroundColor: 'black'}}
+        />
         {detail.excellent && (
           <Text
             style={{
