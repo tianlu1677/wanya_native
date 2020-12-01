@@ -174,7 +174,7 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  translucent
+                  translucent={true}
                   backgroundColor="transparent"
                 />
               )}
@@ -185,8 +185,8 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  translucent
-                  backgroundColor="transparent"
+                  translucent={false}
+                  backgroundColor={route.backgroundColor || 'white'}
                 />
               )}
               <Components {...props} />

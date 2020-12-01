@@ -20,6 +20,7 @@ const ShareItem = () => {
   const shareFriend = e => {
     // e.stopPropagation();
     const content = {...shareContent, scene: 0};
+    // console.log('content', content)
     WeChat.shareMiniProgram(content);
   };
   const shareTimeline = () => {
@@ -46,7 +47,7 @@ const ShareItem = () => {
         }}>
 
         <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
-          <Pressable
+          <TouchableOpacity
             style={{display: 'flex', alignItems: 'center'}}
             onPress={() => {
               shareFriend();
@@ -57,7 +58,7 @@ const ShareItem = () => {
               resizeMode={'contain'}
             />
             <ShareText>微信好友</ShareText>
-          </Pressable>
+          </TouchableOpacity>
           <TouchableOpacity
             style={{display: 'flex', alignItems: 'center'}}
             onPress={() => {
