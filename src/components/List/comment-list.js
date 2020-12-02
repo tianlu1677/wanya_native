@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Platform, Alert, StyleSheet, ActionSheetIOS, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import { ActionSheet } from 'react-native-cross-actionsheet'
+import {ActionSheet} from 'react-native-cross-actionsheet';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {Avator} from '@/components/NodeComponents';
@@ -21,7 +21,7 @@ const CommentList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const choseReplyComment = (v) => {
+  const choseReplyComment = v => {
     const comment = {
       placeholder: `回复: @${v.account.nickname}`,
       comment_type: 'comment',
@@ -32,16 +32,14 @@ const CommentList = props => {
     };
     dispatch({type: action.SAVE_COMMENT_TOPIC, value: comment});
     props.changeVisible(true);
-  }
+  };
   const choseAction = v => {
     let options = {
       options: ['取消', '回复'],
       cancelButtonIndex: 0,
     };
 
-    let androidOptions = [
-      { text: '回复', onPress: () => choseReplyComment(v) },
-    ]
+    let androidOptions = [{text: '回复', onPress: () => choseReplyComment(v)}];
 
     if (v.account.id === currentAccount.id) {
       options = {
@@ -50,9 +48,9 @@ const CommentList = props => {
         cancelButtonIndex: 0,
       };
       androidOptions = [
-        { text: '回复', tintColor: 'red', onPress: () => choseReplyComment(v) },
-        { text: '删除', destructive: true, onPress: () => props.deleteComment(v.id) },
-      ]
+        {text: '回复', tintColor: 'red', onPress: () => choseReplyComment(v)},
+        {text: '删除', destructive: true, onPress: () => props.deleteComment(v.id)},
+      ];
     }
 
     // 区分删除和回复
@@ -78,9 +76,9 @@ const CommentList = props => {
     if (Platform.OS === 'android') {
       ActionSheet.options({
         options: androidOptions,
-        cancel: {text: '取消',  onPress: () => console.log('cancel') },
-        tintColor: '#080808'
-      })
+        cancel: {text: '取消', onPress: () => console.log('cancel')},
+        tintColor: '#080808',
+      });
     }
   };
 
@@ -204,6 +202,7 @@ const CommentList = props => {
       bounces={false}
       renderSeparator={renderSeparator}
       settings={{showsVerticalScrollIndicator: false}}
+      from="comment"
       {...props}
     />
   );

@@ -200,7 +200,7 @@ const ScrollList = props => {
       contentContainerStyle={[
         scrollStyle.containter,
         props.style,
-        // {flex: props.data.length === 0 ? 1 : 0},
+        {flex: props.data.length === 0 && props.from !== 'comment' ? 1 : 0},
       ]}
       keyExtractor={keyExtractor}
       renderItem={props.renderItem}
