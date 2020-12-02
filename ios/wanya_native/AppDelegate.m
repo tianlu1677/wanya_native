@@ -6,8 +6,6 @@
 #import <React/RCTLinkingManager.h>
 #import "SDImageCodersManager.h"
 #import <SDWebImageWebPCoder/SDImageWebPCoder.h>
-#import <UserNotifications/UserNotifications.h>
-#import <UMPush/UMessage.h>
 #import "RNUMConfigure.h"
 #import "UMAnalyticsModule.h"
 #import "UMPushModule.h"
@@ -16,6 +14,7 @@
 #import <CodePush/CodePush.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
+#import <UMPush/UMessage.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -41,6 +40,9 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
+@interface AppDelegate() <UNUserNotificationCenterDelegate>
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -65,8 +67,26 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // <- initialization using the storyboard file name
-
+  
+  // 使用 UNUserNotificationCenter 来管理通知
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  //监听回调事件
+  center.delegate = (id)self;
+  
+  //iOS 10 使用以下方法注册，才能得到授权
+  [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
+                        completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                            if(granted) {
+                                NSLog(@"授权成功");
+                            }
+                        }];
+  
+  //获取当前的通知设置，UNNotificationSettings 是只读对象，不能直接修改，只能通过以下方法获取
+  [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+  }];
+  
+  [[UIApplication sharedApplication] registerForRemoteNotifications];
+  
   // Register WebP format support
   [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
 //  [SDWebImageCodersManager.sharedInstance addCoder:SDWebImageGIFCoder.sharedCoder];
@@ -86,11 +106,8 @@ static void InitializeFlipper(UIApplication *application) {
       
     }
   }];
-
   
-  // Define UNUserNotificationCenter
-  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-  center.delegate = self;
+  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // <- initialization using the storyboard file name
   
   return YES;
 }
@@ -100,7 +117,6 @@ static void InitializeFlipper(UIApplication *application) {
 {
   completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
 }
-
 
 // Required to register for notifications
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
@@ -123,18 +139,12 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
  [RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error];
 }
-// IOS 10+ Required for localNotification event
+// Required for localNotification event
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
 didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void (^)(void))completionHandler
 {
   [RNCPushNotificationIOS didReceiveNotificationResponse:response];
-  completionHandler();
-}
-// IOS 4-10 Required for the localNotification event.
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
- [RNCPushNotificationIOS didReceiveLocalNotification:notification];
 }
 
 

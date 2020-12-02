@@ -127,6 +127,7 @@ class App extends Component {
   // 接受到通知
   // NotificationHandler: {"badge": undefined, "data": {"TopicDetail": "1", "actionIdentifier": "com.apple.UNNotificationDefaultActionIdentifier", "aps": {"alert": "哈哈哈", "badge": 1, "mutable-content": 1, "sound": "default", "url": "https://baidu.com"}, "d": "uukbzq5160490651243410", "p": 0, "screen": "AccountDetail", "userInteraction": 1}, "finish": [Function finish], "foreground": true, "id": undefined, "message": "哈哈哈", "soundName": undefined, "title": null, "userInteraction": true}
   async onNotification(notification) {
+    // Alert.alert(`${JSON.stringify(notification)}`)
     try {
       console.log('onNotification:', notification);
       const auth_token = await Helper.getData('auth_token');
@@ -142,9 +143,11 @@ class App extends Component {
       const screen_params = queryString.parse(data.params, {parseNumbers: true});
       // debugger
       console.log('params', params, screen);
-      RootNavigation.navigate(data.screen, screen_params);
+      setTimeout(() => {
+        RootNavigation.navigate(data.screen, screen_params);
+      }, 1500)
     } catch (e) {
-      console.log('error', e);      
+      console.log('error', e);
     }
     // 已登录的情况下
     // 未登录的情况下
