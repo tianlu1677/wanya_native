@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useCallback} from 'react';
+import React, {useState, useLayoutEffect, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Pressable, Dimensions, ActionSheetIOS} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
@@ -32,6 +32,7 @@ const MineDetail = props => {
   const [accountId] = useState(currentAccount.id);
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
+  const [useFocus, setuseFocus] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -129,18 +130,20 @@ const MineDetail = props => {
     return currentBaseInfo.new_message_count;
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(dispatchBaseCurrentAccount());
-    }, [])
-  );
-
   useLayoutEffect(() => {
     props.navigation.setOptions({});
     loadData();
   }, []);
 
-  return currentAccount ? (
+  useFocusEffect(
+    useCallback(() => {
+      setuseFocus(true);
+      setCurrentKey('publish');
+      dispatch(dispatchBaseCurrentAccount());
+    }, [])
+  );
+
+  return currentAccount && useFocus ? (
     <View style={{flex: 1}}>
       <CollapsibleHeader
         headerHeight={HEADER_HEIGHT}
@@ -191,7 +194,10 @@ const MineDetail = props => {
                 />
               </Pressable>
               <Pressable
-                onPress={() => props.navigation.navigate('Settings')}
+                onPress={() => {
+                  setuseFocus(false);
+                  props.navigation.navigate('Settings');
+                }}
                 hitSlop={{top: 10, right: 10}}>
                 <IconFont name="settings" size={20} color="#fff" />
               </Pressable>

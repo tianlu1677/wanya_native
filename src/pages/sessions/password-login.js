@@ -71,7 +71,7 @@ const PasswordLogin = ({navigation, route}) => {
 
   const downTimeRunner = () => {
     var timeo = 59;
-    var timeStop = setInterval(function () {
+    var timeStop = setInterval(function() {
       timeo--;
       if (timeo >= 1) {
         let text = `重新获取(${timeo}s)`;
@@ -199,8 +199,8 @@ const PasswordLogin = ({navigation, route}) => {
                     downTime > 0
                       ? () => {}
                       : () => {
-                        onSendPhoneCode();
-                      }
+                          onSendPhoneCode();
+                        }
                   }>
                   <Text style={[styles.verifyCodeText, {color: downTime ? '#353535' : 'white'}]}>
                     {verifyText}
@@ -281,6 +281,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingBottom: 12,
     flexDirection: 'row',
+    alignItems: 'flex-end',
     fontSize: 30,
     borderBottomWidth: 1,
     borderBottomColor: '#353535',
