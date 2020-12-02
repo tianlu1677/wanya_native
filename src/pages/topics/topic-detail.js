@@ -39,6 +39,8 @@ const TopicDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
 
+  const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0
+
   const loadData = async () => {
     const res = await getTopic(topicId);
     if (res.data.status === 404) {
@@ -106,7 +108,8 @@ const TopicDetail = ({navigation, route}) => {
   }, []);
 
   const renderImg = () => {
-    let {medias, media_images} = detail;
+    // console.log('deta', detail)
+    let {media_images} = detail;
     let maxHeight = 100;
     (media_images || []).map(img => {
       let imgHeight = Math.floor((screenWidth / img.width) * img.height);
@@ -126,25 +129,24 @@ const TopicDetail = ({navigation, route}) => {
 
     const onPreview = index => {
       const data = {
-        images: medias.map(v => {
-          return {url: v.split('?')[0]};
+        images: media_images.map(v => {
+          return {url: v.image_url.split('?')[0]};
         }),
         visible: true,
         index,
       };
       dispatch(dispatchPreviewImage(data));
     };
-
     return (
-      <View style={{flex: 1}}>
-        <View
-          style={{height: BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0, backgroundColor: 'black'}}
-        />
+      <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
+        <View style={{height: topHeight, backgroundColor: 'black'}}/>
         <Swiper
           index={0}
           loop={false}
           activeDotColor={'yellow'}
           dotColor={'white'}
+          removeClippedSubviews={false}
+          loadMinimal
           style={{height: maxHeight, backgroundColor: 'black'}}
           showsPagination={detail.media_images.length > 0}>
           {media_images.map((media, index) => (
@@ -171,9 +173,7 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
-        <View
-          style={{height: BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0, backgroundColor: 'black'}}
-        />
+        <View style={{height: topHeight, backgroundColor: 'black'}}/>
         {detail.excellent && (
           <Text
             style={{
