@@ -29,7 +29,10 @@ export default class Helper {
   }
 
   static async clearAllData() {
-    return await AsyncStorage.clear()
+    const agree_modal = await Helper.getData('agree_policy');
+    await AsyncStorage.clear();
+    Helper.setData('agree_policy', agree_modal);
+    return true;
   }
 
   static async getAllKeys() {

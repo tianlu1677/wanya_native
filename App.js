@@ -41,6 +41,7 @@ const codePushOptions = {
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
 import ShareItem from '@/components/ShareItem';
+import PolicyModal from "@/components/PolicyModal";
 import Toast from '@/components/Toast';
 
 class App extends Component {
@@ -219,6 +220,7 @@ class App extends Component {
             <ShareItem />
           </PersistGate>
         </Provider>
+        <PolicyModal />
       </>
     );
   }
