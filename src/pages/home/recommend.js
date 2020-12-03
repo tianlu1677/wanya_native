@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Pressable, TouchableOpacity, ScrollView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
@@ -72,7 +72,11 @@ const Recommend = props => {
     <View style={{flex: 1}}>
       <View style={{height: BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10, backgroundColor: 'black'}} />
       {/*<SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />*/}
-      <FocusAwareStatusBar barStyle="light-content" />
+      <FocusAwareStatusBar
+        barStyle="light-content"
+        translucent={true}
+        backgroundColor={'transparent'}
+      />
       <View style={styles.wrapper}>
         <TabViewList
           size="big"
