@@ -19,6 +19,7 @@ const PermissionModal = props => {
       height={0.5}
       width={1}
       rounded
+      statusBarTranslucent
       useNativeDriver={false}
       containerStyle={{flex: 1, zIndex: 10000, elevation: 10}}
       modalStyle={{}}

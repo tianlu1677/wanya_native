@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {StyleSheet, Alert, Text, View, Pressable, Modal} from 'react-native';
+import {StyleSheet, Platform, Alert, Text, View, Pressable, Modal} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
 
 const GetLocation = ({children, handleClick, style}) => {
   const [visible, setVisible] = useState(false);
-  const iosLocationPermission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+  const iosLocationPermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
 
   const getLocation = async () => {
     const answer = await checkPermission();
@@ -89,7 +89,7 @@ const GetLocation = ({children, handleClick, style}) => {
         }}>
         {children}
       </Pressable>
-      <Modal transparent={visible} visible={visible}>
+      <Modal transparent={visible} statusBarTranslucent visible={visible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>授权后才能设置场地位置</Text>

@@ -50,7 +50,7 @@ export default GoBack;
 const styles = StyleSheet.create({
   goBackWrap: {
     position: 'absolute',
-    zIndex: 100,
+    zIndex: 2,
     justifyContent: 'center',
     alignItems: 'center',
     height: 44,

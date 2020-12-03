@@ -22,8 +22,8 @@ import NewTopic from '@/pages/topics/new-topic';
 import {HeaderBackButton} from '@react-navigation/stack';
 import Helper from '@/utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
-
-import {BlurView, VibrancyView} from '@react-native-community/blur';
+import { BlurView } from '@/components/NodeComponents';
+// import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Recommend from '@/pages/home/recommend';
@@ -94,9 +94,10 @@ function HomeTabList() {
         tabStyle: {display: 'flex', justifyContent: 'center', lineHeight: 55},
         showLabel: false,
         style: {
-          backgroundColor: 'transparent',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
           borderTopWidth: 0,
           height: 55,
+          borderRadius: 30
         },
       }}>
       <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{}} />
@@ -130,12 +131,14 @@ function MainStackList() {
       headerMode="screen"
       screenOptions={({route}) => ({
         headerStyle: {
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
           // height: 54,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
           borderTopWidth: 0,
+          // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight.toFixed(1),
           // borderBottomColor: 'red',
           // justifyContent: 'center',
           // alignItems: 'center'
@@ -171,7 +174,8 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor={'red'}
+                  translucent={true}
+                  backgroundColor="transparent"
                 />
               )}
               <Components {...props} />
@@ -181,7 +185,8 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor={'red'}
+                  translucent={false}
+                  backgroundColor={route.backgroundColor || 'white'}
                 />
               )}
               <Components {...props} />
@@ -296,9 +301,9 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 28,
   },
-  bottomTabBar: {
-    backgroundColor: 'transparent',
-  },
+  // bottomTabBar: {
+  //   backgroundColor: 'transparent',
+  // },
 });
 
 export default Navigation;

@@ -1,4 +1,4 @@
-package com.wanya_native;
+package com.vanyah.androidnative;
 
 import com.theweflex.react.WeChatPackage; // Add this line
 
@@ -12,6 +12,19 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+// umeng
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.commonsdk.UMConfigure;
+
+import com.umeng.message.MsgConstant;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.entity.UMessage;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.IUmengRegisterCallback;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -29,6 +42,8 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           packages.add(new WeChatPackage()); // Add this line
+          packages.add(new DplusReactPackage()); // 增加这行
+
           return packages;
         }
 
@@ -48,6 +63,9 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+    UMConfigure.setLogEnabled(true);
+    RNUMConfigure.init(this, "5fc5fb9d094d637f31309549", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "xxxx");
   }
 
   /**
@@ -65,7 +83,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.wanya_native.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.vanyah.androidnative.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

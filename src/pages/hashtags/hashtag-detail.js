@@ -48,8 +48,6 @@ const HashtagDetail = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
-      <GoBack />
-      <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
       <CollapsibleHeader
         headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
@@ -69,12 +67,14 @@ const HashtagDetail = ({navigation, route}) => {
         renderTopHeader={<StickTopHeader title={'#' + hashtag} />}
         renderHeader={
           <View style={styles.header}>
+            <GoBack />
             <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
             <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
             <Text style={styles.hashtagText}>#{hashtag}</Text>
           </View>
         }
       />
+      <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
     </View>
   );
 };

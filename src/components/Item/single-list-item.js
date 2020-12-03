@@ -177,7 +177,7 @@ export const Bottom = props => {
     let shareOptions = {
       title: '顽鸦',
       userName: 'gh_c2b50fe8e928',
-      webpageUrl: '',
+      webpageUrl: 'https://www.vanyah.cn',
       path: '',
       thumbImageUrl: data.wx_share_image_url,
       scene: 0,

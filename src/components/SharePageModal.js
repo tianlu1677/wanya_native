@@ -74,6 +74,7 @@ const SharePageModal = props => {
       animationType=""
       transparent={true}
       visible={props.shareModelVisible}
+      statusBarTranslucent
       onRequestClose={() => {
         props.onShowShare(false)
       }}>

@@ -41,6 +41,7 @@ const codePushOptions = {
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
 import ShareItem from '@/components/ShareItem';
+import PolicyModal from "@/components/PolicyModal";
 import Toast from '@/components/Toast';
 
 class App extends Component {
@@ -73,15 +74,16 @@ class App extends Component {
       adjustsFontSizeToFit: true,
       minimumFontScale: scale,
     });
+    Text.defaultProps.sytle = { 'color': 'black'}
     TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
       defaultProps: false,
       allowFontScaling: false,
     });
 
-    PushUtil.addTag('normal',(code,remain) =>{
-      console.log('code1', code, remain)
-      // Alert.alert(`${code} ${remain}`)
-    })
+    // PushUtil.addTag('normal',(code,remain) =>{
+    //   console.log('code1', code, remain)
+    //   // Alert.alert(`${code} ${remain}`)
+    // })
     // PushUtil.addAlias('dddd', 'login_user',(code) =>{
     //   console.log('alias', code)      
     // })
@@ -113,6 +115,19 @@ class App extends Component {
         console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
         console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
         console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+      });
+    });
+
+    checkMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
+      // console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+      // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+
+      requestMultiple([
+        PERMISSIONS.ANDROID.CAMERA,
+      ]).then(statuses => {
+        console.log('Camera', statuses[PERMISSIONS.ANDROID.CAMERA]);
+        // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+        // console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
       });
     });
   };
@@ -208,6 +223,7 @@ class App extends Component {
             <ShareItem />
           </PersistGate>
         </Provider>
+        <PolicyModal />
       </>
     );
   }

@@ -124,6 +124,7 @@ const MineDetail = props => {
   };
 
   const UnreadMessageCount = () => {
+    // console.log('currentAccount', currentAccount)
     if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }
