@@ -1,7 +1,9 @@
 package com.vanyah.androidnative;
 import android.os.Bundle;
+import android.content.Intent;
 import com.facebook.react.ReactActivity;
 import com.zoontek.rnbootsplash.RNBootSplash;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends ReactActivity {
 
@@ -18,5 +20,19 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
+    MobclickAgent.setSessionContinueMillis(1000);
+  }
+
+  @Override
+  public void onResume() {
+      super.onResume();
+      android.util.Log.e("rrs","onResume=");
+      MobclickAgent.onResume(this);
+  }
+  @Override
+  protected void onPause() {
+      super.onPause();
+      android.util.Log.e("rrs","onPause=");
+      MobclickAgent.onPause(this);
   }
 }
