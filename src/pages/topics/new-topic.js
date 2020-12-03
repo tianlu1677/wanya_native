@@ -163,7 +163,6 @@ const NewTopic = props => {
     //   }
     // );
 
-
     ImagePicker.launchImageLibrary(
       {
         mediaType: 'video',
@@ -173,7 +172,7 @@ const NewTopic = props => {
         if (response.didCancel) {
           return;
         }
-        console.log('response', response)
+        console.log('response', response);
         // return
         const video = response;
         props.removeAllPhoto();
@@ -281,12 +280,17 @@ const NewTopic = props => {
       const res = await createTopic(data);
       await waitTime(1500);
       Toast.hide();
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
-        })
-      );
+      props.navigation.reset({
+        index: 0,
+        routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
+      });
+
+      // navigation.dispatch(
+      //   CommonActions.reset({
+      //     index: 0,
+      //     routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
+      //   })
+      // );
 
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
     } catch {
