@@ -53,14 +53,14 @@ export const Header = props => {
     if (isCurrentSelf) {
       switch (props.type) {
         case 'topic':
-          options = ['取消', '删除', star ? '取消收藏' : '收藏'];
+          options = ['取消', star ? '取消收藏' : '收藏', '删除'];
           break;
         case 'article':
           options = ['取消', star ? '取消收藏' : '收藏'];
           break;
       }
     } else {
-      options = ['取消', '举报'];
+      options = ['取消', star ? '取消收藏' : '收藏', '举报'];
     }
     return options;
   };
@@ -71,11 +71,11 @@ export const Header = props => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: options,
-        destructiveButtonIndex: 1,
+        destructiveButtonIndex: 2,
         cancelButtonIndex: 0,
       },
       async buttonIndex => {
-        if (buttonIndex === 1) {
+        if (buttonIndex === 2) {
           if (isCurrentTopic) {
             if (props.type === 'article') {
               onStar();
@@ -93,7 +93,7 @@ export const Header = props => {
             navigation.push('Report', {report_type: props.type, report_type_id: data.id});
           }
         }
-        if (buttonIndex === 2) {
+        if (buttonIndex === 1) {
           onStar();
         }
       }
