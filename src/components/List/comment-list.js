@@ -8,14 +8,14 @@ import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import ScrollList from '@/components/ScrollList';
 import {praiseComment, unpraiseComment} from '@/api/comment_api';
-import {useActionSheet} from '@expo/react-native-action-sheet';
+// import {useActionSheet} from '@expo/react-native-action-sheet';
 import * as action from '@/redux/constants';
 
 const CommentList = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const {showActionSheetWithOptions} = useActionSheet();
+  // const {showActionSheetWithOptions} = useActionSheet();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
