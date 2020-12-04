@@ -22,6 +22,7 @@ import ArticleList from '@/components/List/article-list';
 import StickTopHeader from '@/components/StickTopHeader';
 import FastImg from '@/components/FastImg';
 import MediasPicker from '@/components/MediasPicker';
+import ActionSheet from '@/components/ActionSheet';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 const {width: screenW} = Dimensions.get('window');
@@ -33,6 +34,7 @@ const MineDetail = props => {
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
   const [useFocus, setuseFocus] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -56,7 +58,7 @@ const MineDetail = props => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
   };
 
-  const onChangeImage = () => {
+  const onChangeImage1 = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: ['更换背景图', '取消'],
@@ -90,6 +92,10 @@ const MineDetail = props => {
       }
     );
   };
+
+  const onChangeImage = () => {
+    setShowActionSheet(true)
+  }
 
   const onPreview = () => {
     const data = {
@@ -142,6 +148,35 @@ const MineDetail = props => {
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
+
+  const actionItems = [
+    {
+      id: 1,
+      label: 'Action Item 1',
+      onPress: () => {
+      }
+    },
+    {
+      id: 2,
+      label: 'Action Item 2',
+      onPress: () => {
+      }
+    },
+    {
+      id: 3,
+      label: 'Action Item 3',
+      type: 'primary',
+      onPress: () => {
+      }
+    },
+    {
+      id: 4,
+      type: 'cancel',
+      label: 'Action Item 4',
+      onPress: () => {
+      }
+    },
+  ];
 
   return currentAccount && useFocus ? (
     <View style={{flex: 1}}>
@@ -303,6 +338,12 @@ const MineDetail = props => {
           </View>
         }
       />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
+
       <BottomModal
         visible={showModal}
         cancleClick={() => setShowModal(false)}
