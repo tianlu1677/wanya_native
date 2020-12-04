@@ -19,6 +19,7 @@ import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import NewTopic from '@/pages/topics/new-topic';
+import AnalyticsUtil from '@/utils/umeng_analytics_util';
 import {HeaderBackButton} from '@react-navigation/stack';
 import Helper from '@/utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -244,6 +245,8 @@ const Navigation = () => {
   const [initialState, setInitialState] = React.useState();
   const login = useSelector(state => state.login);
 
+  const routeNameRef = React.useRef();
+
   React.useEffect(() => {
     const restoreState = async () => {
       try {
@@ -276,9 +279,33 @@ const Navigation = () => {
     return <ActivityIndicator />;
   }
 
+  // https://reactnavigation.org/docs/screen-tracking
+  const onStateChangeRecord = (state) => {
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = navigationRef.current.getCurrentRoute().name
+
+    if (previousRouteName !== currentRouteName) {
+      // The line below uses the expo-firebase-analytics tracker
+      // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
+      // Change this line to use another Mobile analytics SDK
+      // Analytics.setCurrentScreen(currentRouteName);
+      AnalyticsUtil.onPageBegin(currentRouteName)
+      // console.log('currentRouteName', currentRouteName)
+    }
+    // console.log('currentRouteName', currentRouteName)
+    AnalyticsUtil.onPageEnd(currentRouteName)
+
+    // Save the current route name for later comparision
+    routeNameRef.current = currentRouteName;
+  }
+
   return (
     <NavigationContainer
       ref={navigationRef}
+      onReady={() => routeNameRef.current = navigationRef.current.getCurrentRoute().name}
+      onStateChange={(state) => {
+        onStateChangeRecord(state)
+      }}
       // initialState={initialState}
       // onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
     >
