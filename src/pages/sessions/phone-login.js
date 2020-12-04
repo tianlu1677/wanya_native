@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     minWidth: 200,
+    padding: 0
   },
   titleText: {
     letterSpacing: 1,

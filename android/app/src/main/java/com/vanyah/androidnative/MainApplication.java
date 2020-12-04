@@ -12,7 +12,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
+import com.airbnb.android.react.lottie.LottiePackage;
 // umeng
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.commonsdk.UMConfigure;
@@ -41,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new LottiePackage());
           packages.add(new WeChatPackage()); // Add this line
           packages.add(new DplusReactPackage()); // 增加这行
 

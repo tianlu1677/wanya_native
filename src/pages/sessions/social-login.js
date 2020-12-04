@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect} from 'react';
-import {StyleSheet, StatusBar, View, Text, ImageBackground, Pressable} from 'react-native';
+import {StyleSheet, StatusBar, Platform, View, Text, ImageBackground, Pressable} from 'react-native';
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
 import {useDispatch} from 'react-redux';
@@ -209,18 +209,20 @@ const SocialLogin = ({navigation, route}) => {
               </Text>
             </Pressable>
           </View>
+          {
+            Platform.OS === 'ios' && <View style={[styles.phoneLoginContainer]}>
+              <AppleButton
+                buttonStyle={AppleButton.Type.WHITE_OUTLINE}
+                buttonType={AppleButton.Type.SIGN_IN}
+                style={{...styles.loginButton, backgroundColor: 'black'}}
+                cornerRadius={2}
+                // textStyle={{...styles.loginText}}
+                leftView={<Text />}
+                onPress={onAppleButtonPress}
+              />
+            </View>
+          }
 
-          <View style={[styles.phoneLoginContainer]}>
-            <AppleButton
-              buttonStyle={AppleButton.Type.WHITE_OUTLINE}
-              buttonType={AppleButton.Type.SIGN_IN}
-              style={{...styles.loginButton, backgroundColor: 'black'}}
-              cornerRadius={2}
-              // textStyle={{...styles.loginText}}
-              leftView={<Text />}
-              onPress={onAppleButtonPress}
-            />
-          </View>
         </View>
 
         <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>

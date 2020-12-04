@@ -154,7 +154,7 @@ const PasswordLogin = ({navigation, route}) => {
       <View style={styles.phoneContainer}>
         <Text style={styles.titleText}>手机号登录</Text>
         <View style={styles.inputWrap}>
-          <View style={styles.inputView}>
+          <View style={[styles.inputView]}>
             <Text minimumFontScale={1} style={styles.inputNumber}>
               + 86
             </Text>
@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     minWidth: 200,
+    padding: 0,
   },
   titleText: {
     letterSpacing: 1,
@@ -279,16 +280,17 @@ const styles = StyleSheet.create({
   },
   inputView: {
     marginTop: 20,
-    paddingBottom: 12,
     flexDirection: 'row',
     alignItems: 'flex-end',
     fontSize: 30,
     borderBottomWidth: 1,
     borderBottomColor: '#353535',
+    paddingBottom: 8,
     justifyContent: 'space-between',
   },
   verifyCodeText: {
     fontSize: 12,
+    // height: 22,
     letterSpacing: 1,
     fontWeight: '600',
     color: '#fff',
@@ -297,9 +299,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     marginRight: 20,
-    lineHeight: 20,
     color: 'white',
+    // lineHeight: 27,
+    height: 27,
+    alignItems: 'center',
     letterSpacing: 1,
+    padding: 0
   },
   loginTypeWrap: {
     display: 'flex',
