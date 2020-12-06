@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Pressable,
   Dimensions,
-  ActionSheetIOS,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -28,6 +27,7 @@ import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import ActionSheet from '@/components/ActionSheet';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -38,8 +38,10 @@ const TopicDetail = ({navigation, route}) => {
   const [topicId] = useState(route.params.topicId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  const [actionItems, setActionItems] = useState([]);
 
-  const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0
+  const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
 
   const loadData = async () => {
     const res = await getTopic(topicId);
@@ -68,14 +70,11 @@ const TopicDetail = ({navigation, route}) => {
 
   const onReportClick = () => {
     const isCurrentTopic = detail.account_id === currentAccount.id;
-    ActionSheetIOS.showActionSheetWithOptions(
+    const action = [
       {
-        options: isCurrentTopic ? ['取消', '删除'] : ['取消', '举报'],
-        destructiveButtonIndex: 1,
-        cancelButtonIndex: 0,
-      },
-      async buttonIndex => {
-        if (buttonIndex === 1) {
+        id: 1,
+        label: isCurrentTopic ? '删除' : '举报',
+        onPress: async () => {
           if (isCurrentTopic) {
             // 删除
             await deleteTopic(detail.id);
@@ -84,9 +83,11 @@ const TopicDetail = ({navigation, route}) => {
           } else {
             navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
           }
-        }
-      }
-    );
+        },
+      },
+    ];
+    setActionItems(action);
+    setShowActionSheet(true);
   };
 
   useFocusEffect(
@@ -139,7 +140,7 @@ const TopicDetail = ({navigation, route}) => {
     };
     return (
       <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
-        <View style={{height: topHeight, backgroundColor: 'black'}}/>
+        <View style={{height: topHeight, backgroundColor: 'black'}} />
         <Swiper
           index={0}
           loop={false}
@@ -173,7 +174,7 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
-        <View style={{height: topHeight, backgroundColor: 'black'}}/>
+        <View style={{height: topHeight, backgroundColor: 'black'}} />
         {detail.excellent && (
           <Text
             style={{
@@ -286,6 +287,12 @@ const TopicDetail = ({navigation, route}) => {
         type="Topic"
         setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
+      />
+
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
       />
     </KeyboardAvoidingView>
   ) : (

@@ -23,18 +23,19 @@ import {BASIC_HEIGHT} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {reportContent} from '@/api/secure_check';
+import ActionSheet from '@/components/ActionSheet';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
 const AccountDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
-
+  const currentAccount = useSelector(state => state.account.currentAccount);
   const [accountId] = useState(route.params.accountId);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
-
-  const currentAccount = useSelector(state => state.account.currentAccount);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  // const [actionItems, setActionItems] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({});
@@ -70,28 +71,32 @@ const AccountDetail = ({navigation, route}) => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
   };
 
-  const onReportClick = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['取消', '拉黑', '举报'],
-        destructiveButtonIndex: 1,
-        cancelButtonIndex: 0,
+  const actionItems = [
+    {
+      id: 1,
+      label: '拉黑',
+      onPress: () => {
+        const data = {
+          reason: '拉黑',
+          report_type: 'Account',
+          report_type_id: accountId,
+        };
+        reportContent(data).then(res => {
+          Toast.showError('已拉黑', {duration: 500});
+        });
       },
-      buttonIndex => {
-        if (buttonIndex === 1) {
-          const data = {
-            reason: '拉黑',
-            report_type: 'Account',
-            report_type_id: accountId,
-          };
-          reportContent(data).then(res => {
-            Toast.showError('已拉黑', {duration: 500});
-          });
-        } else if (buttonIndex === 2) {
-          navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
-        }
-      }
-    );
+    },
+    {
+      id: 2,
+      label: '举报',
+      onPress: async () => {
+        navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
+      },
+    },
+  ];
+
+  const onReportClick = () => {
+    setShowActionSheet(true);
   };
 
   const onPreview = () => {
@@ -273,6 +278,11 @@ const AccountDetail = ({navigation, route}) => {
         cancleClick={() => setShowModal(false)}
         title="简介"
         content={account.intro}
+      />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
       />
     </View>
   ) : (

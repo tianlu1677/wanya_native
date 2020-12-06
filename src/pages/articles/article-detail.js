@@ -7,7 +7,6 @@ import {
   Platform,
   Dimensions,
   Pressable,
-  ActionSheetIOS,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getArticle} from '@/api/article_api';
@@ -21,6 +20,7 @@ import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/s
 import {dispatchArticleDetail} from '@/redux/actions';
 import {STATUS_BAR_HEIGHT, NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import TopHeader from '@/components/TopHeader';
+import ActionSheet from '@/components/ActionSheet';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ const ArticleDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [loadingContent, setLoadingContent] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -59,19 +60,18 @@ const ArticleDetail = ({navigation, route}) => {
     loadData();
   };
 
-  const onReportClick = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['取消', '举报'],
-        destructiveButtonIndex: 1,
-        cancelButtonIndex: 0,
+  const actionItems = [
+    {
+      id: 1,
+      label: '举报',
+      onPress: () => {
+        navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
       },
-      async buttonIndex => {
-        if (buttonIndex === 1) {
-          navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
-        }
-      }
-    );
+    },
+  ];
+
+  const onReportClick = () => {
+    setShowActionSheet(true);
   };
 
   const onHTMLParsed = (dom, RNElements) => {
@@ -170,6 +170,12 @@ const ArticleDetail = ({navigation, route}) => {
         type="Article"
         setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
+      />
+
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
       />
     </KeyboardAvoidingView>
   ) : (

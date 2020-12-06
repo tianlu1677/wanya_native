@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Vibration, ActionSheetIOS} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Vibration} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
@@ -10,12 +10,15 @@ import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
 import * as Animatable from 'react-native-animatable';
 import {dispatchShareItem} from '@/redux/actions';
+import ActionSheet from '@/components/ActionSheet';
 
 export const Header = props => {
   const {data} = props;
   const navigation = useNavigation();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const [star, setstar] = useState(data.star);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  const [actionItems, setActionItems] = useState([]);
 
   const goAccountDetail = () => {
     navigation.push('AccountDetail', {accountId: data.account.id});
@@ -47,7 +50,7 @@ export const Header = props => {
     Toast.showError(star ? '已取消收藏' : '已收藏');
   };
 
-  const getOptions = () => {
+  const getOptions = (one, two) => {
     const isCurrentSelf = data.account.id === currentAccount.id;
     let options = [];
     if (isCurrentSelf) {
@@ -66,38 +69,60 @@ export const Header = props => {
   };
 
   const onReportClick = () => {
-    const isCurrentTopic = data.account.id === currentAccount.id;
-    const options = getOptions();
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: options,
-        destructiveButtonIndex: 2,
-        cancelButtonIndex: 0,
-      },
-      async buttonIndex => {
-        if (buttonIndex === 2) {
-          if (isCurrentTopic) {
-            if (props.type === 'article') {
-              onStar();
-            }
-            if (props.type === 'topic') {
-              try {
-                await deleteTopic(data.id);
-                Toast.showError('已删除');
-                props.onRemove();
-              } catch (err) {
-                Toast.error('删除失败，请稍后再试');
-              }
-            }
-          } else {
-            navigation.push('Report', {report_type: props.type, report_type_id: data.id});
-          }
-        }
-        if (buttonIndex === 1) {
-          onStar();
-        }
+    const isCurrentSelf = data.account.id === currentAccount.id;
+    let options = [];
+    if (isCurrentSelf) {
+      switch (props.type) {
+        case 'topic':
+          options = [
+            {
+              id: 1,
+              label: star ? '取消收藏' : '收藏',
+              onPress: async () => onStar(),
+            },
+            {
+              id: 2,
+              label: '删除',
+              onPress: async () => {
+                try {
+                  await deleteTopic(data.id);
+                  Toast.showError('已删除');
+                  props.onRemove();
+                } catch (err) {
+                  Toast.error('删除失败，请稍后再试');
+                }
+              },
+            },
+          ];
+          break;
+        case 'article':
+          options = [
+            {
+              id: 1,
+              label: star ? '取消收藏' : '收藏',
+              onPress: async () => onStar(),
+            },
+          ];
+          break;
       }
-    );
+    } else {
+      options = [
+        {
+          id: 1,
+          label: star ? '取消收藏' : '收藏',
+          onPress: async () => onStar(),
+        },
+        {
+          id: 2,
+          label: '举报',
+          onPress: async () => {
+            navigation.push('Report', {report_type: props.type, report_type_id: data.id});
+          },
+        },
+      ];
+    }
+    setActionItems(options);
+    setShowActionSheet(true);
   };
 
   return (
@@ -129,6 +154,12 @@ export const Header = props => {
       {/* <Text style={hstyles.joinBtn} onPress={goNodeDetail}>
         进入圈子
       </Text> */}
+
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
     </View>
   );
 };

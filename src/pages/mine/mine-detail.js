@@ -58,44 +58,46 @@ const MineDetail = props => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
   };
 
-  const onChangeImage1 = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['更换背景图', '取消'],
-      },
-      async buttonIndex => {
-        if (buttonIndex === 0) {
-          props.removeAllPhoto();
-          const options = {
-            imageCount: 1,
-            isCrop: true,
-            CropW: screenW * 1,
-            CropH: HEADER_HEIGHT,
-            isCamera: false,
-          };
-          props.imagePick(options, async (err, res) => {
-            if (err) {
-              return;
-            }
-            Toast.showLoading('更换中...');
-            await props.uploadAvatar({
-              uploadType: 'multipart',
-              account_id: currentAccount.id,
-              keyParams: 'account[profile_attributes][background_img]',
-              ...res[0],
-            });
-            dispatch(dispatchCurrentAccount());
-            Toast.hide();
-            Toast.showError('已完成', {duration: 500});
+  const actionItems = [
+    {
+      id: 1,
+      label: '更换背景图',
+      onPress: async () => {
+        props.removeAllPhoto();
+        const options = {
+          imageCount: 1,
+          isCrop: true,
+          CropW: screenW * 1,
+          CropH: HEADER_HEIGHT,
+          isCamera: false,
+        };
+        props.imagePick(options, async (err, res) => {
+          if (err) {
+            return;
+          }
+          setShowActionSheet(false);
+          Toast.showLoading('更换中...');
+          await props.uploadAvatar({
+            uploadType: 'multipart',
+            account_id: currentAccount.id,
+            keyParams: 'account[profile_attributes][background_img]',
+            ...res[0],
           });
-        }
-      }
-    );
-  };
+          dispatch(dispatchCurrentAccount());
+          Toast.hide();
+          Toast.showError('已完成', {duration: 500});
+        });
+      },
+    },
+  ];
 
   const onChangeImage = () => {
-    setShowActionSheet(true)
-  }
+    console.log(22);
+
+    setShowActionSheet(true);
+  };
+
+  console.log(showActionSheet);
 
   const onPreview = () => {
     const data = {
@@ -148,35 +150,6 @@ const MineDetail = props => {
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
-
-  const actionItems = [
-    {
-      id: 1,
-      label: 'Action Item 1',
-      onPress: () => {
-      }
-    },
-    {
-      id: 2,
-      label: 'Action Item 2',
-      onPress: () => {
-      }
-    },
-    {
-      id: 3,
-      label: 'Action Item 3',
-      type: 'primary',
-      onPress: () => {
-      }
-    },
-    {
-      id: 4,
-      type: 'cancel',
-      label: 'Action Item 4',
-      onPress: () => {
-      }
-    },
-  ];
 
   return currentAccount && useFocus ? (
     <View style={{flex: 1}}>
@@ -343,7 +316,6 @@ const MineDetail = props => {
         showActionSheet={showActionSheet}
         changeModal={() => setShowActionSheet(false)}
       />
-
       <BottomModal
         visible={showModal}
         cancleClick={() => setShowModal(false)}
