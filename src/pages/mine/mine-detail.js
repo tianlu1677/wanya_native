@@ -75,7 +75,6 @@ const MineDetail = props => {
           if (err) {
             return;
           }
-          setShowActionSheet(false);
           Toast.showLoading('更换中...');
           await props.uploadAvatar({
             uploadType: 'multipart',
