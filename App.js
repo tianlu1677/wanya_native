@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
-import {Text, TextInput, Dimensions, Modal, Alert, View} from 'react-native';
+import {Text, TextInput, Platform, Dimensions, Modal, Alert, View} from 'react-native';
 import CodePush from 'react-native-code-push';
 import {
   requestMultiple,
@@ -23,7 +23,7 @@ import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
 import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
 import NetworkErrorModal from '@/components/NetworkErrorModal';
-import PushUtil from '@/utils/umeng_push_util'
+import PushUtil from '@/utils/umeng_push_util';
 
 import * as RootNavigation from '@/navigator/root-navigation';
 
@@ -84,6 +84,14 @@ class App extends Component {
     //   console.log('code1', code, remain)
     //   // Alert.alert(`${code} ${remain}`)
     // })
+
+    if(Platform.OS === 'ios') {
+      PushUtil.addTag('normal', (code, remain) => {
+        // console.log('code1', code, remain);
+        // Alert.alert(`${code} ${remain}`)
+      });
+    }
+
     // PushUtil.addAlias('dddd', 'login_user',(code) =>{
     //   console.log('alias', code)      
     // })
@@ -117,25 +125,12 @@ class App extends Component {
         console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
       });
     });
-
-    checkMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
-      // console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-      // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
-
-      requestMultiple([
-        PERMISSIONS.ANDROID.CAMERA,
-      ]).then(statuses => {
-        console.log('Camera', statuses[PERMISSIONS.ANDROID.CAMERA]);
-        // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
-        // console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-      });
-    });
   };
 
   // 通知相关内容
   onRegister = response => {
     console.log('onRegister', response.token);
-    const data = {device_token: response.token, platform: response.os}
+    const data = {device_token: response.token, platform: response.os};
     syncDeviceToken(data);
   };
 
@@ -146,12 +141,21 @@ class App extends Component {
     try {
       console.log('onNotification:', notification);
       const auth_token = await Helper.getData('auth_token');
-      // if (!auth_token) {
-      //   return;
-      // }
+      if (!auth_token) {
+        return;
+      }
+      let screen = '';
+      let params = '';
       const data = notification.data;
-      const params = data.params;
-      const screen = data.screen;
+      params = data.params;
+      screen = data.screen;
+      const extra = data.extra;
+      if (!params) {
+        params = extra.params;
+      }
+      if (!screen) {
+        screen = extra.screen;
+      }
       if (!params || !screen) {
         return;
       }
@@ -160,7 +164,7 @@ class App extends Component {
       console.log('params', params, screen);
       setTimeout(() => {
         RootNavigation.navigate(data.screen, screen_params);
-      }, 1500)
+      }, 1500);
     } catch (e) {
       console.log('error', e);
     }
@@ -173,8 +177,8 @@ class App extends Component {
   loadNetworkInfo = () => {
     this.networdunsubscribe = NetInfo.addEventListener(state => {
       // console.log('state', state)
-      if(this.state.netInfoErr === !state.isConnected ) {
-        return
+      if (this.state.netInfoErr === !state.isConnected) {
+        return;
       }
       if (state.isConnected) {
         this.setState({

@@ -22,6 +22,7 @@ import ArticleList from '@/components/List/article-list';
 import StickTopHeader from '@/components/StickTopHeader';
 import FastImg from '@/components/FastImg';
 import MediasPicker from '@/components/MediasPicker';
+import ActionSheet from '@/components/ActionSheet';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 const {width: screenW} = Dimensions.get('window');
@@ -33,6 +34,7 @@ const MineDetail = props => {
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
   const [useFocus, setuseFocus] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -56,39 +58,40 @@ const MineDetail = props => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
   };
 
-  const onChangeImage = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['更换背景图', '取消'],
-      },
-      async buttonIndex => {
-        if (buttonIndex === 0) {
-          props.removeAllPhoto();
-          const options = {
-            imageCount: 1,
-            isCrop: true,
-            CropW: screenW * 1,
-            CropH: HEADER_HEIGHT,
-            isCamera: false,
-          };
-          props.imagePick(options, async (err, res) => {
-            if (err) {
-              return;
-            }
-            Toast.showLoading('更换中...');
-            await props.uploadAvatar({
-              uploadType: 'multipart',
-              account_id: currentAccount.id,
-              keyParams: 'account[profile_attributes][background_img]',
-              ...res[0],
-            });
-            dispatch(dispatchCurrentAccount());
-            Toast.hide();
-            Toast.showError('已完成', {duration: 500});
+  const actionItems = [
+    {
+      id: 1,
+      label: '更换背景图',
+      onPress: async () => {
+        props.removeAllPhoto();
+        const options = {
+          imageCount: 1,
+          isCrop: true,
+          CropW: screenW * 1,
+          CropH: HEADER_HEIGHT,
+          isCamera: false,
+        };
+        props.imagePick(options, async (err, res) => {
+          if (err) {
+            return;
+          }
+          Toast.showLoading('更换中...');
+          await props.uploadAvatar({
+            uploadType: 'multipart',
+            account_id: currentAccount.id,
+            keyParams: 'account[profile_attributes][background_img]',
+            ...res[0],
           });
-        }
-      }
-    );
+          dispatch(dispatchCurrentAccount());
+          Toast.hide();
+          Toast.showError('已完成', {duration: 500});
+        });
+      },
+    },
+  ];
+
+  const onChangeImage = () => {
+    setShowActionSheet(true);
   };
 
   const onPreview = () => {
@@ -303,6 +306,11 @@ const MineDetail = props => {
             </Pressable>
           </View>
         }
+      />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
       />
       <BottomModal
         visible={showModal}

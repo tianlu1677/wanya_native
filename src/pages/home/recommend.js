@@ -16,6 +16,7 @@ import SafeAreaPlus from '@/components/SafeAreaPlus';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {navigate} from "../../navigator/root-navigation"
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -69,55 +70,58 @@ const Recommend = props => {
   }, []);
 
   return (
-    <View style={{flex: 1}}>
-      <View style={{height: BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 0, backgroundColor: 'black'}} />
-      {/*<SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />*/}
-      <FocusAwareStatusBar
-        barStyle="light-content"
-        translucent={true}
-        backgroundColor={'transparent'}
-      />
-      <View style={styles.wrapper}>
-        <TabViewList
-          size="big"
-          lazy={true}
-          currentKey={currentKey}
-          tabData={[
-            {
-              key: 'follow',
-              title: '关注',
-              component: FollowList,
-            },
-            {
-              key: 'recommend',
-              title: '推荐',
-              component: RecommendList,
-            },
-            {
-              key: 'lasted',
-              title: '圈子',
-              component: NodeList,
-            },
-          ]}
-          onChange={key => setCurrentKey(key)}
+    <>
+      <View style={{flex: 1}}>
+        <View style={{height: BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 0, backgroundColor: 'black'}} />
+        {/*<SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />*/}
+        <FocusAwareStatusBar
+          barStyle="light-content"
+          translucent={false}
+          backgroundColor={'black'}
         />
-        <View style={styles.message}>
-          <Pressable
-            style={styles.message_icon}
-            hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
-            onPress={() => props.navigation.navigate('NotifyIndex')}>
-            <View style={{position: 'relative'}}>
-              <IconFont name="notice" color={'white'} size={20} />
-            </View>
-            <BadgeMessage
-              value={UnreadMessageCount()}
-              containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
-              size={'small'}
-            />
-          </Pressable>
+        <View style={styles.wrapper}>
+          <TabViewList
+            size="big"
+            lazy={true}
+            currentKey={currentKey}
+            tabData={[
+              {
+                key: 'follow',
+                title: '关注',
+                component: FollowList,
+              },
+              {
+                key: 'recommend',
+                title: '推荐',
+                component: RecommendList,
+              },
+              {
+                key: 'lasted',
+                title: '圈子',
+                component: NodeList,
+              },
+            ]}
+            onChange={key => setCurrentKey(key)}
+          />
         </View>
       </View>
-    </View>
+      <TouchableOpacity
+        style={styles.message}
+        onPress={() => props.navigation.navigate('NotifyIndex')}
+        hitSlop={{left: 30, right: 20, top: 20, bottom: 20}}
+      >
+        <View style={styles.message_icon} >
+          <View style={{position: 'relative'}}>
+            <IconFont name="notice" color={'white'} size={20} />
+          </View>
+          <BadgeMessage
+            value={UnreadMessageCount()}
+            containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
+            size={'small'}
+          />
+        </View>
+      </TouchableOpacity>
+    </>
   );
 };
 
@@ -171,8 +175,9 @@ const styles = StyleSheet.create({
   message: {
     position: 'absolute',
     right: 4,
-    zIndex: 100,
+    zIndex: 1000,
     top: 15,
+    width: 49,
   },
   message_icon: {
     height: 20,

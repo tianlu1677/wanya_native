@@ -111,8 +111,6 @@ const NewTopic = props => {
       if (err) {
         return;
       }
-
-      console.log('res', res)
       const allImage = [...imageSource, ...res];
       setImageSource([...allImage]);
       for (let [index, file] of new Map(allImage.map((item, i) => [i, item]))) {

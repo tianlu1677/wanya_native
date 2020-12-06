@@ -46,7 +46,7 @@ export const getRecentAccounts = async params => {
     method: 'GET',
     params,
   });
-  return res.data.nodes;
+  return res;
 };
 
 // export async function getFollowNodeIndex(params = {account_id: ''}) {
