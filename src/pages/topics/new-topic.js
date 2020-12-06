@@ -11,12 +11,11 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-// import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import ImagePicker from 'react-native-image-picker';
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation, CommonActions} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
@@ -28,7 +27,6 @@ import {dispatchPreviewImage} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
 
 const windowWidth = Dimensions.get('window').width;
-
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
 
 const NewTopic = props => {
@@ -39,16 +37,10 @@ const NewTopic = props => {
   const uploadProgress = useSelector(state => state.home.uploadProgress);
   const location = useSelector(state => state.home.location);
   const videoRef = useRef('');
-
-  // const defaultVideo = [
-  //   {id: 1, url: 'http://xinxuefile.meirixinxue.com/assets/d479716443f6aca08c4e45135509bd03.mp4'},
-  // ];
-
-  const defaultVideo = [];
   const [imageSource, setImageSource] = useState([]);
-  const [videoSource, setVideoSource] = useState(defaultVideo);
+  const [videoSource, setVideoSource] = useState([]);
+  const [linkSource, setLinkSource] = useState(null);
   const [permissionModal, setPermissionModal] = useState(false); // 显示权限页面
-
   const [content, setContent] = useState(savetopic.plan_content);
 
   const onChangeContent = text => {
@@ -94,7 +86,6 @@ const NewTopic = props => {
   };
 
   const onImagePicker = async () => {
-    // console.log('checkPermission()', await checkPermission())
     const hasPermission = await checkPermission();
     if (!hasPermission) {
       return;
@@ -119,49 +110,12 @@ const NewTopic = props => {
       }
     });
   };
-  //TODO 限制描述
+
   const onVideoPicker = async () => {
     const hasPermission = await checkPermission();
     if (!hasPermission) {
       return;
     }
-    // console.log('staring')
-    // SyanImagePicker.openVideoPicker({
-    //   allowTakeVideo: false,
-    //   // MaxSecond: 500,
-    //   // MinSecond: 0,
-    //   // scaleEnabled: false,
-    //   // recordVideoSecond: 500,
-    //   videoCount: 1,
-    //   quality: 100,
-    //   compress: false,
-    //   minimumCompressSize: 1000000
-    //   // videoMaximumDuration: 500
-    // }, (error, res) => {
-    //   console.log('error', error)
-    //   console.log('res', res)
-    //   console.log('end')
-    // });
-    // props.videoPick(
-    //   {
-    //     MaxSecond: 2,
-    //     MinSecond: 1,
-    //     recordVideoSecond: 2,
-    //     videoCount: 1,
-    //     allowTakeVideo: false,
-    //   },
-    //   async (err, res) => {
-    //     if (err) {
-    //       console.log('uploader error', err, res);
-    //       return;
-    //     }
-    //     console.log('res', res);
-    //     setVideoSource([...res]);
-    //     const result = await props.uploadVideo(res[0], dispatch);
-    //     setVideoSource([result.asset]);
-    //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-    //   }
-    // );
 
     ImagePicker.launchImageLibrary(
       {
@@ -172,57 +126,40 @@ const NewTopic = props => {
         if (response.didCancel) {
           return;
         }
-        console.log('response', response);
-        // return
         const video = response;
         props.removeAllPhoto();
         let videoSourceContent = {
-          uri: video.origURL, //video.uri.replace('file://', ''),
-          // height: video.height,
-          // width: video.width,
-          // duration: video.duration,
+          uri: video.origURL,
         };
         setVideoSource([videoSourceContent]);
         const result = await props.uploadVideo(videoSourceContent, dispatch);
         setVideoSource([result.asset]);
         dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-        // Alert.alert(JSON.stringify(video))
       }
     );
-    // ImagePicker.openPicker({
-    //   mediaType: 'video',
-    //   writeTempFile: false,
-    //   smartAlbums: ['Videos'],
-    //   loadingLabelText: '导出视频中, 请稍等...',
-    //   sortOrder: 'asc',
-    // }).then(async video => {
-    //   console.log(video);
-    //   props.removeAllPhoto();
-    //   let videoSourceContent = {
-    //     uri: video.path,
-    //     height: video.height,
-    //     width: video.width,
-    //     duration: video.duration,
-    //   };
-    //   setVideoSource([videoSourceContent]);
-    //   const result = await props.uploadVideo(videoSourceContent, dispatch);
-    //   setVideoSource([result.asset]);
-    //   dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-    //   // Alert.alert(JSON.stringify(video))
-    // });
   };
 
   const deleteMedia = index => {
     props.removeImage(index);
     const image = imageSource.filter((v, i) => i !== index);
     const video = videoSource.filter((v, i) => i !== index);
-
     setImageSource([...image]);
     setVideoSource(video);
   };
 
+  const onAddLink = () => {
+    navigation.navigate('AddLink');
+  };
+
+  const onDeleteLink = () => {
+    setLinkSource(null);
+    const topics = {...savetopic, linkContent: null};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+  };
+
   const isValidateForm = () => {
-    if (imageSource.length === 0 && videoSource.length === 0 && !content) {
+    //图片 视频 外链 文字 选1+node
+    if (imageSource.length === 0 && videoSource.length === 0 && !content && !linkSource) {
       return false;
     } else {
       return true;
@@ -231,7 +168,7 @@ const NewTopic = props => {
 
   const onSubmit = async () => {
     if (!isValidateForm()) {
-      Toast.show('图片/视频不能为空哦~');
+      Toast.show('图片/视频/外链不能为空哦~');
       return false;
     }
 
@@ -262,6 +199,7 @@ const NewTopic = props => {
       type: 'single',
       medias: imageSource.map(v => v.url),
       video_content: videoSource.length > 0 ? videoSource[0].url : '',
+      topic_link_id: linkSource ? linkSource.id : '',
       plain_content: savetopic.plan_content
         ? savetopic.plan_content
         : imageSource.length > 0
@@ -273,8 +211,6 @@ const NewTopic = props => {
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
     };
-
-    console.log(data);
     Toast.showLoading('正在发布中...');
     try {
       const res = await createTopic(data);
@@ -284,13 +220,6 @@ const NewTopic = props => {
         index: 0,
         routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
       });
-
-      // navigation.dispatch(
-      //   CommonActions.reset({
-      //     index: 0,
-      //     routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
-      //   })
-      // );
 
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
     } catch {
@@ -330,6 +259,7 @@ const NewTopic = props => {
 
   useEffect(() => {
     setContent(savetopic.plan_content);
+    setLinkSource(savetopic.linkContent);
   }, [savetopic]);
 
   useEffect(() => {
@@ -346,7 +276,7 @@ const NewTopic = props => {
       headerLeft: () => <LeftBtn />,
       headerRight: () => <RightBtn />,
     });
-  }, [navigation, imageSource, videoSource, savetopic]);
+  }, [navigation, imageSource, videoSource, savetopic, linkSource]);
 
   return (
     <ScrollView>
@@ -388,7 +318,7 @@ const NewTopic = props => {
                 )}
               </View>
             ))}
-            {videoSource.length === 0 && imageSource.length !== 9 && (
+            {videoSource.length === 0 && !linkSource && imageSource.length !== 9 && (
               <Pressable
                 onPress={onImagePicker}
                 style={[
@@ -435,22 +365,46 @@ const NewTopic = props => {
                   </>
                 ) : (
                   <View style={[styles.media, styles.progress]}>
-                    {/* <View style={styles.progressWrap}> */}
                     <Text style={styles.proNum}>{uploadProgress}</Text>
                     <Text style={styles.proPercent}>%</Text>
-                    {/* </View> */}
                   </View>
                 )}
               </Pressable>
             ))}
-
-            {imageSource.length === 0 && videoSource.length === 0 && (
+            {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (
               <Pressable onPress={onVideoPicker}>
                 <FastImg
                   style={styles.mediaWrap}
                   source={require('@/assets/images/add-video.png')}
                 />
               </Pressable>
+            )}
+
+            {/* link */}
+            {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (
+              <Pressable onPress={onAddLink}>
+                <FastImg
+                  style={styles.mediaWrap}
+                  source={require('@/assets/images/add-link.png')}
+                />
+              </Pressable>
+            )}
+            {linkSource && (
+              <View style={styles.linkWrapper}>
+                <FastImg source={{uri: linkSource.cover_url}} style={{width: 45, height: 45}} />
+                <Text style={styles.linkText} numberOfLines={2}>
+                  {linkSource.title}
+                </Text>
+                <Pressable onPress={onDeleteLink}>
+                  <IconFont
+                    name={'node-solid'}
+                    size={15}
+                    color="#000"
+                    style={{marginLeft: 22, marginRight: 4}}
+                    hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  />
+                </Pressable>
+              </View>
             )}
           </View>
           <TextInput
@@ -496,22 +450,6 @@ const NewTopic = props => {
           </View>
         </View>
       </TouchableWithoutFeedback>
-      {/* <Modal
-        transparent={true}
-        visible={true}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>授权后才能设置场地位置</Text>
-            <View style={styles.modalBtnWrap}>
-              <Text style={styles.modalBtn}>取消</Text>
-              <Text style={styles.modalBtn}>去设置</Text>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
     </ScrollView>
   );
 };
@@ -558,13 +496,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#000',
   },
-  progressWrap: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // position: 'relative',
-    // backgroundColor: 'pink',
-    // flexWrap: 'nowrap',
-  },
   proNum: {
     color: '#fff',
     fontSize: 21,
@@ -575,9 +506,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginTop: 8,
     marginLeft: 2,
-    // position: 'absolute',
-    // right: -11,
-    // bottom: 3,
   },
   content: {
     minHeight: 90,
@@ -636,6 +564,27 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: '#BDBDBD',
+  },
+  linkWrapper: {
+    flex: 1,
+    backgroundColor: '#F2F3F5',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 8,
+    alignItems: 'center',
+  },
+  linkText: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginVertical: 3,
+    color: '#3F3F3F',
+    marginLeft: 10,
+    textAlign: 'justify',
+    flex: 1,
+  },
+  linkIcon: {
+    marginRight: 4,
+    marginLeft: 44,
   },
 });
 

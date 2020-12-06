@@ -29,10 +29,10 @@ export const homeReducer = (state = defaultState, action) => {
         savetopic: action.value,
       };
     case constants.PREVIEW_IMAGES:
-      const imageData = formatImagePreviewUrl(action.previewImageData, action.origin)
+      const imageData = formatImagePreviewUrl(action.previewImageData, action.origin);
       return {
         ...state,
-        previewImageData: imageData
+        previewImageData: imageData,
       };
     case constants.ShareView:
       return {
@@ -79,7 +79,7 @@ const formatImagePreviewUrl = (previewImageData, origin = false) => {
     return previewImageData;
   }
 
-  console.log('imageData', previewImageData)
+  console.log('imageData', previewImageData);
   const images = previewImageData.images.map(data => {
     return {
       ...data,
@@ -88,6 +88,6 @@ const formatImagePreviewUrl = (previewImageData, origin = false) => {
   });
   return {
     ...previewImageData,
-    images: images
-  }
+    images: images,
+  };
 };

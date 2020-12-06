@@ -8,6 +8,8 @@ import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
 import AddNode from '@/pages/topics/add-node';
+import AddLink from '@/pages/topics/add-link';
+
 import TopicDetail from '@/pages/topics/topic-detail';
 
 // article
@@ -119,6 +121,11 @@ const topicRouter = [
     name: 'AddNode',
     barColor: 'dark',
     component: AddNode,
+  },
+  {
+    name: 'AddLink',
+    barColor: 'dark',
+    component: AddLink,
   },
 ];
 

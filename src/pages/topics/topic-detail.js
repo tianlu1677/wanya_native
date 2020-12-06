@@ -1,10 +1,9 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useEffect, useState, useRef, useCallback, useLayoutEffect} from 'react';
 import {
   View,
   Text,
   KeyboardAvoidingView,
   Platform,
-  StatusBar,
   StyleSheet,
   Pressable,
   Dimensions,
@@ -23,11 +22,11 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
 import ActionSheet from '@/components/ActionSheet';
+import VideoPlayImg from '@/assets/images/video-play.png';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -108,8 +107,42 @@ const TopicDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
+  // 外链 纯文本 带header
+  const isHeader = () => {
+    if (detail && (detail.content_style === 'link' || detail.content_style === 'text')) {
+      return true;
+    }
+    return false;
+  };
+
+  useLayoutEffect(() => {
+    if (detail) {
+      if (isHeader()) {
+        navigation.setOptions({
+          headerTitle: '帖子详情',
+          headerShown: true,
+          headerTransparent: false,
+          // headerStyle: {
+          //   borderBottomColor: '#EBEBEB',
+          //   borderBottomWidth: StyleSheet.hairlineWidth,
+          // },
+          headerRight: () => (
+            <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <IconFont name="ziyuan" color="#000" size={20} />
+            </Pressable>
+          ),
+        });
+      } else {
+        navigation.setOptions({
+          headerShown: false,
+          title: false,
+          headerTransparent: true,
+        });
+      }
+    }
+  }, [navigation, detail]);
+
   const renderImg = () => {
-    // console.log('deta', detail)
     let {media_images} = detail;
     let maxHeight = 100;
     (media_images || []).map(img => {
@@ -138,6 +171,7 @@ const TopicDetail = ({navigation, route}) => {
       };
       dispatch(dispatchPreviewImage(data));
     };
+
     return (
       <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
         <View style={{height: topHeight, backgroundColor: 'black'}} />
@@ -205,30 +239,28 @@ const TopicDetail = ({navigation, route}) => {
   };
 
   const renderLink = () => {
-    const goLinkDetail = () => {
+    const onGoDetail = () => {
       navigation.push('WebView', {
         sourceUrl: detail.topic_link.raw_link,
         title: detail.topic_link.title,
       });
     };
-
+    // 网易云 微信 其他
+    const isWyy = detail.topic_link.raw_link.includes('https://music.163.com/') ? true : false;
     return (
-      <View>
-        <StatusBar barStyle={'dark-content'} />
-        <View style={{paddingTop: BASIC_HEIGHT, marginTop: 10, paddingBottom: 16}}>
-          <StatusBar barStyle={'dark-content'} />
+      <Pressable onPress={onGoDetail}>
+        <View style={styles.linkWrapper}>
+          <View style={styles.linkImageWrap}>
+            <FastImg source={{uri: detail.topic_link.cover_url}} style={{width: 45, height: 45}} />
+            {isWyy && (
+              <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
+            )}
+          </View>
+          <Text style={styles.linkText} numberOfLines={2}>
+            {detail.topic_link.title}
+          </Text>
         </View>
-        <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
-          <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
-          <LinearGradient
-            style={styles.titleWrapper}
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
-            colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
-            <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
-          </LinearGradient>
-        </Pressable>
-      </View>
+      </Pressable>
     );
   };
 
@@ -236,16 +268,18 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
-      <GoBack
-        name={navigation.canGoBack() ? '' : 'home-recommend'}
-        color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
-      />
-      <Pressable
-        onPress={onReportClick}
-        style={styles.report}
-        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-        <IconFont name="ziyuan" color="#fff" size={20} />
-      </Pressable>
+      {/* 不带header */}
+      {!isHeader() && (
+        <>
+          <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'#fff'} />
+          <Pressable
+            onPress={onReportClick}
+            style={styles.report}
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+            <IconFont name="ziyuan" color="#fff" size={20} />
+          </Pressable>
+        </>
+      )}
       <CommentList
         type="Topic"
         detail={detail}
@@ -257,7 +291,6 @@ const TopicDetail = ({navigation, route}) => {
           <>
             <View style={{position: 'relative'}}>
               {detail.content_style === 'video' && renderVideo()}
-              {detail.content_style === 'link' && renderLink()}
               {detail.content_style === 'img' && renderImg()}
               {detail.content_style === 'img' && detail.excellent && (
                 <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>
@@ -265,12 +298,10 @@ const TopicDetail = ({navigation, route}) => {
                 </Text>
               )}
             </View>
-            {detail.content_style === 'text' && (
-              <View style={{paddingTop: BASIC_HEIGHT + 5, paddingBottom: 16}}>
-                <StatusBar barStyle={'dark-content'} />
-              </View>
-            )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+            {detail.content_style === 'link' && (
+              <View style={{paddingHorizontal: 16, marginTop: 12}}>{renderLink()}</View>
+            )}
             <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
               <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
             </View>
@@ -311,15 +342,6 @@ const styles = StyleSheet.create({
     top: Math.max(getStatusBarHeight(), 20),
     zIndex: 1,
   },
-  title: {
-    fontSize: 20,
-    paddingTop: 8,
-    paddingRight: 14,
-    paddingLeft: 14,
-    paddingBottom: 8,
-    fontWeight: '500',
-    lineHeight: 28,
-  },
   commentTitle: {
     fontSize: 15,
     fontWeight: '500',
@@ -328,34 +350,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: '#fff',
     paddingBottom: 5,
-  },
-  linkWrap: {
-    marginTop: 14,
-    marginRight: 14,
-    marginLeft: 14,
-    height: 167,
-    position: 'relative',
-  },
-  titleWrapper: {
-    height: 64,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    padding: 11,
-    borderRadius: 2,
-  },
-  linkTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#fff',
-    lineHeight: 22,
-  },
-  linkImageCover: {
-    width: '100%',
-    height: 167,
-    flex: 1,
-    borderRadius: 2,
   },
   excellentLabel: {
     width: 30,
@@ -370,13 +364,41 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    // right: 15,
     left: 40,
   },
   multiLineText: {
     fontSize: 14,
     lineHeight: 23,
     color: '#000',
+  },
+  linkWrapper: {
+    flex: 1,
+    backgroundColor: '#F2F3F5',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 8,
+    alignItems: 'center',
+  },
+  linkImageWrap: {
+    position: 'relative',
+  },
+  linkImage: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginTop: -8,
+    marginLeft: -8,
+  },
+  linkText: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginVertical: 3,
+    color: '#3F3F3F',
+    marginLeft: 10,
+    textAlign: 'justify',
+    flex: 1,
   },
 });
 

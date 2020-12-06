@@ -5,7 +5,7 @@ import NodeIndexComponent from '@/components/NodeIndex';
 const NodeIndex = ({navigation}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: '选择圈子',
+      headerTitle: '添加链接',
       headerLeft: () => null,
       headerRight: () => (
         <Pressable onPress={() => navigation.goBack()}>

@@ -7,7 +7,6 @@ import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import IconFont from '@/iconfont';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {dispatchPreviewImage} from '@/redux/actions';
-import LinearGradient from 'react-native-linear-gradient';
 import FastImageGif from '@/components/FastImageGif';
 
 const calculateImg = (width, height) => {
@@ -104,28 +103,39 @@ export const TopicVideoContent = props => {
   );
 };
 
+// 外链
 export const TopicLinkContent = props => {
+  const navigation = useNavigation();
+  const {data} = props;
+  const onGoDetail = () => {
+    navigation.push('WebView', {
+      sourceUrl: data.topic_link.raw_link,
+      title: data.topic_link.title,
+    });
+  };
+  // 网易云 微信 其他
+  const isWyy = data.topic_link.raw_link.includes('https://music.163.com/') ? true : false;
+
   return (
-    <View style={styles.linkWrap}>
-      <FastImg
-        source={{uri: props.data.topic_link.cover_url}}
-        style={{flex: 1, height: 167, width: '100%'}}
-      />
-      <LinearGradient
-        style={styles.titleWrapper}
-        start={{x: 0, y: 0}}
-        end={{x: 0, y: 1}}
-        colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
-        <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
-      </LinearGradient>
-    </View>
+    <Pressable onPress={onGoDetail}>
+      <View style={styles.linkWrapper}>
+        <View style={styles.linkImageWrap}>
+          <FastImg source={{uri: data.topic_link.cover_url}} style={{width: 45, height: 45}} />
+          {isWyy && (
+            <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
+          )}
+        </View>
+        <Text style={styles.linkText} numberOfLines={2}>
+          {data.topic_link.title}
+        </Text>
+      </View>
+    </Pressable>
   );
 };
 
 const BaseTopic = props => {
   const {data} = props;
   const navigation = useNavigation();
-
   const goNodeDetail = () => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
   };
@@ -164,16 +174,6 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     backgroundColor: '#fff',
   },
-  multiText: {
-    fontSize: 14,
-    lineHeight: 24,
-    color: '#1f1f1f',
-  },
-  hashtagText: {
-    color: '#ff8d00',
-    paddingLeft: 2,
-    paddingRight: 2,
-  },
   imageMulti: {
     width: 167,
     height: 167,
@@ -192,20 +192,6 @@ const styles = StyleSheet.create({
     top: '50%',
     marginTop: -15,
     marginLeft: -15,
-  },
-  titleWrapper: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    padding: 11,
-    borderRadius: 2,
-  },
-  linkTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#fff',
-    lineHeight: 22,
   },
   excellentLabel: {
     width: 30,
@@ -239,6 +225,35 @@ const styles = StyleSheet.create({
   nodeName: {
     fontSize: 11,
     marginLeft: 4,
+  },
+  linkWrapper: {
+    flex: 1,
+    backgroundColor: '#F2F3F5',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 8,
+    alignItems: 'center',
+  },
+  linkImageWrap: {
+    position: 'relative',
+  },
+  linkImage: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginTop: -8,
+    marginLeft: -8,
+  },
+  linkText: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginVertical: 3,
+    color: '#3F3F3F',
+    marginLeft: 10,
+    textAlign: 'justify',
+    flex: 1,
   },
 });
 
