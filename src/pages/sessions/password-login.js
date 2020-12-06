@@ -48,17 +48,19 @@ const PasswordLogin = ({navigation, route}) => {
       res = await phoneSignIn(params);
     }
     if (res.account) {
-      await Helper.setData('auth_token', res.account.token);
-      Toast.showError('登录成功');
-      setTimeout(() => {
-        Toast.hide();
+      await Helper.setData('socialToken', res.account.token);
+      const accountInfo = res
+      if (!accountInfo.account.had_invited) {
+        navigation.navigate('InviteLogin');
+      } else {
+        await Helper.setData('auth_token', res.account.token);
         dispatch(dispatchSetAuthToken(res.account.token));
         dispatch(dispatchCurrentAccount());
         navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],
         });
-      }, 1000);
+      }
     } else {
       if (loginType === LoginTypes.CODE) {
         Toast.showError(res.error);
@@ -160,6 +162,7 @@ const PasswordLogin = ({navigation, route}) => {
             </Text>
             <TextInput
               autoFocus
+              textAlign={'left'}
               autoComplete={'tel'}
               caretHidden={false}
               selectionColor={'#ff193a'}
@@ -180,6 +183,7 @@ const PasswordLogin = ({navigation, route}) => {
                 selectionColor={'#ff193a'}
                 keyboardType="numeric"
                 maxLength={6}
+                textAlign={'left'}
                 onChangeText={text => setPhoneCode(text)}
                 placeholder={'输入验证码'}
                 placeholderTextColor={'#353535'}
@@ -190,7 +194,7 @@ const PasswordLogin = ({navigation, route}) => {
                 <Pressable
                   hitSlop={{top: 30, left: 20, right: 10, bottom: 15}}
                   onPress={() => onSendPhoneCode()}>
-                  <Text style={styles.verifyCodeText}>{verifyText}</Text>
+                  <Text style={styles.verifyCodeText} includeFontPadding={false}>{verifyText}</Text>
                 </Pressable>
               ) : (
                 <Pressable
@@ -267,6 +271,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     minWidth: 200,
     padding: 0,
+    paddingBottom: 0
   },
   titleText: {
     letterSpacing: 1,
@@ -277,15 +282,17 @@ const styles = StyleSheet.create({
   inputWrap: {
     paddingTop: 38,
     fontSize: 30,
+    marginBottom: 12,
   },
   inputView: {
+    height: 30,
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'flex-end',
     fontSize: 30,
+    paddingBottom: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#353535',
-    paddingBottom: 8,
     justifyContent: 'space-between',
   },
   verifyCodeText: {
@@ -301,7 +308,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     color: 'white',
     // lineHeight: 27,
-    height: 27,
+    // height: 27,
     alignItems: 'center',
     letterSpacing: 1,
     padding: 0

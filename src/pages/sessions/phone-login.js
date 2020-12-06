@@ -151,8 +151,8 @@ const PhoneLogin = ({navigation, route}) => {
               style={{
                 fontSize: 15,
                 fontWeight: '600',
-                marginRight: 20,
-                lineHeight: 20,
+                marginRight: 27,
+                // lineHeight: 27,
                 color: 'white',
                 letterSpacing: 1,
               }}>
@@ -180,10 +180,11 @@ const PhoneLogin = ({navigation, route}) => {
               selectionColor={'#ff193a'}
               keyboardType="numeric"
               maxLength={6}
+              underlineColorAndroid = {'transparent'}
               onChangeText={text => setPhoneCode(text)}
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
-              style={{...styles.inputContent, width: '70%'}}
+              style={{...styles.inputContent, width: '70%', height: 20}}
               clearButtonMode={'always'}
             />
             {firstVerify ? (
@@ -246,11 +247,13 @@ const styles = StyleSheet.create({
   },
   inputContent: {
     fontSize: 15,
+    height: 22,
     letterSpacing: 1,
     color: '#FFFFFF',
     fontWeight: '600',
     minWidth: 200,
-    padding: 0
+    paddingVertical: 0,
+    padding: 0,
   },
   titleText: {
     letterSpacing: 1,
@@ -264,7 +267,11 @@ const styles = StyleSheet.create({
   },
   inputView: {
     marginTop: 20,
-    paddingBottom: 12,
+    padding: 0,
+    paddingVertical: 0,
+    paddingBottom: 8,
+    // paddingBottom: 10,
+    lineHeight: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
     fontSize: 30,
