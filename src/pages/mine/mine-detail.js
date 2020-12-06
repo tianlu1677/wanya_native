@@ -91,12 +91,8 @@ const MineDetail = props => {
   ];
 
   const onChangeImage = () => {
-    console.log(22);
-
     setShowActionSheet(true);
   };
-
-  console.log(showActionSheet);
 
   const onPreview = () => {
     const data = {
