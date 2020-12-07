@@ -89,6 +89,8 @@ const ArticleDetail = ({navigation, route}) => {
     }
   }, [navigation, detail]);
 
+  console.log(detail);
+
   return detail && currentAccount ? (
     <KeyboardAvoidingView
       keyboardVerticalOffset={NAVIGATION_BAR_HEIGHT + STATUS_BAR_HEIGHT}

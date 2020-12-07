@@ -35,8 +35,10 @@ const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const videoRef = useRef(null);
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const currentTopic = useSelector(state => state.topic.topicDetail);
+
   const [topicId] = useState(route.params.topicId);
-  const [detail, setDetail] = useState(null);
+  const [detail, setDetail] = useState();
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [actionItems, setActionItems] = useState([]);
@@ -115,7 +117,14 @@ const TopicDetail = ({navigation, route}) => {
 
   useEffect(() => {
     loadData();
+    return () => {
+      dispatch(dispatchTopicDetail(null));
+    };
   }, []);
+
+  useEffect(() => {
+    setDetail(currentTopic);
+  }, [currentTopic]);
 
   useLayoutEffect(() => {
     if (detail) {
@@ -262,10 +271,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const renderLink = () => {
     const onGoDetail = () => {
-      navigation.push('WebView', {
-        sourceUrl: detail.topic_link.raw_link,
-        title: detail.topic_link.title,
-      });
+      navigation.push('TopicLinkDetail');
     };
 
     return (

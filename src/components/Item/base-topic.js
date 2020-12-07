@@ -107,11 +107,13 @@ export const TopicVideoContent = props => {
 export const TopicLinkContent = props => {
   const navigation = useNavigation();
   const {data} = props;
+  console.log(data);
   const onGoDetail = () => {
-    navigation.push('WebView', {
-      sourceUrl: data.topic_link.raw_link,
-      title: data.topic_link.title,
-    });
+    navigation.push('TopicLinkDetail');
+    // navigation.push('WebView', {
+    //   sourceUrl: data.topic_link.raw_link,
+    //   title: data.topic_link.title,
+    // });
   };
 
   return (

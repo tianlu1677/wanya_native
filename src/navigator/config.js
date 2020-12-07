@@ -10,6 +10,7 @@ import AddNode from '@/pages/topics/add-node';
 import AddLink from '@/pages/topics/add-link';
 
 import TopicDetail from '@/pages/topics/topic-detail';
+import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
 // 文章
 import ArticleDetail from '@/pages/articles/article-detail';
@@ -79,6 +80,11 @@ const topicRouter = [
   {
     name: 'TopicDetail',
     component: TopicDetail,
+    safeArea: false,
+  },
+  {
+    name: 'TopicLinkDetail',
+    component: TopicLinkDetail,
     safeArea: false,
   },
   {

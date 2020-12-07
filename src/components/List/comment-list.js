@@ -147,7 +147,6 @@ const CommentList = props => {
               <Text>{item.content}</Text>
             )}
           </Text>
-
           <View style={cstyles.replyWrap}>
             <Text style={cstyles.reply}>
               {item.created_at_text} · 回复{' '}

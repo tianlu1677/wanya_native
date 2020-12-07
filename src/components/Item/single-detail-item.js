@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
 import {Avator} from '@/components/NodeComponents';
+import {dispatchTopicDetail} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
@@ -106,6 +107,9 @@ export const ActionComment = props => {
   const [star, setStar] = useState(props.detail.star);
 
   const getValueLength = str => {
+    if (!str) {
+      return 0;
+    }
     return str.replace(/\s+/g, '').length;
   };
 
@@ -177,13 +181,15 @@ export const ActionComment = props => {
     switch (type) {
       case 'praise':
         const praiseCount = props.detail.praises_count + (praise === true ? -1 : 1);
-        props.setDetail({...props.detail, praises_count: praiseCount});
         setPraise(!praise);
+        dispatch(
+          dispatchTopicDetail({...props.detail, praise: !praise, praises_count: praiseCount})
+        );
         break;
       case 'star':
         const startCount = props.detail.stars_count + (star === true ? -1 : 1);
-        props.setDetail({...props.detail, stars_count: startCount});
         setStar(!star);
+        dispatch(dispatchTopicDetail({...props.detail, star: !star, stars_count: startCount}));
         break;
     }
   };
@@ -193,6 +199,11 @@ export const ActionComment = props => {
       setValue(null);
     }
   }, [props.visible]);
+
+  useEffect(() => {
+    setPraise(props.detail.praise);
+    setStar(props.detail.star);
+  }, [props.detail]);
 
   useEffect(() => {
     if (comment.content) {
