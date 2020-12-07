@@ -552,6 +552,7 @@ export default class VideoPlayer extends Component {
           source={video}
           resizeMode={resizeMode}
           hideShutterView={true}
+          repeat={this.props.loop}
           ignoreSilentSwitch="ignore"
           onFullscreenPlayerDidDismiss={this.onFullscreenPlayerDidDismiss}
           // fullscreenOrientation={'landscape'}
@@ -667,7 +668,7 @@ VideoPlayer.defaultProps = {
   videoHeight: 720,
   autoplay: false,
   controlsTimeout: 2000,
-  loop: false,
+  loop: true,
   resizeMode: 'contain',
   disableSeek: false,
   pauseOnPress: false,

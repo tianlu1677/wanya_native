@@ -198,7 +198,7 @@ const TopicDetail = ({navigation, route}) => {
           muted={false}
           resizeMode={'cover'}
           autoplay={true}
-          loop
+          loop={true}
         />
       </View>
     );

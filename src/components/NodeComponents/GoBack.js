@@ -21,7 +21,7 @@ export const GoBack = props => {
         routes: [{name: 'Recommend'}],
       });
       // navigation.navigate('Recommend');
-      console.log('no go');
+      // console.log('no go');
     }
   };
 
