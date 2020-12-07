@@ -146,7 +146,7 @@ const NodeScrollView = props => {
               style={styles.nodeWrap}
               onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}>
               <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
-              <Text style={styles.nodeName} numberOfLines={1} ellipsizeMode={'tail'}>
+              <Text style={styles.nodeName} adjustsFontSizeToFit={false} minimumFontScale={1} numberOfLines={1} ellipsizeMode={'tail'}>
                 {node.name}
               </Text>
             </Pressable>
@@ -202,15 +202,14 @@ const styles = StyleSheet.create({
     height: 56,
   },
   nodeName: {
-    flex: 1,
     fontSize: 11,
-    lineHeight: 22,
     marginTop: 5,
-    width: 50,
+    width: 60,
+    maxHeight: 18,
+    minHeight: 16,
     height: 18,
-    // width: 50,
+    lineHeight: 18,
     textAlign: 'center',
-    textAlignVertical: 'top'
   },
   emptyWrap: {
     flex: 1,

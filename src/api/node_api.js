@@ -36,7 +36,7 @@ export const getFollowNodeIndex = async params => {
     method: 'GET',
     data: params,
   });
-  return res.data.nodes;
+  return res;
 };
 
 // 圈子加入用户
