@@ -127,9 +127,6 @@ const ArticleDetail = ({navigation, route}) => {
               imagesMaxWidth={Dimensions.get('window').width - 20}
               imagesInitialDimensions={{width: Dimensions.get('window').width}}
               baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
-              onLinkPress={e => {
-                console.log('xxx', e);
-              }}
               images_info={detail.images_info}
               content={detail.content}
             />

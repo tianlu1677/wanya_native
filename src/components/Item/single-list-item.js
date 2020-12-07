@@ -289,7 +289,7 @@ export const PlainContent = props => {
     navigation.push('HashtagDetail', {hashtag: name.replace('#', '')});
   };
 
-  const AccountDetail = async nickname => {
+  const goAccountDetail = async nickname => {
     const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
     navigation.push('AccountDetail', {accountId: res.data.account.id});
   };
@@ -306,7 +306,7 @@ export const PlainContent = props => {
                 </Text>
               )}
               {v.is_mention && (
-                <Text style={cstyles.hashtagText} onPress={() => AccountDetail(v.content)}>
+                <Text style={cstyles.hashtagText} onPress={() => goAccountDetail(v.content)}>
                   {v.content}&nbsp;
                 </Text>
               )}

@@ -9,7 +9,6 @@ const titleHeight = NAVIGATION_BAR_HEIGHT; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
-  // console.log(headerHeight);
 
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
@@ -23,7 +22,7 @@ const CollapsibleHeader = props => {
   const listRefArr = useRef([]);
   const listOffset = useRef({});
   const isListGliding = useRef(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current // 透明度
+  const fadeAnim = useRef(new Animated.Value(0)).current; // 透明度
 
   useEffect(() => {
     scrollY.addListener(({value}) => {
@@ -143,7 +142,7 @@ const CollapsibleHeader = props => {
       position: 'absolute',
       transform: [{translateY: y}],
       width: '100%',
-      backgroundColor: 'white'
+      backgroundColor: 'white',
     };
 
     return (
@@ -204,7 +203,6 @@ const CollapsibleHeader = props => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     });
-
 
     // console.log('opacity', titleHeight);
     // console.log('opacity', opacity);

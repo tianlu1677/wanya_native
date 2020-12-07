@@ -14,7 +14,9 @@ const defaultState = {
     thumbImageUrl: '',
     path: '',
   },
-  commentTopic: {},
+  commentTopic: {
+    content: '',
+  },
   uploadProgress: 100,
   location: {},
   nodes: [],

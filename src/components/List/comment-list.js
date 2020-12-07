@@ -6,6 +6,7 @@ import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import ScrollList from '@/components/ScrollList';
 import {praiseComment, unpraiseComment} from '@/api/comment_api';
+import {getAccountBaseInfo} from '@/api/account_api';
 import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
 
@@ -98,8 +99,12 @@ const CommentList = props => {
     setShowActionSheet(true);
   };
 
+  const goAccountDetail = async nickname => {
+    const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
+    navigation.push('AccountDetail', {accountId: res.data.account.id});
+  };
+
   const renderItem = ({item, index}) => {
-    // console.log(item);
     return (
       <View key={item.id} style={[cstyles.wrapper, props.style]}>
         <View style={cstyles.info}>
@@ -124,7 +129,25 @@ const CommentList = props => {
               </Text>
             </Text>
           )}
-          <Text style={cstyles.text}>{item.content}</Text>
+          <Text numberOfLines={props.numberOfLines} style={cstyles.text}>
+            {item.mention_content ? (
+              item.mention_content.map((v, i) => {
+                return (
+                  <Text key={i}>
+                    {v.is_mention && (
+                      <Text style={cstyles.hashtagText} onPress={() => goAccountDetail(v.content)}>
+                        {v.content}&nbsp;
+                      </Text>
+                    )}
+                    {!v.is_mention && <Text space="nbsp">{v.content} </Text>}
+                  </Text>
+                );
+              })
+            ) : (
+              <Text>{item.content}</Text>
+            )}
+          </Text>
+
           <View style={cstyles.replyWrap}>
             <Text style={cstyles.reply}>
               {item.created_at_text} · 回复{' '}
@@ -219,6 +242,10 @@ const cstyles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'justify',
     marginBottom: 5,
+  },
+  hashtagText: {
+    color: '#ff8d00',
+    marginRight: 3,
   },
   more: {
     paddingHorizontal: 14,

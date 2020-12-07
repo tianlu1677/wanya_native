@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
+import {useFocusEffect} from '@react-navigation/native';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import VideoPlayerContent from '@/components/react-native-video-player';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
@@ -23,8 +25,7 @@ import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/s
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {BOTTOM_HEIGHT, NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
-import {getStatusBarHeight} from 'react-native-iphone-x-helper';
-import {useFocusEffect} from '@react-navigation/native';
+import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
 import VideoPlayImg from '@/assets/images/video-play.png';
 
@@ -57,6 +58,7 @@ const TopicDetail = ({navigation, route}) => {
     setVisible(false);
     Toast.showLoading('发送中');
     await createComment(data);
+    dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
     Toast.hide();
     Toast.show('评论成功啦');
     loadData();
@@ -69,7 +71,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const onReportClick = () => {
     const isCurrentTopic = detail.account_id === currentAccount.id;
-    const action = [
+    const actions = [
       {
         id: 1,
         label: isCurrentTopic ? '删除' : '举报',
@@ -85,7 +87,7 @@ const TopicDetail = ({navigation, route}) => {
         },
       },
     ];
-    setActionItems(action);
+    setActionItems(actions);
     setShowActionSheet(true);
   };
 
@@ -133,6 +135,25 @@ const TopicDetail = ({navigation, route}) => {
             </Pressable>
           ),
         });
+
+        // 重置返回首页
+        if (!navigation.canGoBack()) {
+          navigation.setOptions({
+            headerLeft: () => (
+              <Pressable
+                onPress={() => {
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Recommend'}],
+                  });
+                }}
+                style={{paddingLeft: 5}}
+                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+                <IconFont name={'home-recommend'} size={14} />
+              </Pressable>
+            ),
+          });
+        }
       } else {
         navigation.setOptions({
           headerShown: false,
@@ -303,9 +324,11 @@ const TopicDetail = ({navigation, route}) => {
             {detail.content_style === 'link' && (
               <View style={{paddingHorizontal: 16, marginTop: 12}}>{renderLink()}</View>
             )}
-            <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
-              <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
-            </View>
+            {detail.plain_content ? (
+              <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
+                <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
+              </View>
+            ) : null}
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>

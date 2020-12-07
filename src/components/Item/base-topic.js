@@ -155,7 +155,7 @@ const BaseTopic = props => {
           {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         </View>
       )}
-      <PlainContent data={data} numberOfLines={5} />
+      {data.plain_content ? <PlainContent data={data} numberOfLines={5} /> : null}
       <Pressable style={styles.infoViewWrap} onPress={goNodeDetail}>
         <View style={styles.infoView}>
           <IconFont name="node-solid" size={12} color={'#000'} />

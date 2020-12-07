@@ -101,15 +101,24 @@ export const ActionComment = props => {
   const navigation = useNavigation();
   const comment = useSelector(state => state.home.commentTopic);
   const dispatch = useDispatch();
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('');
   const [praise, setPraise] = useState(props.detail.praise);
   const [star, setStar] = useState(props.detail.star);
 
+  const getValueLength = str => {
+    return str.replace(/\s+/g, '').length;
+  };
+
   const onChangeValue = text => {
-    setValue(text);
-    if (text.substr(-1) === '@') {
-      navigation.push('AddMentionAccount', {type: 'topicDetail'});
+    // 输入
+    if (getValueLength(text) > getValueLength(value)) {
+      if (text.substr(-1) === '@') {
+        navigation.push('AddMentionAccount', {type: 'topicDetail'});
+        const saveComments = {...comment, content: text.substr(0, text.length - 1)};
+        dispatch({type: action.SAVE_COMMENT_TOPIC, value: saveComments});
+      }
     }
+    setValue(text);
   };
 
   const onCreateComment = v => {
@@ -126,7 +135,6 @@ export const ActionComment = props => {
 
   const publishComment = () => {
     const data = {...comment, content: value};
-    // console.log(data);
     props.publishComment(data);
   };
 
