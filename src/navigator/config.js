@@ -1,9 +1,8 @@
 // 首页
-import {CardStyleInterpolators, HeaderStyleInterpolators} from '@react-navigation/stack';
+import {CardStyleInterpolators} from '@react-navigation/stack';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
-import GoNewTopic from '@/pages/topics/go-new-topic';
 import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
@@ -12,7 +11,7 @@ import AddLink from '@/pages/topics/add-link';
 
 import TopicDetail from '@/pages/topics/topic-detail';
 
-// article
+// 文章
 import ArticleDetail from '@/pages/articles/article-detail';
 
 // 圈子
@@ -24,9 +23,6 @@ import SpaceDetail from '@/pages/space/space-detail';
 
 // 话题
 import HashtagDetail from '@/pages/hashtags/hashtag-detail';
-
-import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
-import InviteDetail from '@/pages/mine/invite-detail';
 
 // 我的页面
 import MineDetail from '@/pages/mine/mine-detail';
@@ -63,14 +59,16 @@ import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
 import PasswordLogin from '@/pages/sessions/password-login';
+import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+import InviteDetail from '@/pages/mine/invite-detail';
 
 // 网页显示
 import WebView from '@/pages/webview/webview';
-
 import SharePage from '@/pages/shares/share_page'; //分享
 
 // 举报
 import Report from '@/pages/reports/report';
+
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
@@ -82,11 +80,6 @@ const topicRouter = [
     name: 'TopicDetail',
     component: TopicDetail,
     safeArea: false,
-    options: {
-      headerShown: false,
-      title: false,
-      headerTransparent: true,
-    },
   },
   {
     name: 'NewTopic',
@@ -135,7 +128,6 @@ const articleRouter = [
     component: ArticleDetail,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '文章详情', headerShown: false},
   },
   {
     name: 'HashtagDetail',

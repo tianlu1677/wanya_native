@@ -99,6 +99,7 @@ const CommentList = props => {
   };
 
   const renderItem = ({item, index}) => {
+    // console.log(item);
     return (
       <View key={item.id} style={[cstyles.wrapper, props.style]}>
         <View style={cstyles.info}>

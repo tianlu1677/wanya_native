@@ -16,16 +16,32 @@ export const MentionsAccountList = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
+  const savecomment = useSelector(state => state.home.commentTopic);
 
   const onPress = item => {
-    const topics = {
-      ...savetopic,
-      plan_content: savetopic.plan_content
-        ? `${savetopic.plan_content} @${item.nickname} `
-        : `@${item.nickname} `,
-      mention: savetopic.mention ? [...savetopic.mention, item] : [item],
-    };
-    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    if (props.type === 'topicDetail') {
+      const comments = {
+        ...savecomment,
+        content: savecomment.content
+          ? `${savecomment.content} @${item.nickname} `
+          : `@${item.nickname} `,
+        mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, item.id] : [item.id],
+      };
+      console.log(comments);
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: comments});
+    }
+
+    if (props.type === 'add-node') {
+      const topics = {
+        ...savetopic,
+        plan_content: savetopic.plan_content
+          ? `${savetopic.plan_content} @${item.nickname} `
+          : `@${item.nickname} `,
+        mention: savetopic.mention ? [...savetopic.mention, item] : [item],
+      };
+      dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    }
+
     navigation.goBack();
   };
 

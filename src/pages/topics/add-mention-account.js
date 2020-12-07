@@ -7,7 +7,7 @@ import {MentionsAccountList} from '@/components/List/account-list';
 import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
 
-const MentionAccounts = ({navigation}) => {
+const MentionAccounts = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
   const [request, setRequest] = useState(null);
   const [searchKey, setSearchKey] = useState(null);
@@ -43,7 +43,9 @@ const MentionAccounts = ({navigation}) => {
         <View style={pstyles.proWrapper}>
           <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
         </View>
-        {request && <MentionsAccountList request={request} enableRefresh={false} />}
+        {request && (
+          <MentionsAccountList request={request} enableRefresh={false} type={route.params.type} />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

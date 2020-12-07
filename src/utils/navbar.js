@@ -11,3 +11,6 @@ export const BOTTOM_HEIGHT = getBottomSpace();
 export const BASIC_HEIGHT = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT : STATUS_BAR_HEIGHT;
 
 export const SCALE = Dimensions.get('window').width / 375 > 1 ? 1.08 : 1;
+console.log('NAV_BAR_HEIGHT', NAV_BAR_HEIGHT);
+console.log('getStatusBarHeight', getStatusBarHeight());
+console.log('STATUS_BAR_HEIGHT', STATUS_BAR_HEIGHT);

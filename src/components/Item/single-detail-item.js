@@ -8,7 +8,6 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
-
 export const PublishAccount = props => {
   const {data} = props;
   const navigation = useNavigation();
@@ -106,6 +105,13 @@ export const ActionComment = props => {
   const [praise, setPraise] = useState(props.detail.praise);
   const [star, setStar] = useState(props.detail.star);
 
+  const onChangeValue = text => {
+    setValue(text);
+    if (text.substr(-1) === '@') {
+      navigation.push('AddMentionAccount', {type: 'topicDetail'});
+    }
+  };
+
   const onCreateComment = v => {
     const commentTopic = {
       placeholder: '写点评论吧',
@@ -120,6 +126,7 @@ export const ActionComment = props => {
 
   const publishComment = () => {
     const data = {...comment, content: value};
+    // console.log(data);
     props.publishComment(data);
   };
 
@@ -174,8 +181,17 @@ export const ActionComment = props => {
   };
 
   useEffect(() => {
-    setValue(null);
+    if (!props.visible) {
+      setValue(null);
+    }
   }, [props.visible]);
+
+  useEffect(() => {
+    if (comment.content) {
+      props.changeVisible(true);
+      setValue(comment.content);
+    }
+  }, [comment]);
 
   return (
     <View style={astyles.actionWrapper}>
@@ -218,7 +234,7 @@ export const ActionComment = props => {
           <TextInput
             style={astyles.input}
             placeholder={comment.placeholder}
-            onChangeText={text => setValue(text)}
+            onChangeText={onChangeValue}
             value={value}
             autoFocus
             onBlur={() => props.changeVisible(false)}

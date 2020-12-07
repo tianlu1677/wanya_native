@@ -12,7 +12,6 @@ const defaultState = {
 };
 
 function topicReducer(state = defaultState, action) {
-  // console.log('topicReducer', action)
   switch (action.type) {
     case TOPIC_DETAIL_SUCCESS:
       return (state = {

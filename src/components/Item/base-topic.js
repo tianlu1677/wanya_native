@@ -113,15 +113,13 @@ export const TopicLinkContent = props => {
       title: data.topic_link.title,
     });
   };
-  // 网易云 微信 其他
-  const isWyy = data.topic_link.raw_link.includes('https://music.163.com/') ? true : false;
 
   return (
     <Pressable onPress={onGoDetail}>
       <View style={styles.linkWrapper}>
         <View style={styles.linkImageWrap}>
           <FastImg source={{uri: data.topic_link.cover_url}} style={{width: 45, height: 45}} />
-          {isWyy && (
+          {data.topic_link.outlink_type === 'music' && (
             <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
           )}
         </View>

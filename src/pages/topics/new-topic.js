@@ -427,7 +427,7 @@ const NewTopic = props => {
             </Pressable>
             <Pressable
               style={styles.addTextNameWrap}
-              onPress={() => navigation.navigate('AddMentionAccount')}>
+              onPress={() => navigation.navigate('AddMentionAccount', {type: 'add-node'})}>
               <IconFont name={'at'} size={13} color="#000" />
               <Text style={styles.addTextName}>顽友</Text>
             </Pressable>

@@ -22,7 +22,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import ActionSheet from '@/components/ActionSheet';
@@ -103,10 +103,6 @@ const TopicDetail = ({navigation, route}) => {
     }, [])
   );
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   // 外链 纯文本 带header
   const isHeader = () => {
     if (detail && (detail.content_style === 'link' || detail.content_style === 'text')) {
@@ -115,6 +111,10 @@ const TopicDetail = ({navigation, route}) => {
     return false;
   };
 
+  useEffect(() => {
+    loadData();
+  }, []);
+
   useLayoutEffect(() => {
     if (detail) {
       if (isHeader()) {
@@ -122,10 +122,11 @@ const TopicDetail = ({navigation, route}) => {
           headerTitle: '帖子详情',
           headerShown: true,
           headerTransparent: false,
-          // headerStyle: {
-          //   borderBottomColor: '#EBEBEB',
-          //   borderBottomWidth: StyleSheet.hairlineWidth,
-          // },
+          safeArea: false,
+          headerStyle: {
+            borderBottomColor: '#EBEBEB',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          },
           headerRight: () => (
             <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
               <IconFont name="ziyuan" color="#000" size={20} />
@@ -245,14 +246,13 @@ const TopicDetail = ({navigation, route}) => {
         title: detail.topic_link.title,
       });
     };
-    // 网易云 微信 其他
-    const isWyy = detail.topic_link.raw_link.includes('https://music.163.com/') ? true : false;
+
     return (
       <Pressable onPress={onGoDetail}>
         <View style={styles.linkWrapper}>
           <View style={styles.linkImageWrap}>
             <FastImg source={{uri: detail.topic_link.cover_url}} style={{width: 45, height: 45}} />
-            {isWyy && (
+            {detail.topic_link.outlink_type === 'music' && (
               <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
             )}
           </View>
@@ -267,7 +267,8 @@ const TopicDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
+      keyboardVerticalOffset={isHeader() ? NAVIGATION_BAR_HEIGHT + STATUS_BAR_HEIGHT : 0}>
       {/* 不带header */}
       {!isHeader() && (
         <>
@@ -319,7 +320,6 @@ const TopicDetail = ({navigation, route}) => {
         setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
       />
-
       <ActionSheet
         actionItems={actionItems}
         showActionSheet={showActionSheet}
