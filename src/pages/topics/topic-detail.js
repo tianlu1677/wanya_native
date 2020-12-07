@@ -23,7 +23,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT, BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -140,6 +140,7 @@ const TopicDetail = ({navigation, route}) => {
     };
     return (
       <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
+        <StatusBar backgroundColor={'black'} />
         <View style={{height: topHeight, backgroundColor: 'black'}} />
         <Swiper
           index={0}
@@ -174,13 +175,14 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
+        <StatusBar backgroundColor={'black'} />
         <View style={{height: topHeight, backgroundColor: 'black'}} />
         {detail.excellent && (
           <Text
             style={{
               ...styles.excellentLabel,
               zIndex: 100,
-              top: Math.max(getStatusBarHeight(), 20),
+              top: IsIos ? Math.max(getStatusBarHeight(), 20) : 1,
             }}>
             精选
           </Text>
@@ -198,7 +200,7 @@ const TopicDetail = ({navigation, route}) => {
           muted={false}
           resizeMode={'cover'}
           autoplay={true}
-          loop
+          loop={true}
         />
       </View>
     );
@@ -215,8 +217,7 @@ const TopicDetail = ({navigation, route}) => {
     return (
       <View>
         <StatusBar barStyle={'dark-content'} />
-        <View style={{paddingTop: BASIC_HEIGHT, marginTop: 10, paddingBottom: 16}}>
-          <StatusBar barStyle={'dark-content'} />
+        <View style={{paddingTop: IsIos ? BASIC_HEIGHT : 0, marginTop: 10, paddingBottom: 16}}>
         </View>
         <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
           <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
@@ -236,16 +237,14 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
+
+
       <GoBack
         name={navigation.canGoBack() ? '' : 'home-recommend'}
         color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
+        top={IsIos ? null : 1}
+        report={{report_type: 'Topic', report_type_id: detail.id}}
       />
-      <Pressable
-        onPress={onReportClick}
-        style={styles.report}
-        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-        <IconFont name="ziyuan" color="#fff" size={20} />
-      </Pressable>
       <CommentList
         type="Topic"
         detail={detail}
@@ -260,14 +259,14 @@ const TopicDetail = ({navigation, route}) => {
               {detail.content_style === 'link' && renderLink()}
               {detail.content_style === 'img' && renderImg()}
               {detail.content_style === 'img' && detail.excellent && (
-                <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>
+                <Text style={{...styles.excellentLabel, top: IsIos ? Math.max(getStatusBarHeight(), 20) : 1}}>
                   精选
                 </Text>
               )}
             </View>
             {detail.content_style === 'text' && (
-              <View style={{paddingTop: BASIC_HEIGHT + 5, paddingBottom: 16}}>
-                <StatusBar barStyle={'dark-content'} />
+              <View style={{paddingTop: IsIos ? BASIC_HEIGHT + 5 : 1, paddingBottom: 16}}>
+                <StatusBar barStyle={'dark-content'} translucent={false} />
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />

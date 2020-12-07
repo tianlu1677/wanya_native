@@ -21,19 +21,19 @@ const TopHeader = props => {
   const navigation = useNavigation();
   const route = useRoute();
   return (
-    <View>
+    <View style={{}}>
       {props.statusBar.hidden ? null : (
         <View style={styles.statusBar}>
           <StatusBar {...props.statusBar} />
         </View>
       )}
-      <View style={styles.header}>
+      <View style={[styles.header, props.headerStyles]}>
         <View style={styles.leftButton}>
           {LeftButton ? (
             <LeftButton />
           ) : (
             <TouchableOpacity
-              style={{marginLeft: 10}}
+              style={{marginLeft: 10,}}
               onPress={() => {
                 if (!navigation.canGoBack() || isAtRoot) {
                   navigation.openDrawer();
@@ -110,5 +110,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     height: STATUS_BAR_HEIGHT,
+
   },
 });

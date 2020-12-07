@@ -80,6 +80,7 @@ const topicRouter = [
     name: 'TopicDetail',
     component: TopicDetail,
     safeArea: false,
+    backgroundColor: '#000',
     options: {
       headerShown: false,
       title: false,
@@ -316,12 +317,6 @@ export const routers = [
     name: 'AdminPhoneLogin',
     component: AdminPhoneLogin,
     options: {title: 'AdminPhoneLogin'},
-  },
-  {
-    name: 'MineDetail',
-    component: MineDetail,
-    safeArea: false,
-    options: {title: 'MineDetail', headerShown: false},
   },
 
   {

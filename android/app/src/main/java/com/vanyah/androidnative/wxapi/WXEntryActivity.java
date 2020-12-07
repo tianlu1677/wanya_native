@@ -1,4 +1,4 @@
-package com.wanya_native.wxapi;
+package com.vanyah.androidnative.wxapi;
 
 import android.app.Activity;
 import android.os.Bundle;

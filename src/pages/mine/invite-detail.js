@@ -188,8 +188,11 @@ const InviteDetail = ({navigation, route}) => {
       <Modal
         animationType=""
         transparent={true}
+        statusBarTranslucent
         visible={shareModelVisible}
-        onRequestClose={() => {}}>
+        onRequestClose={() => {
+          setShareModelVisible(false);
+        }}>
 
         <ModelWrap
           onPress={() => {

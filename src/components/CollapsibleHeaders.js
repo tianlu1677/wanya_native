@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated, Dimensions, StyleSheet, View, Text} from 'react-native';
+import {Animated, Platform, StatusBar, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
@@ -28,6 +28,12 @@ const CollapsibleHeader = props => {
   useEffect(() => {
     scrollY.addListener(({value}) => {
       listOffset.current[currentKey] = value;
+      if(value > 80) {
+        StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
+      } else {
+        StatusBar.setBackgroundColor('black');
+      }
+      // console.log('x', value)
     });
     return () => {
       scrollY.removeAllListeners();
@@ -163,6 +169,8 @@ const CollapsibleHeader = props => {
 
   const renderTabView = () => {
     const onIndexChange = i => {
+      // console.log('change...')
+      // StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
       const key = tabData[i].key;
       props.onKeyChange(key);
     };
@@ -230,12 +238,13 @@ const localStyles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    zIndex: 2,
+    zIndex: 1,
   },
   header: {
     width: '100%',
     position: 'absolute',
     top: 0,
+    backgroundColor: '#000'
   },
 });
 

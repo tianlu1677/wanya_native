@@ -4,7 +4,7 @@ import {Text, View, ActivityIndicator, Modal} from 'react-native';
 
 export const Loading = props => {
   return (
-    <Modal visible={true}>
+    <Modal visible={true} statusBarTranslucent >
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator />
         {props.title && <Text style={{color: '#fff', marginTop: 10}}>{props.title}</Text>}
