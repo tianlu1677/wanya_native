@@ -1,5 +1,5 @@
-import React, {useState, useLayoutEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, {useState, useLayoutEffect, useEffect, useCallback} from 'react';
+import {View, Text, StyleSheet, Pressable, Dimensions, ActionSheetIOS} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {Avator, BadgeMessage, PlayScore, BottomModal} from '@/components/NodeComponents';
@@ -9,7 +9,11 @@ import {AccountDetailBgImg} from '@/utils/default-image';
 import {getAccountPosts, getAccountArticles} from '@/api/account_api';
 import Toast from '@/components/Toast';
 import {BASIC_HEIGHT} from '@/utils/navbar';
-import {dispatchBaseCurrentAccount, dispatchCurrentAccount} from '@/redux/actions';
+import {
+  dispatchBaseCurrentAccount,
+  dispatchCurrentAccount,
+  dispatchPreviewImage,
+} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import SingleList from '@/components/List/single-list';
@@ -17,35 +21,86 @@ import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import StickTopHeader from '@/components/StickTopHeader';
 import FastImg from '@/components/FastImg';
+import MediasPicker from '@/components/MediasPicker';
+import ActionSheet from '@/components/ActionSheet';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
+const {width: screenW} = Dimensions.get('window');
 
-const MineDetail = ({navigation, route}) => {
+const MineDetail = props => {
   const currentAccount = useSelector(state => state.account.currentAccount);
   const currentBaseInfo = useSelector(state => state.account.currentBaseInfo);
   const [accountId] = useState(currentAccount.id);
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
+  const [useFocus, setuseFocus] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const dispatch = useDispatch();
+
   const loadData = async () => {
     dispatch(dispatchCurrentAccount());
   };
 
   const goFollowList = () => {
-    navigation.navigate('FollowNodes', {accountId: currentAccount.id});
+    props.navigation.navigate('FollowNodes', {accountId: currentAccount.id});
   };
 
   const goFollowAccounts = () => {
-    navigation.navigate('FollowAccounts', {accountId: currentAccount.id});
+    props.navigation.navigate('FollowAccounts', {accountId: currentAccount.id});
   };
 
   const goFollowerAccounts = () => {
-    navigation.navigate('FollowerAccounts', {accountId: currentAccount.id});
+    props.navigation.navigate('FollowerAccounts', {accountId: currentAccount.id});
   };
 
   const onPlay = () => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
+  };
+
+  const actionItems = [
+    {
+      id: 1,
+      label: '更换背景图',
+      onPress: async () => {
+        props.removeAllPhoto();
+        const options = {
+          imageCount: 1,
+          isCrop: true,
+          CropW: screenW * 1,
+          CropH: HEADER_HEIGHT,
+          isCamera: false,
+        };
+        props.imagePick(options, async (err, res) => {
+          if (err) {
+            return;
+          }
+          Toast.showLoading('更换中...');
+          await props.uploadAvatar({
+            uploadType: 'multipart',
+            account_id: currentAccount.id,
+            keyParams: 'account[profile_attributes][background_img]',
+            ...res[0],
+          });
+          dispatch(dispatchCurrentAccount());
+          Toast.hide();
+          Toast.showError('已完成', {duration: 500});
+        });
+      },
+    },
+  ];
+
+  const onChangeImage = () => {
+    setShowActionSheet(true);
+  };
+
+  const onPreview = () => {
+    const data = {
+      images: [{url: currentAccount.avatar_url.split('?')[0]}],
+      visible: true,
+      index: 0,
+    };
+    dispatch(dispatchPreviewImage(data));
   };
 
   const PublishList = () => {
@@ -72,25 +127,26 @@ const MineDetail = ({navigation, route}) => {
   };
 
   const UnreadMessageCount = () => {
-    // console.log('currentAccount', currentAccount)
     if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }
     return currentBaseInfo.new_message_count;
   };
 
+  useLayoutEffect(() => {
+    props.navigation.setOptions({});
+    loadData();
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
+      setuseFocus(true);
+      setCurrentKey('publish');
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
 
-  useLayoutEffect(() => {
-    navigation.setOptions({});
-    loadData();
-  }, []);
-
-  return currentAccount ? (
+  return currentAccount && useFocus ? (
     <View style={{flex: 1}}>
       <CollapsibleHeader
         headerHeight={HEADER_HEIGHT}
@@ -124,7 +180,7 @@ const MineDetail = ({navigation, route}) => {
             <FocusAwareStatusBar barStyle="light-content" />
             <View style={styles.setting}>
               <Pressable
-                onPress={() => navigation.navigate('NotifyIndex')}
+                onPress={() => props.navigation.navigate('NotifyIndex')}
                 style={styles.message}
                 hitSlop={{top: 10, left: 20}}>
                 <View style={styles.message_icon}>
@@ -141,23 +197,36 @@ const MineDetail = ({navigation, route}) => {
                 />
               </Pressable>
               <Pressable
-                onPress={() => navigation.navigate('Settings')}
+                onPress={() => {
+                  setuseFocus(false);
+                  props.navigation.navigate('Settings');
+                }}
                 hitSlop={{top: 10, right: 10}}>
                 <IconFont name="settings" size={20} color="#fff" />
               </Pressable>
             </View>
             <FastImg
-              source={{uri: AccountDetailBgImg}}
+              source={{
+                uri: currentAccount.background_img_url
+                  ? currentAccount.background_img_url
+                  : AccountDetailBgImg,
+              }}
               resizeMode={'cover'}
               style={styles.imageCover}
             />
-            <View style={styles.header}>
+            <View style={[styles.imageCover, styles.imageCoverOpacity]} />
+            <Pressable style={styles.header} onPress={onChangeImage}>
               <View
                 style={[
                   styles.userWrap,
                   {marginBottom: currentAccount.settled_type === 'single' ? 30 : 20},
                 ]}>
-                <Avator account={currentAccount} size={50} isShowSettledIcon={false} />
+                <Avator
+                  account={currentAccount}
+                  size={50}
+                  isShowSettledIcon={false}
+                  handleClick={onPreview}
+                />
                 <View style={{marginLeft: 8}}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.nickname}>{currentAccount.nickname}</Text>
@@ -176,7 +245,7 @@ const MineDetail = ({navigation, route}) => {
                 </View>
                 <Pressable
                   style={{marginLeft: 'auto', marginTop: 8}}
-                  onPress={() => navigation.navigate('InviteDetail')}>
+                  onPress={() => props.navigation.navigate('InviteDetail')}>
                   <Text style={styles.invite}>邀请好友</Text>
                 </Pressable>
               </View>
@@ -233,9 +302,14 @@ const MineDetail = ({navigation, route}) => {
                   <Text style={styles.numberTitle}>粉丝</Text>
                 </Pressable>
               </View>
-            </View>
+            </Pressable>
           </View>
         }
+      />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
       />
       <BottomModal
         visible={showModal}
@@ -252,7 +326,7 @@ const MineDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     zIndex: 100,
   },
   setting: {
@@ -271,13 +345,16 @@ const styles = StyleSheet.create({
     height: 270 + BASIC_HEIGHT,
   },
   imageCover: {
+    width: '100%',
+    height: HEADER_HEIGHT,
     position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
-    width: '100%',
-    flex: 1,
-    height: HEADER_HEIGHT,
+  },
+  imageCoverOpacity: {
+    backgroundColor: '#000',
+    opacity: 0.5,
   },
   userWrap: {
     flexDirection: 'row',
@@ -384,4 +461,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MineDetail;
+// export default MineDetail;
+export default MediasPicker(MineDetail);

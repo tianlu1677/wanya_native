@@ -19,6 +19,7 @@ import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import NewTopic from '@/pages/topics/new-topic';
+import AnalyticsUtil from '@/utils/umeng_analytics_util';
 import {HeaderBackButton} from '@react-navigation/stack';
 import Helper from '@/utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -39,7 +40,7 @@ import WebView from '@/pages/webview/webview';
 import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
 import BackImg from '@/assets/images/back.png';
-import ViewShotPage from "@/components/SharePage"
+import ViewShotPage from '@/components/SharePage';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -49,13 +50,13 @@ const AuthStack = createStackNavigator();
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'; // 存储上次打开的位置
 
 const TabBar = props => (
-  <VibrancyView
+  <BlurView
     style={styles.blurView}
     blurType="light"
     blurAmount={80}
     reducedTransparencyFallbackColor="#white">
     <BottomTabBar {...props} />
-  </VibrancyView>
+  </BlurView>
 );
 
 function HomeTabList() {
@@ -124,7 +125,6 @@ const Render = props => {
 };
 
 function MainStackList() {
-
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
@@ -155,8 +155,11 @@ function MainStackList() {
           fontSize: 16,
         },
         headerBackImage: () => (
-          <View style={{flex: 1, paddingRight: 20, paddingTop: 10}}>
-            <Image source={require('../assets/images/back.png')} style={{width: 9, height: 15, paddingLeft: 0}} />
+          <View style={{flex: 1, paddingRight: 20}}>
+            <Image
+              source={require('../assets/images/back.png')}
+              style={{width: 9, height: 15, paddingLeft: 0}}
+            />
           </View>
         ),
       })}>
@@ -242,6 +245,8 @@ const Navigation = () => {
   const [initialState, setInitialState] = React.useState();
   const login = useSelector(state => state.login);
 
+  const routeNameRef = React.useRef();
+
   React.useEffect(() => {
     const restoreState = async () => {
       try {
@@ -274,9 +279,33 @@ const Navigation = () => {
     return <ActivityIndicator />;
   }
 
+  // https://reactnavigation.org/docs/screen-tracking
+  const onStateChangeRecord = (state) => {
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = navigationRef.current.getCurrentRoute().name
+
+    if (previousRouteName !== currentRouteName) {
+      // The line below uses the expo-firebase-analytics tracker
+      // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
+      // Change this line to use another Mobile analytics SDK
+      // Analytics.setCurrentScreen(currentRouteName);
+      AnalyticsUtil.onPageBegin(currentRouteName)
+      // console.log('currentRouteName', currentRouteName)
+    }
+    // console.log('currentRouteName', currentRouteName)
+    AnalyticsUtil.onPageEnd(currentRouteName)
+
+    // Save the current route name for later comparision
+    routeNameRef.current = currentRouteName;
+  }
+
   return (
     <NavigationContainer
       ref={navigationRef}
+      onReady={() => routeNameRef.current = navigationRef.current.getCurrentRoute().name}
+      onStateChange={(state) => {
+        onStateChangeRecord(state)
+      }}
       // initialState={initialState}
       // onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
     >

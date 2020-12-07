@@ -15,7 +15,7 @@ const BaseArticle = props => {
 
   return (
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
-      <Header data={data} type="article" />
+      <Header data={data} type="article" onRemove={props.onRemove} />
       <View style={styles.content}>
         <FastImg source={{uri: data.cover_url}} style={styles.imageCover} />
         <LinearGradient

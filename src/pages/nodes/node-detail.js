@@ -22,6 +22,7 @@ import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {dispathUpdateNodes} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
@@ -30,8 +31,8 @@ import StickTopHeader from '@/components/StickTopHeader';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
+  const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const dispatch = useDispatch();
-  const sheetRef = useRef(null);
 
   const [detail, setDetail] = useState(null);
   const [nodeId] = useState(route.params.nodeId);
@@ -90,11 +91,13 @@ const NodeDetail = ({navigation, route}) => {
 
   const onShowIntro = () => {
     setShowModal(true);
-    // sheetRef.current.snapTo();
   };
 
   useEffect(() => {
     loadData();
+    return () => {
+      dispatch(dispathUpdateNodes());
+    };
   }, []);
 
   const Header = () => {

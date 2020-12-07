@@ -8,17 +8,16 @@ const SafeAreaPlus = props => {
   return (
     <SafeAreaView
       style={[
+        props.styles,
         {
           flex: 1,
           backgroundColor: props.backgroundColor || 'white',
-          paddingBottom: Math.max(insets.bottom, 16),
-          paddingTop: Math.max(insets.top, 20),
+          // paddingBottom: Math.max(insets.bottom, 16),
+          // paddingTop: Math.max(insets.top, 20),
         },
-        props.styles,
       ]}
-      edges={['right', 'bottom', 'left']}
+      edges={props.edges}
       mode="padding"
-      {...props}
     >
       {props.children}
 

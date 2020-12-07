@@ -17,6 +17,8 @@ const defaultState = {
   commentTopic: {},
   uploadProgress: 100,
   location: {},
+  nodes: [],
+  followNodes: [],
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -27,9 +29,10 @@ export const homeReducer = (state = defaultState, action) => {
         savetopic: action.value,
       };
     case constants.PREVIEW_IMAGES:
+      const imageData = formatImagePreviewUrl(action.previewImageData, action.origin)
       return {
         ...state,
-        previewImageData: action.previewImageData,
+        previewImageData: imageData
       };
     case constants.ShareView:
       return {
@@ -56,7 +59,35 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         location: action.value,
       };
+    case constants.UPDATE_NODES:
+      return {
+        ...state,
+        nodes: action.value,
+      };
+    case constants.UPDATE_FOLLOW_NODES:
+      return {
+        ...state,
+        followNodes: action.value,
+      };
     default:
       return state;
+  }
+};
+
+const formatImagePreviewUrl = (previewImageData, origin = false) => {
+  if (origin) {
+    return previewImageData;
+  }
+
+  console.log('imageData', previewImageData)
+  const images = previewImageData.images.map(data => {
+    return {
+      ...data,
+      url: data.url && data.url.includes('?') ? data.url.split('?')[0] : data.url,
+    };
+  });
+  return {
+    ...previewImageData,
+    images: images
   }
 };

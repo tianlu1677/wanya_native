@@ -11,15 +11,20 @@ import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper';
 export const GoBack = props => {
   const navigation = useNavigation();
   let name = props.name || 'arrow-left';
-  let color = props.color || 'white'
+  let color = props.color || 'white';
   const handleClick = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
-      navigation.navigate('Recommend');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Recommend'}],
+      });
+      // navigation.navigate('Recommend');
       console.log('no go');
     }
   };
+
   // console.log('getStatusBarHeight', getStatusBarHeight())
   return (
     <Pressable

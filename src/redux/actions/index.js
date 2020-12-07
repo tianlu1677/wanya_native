@@ -6,17 +6,20 @@ import {
   ACCOUNT_UN_FOLLOW_REQUEST,
   ACCOUNT_EMPTY_SUCCESS,
   CHANGE_PROGRESS,
-  SAVE_NEW_TOPIC,
   ADMIN_SIGN_SUCCESS,
   CURRENT_ACCOUNT_SUCCESS,
   PREVIEW_IMAGES,
   BASE_CURRENT_ACCOUNT_SUCCESS,
   ARTICLE_DETAIL_SUCCESS,
   TOPIC_DELETE_SUCCESS,
-  ShareView, TOPIC_DETAIL_SUCCESS,
+  ShareView,
+  TOPIC_DETAIL_SUCCESS,
+  UPDATE_NODES,
+  UPDATE_FOLLOW_NODES,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
+import {getNodeIndex, getFollowNodeIndex} from '@/api/node_api';
 import Helper from '@/utils/helper';
 
 // 当前用户
@@ -82,6 +85,7 @@ export const dispatchSetAuthToken = (token = '') => async dispatch => {
   Helper.setData('auth_token', token);
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
 };
+
 // 预览图片
 export const dispatchPreviewImage = (previewImageData = {}) => async dispatch => {
   dispatch({
@@ -114,10 +118,12 @@ export const dispatchTopicDetail = (topic = {}) => async dispatch => {
   });
 };
 
-// // new topic
-// export const dispathSaveNewTopic = value => {
-//   return {
-//     type: SAVE_NEW_TOPIC,
-//     value,
-//   };
-// };
+// 更新全部圈子数据
+export const dispathUpdateNodes = account_id => async dispatch => {
+  if (account_id) {
+    const followNodes = await getFollowNodeIndex({account_id});
+    dispatch({type: UPDATE_FOLLOW_NODES, value: followNodes});
+  }
+  const nodes = await getNodeIndex();
+  dispatch({type: UPDATE_NODES, value: nodes});
+};

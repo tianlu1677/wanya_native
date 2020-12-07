@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, ActionSheetIOS, TouchableOpacity} from 'react-native';
-import IconFont from '@/iconfont';
-import {useSelector} from 'react-redux';
+import {View, Text, StyleSheet, Pressable, ActionSheetIOS} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
 import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
+import IconFont from '@/iconfont';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
@@ -22,16 +23,19 @@ import {BASIC_HEIGHT} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {reportContent} from '@/api/secure_check';
+import ActionSheet from '@/components/ActionSheet';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
 const AccountDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const currentAccount = useSelector(state => state.account.currentAccount);
   const [accountId] = useState(route.params.accountId);
   const [account, setAccount] = useState({});
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
-
-  const currentAccount = useSelector(state => state.account.currentAccount);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  // const [actionItems, setActionItems] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({});
@@ -67,28 +71,41 @@ const AccountDetail = ({navigation, route}) => {
     Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
   };
 
-  const onReportClick = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['取消', '拉黑', '举报'],
-        destructiveButtonIndex: 1,
-        cancelButtonIndex: 0,
+  const actionItems = [
+    {
+      id: 1,
+      label: '拉黑',
+      onPress: () => {
+        const data = {
+          reason: '拉黑',
+          report_type: 'Account',
+          report_type_id: accountId,
+        };
+        reportContent(data).then(res => {
+          Toast.showError('已拉黑', {duration: 500});
+        });
       },
-      buttonIndex => {
-        if (buttonIndex === 1) {
-          const data = {
-            reason: '拉黑',
-            report_type: 'Account',
-            report_type_id: accountId,
-          };
-          reportContent(data).then(res => {
-            Toast.showError('已拉黑', {duration: 500});
-          });
-        } else if (buttonIndex === 2) {
-          navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
-        }
-      }
-    );
+    },
+    {
+      id: 2,
+      label: '举报',
+      onPress: async () => {
+        navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
+      },
+    },
+  ];
+
+  const onReportClick = () => {
+    setShowActionSheet(true);
+  };
+
+  const onPreview = () => {
+    const data = {
+      images: [{url: account.avatar_url}],
+      visible: true,
+      index: 0,
+    };
+    dispatch(dispatchPreviewImage(data));
   };
 
   const PublishList = () => {
@@ -122,21 +139,26 @@ const AccountDetail = ({navigation, route}) => {
     return (
       <View style={{flex: 1}}>
         <FastImg
-          source={{uri: AccountDetailBgImg}}
+          source={{
+            uri: account.background_img_url ? account.background_img_url : AccountDetailBgImg,
+          }}
           resizeMode={'cover'}
           style={styles.imageCover}
         />
+        <View style={[styles.imageCover, styles.imageCoverOpacity]} />
         <View style={styles.header}>
           <GoBack />
-          <Pressable
-            onPress={onReportClick}
-            style={styles.report}
-            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-            <IconFont name="ziyuan" color="#fff" size={20} />
-          </Pressable>
+          {account.id !== currentAccount.id && (
+            <Pressable
+              onPress={onReportClick}
+              style={styles.report}
+              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <IconFont name="ziyuan" color="#fff" size={20} />
+            </Pressable>
+          )}
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
-            <Avator account={account} size={51} isShowSettledIcon={false} />
+            <Avator account={account} size={50} isShowSettledIcon={false} handleClick={onPreview} />
             <View style={{marginLeft: 8}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.nickname}>{account.nickname}</Text>
@@ -257,6 +279,11 @@ const AccountDetail = ({navigation, route}) => {
         title="简介"
         content={account.intro}
       />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
     </View>
   ) : (
     <Loading />
@@ -290,6 +317,10 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     height: HEADER_HEIGHT,
+  },
+  imageCoverOpacity: {
+    backgroundColor: '#000',
+    opacity: 0.5,
   },
   userWrap: {
     flexDirection: 'row',

@@ -68,6 +68,16 @@ export const getFollowedTopics = async (params = {}) => {
   return res;
 };
 
+// 关注圈子帖子
+export const getFollowedNodePosts = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/recommend/followed_node_posts',
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
 // export async function createComment(data = {}) {
 //   const res = await request({
 //     url: `/api/v1/comments`,

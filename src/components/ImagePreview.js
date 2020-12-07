@@ -1,43 +1,43 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   StyleSheet,
   Text,
   View,
   Pressable,
-  Image,
-  Dimensions,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import FastImg from '@/components/FastImg';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const ImagePreview = () => {
   const dispatch = useDispatch();
   const previewImageData = useSelector(state => state.home.previewImageData);
-  const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
-  const HeaderContent = () => {
+  const HeaderContent = ({currentShowIndex}) => {
+    let allSizeCount = previewImageData.images.length;
     return (
-      <Pressable
-        style={{
-          position: 'absolute',
-          paddingTop: 45,
-          paddingLeft: 17,
-          paddingRight: 24,
-          paddingBottom: 24,
-          zIndex: 1000,
-        }}
-        onPress={() => {
-          dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
-        }}
-        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-        <IconFont name={'close'} size={14} color={'white'} />
-      </Pressable>
+      <View style={{position: 'absolute', zIndex: -1, width: '100%', top: 50}}>
+        <Pressable
+          style={styles.pressableTop}
+          onPress={() => {
+            dispatch(dispatchPreviewImage({...previewImageData, visible: false}));
+          }}
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+          <View>
+            <IconFont name={'close'} size={15} color={'white'} />
+          </View>
+          <View style={{flex: 1}}>
+            {allSizeCount > 1 && (
+              <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>
+                {currentShowIndex + 1}/{allSizeCount}
+              </Text>
+            )}
+          </View>
+        </Pressable>
+      </View>
     );
   };
 
@@ -77,10 +77,13 @@ const ImagePreview = () => {
             onOpen(false);
           }}
           renderImage={props => <FastImg {...props} />}
-          renderHeader={props => <HeaderContent {...props} />}
+          renderHeader={(currentShowIndex, allSize) => <HeaderContent currentShowIndex={currentShowIndex} allSize={allSize} />}
           index={previewImageData.index}
           imageUrls={previewImageData.images}
           enableSwipeDown
+          renderIndicator={(currentIndex, allSize) => {
+            return <View />;
+          }}
           useNativeDriver={true}
           pageAnimateTime={100}
           swipeDownThreshold={120}
@@ -107,6 +110,14 @@ const styles = StyleSheet.create({
     height: 300,
     width: '100%',
   },
+  pressableTop: {
+    paddingLeft: 17,
+    paddingRight: 24,
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  }
 });
 
 // const images = [

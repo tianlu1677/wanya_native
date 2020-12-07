@@ -32,7 +32,7 @@ const MediasPicker = WrapperComponent => {
           width: file.width,
           height: file.height,
           fsize: file.size,
-          category: 'image'
+          category: 'image',
         },
         headers: {
           'content-type': 'application/octet-stream',
@@ -40,7 +40,7 @@ const MediasPicker = WrapperComponent => {
         },
         path: file.uri,
       };
-      console.log('uploadOptions', uploadOptions)
+      console.log('uploadOptions', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -64,7 +64,10 @@ const MediasPicker = WrapperComponent => {
         method: 'POST',
         maxRetries: 1,
         type: file.uploadType,
-        field: 'account[avatar]',
+        quality: 100,
+        isGif: true, // 头像更换，背景图上传
+        minimumCompressSize: 800,
+        field: file.keyParams ? file.keyParams : 'account[avatar]',
         headers: {
           'content-type': 'application/octet-stream',
           token: token,
@@ -91,7 +94,7 @@ const MediasPicker = WrapperComponent => {
 
     const videoPick = (option = {}, callback) => {
       const options = {...option};
-      console.log('updaload', options)
+      console.log('updaload', options);
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
@@ -117,7 +120,7 @@ const MediasPicker = WrapperComponent => {
         },
         useUtf8Charset: true,
       };
-      console.log('uploadVideo options', uploadOptions)
+      console.log('uploadVideo options', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {

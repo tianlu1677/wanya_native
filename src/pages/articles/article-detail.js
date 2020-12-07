@@ -1,16 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, KeyboardAvoidingView, Platform, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions,
+  Pressable,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getArticle} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
+import IconFont from '@/iconfont';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {dispatchArticleDetail} from '@/redux/actions';
 import {STATUS_BAR_HEIGHT, NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
 import TopHeader from '@/components/TopHeader';
+import ActionSheet from '@/components/ActionSheet';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -21,6 +31,7 @@ const ArticleDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [loadingContent, setLoadingContent] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -49,6 +60,20 @@ const ArticleDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const actionItems = [
+    {
+      id: 1,
+      label: '举报',
+      onPress: () => {
+        navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
+      },
+    },
+  ];
+
+  const onReportClick = () => {
+    setShowActionSheet(true);
+  };
+
   const onHTMLParsed = (dom, RNElements) => {
     setLoadingContent(true);
     // Find the index of the first paragraph
@@ -69,7 +94,7 @@ const ArticleDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  return detail ? (
+  return detail && currentAccount ? (
     <KeyboardAvoidingView
       keyboardVerticalOffset={0}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -81,6 +106,16 @@ const ArticleDetail = ({navigation, route}) => {
           barStyle: 'dark-content',
           hidden: false,
         }}
+        RightButton={() =>
+          detail.account_id !== currentAccount.id ? null : (
+            <Pressable
+              onPress={onReportClick}
+              style={styles.report}
+              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <IconFont name="ziyuan" color="#000" size={20} />
+            </Pressable>
+          )
+        }
       />
       <CommentList
         detail={detail}
@@ -135,6 +170,12 @@ const ArticleDetail = ({navigation, route}) => {
         type="Article"
         setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
+      />
+
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
       />
     </KeyboardAvoidingView>
   ) : (

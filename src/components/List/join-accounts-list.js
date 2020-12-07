@@ -38,6 +38,7 @@ const JoinAccountsList = ({navigation, route}) => {
     const {api, params} = route.params.request;
     const res = await api({...params, page});
     const data = res.data.accounts;
+
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -58,6 +59,7 @@ const JoinAccountsList = ({navigation, route}) => {
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
+      enableRefresh={false}
       {...(route.params.listOption || {})}
       style={{backgroundColor: '#fff'}}
     />

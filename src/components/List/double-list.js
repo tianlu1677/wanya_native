@@ -21,7 +21,7 @@ import FastImageGif from '@/components/FastImageGif';
 
 // const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
 const width = Dimensions.get('window').width;
-const halfWidth = (width - 15) / 2; // 屏幕去掉两边后的宽度
+const halfWidth = (width - 15) / 2; // 屏幕去掉两边后（5*2 中间5）的宽度
 const SingleItem = props => {
   const navigation = useNavigation();
   const {data} = props;
@@ -80,69 +80,67 @@ const SingleItem = props => {
   // console.log('double list', data.id)
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)}>
-      <View style={{backgroundColor: 'white'}}>
-        {data.single_cover.cover_url && (
-          <FastImageGif
-            source={{uri: data.single_cover.cover_url}}
-            gif_url={data.single_cover.link_url}
-            style={{
-              height: (data.single_cover.height * halfWidth) / data.single_cover.width,
-              width: halfWidth,
-              backgroundColor: '#F1F1F1',
-            }}
-          />
-        )}
-        {/*<Text>{data.single_cover.cover_url}</Text>*/}
-        {data.has_video && (
-          <FastImg resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
-        )}
-        {data.type === 'topic' && (
-          <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
-        )}
-        {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+      {data.single_cover.cover_url && (
+        <FastImageGif
+          source={{uri: data.single_cover.cover_url}}
+          gif_url={data.single_cover.link_url}
+          style={{
+            height: (data.single_cover.height * halfWidth) / data.single_cover.width,
+            width: halfWidth,
+            backgroundColor: '#F1F1F1',
+          }}
+        />
+      )}
+      {/*<Text>{data.single_cover.cover_url}</Text>*/}
+      {data.has_video && (
+        <FastImg resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
+      )}
+      {data.type === 'topic' && (
+        <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
+      )}
+      {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
 
-        {props.isTop && (
-          <FastImg
-            source={TopImage}
-            style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
-            resizeMode={'contain'}
-            resizeMethod={'resize'}
-          />
-        )}
+      {props.isTop && (
+        <FastImg
+          source={TopImage}
+          style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
+          resizeMode={'contain'}
+          resizeMethod={'resize'}
+        />
+      )}
 
-        {!props.isTop && data.excellent && (
-          <FastImg
-            source={ExcellentImage}
-            style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
-            resizeMode={'contain'}
-            resizeMethod={'resize'}
-          />
-        )}
+      {!props.isTop && data.excellent && (
+        <FastImg
+          source={ExcellentImage}
+          style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
+          resizeMode={'contain'}
+          resizeMethod={'resize'}
+        />
+      )}
 
-        {/* {props.isTop && <IsTopIcon />} */}
-        {/* {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>} */}
-        <View style={styles.singleBottom}>
-          <Avator account={data.account} size={16} />
-          <Pressable
-            style={{marginRight: 'auto'}}
-            onPress={() => {
-              navigation.push('AccountDetail', {accountId: data.account.id});
-            }}>
-            <Text style={styles.singleName}>
-              {data.account.nickname && data.account.nickname.toString().substr(0, 16)}
-            </Text>
-          </Pressable>
-          <Pressable
-            style={styles.likewrap}
-            hitSlop={{left: 5, top: 5, bottom: 5}}
-            onPress={onPraise}>
-            <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
-            <Text
-              style={{marginLeft: 5, fontSize: 10, color: praiseForm.praise ? '#000' : '#bdbdbd'}}>
-              {praiseForm.praises_count > 0 ? praiseForm.praises_count : ''}
-            </Text>
-          </Pressable>
-        </View>
+      {/* {props.isTop && <IsTopIcon />} */}
+      {/* {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>} */}
+      <View style={styles.singleBottom}>
+        <Avator account={data.account} size={16} />
+        <Pressable
+          style={{marginRight: 'auto'}}
+          onPress={() => {
+            navigation.push('AccountDetail', {accountId: data.account.id});
+          }}>
+          <Text style={styles.singleName}>
+            {data.account.nickname && data.account.nickname.toString().substr(0, 16)}
+          </Text>
+        </Pressable>
+        <Pressable
+          style={styles.likewrap}
+          hitSlop={{left: 5, top: 5, bottom: 5}}
+          onPress={onPraise}>
+          <IconFont name="like" size={14} color={praiseForm.praise ? '#000' : '#bdbdbd'} />
+          <Text
+            style={{marginLeft: 5, fontSize: 10, color: praiseForm.praise ? '#000' : '#bdbdbd'}}>
+            {praiseForm.praises_count > 0 ? praiseForm.praises_count : ''}
+          </Text>
+        </Pressable>
       </View>
     </Pressable>
   );
@@ -190,7 +188,7 @@ const DoubleList = props => {
       const leftPostList = listData.filter((v, i) => i % 2 === 0);
       const rightPostList = listData.filter((v, i) => i % 2 !== 0);
       return (
-        <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 0}]}>
+        <View style={[styles.singleWrap, {marginLeft: index === 0 ? 5 : 0}]}>
           {(item === 1 ? leftPostList : rightPostList).map((v, index) => {
             return <WrapChild key={`wrapchild-${v.id}`} item={v} />;
           })}
@@ -259,9 +257,7 @@ const DoubleList = props => {
     };
     loadFirstData();
 
-    return () => {
-    }
-
+    return () => {};
   }, []);
 
   return (
@@ -276,9 +272,9 @@ const DoubleList = props => {
         onEndReachedThreshold: 0.05,
         initialNumToRender: 5,
         windowSize: 8,
+        progressViewOffset: 0,
         ...props.settings,
       }}
-      style={styles.wrapper}
     />
   );
 };
@@ -290,14 +286,6 @@ DoubleList.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // width: '40%'
-    // backgroundColor: 'pink',
-    justifyContent: 'space-between',
-    // alignItems: 'baseline',
-    paddingLeft: 5,
-    paddingRight: 0,
-  },
   likewrap: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -305,10 +293,9 @@ const styles = StyleSheet.create({
   },
   singleWrap: {
     flex: 1,
-    backgroundColor: '#fff',
-    // marginRight: 5,
-    // marginLeft: '0.5%',
-    // marginRight: '1%',
+    width: halfWidth,
+    marginRight: 5,
+    marginTop: 5,
   },
   videoPlay: {
     width: 16,
@@ -318,6 +305,7 @@ const styles = StyleSheet.create({
     top: 8,
   },
   multiLineText: {
+    flex: 1,
     fontSize: 12,
     lineHeight: 17,
     color: '#1f1f1f',

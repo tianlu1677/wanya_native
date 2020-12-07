@@ -8,7 +8,6 @@ export const NAV_BAR_HEIGHT = Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_B
 export const NAVIGATION_BAR_HEIGHT = NAV_BAR_HEIGHT + getStatusBarHeight();
 export const STATUS_BAR_HEIGHT = Platform.OS !== 'ios' || !isIphoneX ? 0 : 20;
 export const BOTTOM_HEIGHT = getBottomSpace();
-
 export const BASIC_HEIGHT = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT : STATUS_BAR_HEIGHT;
 
 export const SCALE = Dimensions.get('window').width / 375 > 1 ? 1.08 : 1;
