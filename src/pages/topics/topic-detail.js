@@ -182,7 +182,7 @@ const TopicDetail = ({navigation, route}) => {
             style={{
               ...styles.excellentLabel,
               zIndex: 100,
-              top: Math.max(getStatusBarHeight(), 20),
+              top: IsIos ? Math.max(getStatusBarHeight(), 20) : 1,
             }}>
             精选
           </Text>
@@ -237,16 +237,14 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
+
+
       <GoBack
         name={navigation.canGoBack() ? '' : 'home-recommend'}
         color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
+        top={IsIos ? null : 1}
+        report={{report_type: 'Topic', report_type_id: detail.id}}
       />
-      <Pressable
-        onPress={onReportClick}
-        style={styles.report}
-        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-        <IconFont name="ziyuan" color="#fff" size={20} />
-      </Pressable>
       <CommentList
         type="Topic"
         detail={detail}
@@ -261,14 +259,14 @@ const TopicDetail = ({navigation, route}) => {
               {detail.content_style === 'link' && renderLink()}
               {detail.content_style === 'img' && renderImg()}
               {detail.content_style === 'img' && detail.excellent && (
-                <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>
+                <Text style={{...styles.excellentLabel, top: IsIos ? Math.max(getStatusBarHeight(), 20) : 1}}>
                   精选
                 </Text>
               )}
             </View>
             {detail.content_style === 'text' && (
-              <View style={{paddingTop: IsIos ? BASIC_HEIGHT + 5 : 32, paddingBottom: 16}}>
-                <StatusBar barStyle={'dark-content'} translucent={true} />
+              <View style={{paddingTop: IsIos ? BASIC_HEIGHT + 5 : 1, paddingBottom: 16}}>
+                <StatusBar barStyle={'dark-content'} translucent={false} />
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
