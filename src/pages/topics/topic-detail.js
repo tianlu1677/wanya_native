@@ -23,7 +23,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT, BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {useFocusEffect} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -140,6 +140,7 @@ const TopicDetail = ({navigation, route}) => {
     };
     return (
       <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
+        <StatusBar backgroundColor={'black'} />
         <View style={{height: topHeight, backgroundColor: 'black'}} />
         <Swiper
           index={0}
@@ -174,6 +175,7 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
+        <StatusBar backgroundColor={'black'} />
         <View style={{height: topHeight, backgroundColor: 'black'}} />
         {detail.excellent && (
           <Text
@@ -215,8 +217,7 @@ const TopicDetail = ({navigation, route}) => {
     return (
       <View>
         <StatusBar barStyle={'dark-content'} />
-        <View style={{paddingTop: BASIC_HEIGHT, marginTop: 10, paddingBottom: 16}}>
-          <StatusBar barStyle={'dark-content'} />
+        <View style={{paddingTop: IsIos ? BASIC_HEIGHT : 0, marginTop: 10, paddingBottom: 16}}>
         </View>
         <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
           <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
@@ -266,8 +267,8 @@ const TopicDetail = ({navigation, route}) => {
               )}
             </View>
             {detail.content_style === 'text' && (
-              <View style={{paddingTop: BASIC_HEIGHT + 5, paddingBottom: 16}}>
-                <StatusBar barStyle={'dark-content'} />
+              <View style={{paddingTop: IsIos ? BASIC_HEIGHT + 5 : 32, paddingBottom: 16}}>
+                <StatusBar barStyle={'dark-content'} translucent={true} />
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />

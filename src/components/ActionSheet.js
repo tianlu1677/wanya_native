@@ -34,7 +34,7 @@ const ActionSheet = props => {
     }
   };
 
-  console.log('showActionSheet1', props)
+  // console.log('showActionSheet1', props)
   return (
     <Modal
       isVisible={showActionSheet}

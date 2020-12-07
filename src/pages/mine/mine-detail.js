@@ -8,7 +8,7 @@ import IconFont from '@/iconfont';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import {getAccountPosts, getAccountArticles} from '@/api/account_api';
 import Toast from '@/components/Toast';
-import {BASIC_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT, IsIos} from '@/utils/navbar';
 import {
   dispatchBaseCurrentAccount,
   dispatchCurrentAccount,
@@ -178,7 +178,7 @@ const MineDetail = props => {
         renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={true} />}
         renderHeader={
           <View style={{flex: 1}}>
-            <FocusAwareStatusBar barStyle="light-content" />
+            <FocusAwareStatusBar barStyle="light-content" translucent={false} backgroundColor={'#000'} />
             <View style={styles.setting}>
               <Pressable
                 onPress={() => props.navigation.navigate('NotifyIndex')}
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
     height: 20,
     position: 'absolute',
     right: 16,
-    top: 12 + BASIC_HEIGHT,
+    top: IsIos ? (12 + BASIC_HEIGHT) : 12,
     zIndex: 1000,
     flexDirection: 'row',
   },
@@ -342,8 +342,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 40 + BASIC_HEIGHT,
-    height: 270 + BASIC_HEIGHT,
+    paddingTop: IsIos ? (40 + BASIC_HEIGHT) : 40,
+    height: IsIos ? (270 + BASIC_HEIGHT) : 270,
   },
   imageCover: {
     width: '100%',
