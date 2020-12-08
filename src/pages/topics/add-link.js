@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useLayoutEffect} from 'react';
+import React, {useState, useCallback, useLayoutEffect} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -26,11 +26,10 @@ const AddLink = ({navigation}) => {
       Toast.showError('链接格式有误，请重新输入');
       return;
     }
+    Toast.showLoading('正在解析中...');
     try {
-      Toast.showLoading('正在解析中...');
       let res = await addTopicLink({raw_link: text});
       console.log(res);
-      Toast.hide();
       if (!res.topic_link) {
         Toast.showError('解析不到该网址，请重新输入');
         return;
@@ -40,8 +39,8 @@ const AddLink = ({navigation}) => {
       navigation.goBack();
     } catch {
       Toast.showError('解析不到该网址，请重新输入');
-      Toast.hide();
     }
+    Toast.hide();
   };
 
   useFocusEffect(

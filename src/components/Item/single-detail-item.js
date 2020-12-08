@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
 import {Avator} from '@/components/NodeComponents';
-import {dispatchTopicDetail} from '@/redux/actions';
+import {dispatchTopicDetail, dispatchArticleDetail} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
@@ -115,7 +115,7 @@ export const ActionComment = props => {
 
   const onChangeValue = text => {
     // 输入
-    if (getValueLength(text) > getValueLength(value)) {
+    if (getValueLength(text) >= getValueLength(value)) {
       if (text.substr(-1) === '@') {
         navigation.push('AddMentionAccount', {type: 'topicDetail'});
         const saveComments = {...comment, content: text.substr(0, text.length - 1)};
@@ -140,6 +140,17 @@ export const ActionComment = props => {
   const publishComment = () => {
     const data = {...comment, content: value};
     props.publishComment(data);
+  };
+
+  const dispatchData = params => {
+    switch (props.type) {
+      case 'Article':
+        dispatch(dispatchArticleDetail(params));
+        break;
+      case 'Topic':
+        dispatch(dispatchTopicDetail(params));
+        break;
+    }
   };
 
   const onCreate = async type => {
@@ -182,28 +193,23 @@ export const ActionComment = props => {
       case 'praise':
         const praiseCount = props.detail.praises_count + (praise === true ? -1 : 1);
         setPraise(!praise);
-        dispatch(
-          dispatchTopicDetail({...props.detail, praise: !praise, praises_count: praiseCount})
-        );
+        dispatchData({...props.detail, praise: !praise, praises_count: praiseCount});
         break;
       case 'star':
         const startCount = props.detail.stars_count + (star === true ? -1 : 1);
         setStar(!star);
-        dispatch(dispatchTopicDetail({...props.detail, star: !star, stars_count: startCount}));
+        dispatchData({...props.detail, star: !star, stars_count: startCount});
         break;
     }
   };
 
   useEffect(() => {
+    setPraise(props.detail.praise);
+    setStar(props.detail.star);
     if (!props.visible) {
       setValue(null);
     }
-  }, [props.visible]);
-
-  useEffect(() => {
-    setPraise(props.detail.praise);
-    setStar(props.detail.star);
-  }, [props.detail]);
+  }, [props]);
 
   useEffect(() => {
     if (comment.content) {

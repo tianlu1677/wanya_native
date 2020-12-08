@@ -92,16 +92,14 @@ const TopicDetail = ({navigation, route}) => {
     setShowActionSheet(true);
   };
 
+  const ExcellentBtn = ({style}) => <Text style={[styles.excellentLabel, {...style}]}>精选</Text>;
+
   // 外链 纯文本 带header
   const isHeader = () => {
     if (detail && (detail.content_style === 'link' || detail.content_style === 'text')) {
       return true;
     }
     return false;
-  };
-
-  const ExcellentBtn = ({style}) => {
-    return <Text style={[styles.excellentLabel, {...style}]}>精选</Text>;
   };
 
   useFocusEffect(
@@ -132,13 +130,21 @@ const TopicDetail = ({navigation, route}) => {
   }, [currentTopic]);
 
   useLayoutEffect(() => {
+    const goHome = () => {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Recommend'}],
+      });
+    };
+    const goBack = () => {
+      navigation.goBack();
+    };
+
     if (detail) {
       if (isHeader()) {
         navigation.setOptions({
           headerTitle: '帖子详情',
           headerShown: true,
-          headerTransparent: false,
-          safeArea: false,
           headerStyle: {
             borderBottomColor: '#EBEBEB',
             borderBottomWidth: StyleSheet.hairlineWidth,
@@ -146,16 +152,7 @@ const TopicDetail = ({navigation, route}) => {
           headerLeft: () => (
             <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5}}>
               <Pressable
-                onPress={
-                  navigation.canGoBack()
-                    ? onReportClick
-                    : () => {
-                        navigation.reset({
-                          index: 0,
-                          routes: [{name: 'Recommend'}],
-                        });
-                      }
-                }
+                onPress={navigation.canGoBack() ? goBack : goHome}
                 hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
                 <IconFont
                   name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
@@ -349,7 +346,6 @@ const TopicDetail = ({navigation, route}) => {
         detail={detail}
         publishComment={publishComment}
         type="Topic"
-        setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
       />
       <ActionSheet

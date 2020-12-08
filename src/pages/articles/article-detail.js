@@ -25,6 +25,7 @@ import ActionSheet from '@/components/ActionSheet';
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const currentArticle = useSelector(state => state.topic.articleDetail);
 
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
@@ -70,9 +71,14 @@ const ArticleDetail = ({navigation, route}) => {
     loadData();
     // 清空评论数据
     return () => {
+      dispatch(dispatchArticleDetail(null));
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
     };
   }, []);
+
+  useEffect(() => {
+    setDetail(currentArticle);
+  }, [currentArticle]);
 
   useLayoutEffect(() => {
     if (detail) {
@@ -94,8 +100,6 @@ const ArticleDetail = ({navigation, route}) => {
       });
     }
   }, [navigation, detail]);
-
-  console.log(detail);
 
   return detail && currentAccount ? (
     <KeyboardAvoidingView
@@ -149,7 +153,6 @@ const ArticleDetail = ({navigation, route}) => {
         detail={detail}
         publishComment={publishComment}
         type="Article"
-        setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
       />
       <ActionSheet
