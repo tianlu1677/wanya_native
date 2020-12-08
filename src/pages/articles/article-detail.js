@@ -14,6 +14,7 @@ import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import * as action from '@/redux/constants';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
@@ -34,6 +35,7 @@ const ArticleDetail = ({navigation, route}) => {
     setVisible(false);
     Toast.showLoading('发送中');
     await createComment(data);
+    dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
     Toast.hide();
     Toast.show('评论成功啦');
     loadData();
@@ -66,6 +68,10 @@ const ArticleDetail = ({navigation, route}) => {
 
   useEffect(() => {
     loadData();
+    // 清空评论数据
+    return () => {
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+    };
   }, []);
 
   useLayoutEffect(() => {

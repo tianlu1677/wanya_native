@@ -120,7 +120,14 @@ export const TopicLinkContent = props => {
     <Pressable onPress={onGoDetail}>
       <View style={styles.linkWrapper}>
         <View style={styles.linkImageWrap}>
-          <FastImg source={{uri: data.topic_link.cover_url}} style={{width: 45, height: 45}} />
+          <FastImg
+            source={
+              data.topic_link.cover_url
+                ? {uri: data.topic_link.cover_url}
+                : require('@/assets/images/add-link.png')
+            }
+            style={{width: 45, height: 45}}
+          />
           {data.topic_link.outlink_type === 'music' && (
             <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
           )}

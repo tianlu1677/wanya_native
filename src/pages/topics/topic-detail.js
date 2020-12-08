@@ -30,6 +30,7 @@ import ActionSheet from '@/components/ActionSheet';
 import VideoPlayImg from '@/assets/images/video-play.png';
 
 const {width: screenWidth} = Dimensions.get('window');
+const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -42,8 +43,6 @@ const TopicDetail = ({navigation, route}) => {
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [actionItems, setActionItems] = useState([]);
-
-  const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
 
   const loadData = async () => {
     const res = await getTopic(topicId);
@@ -93,6 +92,18 @@ const TopicDetail = ({navigation, route}) => {
     setShowActionSheet(true);
   };
 
+  // 外链 纯文本 带header
+  const isHeader = () => {
+    if (detail && (detail.content_style === 'link' || detail.content_style === 'text')) {
+      return true;
+    }
+    return false;
+  };
+
+  const ExcellentBtn = ({style}) => {
+    return <Text style={[styles.excellentLabel, {...style}]}>精选</Text>;
+  };
+
   useFocusEffect(
     useCallback(() => {
       if (videoRef && videoRef.current) {
@@ -107,18 +118,12 @@ const TopicDetail = ({navigation, route}) => {
     }, [])
   );
 
-  // 外链 纯文本 带header
-  const isHeader = () => {
-    if (detail && (detail.content_style === 'link' || detail.content_style === 'text')) {
-      return true;
-    }
-    return false;
-  };
-
   useEffect(() => {
     loadData();
+    // 清空评论数据
     return () => {
       dispatch(dispatchTopicDetail(null));
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
     };
   }, []);
 
@@ -138,31 +143,35 @@ const TopicDetail = ({navigation, route}) => {
             borderBottomColor: '#EBEBEB',
             borderBottomWidth: StyleSheet.hairlineWidth,
           },
+          headerLeft: () => (
+            <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5}}>
+              <Pressable
+                onPress={
+                  navigation.canGoBack()
+                    ? onReportClick
+                    : () => {
+                        navigation.reset({
+                          index: 0,
+                          routes: [{name: 'Recommend'}],
+                        });
+                      }
+                }
+                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                <IconFont
+                  name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+                  color="#000"
+                  size={20}
+                />
+              </Pressable>
+              {detail.excellent && <ExcellentBtn style={{marginLeft: 10}} />}
+            </View>
+          ),
           headerRight: () => (
             <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
               <IconFont name="ziyuan" color="#000" size={20} />
             </Pressable>
           ),
         });
-
-        // 重置返回首页
-        if (!navigation.canGoBack()) {
-          navigation.setOptions({
-            headerLeft: () => (
-              <Pressable
-                onPress={() => {
-                  navigation.reset({
-                    index: 0,
-                    routes: [{name: 'Recommend'}],
-                  });
-                }}
-                style={{paddingLeft: 5}}
-                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
-                <IconFont name={'home-recommend'} size={14} />
-              </Pressable>
-            ),
-          });
-        }
       } else {
         navigation.setOptions({
           headerShown: false,
@@ -205,7 +214,6 @@ const TopicDetail = ({navigation, route}) => {
 
     return (
       <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
-        <View style={{height: topHeight, backgroundColor: 'black'}} />
         <Swiper
           index={0}
           loop={false}
@@ -239,17 +247,6 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
-        <View style={{height: topHeight, backgroundColor: 'black'}} />
-        {detail.excellent && (
-          <Text
-            style={{
-              ...styles.excellentLabel,
-              zIndex: 100,
-              top: Math.max(getStatusBarHeight(), 20),
-            }}>
-            精选
-          </Text>
-        )}
         <VideoPlayerContent
           ref={videoRef}
           customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
@@ -278,7 +275,14 @@ const TopicDetail = ({navigation, route}) => {
       <Pressable onPress={onGoDetail}>
         <View style={styles.linkWrapper}>
           <View style={styles.linkImageWrap}>
-            <FastImg source={{uri: detail.topic_link.cover_url}} style={{width: 45, height: 45}} />
+            <FastImg
+              source={
+                detail.topic_link.cover_url
+                  ? {uri: detail.topic_link.cover_url}
+                  : require('@/assets/images/add-link.png')
+              }
+              style={{width: 45, height: 45}}
+            />
             {detail.topic_link.outlink_type === 'music' && (
               <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
             )}
@@ -317,15 +321,14 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            <View style={{position: 'relative'}}>
-              {detail.content_style === 'video' && renderVideo()}
-              {detail.content_style === 'img' && renderImg()}
-              {detail.content_style === 'img' && detail.excellent && (
-                <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>
-                  精选
-                </Text>
-              )}
-            </View>
+            {(detail.content_style === 'video' || detail.content_style === 'img') && (
+              <View style={{position: 'relative'}}>
+                <View style={{height: topHeight, backgroundColor: 'black'}} />
+                {detail.excellent && <ExcellentBtn style={styles.excellentHeader} />}
+                {detail.content_style === 'video' && renderVideo()}
+                {detail.content_style === 'img' && renderImg()}
+              </View>
+            )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
             {detail.content_style === 'link' && (
               <View style={{paddingHorizontal: 16, marginTop: 12}}>{renderLink()}</View>
@@ -383,7 +386,6 @@ const styles = StyleSheet.create({
   excellentLabel: {
     width: 30,
     height: 16,
-    marginTop: 14,
     flex: 1,
     textAlign: 'center',
     fontSize: 10,
@@ -392,8 +394,13 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     overflow: 'hidden',
     color: 'white',
+  },
+  excellentHeader: {
+    marginTop: 14,
     position: 'absolute',
     left: 40,
+    zIndex: 100,
+    top: Math.max(getStatusBarHeight(), 20),
   },
   multiLineText: {
     fontSize: 14,

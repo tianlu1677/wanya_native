@@ -26,17 +26,22 @@ const AddLink = ({navigation}) => {
       Toast.showError('链接格式有误，请重新输入');
       return;
     }
-    Toast.showLoading('正在解析中...');
-    let res = await addTopicLink({raw_link: text});
-    console.log(res);
-
-    Toast.hide();
-    if (res.error) {
+    try {
+      Toast.showLoading('正在解析中...');
+      let res = await addTopicLink({raw_link: text});
+      console.log(res);
+      Toast.hide();
+      if (!res.topic_link) {
+        Toast.showError('解析不到该网址，请重新输入');
+        return;
+      }
+      const topics = {...home.savetopic, linkContent: res.topic_link};
+      dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+      navigation.goBack();
+    } catch {
       Toast.showError('解析不到该网址，请重新输入');
+      Toast.hide();
     }
-    const topics = {...home.savetopic, linkContent: res.topic_link};
-    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.goBack();
   };
 
   useFocusEffect(

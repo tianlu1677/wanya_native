@@ -25,6 +25,7 @@ import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
 import {dispatchPreviewImage} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
+import VideoPlayImg from '@/assets/images/video-play.png';
 
 const windowWidth = Dimensions.get('window').width;
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -391,15 +392,30 @@ const NewTopic = props => {
             )}
             {linkSource && (
               <View style={styles.linkWrapper}>
-                <FastImg source={{uri: linkSource.cover_url}} style={{width: 45, height: 45}} />
+                <View style={styles.linkImageWrap}>
+                  <FastImg
+                    source={
+                      linkSource.cover_url
+                        ? {uri: linkSource.cover_url}
+                        : require('@/assets/images/add-link.png')
+                    }
+                    style={{width: 45, height: 45}}
+                  />
+                  {linkSource.outlink_type === 'music' && (
+                    <FastImg
+                      resizeMethod={'resize'}
+                      style={styles.linkImage}
+                      source={VideoPlayImg}
+                    />
+                  )}
+                </View>
                 <Text style={styles.linkText} numberOfLines={2}>
                   {linkSource.title}
                 </Text>
                 <Pressable onPress={onDeleteLink}>
                   <IconFont
-                    name={'node-solid'}
+                    name={'qingchu'}
                     size={15}
-                    color="#000"
                     style={{marginLeft: 22, marginRight: 4}}
                     hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
                   />
@@ -572,6 +588,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
+  },
+  linkImageWrap: {
+    position: 'relative',
+  },
+  linkImage: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginTop: -8,
+    marginLeft: -8,
   },
   linkText: {
     fontSize: 13,
