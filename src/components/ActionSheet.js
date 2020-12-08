@@ -10,14 +10,16 @@ const BORDER_COLOR = '#DBDBDB';
 const ActionSheet = props => {
   const [showActionSheet, setShowActionSheet] = useState(false);
   const {actionItems } = props;
+
+  const cancelItem = {
+    id: '#cancel',
+    label: '取消',
+    type: 'cancel',
+    onPress: props?.onCancel,
+  }
   const actionSheetItems = [
     ...actionItems,
-    {
-      id: '#cancel',
-      label: '取消',
-      type: 'cancel',
-      onPress: props?.onCancel,
-    },
+    cancelItem
   ];
 
   useEffect(() => {
@@ -37,6 +39,7 @@ const ActionSheet = props => {
   // console.log('showActionSheet1', props)
   return (
     <Modal
+      onBackdropPress={() => onPressItem(cancelItem) }
       isVisible={showActionSheet}
       transparent={true}
       animationIn={'slideInUp'}

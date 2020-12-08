@@ -287,7 +287,7 @@ const MineDetail = props => {
               </View>
               <View style={styles.numberWrap}>
                 <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-                  <Text style={styles.numberCount}>{currentAccount.account_feeds_count}</Text>
+                  <Text style={styles.numberCount}>{currentAccount.publish_topics_count + currentAccount.publish_articles_count}</Text>
                   <Text style={styles.numberTitle}>动态</Text>
                 </Pressable>
                 <Pressable style={styles.numberItem} onPress={goFollowList}>

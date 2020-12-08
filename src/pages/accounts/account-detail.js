@@ -213,7 +213,7 @@ const AccountDetail = ({navigation, route}) => {
           </View>
           <View style={styles.numberWrap}>
             <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-              <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
+              <Text style={styles.numberCount}>{account.publish_topics_count + account.publish_articles_count}</Text>
               <Text style={styles.numberTitle}>动态</Text>
             </Pressable>
             <Pressable style={styles.numberItem} onPress={goFollowList}>
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     paddingLeft: 19,
     paddingRight: 16,
     paddingTop: 40 + BASIC_HEIGHT,
-    height: 270 + BASIC_HEIGHT,
+    height: HEADER_HEIGHT,
   },
   imageCover: {
     position: 'absolute',
