@@ -66,7 +66,7 @@ public class MainApplication extends Application implements ReactApplication {
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
     UMConfigure.setLogEnabled(true);
-    RNUMConfigure.init(this, "5fc5fb9d094d637f31309549", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "xxxx");
+    RNUMConfigure.init(this, "5fd0a85dbed37e4506c7b5a8", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "5fd0a85dbed37e4506c7b5a8");
   }
 
   /**
