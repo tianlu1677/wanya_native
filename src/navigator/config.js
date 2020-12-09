@@ -102,24 +102,39 @@ const topicRouter = [
     name: 'AddHashTag',
     barColor: 'dark',
     component: AddHashTag,
-    options: {title: '@话题', headerShown: false},
+    options: {
+      title: '@话题',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddMentionAccount',
     barColor: 'dark',
     component: AddMentionAccount,
-    options: {title: '提及人列表', headerShown: false},
+    options: {
+      title: '提及人列表',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddSpace',
     barColor: 'dark',
     component: AddSpace,
-    options: {title: '场地列表', headerShown: false},
+    options: {
+      title: '场地列表',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddNode',
     barColor: 'dark',
     component: AddNode,
+    options: {
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
 ];
 
