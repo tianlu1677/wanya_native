@@ -22,13 +22,14 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT} from '@/utils/navbar';
 import {dispathUpdateNodes} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
+import FastImage from 'react-native-fast-image';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -108,7 +109,7 @@ const NodeDetail = ({navigation, route}) => {
         <View>
           <FastImg
             source={{uri: detail.backgroud_cover_url}}
-            resizeMode={'cover'}
+            mode={'cover'}
             style={styles.imageCover}
           />
           <View style={styles.imageCoverOpacity} />

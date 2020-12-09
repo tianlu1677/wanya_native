@@ -18,6 +18,10 @@ export const SCALE = Dimensions.get('window').width / 375 > 1 ? 1.08 : 1;
 //padding的距离
 export const PADDING_TOP = Platform.OS === 'ios' ? 20 : 0;
 
+// 设备的宽高
+export const SCREEN_WIDTH = Dimensions.get('window').width
+export const SCREEN_HEIGHT = Dimensions.get('window').height
+
 console.log('getStatusBarHeight();', getStatusBarHeight())
 console.log('getBottomSpace();', getBottomSpace())
 console.log('BASIC_HEIGHT();', BASIC_HEIGHT)

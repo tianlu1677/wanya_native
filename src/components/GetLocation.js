@@ -54,7 +54,7 @@ const GetLocation = ({children, handleClick, style}) => {
       // await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
       const re = await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+        // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
       ]);
       // console.log('re', re)
       // addLocationListener(location => console.log(location));

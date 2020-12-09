@@ -242,6 +242,7 @@ export default class VideoPlayer extends Component {
   }
 
   onBuffer = ({isBuffering}) => {
+    // console.log('onBuffer', isBuffering)
     this.setState({opacity: isBuffering ? 1 : 0});
   }
 
@@ -553,6 +554,7 @@ export default class VideoPlayer extends Component {
           resizeMode={resizeMode}
           hideShutterView={true}
           repeat={this.props.loop}
+          onBuffer={this.onBuffer}
           ignoreSilentSwitch="ignore"
           onFullscreenPlayerDidDismiss={this.onFullscreenPlayerDidDismiss}
           // fullscreenOrientation={'landscape'}
