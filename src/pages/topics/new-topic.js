@@ -402,11 +402,7 @@ const NewTopic = props => {
                     style={{width: 45, height: 45}}
                   />
                   {linkSource.outlink_type === 'music' && (
-                    <FastImg
-                      resizeMethod={'resize'}
-                      style={styles.linkImage}
-                      source={VideoPlayImg}
-                    />
+                    <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
                   )}
                 </View>
                 <Text style={styles.linkText} numberOfLines={2}>
@@ -593,13 +589,11 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   linkImage: {
-    width: 16,
-    height: 16,
     position: 'absolute',
     left: '50%',
     top: '50%',
-    marginTop: -8,
-    marginLeft: -8,
+    marginTop: -6,
+    marginLeft: -6,
   },
   linkText: {
     fontSize: 13,

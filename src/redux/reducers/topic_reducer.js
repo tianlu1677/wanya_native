@@ -8,7 +8,8 @@ import {
 } from '../constants';
 
 const defaultState = {
-  topicDetail: {tag_list: [], medias: [], account: {}},
+  // topicDetail: {tag_list: [], medias: [], account: {}},
+  topicDetail: null,
 };
 
 function topicReducer(state = defaultState, action) {

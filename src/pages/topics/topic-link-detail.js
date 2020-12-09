@@ -1,23 +1,24 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
+import IconFont from '@/iconfont';
 import {ActionComment} from '@/components/Item/single-detail-item';
 import {createComment} from '@/api/comment_api';
 import {dispatchTopicDetail} from '@/redux/actions';
 import {NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getTopic} from '@/api/topic_api';
 
-const TopicLinkDetail = ({navigation}) => {
+const TopicLinkDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentTopic = useSelector(state => state.topic.topicDetail);
   const [detail, setDetail] = useState(currentTopic);
   const [visible, setVisible] = useState(false);
 
   const loadData = async () => {
-    const res = await getTopic(detail.id);
+    const res = await getTopic(route.params.topicId);
     dispatch(dispatchTopicDetail(res.data.topic));
   };
 
@@ -32,19 +33,39 @@ const TopicLinkDetail = ({navigation}) => {
   };
 
   useEffect(() => {
+    if (!currentTopic) {
+      loadData();
+    }
+    return () => {
+      dispatch(dispatchTopicDetail(null));
+    };
+  }, []);
+
+  useEffect(() => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
   useLayoutEffect(() => {
     if (detail) {
       navigation.setOptions({
-        headerTitle: detail.topic_link.title,
+        headerTitle: `${detail.topic_link.title.toString().substr(0, 10)}...`,
         headerShown: true,
         safeArea: false,
         headerStyle: {
           borderBottomColor: '#EBEBEB',
           borderBottomWidth: StyleSheet.hairlineWidth,
         },
+        headerLeft: () => (
+          <Pressable
+            onPress={() => navigation.goBack()}
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+            <IconFont
+              name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+              color="#000"
+              size={15}
+            />
+          </Pressable>
+        ),
       });
     }
   }, [navigation, detail]);

@@ -115,9 +115,11 @@ const CommentList = props => {
             style={cstyles.numWrap}
             hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
-            <Text style={[cstyles.numCount, {color: item.praise ? '#000' : '#bdbdbd'}]}>
-              {item.praises_count > 0 ? item.praises_count : ''}
-            </Text>
+            {item.praises_count > 0 && (
+              <Text style={[cstyles.numCount, {color: item.praise ? '#000' : '#bdbdbd'}]}>
+                {item.praises_count}
+              </Text>
+            )}
           </Pressable>
         </View>
         <Pressable style={cstyles.comment} onPress={() => choseAction(item)}>
@@ -224,9 +226,6 @@ const cstyles = StyleSheet.create({
   numWrap: {
     marginLeft: 'auto',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
   },
   numCount: {
     marginLeft: 5,

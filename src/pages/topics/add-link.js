@@ -7,6 +7,7 @@ import Clipboard from '@react-native-community/clipboard';
 import Toast from '@/components/Toast';
 import {addTopicLink} from '@/api/topic_api';
 
+const reg = 'https://';
 const AddLink = ({navigation}) => {
   const dispatch = useDispatch();
   const home = useSelector(state => state.home);
@@ -14,15 +15,14 @@ const AddLink = ({navigation}) => {
 
   const load = async () => {
     const res = await Clipboard.getString();
-    if (res) {
+    if (res && res.includes(reg)) {
       Toast.showError('已粘贴最近复制过的链接');
       setText(res);
     }
   };
 
   const onAnalysis = async () => {
-    const reg = 'https://';
-    if (!text.match(reg)) {
+    if (!text.includes(reg)) {
       Toast.showError('链接格式有误，请重新输入');
       return;
     }
@@ -30,6 +30,7 @@ const AddLink = ({navigation}) => {
     try {
       let res = await addTopicLink({raw_link: text});
       console.log(res);
+      Toast.hide();
       if (!res.topic_link) {
         Toast.showError('解析不到该网址，请重新输入');
         return;
@@ -38,9 +39,9 @@ const AddLink = ({navigation}) => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
       navigation.goBack();
     } catch {
+      Toast.hide();
       Toast.showError('解析不到该网址，请重新输入');
     }
-    Toast.hide();
   };
 
   useFocusEffect(
@@ -91,19 +92,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputContent: {
+    height: 50,
     backgroundColor: '#FFFFFF',
     borderRadius: 6,
     marginTop: 25,
     paddingHorizontal: 15,
-    paddingVertical: 12,
-    lineHeight: 20,
   },
   cancel: {
     paddingLeft: 5,
     paddingRight: 5,
     textAlign: 'center',
     fontSize: 15,
-    // color: '#bdbdbd',
   },
 });
 

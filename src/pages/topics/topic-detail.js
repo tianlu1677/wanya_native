@@ -45,6 +45,7 @@ const TopicDetail = ({navigation, route}) => {
   const [actionItems, setActionItems] = useState([]);
 
   const loadData = async () => {
+    dispatch(dispatchTopicDetail(null));
     const res = await getTopic(topicId);
     if (res.data.status === 404) {
       Toast.show('该帖子已删除');
@@ -150,14 +151,18 @@ const TopicDetail = ({navigation, route}) => {
             borderBottomWidth: StyleSheet.hairlineWidth,
           },
           headerLeft: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
               <Pressable
                 onPress={navigation.canGoBack() ? goBack : goHome}
                 hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
                 <IconFont
                   name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
                   color="#000"
-                  size={20}
+                  size={15}
                 />
               </Pressable>
               {detail.excellent && <ExcellentBtn style={{marginLeft: 10}} />}
@@ -281,8 +286,12 @@ const TopicDetail = ({navigation, route}) => {
               style={{width: 45, height: 45}}
             />
             {detail.topic_link.outlink_type === 'music' && (
-              <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
+              <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
             )}
+            {/*
+            {detail.topic_link.outlink_type === 'music' && (
+              <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
+            )} */}
           </View>
           <Text style={styles.linkText} numberOfLines={2}>
             {detail.topic_link.title}
@@ -291,6 +300,8 @@ const TopicDetail = ({navigation, route}) => {
       </Pressable>
     );
   };
+
+  console.log(detail);
 
   return detail ? (
     <KeyboardAvoidingView
@@ -328,7 +339,7 @@ const TopicDetail = ({navigation, route}) => {
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
             {detail.content_style === 'link' && (
-              <View style={{paddingHorizontal: 16, marginTop: 12}}>{renderLink()}</View>
+              <View style={{paddingHorizontal: 16, marginTop: 16}}>{renderLink()}</View>
             )}
             {detail.plain_content ? (
               <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
@@ -415,13 +426,11 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   linkImage: {
-    width: 16,
-    height: 16,
     position: 'absolute',
     left: '50%',
     top: '50%',
-    marginTop: -8,
-    marginLeft: -8,
+    marginTop: -6,
+    marginLeft: -6,
   },
   linkText: {
     fontSize: 13,

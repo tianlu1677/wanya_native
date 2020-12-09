@@ -4,9 +4,9 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
+import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import VideoPlayImg from '@/assets/images/video-play.png';
-import {dispatchPreviewImage} from '@/redux/actions';
 import FastImageGif from '@/components/FastImageGif';
 
 const calculateImg = (width, height) => {
@@ -106,14 +106,11 @@ export const TopicVideoContent = props => {
 // 外链
 export const TopicLinkContent = props => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {data} = props;
-  console.log(data);
   const onGoDetail = () => {
-    navigation.push('TopicLinkDetail');
-    // navigation.push('WebView', {
-    //   sourceUrl: data.topic_link.raw_link,
-    //   title: data.topic_link.title,
-    // });
+    dispatch(dispatchTopicDetail(data));
+    navigation.push('TopicLinkDetail', {topicId: data.id});
   };
 
   return (
@@ -126,10 +123,11 @@ export const TopicLinkContent = props => {
                 ? {uri: data.topic_link.cover_url}
                 : require('@/assets/images/add-link.png')
             }
+            resizeMode={'contain'}
             style={{width: 45, height: 45}}
           />
           {data.topic_link.outlink_type === 'music' && (
-            <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
+            <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
           )}
         </View>
         <Text style={styles.linkText} numberOfLines={2}>
@@ -154,23 +152,21 @@ const BaseTopic = props => {
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
-      {data.content_style === 'text' ? (
-        <View style={{paddingTop: 13}} />
-      ) : (
-        <View style={{paddingTop: 13, paddingBottom: 13}}>
-          {data.content_style === 'img' && <TopicImageContent data={data} />}
-          {data.content_style === 'video' && <TopicVideoContent data={data} />}
-          {data.content_style === 'link' && <TopicLinkContent data={data} />}
-          {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
-        </View>
-      )}
-      {data.plain_content ? <PlainContent data={data} numberOfLines={5} /> : null}
-      <Pressable style={styles.infoViewWrap} onPress={goNodeDetail}>
-        <View style={styles.infoView}>
+      <View style={{marginTop: 13}}>
+        {data.content_style === 'img' && <TopicImageContent data={data} />}
+        {data.content_style === 'video' && <TopicVideoContent data={data} />}
+        {data.content_style === 'link' && <TopicLinkContent data={data} />}
+        {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+      </View>
+      {data.plain_content ? (
+        <PlainContent data={data} numberOfLines={5} style={{paddingTop: 13}} />
+      ) : null}
+      <View style={styles.infoViewWrap}>
+        <Pressable style={styles.infoView} onPress={goNodeDetail}>
           <IconFont name="node-solid" size={12} color={'#000'} />
           <Text style={styles.nodeName}>{data.node_name}</Text>
-        </View>
-      </Pressable>
+        </Pressable>
+      </View>
       <Bottom data={data} type="topic" />
     </Pressable>
   );
@@ -245,13 +241,11 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   linkImage: {
-    width: 16,
-    height: 16,
     position: 'absolute',
     left: '50%',
     top: '50%',
-    marginTop: -8,
-    marginLeft: -8,
+    marginTop: -6,
+    marginLeft: -6,
   },
   linkText: {
     fontSize: 13,

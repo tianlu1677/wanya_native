@@ -234,7 +234,7 @@ export const ActionComment = props => {
             </Pressable>
             <Pressable style={astyles.btnWrap} onPress={() => onCreate('star')}>
               <IconFont
-                name={star ? 'star-solid' : 'blank-star'}
+                name={star ? 'star-solid' : 'star'}
                 size={22}
                 color={star ? '#f4ea2a' : '#bdbdbd'}
               />
