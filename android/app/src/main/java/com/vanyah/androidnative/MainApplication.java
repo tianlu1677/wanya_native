@@ -13,6 +13,8 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.airbnb.android.react.lottie.LottiePackage;
+import com.brentvatne.react.ReactVideoPackage;
+
 // umeng
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.commonsdk.UMConfigure;
@@ -44,6 +46,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new LottiePackage());
           packages.add(new WeChatPackage()); // Add this line
           packages.add(new DplusReactPackage()); // 增加这行
+          packages.add(new ReactVideoPackage()); // 增加这行
 
           return packages;
         }
