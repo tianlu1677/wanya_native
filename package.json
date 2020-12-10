@@ -71,7 +71,7 @@
     "react-native-syan-image-picker": "^0.4.9",
     "react-native-tab-view": "^2.15.0",
     "react-native-vector-icons": "^7.0.0",
-    "react-native-video": "^4.4.5",
+    "react-native-video": "^5.1.0-alpha7",
     "react-native-view-shot": "^3.1.2",
     "react-native-webview": "^10.3.2",
     "react-native-wechat-lib": "^1.1.19",

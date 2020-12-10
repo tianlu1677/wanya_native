@@ -510,7 +510,7 @@ export default class VideoPlayer extends Component {
             />
           </TouchableOpacity>
         )}
-        {this.props.disableFullscreen ? null : (
+        {(this.props.disableFullscreen || Platform.OS !== 'ios') ? null : (
           <TouchableOpacity onPress={this.onToggleFullScreen} style={customStyles.controlButton}>
             <Icon
               style={[styles.extraControl, customStyles.controlIcon]}
@@ -552,7 +552,8 @@ export default class VideoPlayer extends Component {
           onLoad={this.onLoad}
           source={video}
           resizeMode={resizeMode}
-          hideShutterView={true}
+          progressUpdateInterval={400}
+          hideShutterView={false}
           repeat={this.props.loop}
           onBuffer={this.onBuffer}
           ignoreSilentSwitch="ignore"
@@ -605,7 +606,9 @@ export default class VideoPlayer extends Component {
     return this.renderVideo();
   }
 
+
   render() {
+    console.log('xxxxxxxxxxxxx')
     return (
       <View onLayout={this.onLayout} style={this.props.customStyles.wrapper}>
         {this.renderContent()}

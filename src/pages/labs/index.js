@@ -6,6 +6,7 @@ import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {getRecommendPosts, getFollowedPosts} from '@/api/home_api';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import Video from 'react-native-video'
 import RenderItemMemo from './memItem';
 // const HEADER_HEIGHT = 144;
 const TAB_BAR_HEIGHT = 55;
@@ -137,7 +138,17 @@ const CollapsibleHeaderExample = props => {
         }}
         style={{marginTop: 0, height: 100, backgroundColor: 'red'}}
       />
-      <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}  style={{marginTop: 100}}/>
+
+
+      <Video
+        style={{height: 400}}
+        autoplay
+        repeat
+        source={{uri: 'http://file.meirixinxue.com/assets/126a2cab32a121cb6c24dd4caceba755.m3u8'}}>
+
+      </Video>
+
+      {/*<FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}  style={{marginTop: 100}}/>*/}
     </View>
   );
 };
