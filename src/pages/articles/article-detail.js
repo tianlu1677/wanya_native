@@ -107,10 +107,10 @@ const ArticleDetail = ({navigation, route}) => {
           hidden: false,
         }}
         RightButton={() =>
-          detail.account_id !== currentAccount.id ? null : (
+          detail.account_id === currentAccount.id ? null : (
             <Pressable
               onPress={onReportClick}
-              style={styles.report}
+              style={{paddingLeft: 20}}
               hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
               <IconFont name="ziyuan" color="#000" size={20} />
             </Pressable>

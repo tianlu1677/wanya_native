@@ -131,7 +131,12 @@ const NewTopic = props => {
 
     if(Platform.OS !== 'ios') {
       props.removeAllPhoto();
-      props.videoPick({}, async (err, res) => {
+      props.videoPick({
+        MaxSecond: 300,
+        MinSecond: 1,
+        recordVideoSecond: 60,
+        videoCount: 1
+      }, async (err, res) => {
         if (err) {
           return;
         }

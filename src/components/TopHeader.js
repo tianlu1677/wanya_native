@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {NAVIGATION_BAR_HEIGHT, IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
 
 const TopHeader = props => {
   const LeftButton = props.LeftButton;
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusBar: {
-    height: STATUS_BAR_HEIGHT,
-
+    height: IsIos ? STATUS_BAR_HEIGHT : 0,
   },
 });

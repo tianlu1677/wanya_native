@@ -105,25 +105,37 @@ const MineDetail = props => {
 
   const PublishList = () => {
     return (
-      <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
+      <View style={{paddingBottom: 100}}>
+        <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
+      </View>
     );
   };
 
   const VideoList = () => {
     return (
-      <DoubleList
-        request={{api: getAccountPosts, params: {id: accountId, type: 'publish_video'}}}
-      />
+      <View style={{paddingBottom: 100}}>
+        <DoubleList
+          request={{api: getAccountPosts, params: {id: accountId, type: 'publish_video'}}}
+        />
+      </View>
     );
   };
 
   const PraiseList = () => {
-    return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
+    return (
+      <View style={{paddingBottom: 100}}>
+        <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />
+      </View>
+    );
   };
 
   const ArticleListPage = () => {
     const params = {id: accountId, type: 'publish'};
-    return <ArticleList request={{api: getAccountArticles, params}} />;
+    return (
+      <View style={{paddingBottom: 100}}>
+        <ArticleList request={{api: getAccountArticles, params}} />
+      </View>
+    );
   };
 
   const UnreadMessageCount = () => {
@@ -178,7 +190,11 @@ const MineDetail = props => {
         renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={true} />}
         renderHeader={
           <View style={{flex: 1}}>
-            <FocusAwareStatusBar barStyle="light-content" translucent={false} backgroundColor={'#000'} />
+            <FocusAwareStatusBar
+              barStyle="light-content"
+              translucent={false}
+              backgroundColor={'#000'}
+            />
             <View style={styles.setting}>
               <Pressable
                 onPress={() => props.navigation.navigate('NotifyIndex')}
@@ -287,7 +303,9 @@ const MineDetail = props => {
               </View>
               <View style={styles.numberWrap}>
                 <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-                  <Text style={styles.numberCount}>{currentAccount.account_feeds_count}</Text>
+                  <Text style={styles.numberCount}>
+                    {currentAccount.publish_topics_count + currentAccount.publish_articles_count}
+                  </Text>
                   <Text style={styles.numberTitle}>动态</Text>
                 </Pressable>
                 <Pressable style={styles.numberItem} onPress={goFollowList}>
@@ -334,7 +352,7 @@ const styles = StyleSheet.create({
     height: 20,
     position: 'absolute',
     right: 16,
-    top: IsIos ? (12 + BASIC_HEIGHT) : 12,
+    top: IsIos ? 12 + BASIC_HEIGHT : 12,
     zIndex: 1000,
     flexDirection: 'row',
   },
@@ -342,8 +360,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: IsIos ? (40 + BASIC_HEIGHT) : 40,
-    height: IsIos ? (270 + BASIC_HEIGHT) : 270,
+    paddingTop: IsIos ? 40 + BASIC_HEIGHT : 40,
+    height: IsIos ? 270 + BASIC_HEIGHT : 270,
   },
   imageCover: {
     width: '100%',

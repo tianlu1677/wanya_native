@@ -26,13 +26,11 @@ public class MainActivity extends ReactActivity {
   @Override
   public void onResume() {
       super.onResume();
-      android.util.Log.e("rrs","onResume=");
       MobclickAgent.onResume(this);
   }
   @Override
   protected void onPause() {
       super.onPause();
-      android.util.Log.e("rrs","onPause=");
       MobclickAgent.onPause(this);
   }
 }

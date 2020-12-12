@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
-import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper';
+import { PADDING_TOP } from '@/utils/navbar';
 
 export const GoBack = props => {
   const navigation = useNavigation();
@@ -26,14 +26,13 @@ export const GoBack = props => {
     }
   };
 
-  console.log('getStatusBarHeight', getStatusBarHeight());
   return (
     <View>
       <Pressable
         onPress={() => {
           handleClick();
         }}
-        style={{...styles.goBackWrap, top: props.top || Math.max(getStatusBarHeight(), 20)}}>
+        style={{...styles.goBackWrap, top: Math.max(PADDING_TOP)}}>
         <IconFont name={name} color={color} size={15} />
       </Pressable>
       {report && (
@@ -44,7 +43,7 @@ export const GoBack = props => {
               report_type_id: report.report_id,
             });
           }}
-          style={{...styles.report, top: props.top || Math.max(getStatusBarHeight(), 20)}}
+          style={{...styles.report, top: Math.max(PADDING_TOP)}}
           hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <IconFont name="ziyuan" color="#fff" size={20} />
         </Pressable>

@@ -24,6 +24,7 @@ import {prosettings} from '@/api/settings_api';
 import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
 import NetworkErrorModal from '@/components/NetworkErrorModal';
 import PushUtil from '@/utils/umeng_push_util';
+import { init, Geolocation } from "react-native-amap-geolocation";
 
 import * as RootNavigation from '@/navigator/root-navigation';
 
@@ -58,6 +59,7 @@ class App extends Component {
       scale = 1.08;
     }
     console.log('scale', scale);
+
     this.loadSplashImg();
     this.loadImgList();
     this.loadSettings();
@@ -174,7 +176,13 @@ class App extends Component {
     // 不在前台运行的情况下
   }
 
-  loadNetworkInfo = () => {
+  loadNetworkInfo = async () => {
+
+    await init({
+      ios: "6da6626cf6588fb6e3052deff1e8d4e9",
+      android: "648f6e4ce8f5b83b30e2eabcac060eee"
+    });
+
     this.networdunsubscribe = NetInfo.addEventListener(state => {
       // console.log('state', state)
       if (this.state.netInfoErr === !state.isConnected) {

@@ -2,10 +2,10 @@ import React, {useEffect, useRef} from 'react';
 import {Animated, Platform, StatusBar, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
-import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT} from '@/utils/navbar';
 
 const tabBarHeight = 45; // tabbar middle高度
-const titleHeight = NAVIGATION_BAR_HEIGHT; // 标题高度
+const titleHeight = NAV_BAR_HEIGHT; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;

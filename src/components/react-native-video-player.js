@@ -242,6 +242,7 @@ export default class VideoPlayer extends Component {
   }
 
   onBuffer = ({isBuffering}) => {
+    // console.log('onBuffer', isBuffering)
     this.setState({opacity: isBuffering ? 1 : 0});
   }
 
@@ -509,7 +510,7 @@ export default class VideoPlayer extends Component {
             />
           </TouchableOpacity>
         )}
-        {this.props.disableFullscreen ? null : (
+        {(this.props.disableFullscreen || Platform.OS !== 'ios') ? null : (
           <TouchableOpacity onPress={this.onToggleFullScreen} style={customStyles.controlButton}>
             <Icon
               style={[styles.extraControl, customStyles.controlIcon]}
@@ -550,11 +551,21 @@ export default class VideoPlayer extends Component {
           onEnd={this.onEnd}
           onLoad={this.onLoad}
           source={video}
+          controls={false}
           resizeMode={resizeMode}
-          hideShutterView={true}
+          progressUpdateInterval={400}
+          // onBandwidthUpdate={(event) => {console.log('e', event)}}
+          hideShutterView={false}
           repeat={this.props.loop}
+          onBuffer={this.onBuffer}
           ignoreSilentSwitch="ignore"
           onFullscreenPlayerDidDismiss={this.onFullscreenPlayerDidDismiss}
+          bufferConfig={{
+            minBufferMs: 15000,
+            maxBufferMs: 50000,
+            bufferForPlaybackMs: 1000,
+            bufferForPlaybackAfterRebufferMs: 1000
+          }}
           // fullscreenOrientation={'landscape'}
         />
         {
@@ -603,7 +614,9 @@ export default class VideoPlayer extends Component {
     return this.renderVideo();
   }
 
+
   render() {
+    console.log('xxxxxxxxxxxxx')
     return (
       <View onLayout={this.onLayout} style={this.props.customStyles.wrapper}>
         {this.renderContent()}
