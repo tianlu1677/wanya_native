@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
-import { PADDING_TOP } from '@/utils/navbar';
+import {PADDING_TOP} from '@/utils/navbar';
+
+console.log(PADDING_TOP);
 
 export const GoBack = props => {
   const navigation = useNavigation();

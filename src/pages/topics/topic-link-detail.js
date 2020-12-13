@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
+import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {ActionComment} from '@/components/Item/single-detail-item';
 import {createComment} from '@/api/comment_api';
@@ -14,7 +15,7 @@ import {getTopic} from '@/api/topic_api';
 const TopicLinkDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentTopic = useSelector(state => state.topic.topicDetail);
-  const [detail, setDetail] = useState(currentTopic);
+  const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
 
   const loadData = async () => {
@@ -33,12 +34,7 @@ const TopicLinkDetail = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    if (!currentTopic) {
-      loadData();
-    }
-    return () => {
-      dispatch(dispatchTopicDetail(null));
-    };
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -70,7 +66,7 @@ const TopicLinkDetail = ({navigation, route}) => {
     }
   }, [navigation, detail]);
 
-  return (
+  return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
@@ -88,6 +84,8 @@ const TopicLinkDetail = ({navigation, route}) => {
         changeVisible={value => setVisible(value)}
       />
     </KeyboardAvoidingView>
+  ) : (
+    <Loading />
   );
 };
 

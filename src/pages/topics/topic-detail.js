@@ -4,10 +4,10 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
-  StatusBar,
   StyleSheet,
   Pressable,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -28,7 +28,6 @@ import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_a
 import {BOTTOM_HEIGHT, NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
-import VideoPlayImg from '@/assets/images/video-play.png';
 
 const {width: screenWidth} = Dimensions.get('window');
 const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
@@ -46,7 +45,6 @@ const TopicDetail = ({navigation, route}) => {
   const [actionItems, setActionItems] = useState([]);
 
   const loadData = async () => {
-    dispatch(dispatchTopicDetail(null));
     const res = await getTopic(topicId);
     if (res.data.status === 404) {
       Toast.show('该帖子已删除');
@@ -106,6 +104,7 @@ const TopicDetail = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
+      console.log('useFocusEffect');
       if (videoRef && videoRef.current) {
         // 是否继续播放
         if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
@@ -120,7 +119,7 @@ const TopicDetail = ({navigation, route}) => {
 
   useEffect(() => {
     loadData();
-    // 清空评论数据
+    // 清空外链，评论数据
     return () => {
       dispatch(dispatchTopicDetail(null));
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
@@ -144,6 +143,8 @@ const TopicDetail = ({navigation, route}) => {
 
     if (detail) {
       if (isHeader()) {
+        StatusBar.setBarStyle('dark-content');
+
         navigation.setOptions({
           headerTitle: '帖子详情',
           headerShown: true,
@@ -169,11 +170,11 @@ const TopicDetail = ({navigation, route}) => {
               {detail.excellent && <ExcellentBtn style={{marginLeft: 10}} />}
             </View>
           ),
-          headerRight: () => (
-            <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-              <IconFont name="ziyuan" color="#000" size={20} />
-            </Pressable>
-          ),
+          // headerRight: () => (
+          //   <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+          //     <IconFont name="ziyuan" color="#000" size={20} />
+          //   </Pressable>
+          // ),
         });
       } else {
         navigation.setOptions({
@@ -181,6 +182,7 @@ const TopicDetail = ({navigation, route}) => {
           title: false,
           headerTransparent: true,
         });
+        StatusBar.setBarStyle('light-content');
       }
     }
   }, [navigation, detail]);
@@ -271,7 +273,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const renderLink = () => {
     const onGoDetail = () => {
-      navigation.push('TopicLinkDetail');
+      navigation.push('TopicLinkDetail', {topicId: detail.id});
     };
 
     return (
@@ -284,15 +286,12 @@ const TopicDetail = ({navigation, route}) => {
                   ? {uri: detail.topic_link.cover_url}
                   : require('@/assets/images/add-link.png')
               }
+              mode={'contain'}
               style={{width: 45, height: 45}}
             />
             {detail.topic_link.outlink_type === 'music' && (
               <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
             )}
-            {/*
-            {detail.topic_link.outlink_type === 'music' && (
-              <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
-            )} */}
           </View>
           <Text style={styles.linkText} numberOfLines={2}>
             {detail.topic_link.title}
@@ -302,8 +301,6 @@ const TopicDetail = ({navigation, route}) => {
     );
   };
 
-  console.log(detail);
-
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -312,13 +309,13 @@ const TopicDetail = ({navigation, route}) => {
       {/* 不带header */}
       {!isHeader() && (
         <>
-          <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'#fff'} />
-          <Pressable
+          <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} />
+          {/* <Pressable
             onPress={onReportClick}
             style={styles.report}
             hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
             <IconFont name="ziyuan" color="#fff" size={20} />
-          </Pressable>
+          </Pressable> */}
         </>
       )}
       <CommentList

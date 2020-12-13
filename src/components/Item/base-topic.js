@@ -109,7 +109,7 @@ export const TopicLinkContent = props => {
   const dispatch = useDispatch();
   const {data} = props;
   const onGoDetail = () => {
-    dispatch(dispatchTopicDetail(data));
+    dispatch(dispatchTopicDetail(null));
     navigation.push('TopicLinkDetail', {topicId: data.id});
   };
 
@@ -123,7 +123,7 @@ export const TopicLinkContent = props => {
                 ? {uri: data.topic_link.cover_url}
                 : require('@/assets/images/add-link.png')
             }
-            resizeMode={'contain'}
+            mode={'contain'}
             style={{width: 45, height: 45}}
           />
           {data.topic_link.outlink_type === 'music' && (

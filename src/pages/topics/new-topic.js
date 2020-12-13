@@ -67,9 +67,10 @@ const NewTopic = props => {
   };
 
   const checkPermission = async () => {
-    const imagePermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
+    const imagePermission =
+      Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
     const status = await check(imagePermission);
-    console.log('imagePermission', status)
+    console.log('imagePermission', status);
     if (status === RESULTS.GRANTED) {
       return true;
     }
@@ -160,26 +161,29 @@ const NewTopic = props => {
     //   }
     // );
 
-    if(Platform.OS !== 'ios') {
+    if (Platform.OS !== 'ios') {
       props.removeAllPhoto();
-      props.videoPick({
-        MaxSecond: 300,
-        MinSecond: 1,
-        recordVideoSecond: 60,
-        videoCount: 1
-      }, async (err, res) => {
-        if (err) {
-          return;
+      props.videoPick(
+        {
+          MaxSecond: 300,
+          MinSecond: 1,
+          recordVideoSecond: 60,
+          videoCount: 1,
+        },
+        async (err, res) => {
+          if (err) {
+            return;
+          }
+          setVideoSource([...res]);
+          const result = await props.uploadVideo(res[0], dispatch);
+          setVideoSource([result.asset]);
+          dispatch({type: action.UPLOAD_PROGRESS, value: ''});
         }
-        setVideoSource([...res]);
-        const result = await props.uploadVideo(res[0], dispatch);
-        setVideoSource([result.asset]);
-        dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-      });
+      );
     }
 
     // react-native-image-picker
-    if(Platform.OS === 'ios') {
+    if (Platform.OS === 'ios') {
       ImagePicker.launchImageLibrary(
         {
           mediaType: 'video',
@@ -189,7 +193,7 @@ const NewTopic = props => {
           if (response.didCancel) {
             return;
           }
-          console.log('response', response)
+          console.log('response', response);
           // return
           const video = response;
           props.removeAllPhoto();
@@ -468,6 +472,7 @@ const NewTopic = props => {
                         ? {uri: linkSource.cover_url}
                         : require('@/assets/images/add-link.png')
                     }
+                    mode={'contain'}
                     style={{width: 45, height: 45}}
                   />
                   {linkSource.outlink_type === 'music' && (
