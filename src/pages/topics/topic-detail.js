@@ -25,11 +25,11 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BOTTOM_HEIGHT, NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
 import VideoPlayImg from '@/assets/images/video-play.png';
-
+import TopHeaderView from '@/components/TopHeadView';
 const {width: screenWidth} = Dimensions.get('window');
 const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
 
@@ -131,59 +131,59 @@ const TopicDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
-  useLayoutEffect(() => {
-    const goHome = () => {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Recommend'}],
-      });
-    };
-    const goBack = () => {
-      navigation.goBack();
-    };
-
-    if (detail) {
-      if (isHeader()) {
-        navigation.setOptions({
-          headerTitle: '帖子详情',
-          headerShown: true,
-          headerStyle: {
-            borderBottomColor: '#EBEBEB',
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          },
-          headerLeft: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Pressable
-                onPress={navigation.canGoBack() ? goBack : goHome}
-                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-                <IconFont
-                  name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
-                  color="#000"
-                  size={15}
-                />
-              </Pressable>
-              {detail.excellent && <ExcellentBtn style={{marginLeft: 10}} />}
-            </View>
-          ),
-          headerRight: () => (
-            <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-              <IconFont name="ziyuan" color="#000" size={20} />
-            </Pressable>
-          ),
-        });
-      } else {
-        navigation.setOptions({
-          headerShown: false,
-          title: false,
-          headerTransparent: true,
-        });
-      }
-    }
-  }, [navigation, detail]);
+  // useLayoutEffect(() => {
+  //   const goHome = () => {
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{name: 'Recommend'}],
+  //     });
+  //   };
+  //   const goBack = () => {
+  //     navigation.goBack();
+  //   };
+  //
+  //   if (detail) {
+  //     if (isHeader()) {
+  //       navigation.setOptions({
+  //         headerTitle: '帖子详情',
+  //         headerShown: true,
+  //         headerStyle: {
+  //           borderBottomColor: '#EBEBEB',
+  //           borderBottomWidth: StyleSheet.hairlineWidth,
+  //         },
+  //         headerLeft: () => (
+  //           <View
+  //             style={{
+  //               flexDirection: 'row',
+  //               alignItems: 'center',
+  //             }}>
+  //             <Pressable
+  //               onPress={navigation.canGoBack() ? goBack : goHome}
+  //               hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+  //               <IconFont
+  //                 name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+  //                 color="#000"
+  //                 size={15}
+  //               />
+  //             </Pressable>
+  //             {detail.excellent && <ExcellentBtn style={{marginLeft: 10}} />}
+  //           </View>
+  //         ),
+  //         headerRight: () => (
+  //           <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+  //             <IconFont name="ziyuan" color="#000" size={20} />
+  //           </Pressable>
+  //         ),
+  //       });
+  //     } else {
+  //       navigation.setOptions({
+  //         headerShown: false,
+  //         title: false,
+  //         headerTransparent: true,
+  //       });
+  //     }
+  //   }
+  // }, [navigation, detail]);
 
   const renderImg = () => {
     let {media_images} = detail;
@@ -216,7 +216,7 @@ const TopicDetail = ({navigation, route}) => {
     };
 
     return (
-      <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
+      <View style={{minHeight: maxHeight, width: screenWidth}}>
         <Swiper
           index={0}
           loop={false}
@@ -298,6 +298,7 @@ const TopicDetail = ({navigation, route}) => {
             {detail.topic_link.title}
           </Text>
         </View>
+
       </Pressable>
     );
   };
@@ -309,18 +310,42 @@ const TopicDetail = ({navigation, route}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
       keyboardVerticalOffset={isHeader() ? NAVIGATION_BAR_HEIGHT + STATUS_BAR_HEIGHT : 0}>
+
       {/* 不带header */}
-      {!isHeader() && (
-        <>
-          <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'#fff'} />
-          <Pressable
-            onPress={onReportClick}
-            style={styles.report}
-            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-            <IconFont name="ziyuan" color="#fff" size={20} />
-          </Pressable>
-        </>
-      )}
+      {/*{!isHeader() && (*/}
+      {/*  <>*/}
+      {/*    <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'#fff'} />*/}
+      {/*    <Pressable*/}
+      {/*      onPress={onReportClick}*/}
+      {/*      style={styles.report}*/}
+      {/*      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>*/}
+      {/*      <IconFont name="ziyuan" color="#fff" size={20} />*/}
+      {/*    </Pressable>*/}
+      {/*  </>*/}
+      {/*)}*/}
+      {
+        (detail.content_style === 'video' || detail.content_style === 'img' ) &&
+        <GoBack
+          color={'white'}
+          report={{
+            report_type: 'Topic',
+            report_id: detail.id
+          }}
+        />
+      }
+
+      {
+        (detail.content_style === 'link' || detail.content_style === 'text' ) &&
+          <TopHeaderView
+            Title={'帖子详情'}
+            leftButtonColor={'black'}
+            RightButton={() => (
+              <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                <IconFont name="ziyuan" color="#000" size={20} />
+              </Pressable>
+            )}
+          />
+      }
       <CommentList
         type="Topic"
         detail={detail}
@@ -332,21 +357,26 @@ const TopicDetail = ({navigation, route}) => {
           <>
             {(detail.content_style === 'video' || detail.content_style === 'img') && (
               <View style={{position: 'relative'}}>
-                <View style={{height: topHeight, backgroundColor: 'black'}} />
+                <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
                 {detail.excellent && <ExcellentBtn style={styles.excellentHeader} />}
                 {detail.content_style === 'video' && renderVideo()}
                 {detail.content_style === 'img' && renderImg()}
               </View>
             )}
-            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+
             {detail.content_style === 'link' && (
-              <View style={{paddingHorizontal: 16, marginTop: 16}}>{renderLink()}</View>
+              <>
+                {/*<View style={{height: SAFE_TOP, backgroundColor: 'white'}} />*/}
+                <View>{renderLink()}</View>
+              </>
             )}
             {detail.plain_content ? (
               <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
                 <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
               </View>
             ) : null}
+
+            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
@@ -409,7 +439,7 @@ const styles = StyleSheet.create({
     // right: 15,
     left: 40,
     zIndex: 100,
-    top: Math.max(getStatusBarHeight(), 20),
+    top: SAFE_TOP,
   },
   multiLineText: {
     fontSize: 14,
