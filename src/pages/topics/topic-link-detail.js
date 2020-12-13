@@ -11,7 +11,7 @@ import {createComment} from '@/api/comment_api';
 import {dispatchTopicDetail} from '@/redux/actions';
 import {NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getTopic} from '@/api/topic_api';
-
+import TopHeaderView from "@/components/TopHeadView"
 const TopicLinkDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentTopic = useSelector(state => state.topic.topicDetail);
@@ -41,36 +41,16 @@ const TopicLinkDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
-  useLayoutEffect(() => {
-    if (detail) {
-      navigation.setOptions({
-        headerTitle: `${detail.topic_link.title.toString().substr(0, 10)}...`,
-        headerShown: true,
-        safeArea: false,
-        headerStyle: {
-          borderBottomColor: '#EBEBEB',
-          borderBottomWidth: StyleSheet.hairlineWidth,
-        },
-        headerLeft: () => (
-          <Pressable
-            onPress={() => navigation.goBack()}
-            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-            <IconFont
-              name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
-              color="#000"
-              size={15}
-            />
-          </Pressable>
-        ),
-      });
-    }
-  }, [navigation, detail]);
-
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
       keyboardVerticalOffset={NAVIGATION_BAR_HEIGHT + STATUS_BAR_HEIGHT}>
+      <TopHeaderView
+        Title={detail.topic_link.title}
+        leftButtonColor={'black'}
+        excellent={detail.excellent}
+      />
       <WebView
         originWhitelist={['*']}
         source={{uri: detail.topic_link.raw_link}}

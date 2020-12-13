@@ -91,6 +91,9 @@ const topicRouter = [
     name: 'TopicLinkDetail',
     component: TopicLinkDetail,
     safeArea: false,
+    options: {
+      headerShown: false,
+    },
   },
   {
     name: 'NewTopic',
