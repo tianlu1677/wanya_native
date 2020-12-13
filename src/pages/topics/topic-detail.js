@@ -307,7 +307,7 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={isHeader() ? NAVIGATION_BAR_HEIGHT : 0}>
+    >
 
       {/* 不带header */}
       {/*{!isHeader() && (*/}

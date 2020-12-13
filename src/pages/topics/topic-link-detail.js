@@ -45,7 +45,7 @@ const TopicLinkDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={NAVIGATION_BAR_HEIGHT + STATUS_BAR_HEIGHT}>
+    >
       <TopHeaderView
         Title={detail.topic_link.title}
         leftButtonColor={'black'}
