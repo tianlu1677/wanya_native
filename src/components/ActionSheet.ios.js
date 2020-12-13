@@ -7,7 +7,7 @@ const PRIMARY_COLOR = 'rgb(0,98,255)';
 const WHITE = '#ffffff';
 const BORDER_COLOR = '#DBDBDB';
 
-const ActionSheet = props => {
+const ActionSheet = props => {p
   const [showActionSheet, setShowActionSheet] = useState(false);
   const {actionItems} = props;
 

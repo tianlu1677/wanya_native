@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useLayoutEffect} from 'react';
+import React, {useState, useCallback,useEffect, useLayoutEffect} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -6,12 +6,18 @@ import * as action from '@/redux/constants';
 import Clipboard from '@react-native-community/clipboard';
 import Toast from '@/components/Toast';
 import {addTopicLink} from '@/api/topic_api';
+import Autolink from 'react-native-autolink';
 
-const reg = 'https://';
+// import Linkify from 'linkifyjs/react';
+// import * as linkify from 'linkifyjs';
+// const linkifyStr = require('linkifyjs/string');
+
+const reg = 'http://';
 const AddLink = ({navigation}) => {
   const dispatch = useDispatch();
   const home = useSelector(state => state.home);
   const [text, setText] = useState(null);
+  const [parseUrl, setParseUrl] = useState('');
 
   const load = async () => {
     const res = await Clipboard.getString();
@@ -19,6 +25,10 @@ const AddLink = ({navigation}) => {
       Toast.showError('已粘贴最近复制过的链接');
       setText(res);
     }
+  };
+
+  const correctUrlText = url => {
+    setText(url);
   };
 
   const onAnalysis = async () => {
@@ -50,6 +60,11 @@ const AddLink = ({navigation}) => {
     }, [])
   );
 
+  useEffect(() => {
+    setParseUrl(parseUrl)
+  }, [parseUrl]);
+  //
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: '添加链接',
@@ -67,17 +82,29 @@ const AddLink = ({navigation}) => {
       <TextInput
         style={styles.inputContent}
         autoFocus
-        autoComplete={'tel'}
+        autoCorrect={false}
+        autoComplete={false}
         caretHidden={false}
         selectionColor={'#ff193a'}
         placeholderTextColor={'#353535'}
         clearButtonMode={'always'}
         value={text}
-        onChangeText={value => setText(value)}
+        onChangeText={value => correctUrlText(value)}
       />
+
+      <View style={{paddingTop: 10, paddingLeft: 10}}>
+        <Autolink
+          text={text}
+          renderLink={(text, match) => {
+            // setParseUrl(match.getAnchorHref()); #TODO:修改
+            // console.log(match.getAnchorHref());
+            return <Text style={{color: 'red'}}>{match.getAnchorHref()}</Text>;
+          }}
+        />
+      </View>
     </View>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   wrapper: {
