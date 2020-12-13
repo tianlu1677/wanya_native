@@ -235,7 +235,9 @@ class App extends Component {
             <ShareItem />
           </PersistGate>
         </Provider>
-        <PolicyModal />
+        {
+          Platform.OS !== 'ios' && <PolicyModal />
+        }
       </>
     );
   }

@@ -6,12 +6,12 @@ import TopHeader from '@/components/TopHeader';
 
 const StickTopHeader = props => {
   return (
-    <View>
+    <>
       {Platform.OS === 'ios' && (
         <BlurView
           style={{flex: 1}}
-          // blurType="light"
-          // blurAmount={40}
+          blurType="light"
+          blurAmount={40}
         >
           <TopHeader
             statusBar={{barStyle: 'light-content'}}
@@ -36,7 +36,7 @@ const StickTopHeader = props => {
           )}
         />
       }
-    </View>
+    </>
   );
 };
 

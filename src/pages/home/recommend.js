@@ -7,7 +7,7 @@ import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRecommendPosts, getFollowedPosts, getFollowedNodePosts} from '@/api/home_api';
-import {BOTTOM_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, IsIos, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
@@ -17,6 +17,8 @@ import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {navigate} from "../../navigator/root-navigation"
+
+const topHeader = IsIos ? (BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10) : 0
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -69,10 +71,12 @@ const Recommend = props => {
     dispatch(dispatchCurrentAccount());
   }, []);
 
+
+
   return (
     <>
       <View style={{flex: 1}}>
-        <View style={{height: BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 0, backgroundColor: 'black'}} />
+        <View style={{height: topHeader, backgroundColor: 'black'}} />
         {/*<SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />*/}
         <FocusAwareStatusBar
           barStyle="light-content"
@@ -176,7 +180,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 4,
     zIndex: 1000,
-    top: 15,
+    top: IsIos ? topHeader + 15 : 15,
     width: 49,
   },
   message_icon: {
