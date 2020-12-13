@@ -19,12 +19,12 @@ import {navigationRef} from '@/navigator/root-navigation';
 import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import NewTopic from '@/pages/topics/new-topic';
-import AnalyticsUtil from '@/utils/umeng_analytics_util';
+
 import {HeaderBackButton} from '@react-navigation/stack';
 import Helper from '@/utils/helper';
 import AsyncStorage from '@react-native-community/async-storage';
-
-import {BlurView, VibrancyView} from '@react-native-community/blur';
+import { BlurView } from '@/components/NodeComponents';
+// import {BlurView, VibrancyView} from '@react-native-community/blur';
 import IconFont from '@/iconfont';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Recommend from '@/pages/home/recommend';
@@ -41,6 +41,7 @@ import {useNavigation} from '@react-navigation/native';
 import BackWhiteImg from '@/assets/images/back-white.png';
 import BackImg from '@/assets/images/back.png';
 import ViewShotPage from '@/components/SharePage';
+import AnalyticsUtil from '@/utils/umeng_analytics_util';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -95,9 +96,10 @@ function HomeTabList() {
         tabStyle: {display: 'flex', justifyContent: 'center', lineHeight: 55},
         showLabel: false,
         style: {
-          backgroundColor: 'transparent',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
           borderTopWidth: 0,
           height: 55,
+          borderRadius: 30
         },
       }}>
       <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{}} />
@@ -131,12 +133,14 @@ function MainStackList() {
       headerMode="screen"
       screenOptions={({route}) => ({
         headerStyle: {
-          backgroundColor: 'white',
-          // height: 54,
+          // backgroundColor: 'white',
+          backgroundColor: Platform.OS === 'ios' ? 'red' : 'white',
+          
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
           borderTopWidth: 0,
+          // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight.toFixed(1),
           // borderBottomColor: 'red',
           // justifyContent: 'center',
           // alignItems: 'center'
@@ -172,7 +176,8 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor={'red'}
+                  // translucent={true}
+                  backgroundColor="transparent"
                 />
               )}
               <Components {...props} />
@@ -182,7 +187,8 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  backgroundColor={'red'}
+                  translucent={!!route.translucent}
+                  backgroundColor={route.backgroundColor || 'transparent'}
                 />
               )}
               <Components {...props} />
@@ -289,12 +295,11 @@ const Navigation = () => {
       // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
       // Change this line to use another Mobile analytics SDK
       // Analytics.setCurrentScreen(currentRouteName);
-      AnalyticsUtil.onPageBegin(currentRouteName)
+      AnalyticsUtil.onPageStart(currentRouteName)
       // console.log('currentRouteName', currentRouteName)
     }
     // console.log('currentRouteName', currentRouteName)
     AnalyticsUtil.onPageEnd(currentRouteName)
-
     // Save the current route name for later comparision
     routeNameRef.current = currentRouteName;
   }
@@ -306,7 +311,7 @@ const Navigation = () => {
       onStateChange={(state) => {
         onStateChangeRecord(state)
       }}
-      // initialState={initialState}
+      // initialState={ __DEV__ ? initialState : ''}
       // onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
     >
       <>{!login.auth_token ? AuthStackList() : MainStackList()}</>
@@ -323,9 +328,9 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 28,
   },
-  bottomTabBar: {
-    backgroundColor: 'transparent',
-  },
+  // bottomTabBar: {
+  //   backgroundColor: 'transparent',
+  // },
 });
 
 export default Navigation;

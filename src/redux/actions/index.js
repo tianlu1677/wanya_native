@@ -122,7 +122,7 @@ export const dispatchTopicDetail = (topic = {}) => async dispatch => {
 export const dispathUpdateNodes = account_id => async dispatch => {
   if (account_id) {
     const followNodes = await getFollowNodeIndex({account_id});
-    dispatch({type: UPDATE_FOLLOW_NODES, value: followNodes});
+    dispatch({type: UPDATE_FOLLOW_NODES, value: followNodes.data.nodes});
   }
   const nodes = await getNodeIndex();
   dispatch({type: UPDATE_NODES, value: nodes});

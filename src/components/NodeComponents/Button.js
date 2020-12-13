@@ -11,6 +11,7 @@ const JoinStyles = StyleSheet.create({
     borderRadius: 1,
     fontWeight: '500',
     overflow: 'hidden',
+    zIndex: 10
   },
   joined: {
     color: '#bdbdbd',

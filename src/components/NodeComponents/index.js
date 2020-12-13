@@ -9,6 +9,7 @@ import JoinActivityNode from './JoinActivity'
 import GoBackNode from './GoBack'
 import {Loading} from './Modal';
 import BottomModalNode from './BottomModal';
+import BlurViewNode from './BlurViewComponent';
 
 export const PlayScore = PlayScoreNode;
 export const Avator = AvatorNode;
@@ -21,3 +22,4 @@ export const ModalLoading = Loading;
 export const JoinActivity = JoinActivityNode;
 export const GoBack = GoBackNode;
 export const BottomModal = BottomModalNode;
+export const BlurView = BlurViewNode;

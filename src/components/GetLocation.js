@@ -1,13 +1,22 @@
 import React, {useState} from 'react';
-import {StyleSheet, Alert, Text, View, Pressable, Modal} from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import {check, request, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
+import {StyleSheet, Platform, PermissionsAndroid, Alert, Text, View, Pressable, Modal} from 'react-native';
+import GeolocationIOS from 'react-native-geolocation-service';
+import {check, request, addLocationListener, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
+
+import { init, Geolocation } from "react-native-amap-geolocation";
+
+
 
 const GetLocation = ({children, handleClick, style}) => {
   const [visible, setVisible] = useState(false);
-  const iosLocationPermission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+  const iosLocationPermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
 
   const getLocation = async () => {
+    // await init({
+    //   ios: "6da6626cf6588fb6e3052deff1e8d4e9",
+    //   android: "648f6e4ce8f5b83b30e2eabcac060eee"
+    // });
+
     const answer = await checkPermission();
 
     if (answer === 'WAIT') {
@@ -28,19 +37,56 @@ const GetLocation = ({children, handleClick, style}) => {
       return;
     }
 
+    if(Platform.OS === 'ios') {
+      Geolocation.getCurrentPosition(
+        position => {
+          console.log('position => ', position);
+          handleClick && handleClick({position: position});
+        },
+        error => {
+          // See error code charts below.
+          console.log(error.code, error.message);
+          handleClick(false);
+        },
+        {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}
+      );
+    } else {
+      // await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
+      const re = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      ]);
+      // console.log('re', re)
+      // addLocationListener(location => console.log(location));
+      Geolocation.getCurrentPosition(
+        position => {
+          // alert(JSON.stringify(position))
+          console.log('position => ', position);
+          handleClick && handleClick({position: position});
+        },
+        error => {
+          // See error code charts below.
+          alert(JSON.stringify(error))
+          console.log(error.code, error.message);
+          handleClick(false);
+        },
+        {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}
+      );
+    }
+
     // position {"coords": {"accuracy": 65, "altitude": 84.75999954223632, "altitudeAccuracy": 6.575991892838178, "heading": -1, "latitude": 39.90715934323369, "longitude": 116.4694786466312, "speed": -1}, "timestamp": 1599203461710.297}
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('position => ', position);
-        handleClick && handleClick({position: position});
-      },
-      error => {
-        // See error code charts below.
-        console.log(error.code, error.message);
-        handleClick(false);
-      },
-      {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}
-    );
+    // Geolocation.getCurrentPosition(
+    //   position => {
+    //     console.log('position => ', position);
+    //     handleClick && handleClick({position: position});
+    //   },
+    //   error => {
+    //     // See error code charts below.
+    //     console.log(error.code, error.message);
+    //     handleClick(false);
+    //   },
+    //   {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}
+    // );
   };
 
   const checkPermission = async () => {
@@ -89,7 +135,7 @@ const GetLocation = ({children, handleClick, style}) => {
         }}>
         {children}
       </Pressable>
-      <Modal transparent={visible} visible={visible}>
+      <Modal transparent={visible} statusBarTranslucent visible={visible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>授权后才能设置场地位置</Text>

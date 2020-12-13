@@ -10,7 +10,9 @@ import {
   Pressable,
   Dimensions,
   ScrollView,
+  Platform,
 } from 'react-native';
+// import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import ImagePicker from 'react-native-image-picker';
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
@@ -65,13 +67,15 @@ const NewTopic = props => {
   };
 
   const checkPermission = async () => {
-    const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+    const imagePermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
+    const status = await check(imagePermission);
+    console.log('imagePermission', status)
     if (status === RESULTS.GRANTED) {
       return true;
     }
 
     if (status === RESULTS.DENIED) {
-      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+      request(imagePermission).then(result => {
         console.log('result', result);
       });
       return true;
@@ -87,6 +91,7 @@ const NewTopic = props => {
   };
 
   const onImagePicker = async () => {
+    // console.log('checkPermission()', await checkPermission())
     const hasPermission = await checkPermission();
     if (!hasPermission) {
       return;
@@ -111,33 +116,97 @@ const NewTopic = props => {
       }
     });
   };
-
+  //TODO 限制描述
   const onVideoPicker = async () => {
     const hasPermission = await checkPermission();
     if (!hasPermission) {
       return;
     }
+    // console.log('staring')
+    // SyanImagePicker.openVideoPicker({
+    //   allowTakeVideo: false,
+    //   // MaxSecond: 500,
+    //   // MinSecond: 0,
+    //   // scaleEnabled: false,
+    //   // recordVideoSecond: 500,
+    //   videoCount: 1,
+    //   quality: 100,
+    //   compress: false,
+    //   minimumCompressSize: 1000000
+    //   // videoMaximumDuration: 500
+    // }, (error, res) => {
+    //   console.log('error', error)
+    //   console.log('res', res)
+    //   console.log('end')
+    // });
+    // props.videoPick(
+    //   {
+    //     MaxSecond: 2,
+    //     MinSecond: 1,
+    //     recordVideoSecond: 2,
+    //     videoCount: 1,
+    //     allowTakeVideo: false,
+    //   },
+    //   async (err, res) => {
+    //     if (err) {
+    //       console.log('uploader error', err, res);
+    //       return;
+    //     }
+    //     console.log('res', res);
+    //     setVideoSource([...res]);
+    //     const result = await props.uploadVideo(res[0], dispatch);
+    //     setVideoSource([result.asset]);
+    //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+    //   }
+    // );
 
-    ImagePicker.launchImageLibrary(
-      {
-        mediaType: 'video',
-        videoQuality: 'low',
-      },
-      async response => {
-        if (response.didCancel) {
+    if(Platform.OS !== 'ios') {
+      props.removeAllPhoto();
+      props.videoPick({
+        MaxSecond: 300,
+        MinSecond: 1,
+        recordVideoSecond: 60,
+        videoCount: 1
+      }, async (err, res) => {
+        if (err) {
           return;
         }
-        const video = response;
-        props.removeAllPhoto();
-        let videoSourceContent = {
-          uri: video.origURL,
-        };
-        setVideoSource([videoSourceContent]);
-        const result = await props.uploadVideo(videoSourceContent, dispatch);
+        setVideoSource([...res]);
+        const result = await props.uploadVideo(res[0], dispatch);
         setVideoSource([result.asset]);
         dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-      }
-    );
+      });
+    }
+
+    // react-native-image-picker
+    if(Platform.OS === 'ios') {
+      ImagePicker.launchImageLibrary(
+        {
+          mediaType: 'video',
+          videoQuality: 'low',
+        },
+        async response => {
+          if (response.didCancel) {
+            return;
+          }
+          console.log('response', response)
+          // return
+          const video = response;
+          props.removeAllPhoto();
+          let videoSourceContent = {
+            uri: video.origURL, //video.uri.replace('file://', ''),
+            // height: video.height,
+            // width: video.width,
+            // duration: video.duration,
+          };
+          setVideoSource([videoSourceContent]);
+          const result = await props.uploadVideo(videoSourceContent, dispatch);
+          setVideoSource([result.asset]);
+          dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+          // Alert.alert(JSON.stringify(video))
+        }
+      );
+    }
   };
 
   const deleteMedia = index => {

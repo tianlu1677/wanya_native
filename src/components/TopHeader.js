@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {NAVIGATION_BAR_HEIGHT, IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
 
 const TopHeader = props => {
   const LeftButton = props.LeftButton;
@@ -21,19 +21,19 @@ const TopHeader = props => {
   const navigation = useNavigation();
   const route = useRoute();
   return (
-    <View>
+    <View style={{}}>
       {props.statusBar.hidden ? null : (
         <View style={styles.statusBar}>
           <StatusBar {...props.statusBar} />
         </View>
       )}
-      <View style={styles.header}>
+      <View style={[styles.header, props.headerStyles]}>
         <View style={styles.leftButton}>
           {LeftButton ? (
             <LeftButton />
           ) : (
             <TouchableOpacity
-              style={{marginLeft: 10}}
+              style={{marginLeft: 10,}}
               onPress={() => {
                 if (!navigation.canGoBack() || isAtRoot) {
                   navigation.openDrawer();
@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusBar: {
-    height: STATUS_BAR_HEIGHT,
+    height: IsIos ? STATUS_BAR_HEIGHT : 0,
   },
 });

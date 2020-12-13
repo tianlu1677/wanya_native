@@ -157,7 +157,7 @@ const ContentInput = styled(TextInput)`
   font-size: 15px;
   height: 174px;
   line-height: 16px;
-  paddingTop: 10;
+  paddingTop: 10px;
   text-align-vertical: top;
 `;
 

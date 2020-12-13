@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {BlurView} from '@react-native-community/blur';
+// import {BlurView} from '@react-native-community/blur';
 import Loading from '@/components/Loading';
 import TabViewList from '@/components/TabView';
 import {
@@ -11,6 +11,7 @@ import {
   JoinActivity,
   GoBack,
   BottomModal,
+  BlurView
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
@@ -21,13 +22,14 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT} from '@/utils/navbar';
 import {dispathUpdateNodes} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
+import FastImage from 'react-native-fast-image';
 
 const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -102,17 +104,16 @@ const NodeDetail = ({navigation, route}) => {
 
   const Header = () => {
     return (
-      <View style={{position: 'relative'}}>
-        <GoBack />
+      <View style={{position: 'relative', flex: 1}}>
         <View>
           <FastImg
             source={{uri: detail.backgroud_cover_url}}
-            resizeMode={'cover'}
+            mode={'cover'}
             style={styles.imageCover}
           />
           <View style={styles.imageCoverOpacity} />
         </View>
-
+        <GoBack />
         <View style={styles.header}>
           <View style={styles.nodeContent}>
             <View style={styles.nodeInfo}>
@@ -136,7 +137,7 @@ const NodeDetail = ({navigation, route}) => {
               style={styles.accountInfo}
               blurType="light"
               blurAmount={10}
-              reducedTransparencyFallbackColor="#white">
+              reducedTransparencyFallbackColor="white">
               <JoinAccounts accounts={detail.accounts} size={25} />
               <Text style={styles.count}>
                 {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
@@ -321,7 +322,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-    zIndex: 2,
+    // zIndex: ,
     borderRadius: 2,
     overflow: 'hidden',
     // position: 'absolute',

@@ -3,6 +3,7 @@ import {CardStyleInterpolators} from '@react-navigation/stack';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
+import GoNewTopic from '@/pages/topics/go-new-topic';
 import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
@@ -103,24 +104,39 @@ const topicRouter = [
     name: 'AddHashTag',
     barColor: 'dark',
     component: AddHashTag,
-    options: {title: '@话题', headerShown: false},
+    options: {
+      title: '@话题',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddMentionAccount',
     barColor: 'dark',
     component: AddMentionAccount,
-    options: {title: '提及人列表', headerShown: false},
+    options: {
+      title: '提及人列表',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddSpace',
     barColor: 'dark',
     component: AddSpace,
-    options: {title: '场地列表', headerShown: false},
+    options: {
+      title: '场地列表',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddNode',
     barColor: 'dark',
     component: AddNode,
+    options: {
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddLink',
@@ -322,12 +338,6 @@ export const routers = [
     name: 'AdminPhoneLogin',
     component: AdminPhoneLogin,
     options: {title: 'AdminPhoneLogin'},
-  },
-  {
-    name: 'MineDetail',
-    component: MineDetail,
-    safeArea: false,
-    options: {title: 'MineDetail', headerShown: false},
   },
 
   {

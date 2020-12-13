@@ -71,7 +71,7 @@ RCT_EXPORT_METHOD(onEventWithMapAndCount:(NSString *)eventId parameters:(NSDicti
   [MobClick event:eventId attributes:parameters counter:eventNum];
 }
 
-RCT_EXPORT_METHOD(onPageBegin:(NSString *)pageName)
+RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
 {
   if (pageName == nil || [pageName isKindOfClass:[NSNull class]]) {
     return;

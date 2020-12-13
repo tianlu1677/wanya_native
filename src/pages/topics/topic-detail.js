@@ -4,6 +4,7 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
+  StatusBar,
   StyleSheet,
   Pressable,
   Dimensions,
@@ -405,6 +406,7 @@ const styles = StyleSheet.create({
   excellentHeader: {
     marginTop: 14,
     position: 'absolute',
+    // right: 15,
     left: 40,
     zIndex: 100,
     top: Math.max(getStatusBarHeight(), 20),

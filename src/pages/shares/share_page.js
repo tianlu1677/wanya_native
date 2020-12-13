@@ -161,7 +161,7 @@ const SharePageModal = props => {
     <ModelWrap>
       {loadingView ? <Loading /> : <View />}
       <ScrollView
-        style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : ''}}
+        style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : 'flex'}}
         showsVerticalScrollIndicator={false}>
         <ViewShotPage pageShareContent={shareContent} viewShotRef={viewShotRef} />
       </ScrollView>

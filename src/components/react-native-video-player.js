@@ -10,9 +10,12 @@ import {
   View,
   ViewPropTypes,
   ActivityIndicator,
+  NativeModules,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video'; // eslint-disable-line
+
+const { VideoPlayerManager } = NativeModules;
 
 const BackgroundImage = ImageBackground || Image; // fall back to Image if RN < 0.46
 
@@ -239,6 +242,7 @@ export default class VideoPlayer extends Component {
   }
 
   onBuffer = ({isBuffering}) => {
+    // console.log('onBuffer', isBuffering)
     this.setState({opacity: isBuffering ? 1 : 0});
   }
 
@@ -265,7 +269,34 @@ export default class VideoPlayer extends Component {
   }
 
   onToggleFullScreen() {
-    this.player.presentFullscreenPlayer();
+    // this.player.presentFullscreenPlayer();
+    const { video } = this.props;
+    if(Platform.OS === "android")
+    {
+      // VideoPlayerManager.showVideoPlayer(video.uri);
+      this.player.presentFullscreenPlayer();
+    }
+    else
+    {
+      this.player.presentFullscreenPlayer();
+    }
+  }
+
+  async showFullscreenAndroid(uri, position) {
+    try {
+      position = await NativeModules.BridgeModule.showFullscreen(uri, position);
+      // If position is zero, stop.
+      if (position == 0) {
+        this.setState({isPlaying: false});
+      } else {
+        position = Math.floor(position / 1000);
+        let progress = position / this.state.duration;
+        this.setState({progress,});
+        this.player.seek(position);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   onSeekBarLayout({nativeEvent}) {
@@ -479,7 +510,7 @@ export default class VideoPlayer extends Component {
             />
           </TouchableOpacity>
         )}
-        {Platform.OS === 'android' || this.props.disableFullscreen ? null : (
+        {(this.props.disableFullscreen || Platform.OS !== 'ios') ? null : (
           <TouchableOpacity onPress={this.onToggleFullScreen} style={customStyles.controlButton}>
             <Icon
               style={[styles.extraControl, customStyles.controlIcon]}
@@ -520,10 +551,21 @@ export default class VideoPlayer extends Component {
           onEnd={this.onEnd}
           onLoad={this.onLoad}
           source={video}
+          controls={false}
           resizeMode={resizeMode}
-          hideShutterView={true}
+          progressUpdateInterval={400}
+          // onBandwidthUpdate={(event) => {console.log('e', event)}}
+          hideShutterView={false}
+          repeat={this.props.loop}
+          onBuffer={this.onBuffer}
           ignoreSilentSwitch="ignore"
           onFullscreenPlayerDidDismiss={this.onFullscreenPlayerDidDismiss}
+          bufferConfig={{
+            minBufferMs: 15000,
+            maxBufferMs: 50000,
+            bufferForPlaybackMs: 1000,
+            bufferForPlaybackAfterRebufferMs: 1000
+          }}
           // fullscreenOrientation={'landscape'}
         />
         {
@@ -572,7 +614,9 @@ export default class VideoPlayer extends Component {
     return this.renderVideo();
   }
 
+
   render() {
+    console.log('xxxxxxxxxxxxx')
     return (
       <View onLayout={this.onLayout} style={this.props.customStyles.wrapper}>
         {this.renderContent()}
@@ -637,7 +681,7 @@ VideoPlayer.defaultProps = {
   videoHeight: 720,
   autoplay: false,
   controlsTimeout: 2000,
-  loop: false,
+  loop: true,
   resizeMode: 'contain',
   disableSeek: false,
   pauseOnPress: false,

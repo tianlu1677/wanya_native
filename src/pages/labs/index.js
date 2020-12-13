@@ -1,13 +1,18 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {StyleSheet,Pressable, Button, FlatList, View, Text} from 'react-native';
+import {StyleSheet,Pressable, Button, FlatList, ScrollView, View, Text} from 'react-native';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import {getRecommendPosts, getFollowedPosts} from '@/api/home_api';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import Video from 'react-native-video'
+// import VideoPlayerContent from '@/components/react-native-video-player';
+
 import RenderItemMemo from './memItem';
 // const HEADER_HEIGHT = 144;
+// import { VLCPlayer } from 'react-native-vlc-media-player';
+// import VideoVLC from "@/components/VLCPlayer/VideoVLC"
 const TAB_BAR_HEIGHT = 55;
 
 const CollapsibleHeaderExample = props => {
@@ -129,16 +134,72 @@ const CollapsibleHeaderExample = props => {
 
   return (
     <View style={{flex: 1}}>
-      <Pressable
-        title={'add'}
-        onPress={() => {
-          add();
-          // setNumber(number + 1);
-        }}
-        style={{marginTop: 0, height: 100, backgroundColor: 'red'}}
-      />
-      <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}  style={{marginTop: 100}}/>
+      <ScrollView>
+      <Video
+        style={{height: 350, width: 400}}
+        autoplay
+        repeat
+        controls
+        source={{uri: 'https://file.meirixinxue.com/assets/126a2cab32a121cb6c24dd4caceba755.m3u8'}}>
+      </Video>
+
+        {/*<VideoVLC*/}
+        {/*  customStyles={{ height: 200, width: 200}}*/}
+        {/*  videoWidth={375}*/}
+        {/*  videoHeight={350}*/}
+
+        {/*  video={{uri: 'https://file.meirixinxue.com/assets/126a2cab32a121cb6c24dd4caceba755.mp4'}}*/}
+        {/*  // videoWidth={videoWidth}*/}
+        {/*  // videoHeight={videoHeight}*/}
+        {/*  // poster={`${detail.video_content_m3u8}?vframe/jpg/offset/0/rotate/auto`}*/}
+        {/*  posterResizeMode={'contain'}*/}
+        {/*  hideControlsOnStart*/}
+        {/*  pauseOnPress*/}
+        {/*  muted={false}*/}
+        {/*  resizeMode={'cover'}*/}
+        {/*  autoplay={true}*/}
+        {/*  loop={true}*/}
+        {/*/>*/}
+
+
+        {/*<VLCPlayer*/}
+        {/*  source={{*/}
+        {/*    initType: 2,*/}
+        {/*    hwDecoderEnabled: 1,*/}
+        {/*    hwDecoderForced: 1,*/}
+        {/*    uri:*/}
+        {/*      'https://file.meirixinxue.com/assets/126a2cab32a121cb6c24dd4caceba755.mp4',*/}
+        {/*    initOptions: [*/}
+        {/*      '--rtsp-tcp',*/}
+        {/*      '--network-caching=150',*/}
+        {/*      '--rtsp-caching=150',*/}
+        {/*      '--no-stats',*/}
+        {/*      '--tcp-caching=150',*/}
+        {/*      '--realrtsp-caching=150',*/}
+        {/*    ],*/}
+        {/*  }}*/}
+        {/*  autoplay={true}*/}
+        {/*  autoAspectRatio={true}*/}
+        {/*  resizeMode="cover"*/}
+        {/*  // videoAspectRatio={"4:3"}*/}
+        {/*  isLive={true}*/}
+        {/*  autoReloadLive={true}*/}
+        {/*  style={{ height: 400, marginTop: 30}}*/}
+        {/*/>*/}
+
+
+        {/*<Video*/}
+        {/*  style={{height: 400, width: 300}}*/}
+        {/*  autoplay={false}*/}
+        {/*  repeat*/}
+        {/*  source={{uri: 'https://file.meirixinxue.com/assets/126a2cab32a121cb6c24dd4caceba755.mp4'}}>*/}
+        {/*</Video>*/}
+
+
+        {/*<FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}  style={{marginTop: 100}}/>*/}
+      </ScrollView>
     </View>
+
   );
 };
 

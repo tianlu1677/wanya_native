@@ -4,6 +4,7 @@ import {
   StyleSheet,
   StatusBar,
   View,
+  ScrollView,
   TouchableOpacity,
   Image,
   Text,
@@ -20,11 +21,11 @@ import Toast from '@/components/Toast';
 import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import AddFriendImg from '@/assets/images/add-invite.png';
-import FastImg from '@/components/FastImg'
+import FastImg from '@/components/FastImg';
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
-  const [accountList, setAccountList] = useState([])
+  const [accountList, setAccountList] = useState([]);
   const [shareModelVisible, setShareModelVisible] = useState(false);
   const [shareUri, setShareUri] = useState('');
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const InviteDetail = ({navigation, route}) => {
 
   //https://github.com/little-snow-fox/react-native-wechat-lib
   const shareFriend = e => {
-    console.log('shareUri', shareUri)
+    console.log('shareUri', shareUri);
     // e.stopPropagation();
     WeChat.shareImage(
       {
@@ -86,86 +87,88 @@ const InviteDetail = ({navigation, route}) => {
   };
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <StatusBar barStyle={'default'} />
-      <CardView colors={['#4e4e4e', '#181818']}>
-        <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
-          <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
-          <CardTitleText>我的邀请码</CardTitleText>
-        </View>
-        <CardCodeText
-          onPress={() => {
-            onCopy();
-          }}>
-          {inviteCode}
-        </CardCodeText>
-        <CardCopyText
-          onPress={() => {
-            onCopy();
-          }}>
-          复制
-        </CardCopyText>
-      </CardView>
+      <StatusBar barStyle={'dark-content'} />
+      <ScrollView>
+        <CardView colors={['#4e4e4e', '#181818']}>
+          <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
+            <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
+            <CardTitleText>我的邀请码</CardTitleText>
+          </View>
+          <CardCodeText
+            onPress={() => {
+              onCopy();
+            }}>
+            {inviteCode}
+          </CardCodeText>
+          <CardCopyText
+            onPress={() => {
+              onCopy();
+            }}>
+            复制
+          </CardCopyText>
+        </CardView>
 
-      <DescView>
-        <DescText>向朋友发送社区体验邀请，</DescText>
-        <DescText>与朋友共建青年社区文化。</DescText>
-      </DescView>
+        <DescView>
+          <DescText>向朋友发送社区体验邀请，</DescText>
+          <DescText>与朋友共建青年社区文化。</DescText>
+        </DescView>
 
-      <AccountCardView>
-        {accountList.map(invite => {
-          return (
-            <AccountWrapView>
-              <Avator
-                size={45}
-                key={invite.id}
-                account={invite.account}
-                // containerStyle={{marginRight: 15}}
-              />
-            </AccountWrapView>
-          );
-        })}
-        {(accountList.length <= 0 || accountList.length < 5) &&
-          [1, 2, 3, 4].slice(0, 4 - accountList.length).map(i => {
+        <AccountCardView>
+          {accountList.map(invite => {
             return (
-              <AccountWrapView
-                key={i}
-                onPress={() => {
-                  setShareModelVisible(true);
-                }}>
-                <FastImg
-                  source={AddFriendImg}
-                  style={{width: 45, height: 45, borderRadius: 20}}
+              <AccountWrapView>
+                <Avator
+                  size={45}
+                  key={invite.id}
+                  account={invite.account}
+                  // containerStyle={{marginRight: 15}}
                 />
               </AccountWrapView>
             );
           })}
-        <AccountWrapView
-          onPress={() => {
-            setShareModelVisible(true);
-          }}>
-          <FastImg source={AddFriendImg} style={{width: 45, height: 45, borderRadius: 20}} />
-        </AccountWrapView>
+          {(accountList.length <= 0 || accountList.length < 5) &&
+            [1, 2, 3, 4].slice(0, 4 - accountList.length).map(i => {
+              return (
+                <AccountWrapView
+                  key={i}
+                  onPress={() => {
+                    setShareModelVisible(true);
+                  }}>
+                  <FastImg
+                    source={AddFriendImg}
+                    style={{width: 45, height: 45, borderRadius: 20}}
+                  />
+                </AccountWrapView>
+              );
+            })}
+          <AccountWrapView
+            onPress={() => {
+              setShareModelVisible(true);
+            }}>
+            <FastImg source={AddFriendImg} style={{width: 45, height: 45, borderRadius: 20}} />
+          </AccountWrapView>
 
-
-         {(accountList.length >= 5 && accountList.length % 5 !== 0) &&
-          [1, 2, 3, 4, 5].slice(0, 4 - accountList.length % 5).map(i => {
-            return (
-              <AccountWrapView
-                key={i}
-                onPress={() => {
-                  setShareModelVisible(true);
-                }}>
-                <FastImg
-                  source={AddFriendImg}
-                  style={{width: 45, height: 45, borderRadius: 20}}
-                />
-              </AccountWrapView>
-            );
-          })}        
-      </AccountCardView>
-      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
-      </View>
+          {accountList.length >= 5 &&
+            accountList.length % 5 !== 0 &&
+            [1, 2, 3, 4, 5].slice(0, 4 - (accountList.length % 5)).map(i => {
+              return (
+                <AccountWrapView
+                  key={i}
+                  onPress={() => {
+                    setShareModelVisible(true);
+                  }}>
+                  <FastImg
+                    source={AddFriendImg}
+                    style={{width: 45, height: 45, borderRadius: 20}}
+                  />
+                </AccountWrapView>
+              );
+            })}
+        </AccountCardView>
+        <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
+        </View>
+      </ScrollView>
       <Button
         title="微信邀请"
         titleStyle={{fontSize: 16, fontWeight: '500'}}
@@ -188,9 +191,11 @@ const InviteDetail = ({navigation, route}) => {
       <Modal
         animationType=""
         transparent={true}
+        statusBarTranslucent
         visible={shareModelVisible}
-        onRequestClose={() => {}}>
-
+        onRequestClose={() => {
+          setShareModelVisible(false);
+        }}>
         <ModelWrap
           onPress={() => {
             setShareModelVisible(false);
@@ -283,7 +288,7 @@ const AccountCardView = styled(View)`
   display: flex;
   flex-direction: row;
   margin-top: 45px;
-  justify-content: space-between;  
+  justify-content: space-between;
   align-content: center;
   flex-wrap: wrap;
   margin-left: 52px;
@@ -294,10 +299,10 @@ const AccountCardView = styled(View)`
 
 const AccountWrapView = styled(Pressable)`
   display: flex;
-  marginBottom: 18px;
-  paddingLeft: 5px;
-  paddingRight: 5px;
-`
+  margin-bottom: 18px;
+  padding-left: 5px;
+  padding-right: 5px;
+`;
 const ModelWrap = styled(TouchableOpacity)`
   display: flex;
   flex: 1;
