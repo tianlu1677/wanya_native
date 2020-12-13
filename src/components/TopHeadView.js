@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {NAVIGATION_BAR_HEIGHT, IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
 import ExcellentImage from '@/assets/images/excellent.png';
 import FastImg from "@/components/FastImg"
+import IconFont from '@/iconfont';
 
 const TopHeaderView = props => {
   const LeftButton = props.LeftButton;
@@ -46,12 +47,14 @@ const TopHeaderView = props => {
                   navigation.goBack();
                 }
               }}>
-              <Icon
-                name="chevron-back-outline"
-                size={22}
-                color={props.leftButtonColor || 'white'}
-                iconStyle={{marginRight: 1}}
-              />
+              {navigation.canGoBack() ?
+                <Icon
+                  name={'chevron-back-outline'}
+                  size={22}
+                  color={props.leftButtonColor || 'white'}
+                  iconStyle={{marginRight: 1}}
+                /> : <IconFont name="home-recommend" color={props.leftButtonColor || 'white'} size={16} />
+              }
               {
                 props.excellent && <View style={{justifyContent: 'center'}}>
                   <FastImg source={ExcellentImage} style={{width: 30, height: 17}} />
@@ -99,7 +102,6 @@ TopHeaderView.defaultProps = {
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    marginTop: 5,
     height: NAV_BAR_HEIGHT,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#EBEBEB',

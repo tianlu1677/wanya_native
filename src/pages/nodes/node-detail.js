@@ -22,7 +22,7 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT} from '@/utils/navbar';
+import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import {dispathUpdateNodes} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: NAVIGATION_BAR_HEIGHT + 1,
+    paddingTop: SAFE_TOP + 34,
     height: 283,
     position: 'relative',
   },

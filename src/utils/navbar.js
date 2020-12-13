@@ -7,7 +7,7 @@ export const NAV_BAR_HEIGHT_ANDROID = 50; //导航栏在Android中的高度
 export const NAV_BAR_HEIGHT = Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID;
 
 export const NAVIGATION_BAR_HEIGHT = NAV_BAR_HEIGHT;
-export const STATUS_BAR_HEIGHT = Platform.OS !== 'ios' || !isIphoneX ? getStatusBarHeight(false) : 20;
+export const STATUS_BAR_HEIGHT = Platform.OS !== 'ios' || !isIphoneX ? getStatusBarHeight(false) : getStatusBarHeight(false);
 export const BOTTOM_HEIGHT = Platform.OS === 'ios' ? getBottomSpace() : 0;
 export const IsIos = (Platform.OS === 'ios')
 
@@ -18,6 +18,7 @@ export const SCALE = Dimensions.get('window').width / 375 > 1 ? 1.08 : 1;
 //padding的距离
 export const PADDING_TOP = Platform.OS === 'ios' ? 20 : 0;
 export const SAFE_TOP = Platform.OS === 'ios' ? getStatusBarHeight(true) : 0;
+export const UNSAFE_TOP = Platform.OS === 'ios' ? getStatusBarHeight(false) : 0;
 
 // 设备的宽高
 export const SCREEN_WIDTH = Dimensions.get('window').width
