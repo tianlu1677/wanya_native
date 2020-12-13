@@ -20,7 +20,7 @@ const AddLink = ({navigation}) => {
   const load = async () => {
     const res = await Clipboard.getString();
     console.log(res);
-    re;
+
     if (res && res.includes(reg)) {
       Toast.showError('已粘贴最近复制过的链接');
       setText(res);
