@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Platform, ActionSheetIOS, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Avator} from '@/components/NodeComponents';
@@ -64,8 +64,27 @@ const CommentList = props => {
         },
       ];
     }
-    setActionItems(options);
-    setShowActionSheet(true);
+    if(Platform.OS === 'ios') {
+      const cancelItem = {
+        id: '#cancel',
+        label: '取消',
+        type: 'cancel',
+        onPress: () => {},
+      };
+      const actionSheetItems = [...options, cancelItem];
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: actionSheetItems.map((x) => x.label),
+          destructiveButtonIndex: actionSheetItems.length - 1,
+        },
+        buttonIndex => {
+          actionSheetItems[buttonIndex].onPress();
+        }
+      )
+    } else {
+      setActionItems(options);
+      setShowActionSheet(true);
+    }
   };
 
   const onPraise = async (item, index) => {
