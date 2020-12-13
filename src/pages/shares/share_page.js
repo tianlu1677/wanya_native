@@ -30,6 +30,7 @@ const SharePageModal = props => {
     node_name: '',
     content: '',
     bg_img_url: '',
+    topic_link: {}
   };
   const {route} = props;
   const item_type = route.params.item_type;
@@ -75,6 +76,7 @@ const SharePageModal = props => {
           : '',
         desc: `${topic.published_at_text} 发布了一篇帖子`,
         content_style: topic.content_style,
+        topic_link: topic.topic_link,
         qrcode_url: topic.qrcode_url,
       });
       // console.log('shareContent', shareContent);
