@@ -162,11 +162,6 @@ const CommentList = props => {
             </Pressable>
           </View>
         </Pressable>
-        <ActionSheet
-          actionItems={actionItems}
-          showActionSheet={showActionSheet}
-          changeModal={() => setShowActionSheet(false)}
-        />
       </View>
     );
   };
@@ -190,19 +185,26 @@ const CommentList = props => {
   }, [props.detail]);
 
   return (
-    <ScrollList
-      data={listData}
-      loading={loading}
-      onRefresh={loadData}
-      headers={headers}
-      renderItem={renderItem}
-      enableRefresh={false}
-      bounces={false}
-      renderSeparator={renderSeparator}
-      settings={{showsVerticalScrollIndicator: false}}
-      from="comment"
-      {...props}
-    />
+    <>
+      <ScrollList
+        data={listData}
+        loading={loading}
+        onRefresh={loadData}
+        headers={headers}
+        renderItem={renderItem}
+        enableRefresh={false}
+        bounces={false}
+        renderSeparator={renderSeparator}
+        settings={{showsVerticalScrollIndicator: false}}
+        from="comment"
+        {...props}
+      />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
+    </>
   );
 };
 

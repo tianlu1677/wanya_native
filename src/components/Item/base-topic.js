@@ -123,7 +123,7 @@ export const TopicLinkContent = props => {
                 ? {uri: data.topic_link.cover_url}
                 : require('@/assets/images/add-link.png')
             }
-            mode={'contain'}
+            mode={'cover'}
             style={{width: 45, height: 45}}
           />
           {data.topic_link.outlink_type === 'music' && (

@@ -91,8 +91,8 @@ export async function updateTopic(id, data = {}) {
 // 添加外链
 export async function addTopicLink(data) {
   const res = await request({
-    url: '/api/v1/topics/add_topic_link.json',
-    method: 'POST',
+    url: '/api/v1/url_meta',
+    method: 'GET',
     data: data,
   });
   return res.data;
