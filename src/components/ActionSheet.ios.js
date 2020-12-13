@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Modal from 'react-native-modal';
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {StyleSheet, Text, TouchableHighlight, ActionSheetIOS, View} from 'react-native';
 
 const PRIMARY_COLOR = 'rgb(0,98,255)';
 const WHITE = '#ffffff';
@@ -9,27 +9,22 @@ const BORDER_COLOR = '#DBDBDB';
 
 const ActionSheet = props => {
   const [showActionSheet, setShowActionSheet] = useState(false);
-  const {actionItems } = props;
+  const {actionItems} = props;
 
   const cancelItem = {
     id: '#cancel',
     label: '取消',
     type: 'cancel',
     onPress: props?.onCancel,
-  }
+  };
 
-  const actionSheetItems = [
-    ...actionItems,
-    cancelItem
-  ];
+  const actionSheetItems = [...actionItems, cancelItem];
 
   useEffect(() => {
     setShowActionSheet(props.showActionSheet);
   }, [props.showActionSheet]);
 
   const onPressItem = actionItem => {
-    console.log('xxxxxxxxxxx');
-
     actionItem.onPress();
     setShowActionSheet(false);
     if (props.changeModal) {
@@ -37,60 +32,23 @@ const ActionSheet = props => {
     }
   };
 
-  console.log('showActionSheet1', props)
+  // console.log('showActionSheet1', actionSheetItems)
   return (
-    <Modal
-      onBackdropPress={() => onPressItem(cancelItem) }
-      isVisible={showActionSheet}
-      transparent={true}
-      animationIn={'slideInUp'}
-      statusBarTranslucent
-      useNativeDriver={true}
-      animationInTiming={400}
-      animationOutTiming={400}
-      style={{
-        margin: 0,
-        justifyContent: 'flex-end',
-      }}>
-
-      <View style={styles.modalContent}>
-        {actionSheetItems.map((actionItem, index) => {
-          return (
-            <TouchableHighlight
-              style={[
-                styles.actionSheetView,
-                index === 0 && {
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
-                },
-                index === actionSheetItems.length - 2 && {
-                  borderBottomLeftRadius: 12,
-                  borderBottomRightRadius: 12,
-                },
-                index === actionSheetItems.length - 1 && {
-                  borderBottomWidth: 0,
-                  backgroundColor: WHITE,
-                  marginTop: 8,
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
-                  borderBottomLeftRadius: 12,
-                  borderBottomRightRadius: 12,
-                },
-              ]}
-              underlayColor={'#f7f7f7'}
-              key={index}
-              onPress={() => onPressItem(actionItem)}>
-              <Text
-                allowFontScaling={false}
-                style={[styles.actionSheetText, actionItem.type && styles[actionItem.type]]}>
-                {actionItem.label}
-              </Text>
-            </TouchableHighlight>
-          );
-        })}
-      </View>
-    </Modal>
-  );
+    <>
+      {
+        showActionSheet && ActionSheetIOS.showActionSheetWithOptions(
+          {
+            options: actionSheetItems.map((x) => x.label),
+            destructiveButtonIndex: actionSheetItems.length - 1,
+            // cancelButtonIndex: 2//actionSheetItems.length - 1
+          },
+          buttonIndex => {
+            onPressItem(actionSheetItems[buttonIndex])
+          }
+        )
+      }
+    </>
+  )
 };
 
 const styles = StyleSheet.create({
@@ -122,11 +80,11 @@ const styles = StyleSheet.create({
     color: PRIMARY_COLOR,
   },
   cancel: {
-    color: '#fa1616'
+    color: '#fa1616',
   },
   destroy: {
-    color: '#fa1616'
-  }
+    color: '#fa1616',
+  },
 });
 
 ActionSheet.propTypes = {
@@ -139,7 +97,6 @@ ActionSheet.propTypes = {
   ).isRequired,
   onCancel: PropTypes.func,
   actionTextColor: PropTypes.string,
-
 };
 
 ActionSheet.defaultProps = {
@@ -150,7 +107,6 @@ ActionSheet.defaultProps = {
 };
 
 export default ActionSheet;
-
 
 // const actionItems = [
 //   {
