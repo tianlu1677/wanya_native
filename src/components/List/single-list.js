@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 const SingleList = props => {
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
@@ -55,7 +55,11 @@ const SingleList = props => {
         backgroundColor: '#FAFAFA',
         flex: listData.length === 0 && props.renderEmpty ? 1 : 0,
       }}
-      settings={{initialNumToRender: 6, onEndReachedThreshold: 0.25, windowSize: Platform.OS === 'ios' ? 8 : 20}}
+      settings={{
+        initialNumToRender: 6,
+        onEndReachedThreshold: 0.25,
+        windowSize: Platform.OS === 'ios' ? 8 : 20,
+      }}
       {...props}
     />
   );

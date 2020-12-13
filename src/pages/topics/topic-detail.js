@@ -279,24 +279,25 @@ const TopicDetail = ({navigation, route}) => {
       <Pressable onPress={onGoDetail}>
         <View style={styles.linkWrapper}>
           <View style={styles.linkImageWrap}>
-            <FastImg
-              source={
-                detail.topic_link.cover_url
-                  ? {uri: detail.topic_link.cover_url}
-                  : require('@/assets/images/add-link.png')
-              }
-              mode={'cover'}
-              style={{width: 45, height: 45}}
-            />
+            {detail.topic_link.cover_url ? (
+              <FastImg
+                source={{uri: detail.topic_link.cover_url}}
+                mode={'cover'}
+                style={{width: 45, height: 45}}
+              />
+            ) : (
+              <View style={styles.defaultImage}>
+                <IconFont name="lujing" size="20" color="#fff" />
+              </View>
+            )}
             {detail.topic_link.outlink_type === 'music' && (
               <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
             )}
           </View>
           <Text style={styles.linkText} numberOfLines={2}>
-            {detail.topic_link.title}
+            {detail.topic_link.title || detail.topic_link.raw_link}
           </Text>
         </View>
-
       </Pressable>
     );
   };
@@ -306,9 +307,7 @@ const TopicDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-    >
-
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
       {/* 不带header */}
       {/*{!isHeader() && (*/}
       {/*  <>*/}
@@ -321,34 +320,35 @@ const TopicDetail = ({navigation, route}) => {
       {/*    </Pressable>*/}
       {/*  </>*/}
       {/*)}*/}
-      {
-        (detail.content_style === 'video' || detail.content_style === 'img' ) &&<>
+      {(detail.content_style === 'video' || detail.content_style === 'img') && (
+        <>
           <StatusBar barStyle={'light-content'} backgroundColor={'black'} />
-        <GoBack
-          color={'white'}
-          report={{
-            report_type: 'Topic',
-            report_id: detail.id
-          }}
-        />
+          <GoBack
+            color={'white'}
+            report={{
+              report_type: 'Topic',
+              report_id: detail.id,
+            }}
+          />
         </>
-      }
-      {
-        (detail.content_style === 'link' || detail.content_style === 'text') &&
-          <>
+      )}
+      {(detail.content_style === 'link' || detail.content_style === 'text') && (
+        <>
           <TopHeaderView
             Title={'帖子详情'}
             leftButtonColor={'black'}
             excellent={detail.excellent}
             RightButton={() => (
-              <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <Pressable
+                onPress={onReportClick}
+                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
                 <IconFont name="ziyuan" color="#000" size={20} />
               </Pressable>
             )}
           />
-            <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
-          </>
-      }
+          <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+        </>
+      )}
       <CommentList
         type="Topic"
         detail={detail}
@@ -366,12 +366,14 @@ const TopicDetail = ({navigation, route}) => {
                 {detail.content_style === 'img' && renderImg()}
               </View>
             )}
-            {
-              (detail.content_style === 'link' || detail.content_style === 'text') &&
-                <View>
-                  <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-                </View>
-            }
+            {(detail.content_style === 'link' || detail.content_style === 'text') && (
+              <View>
+                <PublishAccount
+                  data={detail}
+                  showFollow={currentAccount.id !== detail.account_id}
+                />
+              </View>
+            )}
             {detail.content_style === 'link' && (
               <>
                 <View>{renderLink()}</View>
@@ -383,9 +385,9 @@ const TopicDetail = ({navigation, route}) => {
               </View>
             ) : null}
 
-            {
-              (detail.content_style === 'video' || detail.content_style === 'img') ? <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} /> : null
-            }
+            {detail.content_style === 'video' || detail.content_style === 'img' ? (
+              <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+            ) : null}
 
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
@@ -446,7 +448,6 @@ const styles = StyleSheet.create({
   excellentHeader: {
     marginTop: 14,
     position: 'absolute',
-    // right: 15,
     left: 40,
     zIndex: 100,
     top: SAFE_TOP,
@@ -464,6 +465,14 @@ const styles = StyleSheet.create({
     padding: 8,
     alignItems: 'center',
     marginTop: 20,
+  },
+  defaultImage: {
+    width: 45,
+    height: 45,
+    backgroundColor: '#BDBDBD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 2,
   },
   linkImageWrap: {
     position: 'relative',

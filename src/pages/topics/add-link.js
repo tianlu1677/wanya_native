@@ -24,17 +24,15 @@ const AddLink = ({navigation}) => {
 
   const onAnalysis = async () => {
     Toast.showLoading('正在解析中...');
-    console.log({url: parseUrl});
-
     try {
-      let res = await addTopicLink({url: parseUrl});
+      let res = await addTopicLink({raw_link: parseUrl});
       console.log(res);
       Toast.hide();
       if (res.error_info || res.error) {
-        Toast.showError(res.error_info || res.error);
+        Toast.showError(res.error_info || '解析不到该网址，请重新输入');
         return;
       }
-      const topics = {...home.savetopic, linkContent: res};
+      const topics = {...home.savetopic, linkContent: res.topic_link};
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
       navigation.goBack();
     } catch {
