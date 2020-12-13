@@ -106,6 +106,7 @@ const TopicDetail = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
+      console.log('useFocusEffect');
       if (videoRef && videoRef.current) {
         // 是否继续播放
         if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
@@ -120,7 +121,7 @@ const TopicDetail = ({navigation, route}) => {
 
   useEffect(() => {
     loadData();
-    // 清空评论数据
+    // 清空外链，评论数据
     return () => {
       dispatch(dispatchTopicDetail(null));
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
@@ -271,7 +272,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const renderLink = () => {
     const onGoDetail = () => {
-      navigation.push('TopicLinkDetail');
+      navigation.push('TopicLinkDetail', {topicId: detail.id});
     };
 
     return (
@@ -284,15 +285,12 @@ const TopicDetail = ({navigation, route}) => {
                   ? {uri: detail.topic_link.cover_url}
                   : require('@/assets/images/add-link.png')
               }
+              mode={'contain'}
               style={{width: 45, height: 45}}
             />
             {detail.topic_link.outlink_type === 'music' && (
               <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
             )}
-            {/*
-            {detail.topic_link.outlink_type === 'music' && (
-              <FastImg resizeMethod={'resize'} style={styles.linkImage} source={VideoPlayImg} />
-            )} */}
           </View>
           <Text style={styles.linkText} numberOfLines={2}>
             {detail.topic_link.title}

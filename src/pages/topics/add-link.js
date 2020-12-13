@@ -1,4 +1,4 @@
-import React, {useState, useCallback,useEffect, useLayoutEffect} from 'react';
+import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -8,11 +8,9 @@ import Toast from '@/components/Toast';
 import {addTopicLink} from '@/api/topic_api';
 import Autolink from 'react-native-autolink';
 
-// import Linkify from 'linkifyjs/react';
-// import * as linkify from 'linkifyjs';
-// const linkifyStr = require('linkifyjs/string');
+// const reg = 'https://';
+const reg = /https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*/i;
 
-const reg = 'http://';
 const AddLink = ({navigation}) => {
   const dispatch = useDispatch();
   const home = useSelector(state => state.home);
@@ -21,6 +19,8 @@ const AddLink = ({navigation}) => {
 
   const load = async () => {
     const res = await Clipboard.getString();
+    console.log(res);
+
     if (res && res.includes(reg)) {
       Toast.showError('已粘贴最近复制过的链接');
       setText(res);
@@ -38,7 +38,7 @@ const AddLink = ({navigation}) => {
     }
     Toast.showLoading('正在解析中...');
     try {
-      let res = await addTopicLink({raw_link: text});
+      let res = await addTopicLink({raw_link: String(text).trim()});
       console.log(res);
       Toast.hide();
       if (!res.topic_link) {
@@ -61,7 +61,7 @@ const AddLink = ({navigation}) => {
   );
 
   useEffect(() => {
-    setParseUrl(parseUrl)
+    setParseUrl(parseUrl);
   }, [parseUrl]);
   //
 
@@ -84,10 +84,11 @@ const AddLink = ({navigation}) => {
         autoFocus
         autoCorrect={false}
         autoComplete={false}
+        multiline
         caretHidden={false}
+        clearButtonMode="always"
         selectionColor={'#ff193a'}
         placeholderTextColor={'#353535'}
-        clearButtonMode={'always'}
         value={text}
         onChangeText={value => correctUrlText(value)}
       />
@@ -104,7 +105,7 @@ const AddLink = ({navigation}) => {
       </View>
     </View>
   );
-};;
+};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -119,11 +120,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputContent: {
-    height: 50,
+    minHeight: 80,
+    lineHeight: 22,
     backgroundColor: '#FFFFFF',
     borderRadius: 6,
     marginTop: 25,
     paddingHorizontal: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   cancel: {
     paddingLeft: 5,

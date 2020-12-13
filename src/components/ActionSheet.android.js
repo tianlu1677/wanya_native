@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Modal from 'react-native-modal';
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
@@ -9,19 +9,16 @@ const BORDER_COLOR = '#DBDBDB';
 
 const ActionSheetAndroid = props => {
   const [showActionSheet, setShowActionSheet] = useState(false);
-  const {actionItems } = props;
+  const {actionItems} = props;
 
   const cancelItem = {
     id: '#cancel',
     label: '取消',
     type: 'cancel',
     onPress: props?.onCancel,
-  }
+  };
 
-  const actionSheetItems = [
-    ...actionItems,
-    cancelItem
-  ];
+  const actionSheetItems = [...actionItems, cancelItem];
 
   useEffect(() => {
     setShowActionSheet(props.showActionSheet);
@@ -40,7 +37,7 @@ const ActionSheetAndroid = props => {
   // console.log('showActionSheet1', props)
   return (
     <Modal
-      onBackdropPress={() => onPressItem(cancelItem) }
+      onBackdropPress={() => onPressItem(cancelItem)}
       isVisible={props.showActionSheet}
       transparent={true}
       animationIn={'slideInUp'}
@@ -52,7 +49,6 @@ const ActionSheetAndroid = props => {
         margin: 0,
         justifyContent: 'flex-end',
       }}>
-
       <View style={styles.modalContent}>
         {actionSheetItems.map((actionItem, index) => {
           return (
@@ -157,11 +153,11 @@ const styles = StyleSheet.create({
     color: PRIMARY_COLOR,
   },
   cancel: {
-    color: '#fa1616'
+    color: '#fa1616',
   },
   destroy: {
-    color: '#fa1616'
-  }
+    color: '#fa1616',
+  },
 });
 
 ActionSheetAndroid.propTypes = {
@@ -174,7 +170,6 @@ ActionSheetAndroid.propTypes = {
   ).isRequired,
   onCancel: PropTypes.func,
   actionTextColor: PropTypes.string,
-
 };
 
 ActionSheetAndroid.defaultProps = {
@@ -185,7 +180,6 @@ ActionSheetAndroid.defaultProps = {
 };
 
 export default ActionSheetAndroid;
-
 
 // const actionItems = [
 //   {
