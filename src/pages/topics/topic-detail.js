@@ -46,7 +46,6 @@ const TopicDetail = ({navigation, route}) => {
   const [actionItems, setActionItems] = useState([]);
 
   const loadData = async () => {
-    dispatch(dispatchTopicDetail(null));
     const res = await getTopic(topicId);
     if (res.data.status === 404) {
       Toast.show('该帖子已删除');
