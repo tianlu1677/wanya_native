@@ -117,21 +117,23 @@ export const TopicLinkContent = props => {
     <Pressable onPress={onGoDetail}>
       <View style={styles.linkWrapper}>
         <View style={styles.linkImageWrap}>
-          <FastImg
-            source={
-              data.topic_link.cover_url
-                ? {uri: data.topic_link.cover_url}
-                : require('@/assets/images/add-link.png')
-            }
-            mode={'cover'}
-            style={{width: 45, height: 45}}
-          />
+          {data.topic_link.cover_url ? (
+            <FastImg
+              source={{uri: data.topic_link.cover_url}}
+              mode={'cover'}
+              style={{width: 45, height: 45}}
+            />
+          ) : (
+            <View style={styles.defaultImage}>
+              <IconFont name="lujing" size="20" color="#fff" />
+            </View>
+          )}
           {data.topic_link.outlink_type === 'music' && (
             <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
           )}
         </View>
         <Text style={styles.linkText} numberOfLines={2}>
-          {data.topic_link.title}
+          {data.topic_link.title || data.topic_link.raw_link}
         </Text>
       </View>
     </Pressable>
@@ -236,6 +238,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
+  },
+  defaultImage: {
+    width: 45,
+    height: 45,
+    backgroundColor: '#BDBDBD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 2,
   },
   linkImageWrap: {
     position: 'relative',

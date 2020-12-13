@@ -285,6 +285,7 @@ const NewTopic = props => {
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
     };
+
     Toast.showLoading('正在发布中...');
     try {
       const res = await createTopic(data);
@@ -463,24 +464,27 @@ const NewTopic = props => {
                 />
               </Pressable>
             )}
+
             {linkSource && (
               <View style={styles.linkWrapper}>
                 <View style={styles.linkImageWrap}>
-                  <FastImg
-                    source={
-                      linkSource.cover_url
-                        ? {uri: linkSource.cover_url}
-                        : require('@/assets/images/add-link.png')
-                    }
-                    mode={'cover'}
-                    style={{width: 45, height: 45}}
-                  />
+                  {linkSource.cover_url ? (
+                    <FastImg
+                      source={{uri: linkSource.cover_url}}
+                      mode={'cover'}
+                      style={{width: 45, height: 45}}
+                    />
+                  ) : (
+                    <View style={styles.defaultImage}>
+                      <IconFont name="lujing" size="20" color="#fff" />
+                    </View>
+                  )}
                   {linkSource.outlink_type === 'music' && (
                     <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
                   )}
                 </View>
                 <Text style={styles.linkText} numberOfLines={2}>
-                  {linkSource.title}
+                  {linkSource.title || linkSource.raw_link}
                 </Text>
                 <Pressable onPress={onDeleteLink}>
                   <IconFont
@@ -658,6 +662,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
+  },
+  defaultImage: {
+    width: 45,
+    height: 45,
+    backgroundColor: '#BDBDBD',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 2,
   },
   linkImageWrap: {
     position: 'relative',
