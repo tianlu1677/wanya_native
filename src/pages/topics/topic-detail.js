@@ -285,7 +285,7 @@ const TopicDetail = ({navigation, route}) => {
                   ? {uri: detail.topic_link.cover_url}
                   : require('@/assets/images/add-link.png')
               }
-              mode={'contain'}
+              mode={'cover'}
               style={{width: 45, height: 45}}
             />
             {detail.topic_link.outlink_type === 'music' && (

@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useCallback, useLayoutEffect, useEffect} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -8,44 +8,33 @@ import Toast from '@/components/Toast';
 import {addTopicLink} from '@/api/topic_api';
 import Autolink from 'react-native-autolink';
 
-// const reg = 'https://';
-const reg = /https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*/i;
-
 const AddLink = ({navigation}) => {
   const dispatch = useDispatch();
   const home = useSelector(state => state.home);
-  const [text, setText] = useState(null);
+  const [textValue, setTextValue] = useState('');
   const [parseUrl, setParseUrl] = useState('');
 
   const load = async () => {
     const res = await Clipboard.getString();
-    console.log(res);
-
-    if (res && res.includes(reg)) {
+    if (res) {
       Toast.showError('已粘贴最近复制过的链接');
-      setText(res);
+      setTextValue(res);
     }
-  };
-
-  const correctUrlText = url => {
-    setText(url);
   };
 
   const onAnalysis = async () => {
-    if (!text.includes(reg)) {
-      Toast.showError('链接格式有误，请重新输入');
-      return;
-    }
     Toast.showLoading('正在解析中...');
+    console.log({url: parseUrl});
+
     try {
-      let res = await addTopicLink({raw_link: String(text).trim()});
+      let res = await addTopicLink({url: parseUrl});
       console.log(res);
       Toast.hide();
-      if (!res.topic_link) {
-        Toast.showError('解析不到该网址，请重新输入');
+      if (res.error_info || res.error) {
+        Toast.showError(res.error_info || res.error);
         return;
       }
-      const topics = {...home.savetopic, linkContent: res.topic_link};
+      const topics = {...home.savetopic, linkContent: res};
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
       navigation.goBack();
     } catch {
@@ -60,21 +49,20 @@ const AddLink = ({navigation}) => {
     }, [])
   );
 
-  useEffect(() => {
-    setParseUrl(parseUrl);
-  }, [parseUrl]);
-  //
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: '添加链接',
       headerRight: () => (
         <Pressable onPress={onAnalysis}>
-          <Text style={[styles.cancel, {color: text ? '#000' : '#bdbdbd'}]}>确定</Text>
+          <Text style={[styles.cancel, {color: textValue ? '#000' : '#bdbdbd'}]}>确定</Text>
         </Pressable>
       ),
     });
-  }, [navigation, text]);
+  }, [navigation, textValue, parseUrl]);
+
+  useEffect(() => {
+    setParseUrl(parseUrl);
+  }, [parseUrl]);
 
   return (
     <View style={styles.wrapper}>
@@ -89,16 +77,15 @@ const AddLink = ({navigation}) => {
         clearButtonMode="always"
         selectionColor={'#ff193a'}
         placeholderTextColor={'#353535'}
-        value={text}
-        onChangeText={value => correctUrlText(value)}
+        value={textValue}
+        onChangeText={value => setTextValue(value)}
       />
 
-      <View style={{paddingTop: 10, paddingLeft: 10}}>
+      <View style={{display: 'none'}}>
         <Autolink
-          text={text}
+          text={textValue}
           renderLink={(text, match) => {
-            // setParseUrl(match.getAnchorHref()); #TODO:修改
-            // console.log(match.getAnchorHref());
+            setParseUrl(match.getAnchorHref());
             return <Text style={{color: 'red'}}>{match.getAnchorHref()}</Text>;
           }}
         />

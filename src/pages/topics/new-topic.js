@@ -472,7 +472,7 @@ const NewTopic = props => {
                         ? {uri: linkSource.cover_url}
                         : require('@/assets/images/add-link.png')
                     }
-                    mode={'contain'}
+                    mode={'cover'}
                     style={{width: 45, height: 45}}
                   />
                   {linkSource.outlink_type === 'music' && (
