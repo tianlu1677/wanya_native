@@ -12,6 +12,8 @@ import {
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {NAVIGATION_BAR_HEIGHT, IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import ExcellentImage from '@/assets/images/excellent.png';
+import FastImg from "@/components/FastImg"
 
 const TopHeaderView = props => {
   const LeftButton = props.LeftButton;
@@ -33,7 +35,7 @@ const TopHeaderView = props => {
             <LeftButton />
           ) : (
             <TouchableOpacity
-              style={{marginLeft: 10,}}
+              style={{marginLeft: 10, flexDirection: 'row'}}
               onPress={() => {
                 if (!navigation.canGoBack() || isAtRoot) {
                   navigation.reset({
@@ -50,6 +52,12 @@ const TopHeaderView = props => {
                 color={props.leftButtonColor || 'white'}
                 iconStyle={{marginRight: 1}}
               />
+              {
+                props.excellent && <View style={{justifyContent: 'center'}}>
+                  <FastImg source={ExcellentImage} style={{width: 30, height: 17}} />
+                </View>
+              }
+
             </TouchableOpacity>
           )}
         </View>

@@ -322,7 +322,8 @@ const TopicDetail = ({navigation, route}) => {
       {/*  </>*/}
       {/*)}*/}
       {
-        (detail.content_style === 'video' || detail.content_style === 'img' ) &&
+        (detail.content_style === 'video' || detail.content_style === 'img' ) &&<>
+          <StatusBar barStyle={'light-content'} backgroundColor={'black'} />
         <GoBack
           color={'white'}
           report={{
@@ -330,19 +331,23 @@ const TopicDetail = ({navigation, route}) => {
             report_id: detail.id
           }}
         />
+        </>
       }
-
       {
-        (detail.content_style === 'link' || detail.content_style === 'text' ) &&
+        (detail.content_style === 'link' || detail.content_style === 'text') &&
+          <>
           <TopHeaderView
             Title={'帖子详情'}
             leftButtonColor={'black'}
+            excellent={detail.excellent}
             RightButton={() => (
               <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
                 <IconFont name="ziyuan" color="#000" size={20} />
               </Pressable>
             )}
           />
+            <StatusBar barStyle={'dark-content'} backgroundColor={'black'} />
+          </>
       }
       <CommentList
         type="Topic"
@@ -361,10 +366,14 @@ const TopicDetail = ({navigation, route}) => {
                 {detail.content_style === 'img' && renderImg()}
               </View>
             )}
-
+            {
+              (detail.content_style === 'link' || detail.content_style === 'text') &&
+                <View>
+                  <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+                </View>
+            }
             {detail.content_style === 'link' && (
               <>
-                {/*<View style={{height: SAFE_TOP, backgroundColor: 'white'}} />*/}
                 <View>{renderLink()}</View>
               </>
             )}
@@ -374,7 +383,10 @@ const TopicDetail = ({navigation, route}) => {
               </View>
             ) : null}
 
-            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+            {
+              (detail.content_style === 'video' || detail.content_style === 'img') ? <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} /> : null
+            }
+
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
@@ -451,6 +463,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
+    marginTop: 20,
   },
   linkImageWrap: {
     position: 'relative',

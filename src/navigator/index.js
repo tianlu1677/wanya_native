@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
     right: '23%',
     height: 55,
     borderRadius: 28,
+    zIndex: 1000
   },
   // bottomTabBar: {
   //   backgroundColor: 'transparent',

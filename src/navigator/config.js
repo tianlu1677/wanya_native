@@ -82,6 +82,10 @@ const topicRouter = [
     name: 'TopicDetail',
     component: TopicDetail,
     safeArea: false,
+    barColor: 'dark',
+    options: {
+      headerShown: false,
+    },
   },
   {
     name: 'TopicLinkDetail',
