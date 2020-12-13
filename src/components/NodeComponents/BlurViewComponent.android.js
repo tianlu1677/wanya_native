@@ -5,15 +5,15 @@ import {BlurView, VibrancyView} from '@react-native-community/blur';
 const isIos = Platform.OS === 'ios'
 const BlurViewComponent = props => {
   return (
-    <View>
+    <View style={{zIndex: 100}}>
       {isIos ? (
-        <BlurView
+        <VibrancyView
           // style={styles.backgroundBlur}
-          // blurType="light"
-          // blurAmount={80}
+          blurType="light"
+          blurAmount={80}
           {...props}>
           {props.children}
-        </BlurView>
+        </VibrancyView>
       ) : (
         <View
           {...props}

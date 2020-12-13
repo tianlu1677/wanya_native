@@ -38,7 +38,7 @@ const GetLocation = ({children, handleClick, style}) => {
     }
 
     if(Platform.OS === 'ios') {
-      GeolocationIOS.getCurrentPosition(
+      Geolocation.getCurrentPosition(
         position => {
           console.log('position => ', position);
           handleClick && handleClick({position: position});

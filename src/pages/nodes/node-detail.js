@@ -104,8 +104,7 @@ const NodeDetail = ({navigation, route}) => {
 
   const Header = () => {
     return (
-      <View style={{position: 'relative'}}>
-        <GoBack />
+      <View style={{position: 'relative', flex: 1}}>
         <View>
           <FastImg
             source={{uri: detail.backgroud_cover_url}}
@@ -114,7 +113,7 @@ const NodeDetail = ({navigation, route}) => {
           />
           <View style={styles.imageCoverOpacity} />
         </View>
-
+        <GoBack />
         <View style={styles.header}>
           <View style={styles.nodeContent}>
             <View style={styles.nodeInfo}>
@@ -138,7 +137,7 @@ const NodeDetail = ({navigation, route}) => {
               style={styles.accountInfo}
               blurType="light"
               blurAmount={10}
-              reducedTransparencyFallbackColor="#white">
+              reducedTransparencyFallbackColor="white">
               <JoinAccounts accounts={detail.accounts} size={25} />
               <Text style={styles.count}>
                 {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
@@ -323,7 +322,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-    zIndex: 2,
+    // zIndex: ,
     borderRadius: 2,
     overflow: 'hidden',
     // position: 'absolute',
