@@ -139,7 +139,7 @@ export const ActionComment = props => {
 
   const publishComment = () => {
     const data = {...comment, content: value};
-    console.log(data);
+    // console.log(data);
     const params = {
       placeholder: data.placeholder,
       comment: {
@@ -151,7 +151,7 @@ export const ActionComment = props => {
         target_comment_id: data.target_comment_id || '',
       },
     };
-    console.log(params);
+    // console.log(params);
     props.publishComment(params);
   };
 
