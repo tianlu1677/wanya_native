@@ -4,9 +4,7 @@ import qs from 'querystring';
 import Helper from '../utils/helper';
 import Toast from '@/components/Toast';
 import * as RootNavigation from '@/navigator/root-navigation';
-import {BaseApiUrl} from '@/utils/config';
-
-const VERSION = '1.0.0';
+import {BaseApiUrl, WANYA_VERSION} from '@/utils/config';
 
 axios.defaults.baseURL = `${BaseApiUrl}`;
 axios.defaults.timeout = 20000;
@@ -14,7 +12,7 @@ axios.defaults.timeout = 20000;
 // Add a request interceptor
 axios.interceptors.request.use(
   async function (config) {
-    config.headers.common.version = VERSION;
+    config.headers.common.version = WANYA_VERSION;
     // let token = await Helper.getData('auth_token');
     // config.headers.common.Token = token
     return config;

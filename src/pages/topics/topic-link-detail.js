@@ -48,7 +48,8 @@ const TopicLinkDetail = ({navigation, route}) => {
       title: currentTopic.topic_link?.title || currentTopic.topic_link.raw_link,
       thumbImageUrl: currentTopic.topic_link.cover_url,
       webpageUrl: currentTopic.topic_link.raw_link,
-      visible: true
+      visible: true,
+      type: 'link'
     };
     dispatch(dispatchShareItem(shareOptions));
   }
