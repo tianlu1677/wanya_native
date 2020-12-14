@@ -150,7 +150,6 @@ const BaseTopic = props => {
   const goTopicDetail = () => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
-
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
@@ -161,7 +160,11 @@ const BaseTopic = props => {
         {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
       </View>
       {data.plain_content ? (
-        <PlainContent data={data} numberOfLines={5} style={{paddingTop: 13}} />
+        <PlainContent
+          data={data}
+          numberOfLines={5}
+          style={{paddingTop: data.content_style === 'text' ? 0 : 13}}
+        />
       ) : null}
       <View style={styles.infoViewWrap}>
         <Pressable style={styles.infoView} onPress={goNodeDetail}>

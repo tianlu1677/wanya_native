@@ -105,7 +105,6 @@ const TopicDetail = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('useFocusEffect');
       if (videoRef && videoRef.current) {
         // 是否继续播放
         if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
@@ -271,6 +270,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const renderLink = () => {
     const onGoDetail = () => {
+      dispatch(dispatchTopicDetail(null));
       navigation.push('TopicLinkDetail', {topicId: detail.id});
     };
 
@@ -300,8 +300,6 @@ const TopicDetail = ({navigation, route}) => {
       </Pressable>
     );
   };
-
-  console.log(detail);
 
   return detail ? (
     <KeyboardAvoidingView
@@ -341,8 +339,7 @@ const TopicDetail = ({navigation, route}) => {
               <Pressable
                 onPress={onReportClick}
                 hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-                style={{paddingRight: 10}}
-              >
+                style={{paddingRight: 10}}>
                 <IconFont name="ziyuan" color="#000" size={20} />
               </Pressable>
             )}
