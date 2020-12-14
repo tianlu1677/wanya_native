@@ -278,17 +278,11 @@ const TopicDetail = ({navigation, route}) => {
       <Pressable onPress={onGoDetail}>
         <View style={styles.linkWrapper}>
           <View style={styles.linkImageWrap}>
-            {detail.topic_link.cover_url ? (
-              <FastImg
-                source={{uri: detail.topic_link.cover_url}}
-                mode={'cover'}
-                style={{width: 45, height: 45}}
-              />
-            ) : (
-              <View style={styles.defaultImage}>
-                <IconFont name="lujing" size="20" color="#fff" />
-              </View>
-            )}
+            <FastImg
+              source={{uri: detail.topic_link.cover_url}}
+              mode={'cover'}
+              style={{width: 45, height: 45}}
+            />
             {detail.topic_link.outlink_type === 'music' && (
               <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
             )}
@@ -470,14 +464,6 @@ const styles = StyleSheet.create({
     marginRight: 14,
     alignItems: 'center',
     marginTop: 20,
-  },
-  defaultImage: {
-    width: 45,
-    height: 45,
-    backgroundColor: '#BDBDBD',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 2,
   },
   linkImageWrap: {
     position: 'relative',
