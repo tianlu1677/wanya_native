@@ -229,6 +229,8 @@ export const Bottom = props => {
           title: data.plain_content,
           path: '/pages/topics/topic-detail?topic_id=' + data.id,
           thumbImageUrl: data.wx_share_image_url,
+          webpageUrl: data.topic_link?.raw_link,
+          type: data.content_style
         };
         break;
       default:
@@ -274,7 +276,7 @@ export const Bottom = props => {
         onPress={() => {
           onShare();
         }}
-        hitSlop={{left: 10, right: 10, top: 5}}>
+        hitSlop={{left: 30, right: 20, top: 20, bottom: 10}}>
         <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
       </Pressable>
     </View>
