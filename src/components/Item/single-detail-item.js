@@ -139,7 +139,20 @@ export const ActionComment = props => {
 
   const publishComment = () => {
     const data = {...comment, content: value};
-    props.publishComment(data);
+    console.log(data);
+    const params = {
+      comment_type: data.comment_type,
+      placeholder: data.placeholder,
+      comment: {
+        content: data.content,
+        mention_ids: data.mention_ids,
+        commentable_type: data.commentable_type,
+        commentable_id: data.commentable_id,
+        target_comment_id: data.target_comment_id || '',
+      },
+    };
+    console.log(params);
+    props.publishComment(params);
   };
 
   const dispatchData = params => {
@@ -204,12 +217,12 @@ export const ActionComment = props => {
   };
 
   const onShare = () => {
-    if(props.onShare) {
-      props.onShare()
-      return
+    if (props.onShare) {
+      props.onShare();
+      return;
     }
     navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
-  }
+  };
   useEffect(() => {
     setPraise(props.detail.praise);
     setStar(props.detail.star);
@@ -253,7 +266,7 @@ export const ActionComment = props => {
               hitSlop={{right: 20, left: 5}}
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
-                onShare()
+                onShare();
               }}>
               <IconFont name="zhuanfa" size={18} />
             </Pressable>
