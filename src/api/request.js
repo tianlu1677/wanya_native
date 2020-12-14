@@ -9,6 +9,7 @@ import {BaseApiUrl} from '@/utils/config';
 const VERSION = '1.0.0';
 
 axios.defaults.baseURL = `${BaseApiUrl}`;
+axios.defaults.timeout = 20000;
 
 // Add a request interceptor
 axios.interceptors.request.use(

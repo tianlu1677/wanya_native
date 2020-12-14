@@ -7,6 +7,7 @@ import Clipboard from '@react-native-community/clipboard';
 import Toast from '@/components/Toast';
 import {addTopicLink} from '@/api/topic_api';
 import Autolink from 'react-native-autolink';
+import * as Sentry from "@sentry/react-native";
 
 const AddLink = ({navigation}) => {
   const dispatch = useDispatch();
@@ -25,8 +26,9 @@ const AddLink = ({navigation}) => {
   const onAnalysis = async () => {
     Toast.showLoading('正在解析中...');
     try {
-      let res = await addTopicLink({raw_link: parseUrl});
-      console.log(res);
+      // console.log('parseUrl', parseUrl)
+      let res = await addTopicLink({raw_link: (parseUrl)});
+      // console.log('res', res);
       Toast.hide();
       if (res.error_info || res.error) {
         Toast.showError(res.error_info || '解析不到该网址，请重新输入');
@@ -35,7 +37,9 @@ const AddLink = ({navigation}) => {
       const topics = {...home.savetopic, linkContent: res.topic_link};
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
       navigation.goBack();
-    } catch {
+    } catch(e) {
+
+      Sentry.captureException(e);
       Toast.hide();
       Toast.showError('解析不到该网址，请重新输入');
     }

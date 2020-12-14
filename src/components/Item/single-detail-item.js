@@ -203,6 +203,13 @@ export const ActionComment = props => {
     }
   };
 
+  const onShare = () => {
+    if(props.onShare) {
+      props.onShare()
+      return
+    }
+    navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
+  }
   useEffect(() => {
     setPraise(props.detail.praise);
     setStar(props.detail.star);
@@ -246,7 +253,7 @@ export const ActionComment = props => {
               hitSlop={{right: 20, left: 5}}
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
-                navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
+                onShare()
               }}>
               <IconFont name="zhuanfa" size={18} />
             </Pressable>

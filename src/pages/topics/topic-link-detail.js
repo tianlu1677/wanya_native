@@ -11,6 +11,7 @@ import {createComment} from '@/api/comment_api';
 import {dispatchTopicDetail} from '@/redux/actions';
 import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getTopic} from '@/api/topic_api';
+import {dispatchShareItem} from '@/redux/actions';
 import TopHeaderView from "@/components/TopHeadView"
 const TopicLinkDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -41,6 +42,19 @@ const TopicLinkDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
+  const onShare = () => {
+    let shareOptions = {
+      userName: 'gh_c2b50fe8e928',
+      path: '',
+      scene: 0,
+      title: currentTopic.topic_link?.title || currentTopic.topic_link.raw_link,
+      thumbImageUrl: currentTopic.topic_link.cover_url,
+      webpageUrl: currentTopic.topic_link.raw_link,
+      visible: true
+    };
+    dispatch(dispatchShareItem(shareOptions));
+  }
+
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -66,6 +80,9 @@ const TopicLinkDetail = ({navigation, route}) => {
         publishComment={publishComment}
         type="Topic"
         changeVisible={value => setVisible(value)}
+        onShare={() => {
+          onShare()
+        }}
       />
     </KeyboardAvoidingView>
   ) : (
