@@ -2,11 +2,24 @@ import React from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import Spinner from 'react-native-spinkit';
 
-const Loading = () => {
-  const allTypes = ['CircleFlip', 'Bounce', 'Plane', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce', 'Circle', '9CubeGrid', 'FadingCircle', 'FadingCircleAlt']
-  const type = Math.random(allTypes.length - 1).toFixed(1) * 10
+const Loading = props => {
+  const allTypes = [
+    'CircleFlip',
+    'Bounce',
+    'Plane',
+    'Wave',
+    'WanderingCubes',
+    'Pulse',
+    'ChasingDots',
+    'ThreeBounce',
+    'Circle',
+    '9CubeGrid',
+    'FadingCircle',
+    'FadingCircleAlt',
+  ];
+  const type = Math.random(allTypes.length - 1).toFixed(1) * 10;
   return (
-    <View style={styles.loading}>
+    <View style={[styles.loading, props.style]}>
       {/*<ActivityIndicator size={'small'} />*/}
       <Spinner style={{}} isVisible={true} size={35} type={'Bounce'} color={'#BDBDBD'} />
       <Text style={styles.text}>加载中...</Text>
@@ -30,8 +43,8 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 10,
     fontSize: 14,
-    color: '#BDBDBD'
-  }
+    color: '#BDBDBD',
+  },
 });
 
 export default Loading;

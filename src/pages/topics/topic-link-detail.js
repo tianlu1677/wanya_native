@@ -1,17 +1,16 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet, Pressable} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {KeyboardAvoidingView, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
-import IconFont from '@/iconfont';
 import {ActionComment} from '@/components/Item/single-detail-item';
 import {createComment} from '@/api/comment_api';
 import {dispatchTopicDetail} from '@/redux/actions';
-import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getTopic} from '@/api/topic_api';
-import TopHeaderView from "@/components/TopHeadView"
+import TopHeaderView from '@/components/TopHeadView';
+
 const TopicLinkDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentTopic = useSelector(state => state.topic.topicDetail);
@@ -44,8 +43,7 @@ const TopicLinkDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-    >
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
       <TopHeaderView
         Title={detail.topic_link.title}
         leftButtonColor={'black'}
@@ -58,8 +56,10 @@ const TopicLinkDetail = ({navigation, route}) => {
       <WebView
         originWhitelist={['*']}
         source={{uri: detail.topic_link.raw_link}}
-        startInLoadingState={false}
+        startInLoadingState={true}
+        scalesPageToFit={true}
       />
+
       <ActionComment
         visible={visible}
         detail={detail}

@@ -17,7 +17,7 @@ const AddLink = ({navigation}) => {
   const load = async () => {
     const res = await Clipboard.getString();
     if (res) {
-      Toast.showError('已粘贴最近复制过的链接', {duration: 1500});
+      Toast.showError('已粘贴最近复制过的链接');
       setTextValue(res);
     }
   };
