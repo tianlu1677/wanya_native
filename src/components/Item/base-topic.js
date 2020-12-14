@@ -117,17 +117,11 @@ export const TopicLinkContent = props => {
     <Pressable onPress={onGoDetail}>
       <View style={styles.linkWrapper}>
         <View style={styles.linkImageWrap}>
-          {data.topic_link.cover_url ? (
-            <FastImg
-              source={{uri: data.topic_link.cover_url}}
-              mode={'cover'}
-              style={{width: 45, height: 45}}
-            />
-          ) : (
-            <View style={styles.defaultImage}>
-              <IconFont name="lujing" size="20" color="#fff" />
-            </View>
-          )}
+          <FastImg
+            source={{uri: data.topic_link.cover_url}}
+            mode={'cover'}
+            style={{width: 45, height: 45}}
+          />
           {data.topic_link.outlink_type === 'music' && (
             <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
           )}
@@ -150,7 +144,6 @@ const BaseTopic = props => {
   const goTopicDetail = () => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
-
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
@@ -161,9 +154,13 @@ const BaseTopic = props => {
         {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
       </View>
       {data.plain_content ? (
-        <PlainContent data={data} numberOfLines={5} style={{paddingTop: 13}} />
+        <PlainContent
+          data={data}
+          numberOfLines={5}
+          style={{paddingTop: data.content_style === 'text' ? 0 : 13}}
+        />
       ) : null}
-      <View style={styles.infoViewWrap}>
+      <View style={[styles.infoViewWrap, {marginTop: data.plain_content ? 10 : 16}]}>
         <Pressable style={styles.infoView} onPress={goNodeDetail}>
           <IconFont name="node-solid" size={12} color={'#000'} />
           <Text style={styles.nodeName}>{data.node_name}</Text>
@@ -238,14 +235,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
-  },
-  defaultImage: {
-    width: 45,
-    height: 45,
-    backgroundColor: '#BDBDBD',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 2,
   },
   linkImageWrap: {
     position: 'relative',

@@ -468,17 +468,11 @@ const NewTopic = props => {
             {linkSource && (
               <View style={styles.linkWrapper}>
                 <View style={styles.linkImageWrap}>
-                  {linkSource.cover_url ? (
-                    <FastImg
-                      source={{uri: linkSource.cover_url}}
-                      mode={'cover'}
-                      style={{width: 45, height: 45}}
-                    />
-                  ) : (
-                    <View style={styles.defaultImage}>
-                      <IconFont name="lujing" size="20" color="#fff" />
-                    </View>
-                  )}
+                  <FastImg
+                    source={{uri: linkSource.cover_url}}
+                    mode={'cover'}
+                    style={{width: 45, height: 45}}
+                  />
                   {linkSource.outlink_type === 'music' && (
                     <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
                   )}
@@ -662,14 +656,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
-  },
-  defaultImage: {
-    width: 45,
-    height: 45,
-    backgroundColor: '#BDBDBD',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 2,
   },
   linkImageWrap: {
     position: 'relative',

@@ -105,7 +105,6 @@ const TopicDetail = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('useFocusEffect');
       if (videoRef && videoRef.current) {
         // 是否继续播放
         if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
@@ -271,6 +270,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const renderLink = () => {
     const onGoDetail = () => {
+      dispatch(dispatchTopicDetail(null));
       navigation.push('TopicLinkDetail', {topicId: detail.id});
     };
 
@@ -278,17 +278,11 @@ const TopicDetail = ({navigation, route}) => {
       <Pressable onPress={onGoDetail}>
         <View style={styles.linkWrapper}>
           <View style={styles.linkImageWrap}>
-            {detail.topic_link.cover_url ? (
-              <FastImg
-                source={{uri: detail.topic_link.cover_url}}
-                mode={'cover'}
-                style={{width: 45, height: 45}}
-              />
-            ) : (
-              <View style={styles.defaultImage}>
-                <IconFont name="lujing" size="20" color="#fff" />
-              </View>
-            )}
+            <FastImg
+              source={{uri: detail.topic_link.cover_url}}
+              mode={'cover'}
+              style={{width: 45, height: 45}}
+            />
             {detail.topic_link.outlink_type === 'music' && (
               <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
             )}
@@ -300,8 +294,6 @@ const TopicDetail = ({navigation, route}) => {
       </Pressable>
     );
   };
-
-  console.log(detail);
 
   return detail ? (
     <KeyboardAvoidingView
@@ -341,8 +333,7 @@ const TopicDetail = ({navigation, route}) => {
               <Pressable
                 onPress={onReportClick}
                 hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-                style={{paddingRight: 10}}
-              >
+                style={{paddingRight: 10}}>
                 <IconFont name="ziyuan" color="#000" size={20} />
               </Pressable>
             )}
@@ -381,7 +372,12 @@ const TopicDetail = ({navigation, route}) => {
               </>
             )}
             {detail.plain_content ? (
-              <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
+              <View
+                style={{
+                  padding: 15,
+                  paddingRight: 24,
+                  paddingBottom: detail.content_style === 'text' ? 0 : 10,
+                }}>
                 <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
               </View>
             ) : null}
@@ -468,14 +464,6 @@ const styles = StyleSheet.create({
     marginRight: 14,
     alignItems: 'center',
     marginTop: 20,
-  },
-  defaultImage: {
-    width: 45,
-    height: 45,
-    backgroundColor: '#BDBDBD',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 2,
   },
   linkImageWrap: {
     position: 'relative',
