@@ -1,19 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ViewPropTypes,
-  Text,
-  StatusBar,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Platform,
-} from 'react-native';
+import {Text, StatusBar, TouchableOpacity, StyleSheet, View, Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {NAVIGATION_BAR_HEIGHT, IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
 import ExcellentImage from '@/assets/images/excellent.png';
-import FastImg from "@/components/FastImg"
+import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 
 const TopHeaderView = props => {
@@ -42,25 +34,30 @@ const TopHeaderView = props => {
                   navigation.reset({
                     index: 0,
                     routes: [{name: 'Recommend'}],
-                  })
+                  });
                 } else {
                   navigation.goBack();
                 }
               }}>
-              {navigation.canGoBack() ?
+              {navigation.canGoBack() ? (
                 <Icon
                   name={'chevron-back-outline'}
                   size={22}
                   color={props.leftButtonColor || 'white'}
                   iconStyle={{marginRight: 1}}
-                /> : <IconFont name="home-recommend" color={props.leftButtonColor || 'white'} size={16} />
-              }
-              {
-                props.excellent && <View style={{justifyContent: 'center'}}>
+                />
+              ) : (
+                <IconFont
+                  name="home-recommend"
+                  color={props.leftButtonColor || 'white'}
+                  size={16}
+                />
+              )}
+              {props.excellent && (
+                <View style={{justifyContent: 'center'}}>
                   <FastImg source={ExcellentImage} style={{width: 30, height: 17}} />
                 </View>
-              }
-
+              )}
             </TouchableOpacity>
           )}
         </View>
@@ -84,7 +81,7 @@ export default TopHeaderView;
 TopHeaderView.propTypes = {
   // Title: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   // LeftButton: PropTypes.object,
-  RightButton: PropTypes.object,
+  // RightButton: PropTypes.object,
   isAtRoot: PropTypes.bool,
 };
 

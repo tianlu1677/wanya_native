@@ -50,6 +50,10 @@ const TopicLinkDetail = ({navigation, route}) => {
         Title={detail.topic_link.title}
         leftButtonColor={'black'}
         excellent={detail.excellent}
+        statusBar={{
+          barStyle: 'dark-content',
+          hidden: false,
+        }}
       />
       <WebView
         originWhitelist={['*']}
