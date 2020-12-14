@@ -141,9 +141,9 @@ export const ActionComment = props => {
     const data = {...comment, content: value};
     console.log(data);
     const params = {
-      comment_type: data.comment_type,
       placeholder: data.placeholder,
       comment: {
+        comment_type: data.comment_type,
         content: data.content,
         mention_ids: data.mention_ids,
         commentable_type: data.commentable_type,

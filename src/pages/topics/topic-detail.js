@@ -57,24 +57,10 @@ const TopicDetail = ({navigation, route}) => {
   };
 
   const publishComment = async data => {
-    console.log(data);
-    const params = {
-      comment_type: data.comment_type,
-      placeholder: data.placeholder,
-      comment: {
-        content: data.content,
-        mention_ids: data.mention_ids,
-        commentable_type: data.commentable_type,
-        comment_type: data.comment_type,
-        commentable_id: data.commentable_id,
-      },
-    };
-    console.log(params);
-
     try {
       setVisible(false);
       Toast.showLoading('发送中');
-      const comment_res = await createComment(params);
+      const comment_res = await createComment(data);
       console.log('comment_res', comment_res);
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
       Toast.hide();
