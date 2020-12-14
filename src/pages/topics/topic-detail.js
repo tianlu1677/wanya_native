@@ -65,18 +65,25 @@ const TopicDetail = ({navigation, route}) => {
         content: data.content,
         mention_ids: data.mention_ids,
         commentable_type: data.commentable_type,
+        comment_type: data.comment_type,
         commentable_id: data.commentable_id,
       },
     };
     console.log(params);
 
-    setVisible(false);
-    Toast.showLoading('发送中');
-    await createComment(params);
-    dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
-    Toast.hide();
-    Toast.show('评论成功啦');
-    loadData();
+    try {
+      setVisible(false);
+      Toast.showLoading('发送中');
+      const comment_res = await createComment(params);
+      console.log('comment_res', comment_res)
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      Toast.hide();
+      Toast.show('评论成功啦');
+      loadData();
+    } catch (e) {
+      Toast.show('评论出错了');
+      Toast.hide();
+    }
   };
 
   const deleteTopicComment = async id => {
