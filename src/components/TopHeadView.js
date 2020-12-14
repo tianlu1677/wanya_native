@@ -120,8 +120,7 @@ const styles = StyleSheet.create({
   rightButton: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'flex-start',
-    marginLeft: 20
+    alignItems: 'flex-end',
   },
   statusBar: {
     height: IsIos ? STATUS_BAR_HEIGHT : 0,

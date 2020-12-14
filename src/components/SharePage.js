@@ -73,7 +73,7 @@ const ViewShotPage = props => {
                     source={{uri: topic_link.cover_url}}
                   />
                   <Text style={styles.linkText} numberOfLines={2}>
-                    {topic_link.title || topic_link.raw_link} xxxxxxxxxxxxxxxxxxx
+                    {topic_link.title || topic_link.raw_link}
                   </Text>
                 </View>
               }
