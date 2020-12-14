@@ -13,7 +13,7 @@ import {
   Platform,
 } from 'react-native';
 // import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker, {launchImageLibrary} from 'react-native-image-picker';
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -184,7 +184,7 @@ const NewTopic = props => {
 
     // react-native-image-picker
     if (Platform.OS === 'ios') {
-      ImagePicker.launchImageLibrary(
+      launchImageLibrary(
         {
           mediaType: 'video',
           videoQuality: 'low',
