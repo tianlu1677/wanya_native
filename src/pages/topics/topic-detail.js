@@ -462,6 +462,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 8,
+    marginLeft: 14,
+    marginRight: 14,
     alignItems: 'center',
     marginTop: 20,
   },

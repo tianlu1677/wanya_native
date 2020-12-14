@@ -72,8 +72,8 @@ const ViewShotPage = props => {
                     mode={'cover'}
                     source={{uri: topic_link.cover_url}}
                   />
-                  <Text style={styles.linkText}>
-                    {topic_link.title || topic_link.raw_link}
+                  <Text style={styles.linkText} numberOfLines={2}>
+                    {topic_link.title || topic_link.raw_link} xxxxxxxxxxxxxxxxxxx
                   </Text>
                 </View>
               }
@@ -197,15 +197,18 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     marginLeft: 17,
     marginRight: 17,
-    backgroundColor: '#636363'
+    backgroundColor: '#303030'
   },
   linkText: {
+    flex: 1,
+    flexWrap: 'wrap',
     paddingLeft: 10,
     fontWeight: '400',
     fontSize: 13,
     color: 'white',
-    lineHeight: 14,
-    letterSpacing: 1
+    lineHeight: 22,
+    letterSpacing: 1,
+    paddingRight: 10,
   },
   footer: {
     flex: 1,
