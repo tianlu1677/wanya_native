@@ -23,6 +23,7 @@ const ShareItem = () => {
     if (content.type === 'link') {
       WeChat.shareWebpage({
         ...content,
+        description: '顽鸦APP，新青年文化庇护所',
         scene: 0,
       });
     } else {
