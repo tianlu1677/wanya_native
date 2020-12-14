@@ -20,23 +20,24 @@ const ActionSheet = props => {
 
   const actionSheetItems = [...actionItems, cancelItem];
 
-  // useEffect(() => {
-  //   setShowActionSheet(props.showActionSheet);
-  // }, [props.showActionSheet]);
+  useEffect(() => {
+    if(props.showActionSheet !== showActionSheet) {
+      setShowActionSheet(props.showActionSheet);
+    }
+  }, [props.showActionSheet]);
 
   const onPressItem = actionItem => {
     actionItem.onPress();
-    // setShowActionSheet(false);
+    setShowActionSheet(false);
     if (props.changeModal) {
-      // props.changeModal(false);
+      props.changeModal(false);
     }
   };
 
-  // console.log('showActionSheet1', actionSheetItems)
   return (
     <>
       {
-        props.showActionSheet && ActionSheetIOS.showActionSheetWithOptions(
+        showActionSheet && ActionSheetIOS.showActionSheetWithOptions(
           {
             options: actionSheetItems.map((x) => x.label),
             destructiveButtonIndex: actionSheetItems.length - 1,

@@ -25,7 +25,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BOTTOM_HEIGHT, NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
 import VideoPlayImg from '@/assets/images/video-play.png';

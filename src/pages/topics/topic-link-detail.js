@@ -9,7 +9,7 @@ import IconFont from '@/iconfont';
 import {ActionComment} from '@/components/Item/single-detail-item';
 import {createComment} from '@/api/comment_api';
 import {dispatchTopicDetail} from '@/redux/actions';
-import {NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {getTopic} from '@/api/topic_api';
 import TopHeaderView from "@/components/TopHeadView"
 const TopicLinkDetail = ({navigation, route}) => {

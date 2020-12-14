@@ -19,7 +19,7 @@ import {getArticleCommentList, createComment, deleteComment} from '@/api/comment
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {dispatchArticleDetail} from '@/redux/actions';
-import {NAVIGATION_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import ActionSheet from '@/components/ActionSheet';
 
 const ArticleDetail = ({navigation, route}) => {
@@ -103,7 +103,7 @@ const ArticleDetail = ({navigation, route}) => {
 
   return detail && currentAccount ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={NAVIGATION_BAR_HEIGHT + STATUS_BAR_HEIGHT}
+      keyboardVerticalOffset={NAV_BAR_HEIGHT + STATUS_BAR_HEIGHT}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
       <CommentList

@@ -153,7 +153,7 @@ const InviteDetail = ({navigation, route}) => {
             [1, 2, 3, 4, 5].slice(0, 4 - (accountList.length % 5)).map(i => {
               return (
                 <AccountWrapView
-                  key={i}
+                  key={`empty_${i}`}
                   onPress={() => {
                     setShareModelVisible(true);
                   }}>
