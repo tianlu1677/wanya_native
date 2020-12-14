@@ -378,7 +378,12 @@ const TopicDetail = ({navigation, route}) => {
               </>
             )}
             {detail.plain_content ? (
-              <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
+              <View
+                style={{
+                  padding: 15,
+                  paddingRight: 24,
+                  paddingBottom: detail.content_style === 'text' ? 0 : 10,
+                }}>
                 <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
               </View>
             ) : null}
