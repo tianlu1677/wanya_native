@@ -340,7 +340,9 @@ const TopicDetail = ({navigation, route}) => {
             RightButton={() => (
               <Pressable
                 onPress={onReportClick}
-                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+                style={{paddingRight: 10}}
+              >
                 <IconFont name="ziyuan" color="#000" size={20} />
               </Pressable>
             )}
