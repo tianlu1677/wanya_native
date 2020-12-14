@@ -75,7 +75,8 @@ const CommentList = props => {
       ActionSheetIOS.showActionSheetWithOptions(
         {
           options: actionSheetItems.map((x) => x.label),
-          destructiveButtonIndex: actionSheetItems.length - 1,
+          // destructiveButtonIndex: actionSheetItems.length - 1,
+          cancelButtonIndex: actionSheetItems.length - 1,
         },
         buttonIndex => {
           actionSheetItems[buttonIndex].onPress();

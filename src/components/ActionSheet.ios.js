@@ -40,8 +40,9 @@ const ActionSheet = props => {
         showActionSheet && ActionSheetIOS.showActionSheetWithOptions(
           {
             options: actionSheetItems.map((x) => x.label),
-            destructiveButtonIndex: actionSheetItems.length - 1,
-            // cancelButtonIndex: 2//actionSheetItems.length - 1
+            // destructiveButtonIndex: actionSheetItems.length - 1,
+            cancelButtonIndex: actionSheetItems.length - 1,
+            // tintColor: 'red',
           },
           buttonIndex => {
             onPressItem(actionSheetItems[buttonIndex])
