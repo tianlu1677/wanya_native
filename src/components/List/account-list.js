@@ -25,7 +25,7 @@ export const MentionsAccountList = props => {
         content: savecomment.content
           ? `${savecomment.content} @${item.nickname} `
           : `@${item.nickname} `,
-        mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, item] : [item],
+        mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, item.id] : [item.id],
       };
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: comments});
     }
