@@ -17,7 +17,7 @@ const defaultState = {
   commentTopic: {
     content: '',
   },
-  uploadProgress: 100,
+  uploadProgress: 0,
   location: {},
   nodes: [],
   followNodes: [],
