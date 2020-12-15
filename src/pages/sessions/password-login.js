@@ -49,7 +49,7 @@ const PasswordLogin = ({navigation, route}) => {
     }
     if (res.account) {
       await Helper.setData('socialToken', res.account.token);
-      const accountInfo = res
+      const accountInfo = res;
       if (!accountInfo.account.had_invited) {
         navigation.navigate('InviteLogin');
       } else {
@@ -188,13 +188,14 @@ const PasswordLogin = ({navigation, route}) => {
                 placeholder={'输入验证码'}
                 placeholderTextColor={'#353535'}
                 style={{...styles.inputContent, width: '70%'}}
-                clearButtonMode={'always'}
               />
               {firstVerify ? (
                 <Pressable
                   hitSlop={{top: 30, left: 20, right: 10, bottom: 15}}
                   onPress={() => onSendPhoneCode()}>
-                  <Text style={styles.verifyCodeText} includeFontPadding={false}>{verifyText}</Text>
+                  <Text style={styles.verifyCodeText} includeFontPadding={false}>
+                    {verifyText}
+                  </Text>
                 </Pressable>
               ) : (
                 <Pressable
@@ -227,7 +228,6 @@ const PasswordLogin = ({navigation, route}) => {
                 placeholder={'输入登录密码'}
                 placeholderTextColor={'#353535'}
                 style={{...styles.inputContent, width: '70%'}}
-                clearButtonMode={'always'}
               />
               <Pressable
                 onPress={() => setPasswordHidden(!passwordHidden)}
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     minWidth: 200,
     padding: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   titleText: {
     letterSpacing: 1,
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     // height: 27,
     alignItems: 'center',
     letterSpacing: 1,
-    padding: 0
+    padding: 0,
   },
   loginTypeWrap: {
     display: 'flex',

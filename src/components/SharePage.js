@@ -12,7 +12,7 @@ import {prosettings} from '@/api/settings_api';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
 const ViewShotPage = props => {
-  const {account, node_name, height, width, bg_img_url, content, content_style, desc} = props.pageShareContent;
+  const {account, node_name, height, width, topic_link, bg_img_url, content, content_style, desc} = props.pageShareContent;
   const [imgWidth, setimgWidth] = useState(screenWidth-20);
   const [imgHeight, setimgHeight] = useState(300);
   const [qrcode_url, setQrcode_url] = useState('');
@@ -65,7 +65,20 @@ const ViewShotPage = props => {
               </View>
             </View>
             <View style={{width: '100%'}}>
-              {bg_img_url ? (
+              {
+                topic_link && <View style={styles.linkWrap}>
+                  <FastImg
+                    style={{width: 45, height: 45}}
+                    mode={'cover'}
+                    source={{uri: topic_link.cover_url}}
+                  />
+                  <Text style={styles.linkText} numberOfLines={2}>
+                    {topic_link.title || topic_link.raw_link}
+                  </Text>
+                </View>
+              }
+
+              {!topic_link && bg_img_url ? (
                 <FastImg
                   style={{...styles.cover, ...{width: imgWidth, height: imgHeight}}}
                   resizeMode={'cover'}
@@ -176,6 +189,26 @@ const styles = StyleSheet.create({
     // minHeight: 150,
     letterSpacing: 1,
     textAlign: 'justify',
+  },
+  linkWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 61,
+    paddingLeft: 8,
+    marginLeft: 17,
+    marginRight: 17,
+    backgroundColor: '#303030'
+  },
+  linkText: {
+    flex: 1,
+    flexWrap: 'wrap',
+    paddingLeft: 10,
+    fontWeight: '400',
+    fontSize: 13,
+    color: 'white',
+    lineHeight: 22,
+    letterSpacing: 1,
+    paddingRight: 10,
   },
   footer: {
     flex: 1,

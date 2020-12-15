@@ -134,7 +134,7 @@ function MainStackList() {
       screenOptions={({route}) => ({
         headerStyle: {
           // backgroundColor: 'white',
-          backgroundColor: Platform.OS === 'ios' ? 'red' : 'white',
+          backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
           
           elevation: 0,
           shadowOpacity: 0,
@@ -311,8 +311,8 @@ const Navigation = () => {
       onStateChange={(state) => {
         onStateChangeRecord(state)
       }}
-      // initialState={ __DEV__ ? initialState : ''}
-      // onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
+      // initialState={initialState}
+      onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
     >
       <>{!login.auth_token ? AuthStackList() : MainStackList()}</>
     </NavigationContainer>
@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
     right: '23%',
     height: 55,
     borderRadius: 28,
+    zIndex: 1000
   },
   // bottomTabBar: {
   //   backgroundColor: 'transparent',

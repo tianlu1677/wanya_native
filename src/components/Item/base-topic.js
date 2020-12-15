@@ -4,10 +4,9 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
+import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import VideoPlayImg from '@/assets/images/video-play.png';
-import {dispatchPreviewImage} from '@/redux/actions';
-import LinearGradient from 'react-native-linear-gradient';
 import FastImageGif from '@/components/FastImageGif';
 
 const calculateImg = (width, height) => {
@@ -104,28 +103,40 @@ export const TopicVideoContent = props => {
   );
 };
 
+// 外链
 export const TopicLinkContent = props => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {data} = props;
+  const onGoDetail = () => {
+    dispatch(dispatchTopicDetail(null));
+    navigation.push('TopicLinkDetail', {topicId: data.id});
+  };
+
   return (
-    <View style={styles.linkWrap}>
-      <FastImg
-        source={{uri: props.data.topic_link.cover_url}}
-        style={{flex: 1, height: 167, width: '100%'}}
-      />
-      <LinearGradient
-        style={styles.titleWrapper}
-        start={{x: 0, y: 0}}
-        end={{x: 0, y: 1}}
-        colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
-        <Text style={styles.linkTitle}>{props.data.topic_link.title}</Text>
-      </LinearGradient>
-    </View>
+    <Pressable onPress={onGoDetail}>
+      <View style={styles.linkWrapper}>
+        <View style={styles.linkImageWrap}>
+          <FastImg
+            source={{uri: data.topic_link.cover_url}}
+            mode={'cover'}
+            style={{width: 45, height: 45}}
+          />
+          {data.topic_link.outlink_type === 'music' && (
+            <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
+          )}
+        </View>
+        <Text style={styles.linkText} numberOfLines={2}>
+          {data.topic_link.title || data.topic_link.raw_link}
+        </Text>
+      </View>
+    </Pressable>
   );
 };
 
 const BaseTopic = props => {
   const {data} = props;
   const navigation = useNavigation();
-
   const goNodeDetail = () => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
   };
@@ -133,27 +144,28 @@ const BaseTopic = props => {
   const goTopicDetail = () => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
-
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
-      {data.content_style === 'text' ? (
-        <View style={{paddingTop: 13}} />
-      ) : (
-        <View style={{paddingTop: 13, paddingBottom: 13}}>
-          {data.content_style === 'img' && <TopicImageContent data={data} />}
-          {data.content_style === 'video' && <TopicVideoContent data={data} />}
-          {data.content_style === 'link' && <TopicLinkContent data={data} />}
-          {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
-        </View>
-      )}
-      <PlainContent data={data} numberOfLines={5} />
-      <Pressable style={styles.infoViewWrap} onPress={goNodeDetail}>
-        <View style={styles.infoView}>
+      <View style={{marginTop: 13}}>
+        {data.content_style === 'img' && <TopicImageContent data={data} />}
+        {data.content_style === 'video' && <TopicVideoContent data={data} />}
+        {data.content_style === 'link' && <TopicLinkContent data={data} />}
+        {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+      </View>
+      {data.plain_content ? (
+        <PlainContent
+          data={data}
+          numberOfLines={5}
+          style={{paddingTop: data.content_style === 'text' ? 0 : 13}}
+        />
+      ) : null}
+      <View style={[styles.infoViewWrap, {marginTop: data.plain_content ? 10 : 16}]}>
+        <Pressable style={styles.infoView} onPress={goNodeDetail}>
           <IconFont name="node-solid" size={12} color={'#000'} />
           <Text style={styles.nodeName}>{data.node_name}</Text>
-        </View>
-      </Pressable>
+        </Pressable>
+      </View>
       <Bottom data={data} type="topic" />
     </Pressable>
   );
@@ -163,16 +175,6 @@ const styles = StyleSheet.create({
     padding: 14,
     paddingBottom: 0,
     backgroundColor: '#fff',
-  },
-  multiText: {
-    fontSize: 14,
-    lineHeight: 24,
-    color: '#1f1f1f',
-  },
-  hashtagText: {
-    color: '#ff8d00',
-    paddingLeft: 2,
-    paddingRight: 2,
   },
   imageMulti: {
     width: 167,
@@ -192,20 +194,6 @@ const styles = StyleSheet.create({
     top: '50%',
     marginTop: -15,
     marginLeft: -15,
-  },
-  titleWrapper: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    padding: 11,
-    borderRadius: 2,
-  },
-  linkTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#fff',
-    lineHeight: 22,
   },
   excellentLabel: {
     width: 30,
@@ -239,6 +227,33 @@ const styles = StyleSheet.create({
   nodeName: {
     fontSize: 11,
     marginLeft: 4,
+  },
+  linkWrapper: {
+    flex: 1,
+    backgroundColor: '#F2F3F5',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 8,
+    alignItems: 'center',
+  },
+  linkImageWrap: {
+    position: 'relative',
+  },
+  linkImage: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginTop: -6,
+    marginLeft: -6,
+  },
+  linkText: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginVertical: 3,
+    color: '#3F3F3F',
+    marginLeft: 10,
+    textAlign: 'justify',
+    flex: 1,
   },
 });
 

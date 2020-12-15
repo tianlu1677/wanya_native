@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useEffect, useState, useRef, useCallback, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
+import {useFocusEffect} from '@react-navigation/native';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import VideoPlayerContent from '@/components/react-native-video-player';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
@@ -23,25 +25,25 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BASIC_HEIGHT, BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
-import {getStatusBarHeight} from 'react-native-iphone-x-helper';
-import {useFocusEffect} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
+import {BOTTOM_HEIGHT, NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
-
+import VideoPlayImg from '@/assets/images/video-play.png';
+import TopHeaderView from '@/components/TopHeadView';
 const {width: screenWidth} = Dimensions.get('window');
+const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const videoRef = useRef(null);
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const currentTopic = useSelector(state => state.topic.topicDetail);
+
   const [topicId] = useState(route.params.topicId);
-  const [detail, setDetail] = useState(null);
+  const [detail, setDetail] = useState();
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [actionItems, setActionItems] = useState([]);
-
-  const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
 
   const loadData = async () => {
     const res = await getTopic(topicId);
@@ -55,12 +57,19 @@ const TopicDetail = ({navigation, route}) => {
   };
 
   const publishComment = async data => {
-    setVisible(false);
-    Toast.showLoading('发送中');
-    await createComment(data);
-    Toast.hide();
-    Toast.show('评论成功啦');
-    loadData();
+    try {
+      setVisible(false);
+      Toast.showLoading('发送中');
+      const comment_res = await createComment(data);
+      // console.log('comment_res', comment_res);
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      Toast.hide();
+      Toast.show('评论成功啦');
+      loadData();
+    } catch (e) {
+      Toast.show('评论出错了');
+      Toast.hide();
+    }
   };
 
   const deleteTopicComment = async id => {
@@ -70,7 +79,7 @@ const TopicDetail = ({navigation, route}) => {
 
   const onReportClick = () => {
     const isCurrentTopic = detail.account_id === currentAccount.id;
-    const action = [
+    const actions = [
       {
         id: 1,
         label: isCurrentTopic ? '删除' : '举报',
@@ -86,8 +95,18 @@ const TopicDetail = ({navigation, route}) => {
         },
       },
     ];
-    setActionItems(action);
+    setActionItems(actions);
     setShowActionSheet(true);
+  };
+
+  const ExcellentBtn = ({style}) => <Text style={[styles.excellentLabel, {...style}]}>精选</Text>;
+
+  // 外链 纯文本 带header
+  const isHeader = () => {
+    if (detail && (detail.content_style === 'link' || detail.content_style === 'text')) {
+      return true;
+    }
+    return false;
   };
 
   useFocusEffect(
@@ -106,10 +125,72 @@ const TopicDetail = ({navigation, route}) => {
 
   useEffect(() => {
     loadData();
+    // 清空外链，评论数据
+    return () => {
+      dispatch(dispatchTopicDetail(null));
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+    };
   }, []);
 
+  useEffect(() => {
+    setDetail(currentTopic);
+  }, [currentTopic]);
+
+  // useLayoutEffect(() => {
+  //   const goHome = () => {
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{name: 'Recommend'}],
+  //     });
+  //   };
+  //   const goBack = () => {
+  //     navigation.goBack();
+  //   };
+  //
+  //   if (detail) {
+  //     if (isHeader()) {
+  //       navigation.setOptions({
+  //         headerTitle: '帖子详情',
+  //         headerShown: true,
+  //         headerStyle: {
+  //           borderBottomColor: '#EBEBEB',
+  //           borderBottomWidth: StyleSheet.hairlineWidth,
+  //         },
+  //         headerLeft: () => (
+  //           <View
+  //             style={{
+  //               flexDirection: 'row',
+  //               alignItems: 'center',
+  //             }}>
+  //             <Pressable
+  //               onPress={navigation.canGoBack() ? goBack : goHome}
+  //               hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+  //               <IconFont
+  //                 name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+  //                 color="#000"
+  //                 size={15}
+  //               />
+  //             </Pressable>
+  //             {detail.excellent && <ExcellentBtn style={{marginLeft: 10}} />}
+  //           </View>
+  //         ),
+  //         headerRight: () => (
+  //           <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+  //             <IconFont name="ziyuan" color="#000" size={20} />
+  //           </Pressable>
+  //         ),
+  //       });
+  //     } else {
+  //       navigation.setOptions({
+  //         headerShown: false,
+  //         title: false,
+  //         headerTransparent: true,
+  //       });
+  //     }
+  //   }
+  // }, [navigation, detail]);
+
   const renderImg = () => {
-    // console.log('deta', detail)
     let {media_images} = detail;
     let maxHeight = 100;
     (media_images || []).map(img => {
@@ -138,10 +219,9 @@ const TopicDetail = ({navigation, route}) => {
       };
       dispatch(dispatchPreviewImage(data));
     };
+
     return (
-      <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
-        <StatusBar backgroundColor={'black'} />
-        <View style={{height: topHeight, backgroundColor: 'black'}} />
+      <View style={{minHeight: maxHeight, width: screenWidth}}>
         <Swiper
           index={0}
           loop={false}
@@ -175,18 +255,6 @@ const TopicDetail = ({navigation, route}) => {
     let videoHeight = height ? height * (screenWidth / width) : screenWidth;
     return (
       <View style={{backgroundColor: 'black'}}>
-        <StatusBar backgroundColor={'black'} />
-        <View style={{height: topHeight, backgroundColor: 'black'}} />
-        {detail.excellent && (
-          <Text
-            style={{
-              ...styles.excellentLabel,
-              zIndex: 100,
-              top: IsIos ? Math.max(getStatusBarHeight(), 20) : 1,
-            }}>
-            精选
-          </Text>
-        )}
         <VideoPlayerContent
           ref={videoRef}
           customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
@@ -200,36 +268,36 @@ const TopicDetail = ({navigation, route}) => {
           muted={false}
           resizeMode={'cover'}
           autoplay={true}
-          loop={true}
+          loop
         />
       </View>
     );
   };
 
   const renderLink = () => {
-    const goLinkDetail = () => {
-      navigation.push('WebView', {
-        sourceUrl: detail.topic_link.raw_link,
-        title: detail.topic_link.title,
-      });
+    const onGoDetail = () => {
+      dispatch(dispatchTopicDetail(null));
+      navigation.push('TopicLinkDetail', {topicId: detail.id});
     };
 
     return (
-      <View>
-        <StatusBar barStyle={'dark-content'} />
-        <View style={{paddingTop: IsIos ? BASIC_HEIGHT : 0, marginTop: 10, paddingBottom: 16}}>
+      <Pressable onPress={onGoDetail}>
+        <View style={styles.linkWrapper}>
+          <View style={styles.linkImageWrap}>
+            <FastImg
+              source={{uri: detail.topic_link.cover_url}}
+              mode={'cover'}
+              style={{width: 45, height: 45}}
+            />
+            {detail.topic_link.outlink_type === 'music' && (
+              <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
+            )}
+          </View>
+          <Text style={styles.linkText} numberOfLines={2}>
+            {detail.topic_link.title || detail.topic_link.raw_link}
+          </Text>
         </View>
-        <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
-          <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
-          <LinearGradient
-            style={styles.titleWrapper}
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
-            colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
-            <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
-          </LinearGradient>
-        </Pressable>
-      </View>
+      </Pressable>
     );
   };
 
@@ -237,14 +305,48 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
-
-
-      <GoBack
-        name={navigation.canGoBack() ? '' : 'home-recommend'}
-        color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
-        top={IsIos ? null : 1}
-        report={{report_type: 'Topic', report_type_id: detail.id}}
-      />
+      {/* 不带header */}
+      {/*{!isHeader() && (*/}
+      {/*  <>*/}
+      {/*    <GoBack name={navigation.canGoBack() ? '' : 'home-recommend'} color={'#fff'} />*/}
+      {/*    <Pressable*/}
+      {/*      onPress={onReportClick}*/}
+      {/*      style={styles.report}*/}
+      {/*      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>*/}
+      {/*      <IconFont name="ziyuan" color="#fff" size={20} />*/}
+      {/*    </Pressable>*/}
+      {/*  </>*/}
+      {/*)}*/}
+      {(detail.content_style === 'video' || detail.content_style === 'img') && (
+        <>
+          <StatusBar barStyle={'light-content'} backgroundColor={'black'} />
+          <GoBack
+            color={'white'}
+            report={{
+              report_type: 'Topic',
+              report_id: detail.id,
+            }}
+          />
+        </>
+      )}
+      {(detail.content_style === 'link' || detail.content_style === 'text') && (
+        <>
+          <TopHeaderView
+            Title={'帖子详情'}
+            leftButtonColor={'black'}
+            excellent={detail.excellent}
+            RightButton={() => (
+              <Pressable
+                onPress={onReportClick}
+                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+                style={{paddingRight: 10}}>
+                <IconFont name="ziyuan" color="#000" size={20} />
+              </Pressable>
+            )}
+          />
+          <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+        </>
+      )}
       <CommentList
         type="Topic"
         detail={detail}
@@ -254,25 +356,30 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            <View style={{position: 'relative'}}>
-              {detail.content_style === 'video' && renderVideo()}
-              {detail.content_style === 'link' && renderLink()}
-              {detail.content_style === 'img' && renderImg()}
-              {detail.content_style === 'img' && detail.excellent && (
-                <Text style={{...styles.excellentLabel, top: IsIos ? Math.max(getStatusBarHeight(), 20) : 1}}>
-                  精选
-                </Text>
-              )}
-            </View>
-            {detail.content_style === 'text' && (
-              <View style={{paddingTop: IsIos ? BASIC_HEIGHT + 5 : 1, paddingBottom: 16}}>
-                <StatusBar barStyle={'dark-content'} translucent={false} />
+            {(detail.content_style === 'video' || detail.content_style === 'img') && (
+              <View style={{position: 'relative'}}>
+                <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
+                {detail.excellent && <ExcellentBtn style={styles.excellentHeader} />}
+                {detail.content_style === 'video' && renderVideo()}
+                {detail.content_style === 'img' && renderImg()}
               </View>
             )}
             <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-            <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
-              <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
-            </View>
+            {detail.content_style === 'link' && (
+              <>
+                <View>{renderLink()}</View>
+              </>
+            )}
+            {detail.plain_content ? (
+              <View
+                style={{
+                  padding: 15,
+                  paddingRight: 24,
+                  paddingBottom: detail.content_style === 'text' ? 0 : 10,
+                }}>
+                <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
+              </View>
+            ) : null}
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
@@ -284,10 +391,8 @@ const TopicDetail = ({navigation, route}) => {
         detail={detail}
         publishComment={publishComment}
         type="Topic"
-        setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
       />
-
       <ActionSheet
         actionItems={actionItems}
         showActionSheet={showActionSheet}
@@ -310,15 +415,6 @@ const styles = StyleSheet.create({
     top: Math.max(getStatusBarHeight(), 20),
     zIndex: 1,
   },
-  title: {
-    fontSize: 20,
-    paddingTop: 8,
-    paddingRight: 14,
-    paddingLeft: 14,
-    paddingBottom: 8,
-    fontWeight: '500',
-    lineHeight: 28,
-  },
   commentTitle: {
     fontSize: 15,
     fontWeight: '500',
@@ -328,38 +424,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingBottom: 5,
   },
-  linkWrap: {
-    marginTop: 14,
-    marginRight: 14,
-    marginLeft: 14,
-    height: 167,
-    position: 'relative',
-  },
-  titleWrapper: {
-    height: 64,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    padding: 11,
-    borderRadius: 2,
-  },
-  linkTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#fff',
-    lineHeight: 22,
-  },
-  linkImageCover: {
-    width: '100%',
-    height: 167,
-    flex: 1,
-    borderRadius: 2,
-  },
   excellentLabel: {
     width: 30,
     height: 16,
-    marginTop: 14,
     flex: 1,
     textAlign: 'center',
     fontSize: 10,
@@ -368,14 +435,48 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     overflow: 'hidden',
     color: 'white',
+  },
+  excellentHeader: {
+    marginTop: 14,
     position: 'absolute',
-    // right: 15,
     left: 40,
+    zIndex: 100,
+    top: SAFE_TOP,
   },
   multiLineText: {
     fontSize: 14,
     lineHeight: 23,
     color: '#000',
+  },
+  linkWrapper: {
+    flex: 1,
+    backgroundColor: '#F2F3F5',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 8,
+    marginLeft: 14,
+    marginRight: 14,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  linkImageWrap: {
+    position: 'relative',
+  },
+  linkImage: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginTop: -6,
+    marginLeft: -6,
+  },
+  linkText: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginVertical: 3,
+    color: '#3F3F3F',
+    marginLeft: 10,
+    textAlign: 'justify',
+    flex: 1,
   },
 });
 

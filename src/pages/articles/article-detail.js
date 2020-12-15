@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -14,42 +14,29 @@ import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import * as action from '@/redux/constants';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {dispatchArticleDetail} from '@/redux/actions';
-import {STATUS_BAR_HEIGHT, NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
-import TopHeader from '@/components/TopHeader';
+import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import ActionSheet from '@/components/ActionSheet';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
-
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const currentArticle = useSelector(state => state.topic.articleDetail);
 
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
-  const [loadingContent, setLoadingContent] = useState(null);
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: (detail && detail.title) || '',
-    });
-  }, [navigation, detail]);
-
-  const loadData = async () => {
-    const res = await getArticle(articleId);
-    setDetail(res.data.article);
-    onHTMLParsed();
-    dispatch(dispatchArticleDetail(res.data.article));
-  };
 
   const publishComment = async data => {
     setVisible(false);
     Toast.showLoading('发送中');
     await createComment(data);
+    dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
     Toast.hide();
     Toast.show('评论成功啦');
     loadData();
@@ -74,49 +61,51 @@ const ArticleDetail = ({navigation, route}) => {
     setShowActionSheet(true);
   };
 
-  const onHTMLParsed = (dom, RNElements) => {
-    setLoadingContent(true);
-    // Find the index of the first paragraph
-    // const ad = {
-    //   wrapper: "View",
-    //   tagName: "mycustomblock",
-    //   attribs: {},
-    //   parent: false,
-    //   parentTag: false,
-    //   nodeIndex: 4,
-    // };
-    // // Insert the component
-    // RNElements.splice(4, 0, ad);
-    // return RNElements;
+  const loadData = async () => {
+    const res = await getArticle(articleId);
+    setDetail(res.data.article);
+    dispatch(dispatchArticleDetail(res.data.article));
   };
 
   useEffect(() => {
     loadData();
+    // 清空评论数据
+    return () => {
+      dispatch(dispatchArticleDetail(null));
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+    };
   }, []);
+
+  useEffect(() => {
+    setDetail(currentArticle);
+  }, [currentArticle]);
+
+  useLayoutEffect(() => {
+    if (detail) {
+      navigation.setOptions({
+        headerTitle: detail.title,
+        headerShown: true,
+        headerTransparent: false,
+        safeArea: false,
+        headerStyle: {
+          borderBottomColor: '#EBEBEB',
+          borderBottomWidth: StyleSheet.hairlineWidth,
+        },
+        headerRight: () =>
+          detail.account_id === currentAccount.id ? null : (
+            <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+              <IconFont name="ziyuan" color="#000" size={20} />
+            </Pressable>
+          ),
+      });
+    }
+  }, [navigation, detail]);
 
   return detail && currentAccount ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={0}
+      keyboardVerticalOffset={NAV_BAR_HEIGHT + STATUS_BAR_HEIGHT}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
-      <TopHeader
-        Title={detail.title}
-        leftButtonColor={'black'}
-        statusBar={{
-          barStyle: 'dark-content',
-          hidden: false,
-        }}
-        RightButton={() =>
-          detail.account_id === currentAccount.id ? null : (
-            <Pressable
-              onPress={onReportClick}
-              style={{paddingLeft: 20}}
-              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-              <IconFont name="ziyuan" color="#000" size={20} />
-            </Pressable>
-          )
-        }
-      />
       <CommentList
         detail={detail}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
@@ -150,11 +139,7 @@ const ArticleDetail = ({navigation, route}) => {
               imagesMaxWidth={Dimensions.get('window').width - 20}
               imagesInitialDimensions={{width: Dimensions.get('window').width}}
               baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
-              onLinkPress={e => {
-                console.log('xxx', e);
-              }}
               images_info={detail.images_info}
-              onHTMLParsed={onHTMLParsed}
               content={detail.content}
             />
             <PublishRelated data={detail} />
@@ -168,10 +153,8 @@ const ArticleDetail = ({navigation, route}) => {
         detail={detail}
         publishComment={publishComment}
         type="Article"
-        setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
       />
-
       <ActionSheet
         actionItems={actionItems}
         showActionSheet={showActionSheet}
@@ -192,6 +175,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     fontWeight: '500',
     lineHeight: 28,
+    marginTop: 20,
   },
   commentTitle: {
     fontSize: 15,

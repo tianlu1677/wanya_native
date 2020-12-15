@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
-import { PADDING_TOP } from '@/utils/navbar';
+import { SAFE_TOP } from '@/utils/navbar';
 
 export const GoBack = props => {
   const navigation = useNavigation();
@@ -27,13 +27,13 @@ export const GoBack = props => {
   };
 
   return (
-    <View>
+    <>
       <Pressable
         onPress={() => {
           handleClick();
         }}
-        style={{...styles.goBackWrap, top: Math.max(PADDING_TOP)}}>
-        <IconFont name={name} color={color} size={15} />
+        style={{...styles.goBackWrap, top: SAFE_TOP}}>
+        <IconFont name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={color} size={15} />
       </Pressable>
       {report && (
         <Pressable
@@ -43,12 +43,12 @@ export const GoBack = props => {
               report_type_id: report.report_id,
             });
           }}
-          style={{...styles.report, top: Math.max(PADDING_TOP)}}
+          style={{...styles.report, top: SAFE_TOP}}
           hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <IconFont name="ziyuan" color="#fff" size={20} />
         </Pressable>
       )}
-    </View>
+    </>
   );
 };
 
@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
     zIndex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 44,
+    height: 34,
     width: 44,
-    lineHeight: 44,
+    lineHeight: 34,
     flexDirection: 'row',
     color: 'white',
     // backgroundColor: 'red',
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   report: {
     position: 'absolute',
     right: 16,
-    height: 44,
+    height: 34,
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',

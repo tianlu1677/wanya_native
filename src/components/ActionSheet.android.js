@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Modal from 'react-native-modal';
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
@@ -7,31 +7,29 @@ const PRIMARY_COLOR = 'rgb(0,98,255)';
 const WHITE = '#ffffff';
 const BORDER_COLOR = '#DBDBDB';
 
-const ActionSheet = props => {
+const ActionSheetAndroid = props => {
   const [showActionSheet, setShowActionSheet] = useState(false);
-  const {actionItems } = props;
+  const {actionItems} = props;
 
   const cancelItem = {
     id: '#cancel',
     label: '取消',
     type: 'cancel',
     onPress: props?.onCancel,
-  }
-  const actionSheetItems = [
-    ...actionItems,
-    cancelItem
-  ];
+  };
+
+  const actionSheetItems = [...actionItems, cancelItem];
 
   useEffect(() => {
     setShowActionSheet(props.showActionSheet);
   }, [props.showActionSheet]);
 
   const onPressItem = actionItem => {
-    console.log('xxxxxxxxxxx');
+    // console.log('xxxxxxxxxxx');
 
     actionItem.onPress();
-    setShowActionSheet(false);
-    if(props.changeModal) {
+    // setShowActionSheet(false);
+    if (props.changeModal) {
       props.changeModal(false);
     }
   };
@@ -39,8 +37,8 @@ const ActionSheet = props => {
   // console.log('showActionSheet1', props)
   return (
     <Modal
-      onBackdropPress={() => onPressItem(cancelItem) }
-      isVisible={showActionSheet}
+      onBackdropPress={() => onPressItem(cancelItem)}
+      isVisible={props.showActionSheet}
       transparent={true}
       animationIn={'slideInUp'}
       statusBarTranslucent
@@ -51,7 +49,6 @@ const ActionSheet = props => {
         margin: 0,
         justifyContent: 'flex-end',
       }}>
-
       <View style={styles.modalContent}>
         {actionSheetItems.map((actionItem, index) => {
           return (
@@ -81,10 +78,7 @@ const ActionSheet = props => {
               onPress={() => onPressItem(actionItem)}>
               <Text
                 allowFontScaling={false}
-                style={[
-                  styles.actionSheetText,
-                  actionItem.type && styles[actionItem.type],
-                ]}>
+                style={[styles.actionSheetText, actionItem.type && styles[actionItem.type]]}>
                 {actionItem.label}
               </Text>
             </TouchableHighlight>
@@ -93,7 +87,42 @@ const ActionSheet = props => {
       </View>
     </Modal>
   );
-};;
+};
+
+// const onChangeImage1 = () => {
+//   ActionSheetIOS.showActionSheetWithOptions(
+//     {
+//       options: ['更换背景图', '取消'],
+//     },
+//     async buttonIndex => {
+//       if (buttonIndex === 0) {
+//         props.removeAllPhoto();
+//         const options = {
+//           imageCount: 1,
+//           isCrop: true,
+//           CropW: screenW * 1,
+//           CropH: HEADER_HEIGHT,
+//           isCamera: false,
+//         };
+//         props.imagePick(options, async (err, res) => {
+//           if (err) {
+//             return;
+//           }
+//           Toast.showLoading('更换中...');
+//           await props.uploadAvatar({
+//             uploadType: 'multipart',
+//             account_id: currentAccount.id,
+//             keyParams: 'account[profile_attributes][background_img]',
+//             ...res[0],
+//           });
+//           dispatch(dispatchCurrentAccount());
+//           Toast.hide();
+//           Toast.showError('已完成', {duration: 500});
+//         });
+//       }
+//     }
+//   );
+// };
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -124,14 +153,14 @@ const styles = StyleSheet.create({
     color: PRIMARY_COLOR,
   },
   cancel: {
-    color: '#fa1616'
+    color: '#fa1616',
   },
   destroy: {
-    color: '#fa1616'
-  }
+    color: '#fa1616',
+  },
 });
 
-ActionSheet.propTypes = {
+ActionSheetAndroid.propTypes = {
   actionItems: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -141,18 +170,16 @@ ActionSheet.propTypes = {
   ).isRequired,
   onCancel: PropTypes.func,
   actionTextColor: PropTypes.string,
-
 };
 
-ActionSheet.defaultProps = {
+ActionSheetAndroid.defaultProps = {
   actionItems: [],
   onCancel: () => {},
   actionTextColor: null,
   actionSheet: false,
 };
 
-export default ActionSheet;
-
+export default ActionSheetAndroid;
 
 // const actionItems = [
 //   {

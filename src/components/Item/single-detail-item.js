@@ -4,11 +4,11 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
 import {Avator} from '@/components/NodeComponents';
+import {dispatchTopicDetail, dispatchArticleDetail} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
-
 export const PublishAccount = props => {
   const {data} = props;
   const navigation = useNavigation();
@@ -102,9 +102,28 @@ export const ActionComment = props => {
   const navigation = useNavigation();
   const comment = useSelector(state => state.home.commentTopic);
   const dispatch = useDispatch();
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('');
   const [praise, setPraise] = useState(props.detail.praise);
   const [star, setStar] = useState(props.detail.star);
+
+  const getValueLength = str => {
+    if (!str) {
+      return 0;
+    }
+    return str.replace(/\s+/g, '').length;
+  };
+
+  const onChangeValue = text => {
+    // 输入
+    if (getValueLength(text) >= getValueLength(value)) {
+      if (text.substr(-1) === '@') {
+        navigation.push('AddMentionAccount', {type: 'topicDetail'});
+        const saveComments = {...comment, content: text.substr(0, text.length - 1)};
+        dispatch({type: action.SAVE_COMMENT_TOPIC, value: saveComments});
+      }
+    }
+    setValue(text);
+  };
 
   const onCreateComment = v => {
     const commentTopic = {
@@ -120,7 +139,31 @@ export const ActionComment = props => {
 
   const publishComment = () => {
     const data = {...comment, content: value};
-    props.publishComment(data);
+    // console.log(data);
+    const params = {
+      placeholder: data.placeholder,
+      comment: {
+        comment_type: data.comment_type,
+        content: data.content,
+        mention_ids: data.mention_ids,
+        commentable_type: data.commentable_type,
+        commentable_id: data.commentable_id,
+        target_comment_id: data.target_comment_id || '',
+      },
+    };
+    // console.log(params);
+    props.publishComment(params);
+  };
+
+  const dispatchData = params => {
+    switch (props.type) {
+      case 'Article':
+        dispatch(dispatchArticleDetail(params));
+        break;
+      case 'Topic':
+        dispatch(dispatchTopicDetail(params));
+        break;
+    }
   };
 
   const onCreate = async type => {
@@ -162,20 +205,38 @@ export const ActionComment = props => {
     switch (type) {
       case 'praise':
         const praiseCount = props.detail.praises_count + (praise === true ? -1 : 1);
-        props.setDetail({...props.detail, praises_count: praiseCount});
         setPraise(!praise);
+        dispatchData({...props.detail, praise: !praise, praises_count: praiseCount});
         break;
       case 'star':
         const startCount = props.detail.stars_count + (star === true ? -1 : 1);
-        props.setDetail({...props.detail, stars_count: startCount});
         setStar(!star);
+        dispatchData({...props.detail, star: !star, stars_count: startCount});
         break;
     }
   };
 
+  const onShare = () => {
+    if (props.onShare) {
+      props.onShare();
+      return;
+    }
+    navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
+  };
   useEffect(() => {
-    setValue(null);
-  }, [props.visible]);
+    setPraise(props.detail.praise);
+    setStar(props.detail.star);
+    if (!props.visible) {
+      setValue(null);
+    }
+  }, [props]);
+
+  useEffect(() => {
+    if (comment.content) {
+      props.changeVisible(true);
+      setValue(comment.content);
+    }
+  }, [comment]);
 
   return (
     <View style={astyles.actionWrapper}>
@@ -193,7 +254,7 @@ export const ActionComment = props => {
             </Pressable>
             <Pressable style={astyles.btnWrap} onPress={() => onCreate('star')}>
               <IconFont
-                name={star ? 'star-solid' : 'blank-star'}
+                name={star ? 'star-solid' : 'star'}
                 size={22}
                 color={star ? '#f4ea2a' : '#bdbdbd'}
               />
@@ -205,7 +266,7 @@ export const ActionComment = props => {
               hitSlop={{right: 20, left: 5}}
               style={[astyles.btnWrap, {minWidth: 25}]}
               onPress={() => {
-                navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
+                onShare();
               }}>
               <IconFont name="zhuanfa" size={18} />
             </Pressable>
@@ -218,7 +279,7 @@ export const ActionComment = props => {
           <TextInput
             style={astyles.input}
             placeholder={comment.placeholder}
-            onChangeText={text => setValue(text)}
+            onChangeText={onChangeValue}
             value={value}
             autoFocus
             onBlur={() => props.changeVisible(false)}

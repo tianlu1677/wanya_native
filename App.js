@@ -66,7 +66,7 @@ class App extends Component {
     this.checkPermission();
     this.loadNetworkInfo();
     this.notif = new NotifyService(this.onRegister, this.onNotification);
-    // this.loadDeviceInfo();
+    this.loadDeviceInfo();
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
@@ -205,14 +205,15 @@ class App extends Component {
   }
 
   loadDeviceInfo = () => {
-    DeviceInfo.getApiLevel().then(apiLevel => {
-      // console.log('apiLevel', apiLevel);
-      // iOS: ?
-      // Android: 25
-      // Windows: ?
-    });
+    // DeviceInfo.getApiLevel().then(apiLevel => {
+    //   console.log('apiLevel', apiLevel);
+    //   iOS: ?
+    //   Android: 25
+    //   Windows: ?
+    // });
+    // console.log(DeviceInfo.getSystemVersion())
 
-    let bundleId = DeviceInfo.getBundleId();
+    // let bundleId = DeviceInfo.getBundleId();
   };
 
   loadImgList = () => {

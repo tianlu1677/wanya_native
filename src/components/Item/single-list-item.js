@@ -229,7 +229,18 @@ export const Bottom = props => {
           title: data.plain_content,
           path: '/pages/topics/topic-detail?topic_id=' + data.id,
           thumbImageUrl: data.wx_share_image_url,
+          type: data.content_style,
+          topic_link: data.topic_link,
         };
+
+        if(data.content_style === 'link' && data.topic_link) {
+          shareOptions = {
+            ...shareOptions,
+            title: data.topic_link?.title || data.topic_link.raw_link,
+            thumbImageUrl: data.topic_link.cover_url,
+            webpageUrl: data.topic_link.raw_link
+          }
+        }
         break;
       default:
         shareOptions;
@@ -274,7 +285,7 @@ export const Bottom = props => {
         onPress={() => {
           onShare();
         }}
-        hitSlop={{left: 10, right: 10, top: 5}}>
+        hitSlop={{left: 30, right: 20, top: 20, bottom: 10}}>
         <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
       </Pressable>
     </View>
@@ -289,7 +300,7 @@ export const PlainContent = props => {
     navigation.push('HashtagDetail', {hashtag: name.replace('#', '')});
   };
 
-  const AccountDetail = async nickname => {
+  const goAccountDetail = async nickname => {
     const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
     navigation.push('AccountDetail', {accountId: res.data.account.id});
   };
@@ -306,7 +317,7 @@ export const PlainContent = props => {
                 </Text>
               )}
               {v.is_mention && (
-                <Text style={cstyles.hashtagText} onPress={() => AccountDetail(v.content)}>
+                <Text style={cstyles.hashtagText} onPress={() => goAccountDetail(v.content)}>
                   {v.content}&nbsp;
                 </Text>
               )}

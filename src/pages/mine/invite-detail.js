@@ -88,7 +88,7 @@ const InviteDetail = ({navigation, route}) => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <StatusBar barStyle={'dark-content'} />
-      <ScrollView>
+      <ScrollView >
         <CardView colors={['#4e4e4e', '#181818']}>
           <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
             <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
@@ -116,7 +116,7 @@ const InviteDetail = ({navigation, route}) => {
         <AccountCardView>
           {accountList.map(invite => {
             return (
-              <AccountWrapView>
+              <AccountWrapView key={invite.id}>
                 <Avator
                   size={45}
                   key={invite.id}
@@ -153,7 +153,7 @@ const InviteDetail = ({navigation, route}) => {
             [1, 2, 3, 4, 5].slice(0, 4 - (accountList.length % 5)).map(i => {
               return (
                 <AccountWrapView
-                  key={i}
+                  key={`empty_${i}`}
                   onPress={() => {
                     setShareModelVisible(true);
                   }}>
@@ -168,6 +168,7 @@ const InviteDetail = ({navigation, route}) => {
         <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Text style={{fontSize: 11, color: '#bdbdbd'}}>已邀请{accountList.length}位</Text>
         </View>
+        <View style={{height: 100}} />
       </ScrollView>
       <Button
         title="微信邀请"
@@ -291,8 +292,8 @@ const AccountCardView = styled(View)`
   justify-content: space-between;
   align-content: center;
   flex-wrap: wrap;
-  margin-left: 52px;
-  margin-right: 52px;
+  margin-left: 44px;
+  margin-right: 44px;
   margin-bottom: 23px;
   align-items: center;
 `;

@@ -8,25 +8,39 @@ import {dispatchShareItem} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
 import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
 import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
-import { DefaultLog} from "@/utils/default-image"
+import {DefaultLog} from '@/utils/default-image';
 
 const ShareItem = () => {
   const [shareModelVisible, setShareModelVisible] = useState(false);
   const dispatch = useDispatch();
   let shareContent = useSelector(state => state.home.shareContent);
-  if(!shareContent.thumbImageUrl) {
-    shareContent = {...shareContent, thumbImageUrl: DefaultLog}
+  if (!shareContent.thumbImageUrl) {
+    shareContent = {...shareContent, thumbImageUrl: DefaultLog};
   }
   const shareFriend = e => {
     // e.stopPropagation();
     const content = {...shareContent, scene: 0};
-    // console.log('content', content)
-    WeChat.shareMiniProgram(content);
+    if (content.type === 'link') {
+      WeChat.shareWebpage({
+        ...content,
+        description: '顽鸦APP，新青年文化庇护所',
+        scene: 0,
+      });
+    } else {
+      WeChat.shareMiniProgram(content);
+    }
   };
   const shareTimeline = () => {
     try {
       const content = {...shareContent, scene: 0};
-      WeChat.shareMiniProgram(content);
+      if (content.type === 'link') {
+        WeChat.shareWebpage({
+          ...content,
+          scene: 1,
+        });
+      } else {
+        WeChat.shareMiniProgram(content);
+      }
     } catch (e) {
       console.log('e', e);
     }
@@ -39,13 +53,12 @@ const ShareItem = () => {
       statusBarTranslucent
       visible={shareContent.visible}
       onRequestClose={() => {
-        dispatch(dispatchShareItem({...shareContent, visible: false}))
+        dispatch(dispatchShareItem({...shareContent, visible: false}));
       }}>
       <ModelWrap
         onPress={() => {
           dispatch(dispatchShareItem({...shareContent, visible: false}));
         }}>
-
         <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
           <TouchableOpacity
             style={{display: 'flex', alignItems: 'center'}}

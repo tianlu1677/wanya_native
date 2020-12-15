@@ -7,7 +7,7 @@ import {PlayScore, Avator, JoinActivity, GoBack, BottomModal} from '@/components
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
-import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 14,
     paddingRight: 24,
-    paddingTop: NAVIGATION_BAR_HEIGHT + 2,
+    paddingTop: NAV_BAR_HEIGHT + 2,
     height: 275,
     position: 'relative',
   },

@@ -8,11 +8,11 @@ import {
 } from '../constants';
 
 const defaultState = {
-  topicDetail: {tag_list: [], medias: [], account: {}},
+  // topicDetail: {tag_list: [], medias: [], account: {}},
+  topicDetail: null,
 };
 
 function topicReducer(state = defaultState, action) {
-  // console.log('topicReducer', action)
   switch (action.type) {
     case TOPIC_DETAIL_SUCCESS:
       return (state = {

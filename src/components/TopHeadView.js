@@ -1,19 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ViewPropTypes,
-  Text,
-  StatusBar,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Platform,
-} from 'react-native';
+import {Text, StatusBar, TouchableOpacity, StyleSheet, View, Platform} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {NAV_BAR_HEIGHT, IsIos, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
+import ExcellentImage from '@/assets/images/excellent.png';
+import FastImg from '@/components/FastImg';
+import IconFont from '@/iconfont';
 
-const TopHeader = props => {
+const TopHeaderView = props => {
   const LeftButton = props.LeftButton;
   const RightButton = props.RightButton;
   const Title = props.Title;
@@ -33,20 +28,36 @@ const TopHeader = props => {
             <LeftButton />
           ) : (
             <TouchableOpacity
-              style={{marginLeft: 10,}}
+              style={{marginLeft: 10, flexDirection: 'row'}}
               onPress={() => {
                 if (!navigation.canGoBack() || isAtRoot) {
-                  navigation.openDrawer();
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Recommend'}],
+                  });
                 } else {
                   navigation.goBack();
                 }
               }}>
-              <Icon
-                name="chevron-back-outline"
-                size={22}
-                color={props.leftButtonColor || 'white'}
-                iconStyle={{marginRight: 1}}
-              />
+              {navigation.canGoBack() ? (
+                <Icon
+                  name={'chevron-back-outline'}
+                  size={22}
+                  color={props.leftButtonColor || 'white'}
+                  iconStyle={{marginRight: 1}}
+                />
+              ) : (
+                <IconFont
+                  name="home-recommend"
+                  color={props.leftButtonColor || 'white'}
+                  size={16}
+                />
+              )}
+              {props.excellent && (
+                <View style={{justifyContent: 'center'}}>
+                  <FastImg source={ExcellentImage} style={{width: 30, height: 17}} />
+                </View>
+              )}
             </TouchableOpacity>
           )}
         </View>
@@ -66,15 +77,15 @@ const TopHeader = props => {
     </View>
   );
 };
-export default TopHeader;
-TopHeader.propTypes = {
+export default TopHeaderView;
+TopHeaderView.propTypes = {
   // Title: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   // LeftButton: PropTypes.object,
-  RightButton: PropTypes.object,
+  // RightButton: PropTypes.object,
   isAtRoot: PropTypes.bool,
 };
 
-TopHeader.defaultProps = {
+TopHeaderView.defaultProps = {
   Title: '',
   LeftButton: null,
   RightButton: null,
@@ -89,6 +100,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     height: NAV_BAR_HEIGHT,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#EBEBEB',
   },
   leftButton: {
     flex: 1,
@@ -100,13 +113,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleText: {
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 16,
     color: 'black',
   },
   rightButton: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   statusBar: {
     height: IsIos ? STATUS_BAR_HEIGHT : 0,

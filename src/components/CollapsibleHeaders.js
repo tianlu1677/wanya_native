@@ -2,14 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import {Animated, Platform, StatusBar, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
-import {NAV_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT, IsIos, UNSAFE_TOP} from '@/utils/navbar';
 
 const tabBarHeight = 45; // tabbar middle高度
-const titleHeight = NAV_BAR_HEIGHT; // 标题高度
+const titleHeight = IsIos ? NAV_BAR_HEIGHT + UNSAFE_TOP : NAV_BAR_HEIGHT; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
-  // console.log(headerHeight);
 
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
@@ -23,7 +22,7 @@ const CollapsibleHeader = props => {
   const listRefArr = useRef([]);
   const listOffset = useRef({});
   const isListGliding = useRef(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current // 透明度
+  const fadeAnim = useRef(new Animated.Value(0)).current; // 透明度
 
   useEffect(() => {
     scrollY.addListener(({value}) => {
@@ -149,7 +148,7 @@ const CollapsibleHeader = props => {
       position: 'absolute',
       transform: [{translateY: y}],
       width: '100%',
-      backgroundColor: 'white'
+      backgroundColor: 'white',
     };
 
     return (
@@ -212,7 +211,6 @@ const CollapsibleHeader = props => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     });
-
 
     // console.log('opacity', titleHeight);
     // console.log('opacity', opacity);

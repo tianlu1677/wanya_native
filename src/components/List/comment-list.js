@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Platform, ActionSheetIOS, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import ScrollList from '@/components/ScrollList';
 import {praiseComment, unpraiseComment} from '@/api/comment_api';
+import {getAccountBaseInfo} from '@/api/account_api';
 import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
 
@@ -63,8 +64,28 @@ const CommentList = props => {
         },
       ];
     }
-    setActionItems(options);
-    setShowActionSheet(true);
+    if(Platform.OS === 'ios') {
+      const cancelItem = {
+        id: '#cancel',
+        label: '取消',
+        type: 'cancel',
+        onPress: () => {},
+      };
+      const actionSheetItems = [...options, cancelItem];
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: actionSheetItems.map((x) => x.label),
+          // destructiveButtonIndex: actionSheetItems.length - 1,
+          cancelButtonIndex: actionSheetItems.length - 1,
+        },
+        buttonIndex => {
+          actionSheetItems[buttonIndex].onPress();
+        }
+      )
+    } else {
+      setActionItems(options);
+      setShowActionSheet(true);
+    }
   };
 
   const onPraise = async (item, index) => {
@@ -98,6 +119,11 @@ const CommentList = props => {
     setShowActionSheet(true);
   };
 
+  const goAccountDetail = async nickname => {
+    const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
+    navigation.push('AccountDetail', {accountId: res.data.account.id});
+  };
+
   const renderItem = ({item, index}) => {
     return (
       <View key={item.id} style={[cstyles.wrapper, props.style]}>
@@ -109,9 +135,11 @@ const CommentList = props => {
             style={cstyles.numWrap}
             hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
             <IconFont name="like" size={16} color={item.praise ? '#000' : '#bdbdbd'} />
-            <Text style={[cstyles.numCount, {color: item.praise ? '#000' : '#bdbdbd'}]}>
-              {item.praises_count > 0 ? item.praises_count : ''}
-            </Text>
+            {item.praises_count > 0 && (
+              <Text style={[cstyles.numCount, {color: item.praise ? '#000' : '#bdbdbd'}]}>
+                {item.praises_count}
+              </Text>
+            )}
           </Pressable>
         </View>
         <Pressable style={cstyles.comment} onPress={() => choseAction(item)}>
@@ -123,7 +151,24 @@ const CommentList = props => {
               </Text>
             </Text>
           )}
-          <Text style={cstyles.text}>{item.content}</Text>
+          <Text numberOfLines={props.numberOfLines} style={cstyles.text}>
+            {item.mention_content ? (
+              item.mention_content.map((v, i) => {
+                return (
+                  <Text key={i}>
+                    {v.is_mention && (
+                      <Text style={cstyles.hashtagText} onPress={() => goAccountDetail(v.content)}>
+                        {v.content}&nbsp;
+                      </Text>
+                    )}
+                    {!v.is_mention && <Text space="nbsp">{v.content} </Text>}
+                  </Text>
+                );
+              })
+            ) : (
+              <Text>{item.content}</Text>
+            )}
+          </Text>
           <View style={cstyles.replyWrap}>
             <Text style={cstyles.reply}>
               {item.created_at_text} · 回复{' '}
@@ -137,11 +182,6 @@ const CommentList = props => {
             </Pressable>
           </View>
         </Pressable>
-        <ActionSheet
-          actionItems={actionItems}
-          showActionSheet={showActionSheet}
-          changeModal={() => setShowActionSheet(false)}
-        />
       </View>
     );
   };
@@ -165,19 +205,26 @@ const CommentList = props => {
   }, [props.detail]);
 
   return (
-    <ScrollList
-      data={listData}
-      loading={loading}
-      onRefresh={loadData}
-      headers={headers}
-      renderItem={renderItem}
-      enableRefresh={false}
-      bounces={false}
-      renderSeparator={renderSeparator}
-      settings={{showsVerticalScrollIndicator: false}}
-      from="comment"
-      {...props}
-    />
+    <>
+      <ScrollList
+        data={listData}
+        loading={loading}
+        onRefresh={loadData}
+        headers={headers}
+        renderItem={renderItem}
+        enableRefresh={false}
+        bounces={false}
+        renderSeparator={renderSeparator}
+        settings={{showsVerticalScrollIndicator: false}}
+        from="comment"
+        {...props}
+      />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
+    </>
   );
 };
 
@@ -201,9 +248,6 @@ const cstyles = StyleSheet.create({
   numWrap: {
     marginLeft: 'auto',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
   },
   numCount: {
     marginLeft: 5,
@@ -218,6 +262,10 @@ const cstyles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'justify',
     marginBottom: 5,
+  },
+  hashtagText: {
+    color: '#ff8d00',
+    marginRight: 3,
   },
   more: {
     paddingHorizontal: 14,
