@@ -364,14 +364,7 @@ const TopicDetail = ({navigation, route}) => {
                 {detail.content_style === 'img' && renderImg()}
               </View>
             )}
-            {(detail.content_style === 'link' || detail.content_style === 'text') && (
-              <View>
-                <PublishAccount
-                  data={detail}
-                  showFollow={currentAccount.id !== detail.account_id}
-                />
-              </View>
-            )}
+            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
             {detail.content_style === 'link' && (
               <>
                 <View>{renderLink()}</View>
@@ -387,11 +380,6 @@ const TopicDetail = ({navigation, route}) => {
                 <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
               </View>
             ) : null}
-
-            {detail.content_style === 'video' || detail.content_style === 'img' ? (
-              <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-            ) : null}
-
             <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
