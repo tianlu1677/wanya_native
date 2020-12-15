@@ -180,12 +180,11 @@ const PhoneLogin = ({navigation, route}) => {
               selectionColor={'#ff193a'}
               keyboardType="numeric"
               maxLength={6}
-              underlineColorAndroid = {'transparent'}
+              underlineColorAndroid={'transparent'}
               onChangeText={text => setPhoneCode(text)}
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
               style={{...styles.inputContent, width: '70%', height: 20}}
-              clearButtonMode={'always'}
             />
             {firstVerify ? (
               <Pressable
