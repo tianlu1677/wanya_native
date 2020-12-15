@@ -16,9 +16,9 @@ import SafeAreaPlus from '@/components/SafeAreaPlus';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {navigate} from "../../navigator/root-navigation"
+import {navigate} from '../../navigator/root-navigation';
 
-const topHeader = IsIos ? (BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10) : 0
+const topHeader = IsIos ? (BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10) : 0;
 
 const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('recommend');
@@ -71,8 +71,6 @@ const Recommend = props => {
     dispatch(dispatchCurrentAccount());
   }, []);
 
-
-
   return (
     <>
       <View style={{flex: 1}}>
@@ -112,9 +110,8 @@ const Recommend = props => {
       <TouchableOpacity
         style={styles.message}
         onPress={() => props.navigation.navigate('NotifyIndex')}
-        hitSlop={{left: 30, right: 20, top: 20, bottom: 20}}
-      >
-        <View style={styles.message_icon} >
+        hitSlop={{left: 30, right: 20, top: 20, bottom: 20}}>
+        <View style={styles.message_icon}>
           <View style={{position: 'relative'}}>
             <IconFont name="notice" color={'white'} size={20} />
           </View>
@@ -150,7 +147,12 @@ const NodeScrollView = props => {
               style={styles.nodeWrap}
               onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}>
               <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
-              <Text style={styles.nodeName} adjustsFontSizeToFit={false} minimumFontScale={1} numberOfLines={1} ellipsizeMode={'tail'}>
+              <Text
+                style={styles.nodeName}
+                adjustsFontSizeToFit={false}
+                minimumFontScale={1}
+                numberOfLines={1}
+                ellipsizeMode={'tail'}>
                 {node.name}
               </Text>
             </Pressable>
@@ -214,6 +216,7 @@ const styles = StyleSheet.create({
     height: 18,
     lineHeight: 18,
     textAlign: 'center',
+    fontWeight: '300',
   },
   emptyWrap: {
     flex: 1,
