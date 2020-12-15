@@ -84,7 +84,7 @@ const NotifyIndex = ({navigation}) => {
   const unread_comments_notifies_count = currentAccount.unread_comments_notifies_count;
   const unread_follow_messages_count = currentAccount.unread_follow_messages_count;
   const unread_system_messages_count = currentAccount.unread_system_messages_count;
-  const unread_mentions_notifies_count = currentAccount.unread_system_messages_count;
+  const unread_mentions_notifies_count = currentAccount.unread_mentions_notifies_count;
 
   return (
     <View>

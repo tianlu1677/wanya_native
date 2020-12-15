@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {KeyboardAvoidingView, Platform} from 'react-native';
+import {KeyboardAvoidingView, StatusBar, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
@@ -72,6 +72,14 @@ const TopicLinkDetail = ({navigation, route}) => {
         source={{uri: detail.topic_link.raw_link}}
         startInLoadingState={true}
         scalesPageToFit={true}
+        autoManageStatusBarEnabled={false}
+        // onLoadEnd={() => {
+        //   [10, 50, 100, 500, 1000].forEach(timeout => {
+        //     setTimeout(() => {
+        //       StatusBar.setBarStyle("dark-content");
+        //     }, timeout);
+        //   });
+        // }}
       />
 
       <ActionComment
