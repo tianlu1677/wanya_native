@@ -163,7 +163,8 @@ const NewTopic = props => {
     // );
 
     const systemVersion = parseInt(DeviceInfo.getSystemVersion());
-    const videoSelectType = (Platform.OS === 'ios' && systemVersion < 14) ? 'imagePicker' : 'syanPicker'
+    const videoSelectType =
+      Platform.OS === 'ios' && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
     // console.log('systemVersion', systemVersion > 14.0)
     if (videoSelectType === 'syanPicker') {
       props.removeAllPhoto();
@@ -182,7 +183,7 @@ const NewTopic = props => {
           setVideoSource([...res]);
           const result = await props.uploadVideo(res[0], dispatch);
           setVideoSource([result.asset]);
-          dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+          dispatch({type: action.UPLOAD_PROGRESS, value: 0});
         }
       );
     }
@@ -211,7 +212,7 @@ const NewTopic = props => {
           setVideoSource([videoSourceContent]);
           const result = await props.uploadVideo(videoSourceContent, dispatch);
           setVideoSource([result.asset]);
-          dispatch({type: action.UPLOAD_PROGRESS, value: ''});
+          dispatch({type: action.UPLOAD_PROGRESS, value: 0});
           // Alert.alert(JSON.stringify(video))
         }
       );
@@ -302,8 +303,9 @@ const NewTopic = props => {
       });
 
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
-    } catch {
+    } catch (err) {
       Toast.hide();
+      console.log(err);
     }
   };
 

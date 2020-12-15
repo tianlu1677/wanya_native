@@ -75,7 +75,7 @@ const PhoneLogin = ({navigation, route}) => {
 
   const downTimeRunner = () => {
     var timeo = 59;
-    var timeStop = setInterval(function () {
+    var timeStop = setInterval(function() {
       timeo--;
       if (timeo >= 1) {
         let text = `重新获取(${timeo}s)`;
@@ -198,7 +198,6 @@ const PhoneLogin = ({navigation, route}) => {
               placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
               style={{...styles.inputContent, width: '70%'}}
-              clearButtonMode={'always'}
             />
             {firstVerify ? (
               <Pressable
