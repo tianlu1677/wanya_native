@@ -110,7 +110,7 @@ const MediasPicker = WrapperComponent => {
         url: res.qiniu_region,
         path: path,
         method: 'POST',
-        type: 'multipart',
+        type: 'raw',
         field: 'file',
         parameters: {
           token: res.token,
@@ -128,6 +128,7 @@ const MediasPicker = WrapperComponent => {
       };
       console.log('uploadVideo options', uploadOptions);
       return new Promise((resolve, reject) => {
+        // console.log('reject', reject)
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {
@@ -154,6 +155,7 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
+            console.log('error', err)
             reject(err);
           });
       });
