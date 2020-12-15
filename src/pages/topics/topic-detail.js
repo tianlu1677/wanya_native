@@ -61,7 +61,7 @@ const TopicDetail = ({navigation, route}) => {
       setVisible(false);
       Toast.showLoading('发送中');
       const comment_res = await createComment(data);
-      console.log('comment_res', comment_res);
+      // console.log('comment_res', comment_res);
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
       Toast.hide();
       Toast.show('评论成功啦');

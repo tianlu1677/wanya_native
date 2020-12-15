@@ -116,7 +116,7 @@ const InviteDetail = ({navigation, route}) => {
         <AccountCardView>
           {accountList.map(invite => {
             return (
-              <AccountWrapView>
+              <AccountWrapView key={invite.id}>
                 <Avator
                   size={45}
                   key={invite.id}

@@ -19,7 +19,7 @@ const NotifyIndex = ({navigation}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
   const dispatch = useDispatch();
 
-  const goPageMethod = (type = '', event) => {
+  const goPageMethod = async (type = '', event) => {
     if (!currentAccount.id) {
       return;
     }
@@ -53,7 +53,7 @@ const NotifyIndex = ({navigation}) => {
         navigation.navigate('SystemNotify');
         break;
       case 'mention_account_notice':
-        syncAccountInfo({
+        await syncAccountInfo({
           id: currentAccount.id,
           profile_attributes: {unread_mentions_notifies_count: 0},
         });
