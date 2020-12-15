@@ -110,7 +110,7 @@ const MediasPicker = WrapperComponent => {
         url: res.qiniu_region,
         path: path,
         method: 'POST',
-        type: 'raw',
+        type: 'multipart',
         field: 'file',
         parameters: {
           token: res.token,
