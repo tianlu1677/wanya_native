@@ -12,6 +12,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 // import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import ImagePicker, {launchImageLibrary} from 'react-native-image-picker';
 import PermissionModal from './PhotoPermission';
@@ -161,7 +162,9 @@ const NewTopic = props => {
     //   }
     // );
 
-    if (Platform.OS !== 'ios') {
+    const systemVersion = DeviceInfo.getSystemVersion();
+    // console.log('systemVersion', systemVersion > 14.0)
+    if (Platform.OS !== 'ios' || systemVersion >= 14.0) {
       props.removeAllPhoto();
       props.videoPick(
         {
@@ -183,8 +186,8 @@ const NewTopic = props => {
     }
 
     // react-native-image-picker
-    if (Platform.OS === 'ios') {
-      launchImageLibrary(
+    if (Platform.OS === 'ios' && systemVersion < 14.0) {
+      ImagePicker.launchImageLibrary(
         {
           mediaType: 'video',
           videoQuality: 'low',
