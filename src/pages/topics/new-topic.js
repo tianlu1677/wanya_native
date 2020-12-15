@@ -173,6 +173,7 @@ const NewTopic = props => {
           MinSecond: 1,
           recordVideoSecond: 60,
           videoCount: 1,
+          allowTakeVideo: false,
         },
         async (err, res) => {
           if (err) {
