@@ -23,10 +23,10 @@ export const UNSAFE_TOP = Platform.OS === 'ios' ? getStatusBarHeight(false) : 0;
 export const SCREEN_WIDTH = Dimensions.get('window').width
 export const SCREEN_HEIGHT = Dimensions.get('window').height
 
-console.log('getStatusBarHeight();', getStatusBarHeight(true))
-console.log('getStatusBarHeight();', getStatusBarHeight(false))
-console.log('getBottomSpace();', getBottomSpace())
-console.log('BASIC_HEIGHT();', BASIC_HEIGHT)
-console.log('STATUS_BAR_HEIGHT();', STATUS_BAR_HEIGHT)
-console.log('Platform.OS();', Platform.OS)
-console.log('UNSAFE_TOP', <UNSAFE_TOP></UNSAFE_TOP>)
+// console.log('getStatusBarHeight();', getStatusBarHeight(true))
+// console.log('getStatusBarHeight();', getStatusBarHeight(false))
+// console.log('getBottomSpace();', getBottomSpace())
+// console.log('BASIC_HEIGHT();', BASIC_HEIGHT)
+// console.log('STATUS_BAR_HEIGHT();', STATUS_BAR_HEIGHT)
+// console.log('Platform.OS();', Platform.OS)
+// console.log('UNSAFE_TOP', <UNSAFE_TOP></UNSAFE_TOP>)
