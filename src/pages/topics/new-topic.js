@@ -162,9 +162,10 @@ const NewTopic = props => {
     //   }
     // );
 
-    const systemVersion = DeviceInfo.getSystemVersion();
+    const systemVersion = parseInt(DeviceInfo.getSystemVersion());
+    const videoSelectType = (Platform.OS === 'ios' && systemVersion < 14) ? 'imagePicker' : 'syanPicker'
     // console.log('systemVersion', systemVersion > 14.0)
-    if (Platform.OS !== 'ios' || systemVersion >= 14.0) {
+    if (videoSelectType === 'syanPicker') {
       props.removeAllPhoto();
       props.videoPick(
         {
@@ -186,7 +187,7 @@ const NewTopic = props => {
     }
 
     // react-native-image-picker
-    if (Platform.OS === 'ios' && systemVersion < 14.0) {
+    if (videoSelectType === 'imagePicker') {
       ImagePicker.launchImageLibrary(
         {
           mediaType: 'video',
