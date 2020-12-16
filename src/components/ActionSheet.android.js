@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
 import Modal from 'react-native-modal';
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {StyleSheet, Dimensions, Text, TouchableHighlight, View} from 'react-native';
 
 const PRIMARY_COLOR = 'rgb(0,98,255)';
 const WHITE = '#ffffff';
@@ -28,7 +28,7 @@ const ActionSheetAndroid = props => {
     // console.log('xxxxxxxxxxx');
 
     actionItem.onPress();
-    // setShowActionSheet(false);
+    setShowActionSheet(false);
     if (props.changeModal) {
       props.changeModal(false);
     }
@@ -37,14 +37,15 @@ const ActionSheetAndroid = props => {
   // console.log('showActionSheet1', props)
   return (
     <Modal
-      onBackdropPress={() => onPressItem(cancelItem)}
-      isVisible={props.showActionSheet}
+      // onBackdropPress={() => onPressItem(cancelItem)}
+      isVisible={showActionSheet}
       transparent={true}
       animationIn={'slideInUp'}
       statusBarTranslucent
-      useNativeDriver={true}
+      useNativeDriver={false}
       animationInTiming={400}
-      animationOutTiming={400}
+      deviceHeight={Dimensions.get("window").height}
+      // animationOutTiming={400}
       style={{
         margin: 0,
         justifyContent: 'flex-end',
