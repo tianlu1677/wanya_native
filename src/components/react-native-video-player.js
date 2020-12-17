@@ -616,7 +616,7 @@ export default class VideoPlayer extends Component {
 
 
   render() {
-    console.log('xxxxxxxxxxxxx')
+    // console.log('xxxxxxxxxxxxx')
     return (
       <View onLayout={this.onLayout} style={this.props.customStyles.wrapper}>
         {this.renderContent()}

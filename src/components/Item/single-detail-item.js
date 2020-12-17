@@ -233,8 +233,10 @@ export const ActionComment = props => {
 
   useEffect(() => {
     if (comment.content) {
-      props.changeVisible(true);
       setValue(comment.content);
+      setTimeout(() => {
+        props.changeVisible(true);
+      }, 100)
     }
   }, [comment]);
 

@@ -37,7 +37,7 @@ const ActionSheetAndroid = props => {
   // console.log('showActionSheet1', props)
   return (
     <Modal
-      // onBackdropPress={() => onPressItem(cancelItem)}
+      onBackdropPress={() => onPressItem(cancelItem)}
       isVisible={showActionSheet}
       transparent={true}
       animationIn={'slideInUp'}
