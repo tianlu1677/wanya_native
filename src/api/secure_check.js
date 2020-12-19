@@ -13,7 +13,7 @@ export async function secureCheck(type, content) {
   return res.data;
 }
 
-//举报
+//投诉
 export async function reportContent(
   data = {report_item_id: '', report_item_type: '', reason: '', more_reason: ''}
 ) {

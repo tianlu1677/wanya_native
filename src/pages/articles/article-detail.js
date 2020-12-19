@@ -50,7 +50,7 @@ const ArticleDetail = ({navigation, route}) => {
   const actionItems = [
     {
       id: 1,
-      label: '举报',
+      label: '投诉',
       onPress: () => {
         navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
       },

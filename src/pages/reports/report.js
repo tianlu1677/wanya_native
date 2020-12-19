@@ -29,7 +29,7 @@ const Report = ({navigation, route}) => {
     '垃圾广告',
     '色情低俗',
     '和话题氛围不符',
-    '攻击谩骂',
+    '语言不友好',
     '内容不适合未成年观看',
     '内容侵权',
     '诈骗信息',
@@ -45,7 +45,7 @@ const Report = ({navigation, route}) => {
   const onSubmit = async () => {
     console.log('onSubmit', reason);
     if (!reason) {
-      Toast.showError('请选择一个选项，进行举报');
+      Toast.showError('请选择一个选项，进行投诉');
       return;
     }
 
@@ -102,7 +102,7 @@ const Report = ({navigation, route}) => {
           multiline
           onFouce
           numberOfLines={10}
-          placeholder={'输入举报理由，100字以内'}
+          placeholder={'输入投诉理由，100字以内'}
           placeholderTextColor={'#C2C2C2'}
           defaultValue={''}
           style={{marginLeft: 14, marginRight: 14, paddingBottom: 100}}

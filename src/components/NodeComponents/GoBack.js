@@ -12,7 +12,7 @@ export const GoBack = props => {
   const navigation = useNavigation();
   let name = props.name || 'arrow-left';
   let color = props.color || 'white';
-  const {report} = props; // 举报信息
+  const {report} = props; // 投诉信息
   const handleClick = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();

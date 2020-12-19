@@ -88,7 +88,7 @@ const AccountDetail = ({navigation, route}) => {
     },
     {
       id: 2,
-      label: '举报',
+      label: '投诉',
       onPress: async () => {
         navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
       },

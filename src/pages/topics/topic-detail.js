@@ -25,7 +25,7 @@ import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import {getTopic, deleteTopic} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BOTTOM_HEIGHT, NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT, SAFE_TOP, IsIos} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
 import VideoPlayImg from '@/assets/images/video-play.png';
@@ -82,7 +82,7 @@ const TopicDetail = ({navigation, route}) => {
     const actions = [
       {
         id: 1,
-        label: isCurrentTopic ? '删除' : '举报',
+        label: isCurrentTopic ? '删除' : '投诉',
         onPress: async () => {
           if (isCurrentTopic) {
             // 删除
@@ -304,7 +304,9 @@ const TopicDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
+      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
+    >
       {/* 不带header */}
       {/*{!isHeader() && (*/}
       {/*  <>*/}

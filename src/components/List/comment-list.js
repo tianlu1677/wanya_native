@@ -108,7 +108,7 @@ const CommentList = props => {
     const options = [
       {
         id: 1,
-        label: '举报',
+        label: '投诉',
         onPress: () => {
           navigation.push('Report', {report_type: props.type, report_type_id: props.detail.id});
         },

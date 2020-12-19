@@ -11,6 +11,7 @@ import {dispatchTopicDetail} from '@/redux/actions';
 import {getTopic} from '@/api/topic_api';
 import {dispatchShareItem} from '@/redux/actions';
 import TopHeaderView from "@/components/TopHeadView"
+import {IsIos, STATUS_BAR_HEIGHT} from "@/utils/navbar"
 const TopicLinkDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentTopic = useSelector(state => state.topic.topicDetail);
@@ -57,7 +58,9 @@ const TopicLinkDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
+      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
+    >
       <TopHeaderView
         Title={detail.topic_link.title}
         leftButtonColor={'black'}

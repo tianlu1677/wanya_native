@@ -63,7 +63,7 @@ export const Header = props => {
           break;
       }
     } else {
-      options = ['取消', star ? '取消收藏' : '收藏', '举报'];
+      options = ['取消', star ? '取消收藏' : '收藏', '投诉'];
     }
     return options;
   };
@@ -114,7 +114,7 @@ export const Header = props => {
         },
         {
           id: 2,
-          label: '举报',
+          label: '投诉',
           onPress: async () => {
             navigation.push('Report', {report_type: props.type, report_type_id: data.id});
           },

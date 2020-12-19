@@ -68,7 +68,7 @@ import InviteDetail from '@/pages/mine/invite-detail';
 import WebView from '@/pages/webview/webview';
 import SharePage from '@/pages/shares/share_page'; //分享
 
-// 举报
+// 投诉
 import Report from '@/pages/reports/report';
 
 // 公用页面
@@ -267,7 +267,7 @@ const commonRouter = [
     component: Report,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '举报', headerShown: true},
+    options: {title: '投诉', headerShown: true},
   },
 ];
 
