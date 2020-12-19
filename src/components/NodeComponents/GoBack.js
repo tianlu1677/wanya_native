@@ -32,7 +32,7 @@ export const GoBack = props => {
         onPress={() => {
           handleClick();
         }}
-        style={{...styles.goBackWrap, top: SAFE_TOP}}>
+        style={{...styles.goBackWrap, top: props.top || SAFE_TOP}}>
         <IconFont name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={color} size={15} />
       </Pressable>
       {report && (

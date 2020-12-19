@@ -236,7 +236,7 @@ export const ActionComment = props => {
       setValue(comment.content);
       setTimeout(() => {
         props.changeVisible(true);
-      }, 300)
+      }, 600)
     }
   }, [comment]);
 

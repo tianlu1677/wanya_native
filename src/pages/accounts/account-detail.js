@@ -19,7 +19,7 @@ import {
   getAccountArticles,
 } from '@/api/account_api';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {BASIC_HEIGHT, IsIos} from '@/utils/navbar';
+import {BASIC_HEIGHT, IsIos, SAFE_TOP} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {reportContent} from '@/api/secure_check';
@@ -138,7 +138,15 @@ const AccountDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{flex: 1}}>
-        <GoBack top={IsIos ? null : 1} report={account.id !== currentAccount.id ? { report_type: 'Account', report_type_id: account.id} : null } />
+        <GoBack top={IsIos ? null : 20 }/>
+        {account.id !== currentAccount.id && (
+          <Pressable
+            onPress={onReportClick}
+            style={styles.report}
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+            <IconFont name="ziyuan" color="#fff" size={20} />
+          </Pressable>
+        )}
         <FastImg
           source={{
             uri: account.background_img_url ? account.background_img_url : AccountDetailBgImg,
@@ -290,11 +298,12 @@ const styles = StyleSheet.create({
   report: {
     position: 'absolute',
     right: 16,
-    height: 44,
+    height: 34,
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
-    top: Math.max(getStatusBarHeight(), 20),
+    top: IsIos ? SAFE_TOP : 20,
+    zIndex: 2
   },
   header: {
     paddingLeft: 19,
