@@ -161,11 +161,11 @@ class App extends Component {
       if (!params || !screen) {
         return;
       }
-      const screen_params = queryString.parse(data.params, {parseNumbers: true});
+      const screen_params = queryString.parse(params, {parseNumbers: true});
       // debugger
-      console.log('params', params, screen);
+      console.log('params', screen_params, screen);
       setTimeout(() => {
-        RootNavigation.navigate(data.screen, screen_params);
+        RootNavigation.push(screen, screen_params);
       }, 1500);
     } catch (e) {
       console.log('error', e);
