@@ -81,6 +81,11 @@ const Recommend = props => {
           translucent={false}
           backgroundColor={'black'}
         />
+        <Text
+          style={{height: 100, backgroundColor: 'pink'}}
+          onPress={() => props.navigation.push('SearchIndex')}>
+          搜索
+        </Text>
         <View style={styles.wrapper}>
           <TabViewList
             size="big"

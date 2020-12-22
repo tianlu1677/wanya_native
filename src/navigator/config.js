@@ -275,8 +275,8 @@ const searchRouter = [
   {
     name: 'SearchIndex',
     component: SearchIndex,
-    barColor: 'dark',
-    options: {title: '搜索'},
+    safeArea: false,
+    options: {title: '搜索', headerShown: false},
   },
 ];
 

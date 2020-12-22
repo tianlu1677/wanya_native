@@ -22,7 +22,7 @@ const ArticleList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.articles;
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.articles;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -30,7 +30,7 @@ const ArticleList = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [props.request]);
 
   return (
     <ScrollList

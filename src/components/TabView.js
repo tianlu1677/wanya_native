@@ -23,12 +23,21 @@ const TabViewIndex = props => {
     props.onChange(item.key);
   };
 
-  useEffect(() => {
+  const initRoute = () => {
     const route = props.tabData.map(v => ({key: v.key, title: v.title}));
     const scene = Object.assign({}, ...props.tabData.map(v => ({[v.key]: v.component})));
     setScenes(scene);
     setRoutes(route);
+  };
+
+  useEffect(() => {
+    initRoute();
   }, []);
+
+  useEffect(() => {
+    // 适配搜索
+    initRoute();
+  }, [props.request]);
 
   useEffect(() => {
     const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);
@@ -46,6 +55,7 @@ const TabViewIndex = props => {
             tabChange={tabChange}
             size={props.size}
             bottomLine={props.bottomLine}
+            center={props.center}
             separator={props.separator}
           />
         )}
@@ -57,7 +67,11 @@ const TabViewIndex = props => {
         lazy={props.lazy}
         swipeVelocityImpact={0.1}
         swipeEnabled={props.swipeEnabled || true}
-        renderLazyPlaceholder={() => <View style={{flex: 1}}><Text>Loading</Text></View>}
+        renderLazyPlaceholder={() => (
+          <View style={{flex: 1}}>
+            <Text>Loading</Text>
+          </View>
+        )}
         // lazyPreloadDistance={props.lazyPreloadDistance || 10}
         removeClippedSubviews={props.removeClippedSubviews || false}
         keyboardDismissMode={props.keyboardDismissMode || 'on-drag'}

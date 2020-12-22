@@ -5,7 +5,7 @@ const deviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [center] = useState(true || props.center);
+  const [center] = useState(props.center === false ? false : true);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
   const [layoutList, setLayoutList] = useState([]);
@@ -64,6 +64,9 @@ const TabList = props => {
         tabBarStyle.tabWrap,
         tabBarStyle[`tab${size}`],
         bottomLine ? tabBarStyle.bottomLine : null,
+        {
+          alignItems: center ? 'center' : 'flex-start',
+        },
       ]}>
       <ScrollView
         horizontal
@@ -116,12 +119,11 @@ const tabBarStyle = StyleSheet.create({
   },
   tabmiddle: {
     height: 50,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
-    borderBottomWidth: 2,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   tabItem: {
     paddingLeft: 10,

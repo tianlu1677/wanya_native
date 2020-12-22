@@ -42,6 +42,7 @@ const AddHashTag = ({navigation}) => {
             request={request}
             enableRefresh={false}
             type="add-hash-tag"
+            dataKey={searchKey ? 'items' : 'hashtags'}
             ListHeaderComponent={
               <View style={pstyles.proWrapper}>
                 <Text style={pstyles.proTitle}>{searchKey ? '搜索到的话题' : '热门话题'}</Text>

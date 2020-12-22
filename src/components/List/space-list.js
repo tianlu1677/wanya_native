@@ -32,7 +32,7 @@ const SpaceList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.spaces;
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.spaces;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -40,7 +40,7 @@ const SpaceList = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [props.request]);
 
   useEffect(() => {
     loadData();
