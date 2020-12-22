@@ -21,7 +21,7 @@ import {navigate} from '../../navigator/root-navigation';
 const topHeader = IsIos ? (BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10) : 0;
 
 const Recommend = props => {
-  const [currentKey, setCurrentKey] = useState('recommend');
+  const [currentKey, setCurrentKey] = useState('follow');
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
 
@@ -29,8 +29,15 @@ const Recommend = props => {
     return <DoubleList request={{api: getRecommendPosts}} type="follow" />;
   };
 
-  const FollowList = () => {
-    return <SingleList request={{api: getFollowedPosts}} />;
+  const FollowListPage = () => {
+    return (
+      <SingleList
+        request={{api: getFollowedPosts}}
+        // ListHeaderComponent={
+
+        // }
+      />
+    );
   };
 
   const NodeList = () => {
@@ -82,10 +89,23 @@ const Recommend = props => {
           backgroundColor={'black'}
         />
         <Text
-          style={{height: 100, backgroundColor: 'pink'}}
+          style={{height: 100, lineHeight: 100, textAlign: 'center', backgroundColor: 'pink'}}
           onPress={() => props.navigation.push('SearchIndex')}>
           搜索
         </Text>
+        <View style={styles.uploadContent}>
+          {/* <FastImg style={styles.uploadImage} source={require('@/assets/images/add-photo.png')} /> */}
+          <View style={styles.imageWrap}>
+            <Text style={styles.uploadImage} />
+            <Text style={styles.percent}>
+              <Text style={{fontSize: 18}}>99</Text>
+              <Text style={{fontSize: 4}}>%</Text>
+            </Text>
+          </View>
+          <Text numberOfLines={2} style={styles.uploadText}>
+            AIRWALK 购物车 | 五一小长假怎么穿？越简单越有型！文末有福利…uuu
+          </Text>
+        </View>
         <View style={styles.wrapper}>
           <TabViewList
             size="big"
@@ -95,7 +115,7 @@ const Recommend = props => {
               {
                 key: 'follow',
                 title: '关注',
-                component: FollowList,
+                component: FollowListPage,
               },
               {
                 key: 'recommend',
@@ -247,6 +267,35 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: '#fff',
     textAlign: 'center',
+  },
+  uploadContent: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  imageWrap: {
+    position: 'relative',
+  },
+  percent: {
+    position: 'absolute',
+    color: '#fff',
+    // left: '50%',
+    // top: '50%',
+  },
+  uploadImage: {
+    width: 45,
+    height: 45,
+    backgroundColor: '#000',
+  },
+  uploadText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#3F3F3F',
+    lineHeight: 19,
+    marginLeft: 10,
+    marginRight: 10,
   },
 });
 
