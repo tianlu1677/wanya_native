@@ -19,7 +19,12 @@ import {
   openSettings,
 } from 'react-native-permissions';
 
-import {init, Geolocation} from 'react-native-amap-geolocation';
+import {init, Geolocation, setLocatingWithReGeocode, setNeedAddress} from 'react-native-amap-geolocation';
+// android
+// setNeedAddress(true);
+
+// ios
+setLocatingWithReGeocode(true);
 
 const GetLocation = ({children, handleClick, style}) => {
   const [visible, setVisible] = useState(false);
