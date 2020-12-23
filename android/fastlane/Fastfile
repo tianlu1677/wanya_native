@@ -23,7 +23,7 @@ platform :android do
 
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do
-    #gradle(task: "clean assembleRelease")
+    gradle(task: "clean assembleRelease")
     gradle(task: 'assemble', build_type: 'Release')
     apk_path = "#{Dir.pwd.gsub('fastlane', '')}app/build/outputs/apk/release/app-release.apk"
     puts "url => #{apk_path}"
