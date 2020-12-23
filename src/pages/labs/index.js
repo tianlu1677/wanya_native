@@ -26,7 +26,9 @@ const LabIndex = props => {
             <Text style={styles.text}>最新帖子排序</Text>
 
           </Pressable>
-
+          <Pressable onPress={() => {navigation.navigate('LabGalley')}}>
+            <Text style={styles.text}>最新帖子画廊</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </View>
