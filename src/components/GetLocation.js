@@ -1,15 +1,32 @@
 import React, {useState} from 'react';
-import {StyleSheet, Platform, PermissionsAndroid, Alert, Text, View, Pressable, Modal} from 'react-native';
-import GeolocationIOS from 'react-native-geolocation-service';
-import {check, request, addLocationListener, PERMISSIONS, RESULTS, openSettings} from 'react-native-permissions';
+import {
+  StyleSheet,
+  Platform,
+  PermissionsAndroid,
+  Alert,
+  Text,
+  View,
+  Pressable,
+  Modal,
+} from 'react-native';
+// import GeolocationIOS from 'react-native-geolocation-service';
+import {
+  check,
+  request,
+  addLocationListener,
+  PERMISSIONS,
+  RESULTS,
+  openSettings,
+} from 'react-native-permissions';
 
-import { init, Geolocation } from "react-native-amap-geolocation";
-
-
+import {init, Geolocation} from 'react-native-amap-geolocation';
 
 const GetLocation = ({children, handleClick, style}) => {
   const [visible, setVisible] = useState(false);
-  const iosLocationPermission = Platform.OS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+  const iosLocationPermission =
+    Platform.OS === 'ios'
+      ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+      : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
 
   const getLocation = async () => {
     // await init({
@@ -37,7 +54,7 @@ const GetLocation = ({children, handleClick, style}) => {
       return;
     }
 
-    if(Platform.OS === 'ios') {
+    if (Platform.OS === 'ios') {
       Geolocation.getCurrentPosition(
         position => {
           console.log('position => ', position);
@@ -66,7 +83,7 @@ const GetLocation = ({children, handleClick, style}) => {
         },
         error => {
           // See error code charts below.
-          alert(JSON.stringify(error))
+          alert(JSON.stringify(error));
           console.log(error.code, error.message);
           handleClick(false);
         },
