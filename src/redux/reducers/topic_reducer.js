@@ -5,11 +5,13 @@ import {
   TOPIC_UN_PRAISE_SUCCESS,
   TOPIC_UN_STAR_SUCCESS,
   TOPIC_EMPTY,
+  CHANGE_UPLOAD_STATUS,
 } from '../constants';
 
 const defaultState = {
   // topicDetail: {tag_list: [], medias: [], account: {}},
   topicDetail: null,
+  uploadStatus: null,
 };
 
 function topicReducer(state = defaultState, action) {
@@ -23,6 +25,11 @@ function topicReducer(state = defaultState, action) {
       return (state = {
         ...state,
         topicDetail: {tag_list: [], medias: [], account: {}},
+      });
+    case CHANGE_UPLOAD_STATUS:
+      return (state = {
+        ...state,
+        uploadStatus: action.value,
       });
     default:
       return state;

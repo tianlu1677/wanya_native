@@ -17,7 +17,6 @@ const defaultState = {
   commentTopic: {
     content: '',
   },
-  uploadProgress: 0,
   location: {},
   nodes: [],
   followNodes: [],
@@ -45,11 +44,6 @@ export const homeReducer = (state = defaultState, action) => {
       return {
         ...state,
         commentTopic: action.value,
-      };
-    case constants.UPLOAD_PROGRESS:
-      return {
-        ...state,
-        uploadProgress: action.value,
       };
     case constants.CHOOSE_CITY:
       return {

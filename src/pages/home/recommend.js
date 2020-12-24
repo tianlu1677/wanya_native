@@ -1,22 +1,20 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Pressable, TouchableOpacity, ScrollView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
+import Video from 'react-native-video';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRecommendPosts, getFollowedPosts, getFollowedNodePosts} from '@/api/home_api';
-import {BOTTOM_HEIGHT, IsIos, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
-import SafeAreaPlus from '@/components/SafeAreaPlus';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {navigate} from '../../navigator/root-navigation';
 
 const topHeader = IsIos ? (BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10) : 0;
 
@@ -24,20 +22,71 @@ const Recommend = props => {
   const [currentKey, setCurrentKey] = useState('follow');
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const uploadStatus = useSelector(state => state.topic.uploadStatus);
 
-  const RecommendList = () => {
-    return <DoubleList request={{api: getRecommendPosts}} type="follow" />;
+  console.log(uploadStatus);
+
+  // 是否展示上传topic模块
+  const isShowUploadTopic = () => {
+    if (
+      uploadStatus &&
+      uploadStatus.status &&
+      ['upload', 'publish'].includes(uploadStatus.status)
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const UploadTopic = () => {
+    return (
+      <View style={styles.uploadContent}>
+        <View style={styles.imageWrap}>
+          <Video
+            style={{width: 45, height: 45}}
+            source={{uri: uploadStatus.content.video.uri}}
+            posterResizeMode={'center'}
+            controls={false}
+            muted={false}
+            reportBandwidth
+            ignoreSilentSwitch="ignore"
+            repeat
+          />
+          <Text style={styles.uploadopacity} />
+          {/* 上传视频中 */}
+          {uploadStatus.status === 'upload' && (
+            <View style={styles.percent}>
+              <Text style={{fontSize: 18, color: '#fff'}}>{uploadStatus.progress}</Text>
+              <Text style={{fontSize: 8, color: '#fff'}}>%</Text>
+            </View>
+          )}
+          {/* 发布帖子中 */}
+          {uploadStatus.status === 'publish' && (
+            <Text style={[styles.percent, {fontSize: 10, color: '#fff'}]}>
+              {uploadStatus.progress}
+            </Text>
+          )}
+        </View>
+        <Text numberOfLines={2} style={styles.uploadText}>
+          {uploadStatus.content.content.plain_content}
+        </Text>
+      </View>
+    );
   };
 
   const FollowListPage = () => {
     return (
       <SingleList
         request={{api: getFollowedPosts}}
-        // ListHeaderComponent={
-
-        // }
+        // extraData={uploadStatus}
+        // ListHeaderComponent={<UploadTopic />}
+        ListHeaderComponent={isShowUploadTopic() ? <UploadTopic /> : null}
       />
     );
+  };
+
+  const RecommendList = () => {
+    return <DoubleList request={{api: getRecommendPosts}} type="follow" />;
   };
 
   const NodeList = () => {
@@ -82,7 +131,6 @@ const Recommend = props => {
     <>
       <View style={{flex: 1}}>
         <View style={{height: topHeader, backgroundColor: 'black'}} />
-        {/*<SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />*/}
         <FocusAwareStatusBar
           barStyle="light-content"
           translucent={false}
@@ -93,19 +141,7 @@ const Recommend = props => {
           onPress={() => props.navigation.push('SearchIndex')}>
           搜索
         </Text>
-        <View style={styles.uploadContent}>
-          {/* <FastImg style={styles.uploadImage} source={require('@/assets/images/add-photo.png')} /> */}
-          <View style={styles.imageWrap}>
-            <Text style={styles.uploadImage} />
-            <Text style={styles.percent}>
-              <Text style={{fontSize: 18}}>99</Text>
-              <Text style={{fontSize: 4}}>%</Text>
-            </Text>
-          </View>
-          <Text numberOfLines={2} style={styles.uploadText}>
-            AIRWALK 购物车 | 五一小长假怎么穿？越简单越有型！文末有福利…uuu
-          </Text>
-        </View>
+
         <View style={styles.wrapper}>
           <TabViewList
             size="big"
@@ -277,17 +313,28 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     position: 'relative',
+    width: 45,
+    height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  uploadopacity: {
+    position: 'absolute',
+    width: 45,
+    height: 45,
+    backgroundColor: '#000',
+    opacity: 0.6,
   },
   percent: {
     position: 'absolute',
     color: '#fff',
-    // left: '50%',
-    // top: '50%',
-  },
-  uploadImage: {
-    width: 45,
-    height: 45,
-    backgroundColor: '#000',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    height: 20,
+    lineHeight: 20,
   },
   uploadText: {
     flex: 1,

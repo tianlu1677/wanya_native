@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Dimensions, View, Text} from 'react-native';
+import {useSelector} from 'react-redux';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import PropTypes from 'prop-types';
 import TabList from './TabList';
@@ -10,6 +11,8 @@ const initialLayout = {
 };
 
 const TabViewIndex = props => {
+  const uploadStatus = useSelector(state => state.topic.uploadStatus);
+
   const [routes, setRoutes] = useState([]);
   const [scenes, setScenes] = useState([]);
   const [index, setIndex] = useState(0);
@@ -23,21 +26,26 @@ const TabViewIndex = props => {
     props.onChange(item.key);
   };
 
-  const initRoute = () => {
-    const route = props.tabData.map(v => ({key: v.key, title: v.title}));
+  const initScene = () => {
     const scene = Object.assign({}, ...props.tabData.map(v => ({[v.key]: v.component})));
     setScenes(scene);
-    setRoutes(route);
   };
 
   useEffect(() => {
-    initRoute();
+    initScene();
+    const route = props.tabData.map(v => ({key: v.key, title: v.title}));
+    setRoutes(route);
   }, []);
 
   useEffect(() => {
     // 适配搜索
-    initRoute();
+    initScene();
   }, [props.request]);
+
+  useEffect(() => {
+    // 适配首页发布
+    initScene();
+  }, [uploadStatus]);
 
   useEffect(() => {
     const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);
