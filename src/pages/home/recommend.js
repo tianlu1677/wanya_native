@@ -11,7 +11,7 @@ import {getRecommendPosts, getFollowedPosts, getFollowedNodePosts} from '@/api/h
 import {BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
-import {dispatchCurrentAccount} from '@/redux/actions';
+import {dispatchCurrentAccount, dispatchFetchCategoryList} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
@@ -137,6 +137,7 @@ const Recommend = props => {
 
   useEffect(() => {
     dispatch(dispatchCurrentAccount());
+    dispatch(dispatchFetchCategoryList());
     props.navigation.push('SearchIndex');
   }, []);
 

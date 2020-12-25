@@ -10,15 +10,10 @@ const NodeIndex = ({type}) => {
   const dispatch = useDispatch();
   const scrollRef = useRef(null);
   const nodes = useSelector(state => state.home.nodes);
+  const categories = useSelector(state => state.home.categoryList);
 
-  const [categories, setCategories] = useState(null);
   const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(0);
-
-  const loadCategoryData = async () => {
-    const category = await getCategoryList();
-    setCategories(category);
-  };
 
   const setLayout = (layout, index) => {
     layoutList[index] = layout;
@@ -32,7 +27,6 @@ const NodeIndex = ({type}) => {
   };
 
   useEffect(() => {
-    loadCategoryData();
     dispatch(dispathUpdateNodes());
   }, []);
 

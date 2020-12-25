@@ -118,6 +118,7 @@ const ArticleDetail = ({navigation, route}) => {
             <View style={{marginBottom: 20}}>
               <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
             </View>
+
             <RichHtml
               containerStyle={{
                 backgroundColor: '#fff',

@@ -15,6 +15,7 @@ import {
   ShareView,
   TOPIC_DETAIL_SUCCESS,
   UPDATE_NODES,
+  UPDATE_FOLLOW_NODES, UPDATE_CATEGORY_LIST,
   UPDATE_FOLLOW_NODES,
   CHANGE_UPLOAD_STATUS,
   SAVE_CHANNELS,
@@ -130,6 +131,11 @@ export const dispathUpdateNodes = account_id => async dispatch => {
   }
   const nodes = await getNodeIndex();
   dispatch({type: UPDATE_NODES, value: nodes});
+};
+// 获取categories的数据
+export const dispatchFetchCategoryList = () => async dispatch => {
+  const categories = await getCategoryList();
+  dispatch({type: UPDATE_CATEGORY_LIST, categories: categories});
 };
 
 export const changeUploadStatus = value => {

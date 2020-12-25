@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 8,
+    minHeight: 60,
     alignItems: 'center',
   },
   linkImageWrap: {

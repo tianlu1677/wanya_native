@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button} from 'react-native';
 import Helper from '../../utils/helper';
-import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from 'react-native-geolocation-service';
 import GetLocation from '@/components/GetLocation';
 import {connect} from 'react-redux';
 import ViewShot from 'react-native-view-shot';
@@ -68,18 +68,18 @@ class Mine extends Component {
 
   getPosition = () => {
     console.log('xxxx')
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log(position);
-
-        // {"coords": {"accuracy": 65, "altitude": 84.75999954223632, "altitudeAccuracy": 6.223368346853014, "heading": -1, "latitude": 39.907174015590265, "longitude": 116.46947545239904, "speed": -1}, "timestamp": 1599201969161.0908}
-      },
-      error => {
-        // See error code charts below.
-        console.log(error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
-    );
+    // Geolocation.getCurrentPosition(
+    //   position => {
+    //     console.log(position);
+    //
+    //     // {"coords": {"accuracy": 65, "altitude": 84.75999954223632, "altitudeAccuracy": 6.223368346853014, "heading": -1, "latitude": 39.907174015590265, "longitude": 116.46947545239904, "speed": -1}, "timestamp": 1599201969161.0908}
+    //   },
+    //   error => {
+    //     // See error code charts below.
+    //     console.log(error.code, error.message);
+    //   },
+    //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
+    // );
     // navigator.geolocation.getCurrentPosition(
     //   position => {
     //     const location = JSON.stringify(position);

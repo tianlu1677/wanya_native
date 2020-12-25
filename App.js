@@ -11,6 +11,7 @@ import {
   PERMISSIONS,
   RESULTS,
 } from 'react-native-permissions';
+import { ModalPortal } from 'react-native-modals';
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
@@ -242,6 +243,7 @@ class App extends Component {
             />
             <ImagePreview />
             <ShareItem />
+            <ModalPortal />
           </PersistGate>
         </Provider>
         {Platform.OS !== 'ios' && <PolicyModal />}
