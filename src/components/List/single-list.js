@@ -34,8 +34,23 @@ const SingleList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
-
-    setListData(page === 1 ? data : [...listData, ...data]);
+    const transdata = page === 1 ? data : [...listData, ...data];
+    if (props.type === 'recommend') {
+      // 发布文案修改
+      const renderData = transdata.map(v => {
+        const item = {
+          ...v,
+          item: {
+            ...v.item,
+            published_at_text: '发布了',
+          },
+        };
+        return item;
+      });
+      setListData(renderData);
+    } else {
+      setListData(transdata);
+    }
     setLoading(false);
     setHeaders(res.headers);
   };

@@ -85,7 +85,7 @@ const ScrollList = props => {
 
   const renderFooter = () => {
     let footer = null;
-    if (pagin && pagin.hasMore) {
+    if (pagin && pagin.hasMore && props.loading) {
       footer = (
         <View
           style={{

@@ -153,6 +153,7 @@ const BaseTopic = props => {
         {data.content_style === 'link' && <TopicLinkContent data={data} />}
         {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
       </View>
+
       {data.plain_content ? (
         <PlainContent
           data={data}

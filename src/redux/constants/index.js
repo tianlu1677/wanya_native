@@ -184,3 +184,4 @@ export const CHANGE_UPLOAD_STATUS = 'CHANGE_UPLOAD_STATUS'; //视频上传进度
 //recommend
 export const UPDATE_NODES = 'UPDATE_NODES'; //更新全部圈子数据
 export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //更新关注圈子数据
+export const SAVE_CHANNELS = 'SAVE_CHANNELS'; //首页channels

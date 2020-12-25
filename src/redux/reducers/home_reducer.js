@@ -1,6 +1,7 @@
 import * as constants from '../constants';
 
 const defaultState = {
+  channels: [],
   savetopic: {},
   previewImageData: {
     images: [],
@@ -24,6 +25,11 @@ const defaultState = {
 
 export const homeReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case constants.SAVE_CHANNELS:
+      return {
+        ...state,
+        channels: action.value,
+      };
     case constants.SAVE_NEW_TOPIC:
       return {
         ...state,

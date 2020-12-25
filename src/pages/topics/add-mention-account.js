@@ -35,11 +35,15 @@ const MentionAccounts = ({navigation, route}) => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          style={styles.search}
+          inputStyle={{borderRadius: 5, backgroundColor: '#EBEBEB'}}
+          height={30}
+          cancelWidth={66}
+          placeholderTextColor="#7F7F81"
           placeholder="搜索更多顽友"
           onChangeText={text => setSearchKey(text)}
           onCancel={() => navigation.goBack()}
         />
+
         <View style={pstyles.proWrapper}>
           <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
         </View>
@@ -54,9 +58,6 @@ const MentionAccounts = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-  },
-  search: {
-    paddingLeft: 14,
   },
 });
 

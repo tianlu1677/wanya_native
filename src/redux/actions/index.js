@@ -17,6 +17,7 @@ import {
   UPDATE_NODES,
   UPDATE_FOLLOW_NODES,
   CHANGE_UPLOAD_STATUS,
+  SAVE_CHANNELS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';

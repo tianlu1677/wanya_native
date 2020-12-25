@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
+import {View, Text, StyleSheet, Pressable, ScrollView, TextInput} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
 import TabViewList from '@/components/TabView';
@@ -15,16 +15,19 @@ import {dispatchCurrentAccount} from '@/redux/actions';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
+import {Search} from '@/components/NodeComponents';
 
 const topHeader = IsIos ? (BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10) : 0;
 
 const Recommend = props => {
-  const [currentKey, setCurrentKey] = useState('follow');
   const dispatch = useDispatch();
+  const [inputRef, setinputRef] = useState(null);
+  const [currentKey, setCurrentKey] = useState('follow');
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
+  const home = useSelector(state => state.home);
 
-  console.log(uploadStatus);
+  // console.log(uploadStatus);
 
   // 是否展示上传topic模块
   const isShowUploadTopic = () => {
@@ -78,18 +81,14 @@ const Recommend = props => {
     return (
       <SingleList
         request={{api: getFollowedPosts}}
-        // extraData={uploadStatus}
-        // ListHeaderComponent={<UploadTopic />}
         ListHeaderComponent={isShowUploadTopic() ? <UploadTopic /> : null}
       />
     );
   };
 
-  const RecommendList = () => {
-    return <DoubleList request={{api: getRecommendPosts}} type="follow" />;
-  };
+  const RecommendPage = () => <SingleList request={{api: getRecommendPosts}} type="recommend" />;
 
-  const NodeList = () => {
+  const NodeListPage = () => {
     return (
       <SingleList
         type="node-recommend"
@@ -110,6 +109,19 @@ const Recommend = props => {
     );
   };
 
+  const channels = home.channels.map(item => {
+    return {
+      key: item.name,
+      title: item.name,
+      component: () =>
+        item.condition === 'single' ? (
+          <SingleList request={{api: getRecommendPosts}} />
+        ) : (
+          <DoubleList request={{api: getRecommendPosts}} />
+        ),
+    };
+  });
+
   const UnreadMessageCount = () => {
     if (!currentAccount || currentAccount.new_message_count === 0) {
       return 0;
@@ -125,6 +137,7 @@ const Recommend = props => {
 
   useEffect(() => {
     dispatch(dispatchCurrentAccount());
+    props.navigation.push('SearchIndex');
   }, []);
 
   return (
@@ -136,53 +149,61 @@ const Recommend = props => {
           translucent={false}
           backgroundColor={'black'}
         />
-        <Text
-          style={{height: 100, lineHeight: 100, textAlign: 'center', backgroundColor: 'pink'}}
-          onPress={() => props.navigation.push('SearchIndex')}>
-          搜索
-        </Text>
+        <Search
+          getRef={refs => setinputRef(refs)}
+          style={{backgroundColor: '#000'}}
+          inputStyle={{borderRadius: 18, backgroundColor: '#fff'}}
+          height={36}
+          placeholderTextColor="#000"
+          placeholder="搜索帖子、文章、圈子等内容"
+          onFocus={() => {
+            inputRef.blur();
+            props.navigation.push('SearchIndex');
+          }}>
+          <Pressable
+            style={styles.message}
+            onPress={() => props.navigation.navigate('NotifyIndex')}>
+            <View style={styles.message_icon}>
+              <IconFont name="notice" color={'white'} size={20} />
+              <BadgeMessage
+                size={'small'}
+                value={UnreadMessageCount()}
+                containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
+              />
+            </View>
+          </Pressable>
+        </Search>
 
-        <View style={styles.wrapper}>
-          <TabViewList
-            size="big"
-            lazy={true}
-            currentKey={currentKey}
-            tabData={[
-              {
-                key: 'follow',
-                title: '关注',
-                component: FollowListPage,
-              },
-              {
-                key: 'recommend',
-                title: '推荐',
-                component: RecommendList,
-              },
-              {
-                key: 'lasted',
-                title: '圈子',
-                component: NodeList,
-              },
-            ]}
-            onChange={key => setCurrentKey(key)}
-          />
-        </View>
-      </View>
-      <TouchableOpacity
-        style={styles.message}
-        onPress={() => props.navigation.navigate('NotifyIndex')}
-        hitSlop={{left: 30, right: 20, top: 20, bottom: 20}}>
-        <View style={styles.message_icon}>
-          <View style={{position: 'relative'}}>
-            <IconFont name="notice" color={'white'} size={20} />
+        {channels.length > 0 && (
+          <View style={styles.wrapper}>
+            <TabViewList
+              center={false}
+              bottomLine={true}
+              lazy={true}
+              currentKey={currentKey}
+              tabData={[
+                {
+                  key: 'follow',
+                  title: '关注',
+                  component: FollowListPage,
+                },
+                {
+                  key: 'recommend',
+                  title: '推荐',
+                  component: RecommendPage,
+                },
+                {
+                  key: 'lasted',
+                  title: '圈子',
+                  component: NodeListPage,
+                },
+                ...channels,
+              ]}
+              onChange={key => setCurrentKey(key)}
+            />
           </View>
-          <BadgeMessage
-            value={UnreadMessageCount()}
-            containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
-            size={'small'}
-          />
-        </View>
-      </TouchableOpacity>
+        )}
+      </View>
     </>
   );
 };
@@ -240,18 +261,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   message: {
-    position: 'absolute',
-    right: 4,
-    zIndex: 1000,
-    top: IsIos ? topHeader + 15 : 15,
-    width: 49,
-  },
-  message_icon: {
-    height: 20,
-    position: 'absolute',
-    top: 0,
-    right: 18,
-    zIndex: -1,
+    width: 50,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   nodeView: {
     backgroundColor: '#fff',

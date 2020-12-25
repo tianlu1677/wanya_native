@@ -47,10 +47,13 @@ const AddSpace = props => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          style={styles.search}
+          inputStyle={{borderRadius: 5, backgroundColor: '#EBEBEB'}}
+          height={30}
+          cancelWidth={66}
+          placeholderTextColor="#7F7F81"
           placeholder="搜索更多场地"
           onChangeText={text => setSearchKey(text)}
-          onCancel={() => props.navigation.goBack()}
+          onCancel={() => navigation.goBack()}
         />
         <Pressable style={pstyles.proWrapper} onPress={goChooseCity}>
           <Text style={pstyles.proTitle}>
@@ -74,7 +77,7 @@ const AddSpace = props => {
               longitude: home.location.longitude,
               name_cont: searchKey,
               city: home.location.chooseCity,
-              currentcity: home.location.chooseCity
+              currentcity: home.location.chooseCity,
             },
           }}
           onPress={onPress}
@@ -89,9 +92,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  search: {
-    paddingLeft: 14,
   },
 });
 
