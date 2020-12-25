@@ -1,6 +1,7 @@
 import * as constants from '../constants';
 
 const defaultState = {
+  channels: [],
   savetopic: {},
   previewImageData: {
     images: [],
@@ -17,7 +18,6 @@ const defaultState = {
   commentTopic: {
     content: '',
   },
-  uploadProgress: 0,
   location: {},
   nodes: [],
   categoryList: [],
@@ -26,6 +26,11 @@ const defaultState = {
 
 export const homeReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case constants.SAVE_CHANNELS:
+      return {
+        ...state,
+        channels: action.value,
+      };
     case constants.SAVE_NEW_TOPIC:
       return {
         ...state,
@@ -46,11 +51,6 @@ export const homeReducer = (state = defaultState, action) => {
       return {
         ...state,
         commentTopic: action.value,
-      };
-    case constants.UPLOAD_PROGRESS:
-      return {
-        ...state,
-        uploadProgress: action.value,
       };
     case constants.CHOOSE_CITY:
       return {

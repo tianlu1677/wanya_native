@@ -31,7 +31,10 @@ const AddHashTag = ({navigation}) => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          style={styles.search}
+          inputStyle={{borderRadius: 5, backgroundColor: '#EBEBEB'}}
+          height={30}
+          cancelWidth={66}
+          placeholderTextColor="#7F7F81"
           placeholder="搜索更多话题"
           onChangeText={text => setSearchKey(text)}
           onCancel={() => navigation.goBack()}
@@ -42,6 +45,7 @@ const AddHashTag = ({navigation}) => {
             request={request}
             enableRefresh={false}
             type="add-hash-tag"
+            dataKey={searchKey ? 'items' : 'hashtags'}
             ListHeaderComponent={
               <View style={pstyles.proWrapper}>
                 <Text style={pstyles.proTitle}>{searchKey ? '搜索到的话题' : '热门话题'}</Text>
@@ -58,9 +62,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  search: {
-    paddingLeft: 14,
   },
 });
 

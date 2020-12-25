@@ -13,7 +13,6 @@ import {
   Platform,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-// import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
 import ImagePicker, {launchImageLibrary} from 'react-native-image-picker';
 import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
@@ -26,9 +25,8 @@ import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
-import {dispatchPreviewImage} from '@/redux/actions';
+import {dispatchPreviewImage, dispatchFetchUploadTopic} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
-import VideoPlayImg from '@/assets/images/video-play.png';
 
 const windowWidth = Dimensions.get('window').width;
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -38,7 +36,6 @@ const NewTopic = props => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const savetopic = useSelector(state => state.home.savetopic);
-  const uploadProgress = useSelector(state => state.home.uploadProgress);
   const location = useSelector(state => state.home.location);
   const videoRef = useRef('');
   const [imageSource, setImageSource] = useState([]);
@@ -158,16 +155,14 @@ const NewTopic = props => {
     //     setVideoSource([...res]);
     //     const result = await props.uploadVideo(res[0], dispatch);
     //     setVideoSource([result.asset]);
-    //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
     //   }
     // );
-
+    props.removeAllPhoto();
     const systemVersion = parseInt(DeviceInfo.getSystemVersion());
     const videoSelectType =
       Platform.OS === 'ios' && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
-    // console.log('systemVersion', systemVersion > 14.0)
+
     if (videoSelectType === 'syanPicker') {
-      props.removeAllPhoto();
       props.videoPick(
         {
           MaxSecond: 300,
@@ -180,10 +175,8 @@ const NewTopic = props => {
           if (err) {
             return;
           }
-          setVideoSource([...res]);
-          const result = await props.uploadVideo(res[0], dispatch);
-          setVideoSource([result.asset]);
-          dispatch({type: action.UPLOAD_PROGRESS, value: 0});
+          console.log(res);
+          setVideoSource(res);
         }
       );
     }
@@ -199,21 +192,8 @@ const NewTopic = props => {
           if (response.didCancel) {
             return;
           }
-          console.log('response', response);
-          // return
-          const video = response;
-          props.removeAllPhoto();
-          let videoSourceContent = {
-            uri: video.origURL, //video.uri.replace('file://', ''),
-            // height: video.height,
-            // width: video.width,
-            // duration: video.duration,
-          };
-          setVideoSource([videoSourceContent]);
-          const result = await props.uploadVideo(videoSourceContent, dispatch);
-          setVideoSource([result.asset]);
-          dispatch({type: action.UPLOAD_PROGRESS, value: 0});
-          // Alert.alert(JSON.stringify(video))
+          console.log({uri: response.origURL});
+          setVideoSource([{uri: response.origURL}]);
         }
       );
     }
@@ -246,6 +226,25 @@ const NewTopic = props => {
     }
   };
 
+  const getValidateForm = () => {
+    const data = {
+      type: 'single',
+      medias: imageSource.map(v => v.url),
+      topic_link_id: linkSource ? linkSource.id : '',
+      plain_content: savetopic.plan_content
+        ? savetopic.plan_content
+        : imageSource.length > 0
+        ? '分享图片'
+        : videoSource.length > 0
+        ? '分享视频'
+        : '',
+      mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
+      node_id: savetopic.node ? savetopic.node.id : '',
+      space_id: savetopic.space ? savetopic.space.id : '',
+    };
+    return data;
+  };
+
   const onSubmit = async () => {
     if (!isValidateForm()) {
       Toast.show('图片/视频/外链不能为空哦~');
@@ -260,52 +259,44 @@ const NewTopic = props => {
       }
     }
 
-    if (videoSource.length > 0) {
-      if (!videoSource[0].id) {
-        Toast.show('视频正在上传中');
-        return false;
-      }
-    }
-
     if (!savetopic.node) {
       navigation.navigate('AddNode');
       return false;
     }
 
-    const waitTime = ms => {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    };
-    const data = {
-      type: 'single',
-      medias: imageSource.map(v => v.url),
-      video_content: videoSource.length > 0 ? videoSource[0].url : '',
-      topic_link_id: linkSource ? linkSource.id : '',
-      plain_content: savetopic.plan_content
-        ? savetopic.plan_content
-        : imageSource.length > 0
-        ? '分享图片'
-        : videoSource.length > 0
-        ? '分享视频'
-        : '',
-      mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
-      node_id: savetopic.node ? savetopic.node.id : '',
-      space_id: savetopic.space ? savetopic.space.id : '',
-    };
-
-    Toast.showLoading('正在发布中...');
-    try {
-      const res = await createTopic(data);
-      await waitTime(1500);
-      Toast.hide();
-      props.navigation.reset({
-        index: 0,
-        routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
-      });
-
-      dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
-    } catch (err) {
-      Toast.hide();
-      console.log(err);
+    const data = getValidateForm();
+    if (videoSource.length > 0) {
+      // 视频上传
+      navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+      const params = {
+        content: {
+          video: {...videoSource[0]},
+          content: {...data},
+        },
+        upload: (file, cb) => props.uploadVideo(file, cb),
+      };
+      dispatch(
+        dispatchFetchUploadTopic(params, () => {
+          Toast.showError('发布完成');
+        })
+      );
+    } else {
+      //other
+      const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
+      Toast.showLoading('正在发布中...');
+      try {
+        const res = await createTopic(data);
+        await waitTime(1500);
+        Toast.hide();
+        props.navigation.reset({
+          index: 0,
+          routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
+        });
+        dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
+      } catch (err) {
+        Toast.hide();
+        console.log(err);
+      }
     }
   };
 
@@ -413,44 +404,36 @@ const NewTopic = props => {
 
             {/* video */}
             {videoSource.map((v, index) => (
-              <Pressable
-                style={[styles.mediaWrap, {marginRight: (index + 1) % 4 === 0 ? 0 : 10}]}
-                key={index}>
-                {v.id ? (
-                  <>
-                    <Pressable
-                      style={styles.media}
-                      onPress={() => {
-                        videoRef.current.presentFullscreenPlayer();
-                      }}>
-                      <Video
-                        style={{...styles.media, backgroundColor: 'black'}}
-                        ref={videoRef}
-                        source={{uri: v.url}}
-                        posterResizeMode={'center'}
-                        controls={false}
-                        muted={false}
-                        reportBandwidth
-                        ignoreSilentSwitch="ignore"
-                        repeat
-                        onFullscreenPlayerDidDismiss={() => {
-                          videoRef.current.seek(0);
-                        }}
-                      />
-                    </Pressable>
-                    <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                      <Image
-                        style={styles.mediaClose}
-                        source={require('@/assets/images/close.png')}
-                      />
-                    </Pressable>
-                  </>
-                ) : (
+              <Pressable style={styles.mediaWrap} key={index}>
+                <Pressable
+                  style={styles.media}
+                  onPress={() => {
+                    videoRef.current.presentFullscreenPlayer();
+                  }}>
+                  <Video
+                    style={styles.media}
+                    ref={videoRef}
+                    source={{uri: v.uri}}
+                    posterResizeMode={'center'}
+                    controls={false}
+                    muted={false}
+                    reportBandwidth
+                    ignoreSilentSwitch="ignore"
+                    repeat
+                    onFullscreenPlayerDidDismiss={() => {
+                      videoRef.current.seek(0);
+                    }}
+                  />
+                </Pressable>
+                <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
+                  <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+                </Pressable>
+                {/* ) : (
                   <View style={[styles.media, styles.progress]}>
                     <Text style={styles.proNum}>{uploadProgress}</Text>
                     <Text style={styles.proPercent}>%</Text>
                   </View>
-                )}
+                )} */}
               </Pressable>
             ))}
             {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (

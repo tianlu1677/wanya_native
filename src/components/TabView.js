@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Dimensions, View, Text} from 'react-native';
+import {useSelector} from 'react-redux';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import PropTypes from 'prop-types';
 import TabList from './TabList';
@@ -10,6 +11,8 @@ const initialLayout = {
 };
 
 const TabViewIndex = props => {
+  const uploadStatus = useSelector(state => state.topic.uploadStatus);
+
   const [routes, setRoutes] = useState([]);
   const [scenes, setScenes] = useState([]);
   const [index, setIndex] = useState(0);
@@ -23,12 +26,26 @@ const TabViewIndex = props => {
     props.onChange(item.key);
   };
 
-  useEffect(() => {
-    const route = props.tabData.map(v => ({key: v.key, title: v.title}));
+  const initScene = () => {
     const scene = Object.assign({}, ...props.tabData.map(v => ({[v.key]: v.component})));
     setScenes(scene);
+  };
+
+  useEffect(() => {
+    initScene();
+    const route = props.tabData.map(v => ({key: v.key, title: v.title}));
     setRoutes(route);
   }, []);
+
+  useEffect(() => {
+    // 适配搜索
+    initScene();
+  }, [props.request]);
+
+  // useEffect(() => {
+  //   // 适配首页发布
+  //   initScene();
+  // }, [uploadStatus]);
 
   useEffect(() => {
     const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);
@@ -46,6 +63,7 @@ const TabViewIndex = props => {
             tabChange={tabChange}
             size={props.size}
             bottomLine={props.bottomLine}
+            center={props.center}
             separator={props.separator}
           />
         )}
@@ -57,7 +75,11 @@ const TabViewIndex = props => {
         lazy={props.lazy}
         swipeVelocityImpact={0.1}
         swipeEnabled={props.swipeEnabled || true}
-        renderLazyPlaceholder={() => <View style={{flex: 1}}><Text>Loading</Text></View>}
+        renderLazyPlaceholder={() => (
+          <View style={{flex: 1}}>
+            <Text>Loading</Text>
+          </View>
+        )}
         // lazyPreloadDistance={props.lazyPreloadDistance || 10}
         removeClippedSubviews={props.removeClippedSubviews || false}
         keyboardDismissMode={props.keyboardDismissMode || 'on-drag'}

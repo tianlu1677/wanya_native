@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
-import {Provider} from 'react-redux';
+import {Provider, connect} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
 import {Text, TextInput, Platform, Dimensions, Modal, Alert, View} from 'react-native';
 import CodePush from 'react-native-code-push';
@@ -12,7 +12,6 @@ import {
   RESULTS,
 } from 'react-native-permissions';
 import { ModalPortal } from 'react-native-modals';
-
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
@@ -25,10 +24,10 @@ import {prosettings} from '@/api/settings_api';
 import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
 import NetworkErrorModal from '@/components/NetworkErrorModal';
 import PushUtil from '@/utils/umeng_push_util';
-import { init, Geolocation } from "react-native-amap-geolocation";
-
+import {init, Geolocation} from 'react-native-amap-geolocation';
 import * as RootNavigation from '@/navigator/root-navigation';
-
+import * as action from '@/redux/constants';
+import {getChannels, getChannelPosts} from '@/api/home_api';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
 const queryString = require('query-string');
@@ -43,7 +42,7 @@ const codePushOptions = {
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
 import ShareItem from '@/components/ShareItem';
-import PolicyModal from "@/components/PolicyModal";
+import PolicyModal from '@/components/PolicyModal';
 import Toast from '@/components/Toast';
 
 class App extends Component {
@@ -68,6 +67,7 @@ class App extends Component {
     this.loadNetworkInfo();
     this.notif = new NotifyService(this.onRegister, this.onNotification);
     this.loadDeviceInfo();
+    this.getIndexTabData(); //获取首页频道信息
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
@@ -77,7 +77,7 @@ class App extends Component {
       adjustsFontSizeToFit: true,
       minimumFontScale: scale,
     });
-    Text.defaultProps.sytle = { 'color': 'black'}
+    Text.defaultProps.sytle = {color: 'black'};
     TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
       defaultProps: false,
       allowFontScaling: false,
@@ -88,7 +88,7 @@ class App extends Component {
     //   // Alert.alert(`${code} ${remain}`)
     // })
 
-    if(Platform.OS === 'ios') {
+    if (Platform.OS === 'ios') {
       PushUtil.addTag('normal', (code, remain) => {
         // console.log('code1', code, remain);
         // Alert.alert(`${code} ${remain}`)
@@ -96,7 +96,7 @@ class App extends Component {
     }
 
     // PushUtil.addAlias('dddd', 'login_user',(code) =>{
-    //   console.log('alias', code)      
+    //   console.log('alias', code)
     // })
   }
 
@@ -178,10 +178,9 @@ class App extends Component {
   }
 
   loadNetworkInfo = async () => {
-
     await init({
-      ios: "6da6626cf6588fb6e3052deff1e8d4e9",
-      android: "648f6e4ce8f5b83b30e2eabcac060eee"
+      ios: '6da6626cf6588fb6e3052deff1e8d4e9',
+      android: '648f6e4ce8f5b83b30e2eabcac060eee',
     });
 
     this.networdunsubscribe = NetInfo.addEventListener(state => {
@@ -213,12 +212,21 @@ class App extends Component {
     //   Windows: ?
     // });
     // console.log(DeviceInfo.getSystemVersion())
-
     // let bundleId = DeviceInfo.getBundleId();
   };
 
   loadImgList = () => {
     // FastImage.preload(ImageList.map((u) => ({uri: u})))
+  };
+
+  getIndexTabData = async () => {
+    const res = await getChannels();
+    // for (const item of res.data.channels) {
+    //   const params = {page: 1, per_page: 10, channel_id: item.id, channle_name: item.name};
+    //   const ret = await getChannelPosts(params);
+    //   console.log(ret);
+    // }
+    store.dispatch({type: action.SAVE_CHANNELS, value: res.data.channels});
   };
 
   render() {
@@ -238,9 +246,7 @@ class App extends Component {
             <ModalPortal />
           </PersistGate>
         </Provider>
-        {
-          Platform.OS !== 'ios' && <PolicyModal />
-        }
+        {Platform.OS !== 'ios' && <PolicyModal />}
       </>
     );
   }

@@ -189,14 +189,14 @@ export const AccountList = props => {
     let data = [];
     const res = await api({...params, page});
     if (account_type === 'account_recent_follow') {
-      data = res.data.follows;
+      data = props.dataKey ? res.data[props.dataKey] : res.data.follows;
       data = data.map(follow => ({
         ...follow.account,
         created_at_text: follow.created_at_text,
         right_text: right_text,
       }));
     } else {
-      data = res.data.accounts;
+      data = props.dataKey ? res.data[props.dataKey] : res.data.accounts;
     }
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

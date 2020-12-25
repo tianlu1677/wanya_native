@@ -21,10 +21,10 @@ const MediasPicker = WrapperComponent => {
     };
 
     const uploadImage = async file => {
-      console.log('file', file)
+      console.log('file', file);
       const token = await Helper.getData('auth_token');
       const path = file.uri.replace('file://', '');
-      console.log('filepath', path)
+      console.log('filepath', path);
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
@@ -35,7 +35,7 @@ const MediasPicker = WrapperComponent => {
           width: file.width.toString(),
           height: file.height.toString(),
           fsize: file.size.toString(),
-          category: 'image'
+          category: 'image',
         },
         headers: {
           'content-type': 'application/octet-stream',
@@ -43,7 +43,7 @@ const MediasPicker = WrapperComponent => {
         },
         path: path,
       };
-      console.log('uploadOptions', uploadOptions)
+      console.log('uploadOptions', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -102,7 +102,7 @@ const MediasPicker = WrapperComponent => {
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
-    const uploadVideo = async (file, dispatch) => {
+    const uploadVideo = async (file, cb) => {
       const res = await getUploadFileToken({ftype: 'mp4'});
       // console.log('re', res)
       const path = file.uri.replace('file://', '');
@@ -132,7 +132,7 @@ const MediasPicker = WrapperComponent => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {
-              dispatch({type: action.UPLOAD_PROGRESS, value: parseInt(data.progress)});
+              cb(parseInt(data.progress));
             });
             Upload.addListener('error', uploadId, data => {
               reject(data.error);
@@ -155,7 +155,7 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
-            console.log('error', err)
+            console.log('error', err);
             reject(err);
           });
       });

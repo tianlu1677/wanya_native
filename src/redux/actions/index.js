@@ -16,10 +16,15 @@ import {
   TOPIC_DETAIL_SUCCESS,
   UPDATE_NODES,
   UPDATE_FOLLOW_NODES, UPDATE_CATEGORY_LIST,
+  UPDATE_FOLLOW_NODES,
+  CHANGE_UPLOAD_STATUS,
+  SAVE_CHANNELS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {getNodeIndex, getFollowNodeIndex} from '@/api/node_api';
+// import {uploadVideoFile} from '@/utils/upload_files';
+import {createTopic} from '@/api/topic_api';
 import Helper from '@/utils/helper';
 
 // 当前用户
@@ -131,4 +136,36 @@ export const dispathUpdateNodes = account_id => async dispatch => {
 export const dispatchFetchCategoryList = () => async dispatch => {
   const categories = await getCategoryList();
   dispatch({type: UPDATE_CATEGORY_LIST, categories: categories});
+};
+
+export const changeUploadStatus = value => {
+  return {
+    type: CHANGE_UPLOAD_STATUS,
+    value,
+  };
+};
+
+// 上传视频topic
+export const dispatchFetchUploadTopic = (data, cb) => async dispatch => {
+  const {video, content} = data.content;
+  dispatch(changeUploadStatus({status: 'upload', progress: 0, ...data}));
+  // const videoRes = await data.upload(video, progress => {
+  //   if (progress === 100) {
+  //     dispatch(changeUploadStatus({status: 'publish', progress: '发布中', ...data}));
+  //   } else {
+  //     dispatch(changeUploadStatus({status: 'upload', progress: progress, ...data}));
+  //   }
+  // });
+  // const params = {...content, video_content: videoRes.asset.video_url};
+  // await createTopic(params);
+  // dispatch(changeUploadStatus({status: 'done', progress: '发布完成', ...data}));
+  // 设置progress 为发布完成 done
+  // cb();
+  setTimeout(() => {
+    dispatch(changeUploadStatus({status: 'upload', progress: 60, ...data}));
+  }, 3000);
+
+  setTimeout(() => {
+    dispatch(changeUploadStatus({status: 'done', progress: '发布完成', ...data}));
+  }, 5000);
 };

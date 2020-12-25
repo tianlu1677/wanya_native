@@ -46,7 +46,7 @@ const HashtagList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = params.name ? res.data.items : res.data.hashtags;
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.spaces;
     setHeaders(res.headers);
     if (params.name && data.length === 0) {
       setListData([{name: params.name, id: 0}]);

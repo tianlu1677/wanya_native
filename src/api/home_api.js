@@ -1,5 +1,23 @@
 import request from './request';
 
+// 首页频道信息流
+export const getChannels = async () => {
+  const res = await request({
+    url: '/api/v1/channels',
+    method: 'GET',
+  });
+  return res;
+};
+
+export const getChannelPosts = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/recommend/channel_posts',
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
 // 推荐帖子
 export const getRecommendPosts = async (params = {}) => {
   const res = await request({

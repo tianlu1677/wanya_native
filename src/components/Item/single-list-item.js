@@ -233,13 +233,13 @@ export const Bottom = props => {
           topic_link: data.topic_link,
         };
 
-        if(data.content_style === 'link' && data.topic_link) {
+        if (data.content_style === 'link' && data.topic_link) {
           shareOptions = {
             ...shareOptions,
             title: data.topic_link?.title || data.topic_link.raw_link,
             thumbImageUrl: data.topic_link.cover_url,
-            webpageUrl: data.topic_link.raw_link
-          }
+            webpageUrl: data.topic_link.raw_link,
+          };
         }
         break;
       default:
