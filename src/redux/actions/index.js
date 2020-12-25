@@ -15,7 +15,7 @@ import {
   ShareView,
   TOPIC_DETAIL_SUCCESS,
   UPDATE_NODES,
-  UPDATE_FOLLOW_NODES,
+  UPDATE_FOLLOW_NODES, UPDATE_CATEGORY_LIST,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -126,4 +126,9 @@ export const dispathUpdateNodes = account_id => async dispatch => {
   }
   const nodes = await getNodeIndex();
   dispatch({type: UPDATE_NODES, value: nodes});
+};
+// 获取categories的数据
+export const dispatchFetchCategoryList = () => async dispatch => {
+  const categories = await getCategoryList();
+  dispatch({type: UPDATE_CATEGORY_LIST, categories: categories});
 };

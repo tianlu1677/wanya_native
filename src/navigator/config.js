@@ -53,6 +53,8 @@ import SearchIndex from '@/pages/search/search-index';
 
 // 实验室页面
 import LabIndex from '@/pages/labs/index';
+import LabNewest from '@/pages/labs/newest';
+import LabGalley from '@/pages/labs/galley';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabStorageIndex from '@/pages/labs/storageindex';
 
@@ -326,8 +328,23 @@ export const routers = [
   {
     name: 'LabIndex',
     component: LabIndex,
-    safeArea: false,
-    options: {title: '实验室主页', headerShown: false},
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '实验室主页', headerShown: true},
+  },
+  {
+    name: 'LabNewest',
+    component: LabNewest,
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '最新', headerShown: true},
+  },
+  {
+    name: 'LabGalley',
+    component: LabGalley,
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '最新', headerShown: true},
   },
   {
     name: 'LabTabIndex',

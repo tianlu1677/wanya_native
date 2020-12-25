@@ -184,3 +184,4 @@ export const GET_LOCATION = 'GET_LOCATION'; // 经纬度
 //recommend
 export const UPDATE_NODES = 'UPDATE_NODES'; //更新全部圈子数据
 export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //更新关注圈子数据
+export const UPDATE_CATEGORY_LIST = 'UPDATE_CATEGORY_LIST';

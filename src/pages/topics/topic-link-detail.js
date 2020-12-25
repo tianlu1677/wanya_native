@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {KeyboardAvoidingView, StatusBar, Platform} from 'react-native';
+import {KeyboardAvoidingView, ScrollView, Dimensions, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
@@ -70,20 +70,18 @@ const TopicLinkDetail = ({navigation, route}) => {
           hidden: false,
         }}
       />
-      <WebView
-        originWhitelist={['*']}
-        source={{uri: detail.topic_link.raw_link}}
-        startInLoadingState={true}
-        scalesPageToFit={true}
-        autoManageStatusBarEnabled={false}
-        // onLoadEnd={() => {
-        //   [10, 50, 100, 500, 1000].forEach(timeout => {
-        //     setTimeout(() => {
-        //       StatusBar.setBarStyle("dark-content");
-        //     }, timeout);
-        //   });
-        // }}
-      />
+      {/*https://github.com/react-native-webview/react-native-webview/issues/22*/}
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <WebView
+          originWhitelist={['*']}
+          source={{uri: detail.topic_link.raw_link}}
+          startInLoadingState={true}
+          scalesPageToFit={true}
+          scrollEnabled
+          style={{ height: Dimensions.get('window').height-70, width: Dimensions.get('window').width, flex: 1}}
+          autoManageStatusBarEnabled={false}
+        />
+      </ScrollView>
 
       <ActionComment
         visible={visible}

@@ -20,6 +20,7 @@ const defaultState = {
   uploadProgress: 0,
   location: {},
   nodes: [],
+  categoryList: [],
   followNodes: [],
 };
 
@@ -71,6 +72,11 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         followNodes: action.value,
       };
+    case constants.UPDATE_CATEGORY_LIST:
+      return {
+        ...state,
+        categoryList: action.categories
+      }
     default:
       return state;
   }

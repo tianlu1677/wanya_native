@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView, Dimensions, Image, Text, View} from 'react-native';
 import HTML from 'react-native-render-html';
 import FastImg from '@/components/FastImg';
+import WebView from 'react-native-webview';
 
 const RichHTML = props => {
   const {images_info} = props;
@@ -26,7 +27,9 @@ const RichHTML = props => {
 
   return (
     <HTML
-      html={props.content}
+      WebView={WebView}
+      source={{html: props.content}}
+      // html={props.content}
       imagesMaxWidth={Dimensions.get('window').width}
       renderers={{
         img: (htmlAttribs, children, convertedCSSStyles, passProps) => {

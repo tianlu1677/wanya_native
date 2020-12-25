@@ -1,14 +1,14 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
-import Modal, {ModalTitle, ModalContent} from 'react-native-modals';
+import Modal, {ModalTitle, BottomModal, ModalContent} from 'react-native-modals';
 
-const BottomModal = props => {
+const BottomModalView = props => {
   const cancel = () => {
     props.cancleClick();
   };
 
   return (
-    <Modal.BottomModal
+    <BottomModal
       height={0.5}
       width={1}
       rounded
@@ -24,7 +24,7 @@ const BottomModal = props => {
       <ModalContent style={styles.content}>
         {props.content ? <Text style={styles.body}>{props.content}</Text> : props.children}
       </ModalContent>
-    </Modal.BottomModal>
+    </BottomModal>
   );
 };
 
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomModal;
+export default BottomModalView;
