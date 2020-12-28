@@ -1,9 +1,12 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import {Platform} from 'react-native';
 import PropTypes from 'prop-types';
-import ScrollList from '@/components/ScrollList';
+import {throttle} from 'lodash';
+import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
-import {Platform} from 'react-native';
+import {getRecommendTopPosts} from '@/api/home_api';
+
 const SingleList = props => {
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
@@ -27,6 +30,22 @@ const SingleList = props => {
     );
   });
 
+  const onChangeListDataText = data => {
+    // 发布文案修改
+    return props.type === 'recommend'
+      ? data.map(v => {
+          const item = {
+            ...v,
+            item: {
+              ...v.item,
+              published_at_text: '发布了',
+            },
+          };
+          return item;
+        })
+      : data;
+  };
+
   const loadData = async (page = 1) => {
     if (page === 1) {
       setLoading(true);
@@ -35,35 +54,52 @@ const SingleList = props => {
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     const transdata = page === 1 ? data : [...listData, ...data];
-    if (props.type === 'recommend') {
-      // 发布文案修改
-      const renderData = transdata.map(v => {
-        const item = {
-          ...v,
-          item: {
-            ...v.item,
-            published_at_text: '发布了',
-          },
-        };
-        return item;
-      });
-      setListData(renderData);
-    } else {
-      setListData(transdata);
-    }
+    setListData(onChangeListDataText(transdata));
     setLoading(false);
     setHeaders(res.headers);
   };
 
+  //首页推荐
+  const indexLoadData = async (page = 1) => {
+    if (page === 1) {
+      setLoading(true);
+    }
+    let itemList = [];
+    // 加载首页置顶的
+    let top_posts_res = await getRecommendTopPosts();
+    itemList = top_posts_res.data.posts;
+    itemList = itemList.map(item => ({...item, is_top: true}));
+    const {api, params} = props.request;
+    const res = await api({...params, page});
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
+    itemList = itemList.concat(data);
+    setListData(onChangeListDataText(itemList));
+    setHeaders(res.headers);
+    setLoading(false);
+  };
+
+  const onRefresh = (page = 1) => {
+    if (props.type === 'recommend' && (page === 1 || !page)) {
+      indexLoadData(pagination(headers).nextPage);
+    } else {
+      loadData(page);
+    }
+  };
+
   useEffect(() => {
-    loadData();
+    if (props.type === 'recommend') {
+      indexLoadData(1);
+    } else {
+      loadData();
+    }
   }, []);
 
+  console.log(listData);
   return (
     <ScrollList
       data={listData}
       loading={loading}
-      onRefresh={loadData}
+      onRefresh={throttle(onRefresh, 300)}
       headers={headers}
       renderItem={renderItemMemo}
       style={{

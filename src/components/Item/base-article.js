@@ -17,6 +17,7 @@ const BaseArticle = props => {
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
       <Header data={data} type="article" onRemove={props.onRemove} />
       <View style={styles.content}>
+        {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         <FastImg source={{uri: data.cover_url}} style={styles.imageCover} />
         <LinearGradient
           style={styles.titleWrapper}
@@ -40,6 +41,8 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 13,
     position: 'relative',
+    backgroundColor: 'pink',
+    // height: 200,
   },
   titleWrapper: {
     height: 64,
@@ -63,6 +66,22 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     width: '100%',
     height: 167,
+  },
+  excellentLabel: {
+    width: 30,
+    height: 16,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 10,
+    lineHeight: 16,
+    backgroundColor: '#FF2242',
+    borderRadius: 2,
+    overflow: 'hidden',
+    color: 'white',
+    position: 'absolute',
+    left: 8,
+    top: 8,
+    zIndex: 1,
   },
 });
 

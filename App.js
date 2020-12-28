@@ -11,7 +11,7 @@ import {
   PERMISSIONS,
   RESULTS,
 } from 'react-native-permissions';
-import { ModalPortal } from 'react-native-modals';
+import {ModalPortal} from 'react-native-modals';
 import Navigation from './src/navigator/index';
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
@@ -67,7 +67,6 @@ class App extends Component {
     this.loadNetworkInfo();
     this.notif = new NotifyService(this.onRegister, this.onNotification);
     this.loadDeviceInfo();
-    this.getIndexTabData(); //获取首页频道信息
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
@@ -98,6 +97,8 @@ class App extends Component {
     // PushUtil.addAlias('dddd', 'login_user',(code) =>{
     //   console.log('alias', code)
     // })
+
+    this.getIndexTabData(); //获取首页频道信息
   }
 
   loadSplashImg = () => {

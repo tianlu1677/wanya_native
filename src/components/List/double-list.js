@@ -212,7 +212,7 @@ const DoubleList = props => {
     }
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.posts;
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
     setHeaders(res.headers);
@@ -239,7 +239,6 @@ const DoubleList = props => {
   };
 
   const onRefresh = (page = 1) => {
-    // console.log('props', props)
     if (props.type === 'recommend' && (page === 1 || !page)) {
       indexLoadData(pagination(headers).nextPage);
     } else {

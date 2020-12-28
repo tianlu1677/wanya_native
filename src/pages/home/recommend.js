@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {View, Text, StyleSheet, Pressable, ScrollView, TextInput} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
 import TabViewList from '@/components/TabView';
@@ -7,7 +7,12 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import IconFont from '@/iconfont';
 import {useDispatch, useSelector} from 'react-redux';
-import {getRecommendPosts, getFollowedPosts, getFollowedNodePosts} from '@/api/home_api';
+import {
+  getRecommendPosts,
+  getFollowedPosts,
+  getFollowedNodePosts,
+  getChannelPosts,
+} from '@/api/home_api';
 import {BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
@@ -26,8 +31,6 @@ const Recommend = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
-
-  // console.log(uploadStatus);
 
   // 是否展示上传topic模块
   const isShowUploadTopic = () => {
@@ -77,16 +80,11 @@ const Recommend = props => {
     );
   };
 
-  const FollowListPage = () => {
-    return (
-      <SingleList
-        request={{api: getFollowedPosts}}
-        ListHeaderComponent={isShowUploadTopic() ? <UploadTopic /> : null}
-      />
-    );
-  };
+  const FollowListPage = () => <SingleList request={{api: getFollowedPosts}} />;
 
-  const RecommendPage = () => <SingleList request={{api: getRecommendPosts}} type="recommend" />;
+  const RecommendPage = () => (
+    <SingleList request={{api: getRecommendPosts}} type="recommend" loadType="more" />
+  );
 
   const NodeListPage = () => {
     return (
@@ -110,14 +108,15 @@ const Recommend = props => {
   };
 
   const channels = home.channels.map(item => {
+    const params = {channel_id: item.id, channel_name: item.name};
     return {
       key: item.name,
       title: item.name,
       component: () =>
         item.condition === 'single' ? (
-          <SingleList request={{api: getRecommendPosts}} />
+          <SingleList request={{api: getChannelPosts, params}} />
         ) : (
-          <DoubleList request={{api: getRecommendPosts}} />
+          <DoubleList request={{api: getChannelPosts}} />
         ),
     };
   });
@@ -138,7 +137,6 @@ const Recommend = props => {
   useEffect(() => {
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
-    props.navigation.push('SearchIndex');
   }, []);
 
   return (
@@ -177,6 +175,7 @@ const Recommend = props => {
 
         {channels.length > 0 && (
           <View style={styles.wrapper}>
+            {isShowUploadTopic() ? <UploadTopic /> : null}
             <TabViewList
               center={false}
               bottomLine={true}
@@ -222,6 +221,12 @@ const NodeScrollView = props => {
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
+      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
+        <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
+        <Text style={styles.nodeName} numberOfLines={1}>
+          全部圈子
+        </Text>
+      </Pressable>
       {nodes.length > 0 &&
         nodes.map(node => {
           return (
@@ -241,12 +246,6 @@ const NodeScrollView = props => {
             </Pressable>
           );
         })}
-      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
-        <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
-        <Text style={styles.nodeName} numberOfLines={1}>
-          全部圈子
-        </Text>
-      </Pressable>
     </ScrollView>
   );
 };

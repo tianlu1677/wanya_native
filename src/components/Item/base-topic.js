@@ -144,6 +144,7 @@ const BaseTopic = props => {
   const goTopicDetail = () => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
+
   return (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
@@ -208,8 +209,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: 'white',
     position: 'absolute',
-    left: 12,
-    top: 23,
+    left: 8,
+    top: 8,
   },
   infoViewWrap: {
     flexDirection: 'row',

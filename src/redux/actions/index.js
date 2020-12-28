@@ -15,8 +15,8 @@ import {
   ShareView,
   TOPIC_DETAIL_SUCCESS,
   UPDATE_NODES,
-  UPDATE_FOLLOW_NODES, 
-  UPDATE_CATEGORY_LIST,  
+  UPDATE_FOLLOW_NODES,
+  UPDATE_CATEGORY_LIST,
   CHANGE_UPLOAD_STATUS,
   SAVE_CHANNELS,
 } from '../constants/index';
@@ -149,23 +149,19 @@ export const changeUploadStatus = value => {
 export const dispatchFetchUploadTopic = (data, cb) => async dispatch => {
   const {video, content} = data.content;
   dispatch(changeUploadStatus({status: 'upload', progress: 0, ...data}));
-  // const videoRes = await data.upload(video, progress => {
-  //   if (progress === 100) {
-  //     dispatch(changeUploadStatus({status: 'publish', progress: '发布中', ...data}));
-  //   } else {
-  //     dispatch(changeUploadStatus({status: 'upload', progress: progress, ...data}));
-  //   }
-  // });
-  // const params = {...content, video_content: videoRes.asset.video_url};
-  // await createTopic(params);
-  // dispatch(changeUploadStatus({status: 'done', progress: '发布完成', ...data}));
+  const videoRes = await data.upload(video, progress => {
+    if (progress === 100) {
+      dispatch(changeUploadStatus({status: 'publish', progress: '发布中', ...data}));
+    } else {
+      dispatch(changeUploadStatus({status: 'upload', progress: progress, ...data}));
+    }
+  });
+  const params = {...content, video_content: videoRes.asset.video_url};
+  await createTopic(params);
   // 设置progress 为发布完成 done
-  // cb();
+  dispatch(changeUploadStatus({status: 'done', progress: '发布完成', ...data}));
+  cb();
   setTimeout(() => {
-    dispatch(changeUploadStatus({status: 'upload', progress: 60, ...data}));
-  }, 3000);
-
-  setTimeout(() => {
-    dispatch(changeUploadStatus({status: 'done', progress: '发布完成', ...data}));
-  }, 5000);
+    dispatch(changeUploadStatus(null));
+  }, 500);
 };

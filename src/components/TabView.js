@@ -38,7 +38,7 @@ const TabViewIndex = props => {
   }, []);
 
   useEffect(() => {
-    // 适配搜索
+    // 适配搜索页面
     initScene();
   }, [props.request]);
 

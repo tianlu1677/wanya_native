@@ -22,8 +22,6 @@ const TopicList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    console.log(params);
-
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setHeaders(res.headers);
     if (!params.name) {
@@ -36,7 +34,7 @@ const TopicList = props => {
 
   useEffect(() => {
     loadData();
-  }, [props.request]);
+  }, []);
 
   return (
     <ScrollList
