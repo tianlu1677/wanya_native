@@ -116,7 +116,7 @@ const Recommend = props => {
         item.condition === 'single' ? (
           <SingleList request={{api: getChannelPosts, params}} />
         ) : (
-          <DoubleList request={{api: getChannelPosts}} />
+          <DoubleList request={{api: getChannelPosts, params}} />
         ),
     };
   });
