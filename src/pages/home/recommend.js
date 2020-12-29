@@ -49,20 +49,26 @@ const Recommend = props => {
         <View style={styles.videoWrap}>
           <Video
             style={styles.video}
-            source={{uri: uploadStatus.content.video.uri}}
+            // source={{uri: uploadStatus.content.video.uri}}
+            source={{
+              uri: 'http://xinxuefile.meirixinxue.com/assets/e97cc623812f64d7603a2ba45578f658.mp4',
+            }}
             resizeMode={'cover'}
             paused={true}
           />
-          {/* <View style={[styles.video, styles.opacity]} /> */}
-          <View style={styles.progress}>
+          <View style={[styles.video, styles.opacity]} />
+          {/* <View style={styles.progress}>
             <Text style={styles.num}>{uploadStatus.progress}</Text>
+            <Text style={styles.num}>{100}</Text>
             <Text style={styles.percent}>%</Text>
-          </View>
+          </View> */}
+          <IconFont name="chose-success" color={'white'} size={20} />
         </View>
         <Text style={styles.uploadText}>
-          {uploadStatus.status === 'upload' && '上传中'}
+          上传中
+          {/* {uploadStatus.status === 'upload' && '上传中'}
           {uploadStatus.status === 'publish' && '发布中'}
-          {uploadStatus.status === 'done' && '发布成功'}
+          {uploadStatus.status === 'done' && '发布成功'} */}
         </Text>
       </View>
     );
@@ -131,7 +137,8 @@ const Recommend = props => {
     <>
       <View style={{flex: 1, position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-        {isShowUploadTopic() ? <UploadTopic /> : null}
+        {/* {isShowUploadTopic() ? <UploadTopic /> : null} */}
+        {<UploadTopic />}
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
@@ -305,7 +312,7 @@ const styles = StyleSheet.create({
   uploadWrap: {
     width: 72,
     height: 85,
-    backgroundColor: '#000000',
+    backgroundColor: '#000',
     opacity: 0.8,
     borderRadius: 5,
     position: 'absolute',
@@ -316,12 +323,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   videoWrap: {
-    marginTop: 10,
     width: 45,
     height: 45,
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 10,
   },
   video: {
     width: 45,
@@ -335,7 +342,7 @@ const styles = StyleSheet.create({
   },
   opacity: {
     backgroundColor: '#000',
-    opacity: 0.2,
+    opacity: 0.5,
   },
   progress: {
     alignItems: 'flex-end',
