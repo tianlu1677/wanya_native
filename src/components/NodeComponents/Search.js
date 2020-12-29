@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
@@ -16,6 +16,7 @@ const Search = props => {
           placeholderTextColor={placeholderTextColor}
           onChangeText={props.onChangeText}
           onFocus={props.onFocus}
+          autoFocus={props.autoFocus}
           selectionColor={'#ff193a'}
           clearButtonMode={'always'}
           textAlign={'left'}
@@ -69,10 +70,11 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   textInput: {
-    padding: 0,
+    // padding: 0,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 36,
     fontSize: 13,
-    fontWeight: '300',
     color: '#000',
   },
   cancel: {

@@ -94,7 +94,6 @@ const SingleList = props => {
     }
   }, []);
 
-  console.log(listData);
   return (
     <ScrollList
       data={listData}
