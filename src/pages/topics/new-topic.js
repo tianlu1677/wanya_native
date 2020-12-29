@@ -277,7 +277,7 @@ const NewTopic = props => {
       };
       dispatch(
         dispatchFetchUploadTopic(params, () => {
-          Toast.showError('发布完成');
+          Toast.showError('发布成功');
         })
       );
     } else {

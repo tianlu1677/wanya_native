@@ -84,12 +84,12 @@ const TabList = props => {
                 style={[tabBarStyle.tabItem]}>
                 <Text
                   style={[
+                    tabBarStyle.textActive,
                     tabBarStyle[`tabItemText${size}`],
                     currentIndex === index && tabBarStyle[`textActive${size}`],
                   ]}>
                   {item.title}
                 </Text>
-
                 {currentIndex === index && (
                   <View
                     style={[
@@ -110,16 +110,18 @@ const TabList = props => {
 const tabBarStyle = StyleSheet.create({
   tabWrap: {
     backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   tabbig: {
     height: 50,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#000',
   },
   tabmiddle: {
     height: 50,
-    justifyContent: 'center',
+  },
+  tabsmall: {
+    height: 33,
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
@@ -130,46 +132,57 @@ const tabBarStyle = StyleSheet.create({
     paddingRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
   tabItemTextbig: {
     fontSize: 15,
     color: '#7f7f81',
-    position: 'relative',
   },
   tabItemTextmiddle: {
     fontSize: 14,
     color: '#7f7f81',
-    position: 'relative',
+  },
+  tabItemTextsmall: {
+    fontSize: 15,
+    color: '#000',
+    fontWeight: '300',
+  },
+  textActive: {
+    fontWeight: '500',
+    color: '#000',
   },
   textActivebig: {
     fontSize: 18,
     color: '#fff',
-    fontWeight: '500',
   },
   textActivemiddle: {
     fontSize: 16,
-    color: '#000',
+  },
+  textActivesmall: {
+    fontSize: 16,
     fontWeight: '500',
   },
   tabLine: {
     position: 'absolute',
     bottom: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    height: 3,
   },
   lineActivebig: {
     width: 22,
-    height: 3,
-    backgroundColor: '#fff',
     marginTop: 6,
-    borderRadius: 4,
-    overflow: 'hidden',
+    backgroundColor: '#fff',
   },
   lineActivemiddle: {
     width: 14,
-    height: 3,
-    backgroundColor: '#000',
     marginTop: 5,
-    borderRadius: 4,
-    overflow: 'hidden',
+  },
+  lineActivesmall: {
+    width: 18,
+    position: 'absolute',
+    bottom: 0,
   },
   separator: {
     borderBottomColor: '#FAFAFA',

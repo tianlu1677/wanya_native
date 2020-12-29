@@ -13,7 +13,7 @@ import {
   getFollowedNodePosts,
   getChannelPosts,
 } from '@/api/home_api';
-import {BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
+import {SAFE_TOP} from '@/utils/navbar';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
 import {dispatchCurrentAccount, dispatchFetchCategoryList} from '@/redux/actions';
@@ -21,8 +21,7 @@ import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
 import {Search} from '@/components/NodeComponents';
-
-const topHeader = IsIos ? (BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10) : 0;
+import {RFValue} from '@/utils/response-fontsize';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -46,35 +45,24 @@ const Recommend = props => {
 
   const UploadTopic = () => {
     return (
-      <View style={styles.uploadContent}>
-        <View style={styles.imageWrap}>
+      <View style={styles.uploadWrap}>
+        <View style={styles.videoWrap}>
           <Video
-            style={{width: 45, height: 45}}
+            style={styles.video}
             source={{uri: uploadStatus.content.video.uri}}
-            posterResizeMode={'center'}
-            controls={false}
-            muted={false}
-            reportBandwidth
-            ignoreSilentSwitch="ignore"
-            repeat
+            resizeMode={'cover'}
+            paused={true}
           />
-          <Text style={styles.uploadopacity} />
-          {/* 上传视频中 */}
-          {uploadStatus.status === 'upload' && (
-            <View style={styles.percent}>
-              <Text style={{fontSize: 18, color: '#fff'}}>{uploadStatus.progress}</Text>
-              <Text style={{fontSize: 8, color: '#fff'}}>%</Text>
-            </View>
-          )}
-          {/* 发布帖子中 */}
-          {uploadStatus.status === 'publish' && (
-            <Text style={[styles.percent, {fontSize: 10, color: '#fff'}]}>
-              {uploadStatus.progress}
-            </Text>
-          )}
+          {/* <View style={[styles.video, styles.opacity]} /> */}
+          <View style={styles.progress}>
+            <Text style={styles.num}>{uploadStatus.progress}</Text>
+            <Text style={styles.percent}>%</Text>
+          </View>
         </View>
-        <Text numberOfLines={2} style={styles.uploadText}>
-          {uploadStatus.content.content.plain_content}
+        <Text style={styles.uploadText}>
+          {uploadStatus.status === 'upload' && '上传中'}
+          {uploadStatus.status === 'publish' && '发布中'}
+          {uploadStatus.status === 'done' && '发布成功'}
         </Text>
       </View>
     );
@@ -141,18 +129,15 @@ const Recommend = props => {
 
   return (
     <>
-      <View style={{flex: 1}}>
-        <View style={{height: topHeader, backgroundColor: 'black'}} />
-        <FocusAwareStatusBar
-          barStyle="light-content"
-          translucent={false}
-          backgroundColor={'black'}
-        />
+      <View style={{flex: 1, position: 'relative'}}>
+        <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
+        {isShowUploadTopic() ? <UploadTopic /> : null}
+        <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
           style={{backgroundColor: '#000'}}
           inputStyle={{borderRadius: 18, backgroundColor: '#fff'}}
-          height={36}
+          height={RFValue(36)}
           placeholderTextColor="#000"
           placeholder="搜索帖子、文章、圈子等内容"
           onFocus={() => {
@@ -175,12 +160,13 @@ const Recommend = props => {
 
         {channels.length > 0 && (
           <View style={styles.wrapper}>
-            {isShowUploadTopic() ? <UploadTopic /> : null}
             <TabViewList
               center={false}
               bottomLine={true}
               lazy={true}
               currentKey={currentKey}
+              onChange={key => setCurrentKey(key)}
+              size="small"
               tabData={[
                 {
                   key: 'follow',
@@ -199,7 +185,6 @@ const Recommend = props => {
                 },
                 ...channels,
               ]}
-              onChange={key => setCurrentKey(key)}
             />
           </View>
         )}
@@ -317,45 +302,58 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
-  uploadContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    flexDirection: 'row',
+  uploadWrap: {
+    width: 72,
+    height: 85,
+    backgroundColor: '#000000',
+    opacity: 0.8,
+    borderRadius: 5,
+    position: 'absolute',
+    left: 16,
+    top: '50%',
+    marginTop: -42,
+    zIndex: 1,
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
-  imageWrap: {
-    position: 'relative',
+  videoWrap: {
+    marginTop: 10,
     width: 45,
     height: 45,
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 2,
-    overflow: 'hidden',
   },
-  uploadopacity: {
-    position: 'absolute',
+  video: {
     width: 45,
     height: 45,
+    borderRadius: 23,
+    borderColor: '#fff',
+    borderWidth: 2,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+  },
+  opacity: {
     backgroundColor: '#000',
-    opacity: 0.6,
+    opacity: 0.2,
+  },
+  progress: {
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+  },
+  num: {
+    fontSize: 16,
+    color: '#fff',
   },
   percent: {
-    position: 'absolute',
+    fontSize: 7,
     color: '#fff',
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    height: 20,
-    lineHeight: 20,
+    marginBottom: 3,
   },
   uploadText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#3F3F3F',
-    lineHeight: 19,
-    marginLeft: 10,
-    marginRight: 10,
+    color: '#fff',
+    fontSize: 10,
+    marginTop: 8,
   },
 });
 

@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 
 const SpaceItem = props => {
   const {data} = props;
   return (
-    <TouchableWithoutFeedback onPress={() => props.itemOnPress(data)}>
+    <Pressable onPress={() => props.itemOnPress(data)}>
       <View style={styles.spaceWrapper}>
         <Text style={styles.name}>{data.name}</Text>
         <Text style={styles.address}>{data.address}</Text>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingTop: 12,
     paddingBottom: 12,
-    marginLeft: 15,
+    paddingLeft: 15,
+    backgroundColor: '#fff',
   },
   name: {
     fontSize: 15,

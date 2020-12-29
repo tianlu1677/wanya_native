@@ -42,11 +42,6 @@ const TabViewIndex = props => {
     initScene();
   }, [props.request]);
 
-  // useEffect(() => {
-  //   // 适配首页发布
-  //   initScene();
-  // }, [uploadStatus]);
-
   useEffect(() => {
     const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);
     const i = findIndex > -1 ? findIndex : 0;

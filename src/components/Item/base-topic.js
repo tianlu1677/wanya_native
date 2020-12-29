@@ -8,6 +8,7 @@ import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import FastImageGif from '@/components/FastImageGif';
+import ExcellentImage from '@/assets/images/excellent.png';
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -152,7 +153,14 @@ const BaseTopic = props => {
         {data.content_style === 'img' && <TopicImageContent data={data} />}
         {data.content_style === 'video' && <TopicVideoContent data={data} />}
         {data.content_style === 'link' && <TopicLinkContent data={data} />}
-        {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+        {data.excellent && (
+          <FastImg
+            style={styles.excellentImage}
+            source={ExcellentImage}
+            resizeMode={'contain'}
+            resizeMethod={'resize'}
+          />
+        )}
       </View>
 
       {data.plain_content ? (
@@ -197,20 +205,12 @@ const styles = StyleSheet.create({
     marginTop: -15,
     marginLeft: -15,
   },
-  excellentLabel: {
+  excellentImage: {
     width: 30,
-    height: 16,
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 10,
-    lineHeight: 16,
-    backgroundColor: '#FF2242',
-    borderRadius: 2,
-    overflow: 'hidden',
-    color: 'white',
+    height: 17,
     position: 'absolute',
-    left: 8,
     top: 8,
+    left: 8,
   },
   infoViewWrap: {
     flexDirection: 'row',
