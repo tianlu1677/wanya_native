@@ -122,7 +122,7 @@ const tabBarStyle = StyleSheet.create({
     height: 50,
   },
   tabsmall: {
-    height: RFValue(33),
+    height: RFValue(36),
     paddingLeft: RFValue(8),
   },
   bottomLine: {
