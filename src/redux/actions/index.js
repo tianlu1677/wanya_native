@@ -141,18 +141,17 @@ export const changeUploadStatus = value => {
 // 上传视频topic
 export const dispatchFetchUploadTopic = data => async dispatch => {
   const {video, content} = data.content;
-  dispatch(changeUploadStatus({status: 'upload', progress: 0, ...data}));
   const videoRes = await data.upload(video, progress => {
     if (progress === 100) {
-      dispatch(changeUploadStatus({status: 'publish', progress: progress, ...data}));
+      dispatch(changeUploadStatus({...data, status: 'publish', progress}));
     } else {
-      dispatch(changeUploadStatus({status: 'upload', progress: progress, ...data}));
+      dispatch(changeUploadStatus({...data, status: 'upload', progress}));
     }
   });
   const params = {...content, video_content: videoRes.asset.video_url};
   await createTopic(params);
   // 设置progress 为发布成功 done
-  dispatch(changeUploadStatus({status: 'done', progress: '发布成功', ...data}));
+  dispatch(changeUploadStatus({...data, status: 'done', progress: '发布成功'}));
   setTimeout(() => {
     dispatch(changeUploadStatus(null));
   }, 1000);

@@ -13,6 +13,7 @@ import {
   getChannelPosts,
 } from '@/api/home_api';
 import {SAFE_TOP} from '@/utils/navbar';
+import {dispatchFetchUploadTopic, changeUploadStatus} from '@/redux/actions';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
 import {dispatchCurrentAccount, dispatchFetchCategoryList} from '@/redux/actions';
@@ -21,6 +22,7 @@ import FastImg from '@/components/FastImg';
 import {AllNodeImg} from '@/utils/default-image';
 import {Search} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
+import MediasPicker from '@/components/MediasPicker';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -111,6 +113,11 @@ const Recommend = props => {
   useEffect(() => {
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
+    if (uploadStatus) {
+      const upload = (file, cb) => props.uploadVideo(file, cb);
+      dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
+      dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
+    }
   }, []);
 
   return (
@@ -347,4 +354,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Recommend;
+export default MediasPicker(Recommend);

@@ -20,7 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
 import PermissionModal from './PhotoPermission';
 import * as action from '@/redux/constants';
-import {dispatchPreviewImage, dispatchFetchUploadTopic} from '@/redux/actions';
+import {dispatchPreviewImage, changeUploadStatus} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
@@ -275,7 +275,7 @@ const NewTopic = props => {
         },
         upload: (file, cb) => props.uploadVideo(file, cb),
       };
-      dispatch(dispatchFetchUploadTopic(params));
+      dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
     } else {
       //other
       const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
