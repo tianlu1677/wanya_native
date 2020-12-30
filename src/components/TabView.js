@@ -11,8 +11,6 @@ const initialLayout = {
 };
 
 const TabViewIndex = props => {
-  const uploadStatus = useSelector(state => state.topic.uploadStatus);
-
   const [routes, setRoutes] = useState([]);
   const [scenes, setScenes] = useState([]);
   const [index, setIndex] = useState(0);

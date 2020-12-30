@@ -2,13 +2,19 @@ import React from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
 
 const Search = props => {
   const {height, cancelWidth, placeholderTextColor} = props;
   return (
     <View style={[styles.wrapper, props.style]}>
       <View style={[styles.inputContent, props.inputStyle, {height: height}]}>
-        <IconFont name="sousuo" size={12} color={placeholderTextColor} style={styles.icon} />
+        <IconFont
+          name="sousuo"
+          size={RFValue(13)}
+          color={placeholderTextColor}
+          style={styles.icon}
+        />
         <TextInput
           ref={props.getRef}
           style={[styles.textInput, {height: height}]}
@@ -52,9 +58,9 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingLeft: 14,
+    paddingTop: RFValue(6),
+    paddingBottom: RFValue(6),
+    paddingLeft: RFValue(14),
   },
   inputContent: {
     flex: 1,
@@ -65,21 +71,19 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     top: '50%',
-    marginTop: -6,
-    left: 14,
-    fontSize: 10,
+    marginTop: RFValue(-6),
+    left: RFValue(13),
+    fontSize: RFValue(10),
   },
   textInput: {
-    // padding: 0,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 36,
-    fontSize: 13,
+    paddingLeft: RFValue(35),
+    fontSize: RFValue(13),
     color: '#000',
+    fontWeight: '300',
   },
   cancel: {
     textAlign: 'center',
-    fontSize: 15,
+    fontSize: RFValue(15),
     color: '#bdbdbd',
   },
 });

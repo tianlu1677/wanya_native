@@ -71,8 +71,8 @@ const SearchIndex = ({navigation, route}) => {
     <View style={styles.wrapper}>
       <View style={{height: SAFE_TOP, backgroundColor: '#fff'}} />
       <Search
-        inputStyle={{borderRadius: 18, backgroundColor: '#F2F3F5'}}
-        height={RFValue(36)}
+        inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
+        height={RFValue(38)}
         cancelWidth={RFValue(50)}
         textColor="#000"
         placeholderTextColor="#000"

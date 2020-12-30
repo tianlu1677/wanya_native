@@ -1,6 +1,4 @@
 import {
-  CURRENT_ACCOUNT_REQUEST,
-  BASE_CURRENT_ACCOUNT_REQUEST,
   ACCOUNT_DETAIL_REQUEST,
   ACCOUNT_FOLLOW_REQUEST,
   ACCOUNT_UN_FOLLOW_REQUEST,
@@ -11,19 +9,16 @@ import {
   PREVIEW_IMAGES,
   BASE_CURRENT_ACCOUNT_SUCCESS,
   ARTICLE_DETAIL_SUCCESS,
-  TOPIC_DELETE_SUCCESS,
   ShareView,
   TOPIC_DETAIL_SUCCESS,
   UPDATE_NODES,
   UPDATE_FOLLOW_NODES,
   UPDATE_CATEGORY_LIST,
   CHANGE_UPLOAD_STATUS,
-  SAVE_CHANNELS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {getNodeIndex, getFollowNodeIndex} from '@/api/node_api';
-// import {uploadVideoFile} from '@/utils/upload_files';
 import {createTopic} from '@/api/topic_api';
 import Helper from '@/utils/helper';
 
@@ -35,7 +30,6 @@ export const dispatchCurrentAccount = () => async dispatch => {
 
 export const dispatchBaseCurrentAccount = () => async dispatch => {
   const res = await getCurrentAccountBaseInfo();
-  // console.log('dispatchBaseCurrentAccount', res);
   dispatch({
     type: BASE_CURRENT_ACCOUNT_SUCCESS,
     account: res.account,
@@ -85,7 +79,6 @@ export const changeProgress = value => {
 
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
-  // console.log('dispatchSetAuthToken', token);
   dispatchCurrentAccount();
   Helper.setData('auth_token', token);
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
@@ -146,7 +139,7 @@ export const changeUploadStatus = value => {
 };
 
 // 上传视频topic
-export const dispatchFetchUploadTopic = (data, cb) => async dispatch => {
+export const dispatchFetchUploadTopic = data => async dispatch => {
   const {video, content} = data.content;
   dispatch(changeUploadStatus({status: 'upload', progress: 0, ...data}));
   const videoRes = await data.upload(video, progress => {
@@ -160,8 +153,7 @@ export const dispatchFetchUploadTopic = (data, cb) => async dispatch => {
   await createTopic(params);
   // 设置progress 为发布成功 done
   dispatch(changeUploadStatus({status: 'done', progress: '发布成功', ...data}));
-  cb();
   setTimeout(() => {
     dispatch(changeUploadStatus(null));
-  }, 500);
+  }, 1000);
 };

@@ -13,19 +13,19 @@ import {
   Platform,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import ImagePicker, {launchImageLibrary} from 'react-native-image-picker';
-import PermissionModal from './PhotoPermission';
+import ImagePicker from 'react-native-image-picker';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
+import PermissionModal from './PhotoPermission';
 import * as action from '@/redux/constants';
+import {dispatchPreviewImage, dispatchFetchUploadTopic} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
-import {dispatchPreviewImage, dispatchFetchUploadTopic} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
 
 const windowWidth = Dimensions.get('window').width;
@@ -275,11 +275,7 @@ const NewTopic = props => {
         },
         upload: (file, cb) => props.uploadVideo(file, cb),
       };
-      dispatch(
-        dispatchFetchUploadTopic(params, () => {
-          Toast.showError('发布成功');
-        })
-      );
+      dispatch(dispatchFetchUploadTopic(params));
     } else {
       //other
       const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -404,7 +400,7 @@ const NewTopic = props => {
 
             {/* video */}
             {videoSource.map((v, index) => (
-              <Pressable style={styles.mediaWrap} key={index}>
+              <Pressable style={[styles.mediaWrap, {backgroundColor: '#000'}]} key={index}>
                 <Pressable
                   style={styles.media}
                   onPress={() => {
@@ -428,12 +424,6 @@ const NewTopic = props => {
                 <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
                   <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
                 </Pressable>
-                {/* ) : (
-                  <View style={[styles.media, styles.progress]}>
-                    <Text style={styles.proNum}>{uploadProgress}</Text>
-                    <Text style={styles.proPercent}>%</Text>
-                  </View>
-                )} */}
               </Pressable>
             ))}
             {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (
