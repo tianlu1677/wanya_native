@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
+import Video from 'react-native-video';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -32,13 +33,26 @@ const Recommend = props => {
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
 
-  const UploadTopic = () => {
-    const {status, progress, content} = uploadStatus;
+  const MemoVideo = React.memo(() => {
+    const {content} = uploadStatus;
     return (
-      <View style={styles.uploadWrap}>
+      <Video
+        style={styles.video}
+        source={{uri: content.video.uri}}
+        paused={true}
+        resizeMode="cover"
+      />
+    );
+  });
+
+  const CallBackVideo = useCallback(() => <MemoVideo />, []);
+
+  const UploadTopic = () => {
+    const {status, progress} = uploadStatus;
+    return (
+      <View style={[{zIndex: 3, alignItems: 'center'}]}>
         <View style={styles.videoWrap}>
-          <FastImg style={styles.video} source={{uri: content.video.coverUri}} />
-          <View style={[styles.video, styles.opacity]} />
+          {<View style={[styles.opacity]} />}
           {['upload', 'publish'].includes(status) && (
             <View style={styles.progress}>
               <Text style={styles.num}>{progress}</Text>
@@ -124,7 +138,12 @@ const Recommend = props => {
     <>
       <View style={{flex: 1, position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-        {uploadStatus ? <UploadTopic /> : null}
+        {uploadStatus ? (
+          <View style={[styles.uploadWrap]}>
+            <UploadTopic />
+            <CallBackVideo />
+          </View>
+        ) : null}
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
@@ -305,35 +324,42 @@ const styles = StyleSheet.create({
     left: 14,
     top: '50%',
     marginTop: -42,
-    zIndex: 1,
     alignItems: 'center',
+    zIndex: 3,
   },
   videoWrap: {
-    width: 45,
-    height: 45,
-    position: 'relative',
+    width: 46,
+    height: 46,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
   },
   video: {
-    width: 45,
-    height: 45,
+    width: 46,
+    height: 46,
     borderRadius: 23,
     borderColor: '#fff',
     borderWidth: 2,
     position: 'absolute',
-    left: 0,
-    top: 0,
+    top: '50%',
+    marginTop: -42 + 10,
+    left: 13,
+    zIndex: 2,
   },
   opacity: {
+    width: 46,
+    height: 46,
+    position: 'absolute',
+    left: 0,
+    top: 0,
     backgroundColor: '#000',
-    opacity: 0.5,
+    opacity: 0.4,
   },
   progress: {
     alignItems: 'flex-end',
     flexDirection: 'row',
     position: 'relative',
+    zIndex: 2,
   },
   num: {
     fontSize: 16,
