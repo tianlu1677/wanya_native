@@ -228,6 +228,7 @@ const DoubleList = props => {
         progressViewOffset: 0,
         ...props.settings,
       }}
+      {...props}
     />
   );
 };

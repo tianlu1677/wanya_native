@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
   progress: {
     alignItems: 'flex-end',
     flexDirection: 'row',
+    position: 'relative',
   },
   num: {
     fontSize: 16,
@@ -335,6 +336,9 @@ const styles = StyleSheet.create({
     fontSize: 7,
     color: '#fff',
     marginBottom: 3,
+    position: 'absolute',
+    bottom: 0,
+    right: -8,
   },
   uploadText: {
     color: '#fff',
