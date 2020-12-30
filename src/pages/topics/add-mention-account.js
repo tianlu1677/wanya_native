@@ -6,6 +6,7 @@ import {searchApi} from '@/api/search_api';
 import {MentionsAccountList} from '@/components/List/account-list';
 import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
+import {RFValue} from '@/utils/response-fontsize';
 
 const MentionAccounts = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -35,9 +36,9 @@ const MentionAccounts = ({navigation, route}) => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          inputStyle={{borderRadius: 5, backgroundColor: '#EBEBEB'}}
-          height={30}
-          cancelWidth={66}
+          inputStyle={{borderRadius: RFValue(5), backgroundColor: '#EBEBEB'}}
+          height={RFValue(30)}
+          cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多顽友"
           onChangeText={text => setSearchKey(text)}
