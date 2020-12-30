@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     paddingLeft: RFValue(35),
-    fontSize: RFValue(13),
+    fontSize: RFValue(14),
     color: '#000',
     fontWeight: '300',
   },
