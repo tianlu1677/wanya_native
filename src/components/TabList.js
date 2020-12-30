@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {ScrollView, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
+import {RFValue} from '@/utils/response-fontsize';
 const deviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
@@ -121,7 +122,8 @@ const tabBarStyle = StyleSheet.create({
     height: 50,
   },
   tabsmall: {
-    height: 33,
+    height: RFValue(33),
+    paddingLeft: RFValue(8),
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
@@ -157,6 +159,7 @@ const tabBarStyle = StyleSheet.create({
   },
   textActivemiddle: {
     fontSize: 16,
+    color: '#000',
   },
   textActivesmall: {
     fontSize: 16,

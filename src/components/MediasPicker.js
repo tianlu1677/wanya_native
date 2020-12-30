@@ -21,10 +21,8 @@ const MediasPicker = WrapperComponent => {
     };
 
     const uploadImage = async file => {
-      console.log('file', file);
       const token = await Helper.getData('auth_token');
       const path = file.uri.replace('file://', '');
-      console.log('filepath', path);
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
@@ -43,7 +41,6 @@ const MediasPicker = WrapperComponent => {
         },
         path: path,
       };
-      console.log('uploadOptions', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -78,8 +75,6 @@ const MediasPicker = WrapperComponent => {
         },
         path: path,
       };
-
-      console.log('xxx', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -98,13 +93,11 @@ const MediasPicker = WrapperComponent => {
 
     const videoPick = (option = {}, callback) => {
       const options = {...option};
-      console.log('updaload', options);
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
     const uploadVideo = async (file, cb) => {
       const res = await getUploadFileToken({ftype: 'mp4'});
-      // console.log('re', res)
       const path = file.uri.replace('file://', '');
       let uploadOptions = {
         url: res.qiniu_region,
@@ -126,9 +119,7 @@ const MediasPicker = WrapperComponent => {
         },
         useUtf8Charset: true,
       };
-      console.log('uploadVideo options', uploadOptions);
       return new Promise((resolve, reject) => {
-        // console.log('reject', reject)
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {

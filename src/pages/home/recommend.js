@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import Video from 'react-native-video';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -31,44 +30,25 @@ const Recommend = props => {
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
 
-  // 是否展示上传topic模块
-  const isShowUploadTopic = () => {
-    if (
-      uploadStatus &&
-      uploadStatus.status &&
-      ['upload', 'publish'].includes(uploadStatus.status)
-    ) {
-      return true;
-    }
-    return false;
-  };
-
   const UploadTopic = () => {
+    const {status, progress, content} = uploadStatus;
     return (
       <View style={styles.uploadWrap}>
         <View style={styles.videoWrap}>
-          <Video
-            style={styles.video}
-            // source={{uri: uploadStatus.content.video.uri}}
-            source={{
-              uri: 'http://xinxuefile.meirixinxue.com/assets/e97cc623812f64d7603a2ba45578f658.mp4',
-            }}
-            resizeMode={'cover'}
-            paused={true}
-          />
+          <FastImg style={styles.video} source={{uri: content.video.coverUri}} />
           <View style={[styles.video, styles.opacity]} />
-          {/* <View style={styles.progress}>
-            <Text style={styles.num}>{uploadStatus.progress}</Text>
-            <Text style={styles.num}>{100}</Text>
-            <Text style={styles.percent}>%</Text>
-          </View> */}
-          <IconFont name="chose-success" color={'white'} size={20} />
+          {['upload', 'publish'].includes(status) && (
+            <View style={styles.progress}>
+              <Text style={styles.num}>{progress}</Text>
+              <Text style={styles.percent}>%</Text>
+            </View>
+          )}
+          {status === 'done' && <IconFont name="chose-success" color={'white'} size={20} />}
         </View>
         <Text style={styles.uploadText}>
-          上传中
-          {/* {uploadStatus.status === 'upload' && '上传中'}
-          {uploadStatus.status === 'publish' && '发布中'}
-          {uploadStatus.status === 'done' && '发布成功'} */}
+          {status === 'upload' && '上传中'}
+          {status === 'publish' && '发布中'}
+          {status === 'done' && '已发布'}
         </Text>
       </View>
     );
@@ -137,14 +117,13 @@ const Recommend = props => {
     <>
       <View style={{flex: 1, position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-        {/* {isShowUploadTopic() ? <UploadTopic /> : null} */}
-        {<UploadTopic />}
+        {uploadStatus ? <UploadTopic /> : null}
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
           style={{backgroundColor: '#000'}}
-          inputStyle={{borderRadius: 18, backgroundColor: '#fff'}}
-          height={RFValue(36)}
+          inputStyle={{borderRadius: RFValue(18), backgroundColor: '#fff'}}
+          height={RFValue(38)}
           placeholderTextColor="#000"
           placeholder="搜索帖子、文章、圈子等内容"
           onFocus={() => {
@@ -316,7 +295,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     borderRadius: 5,
     position: 'absolute',
-    left: 16,
+    left: 14,
     top: '50%',
     marginTop: -42,
     zIndex: 1,
