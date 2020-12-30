@@ -5,6 +5,7 @@ import HashtagList from '@/components/List/hash-tag-list';
 import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
 import {searchApi} from '@/api/search_api';
+import {RFValue} from '@/utils/response-fontsize';
 
 const AddHashTag = ({navigation}) => {
   const [searchKey, setSearchKey] = useState(null);
@@ -31,9 +32,9 @@ const AddHashTag = ({navigation}) => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          inputStyle={{borderRadius: 5, backgroundColor: '#EBEBEB'}}
-          height={30}
-          cancelWidth={66}
+          inputStyle={{borderRadius: RFValue(5), backgroundColor: '#EBEBEB'}}
+          height={RFValue(30)}
+          cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多话题"
           onChangeText={text => setSearchKey(text)}

@@ -7,6 +7,7 @@ import * as action from '@/redux/constants';
 import SpaceList from '@/components/List/space-list';
 import {Search} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
 
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
 
@@ -47,9 +48,9 @@ const AddSpace = props => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          inputStyle={{borderRadius: 5, backgroundColor: '#EBEBEB'}}
-          height={30}
-          cancelWidth={66}
+          inputStyle={{borderRadius: RFValue(5), backgroundColor: '#EBEBEB'}}
+          height={RFValue(30)}
+          cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多场地"
           onChangeText={text => setSearchKey(text)}

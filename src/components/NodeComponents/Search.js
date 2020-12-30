@@ -11,7 +11,7 @@ const Search = props => {
       <View style={[styles.inputContent, props.inputStyle, {height: height}]}>
         <IconFont
           name="sousuo"
-          size={RFValue(13)}
+          size={RFValue(14)}
           color={placeholderTextColor}
           style={styles.icon}
         />
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     top: '50%',
-    marginTop: RFValue(-6),
+    marginTop: RFValue(-7),
     left: RFValue(13),
     fontSize: RFValue(10),
   },
