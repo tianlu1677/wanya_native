@@ -52,7 +52,7 @@ const Recommend = props => {
     return (
       <View style={[{zIndex: 3, alignItems: 'center'}]}>
         <View style={styles.videoWrap}>
-          {<View style={[styles.opacity]} />}
+          <View style={[styles.opacity]} />
           {['upload', 'publish'].includes(status) && (
             <View style={styles.progress}>
               <Text style={styles.num}>{progress}</Text>
@@ -144,6 +144,7 @@ const Recommend = props => {
             <CallBackVideo />
           </View>
         ) : null}
+
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
@@ -316,7 +317,7 @@ const styles = StyleSheet.create({
   },
   uploadWrap: {
     width: 72,
-    height: 85,
+    height: 84,
     backgroundColor: '#000',
     opacity: 0.8,
     borderRadius: 5,
@@ -345,6 +346,7 @@ const styles = StyleSheet.create({
     marginTop: -42 + 10,
     left: 13,
     zIndex: 2,
+    overflow: 'hidden',
   },
   opacity: {
     width: 46,
@@ -353,6 +355,9 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     backgroundColor: '#000',
+    borderRadius: 23,
+    borderColor: '#fff',
+    borderWidth: 2,
     opacity: 0.4,
   },
   progress: {
