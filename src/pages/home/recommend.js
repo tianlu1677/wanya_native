@@ -221,7 +221,7 @@ const NodeScrollView = props => {
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
       <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
         <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
-        <Text style={styles.nodeName} numberOfLines={1}>
+        <Text style={styles.nodeName} minimumFontScale={1} numberOfLines={1}>
           全部圈子
         </Text>
       </Pressable>
