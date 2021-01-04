@@ -73,7 +73,7 @@ const TopicLinkDetail = ({navigation, route}) => {
       {/*https://github.com/react-native-webview/react-native-webview/issues/22*/}
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <WebView
-          originWhitelist={['*']}
+          originWhitelist={['http://', 'https://']}
           source={{uri: detail.topic_link.raw_link}}
           startInLoadingState={true}
           scalesPageToFit={true}
