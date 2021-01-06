@@ -11,11 +11,12 @@ const NodeIndex = ({navigation}) => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
 
   const onCreateNode = () => {
-    PushUtil.onEventObject('click_create_node', {
-      account_id: currentAccount.id,
-      account_nickname: currentAccount.nickname,
-    });
-    Toast.showError('敬请期待', {duration: 1000});
+    navigation.push('CreateNodeIntro');
+    // PushUtil.onEventObject('click_create_node', {
+    //   account_id: currentAccount.id,
+    //   account_nickname: currentAccount.nickname,
+    // });
+    // Toast.showError('敬请期待', {duration: 1000});
   };
 
   useLayoutEffect(() => {

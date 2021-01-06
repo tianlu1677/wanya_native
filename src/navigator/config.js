@@ -19,6 +19,10 @@ import ArticleDetail from '@/pages/articles/article-detail';
 // 圈子
 import NodeIndex from '@/pages/nodes/node-index';
 import NodeDetail from '@/pages/nodes/node-detail';
+import CreateNodeIntro from '@/pages/nodes/create-node-intro';
+import CreateNodeInfo from '@/pages/nodes/create-node-info';
+import CreateNodeType from '@/pages/nodes/create-node-type';
+// import CreateNodeResult from '@/pages/nodes/create-node-result';
 
 // 场地
 import SpaceDetail from '@/pages/space/space-detail';
@@ -196,6 +200,29 @@ const nodeRouter = [
       headerShown: false,
     },
   },
+  {
+    name: 'CreateNodeIntro',
+    component: CreateNodeIntro,
+    safeArea: false,
+    options: {title: '创建圈子'},
+  },
+  {
+    name: 'CreateNodeInfo',
+    component: CreateNodeInfo,
+    safeArea: false,
+    options: {title: '填写圈子资料'},
+  },
+  {
+    name: 'CreateNodeType',
+    component: CreateNodeType,
+    safeArea: false,
+    options: {headerShown: false},
+  },
+  // {
+  //   name: 'CreateNodeResult',
+  //   component: CreateNodeResult,
+  //   safeArea: false,
+  // },
 ];
 
 const accountRouter = [

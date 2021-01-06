@@ -186,3 +186,6 @@ export const UPDATE_NODES = 'UPDATE_NODES'; //更新全部圈子数据
 export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //更新关注圈子数据
 export const UPDATE_CATEGORY_LIST = 'UPDATE_CATEGORY_LIST';
 export const SAVE_CHANNELS = 'SAVE_CHANNELS'; //首页channels
+
+// node
+export const CREATE_NODE = 'CREATE_NODE'; //创建node对象

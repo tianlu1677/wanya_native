@@ -49,6 +49,16 @@ export const getRecentAccounts = async params => {
   return res;
 };
 
+// 创建圈子
+export const getCheckNodes = async params => {
+  const res = await request({
+    url: '/api/v1/check_nodes',
+    method: 'POST',
+    params,
+  });
+  return res;
+};
+
 // export async function getFollowNodeIndex(params = {account_id: ''}) {
 //   const res = await request({
 //     url: '/api/v1/nodes/followed',

@@ -6,6 +6,8 @@ import {homeReducer} from './home_reducer';
 import {loginReducer} from './login_reducer';
 import articleReducer from './article_reducer';
 import topicReducer from './topic_reducer';
+import nodeReducer from './node_reducer';
+
 // import counterReducer from './counterReducer';
 
 // Redux: Root Reducer
@@ -15,6 +17,7 @@ const rootReducer = combineReducers({
   login: loginReducer,
   article: articleReducer,
   topic: topicReducer,
+  node: nodeReducer,
 });
 // Exports
 export default rootReducer;
