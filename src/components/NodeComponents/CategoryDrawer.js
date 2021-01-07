@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 
 const CategoryDrawer = props => {
-  const {current, onChooseValue} = props;
+  const {currentId, onChooseValue} = props;
   const categories = useSelector(state => state.home.categoryList);
 
   return (
@@ -14,9 +14,7 @@ const CategoryDrawer = props => {
         {categories.map(item => (
           <Pressable key={item.id} style={dstyles.item} onPress={() => onChooseValue(item)}>
             <Text style={dstyles.itemtext}>{item.name}</Text>
-            {current && current.id === item.id && (
-              <IconFont name={'yixuan'} size={16} color={'#000'} />
-            )}
+            {currentId === item.id && <IconFont name={'yixuan'} size={16} color={'#000'} />}
           </Pressable>
         ))}
       </ScrollView>

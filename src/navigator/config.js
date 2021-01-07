@@ -22,7 +22,7 @@ import NodeDetail from '@/pages/nodes/node-detail';
 import CreateNodeIntro from '@/pages/nodes/create-node-intro';
 import CreateNodeInfo from '@/pages/nodes/create-node-info';
 import CreateNodeType from '@/pages/nodes/create-node-type';
-// import CreateNodeResult from '@/pages/nodes/create-node-result';
+import CreateNodeResult from '@/pages/nodes/create-node-result';
 
 // 场地
 import SpaceDetail from '@/pages/space/space-detail';
@@ -216,13 +216,13 @@ const nodeRouter = [
     name: 'CreateNodeType',
     component: CreateNodeType,
     safeArea: false,
-    options: {headerShown: false},
+    options: {title: '选择圈子分类或位置'},
   },
-  // {
-  //   name: 'CreateNodeResult',
-  //   component: CreateNodeResult,
-  //   safeArea: false,
-  // },
+  {
+    name: 'CreateNodeResult',
+    component: CreateNodeResult,
+    safeArea: false,
+  },
 ];
 
 const accountRouter = [

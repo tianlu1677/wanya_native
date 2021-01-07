@@ -1,7 +1,7 @@
 import * as constants from '../constants';
 
 const defaultState = {
-  createNode: null,
+  createNode: {},
 };
 
 function nodeReducer(state = defaultState, action) {

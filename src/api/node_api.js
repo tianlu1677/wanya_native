@@ -54,7 +54,26 @@ export const getCheckNodes = async params => {
   const res = await request({
     url: '/api/v1/check_nodes',
     method: 'POST',
-    params,
+    data: params,
+  });
+  return res;
+};
+
+//修改审核圈子
+export const editCheckNodes = async (params, id) => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}`,
+    method: 'PUT',
+    data: params,
+  });
+  return res;
+};
+
+//审核圈子详情
+export const getCheckNodesDetail = async id => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}`,
+    method: 'GET',
   });
   return res;
 };

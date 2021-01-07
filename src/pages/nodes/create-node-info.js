@@ -12,10 +12,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
-import TopHeaderView from '@/components/TopHeadView';
 import FastImg from '@/components/FastImg';
-import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
-import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import MediasPicker from '@/components/MediasPicker';
 import {Pressable} from 'react-native';
@@ -24,9 +21,9 @@ const {width} = Dimensions.get('window');
 
 const CreateNodeInfo = props => {
   const dispatch = useDispatch();
-
-  const [imageSource, setImageSource] = useState([]);
-  const [values, setValues] = useState({cover: '', name: '', desc: '', nickname: ''});
+  const [nodeId] = useState(props.route.params ? props.route.params.nodeId : null);
+  const {createNode} = useSelector(state => state.node);
+  const [values, setValues] = useState({});
 
   const chooseImage = () => {
     props.removeAllPhoto();
@@ -35,7 +32,7 @@ const CreateNodeInfo = props => {
       if (err) {
         return;
       }
-      setImageSource(res);
+      setValues({...values, cover: res[0]});
     });
   };
 
@@ -43,20 +40,22 @@ const CreateNodeInfo = props => {
     setValues({...values, [key]: value});
   };
 
-  const isClick = () => (values.cover && values.name && values.desc ? true : false);
+  const isClick = () => (values && values.cover && values.name && values.desc ? true : false);
 
   const goStepClick = () => {
     if (isClick()) {
-      console.log(JSON.stringify(values));
-      console.log(values);
       props.navigation.push('CreateNodeType');
       dispatch({type: action.CREATE_NODE, value: values});
     }
   };
 
   useEffect(() => {
-    setValues({...values, cover: imageSource.length > 0 ? imageSource[0].uri : ''});
-  }, [imageSource]);
+    if (nodeId) {
+      setValues({...createNode});
+    } else {
+      dispatch({type: action.CREATE_NODE, value: {}});
+    }
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -68,8 +67,8 @@ const CreateNodeInfo = props => {
             <FastImg
               style={styles.addphoto}
               source={
-                imageSource.length > 0
-                  ? {uri: imageSource[0].uri}
+                values.cover
+                  ? {uri: values.cover.uri || values.cover.cover_url}
                   : require('@/assets/images/add-photo.png')
               }
               resizeMode={'cover'}
@@ -77,6 +76,7 @@ const CreateNodeInfo = props => {
           </Pressable>
           <TextInput
             style={styles.textInput}
+            value={values.name || ''}
             selectionColor={'#ff193a'}
             placeholderTextColor={'#bdbdbd'}
             placeholder="请输入圈子名称（20字以内）"
@@ -85,6 +85,7 @@ const CreateNodeInfo = props => {
           />
           <TextInput
             style={[styles.textInput, styles.introInput]}
+            value={values.desc || ''}
             selectionColor={'#ff193a'}
             placeholderTextColor={'#bdbdbd'}
             placeholder="请输入圈子简介（50字以内）"
@@ -95,6 +96,7 @@ const CreateNodeInfo = props => {
           <View>
             <TextInput
               style={[styles.textInput, {marginBottom: 0}]}
+              value={values.nickname || ''}
               selectionColor={'#ff193a'}
               placeholderTextColor={'#bdbdbd'}
               placeholder="请输入圈子成员昵称，默认「顽友」"
