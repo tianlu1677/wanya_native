@@ -2,7 +2,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {dispathUpdateNodes} from '@/redux/actions';
-import {getCategoryList} from '@/api/category_api';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
 
@@ -69,7 +68,7 @@ const NodeIndex = ({type}) => {
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'row',

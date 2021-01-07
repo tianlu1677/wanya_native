@@ -25,7 +25,7 @@ const NodeItem = props => {
       await followItem({followable_type: 'Node', followable_id: node.id});
     }
 
-    if (type === 'node-index') {
+    if (type === 'node-index' || 'node-index-mine') {
       if (followed) {
         Toast.show('已取消加入', {duration: 500});
       } else {
@@ -48,6 +48,10 @@ const NodeItem = props => {
     }
   };
 
+  const goNodeResult = () => {
+    navigation.push('CreateNodeResult', {nodeId: node.id});
+  };
+
   useEffect(() => {
     setFollowed(props.node.followed);
   }, [props]);
@@ -63,6 +67,25 @@ const NodeItem = props => {
               {node.topics_count}篇帖子 · {node.accounts_count}位{node.nickname || '圈友'}
             </Text>
           </View>
+
+          {/* node-index-mine */}
+          {props.type === 'node-index-mine' && (
+            <View style={{marginRight: 20}}>
+              {node.audit_status === 'new' && (
+                <JoinButton join={true} text="未审核" onPress={goNodeResult} />
+              )}
+              {node.audit_status === 'auditing' && (
+                <JoinButton join={true} text="审核中" onPress={goNodeResult} />
+              )}
+              {node.audit_status === 'failed' && (
+                <JoinButton join={true} text="未通过" onPress={goNodeResult} />
+              )}
+              {node.audit_status === 'success' && (
+                <JoinButton join={true} text="管理" onPress={goNodeResult} />
+              )}
+              {node.followed && <JoinButton join={true} text="已加入" onPress={onFollowNode} />}
+            </View>
+          )}
 
           {/* node-index */}
           {props.type === 'node-index' && (

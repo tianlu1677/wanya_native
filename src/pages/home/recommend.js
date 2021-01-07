@@ -211,6 +211,8 @@ const NodeScrollView = props => {
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const nodes = useSelector(state => state.home.followNodes);
 
+  console.log(nodes);
+
   useFocusEffect(
     useCallback(() => {
       dispatch(dispathUpdateNodes(currentAccount.id));
@@ -232,7 +234,10 @@ const NodeScrollView = props => {
               key={node.id}
               style={styles.nodeWrap}
               onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}>
-              <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
+              <View style={{position: 'relative'}}>
+                <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
+                {node.role === 'super_admin' && <Text style={styles.nodeSelf}>圈主</Text>}
+              </View>
               <Text
                 style={styles.nodeName}
                 adjustsFontSizeToFit={false}
@@ -289,6 +294,22 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     textAlign: 'center',
     fontWeight: '300',
+  },
+  nodeSelf: {
+    width: 34,
+    height: 18,
+    lineHeight: 18,
+    textAlign: 'center',
+    borderRadius: 9,
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    opacity: 0.7,
+    color: '#FFFF00',
+    fontSize: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: '50%',
+    marginLeft: -17,
   },
   emptyWrap: {
     flex: 1,

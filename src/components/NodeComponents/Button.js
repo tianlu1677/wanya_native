@@ -1,21 +1,22 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
+import {RFValue} from '@/utils/response-fontsize';
 
 const JoinStyles = StyleSheet.create({
   btn: {
-    width: 54,
-    height: 27,
-    lineHeight: 27,
+    width: RFValue(54),
+    height: RFValue(27),
+    lineHeight: RFValue(27),
     textAlign: 'center',
     fontSize: 13,
     borderRadius: 1,
     fontWeight: '500',
     overflow: 'hidden',
-    zIndex: 10
+    zIndex: 10,
   },
   joined: {
     color: '#bdbdbd',
-    backgroundColor: '#fff',
+    backgroundColor: '#FAFAFA',
   },
   join: {
     color: '#fff',

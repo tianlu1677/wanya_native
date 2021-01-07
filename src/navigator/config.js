@@ -190,6 +190,7 @@ const nodeRouter = [
     component: NodeIndex,
     barColor: 'dark',
     safeArea: false,
+    options: {title: '全部圈子'},
   },
   {
     name: 'NodeDetail',
