@@ -33,7 +33,7 @@ platform :android do
   desc "Deploy a new version to the production fir"
   lane :deploy do
     token = "c683bb22bd659a43cd3254fa6400d666"
-    gradle(task: 'assemble', build_type: 'Release')
+    #gradle(task: 'assemble', build_type: 'Release')
     apk_path = "#{Dir.pwd.gsub('fastlane', '')}app/build/outputs/apk/release/app-release.apk"
     puts "url => #{apk_path}"
     fir_cli api_token: token, specify_file_path: apk_path
