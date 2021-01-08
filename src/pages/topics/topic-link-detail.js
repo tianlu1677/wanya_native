@@ -71,8 +71,7 @@ const TopicLinkDetail = ({navigation, route}) => {
         }}
       />
       {/*https://github.com/react-native-webview/react-native-webview/issues/22*/}
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <WebView
+       <WebView
           originWhitelist={['http://', 'https://']}
           source={{uri: detail.topic_link.raw_link}}
           startInLoadingState={true}
@@ -81,7 +80,6 @@ const TopicLinkDetail = ({navigation, route}) => {
           style={{ height: Dimensions.get('window').height-70, width: Dimensions.get('window').width, flex: 1}}
           autoManageStatusBarEnabled={false}
         />
-      </ScrollView>
 
       <ActionComment
         visible={visible}

@@ -9,7 +9,7 @@ import {
   Pressable,
   Modal,
 } from 'react-native';
-// import GeolocationIOS from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import {
   check,
   request,
@@ -19,7 +19,7 @@ import {
   openSettings,
 } from 'react-native-permissions';
 
-import {init, Geolocation, setLocatingWithReGeocode, setNeedAddress} from 'react-native-amap-geolocation';
+import {init, Geolocation as GeolocationAndroid, setLocatingWithReGeocode, setNeedAddress} from 'react-native-amap-geolocation';
 // android
 // setNeedAddress(true);
 
@@ -80,7 +80,7 @@ const GetLocation = ({children, handleClick, style}) => {
       ]);
       // console.log('re', re)
       // addLocationListener(location => console.log(location));
-      Geolocation.getCurrentPosition(
+      GeolocationAndroid.getCurrentPosition(
         position => {
           // alert(JSON.stringify(position))
           console.log('position => ', position);
