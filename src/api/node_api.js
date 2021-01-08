@@ -7,7 +7,7 @@ export const getNodeIndex = async (params = {}) => {
     method: 'GET',
     params,
   });
-  return res.data.nodes;
+  return res;
 };
 
 // 圈子详情

@@ -1,36 +1,34 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import {Avator, PlayScore} from '@/components/NodeComponents';
 import PropTypes from 'prop-types';
+import {RFValue} from '@/utils/response-fontsize';
 
 const JoinAccountsList = ({navigation, route}) => {
+  const {title, account} = route.params;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const goAccountDetail = item => {
-    navigation.push('AccountDetail', {accountId: item.id});
-  };
-
-  const renderItem = ({item, index}) => {
+  const renderItem = ({item}) => {
     return (
-      <TouchableWithoutFeedback onPress={() => goAccountDetail(item)}>
+      <Pressable onPress={() => goAccountDetail(item)}>
         <View style={styles.follow}>
-          <Text style={styles.num}>{index + 1}</Text>
-          <Avator account={item} size={40} />
+          <Avator account={item} size={RFValue(40)} />
           <Text style={styles.nickname}>{item.nickname}</Text>
-          <PlayScore
-            score={item.play_score}
-            textStyle={{color: '#000', minWidth: 30, textAlign: 'center'}}
-          />
+          <PlayScore score={item.play_score} textStyle={styles.textScore} />
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     );
   };
 
   const renderSeparator = () => {
     return <View style={styles.separator} />;
+  };
+
+  const goAccountDetail = item => {
+    navigation.push('AccountDetail', {accountId: item.id});
   };
 
   const loadData = async (page = 1) => {
@@ -46,9 +44,8 @@ const JoinAccountsList = ({navigation, route}) => {
 
   useEffect(() => {
     loadData();
-    navigation.setOptions({
-      title: route.params.title,
-    });
+    navigation.setOptions({title});
+    console.log('route', route.params);
   }, []);
 
   return (
@@ -60,41 +57,60 @@ const JoinAccountsList = ({navigation, route}) => {
       renderItem={renderItem}
       renderSeparator={renderSeparator}
       enableRefresh={false}
-      {...(route.params.listOption || {})}
-      style={{backgroundColor: '#fff'}}
+      ListHeaderComponent={
+        account && (
+          <>
+            <Text style={styles.title}>{account.title}</Text>
+            <Pressable onPress={() => goAccountDetail(account)}>
+              <View style={styles.follow}>
+                <Avator account={account.account} size={RFValue(40)} />
+                <Text style={styles.nickname}>{account.account.nickname}</Text>
+                <PlayScore score={account.account.play_score} textStyle={styles.textScore} />
+              </View>
+            </Pressable>
+            <Text style={styles.title}>已加入顽友</Text>
+          </>
+        )
+      }
     />
   );
 };
 
 export const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  title: {
+    height: RFValue(32),
+    lineHeight: RFValue(32),
+    backgroundColor: '#fafafa',
+    paddingLeft: RFValue(16),
+    color: '#bdbdbd',
+    fontSize: RFValue(12),
+  },
   follow: {
     flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight: 27,
+    paddingLeft: RFValue(16),
+    paddingRight: RFValue(27),
+    paddingVertical: RFValue(14),
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingTop: 14,
-    paddingBottom: 14,
-  },
-  num: {
-    marginRight: 18,
-    fontSize: 14,
   },
   nickname: {
     fontSize: 14,
     marginLeft: 10,
     marginRight: 'auto',
   },
-  btn: {
-    marginLeft: 'auto',
-    paddingLeft: 3,
-    paddingRight: 3,
-    fontWeight: '500',
+  textScore: {
+    color: '#000',
+    minWidth: 30,
+    textAlign: 'center',
   },
   separator: {
-    backgroundColor: '#FAFAFA',
-    height: 2,
-    marginLeft: 16,
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: RFValue(16),
   },
 });
 

@@ -1,20 +1,20 @@
 import React, {useLayoutEffect, useEffect, useState, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {dispathUpdateNodes} from '@/redux/actions';
+import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
 import {styles} from '@/components/NodeIndex';
-import {getCheckNodes, getFollowNodeIndex} from '@/api/node_api';
 
 const NodeIndex = ({navigation}) => {
   const scrollRef = useRef(null);
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const {nodes, followNodes, checkNodes} = useSelector(state => state.node);
+  const {categoryList} = useSelector(state => state.home);
+  const categories = [{id: 0, name: '我的'}, ...categoryList];
   const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(0);
-  const {nodes, categoryList} = useSelector(state => state.home);
-  const categories = [{id: 0, name: '我的'}, ...categoryList];
   const [allNodes, setAllNodes] = useState([]);
 
   const setLayout = (layout, index) => {
@@ -27,19 +27,6 @@ const NodeIndex = ({navigation}) => {
     setActive(index);
     scrollRef.current.scrollTo({y: layoutList[index].y, animated: true});
   };
-
-  const loadData = async () => {
-    const res = await getCheckNodes();
-    const follow = await getFollowNodeIndex({account_id: currentAccount.id, type: 'not_mine'});
-    const mineNodes = [...res.data.check_nodes, ...follow.data.nodes];
-    const allMineNodes = mineNodes.map(item => {
-      const node = {...item, category_id: 0};
-      return node;
-    });
-    setAllNodes([...allMineNodes, ...nodes]);
-  };
-
-  console.log('allNodes', allNodes);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -55,12 +42,24 @@ const NodeIndex = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    loadData();
+    dispatch(nodeAction.dispatchUpdateNodes());
+    dispatch(nodeAction.dispatchUpdateCheckNodes());
+    dispatch(nodeAction.dispatchUpdateFollowNodes(currentAccount.id));
     return () => {
-      dispatch(dispathUpdateNodes(currentAccount.id));
+      dispatch(nodeAction.dispatchUpdateHomeNodes(currentAccount.id));
     };
   }, []);
 
+  useEffect(() => {
+    const mineNodes = [...checkNodes, ...followNodes];
+    const allMineNodes = mineNodes.map(item => {
+      const node = {...item, category_id: 0};
+      return node;
+    });
+    setAllNodes([...allMineNodes, ...nodes]);
+  }, [nodes, followNodes, checkNodes]);
+
+  // console.log(allNodes);
   return allNodes.length > 0 ? (
     <View style={styles.wrapper}>
       <View style={styles.cateWrap}>
@@ -89,7 +88,7 @@ const NodeIndex = ({navigation}) => {
                     <NodeItem
                       node={{...node}}
                       key={node.id}
-                      type={categorie.id === 0 ? 'node-index-mine' : 'node-index'}
+                      type={node.audit_status ? 'node-index-mine' : 'node-index'}
                     />
                     <Text style={styles.separator} />
                   </View>

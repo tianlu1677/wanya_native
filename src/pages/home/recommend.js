@@ -1,29 +1,33 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
+import IconFont from '@/iconfont';
+import {SAFE_TOP} from '@/utils/navbar';
+import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
+import {Search} from '@/components/NodeComponents';
+import MediasPicker from '@/components/MediasPicker';
+import {BadgeMessage} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-import IconFont from '@/iconfont';
-import {useDispatch, useSelector} from 'react-redux';
+import {RFValue} from '@/utils/response-fontsize';
 import {
   getRecommendPosts,
   getFollowedPosts,
   getFollowedNodePosts,
   getChannelPosts,
 } from '@/api/home_api';
-import {SAFE_TOP} from '@/utils/navbar';
-import {dispatchFetchUploadTopic, changeUploadStatus} from '@/redux/actions';
-import {BadgeMessage} from '@/components/NodeComponents';
-import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
-import {dispatchCurrentAccount, dispatchFetchCategoryList} from '@/redux/actions';
-import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
-import FastImg from '@/components/FastImg';
-import {AllNodeImg} from '@/utils/default-image';
-import {Search} from '@/components/NodeComponents';
-import {RFValue} from '@/utils/response-fontsize';
-import MediasPicker from '@/components/MediasPicker';
+import {
+  dispatchFetchCategoryList,
+  dispatchBaseCurrentAccount,
+  dispatchCurrentAccount,
+  dispatchFetchUploadTopic,
+  changeUploadStatus,
+} from '@/redux/actions';
+
+import NodeScrollView from './node-scroll-view';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -203,53 +207,6 @@ const Recommend = props => {
         )}
       </View>
     </>
-  );
-};
-
-const NodeScrollView = props => {
-  const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentBaseInfo);
-  const nodes = useSelector(state => state.home.followNodes);
-
-  console.log(nodes);
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(dispathUpdateNodes(currentAccount.id));
-    }, [])
-  );
-
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
-      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
-        <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
-        <Text style={styles.nodeName} minimumFontScale={1} numberOfLines={1}>
-          全部圈子
-        </Text>
-      </Pressable>
-      {nodes.length > 0 &&
-        nodes.map(node => {
-          return (
-            <Pressable
-              key={node.id}
-              style={styles.nodeWrap}
-              onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}>
-              <View style={{position: 'relative'}}>
-                <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
-                {node.role === 'super_admin' && <Text style={styles.nodeSelf}>圈主</Text>}
-              </View>
-              <Text
-                style={styles.nodeName}
-                adjustsFontSizeToFit={false}
-                minimumFontScale={1}
-                numberOfLines={1}
-                ellipsizeMode={'tail'}>
-                {node.name}
-              </Text>
-            </Pressable>
-          );
-        })}
-    </ScrollView>
   );
 };
 

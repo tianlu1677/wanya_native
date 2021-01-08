@@ -1,16 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {dispathUpdateNodes} from '@/redux/actions';
+import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
 
 const NodeIndex = ({type}) => {
   const dispatch = useDispatch();
   const scrollRef = useRef(null);
-  const nodes = useSelector(state => state.home.nodes);
-  const categories = useSelector(state => state.home.categoryList);
-
+  const {categoryList} = useSelector(state => state.home);
+  const {nodes} = useSelector(state => state.node);
   const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(0);
 
@@ -26,13 +25,13 @@ const NodeIndex = ({type}) => {
   };
 
   useEffect(() => {
-    dispatch(dispathUpdateNodes());
+    dispatch(nodeAction.dispatchUpdateNodes());
   }, []);
 
-  return categories && nodes ? (
+  return nodes.length > 0 ? (
     <View style={styles.wrapper}>
       <View style={styles.cateWrap}>
-        {categories.map((categorie, index) => (
+        {categoryList.map((categorie, index) => (
           <Pressable
             key={index}
             onPress={() => onChange(index)}
@@ -43,7 +42,7 @@ const NodeIndex = ({type}) => {
         ))}
       </View>
       <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
-        {categories.map((categorie, index) => (
+        {categoryList.map((categorie, index) => (
           <View
             style={styles.nodeContent}
             key={categorie.id}

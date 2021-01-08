@@ -15,6 +15,7 @@ const CreateNodeResult = props => {
 
   const loadData = async () => {
     const res = await getCheckNodesDetail(nodeId);
+    console.log('nodeId', nodeId, res);
     setDetail(res.data.check_node);
   };
 
@@ -36,7 +37,7 @@ const CreateNodeResult = props => {
     props.navigation.setOptions({headerTitle: detail ? detail.name : ''});
   }, [props.navigation, detail]);
 
-  console.log('detail', detail);
+  console.log('detail result', detail);
 
   return detail ? (
     <View style={styles.wrapper}>

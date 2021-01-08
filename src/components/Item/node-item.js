@@ -9,14 +9,13 @@ import {followItem, unfollowItem} from '@/api/mine_api';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 
-// type [node-index, add-node, list]
+// type （node-index || node-index-mine） add-node node-list
 const NodeItem = props => {
+  const {node, type} = props;
+  const home = useSelector(state => state.home);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {node, type} = props;
-
-  const home = useSelector(state => state.home);
-  const [followed, setFollowed] = useState(props.node.followed);
+  const [followed, setFollowed] = useState(node.followed);
 
   const onFollowNode = async () => {
     if (node.followed) {
@@ -25,12 +24,10 @@ const NodeItem = props => {
       await followItem({followable_type: 'Node', followable_id: node.id});
     }
 
-    if (type === 'node-index' || 'node-index-mine') {
-      if (followed) {
-        Toast.show('已取消加入', {duration: 500});
-      } else {
-        Toast.show('已成功加入', {duration: 500});
-      }
+    if (followed) {
+      Toast.show('已取消加入', {duration: 500});
+    } else {
+      Toast.show('已成功加入', {duration: 500});
     }
 
     setFollowed(!followed);
@@ -43,8 +40,16 @@ const NodeItem = props => {
       navigation.goBack();
     }
 
-    if (props.type === 'list' || props.type === 'node-index') {
+    if (type === 'node-list' || type === 'node-index') {
       navigation.push('NodeDetail', {nodeId: node.id});
+    }
+
+    if (type === 'node-index-mine') {
+      if (node.audit_status === 'success') {
+        navigation.push('NodeDetail', {nodeId: node.node_id});
+      } else {
+        goNodeResult();
+      }
     }
   };
 
@@ -68,36 +73,6 @@ const NodeItem = props => {
             </Text>
           </View>
 
-          {/* node-index-mine */}
-          {props.type === 'node-index-mine' && (
-            <View style={{marginRight: 20}}>
-              {node.audit_status === 'new' && (
-                <JoinButton join={true} text="未审核" onPress={goNodeResult} />
-              )}
-              {node.audit_status === 'auditing' && (
-                <JoinButton join={true} text="审核中" onPress={goNodeResult} />
-              )}
-              {node.audit_status === 'failed' && (
-                <JoinButton join={true} text="未通过" onPress={goNodeResult} />
-              )}
-              {node.audit_status === 'success' && (
-                <JoinButton join={true} text="管理" onPress={goNodeResult} />
-              )}
-              {node.followed && <JoinButton join={true} text="已加入" onPress={onFollowNode} />}
-            </View>
-          )}
-
-          {/* node-index */}
-          {props.type === 'node-index' && (
-            <View style={{marginRight: 20}}>
-              <JoinButton
-                join={followed}
-                text={followed ? '已加入' : '加入'}
-                onPress={onFollowNode}
-              />
-            </View>
-          )}
-
           {/* add-node */}
           {props.type === 'add-node' &&
             (home.savetopic.node && home.savetopic.node.id === node.id ? (
@@ -106,13 +81,27 @@ const NodeItem = props => {
               <IconFont name="tianjia1" size={15} color={'#000'} style={styles.icon} />
             ))}
 
-          {/* list */}
-          {props.type === 'list' && (
-            <JoinButton
-              join={followed}
-              text={followed ? '已加入' : '加入'}
-              onPress={onFollowNode}
-            />
+          {/* node-index-mine */}
+          {props.type === 'node-index-mine' && (
+            <View style={{marginRight: 20}}>
+              <Pressable onPress={goNodeResult}>
+                {node.audit_status === 'new' && <JoinButton join={true} text="未审核" />}
+                {node.audit_status === 'auditing' && <JoinButton join={true} text="审核中" />}
+                {node.audit_status === 'failed' && <JoinButton join={true} text="未通过" />}
+                {node.audit_status === 'success' && <JoinButton join={true} text="管理" />}
+              </Pressable>
+            </View>
+          )}
+
+          {/* node-index node-list */}
+          {(props.type === 'node-index' || props.type === 'node-list') && (
+            <View style={{marginRight: props.type === 'node-index' ? 20 : 0}}>
+              <JoinButton
+                join={followed}
+                text={followed ? '已加入' : '加入'}
+                onPress={onFollowNode}
+              />
+            </View>
           )}
         </View>
       </View>

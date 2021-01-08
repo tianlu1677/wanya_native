@@ -10,7 +10,7 @@ const NodeList = props => {
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return <NodeItem node={item} key={item.id} type="list" />;
+    return <NodeItem node={item} key={item.id} type="node-list" />;
   };
 
   const renderSeparator = () => {
