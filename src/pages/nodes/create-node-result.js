@@ -9,13 +9,14 @@ import {RFValue} from '@/utils/response-fontsize';
 import {getCheckNodesDetail} from '@/api/node_api';
 
 const CreateNodeResult = props => {
+  const navigation = props.navigation
   const dispatch = useDispatch();
   const [nodeId] = useState(props.route.params.nodeId);
   const [detail, setDetail] = useState(null);
 
   const loadData = async () => {
     const res = await getCheckNodesDetail(nodeId);
-    console.log('nodeId', nodeId, res);
+    console.log('nodeId', nodeId, res.data);
     setDetail(res.data.check_node);
   };
 
@@ -24,18 +25,20 @@ const CreateNodeResult = props => {
       type: action.CREATE_NODE,
       value: {...detail, cover: {cover_id: detail.cover_id, cover_url: detail.cover_url}},
     });
-    props.navigation.push('CreateNodeInfo', {nodeId});
+    navigation.navigate('CreateNodeInfo', {nodeId});
   };
 
-  const onShare = () => {};
+  const onShare = () => {
+    navigation.navigate('InviteDetail');
+  };
 
   useEffect(() => {
     loadData();
   }, []);
 
   useLayoutEffect(() => {
-    props.navigation.setOptions({headerTitle: detail ? detail.name : ''});
-  }, [props.navigation, detail]);
+    navigation.setOptions({headerTitle: detail ? detail.name : ''});
+  }, [navigation, detail]);
 
   console.log('detail result', detail);
 
@@ -58,9 +61,9 @@ const CreateNodeResult = props => {
           {item.is_reach ? (
             <IconFont name="check" size={30} />
           ) : index === 0 ? (
-            <Text style={styles.error}>去发帖</Text>
+            <Text style={styles.error} onPress={() => navigation.navigate('NewTopic')}>去发帖</Text>
           ) : index === 1 ? (
-            <Text style={styles.error}>去邀请</Text>
+            <Text style={styles.error} onPress={onShare}>去邀请</Text>
           ) : index === 2 ? (
             <IconFont name="closed" size={30} />
           ) : null}

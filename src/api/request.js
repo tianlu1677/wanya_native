@@ -44,8 +44,12 @@ axios.interceptors.response.use(
         Toast.showError(Object.values(error.response.data)[0]);
         break;
       case 400:
-        console.log('error', error);
-        break;
+        // debugger
+        console.log('error', error.response.data.error);
+        if (error.response.data && error.response.data.error) {
+          Toast.showError(error.response.data.error);
+        }
+        return;
       case 401:
         Toast.showError('请重新登录');
         Helper.clearAllData();

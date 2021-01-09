@@ -205,24 +205,28 @@ const nodeRouter = [
     name: 'CreateNodeIntro',
     component: CreateNodeIntro,
     safeArea: false,
+    barColor: 'dark',
     options: {title: '创建圈子'},
   },
   {
     name: 'CreateNodeInfo',
     component: CreateNodeInfo,
     safeArea: false,
+    barColor: 'dark',
     options: {title: '填写圈子资料'},
   },
   {
     name: 'CreateNodeType',
     component: CreateNodeType,
     safeArea: false,
+    barColor: 'dark',
     options: {title: '选择圈子分类或位置'},
   },
   {
     name: 'CreateNodeResult',
     component: CreateNodeResult,
     safeArea: false,
+    barColor: 'dark',
   },
 ];
 

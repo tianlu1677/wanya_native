@@ -7,7 +7,7 @@ import {RFValue} from '@/utils/response-fontsize';
 const {width} = Dimensions.get('window');
 
 const CreateNodeIntro = ({navigation}) => {
-  const [check, setcheck] = useState(false);
+  const [check, setCheck] = useState(false);
 
   return (
     <View style={styles.wrapper}>
@@ -16,15 +16,15 @@ const CreateNodeIntro = ({navigation}) => {
         style={{width: width, height: (width * 2434) / 1500}}
       />
       <View style={styles.bottom}>
-        <View style={styles.ruleWrapper}>
-          <Pressable
-            style={styles.checkbox}
-            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-            onPress={() => setcheck(!check)}>
+        <Pressable
+          style={styles.ruleWrapper}
+          hitSlop={{left: 10, right: 10, top: 30}}
+          onPress={() => setCheck(!check)}>
+          <View style={styles.checkbox}>
             {check && <IconFont name="yixuan" size={16} color="#000" />}
-          </Pressable>
+          </View>
           <Text style={styles.ruletext}>所建圈子符合将符合法律和社区规范</Text>
-        </View>
+        </Pressable>
         <Pressable
           style={styles.surebtnWrap}
           onPress={() => (check ? navigation.navigate('CreateNodeInfo') : {})}>

@@ -53,8 +53,7 @@ const NodeIndex = ({navigation}) => {
   useEffect(() => {
     const mineNodes = [...checkNodes, ...followNodes];
     const allMineNodes = mineNodes.map(item => {
-      const node = {...item, category_id: 0};
-      return node;
+      return {...item, category_id: 0};
     });
     setAllNodes([...allMineNodes, ...nodes]);
   }, [nodes, followNodes, checkNodes]);

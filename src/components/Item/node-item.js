@@ -18,19 +18,19 @@ const NodeItem = props => {
   const [followed, setFollowed] = useState(node.followed);
 
   const onFollowNode = async () => {
-    if (node.followed) {
-      await unfollowItem({followable_type: 'Node', followable_id: node.id});
-    } else {
-      await followItem({followable_type: 'Node', followable_id: node.id});
-    }
-
+    let followed_res = {}
     if (followed) {
-      Toast.show('已取消加入', {duration: 500});
+      followed_res = await unfollowItem({followable_type: 'Node', followable_id: node.id});
     } else {
-      Toast.show('已成功加入', {duration: 500});
+      followed_res = await followItem({followable_type: 'Node', followable_id: node.id});
     }
-
-    setFollowed(!followed);
+    setFollowed(followed_res.followed);
+    // console.log('followed_res', followed_res)
+    if (followed_res.followed) {
+      Toast.show('已成功加入', {duration: 500});
+    } else {
+      Toast.show('已取消加入', {duration: 500});
+    }
   };
 
   const goNodeDetail = () => {

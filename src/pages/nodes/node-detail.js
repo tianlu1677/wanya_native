@@ -63,7 +63,11 @@ const NodeDetail = ({navigation, route}) => {
 
   const onFollowNode = async () => {
     if (detail.role === 'super_admin') {
-      navigation.push('CreateNodeResult', {nodeId: detail.id});
+      if (detail.check_node_id) {
+        navigation.push('CreateNodeResult', {nodeId: detail.check_node_id});
+      } else {
+        Toast.showError('暂时无法管理');
+      }
     }
 
     if (detail.followed) {

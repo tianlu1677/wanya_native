@@ -10,6 +10,7 @@ const JoinAccountsList = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
+  const adminAccount = account.account;
 
   const renderItem = ({item}) => {
     return (
@@ -58,14 +59,14 @@ const JoinAccountsList = ({navigation, route}) => {
       renderSeparator={renderSeparator}
       enableRefresh={false}
       ListHeaderComponent={
-        account && (
+        adminAccount && (
           <>
             <Text style={styles.title}>{account.title}</Text>
-            <Pressable onPress={() => goAccountDetail(account)}>
+            <Pressable onPress={() => goAccountDetail(adminAccount)}>
               <View style={styles.follow}>
-                <Avator account={account.account} size={RFValue(40)} />
-                <Text style={styles.nickname}>{account.account.nickname}</Text>
-                <PlayScore score={account.account.play_score} textStyle={styles.textScore} />
+                <Avator account={adminAccount} size={RFValue(40)} />
+                <Text style={styles.nickname}>{adminAccount.nickname}</Text>
+                <PlayScore score={adminAccount.play_score} textStyle={styles.textScore} />
               </View>
             </Pressable>
             <Text style={styles.title}>已加入顽友</Text>
