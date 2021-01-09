@@ -1,55 +1,112 @@
-import React, {useLayoutEffect, useEffect} from 'react';
-import {Text, StyleSheet, Pressable, Image} from 'react-native';
+import React, {useLayoutEffect, useEffect, useState, useRef} from 'react';
+import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {dispathUpdateNodes} from '@/redux/actions';
-import Toast from '@/components/Toast';
-import NodeIndexComponent from '@/components/NodeIndex';
-import PushUtil from '@/utils/umeng_analytics_util';
+import {nodeAction} from '@/redux/actions';
+import Loading from '@/components/Loading';
+import NodeItem from '@/components/Item/node-item';
+import {styles} from '@/components/NodeIndex';
 
 const NodeIndex = ({navigation}) => {
+  const scrollRef = useRef(null);
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const {nodes, followNodes, checkNodes} = useSelector(state => state.node);
+  const {categoryList} = useSelector(state => state.home);
+  const categories = [{id: 0, name: '我的'}, ...categoryList];
+  const [layoutList, setLayoutList] = useState([]);
+  const [active, setActive] = useState(0);
+  const [allNodes, setAllNodes] = useState([]);
 
-  const onCreateNode = () => {
-    navigation.push('CreateNodeIntro');
-    // PushUtil.onEventObject('click_create_node', {
-    //   account_id: currentAccount.id,
-    //   account_nickname: currentAccount.nickname,
-    // });
-    // Toast.showError('敬请期待', {duration: 1000});
+  const setLayout = (layout, index) => {
+    layoutList[index] = layout;
+    const list = JSON.parse(JSON.stringify(layoutList));
+    setLayoutList(list);
+  };
+
+  const onChange = index => {
+    setActive(index);
+    scrollRef.current.scrollTo({y: layoutList[index].y, animated: true});
   };
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: '全部圈子',
-      headerBackImage: () => (
-        <Image source={require('../../assets/images/back.png')} style={{width: 9, height: 15}} />
-      ),
       headerRight: () => (
-        <Pressable onPress={onCreateNode}>
-          <Text style={styles.cancel}>创建圈子</Text>
+        <Pressable
+          onPress={() => {
+            navigation.push('CreateNodeIntro');
+          }}>
+          <Text style={nstyles.cancel}>创建圈子</Text>
         </Pressable>
       ),
     });
   }, [navigation]);
 
   useEffect(() => {
+    dispatch(nodeAction.dispatchUpdateNodes());
+    dispatch(nodeAction.dispatchUpdateCheckNodes());
+    dispatch(nodeAction.dispatchUpdateFollowNodes(currentAccount.id));
     return () => {
-      dispatch(dispathUpdateNodes(currentAccount.id));
+      dispatch(nodeAction.dispatchUpdateHomeNodes(currentAccount.id));
     };
   }, []);
 
-  return <NodeIndexComponent type="node-index" />;
+  useEffect(() => {
+    const mineNodes = [...checkNodes, ...followNodes];
+    const allMineNodes = mineNodes.map(item => {
+      const node = {...item, category_id: 0};
+      return node;
+    });
+    setAllNodes([...allMineNodes, ...nodes]);
+  }, [nodes, followNodes, checkNodes]);
+
+  // console.log(allNodes);
+  return allNodes.length > 0 ? (
+    <View style={styles.wrapper}>
+      <View style={styles.cateWrap}>
+        {categories.map((categorie, index) => (
+          <Pressable
+            key={index}
+            onPress={() => onChange(index)}
+            style={[styles.cateNameWrap, active === index && styles.cateNameActive]}>
+            <Text style={styles.cateName}>{categorie.name}</Text>
+            {active === index && <Text style={styles.active} />}
+          </Pressable>
+        ))}
+      </View>
+      <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
+        {categories.map((categorie, index) => (
+          <View
+            style={styles.nodeContent}
+            key={categorie.id}
+            onLayout={e => setLayout(e.nativeEvent.layout, index)}>
+            <Text style={styles.cateTitle}>{categorie.name}</Text>
+            <View style={styles.typeNodeWrap}>
+              {allNodes
+                .filter(v => v.category_id === categorie.id)
+                .map((node, i) => (
+                  <View key={i}>
+                    <NodeItem
+                      node={{...node}}
+                      key={node.id}
+                      type={node.audit_status ? 'node-index-mine' : 'node-index'}
+                    />
+                    <Text style={styles.separator} />
+                  </View>
+                ))}
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  ) : (
+    <Loading />
+  );
 };
 
-const styles = StyleSheet.create({
+const nstyles = StyleSheet.create({
   cancel: {
-    paddingLeft: 5,
-    paddingRight: 5,
     textAlign: 'center',
     fontSize: 15,
-    height: 18,
-    lineHeight: 18,
     color: '#bdbdbd',
   },
 });

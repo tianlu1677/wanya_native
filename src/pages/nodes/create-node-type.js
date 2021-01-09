@@ -16,7 +16,7 @@ import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import MediasPicker from '@/components/MediasPicker';
 import {CategoryDrawer} from '@/components/NodeComponents';
-import {getCheckNodes, editCheckNodes} from '@/api/node_api';
+import {createCheckNodes, editCheckNodes} from '@/api/node_api';
 
 const CreateNodeType = props => {
   const categories = useSelector(state => state.home.categoryList);
@@ -39,7 +39,7 @@ const CreateNodeType = props => {
     if (nodeId) {
       res = await editCheckNodes({check_node: params}, nodeId);
     } else {
-      res = await getCheckNodes({check_node: params});
+      res = await createCheckNodes({check_node: params});
     }
     Toast.showError(nodeId ? '编辑成功' : '创建成功');
     props.navigation.push('CreateNodeResult', {nodeId: res.data.check_node.id});

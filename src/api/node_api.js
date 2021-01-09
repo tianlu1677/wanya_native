@@ -7,7 +7,7 @@ export const getNodeIndex = async (params = {}) => {
     method: 'GET',
     params,
   });
-  return res.data.nodes;
+  return res;
 };
 
 // 圈子详情
@@ -49,8 +49,17 @@ export const getRecentAccounts = async params => {
   return res;
 };
 
-// 创建圈子
-export const getCheckNodes = async params => {
+// 审核圈子列表
+export const getCheckNodes = async () => {
+  const res = await request({
+    url: '/api/v1/check_nodes',
+    method: 'GET',
+  });
+  return res;
+};
+
+// 审核圈子
+export const createCheckNodes = async params => {
   const res = await request({
     url: '/api/v1/check_nodes',
     method: 'POST',
