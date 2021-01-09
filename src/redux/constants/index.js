@@ -187,7 +187,7 @@ export const SAVE_CHANNELS = 'SAVE_CHANNELS'; //首页channels
 
 // node
 export const CREATE_NODE = 'CREATE_NODE'; //创建node对象
-export const UPDATE_NODES = 'CREATE_NODE'; //全部圈子
+export const UPDATE_NODES = 'UPDATE_NODES'; //全部圈子
 export const UPDATE_HOME_NODES = 'UPDATE_HOME_NODES'; //更新首页圈子列表
 export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //关注圈子列表（只包含关注的）
 export const UPDATE_CHECK_NODES = 'UPDATE_CHECK_NODES'; //check圈子列表

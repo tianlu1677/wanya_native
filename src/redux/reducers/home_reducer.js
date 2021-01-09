@@ -19,9 +19,7 @@ const defaultState = {
     content: '',
   },
   location: {},
-  nodes: [],
   categoryList: [],
-  followNodes: [],
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -62,16 +60,6 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         location: action.value,
       };
-    case constants.UPDATE_NODES:
-      return {
-        ...state,
-        nodes: action.value,
-      };
-    case constants.UPDATE_FOLLOW_NODES:
-      return {
-        ...state,
-        followNodes: action.value,
-      };
     case constants.UPDATE_CATEGORY_LIST:
       return {
         ...state,
@@ -87,7 +75,6 @@ const formatImagePreviewUrl = (previewImageData, origin = false) => {
     return previewImageData;
   }
 
-  console.log('imageData', previewImageData);
   const images = previewImageData.images.map(data => {
     return {
       ...data,
