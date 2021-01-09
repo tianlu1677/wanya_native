@@ -27,7 +27,7 @@ const CreateNodeIntro = ({navigation}) => {
         </View>
         <Pressable
           style={styles.surebtnWrap}
-          onPress={() => (check ? navigation.push('CreateNodeInfo') : {})}>
+          onPress={() => (check ? navigation.navigate('CreateNodeInfo') : {})}>
           <Text style={[styles.surebtn, check ? styles.canClick : styles.disabled]}>开始创建</Text>
         </Pressable>
       </View>

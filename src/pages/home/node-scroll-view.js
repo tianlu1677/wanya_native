@@ -25,7 +25,7 @@ const NodeScrollView = props => {
           全部圈子
         </Text>
       </Pressable>
-      {homeNodes.length > 0 &&
+      {homeNodes && homeNodes.length > 0 &&
         homeNodes.map(node => {
           return (
             <Pressable

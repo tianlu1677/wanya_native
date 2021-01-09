@@ -74,15 +74,15 @@ const NodeIndex = ({navigation}) => {
         ))}
       </View>
       <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
-        {categories.map((categorie, index) => (
+        {categories.map((category, index) => (
           <View
             style={styles.nodeContent}
-            key={categorie.id}
+            key={category.id}
             onLayout={e => setLayout(e.nativeEvent.layout, index)}>
-            <Text style={styles.cateTitle}>{categorie.name}</Text>
+            <Text style={styles.cateTitle}>{category.name}</Text>
             <View style={styles.typeNodeWrap}>
               {allNodes
-                .filter(v => v.category_id === categorie.id)
+                .filter(v => v.category_id === category.id)
                 .map((node, i) => (
                   <View key={i}>
                     <NodeItem
