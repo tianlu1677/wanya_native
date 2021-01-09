@@ -44,8 +44,9 @@ const CreateNodeInfo = props => {
 
   const goStepClick = () => {
     if (isClick()) {
-      props.navigation.push('CreateNodeType');
+      console.log('values', values)
       dispatch({type: action.CREATE_NODE, value: values});
+      props.navigation.push('CreateNodeType');
     }
   };
 

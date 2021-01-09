@@ -28,8 +28,9 @@ const CreateNodeType = props => {
 
   const onCreateClick = async () => {
     const {name, desc, nickname, cover} = createNode;
+    console.log('createNode', createNode)
     Toast.showLoading(nodeId ? '编辑中' : '创建中');
-    let cover_id = cover.cover_id || null;
+    let cover_id = cover ? (cover.cover_id || null) : null;
     if (cover.uri) {
       const result = await props.uploadImage({uploadType: 'multipart', ...cover});
       cover_id = result.asset.id;

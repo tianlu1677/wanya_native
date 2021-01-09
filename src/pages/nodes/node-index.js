@@ -55,7 +55,8 @@ const NodeIndex = ({navigation}) => {
     const allMineNodes = mineNodes.map(item => {
       return {...item, category_id: 0};
     });
-    setAllNodes([...allMineNodes, ...nodes]);
+    // setAllNodes([...allMineNodes, ...nodes]);
+    setAllNodes(allMineNodes.concat(nodes));
   }, [nodes, followNodes, checkNodes]);
 
   // console.log(allNodes);
