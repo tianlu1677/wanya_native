@@ -26,8 +26,8 @@ import {
   dispatchFetchUploadTopic,
   changeUploadStatus,
 } from '@/redux/actions';
-
 import NodeScrollView from './node-scroll-view';
+import RelatedRecommend from './related-recommend';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -74,7 +74,13 @@ const Recommend = props => {
     );
   };
 
-  const FollowListPage = () => <SingleList request={{api: getFollowedPosts}} />;
+  const FollowListPage = () => (
+    <SingleList
+      request={{api: getFollowedPosts}}
+      type="follow"
+      insertComponent={RelatedRecommend}
+    />
+  );
 
   const RecommendPage = () => (
     <SingleList request={{api: getRecommendPosts}} type="recommend" loadType="more" />
@@ -148,7 +154,6 @@ const Recommend = props => {
             <CallBackVideo />
           </View>
         ) : null}
-
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}

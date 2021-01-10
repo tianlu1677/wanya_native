@@ -7,7 +7,7 @@ import NodeList from '@/components/List/node-list';
 import DoubleList from '@/components/List/double-list';
 import SpaceList from '@/components/List/space-list';
 import HashtagList from '@/components/List/hash-tag-list';
-import {AccountList} from '@/components/List/account-list';
+import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
@@ -54,7 +54,7 @@ const SearchIndex = ({navigation, route}) => {
 
   const AccountListPage = () =>
     request.params.type === 'account' ? (
-      <AccountList request={request} enableRefresh={false} dataKey="items" />
+      <AccountsList request={request} enableRefresh={false} dataKey="items" itemType="normal" />
     ) : null;
 
   const onChangeText = text => {

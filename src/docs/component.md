@@ -129,4 +129,3 @@ SwiperImage
 - 文章海报 x
 
 accounts/account-nodes
-accounts/account-list

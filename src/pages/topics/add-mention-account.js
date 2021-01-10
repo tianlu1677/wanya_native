@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Keyboard, TouchableWithoutFeedback} from 'react-
 import {useSelector} from 'react-redux';
 import {getAccountFollowings} from '@/api/account_api';
 import {searchApi} from '@/api/search_api';
-import {MentionsAccountList} from '@/components/List/account-list';
+import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
 import {RFValue} from '@/utils/response-fontsize';
@@ -48,8 +48,14 @@ const MentionAccounts = ({navigation, route}) => {
         <View style={pstyles.proWrapper}>
           <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
         </View>
+
         {request && (
-          <MentionsAccountList request={request} enableRefresh={false} type={route.params.type} />
+          <AccountsList
+            request={request}
+            enableRefresh={false}
+            type={route.params.type}
+            itemType="normal"
+          />
         )}
       </View>
     </TouchableWithoutFeedback>

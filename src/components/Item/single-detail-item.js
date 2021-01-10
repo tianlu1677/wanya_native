@@ -9,6 +9,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
+
 export const PublishAccount = props => {
   const {data} = props;
   const navigation = useNavigation();
@@ -139,7 +140,6 @@ export const ActionComment = props => {
 
   const publishComment = () => {
     const data = {...comment, content: value};
-    // console.log(data);
     const params = {
       placeholder: data.placeholder,
       comment: {
@@ -151,7 +151,6 @@ export const ActionComment = props => {
         target_comment_id: data.target_comment_id || '',
       },
     };
-    // console.log(params);
     props.publishComment(params);
   };
 
@@ -236,7 +235,7 @@ export const ActionComment = props => {
       setValue(comment.content);
       setTimeout(() => {
         props.changeVisible(true);
-      }, 600)
+      }, 600);
     }
   }, [comment]);
 
