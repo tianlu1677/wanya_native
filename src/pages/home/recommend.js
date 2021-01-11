@@ -107,6 +107,27 @@ const Recommend = props => {
     );
   };
 
+  const NearbyListPage = () => {
+    return (
+      <SingleList
+        type="node-recommend"
+        request={{api: getFollowedNodePosts}}
+        ListHeaderComponent={<NodeScrollView {...props} />}
+        renderEmpty={
+          <View style={styles.emptyWrap}>
+            <View style={styles.emptyTextWrap}>
+              <Text style={styles.emptyText}>你还没有加入圈子</Text>
+              <Text style={styles.emptyText}>点击发现更多圈子</Text>
+            </View>
+            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
+              发现更多圈子
+            </Text>
+          </View>
+        }
+      />
+    );
+  };
+
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
@@ -204,6 +225,11 @@ const Recommend = props => {
                   key: 'lasted',
                   title: '圈子',
                   component: NodeListPage,
+                },
+                {
+                  key: 'nearby',
+                  title: '附近',
+                  component: NearbyListPage,
                 },
                 ...channels,
               ]}

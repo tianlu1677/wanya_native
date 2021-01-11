@@ -54,7 +54,7 @@ const NodeIndex = ({navigation}) => {
   useEffect(() => {
     if (layoutList.length > 0) {
       const allTrue = layoutList.every(item => item);
-      // console.log('alltrue', allTrue);
+      console.log('alltrue', allTrue);
       if (allTrue) {
         scrollRef.current.scrollTo({y: layoutList[1].y, animated: true});
       }

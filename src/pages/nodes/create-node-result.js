@@ -9,7 +9,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import {getCheckNodesDetail} from '@/api/node_api';
 
 const CreateNodeResult = props => {
-  const navigation = props.navigation
+  const navigation = props.navigation;
   const dispatch = useDispatch();
   const [nodeId] = useState(props.route.params.nodeId);
   const [detail, setDetail] = useState(null);
@@ -61,9 +61,13 @@ const CreateNodeResult = props => {
           {item.is_reach ? (
             <IconFont name="check" size={30} />
           ) : index === 0 ? (
-            <Text style={styles.error} onPress={() => navigation.navigate('NewTopic')}>去发帖</Text>
+            <Text style={styles.error} onPress={() => navigation.navigate('NewTopic')}>
+              去发帖
+            </Text>
           ) : index === 1 ? (
-            <Text style={styles.error} onPress={onShare}>去邀请</Text>
+            <Text style={styles.error} onPress={onShare}>
+              去邀请
+            </Text>
           ) : index === 2 ? (
             <IconFont name="closed" size={30} />
           ) : null}
