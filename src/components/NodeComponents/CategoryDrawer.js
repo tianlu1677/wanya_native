@@ -9,7 +9,7 @@ const CategoryDrawer = props => {
 
   return (
     <View style={[dstyles.position, dstyles.drawerWrap]}>
-      <View style={[dstyles.position, dstyles.drawerOpacity]} />
+      <Pressable style={[dstyles.position, dstyles.drawerOpacity]} onPress={props.onCancel} />
       <ScrollView style={dstyles.content}>
         {categories.map(item => (
           <Pressable key={item.id} style={dstyles.item} onPress={() => onChooseValue(item)}>

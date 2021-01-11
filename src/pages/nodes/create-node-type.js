@@ -9,8 +9,7 @@ import {
   Keyboard,
   Pressable,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import * as action from '@/redux/constants';
+import {useSelector} from 'react-redux';
 import {RFValue} from '@/utils/response-fontsize';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
@@ -28,7 +27,7 @@ const CreateNodeType = props => {
 
   const onCreateClick = async () => {
     const {name, desc, nickname, cover} = createNode;
-    Toast.showLoading(nodeId ? '编辑中' : '创建中');
+    Toast.showLoading();
     let cover_id = cover.cover_id || null;
     if (cover.uri) {
       const result = await props.uploadImage({uploadType: 'multipart', ...cover});
@@ -41,12 +40,13 @@ const CreateNodeType = props => {
     } else {
       res = await createCheckNodes({check_node: params});
     }
-    Toast.showError(nodeId ? '编辑成功' : '创建成功');
     props.navigation.push('CreateNodeResult', {nodeId: res.data.check_node.id});
   };
 
   const onChooseType = () => {
-    setVisible(true);
+    if (!nodeId) {
+      setVisible(true);
+    }
   };
 
   const onChooseValue = value => {
@@ -68,7 +68,7 @@ const CreateNodeType = props => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <Pressable style={styles.slideView} onPress={onChooseType}>
-            <Text style={[styles.slidetext, {color: type ? '#000' : '#bdbdbd'}]}>
+            <Text style={[styles.slidetext, {color: type && !nodeId ? '#000' : '#bdbdbd'}]}>
               {type ? type.name : '请选择圈子所属分类（必填）'}
             </Text>
             <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
@@ -81,10 +81,16 @@ const CreateNodeType = props => {
           </Pressable>
           <Text style={styles.introText}>选择所在位置后，将方便附近顽友发现该圈子</Text>
           <Pressable style={styles.surebtnWrap} onPress={onCreateClick}>
-            <Text style={[styles.surebtn, type ? styles.canClick : styles.disabled]}>确认创建</Text>
+            <Text style={[styles.surebtn, type ? styles.canClick : styles.disabled]}>
+              {nodeId ? '确认修改' : '确认创建'}
+            </Text>
           </Pressable>
           {visible && (
-            <CategoryDrawer currentId={type ? type.id : null} onChooseValue={onChooseValue} />
+            <CategoryDrawer
+              currentId={type ? type.id : null}
+              onChooseValue={onChooseValue}
+              onCancel={() => setVisible(false)}
+            />
           )}
         </View>
       </TouchableWithoutFeedback>
