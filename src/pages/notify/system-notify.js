@@ -72,7 +72,7 @@ const SystemNotify = ({navigation}) => {
     } else if (notify.article) {
       console.log('article, article');
       navigation.push('ArticleDetail', {articleId: notify.article.id});
-    } else if(notify.target_type == 'CheckNode') {
+    } else if (notify.target_type == 'CheckNode') {
       navigation.push('CreateNodeResult', {nodeId: notify.target_id});
     }
   };
