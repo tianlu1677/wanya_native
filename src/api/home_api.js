@@ -38,6 +38,16 @@ export const getFollowedPosts = async (params = {}) => {
   return res;
 };
 
+// 附近帖子
+export const getNearbyPosts = async (params = {}) => {
+  const res = request({
+    url: '/api/v1/recommend/nearby_posts',
+    method: 'GET',
+    params: params,
+  });
+  return res;
+};
+
 // 最新的帖子
 export const getRecommendLatestPosts = async (params = {}) => {
   const res = await request({

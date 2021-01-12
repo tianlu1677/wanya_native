@@ -18,6 +18,7 @@ import {
   getFollowedPosts,
   getFollowedNodePosts,
   getChannelPosts,
+  getNearbyPosts,
 } from '@/api/home_api';
 import {
   dispatchFetchCategoryList,
@@ -29,6 +30,7 @@ import {
 import NodeScrollView from './node-scroll-view';
 import RelatedRecommend from './related-recommend';
 import ShareComponent from './share-component';
+import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -110,25 +112,25 @@ const Recommend = props => {
     );
   };
 
-  const NearbyListPage = () => {
-    return (
-      <SingleList
-        type="node-recommend"
-        request={{api: getFollowedNodePosts}}
-        renderEmpty={
-          <View style={styles.emptyWrap}>
-            <View style={[styles.emptyTextWrap, {marginTop: 203}]}>
-              <Text style={styles.emptyText}>你还没有开启【定位服务】权限</Text>
-              <Text style={styles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
-            </View>
-            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-              开启位置访问权限
-            </Text>
-          </View>
-        }
-      />
-    );
-  };
+  // const NearbyListPage = () => {
+  //   return (
+  //     <SingleList
+  //       type="node-recommend"
+  //       request={{api: getFollowedNodePosts}}
+  //       renderEmpty={
+  //         <View style={styles.emptyWrap}>
+  //           <View style={[styles.emptyTextWrap, {marginTop: 203}]}>
+  //             <Text style={styles.emptyText}>你还没有开启【定位服务】权限</Text>
+  //             <Text style={styles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
+  //           </View>
+  //           <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
+  //             开启位置访问权限
+  //           </Text>
+  //         </View>
+  //       }
+  //     />
+  //   );
+  // };
 
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
