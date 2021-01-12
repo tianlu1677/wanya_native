@@ -68,6 +68,16 @@ export const createCheckNodes = async params => {
   return res;
 };
 
+// 请求是否符合条件
+export const submitCheckNodes = async id => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}/submit_audit`,
+    method: 'POST',
+    data: {},
+  });
+  return res;
+};
+
 //修改审核圈子
 export const editCheckNodes = async (params, id) => {
   const res = await request({

@@ -15,7 +15,7 @@ import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import MediasPicker from '@/components/MediasPicker';
 import {CategoryDrawer} from '@/components/NodeComponents';
-import {createCheckNodes, editCheckNodes} from '@/api/node_api';
+import {createCheckNodes, editCheckNodes, submitCheckNodes} from '@/api/node_api';
 
 const CreateNodeType = props => {
   const categories = useSelector(state => state.home.categoryList);
@@ -41,6 +41,7 @@ const CreateNodeType = props => {
     } else {
       res = await createCheckNodes({check_node: params});
     }
+    await submitCheckNodes(res.data.check_node.id);
     props.navigation.reset({
       index: 0,
       routes: [
