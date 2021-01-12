@@ -27,6 +27,7 @@ import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
 import FastImg from '@/components/FastImg';
+import {getLocation} from '@/api/space_api';
 
 const windowWidth = Dimensions.get('window').width;
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -35,8 +36,7 @@ const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
-  const savetopic = useSelector(state => state.home.savetopic);
-  const location = useSelector(state => state.home.location);
+  const {savetopic, location} = useSelector(state => state.home);
   const videoRef = useRef('');
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
@@ -50,7 +50,7 @@ const NewTopic = props => {
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
   };
 
-  const getLocation = res => {
+  const getCurrentLocation = async res => {
     if (res === false) {
       // 拒绝权限
       dispatch({type: action.GET_LOCATION, value: {}});
@@ -58,10 +58,23 @@ const NewTopic = props => {
 
     if (res.position && res.position.coords) {
       // 获取到权限信息
-      dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
+      const {latitude, longitude} = res.position.coords;
+      if (
+        parseInt(latitude) === parseInt(location.latitude) &&
+        parseInt(longitude) === parseInt(location.longitude)
+      ) {
+        // 相同不需要重新获取位置
+        dispatch({type: action.GET_LOCATION, value: {...location}});
+      } else {
+        const cityData = await getLocation({latitude, longitude});
+        const {city} = cityData.data;
+        dispatch({
+          type: action.GET_LOCATION,
+          value: {...res.position.coords, currentcity: city},
+        });
+      }
+      navigation.navigate('AddSpace');
     }
-
-    navigation.navigate('AddSpace');
   };
 
   const checkPermission = async () => {
@@ -232,7 +245,7 @@ const NewTopic = props => {
       medias: imageSource.map(v => v.url),
       topic_link_id: linkSource ? linkSource.id : '',
       plain_content: savetopic.plan_content
-        ? savetopic.plan_content
+        ? savetopic.plan_content.trim()
         : imageSource.length > 0
         ? '分享图片'
         : videoSource.length > 0
@@ -504,10 +517,10 @@ const NewTopic = props => {
               </Text>
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </Pressable>
-            <GetLocation handleClick={getLocation} style={styles.addSlide}>
+            <GetLocation handleClick={getCurrentLocation} style={styles.addSlide}>
               <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
               <Text style={[styles.addText, savetopic.space && styles.selectText]}>
-                {savetopic.space ? savetopic.space.name : '选择场地'}
+                {savetopic.space ? savetopic.space.name : '场地位置'}
               </Text>
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </GetLocation>

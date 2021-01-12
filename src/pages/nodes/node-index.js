@@ -14,13 +14,13 @@ const NodeIndex = ({navigation}) => {
   const {nodes, followNodes, checkNodes} = useSelector(state => state.node);
   const {categoryList} = useSelector(state => state.home);
   const categories = [{id: 0, name: '我的'}, ...categoryList];
-  const [layoutList, setLayoutList] = useState([]);
+  const [layoutList, setLayoutList] = useState(Array(categoryList.length).fill({y: -1}));
   const [active, setActive] = useState(1);
   const [allNodes, setAllNodes] = useState([]);
 
   const setLayout = (layout, index) => {
-    layoutList[index] = layout;
     const list = JSON.parse(JSON.stringify(layoutList));
+    list[index] = layout;
     setLayoutList(list);
   };
 
@@ -52,9 +52,8 @@ const NodeIndex = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    if (layoutList.length > 0) {
-      const allTrue = layoutList.every(item => item);
-      console.log('alltrue', allTrue);
+    if (layoutList.length === categories.length) {
+      const allTrue = layoutList.every(item => item.y >= 0);
       if (allTrue) {
         scrollRef.current.scrollTo({y: layoutList[1].y, animated: true});
       }

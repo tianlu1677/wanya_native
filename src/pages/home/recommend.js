@@ -27,7 +27,7 @@ import {
   changeUploadStatus,
 } from '@/redux/actions';
 import NodeScrollView from './node-scroll-view';
-import RelatedRecommend from './share-component';
+import RelatedRecommend from './related-recommend';
 import ShareComponent from './share-component';
 
 const Recommend = props => {
@@ -81,7 +81,7 @@ const Recommend = props => {
       request={{api: getFollowedPosts}}
       type="follow"
       insertComponent={RelatedRecommend}
-      listShareComponent={ShareComponent}
+      shareComponent={ShareComponent}
     />
   );
 

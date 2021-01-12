@@ -70,8 +70,8 @@ const TabList = props => {
         },
       ]}>
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
         ref={scrollRef}
         centerContent={center}
         scrollEnabled={scrollEnabled}>

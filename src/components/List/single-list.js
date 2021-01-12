@@ -33,7 +33,7 @@ const SingleList = props => {
     if (props.type === 'follow' && index === 0) {
       return (
         <>
-          {props.listShareComponent()}
+          {props.shareComponent()}
           <ItemComponent />
           {props.insertComponent()}
         </>

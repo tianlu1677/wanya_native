@@ -2,50 +2,58 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Pressable, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {getSpacesList, getLocation} from '@/api/space_api';
 import * as action from '@/redux/constants';
+import IconFont from '@/iconfont';
 import SpaceList from '@/components/List/space-list';
 import {Search} from '@/components/NodeComponents';
-import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
-
-import {ProWrapper as pstyles} from '@/styles/baseCommon';
+import TabViewList from '@/components/TabView';
+import {getSpacesList} from '@/api/space_api';
 
 const AddSpace = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const home = useSelector(state => state.home);
+  const {savetopic, location} = useSelector(state => state.home);
+  const {latitude, longitude, currentcity} = location;
   const [searchKey, setSearchKey] = useState(null);
+  const [currentKey, setCurrentKey] = useState('space');
+  const params = {latitude, longitude, currentcity, city: searchKey};
+  console.log(params);
 
   const onPress = item => {
-    const topics = {...home.savetopic, space: item};
+    const topics = {...savetopic, space: item.id === 0 ? null : item};
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
     navigation.goBack();
+  };
+
+  const SpaceListPage = () => {
+    return (
+      <SpaceList
+        request={{api: getSpacesList, params}}
+        onPress={onPress}
+        enableRefresh={false}
+        type="add-space"
+      />
+    );
+  };
+
+  const AddressListPage = () => {
+    return (
+      <SpaceList
+        request={{api: getSpacesList, params}}
+        onPress={onPress}
+        enableRefresh={false}
+        type="add-space"
+      />
+    );
   };
 
   const goChooseCity = () => {
     props.navigation.navigate('ChooseCity');
   };
 
-  const loadCity = async () => {
-    const {latitude, longitude} = home.location;
-    const res = await getLocation({latitude, longitude});
-    const {city} = res.data;
-    dispatch({
-      type: action.GET_LOCATION,
-      value: {...home.location, positionCity: city, chooseCity: city},
-    });
-  };
-
-  useEffect(() => {
-    loadCity();
-  }, []);
-
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wrapper}>
         <Search
           inputStyle={{borderRadius: RFValue(5), backgroundColor: '#EBEBEB'}}
@@ -55,34 +63,33 @@ const AddSpace = props => {
           placeholder="搜索更多场地"
           onChangeText={text => setSearchKey(text)}
           onCancel={() => navigation.goBack()}
+          prefix={
+            <Pressable style={styles.proCity} onPress={goChooseCity}>
+              <IconFont name="space-point" size={14} />
+              <Text style={styles.proCityText}>{location.chooseCity || '全国'}</Text>
+            </Pressable>
+          }
         />
-        <Pressable style={pstyles.proWrapper} onPress={goChooseCity}>
-          <Text style={pstyles.proTitle}>
-            {searchKey
-              ? '搜索到的场地'
-              : home.location.positionCity === home.location.chooseCity
-              ? '附近场地'
-              : '热门场地'}
-          </Text>
-          <View style={pstyles.proCity}>
-            <IconFont name="space-point" size={12} style={pstyles.proAddressIcon} />
-            <Text style={pstyles.proCityText}>{home.location.chooseCity || '全国'}</Text>
-            <IconFont name="backdown" size={6} style={pstyles.proDownIcon} />
-          </View>
-        </Pressable>
-        <SpaceList
-          request={{
-            api: getSpacesList,
-            params: {
-              latitude: home.location.latitude,
-              longitude: home.location.longitude,
-              name_cont: searchKey,
-              city: home.location.chooseCity,
-              currentcity: home.location.chooseCity,
+
+        <TabViewList
+          center={false}
+          bottomLine={true}
+          lazy={true}
+          currentKey={currentKey}
+          onChange={key => setCurrentKey(key)}
+          size="small"
+          tabData={[
+            {
+              key: 'space',
+              title: '场地',
+              component: SpaceListPage,
             },
-          }}
-          onPress={onPress}
-          enableRefresh={false}
+            {
+              key: 'address',
+              title: '位置',
+              component: AddressListPage,
+            },
+          ]}
         />
       </View>
     </TouchableWithoutFeedback>
@@ -93,6 +100,15 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  proCity: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  proCityText: {
+    marginRight: RFValue(17),
+    marginLeft: RFValue(7),
+    fontSize: 15,
   },
 });
 
