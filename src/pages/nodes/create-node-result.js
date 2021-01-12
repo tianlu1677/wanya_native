@@ -9,14 +9,14 @@ import {RFValue} from '@/utils/response-fontsize';
 import {getCheckNodesDetail} from '@/api/node_api';
 
 const CreateNodeResult = props => {
-  const navigation = props.navigation
+  const navigation = props.navigation;
   const dispatch = useDispatch();
   const [nodeId] = useState(props.route.params.nodeId);
+  const [prevPage] = useState(props.route.params.prevPage);
   const [detail, setDetail] = useState(null);
 
   const loadData = async () => {
     const res = await getCheckNodesDetail(nodeId);
-    console.log('nodeId', nodeId, res.data);
     setDetail(res.data.check_node);
   };
 
@@ -38,6 +38,18 @@ const CreateNodeResult = props => {
 
   useLayoutEffect(() => {
     navigation.setOptions({headerTitle: detail ? detail.name : ''});
+    if (prevPage === 'create-node-type') {
+      navigation.setOptions({
+        headerLeft: () => (
+          <Pressable
+            onPress={() => {
+              navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+            }}>
+            <IconFont name="home-recommend" size={16} color="#000" />
+          </Pressable>
+        ),
+      });
+    }
   }, [navigation, detail]);
 
   console.log('detail result', detail);
@@ -61,9 +73,13 @@ const CreateNodeResult = props => {
           {item.is_reach ? (
             <IconFont name="check" size={30} />
           ) : index === 0 ? (
-            <Text style={styles.error} onPress={() => navigation.navigate('NewTopic')}>去发帖</Text>
+            <Text style={styles.error} onPress={() => navigation.navigate('NewTopic')}>
+              去发帖
+            </Text>
           ) : index === 1 ? (
-            <Text style={styles.error} onPress={onShare}>去邀请</Text>
+            <Text style={styles.error} onPress={onShare}>
+              去邀请
+            </Text>
           ) : index === 2 ? (
             <IconFont name="closed" size={30} />
           ) : null}
@@ -115,10 +131,12 @@ const styles = StyleSheet.create({
   },
   imageInfo: {
     marginLeft: RFValue(18),
+    flex: 1,
   },
   text: {
     color: '#7F7F81',
     fontSize: 14,
+    lineHeight: 16,
   },
   time: {
     color: '#BDBDBD',

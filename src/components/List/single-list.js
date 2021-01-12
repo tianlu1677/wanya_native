@@ -23,11 +23,24 @@ const SingleList = props => {
   ]);
 
   const Child = React.memo(({item, index}) => {
-    return item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    );
+    const ItemComponent = () =>
+      item.item_type === 'Topic' ? (
+        <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+      ) : (
+        <BaseArticle data={item.item} />
+      );
+
+    if (props.type === 'follow' && index === 0) {
+      return (
+        <>
+          {props.shareComponent()}
+          <ItemComponent />
+          {props.insertComponent()}
+        </>
+      );
+    }
+
+    return <ItemComponent />;
   });
 
   const onChangeListDataText = data => {

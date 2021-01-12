@@ -1,9 +1,9 @@
 // 首页
 import {CardStyleInterpolators} from '@react-navigation/stack';
+import RelatedAccounts from '@/pages/home/related-account-list';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
-import GoNewTopic from '@/pages/topics/go-new-topic';
 import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
@@ -31,7 +31,6 @@ import SpaceDetail from '@/pages/space/space-detail';
 import HashtagDetail from '@/pages/hashtags/hashtag-detail';
 
 // 我的页面
-import MineDetail from '@/pages/mine/mine-detail';
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
@@ -246,6 +245,7 @@ const accountRouter = [
   {
     name: 'FollowAccounts',
     component: FollowAccounts,
+    safeArea: false,
     barColor: 'dark',
     options: {title: '关注列表'},
   },
@@ -253,6 +253,7 @@ const accountRouter = [
     name: 'FollowerAccounts',
     barColor: 'dark',
     component: FollowerAccounts,
+    safeArea: false,
     options: {title: '粉丝列表'},
   },
   {
@@ -352,6 +353,13 @@ export const routers = [
   ...commonRouter,
   ...searchRouter,
   ...authRouter,
+  {
+    name: 'RelatedAccounts',
+    component: RelatedAccounts,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '相关推荐'},
+  },
   {
     name: 'InviteDetail',
     component: InviteDetail,

@@ -19,13 +19,14 @@ const NodeScrollView = props => {
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
-      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
+      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.navigate('NodeIndex')}>
         <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
         <Text style={styles.nodeName} minimumFontScale={1} numberOfLines={1}>
           全部圈子
         </Text>
       </Pressable>
-      {homeNodes && homeNodes.length > 0 &&
+      {homeNodes &&
+        homeNodes.length > 0 &&
         homeNodes.map(node => {
           return (
             <Pressable

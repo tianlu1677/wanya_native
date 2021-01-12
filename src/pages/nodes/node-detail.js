@@ -68,13 +68,14 @@ const NodeDetail = ({navigation, route}) => {
       } else {
         Toast.showError('暂时无法管理');
       }
+    } else {
+      if (detail.followed) {
+        await unfollowItem({followable_type: 'Node', followable_id: detail.id});
+      } else {
+        await followItem({followable_type: 'Node', followable_id: detail.id});
+      }
     }
 
-    if (detail.followed) {
-      await unfollowItem({followable_type: 'Node', followable_id: detail.id});
-    } else {
-      await followItem({followable_type: 'Node', followable_id: detail.id});
-    }
     loadData();
   };
 

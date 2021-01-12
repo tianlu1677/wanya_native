@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     position: 'absolute',
-    bottom: RFValue(70),
+    bottom: RFValue(75),
     left: RFValue(30),
     right: RFValue(30),
   },
@@ -65,9 +65,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 3,
   },
   ruletext: {
     color: '#BDBDBD',
+    fontSize: 12,
+    fontWeight: '300',
+    lineHeight: 20,
   },
   surebtnWrap: {
     ...boxShadow,

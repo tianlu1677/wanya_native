@@ -8,6 +8,7 @@ const Search = props => {
   const {height, cancelWidth, placeholderTextColor} = props;
   return (
     <View style={[styles.wrapper, props.style]}>
+      {props.prefix ? props.prefix : null}
       <View style={[styles.inputContent, props.inputStyle, {height: height}]}>
         <IconFont
           name="sousuo"

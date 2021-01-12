@@ -60,22 +60,4 @@ export const ProWrapper = {
     height: 40,
     lineHeight: 40,
   },
-  proCity: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 'auto',
-  },
-  proAddressIcon: {
-    marginRight: 6,
-  },
-  proDownIcon: {
-    marginLeft: 6,
-    marginTop: 3,
-  },
-  proCityText: {
-    fontSize: 12,
-    height: 40,
-    lineHeight: 40,
-  },
 };

@@ -70,7 +70,7 @@ const CreateNodeInfo = props => {
               source={
                 values.cover
                   ? {uri: values.cover.uri || values.cover.cover_url}
-                  : require('@/assets/images/add-photo.png')
+                  : require('@/assets/images/avator_upload.png')
               }
               resizeMode={'cover'}
             />

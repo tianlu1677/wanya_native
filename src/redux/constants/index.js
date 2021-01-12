@@ -184,6 +184,7 @@ export const CHANGE_UPLOAD_STATUS = 'CHANGE_UPLOAD_STATUS'; //视频上传进度
 //recommend
 export const UPDATE_CATEGORY_LIST = 'UPDATE_CATEGORY_LIST';
 export const SAVE_CHANNELS = 'SAVE_CHANNELS'; //首页channels
+export const CHANGE_SHARE_STATUS = 'CHANGE_SHARE_STATUS'; //首页关注分享状态
 
 // node
 export const CREATE_NODE = 'CREATE_NODE'; //创建node对象

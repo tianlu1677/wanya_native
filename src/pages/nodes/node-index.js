@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
+import {RFValue} from '@/utils/response-fontsize';
 import {styles} from '@/components/NodeIndex';
 
 const NodeIndex = ({navigation}) => {
@@ -13,13 +14,13 @@ const NodeIndex = ({navigation}) => {
   const {nodes, followNodes, checkNodes} = useSelector(state => state.node);
   const {categoryList} = useSelector(state => state.home);
   const categories = [{id: 0, name: '我的'}, ...categoryList];
-  const [layoutList, setLayoutList] = useState([]);
-  const [active, setActive] = useState(0);
+  const [layoutList, setLayoutList] = useState(Array(categoryList.length).fill({y: -1}));
+  const [active, setActive] = useState(1);
   const [allNodes, setAllNodes] = useState([]);
 
   const setLayout = (layout, index) => {
-    layoutList[index] = layout;
     const list = JSON.parse(JSON.stringify(layoutList));
+    list[index] = layout;
     setLayoutList(list);
   };
 
@@ -51,6 +52,15 @@ const NodeIndex = ({navigation}) => {
   }, []);
 
   useEffect(() => {
+    if (layoutList.length === categories.length) {
+      const allTrue = layoutList.every(item => item.y >= 0);
+      if (allTrue) {
+        scrollRef.current.scrollTo({y: layoutList[1].y, animated: true});
+      }
+    }
+  }, [layoutList]);
+
+  useEffect(() => {
     const mineNodes = [...checkNodes, ...followNodes];
     const allMineNodes = mineNodes.map(item => {
       return {...item, category_id: 0};
@@ -59,7 +69,6 @@ const NodeIndex = ({navigation}) => {
     setAllNodes(allMineNodes.concat(nodes));
   }, [nodes, followNodes, checkNodes]);
 
-  // console.log(allNodes);
   return allNodes.length > 0 ? (
     <View style={styles.wrapper}>
       <View style={styles.cateWrap}>
@@ -81,6 +90,10 @@ const NodeIndex = ({navigation}) => {
             onLayout={e => setLayout(e.nativeEvent.layout, index)}>
             <Text style={styles.cateTitle}>{category.name}</Text>
             <View style={styles.typeNodeWrap}>
+              {category.id === 0 &&
+                allNodes.filter(v => v.category_id === category.id).length === 0 && (
+                  <Text style={nstyles.noNodes}>还没有创建或加入任何圈子哦</Text>
+                )}
               {allNodes
                 .filter(v => v.category_id === category.id)
                 .map((node, i) => (
@@ -108,6 +121,13 @@ const nstyles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
     color: '#bdbdbd',
+  },
+  noNodes: {
+    color: '#bdbdbd',
+    fontSize: RFValue(12),
+    marginTop: RFValue(25),
+    marginBottom: RFValue(25),
+    textAlign: 'center',
   },
 });
 

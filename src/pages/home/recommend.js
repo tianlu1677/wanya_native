@@ -26,13 +26,15 @@ import {
   dispatchFetchUploadTopic,
   changeUploadStatus,
 } from '@/redux/actions';
-
 import NodeScrollView from './node-scroll-view';
+import RelatedRecommend from './related-recommend';
+import ShareComponent from './share-component';
 
 const Recommend = props => {
   const dispatch = useDispatch();
   const [inputRef, setinputRef] = useState(null);
   const [currentKey, setCurrentKey] = useState('follow');
+
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
@@ -74,7 +76,14 @@ const Recommend = props => {
     );
   };
 
-  const FollowListPage = () => <SingleList request={{api: getFollowedPosts}} />;
+  const FollowListPage = () => (
+    <SingleList
+      request={{api: getFollowedPosts}}
+      type="follow"
+      insertComponent={RelatedRecommend}
+      shareComponent={ShareComponent}
+    />
+  );
 
   const RecommendPage = () => (
     <SingleList request={{api: getRecommendPosts}} type="recommend" loadType="more" />
@@ -94,6 +103,26 @@ const Recommend = props => {
             </View>
             <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
               发现更多圈子
+            </Text>
+          </View>
+        }
+      />
+    );
+  };
+
+  const NearbyListPage = () => {
+    return (
+      <SingleList
+        type="node-recommend"
+        request={{api: getFollowedNodePosts}}
+        renderEmpty={
+          <View style={styles.emptyWrap}>
+            <View style={[styles.emptyTextWrap, {marginTop: 203}]}>
+              <Text style={styles.emptyText}>你还没有开启【定位服务】权限</Text>
+              <Text style={styles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
+            </View>
+            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
+              开启位置访问权限
             </Text>
           </View>
         }
@@ -148,7 +177,6 @@ const Recommend = props => {
             <CallBackVideo />
           </View>
         ) : null}
-
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
@@ -199,6 +227,11 @@ const Recommend = props => {
                   key: 'lasted',
                   title: '圈子',
                   component: NodeListPage,
+                },
+                {
+                  key: 'nearby',
+                  title: '附近',
+                  component: NearbyListPage,
                 },
                 ...channels,
               ]}
