@@ -40,7 +40,15 @@ const CreateNodeType = props => {
     } else {
       res = await createCheckNodes({check_node: params});
     }
-    props.navigation.push('CreateNodeResult', {nodeId: res.data.check_node.id});
+    props.navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'CreateNodeResult',
+          params: {nodeId: res.data.check_node.id, prevPage: 'create-node-type'},
+        },
+      ],
+    });
   };
 
   const onChooseType = () => {
