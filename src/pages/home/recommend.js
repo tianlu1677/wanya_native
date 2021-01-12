@@ -27,12 +27,14 @@ import {
   changeUploadStatus,
 } from '@/redux/actions';
 import NodeScrollView from './node-scroll-view';
-import RelatedRecommend from './related-recommend';
+import RelatedRecommend from './share-component';
+import ShareComponent from './share-component';
 
 const Recommend = props => {
   const dispatch = useDispatch();
   const [inputRef, setinputRef] = useState(null);
   const [currentKey, setCurrentKey] = useState('follow');
+
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
@@ -79,6 +81,7 @@ const Recommend = props => {
       request={{api: getFollowedPosts}}
       type="follow"
       insertComponent={RelatedRecommend}
+      listShareComponent={ShareComponent}
     />
   );
 
@@ -112,15 +115,14 @@ const Recommend = props => {
       <SingleList
         type="node-recommend"
         request={{api: getFollowedNodePosts}}
-        ListHeaderComponent={<NodeScrollView {...props} />}
         renderEmpty={
           <View style={styles.emptyWrap}>
-            <View style={styles.emptyTextWrap}>
-              <Text style={styles.emptyText}>你还没有加入圈子</Text>
-              <Text style={styles.emptyText}>点击发现更多圈子</Text>
+            <View style={[styles.emptyTextWrap, {marginTop: 203}]}>
+              <Text style={styles.emptyText}>你还没有开启【定位服务】权限</Text>
+              <Text style={styles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
             </View>
             <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-              发现更多圈子
+              开启位置访问权限
             </Text>
           </View>
         }

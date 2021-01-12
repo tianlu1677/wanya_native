@@ -15,11 +15,10 @@ const defaultState = {
     thumbImageUrl: '',
     path: '',
   },
-  commentTopic: {
-    content: '',
-  },
+  commentTopic: {content: ''},
   location: {},
   categoryList: [],
+  shareStatus: true,
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -64,6 +63,12 @@ export const homeReducer = (state = defaultState, action) => {
       return {
         ...state,
         categoryList: action.categories,
+      };
+    case constants.CHANGE_SHARE_STATUS:
+      console.log('action', action);
+      return {
+        ...state,
+        shareStatus: action.value,
       };
     default:
       return state;
