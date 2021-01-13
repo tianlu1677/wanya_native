@@ -64,6 +64,7 @@ const SingleList = props => {
       setLoading(true);
     }
     const {api, params} = props.request;
+    console.log(params);
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     const transdata = page === 1 ? data : [...listData, ...data];

@@ -39,6 +39,7 @@ export const getFollowedPosts = async (params = {}) => {
 };
 
 // 附近帖子
+// 会在最外层有一个距离 ( distance )如果 distance = -1 不显示
 export const getNearbyPosts = async (params = {}) => {
   const res = request({
     url: '/api/v1/recommend/nearby_posts',

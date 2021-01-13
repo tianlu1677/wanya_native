@@ -6,7 +6,36 @@ import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 
-const ShareComponent = () => {
+export const FollowShareComponent = () => {
+  const dispatch = useDispatch();
+  const {shareStatus} = useSelector(state => state.home);
+
+  const onShareClose = () => {
+    dispatch({type: action.CHANGE_SHARE_STATUS, value: false});
+  };
+
+  const onShare = () => {};
+
+  return shareStatus ? (
+    <Pressable style={styles.followShareWrap}>
+      <View style={styles.followShare} onPress={onShare}>
+        <FastImg style={styles.followShareImage} source={require('@/assets/images/share.png')} />
+        <View>
+          <Text>获取更多好友动态</Text>
+          <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
+        </View>
+        <Pressable
+          style={styles.deleteIcon}
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          onPress={onShareClose}>
+          <IconFont name="closed" size={16} />
+        </Pressable>
+      </View>
+    </Pressable>
+  ) : null;
+};
+
+export const NearbyShareComponent = () => {
   const dispatch = useDispatch();
   const {shareStatus} = useSelector(state => state.home);
 
@@ -63,5 +92,3 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
 });
-
-export default ShareComponent;

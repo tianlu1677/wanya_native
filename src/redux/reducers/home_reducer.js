@@ -16,7 +16,7 @@ const defaultState = {
     path: '',
   },
   commentTopic: {content: ''},
-  location: {},
+  location: {getLocation: false},
   categoryList: [],
   shareStatus: true,
 };

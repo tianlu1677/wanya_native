@@ -1,0 +1,19 @@
+import request from './request';
+
+// 获取位置详情
+export const getLocations = async id => {
+  const res = await request({
+    url: `/api/v1/locations/${id}`,
+    method: 'GET',
+  });
+  return res;
+};
+
+// 获具体位置id帖子
+export const getLocationsPosts = async params => {
+  const res = await request({
+    url: `/api/v1/locations/${params.id}/posts`,
+    method: 'GET',
+  });
+  return res;
+};

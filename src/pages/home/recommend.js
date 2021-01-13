@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
+import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {SAFE_TOP} from '@/utils/navbar';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
@@ -18,7 +19,6 @@ import {
   getFollowedPosts,
   getFollowedNodePosts,
   getChannelPosts,
-  getNearbyPosts,
 } from '@/api/home_api';
 import {
   dispatchFetchCategoryList,
@@ -29,8 +29,9 @@ import {
 } from '@/redux/actions';
 import NodeScrollView from './node-scroll-view';
 import RelatedRecommend from './related-recommend';
-import ShareComponent from './share-component';
+import {FollowShareComponent} from './share-component';
 import NearbyListPage from './nearby-list-post';
+import {getLocation} from './getLocation';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ const Recommend = props => {
       request={{api: getFollowedPosts}}
       type="follow"
       insertComponent={RelatedRecommend}
-      shareComponent={ShareComponent}
+      shareComponent={FollowShareComponent}
     />
   );
 
@@ -112,26 +113,6 @@ const Recommend = props => {
     );
   };
 
-  // const NearbyListPage = () => {
-  //   return (
-  //     <SingleList
-  //       type="node-recommend"
-  //       request={{api: getFollowedNodePosts}}
-  //       renderEmpty={
-  //         <View style={styles.emptyWrap}>
-  //           <View style={[styles.emptyTextWrap, {marginTop: 203}]}>
-  //             <Text style={styles.emptyText}>你还没有开启【定位服务】权限</Text>
-  //             <Text style={styles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
-  //           </View>
-  //           <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-  //             开启位置访问权限
-  //           </Text>
-  //         </View>
-  //       }
-  //     />
-  //   );
-  // };
-
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
@@ -151,6 +132,17 @@ const Recommend = props => {
       return 0;
     }
     return currentAccount.new_message_count;
+  };
+
+  const onChange = async key => {
+    if (key === 'nearby') {
+      getLocation(false, result => {
+        if (result) {
+          dispatch({type: action.GET_LOCATION, value: result.position.coords});
+        }
+      });
+    }
+    setCurrentKey(key);
   };
 
   useFocusEffect(
@@ -212,7 +204,7 @@ const Recommend = props => {
               bottomLine={true}
               lazy={true}
               currentKey={currentKey}
-              onChange={key => setCurrentKey(key)}
+              onChange={onChange}
               size="small"
               tabData={[
                 {

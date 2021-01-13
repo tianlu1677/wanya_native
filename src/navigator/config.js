@@ -9,7 +9,6 @@ import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
 import AddNode from '@/pages/topics/add-node';
 import AddLink from '@/pages/topics/add-link';
-
 import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
@@ -29,6 +28,9 @@ import SpaceDetail from '@/pages/space/space-detail';
 
 // 话题
 import HashtagDetail from '@/pages/hashtags/hashtag-detail';
+
+// Location
+import LocationDetail from '@/pages/location/location-detail';
 
 // 我的页面
 import Settings from '@/pages/mine/settings';
@@ -229,6 +231,15 @@ const nodeRouter = [
   },
 ];
 
+const locationRouter = [
+  {
+    name: 'LocationDetail',
+    component: LocationDetail,
+    safeArea: false,
+    options: {title: '位置'},
+  },
+];
+
 const accountRouter = [
   {
     name: 'AccountDetail',
@@ -349,6 +360,7 @@ export const routers = [
   ...articleRouter,
   ...spaceRouter,
   ...nodeRouter,
+  ...locationRouter,
   ...accountRouter,
   ...commonRouter,
   ...searchRouter,
