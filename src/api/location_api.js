@@ -17,3 +17,23 @@ export const getLocationsPosts = async params => {
   });
   return res;
 };
+
+// 创建位置
+export const createLocations = async params => {
+  const res = await request({
+    url: '/api/v1/locations',
+    method: 'POST',
+    data: params,
+  });
+  return res;
+};
+
+// 位置搜索
+export const getLocationsList = async params => {
+  const res = await request({
+    url: '/api/v1/locations/suggestion',
+    method: 'GET',
+    params,
+  });
+  return res;
+};

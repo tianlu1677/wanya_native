@@ -1,12 +1,50 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView, Pressable} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {Platform, View, Text, Pressable, ScrollView, StyleSheet} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import IconFont from '@/iconfont';
+import * as action from '@/redux/constants';
+import {throttle} from 'lodash';
 import Toast from '@/components/Toast';
 import {Avator} from '@/components/NodeComponents';
-import {RFValue} from '@/utils/response-fontsize';
+import IconFont from '@/iconfont';
+import FastImg from '@/components/FastImg';
+import ScrollList from '@/components/ScrollList';
+import BaseTopic from '@/components/Item/base-topic';
+import BaseArticle from '@/components/Item/base-article';
+import {getFollowedPosts} from '@/api/home_api';
 import {recommendAccounts} from '@/api/mine_api';
 import {followAccount} from '@/api/account_api';
+import {RFValue} from '@/utils/response-fontsize';
+import {ShareWrapper as lstyles} from '@/styles/baseCommon';
+
+export const FollowShareComponent = () => {
+  const dispatch = useDispatch();
+  const {shareStatus} = useSelector(state => state.home);
+
+  const onShareClose = () => {
+    dispatch({type: action.CHANGE_SHARE_STATUS, value: false});
+  };
+
+  const onShare = () => {};
+
+  return shareStatus ? (
+    <Pressable style={lstyles.followShareWrap}>
+      <View style={lstyles.followShare} onPress={onShare}>
+        <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
+        <View>
+          <Text>获取更多好友动态</Text>
+          <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
+        </View>
+        <Pressable
+          style={lstyles.deleteIcon}
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          onPress={onShareClose}>
+          <IconFont name="closed" size={16} />
+        </Pressable>
+      </View>
+    </Pressable>
+  ) : null;
+};
 
 const RelatedRecommend = () => {
   const navigation = useNavigation();
@@ -73,6 +111,65 @@ const RelatedRecommend = () => {
   ) : null;
 };
 
+const FollowListPost = () => {
+  const [loading, setLoading] = useState(false);
+  const [headers, setHeaders] = useState();
+  const [listData, setListData] = useState([]);
+
+  const onRemove = index => {
+    const data = JSON.parse(JSON.stringify(listData));
+    data.splice(index, 1);
+    setListData([...data]);
+  };
+
+  const RenderItem = React.memo(({item, index}) => {
+    return (
+      <>
+        {index === 0 && FollowShareComponent()}
+        {item.item_type === 'Topic' ? (
+          <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+        ) : (
+          <BaseArticle data={item.item} />
+        )}
+        {index === 0 && RelatedRecommend()}
+      </>
+    );
+  });
+
+  const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
+
+  const onRefresh = (page = 1) => {
+    loadData(page);
+  };
+
+  const loadData = async (page = 1, params) => {
+    if (page === 1) {
+      setLoading(true);
+    }
+    const res = await getFollowedPosts({page, ...params});
+    setListData(page === 1 ? res.data.posts : [...listData, ...res.data.posts]);
+    setLoading(false);
+    setHeaders(res.headers);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  return (
+    <ScrollList
+      data={listData}
+      loading={loading}
+      onRefresh={throttle(onRefresh, 300)}
+      headers={headers}
+      renderItem={renderItemMemo}
+      initialNumToRender={6}
+      onEndReachedThreshold={0.25}
+      windowSize={Platform.OS === 'ios' ? 8 : 20}
+    />
+  );
+};
+
 const styles = StyleSheet.create({
   wrapper: {
     paddingLeft: 14,
@@ -126,4 +223,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RelatedRecommend;
+export default FollowListPost;

@@ -14,9 +14,6 @@ import ActionSheet from '@/components/ActionSheet';
 
 export const Header = props => {
   const {data} = props;
-  if (data.id === 1296) {
-    console.log('header data', data);
-  }
   const navigation = useNavigation();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const [star, setstar] = useState(data.star);
@@ -137,7 +134,7 @@ export const Header = props => {
                 onPress={goLocationDetail}
                 hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
                 <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-                <Text style={hstyles.spaceText}>{data.location.address}</Text>
+                <Text style={hstyles.spaceText}>{data.location.name}</Text>
               </Pressable>
             )}
           </View>

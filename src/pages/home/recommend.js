@@ -14,12 +14,8 @@ import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {RFValue} from '@/utils/response-fontsize';
-import {
-  getRecommendPosts,
-  getFollowedPosts,
-  getFollowedNodePosts,
-  getChannelPosts,
-} from '@/api/home_api';
+import {getChannelPosts} from '@/api/home_api';
+import {getLocation} from './getLocation';
 import {
   dispatchFetchCategoryList,
   dispatchBaseCurrentAccount,
@@ -27,11 +23,10 @@ import {
   dispatchFetchUploadTopic,
   changeUploadStatus,
 } from '@/redux/actions';
-import NodeScrollView from './node-scroll-view';
-import RelatedRecommend from './related-recommend';
-import {FollowShareComponent} from './share-component';
+import FollowListPage from './follow-list-post';
+import NodeListPage from './node-list-page';
+import RecommendListPage from './recommend-list-post';
 import NearbyListPage from './nearby-list-post';
-import {getLocation} from './getLocation';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -76,40 +71,6 @@ const Recommend = props => {
           {status === 'done' && '已发布'}
         </Text>
       </View>
-    );
-  };
-
-  const FollowListPage = () => (
-    <SingleList
-      request={{api: getFollowedPosts}}
-      type="follow"
-      insertComponent={RelatedRecommend}
-      shareComponent={FollowShareComponent}
-    />
-  );
-
-  const RecommendPage = () => (
-    <SingleList request={{api: getRecommendPosts}} type="recommend" loadType="more" />
-  );
-
-  const NodeListPage = () => {
-    return (
-      <SingleList
-        type="node-recommend"
-        request={{api: getFollowedNodePosts}}
-        ListHeaderComponent={<NodeScrollView {...props} />}
-        renderEmpty={
-          <View style={styles.emptyWrap}>
-            <View style={styles.emptyTextWrap}>
-              <Text style={styles.emptyText}>你还没有加入圈子</Text>
-              <Text style={styles.emptyText}>点击发现更多圈子</Text>
-            </View>
-            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-              发现更多圈子
-            </Text>
-          </View>
-        }
-      />
     );
   };
 
@@ -215,10 +176,10 @@ const Recommend = props => {
                 {
                   key: 'recommend',
                   title: '推荐',
-                  component: RecommendPage,
+                  component: RecommendListPage,
                 },
                 {
-                  key: 'lasted',
+                  key: 'nodes',
                   title: '圈子',
                   component: NodeListPage,
                 },

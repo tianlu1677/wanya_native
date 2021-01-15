@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import {RFValue} from '@/utils/response-fontsize';
 
-const noSpace = {id: 0, name: '不选择场地'};
+const noLocation = {id: 0, name: '不选择位置'};
 
-const SpaceItem = props => {
+const LocationItem = props => {
   const {data} = props;
   return (
     <Pressable style={styles.spaceWrapper} onPress={() => props.itemOnPress(data)}>
@@ -16,13 +16,13 @@ const SpaceItem = props => {
   );
 };
 
-const SpaceList = props => {
+const LocationList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return <SpaceItem data={item} itemOnPress={() => props.onPress(item)} />;
+    return <LocationItem data={item} itemOnPress={() => props.onPress(item)} />;
   };
 
   const renderSeparator = () => {
@@ -33,9 +33,9 @@ const SpaceList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    let data = props.dataKey ? res.data[props.dataKey] : res.data.spaces;
-    if (props.type === 'add-space' && data.length > 0) {
-      data = [noSpace, ...data];
+    let data = res.data.answer.tips;
+    if (props.type === 'add-location' && data.length > 0) {
+      data = [noLocation, ...data];
     }
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
@@ -59,7 +59,7 @@ const SpaceList = props => {
   );
 };
 
-SpaceList.propTypes = {
+LocationList.propTypes = {
   request: PropTypes.object.isRequired,
   onPress: PropTypes.func,
   ref: PropTypes.any,
@@ -67,7 +67,6 @@ SpaceList.propTypes = {
 
 const styles = StyleSheet.create({
   spaceWrapper: {
-    // justifyContent: 'flex-start',
     justifyContent: 'center',
     paddingVertical: 12,
     paddingLeft: 14,
@@ -89,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SpaceList;
+export default LocationList;

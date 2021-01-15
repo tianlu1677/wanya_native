@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,32 +9,45 @@ import {
   Keyboard,
   Pressable,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import {RFValue} from '@/utils/response-fontsize';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import MediasPicker from '@/components/MediasPicker';
 import {CategoryDrawer} from '@/components/NodeComponents';
+import GetLocation from '@/components/GetLocation';
 import {createCheckNodes, editCheckNodes, submitCheckNodes} from '@/api/node_api';
+import {getLocation} from '@/api/space_api';
 
 const CreateNodeType = props => {
-  const categories = useSelector(state => state.home.categoryList);
+  const dispatch = useDispatch();
+  const {location} = useSelector(state => state.home);
   const {createNode} = useSelector(state => state.node);
   const nodeId = createNode.id || null;
   const [visible, setVisible] = useState(false);
-  const [type, setType] = useState(null);
-  const [address, setaddress] = useState(null);
+
+  const getValidateForm = () => {
+    const data = {
+      name: createNode.name,
+      desc: createNode.desc,
+      nickname: createNode.nickname,
+      category_id: createNode.category.id,
+      space_id: createNode.space ? createNode.space.id : '',
+      location_id: createNode.location ? createNode.location.id : '',
+    };
+    return data;
+  };
 
   const onCreateClick = async () => {
-    const {name, desc, nickname, cover} = createNode;
-    console.log('createNode', createNode)
-    Toast.showLoading(nodeId ? '编辑中' : '创建中');
+    Toast.showLoading();
+    const {cover} = createNode;
     let cover_id = cover.cover_id || null;
     if (cover.uri) {
       const result = await props.uploadImage({uploadType: 'multipart', ...cover});
       cover_id = result.asset.id;
     }
-    const params = {name, desc, nickname, category_id: type.id, cover_id};
+    const params = {...getValidateForm(), cover_id};
     let res = null;
     if (nodeId) {
       res = await editCheckNodes({check_node: params}, nodeId);
@@ -53,6 +66,33 @@ const CreateNodeType = props => {
     });
   };
 
+  const getCurrentLocation = async res => {
+    if (res === false) {
+      // 拒绝权限
+      dispatch({type: action.GET_LOCATION, value: {}});
+    }
+
+    if (res.position && res.position.coords) {
+      // 获取到权限信息
+      const {latitude, longitude} = res.position.coords;
+      if (
+        parseInt(latitude) === parseInt(location.latitude) &&
+        parseInt(longitude) === parseInt(location.longitude)
+      ) {
+        // 相同不需要重新获取位置
+        dispatch({type: action.GET_LOCATION, value: {...location}});
+      } else {
+        const cityData = await getLocation({latitude, longitude});
+        const {city} = cityData.data;
+        dispatch({
+          type: action.GET_LOCATION,
+          value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
+        });
+      }
+      props.navigation.navigate('AddSpace', {type: 'node'});
+    }
+  };
+
   const onChooseType = () => {
     if (!nodeId) {
       setVisible(true);
@@ -61,15 +101,8 @@ const CreateNodeType = props => {
 
   const onChooseValue = value => {
     setVisible(false);
-    setType(value);
+    dispatch({type: action.CREATE_NODE, value: {...createNode, category: value}});
   };
-
-  useEffect(() => {
-    if (createNode.category_id) {
-      const defaultType = categories.find(item => item.id === createNode.category_id);
-      setType(defaultType);
-    }
-  }, [createNode]);
 
   return (
     <KeyboardAvoidingView
@@ -78,26 +111,39 @@ const CreateNodeType = props => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <Pressable style={styles.slideView} onPress={onChooseType}>
-            <Text style={[styles.slidetext, {color: type && !nodeId ? '#000' : '#bdbdbd'}]}>
-              {type ? type.name : '请选择圈子所属分类（必填）'}
+            <Text
+              style={[
+                styles.slidetext,
+                {color: createNode.category && !nodeId ? '#000' : '#bdbdbd'},
+              ]}>
+              {createNode.category?.name || '请选择圈子所属分类（必填）'}
             </Text>
             <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
           </Pressable>
-          <Pressable style={[styles.slideView, {marginBottom: 0}]} onPress={onChooseType}>
-            <Text style={[styles.slidetext, {color: address ? '#000' : '#bdbdbd'}]}>
-              {address ? address.name : '可选择圈子所在位置（选填）'}
+          <GetLocation
+            style={[styles.slideView, {marginBottom: 0}]}
+            handleClick={getCurrentLocation}>
+            <Text
+              style={[
+                styles.slidetext,
+                {color: createNode.space || createNode.location ? '#000' : '#bdbdbd'},
+              ]}>
+              {createNode.space || createNode.location
+                ? createNode.space?.name || createNode.location?.name
+                : '可选择圈子所在位置（选填）'}
             </Text>
             <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
-          </Pressable>
+          </GetLocation>
           <Text style={styles.introText}>选择所在位置后，将方便附近顽友发现该圈子</Text>
           <Pressable style={styles.surebtnWrap} onPress={onCreateClick}>
-            <Text style={[styles.surebtn, type ? styles.canClick : styles.disabled]}>
+            <Text style={[styles.surebtn, createNode.category ? styles.canClick : styles.disabled]}>
               {nodeId ? '确认修改' : '确认创建'}
             </Text>
           </Pressable>
+
           {visible && (
             <CategoryDrawer
-              currentId={type ? type.id : null}
+              currentId={createNode.category?.id || null}
               onChooseValue={onChooseValue}
               onCancel={() => setVisible(false)}
             />

@@ -1,14 +1,16 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import {View, Text, Pressable, Platform} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {throttle} from 'lodash';
+import IconFont from '@/iconfont';
+import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
-import {NearbyShareComponent} from './share-component';
 import {getNearbyPosts} from '@/api/home_api';
 import {getLocation} from './getLocation';
+import {ListEmpty as lstyles, ShareWrapper as styles} from '@/styles/baseCommon';
 
 const NearByListPost = () => {
   const dispatch = useDispatch();
@@ -25,14 +27,13 @@ const NearByListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    const data = {...item.item, location: item.location};
     return (
       <>
         {index === 0 && NearbyShareComponent()}
         {item.item_type === 'Topic' ? (
-          <BaseTopic data={data} onRemove={() => onRemove(index)} />
+          <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
         ) : (
-          <BaseArticle data={data} />
+          <BaseArticle data={item.item} />
         )}
       </>
     );
@@ -46,16 +47,17 @@ const NearByListPost = () => {
       if (result) {
         dispatch({
           type: action.GET_LOCATION,
-          value: {getLocation: true, ...result.position.coords},
+          value: {...result.position.coords},
         });
       } else {
-        dispatch({type: action.GET_LOCATION, value: {getLocation: false}});
+        dispatch({type: action.GET_LOCATION, value: {}});
       }
     });
   };
 
   const onRefresh = (page = 1) => {
-    loadData(page);
+    const {latitude, longitude} = location;
+    loadData(page, {latitude, longitude});
   };
 
   const loadData = async (page = 1, params) => {
@@ -71,12 +73,9 @@ const NearByListPost = () => {
   useEffect(() => {
     if (location.latitude && location.longitude) {
       const {latitude, longitude} = location;
-      // loadData(1, {latitude, longitude});
-      loadData(1, {latitude: 39.908491, longitude: 116.374328});
+      loadData(1, {latitude, longitude});
     }
   }, [location]);
-
-  // console.log('nearby location', location);
 
   return location.latitude && location.longitude ? (
     <ScrollList
@@ -89,54 +88,58 @@ const NearByListPost = () => {
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
       renderEmpty={
-        <View style={styles.emptyWrap}>
-          <View style={styles.emptyTextWrap}>
-            <Text style={styles.emptyText}>附近还没有更多顽友</Text>
-            <Text style={styles.emptyText}>邀请小伙伴一起玩呀</Text>
+        <View style={lstyles.emptyWrap}>
+          <View style={lstyles.emptyTextWrap}>
+            <Text style={lstyles.emptyText}>附近还没有更多顽友</Text>
+            <Text style={lstyles.emptyText}>邀请小伙伴一起玩呀</Text>
           </View>
-          <Text style={styles.moreNode}>分享给身边好友</Text>
+          <Text style={lstyles.moreNode}>分享给身边好友</Text>
         </View>
       }
     />
   ) : (
-    <View style={styles.emptyWrap}>
-      <View style={styles.emptyTextWrap}>
-        <Text style={styles.emptyText}>你还没有开启【定位服务】权限</Text>
-        <Text style={styles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
+    <View style={lstyles.emptyWrap}>
+      <View style={lstyles.emptyTextWrap}>
+        <Text style={lstyles.emptyText}>你还没有开启【定位服务】权限</Text>
+        <Text style={lstyles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
       </View>
-      <Text style={styles.moreNode} onPress={onOpenLocation}>
+      <Text style={lstyles.moreNode} onPress={onOpenLocation}>
         开启位置访问权限
       </Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  emptyWrap: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  emptyTextWrap: {
-    flexDirection: 'column',
-    marginTop: 110,
-  },
-  emptyText: {
-    lineHeight: 23,
-    fontSize: 14,
-    textAlign: 'center',
-    color: '#BDBDBD',
-  },
-  moreNode: {
-    width: 243,
-    height: 45,
-    lineHeight: 45,
-    backgroundColor: '#000',
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginTop: 20,
-    color: '#fff',
-    textAlign: 'center',
-  },
-});
+const NearbyShareComponent = () => {
+  const dispatch = useDispatch();
+  const {shareNearbyStatus} = useSelector(state => state.home);
+
+  const onShareClose = () => {
+    dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: false});
+  };
+
+  const onShare = () => {};
+
+  return shareNearbyStatus ? (
+    <Pressable style={styles.followShareWrap}>
+      <View style={styles.followShare} onPress={onShare}>
+        <FastImg
+          style={styles.followShareImage}
+          source={require('@/assets/images/share-nearby.png')}
+        />
+        <View>
+          <Text>获取更多附近信息</Text>
+          <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
+        </View>
+        <Pressable
+          style={styles.deleteIcon}
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          onPress={onShareClose}>
+          <IconFont name="closed" size={16} />
+        </Pressable>
+      </View>
+    </Pressable>
+  ) : null;
+};
 
 export default NearByListPost;

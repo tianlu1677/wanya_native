@@ -16,9 +16,10 @@ const defaultState = {
     path: '',
   },
   commentTopic: {content: ''},
-  location: {getLocation: false},
+  location: {chooseCity: ''},
   categoryList: [],
   shareStatus: true,
+  shareNearbyStatus: true,
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -49,11 +50,6 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         commentTopic: action.value,
       };
-    case constants.CHOOSE_CITY:
-      return {
-        ...state,
-        chooseCity: action.value,
-      };
     case constants.GET_LOCATION:
       return {
         ...state,
@@ -65,10 +61,14 @@ export const homeReducer = (state = defaultState, action) => {
         categoryList: action.categories,
       };
     case constants.CHANGE_SHARE_STATUS:
-      console.log('action', action);
       return {
         ...state,
         shareStatus: action.value,
+      };
+    case constants.CHANGE_SHARE_NEARBY_STATUS:
+      return {
+        ...state,
+        shareNearbyStatus: action.value,
       };
     default:
       return state;

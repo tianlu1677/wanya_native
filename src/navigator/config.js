@@ -236,6 +236,7 @@ const locationRouter = [
     name: 'LocationDetail',
     component: LocationDetail,
     safeArea: false,
+    barColor: 'dark',
     options: {title: '位置'},
   },
 ];

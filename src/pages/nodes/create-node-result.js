@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
@@ -11,6 +11,7 @@ import {getCheckNodesDetail} from '@/api/node_api';
 const CreateNodeResult = props => {
   const navigation = props.navigation;
   const dispatch = useDispatch();
+  const categories = useSelector(state => state.home.categoryList);
   const [nodeId] = useState(props.route.params.nodeId);
   const [prevPage] = useState(props.route.params.prevPage);
   const [detail, setDetail] = useState(null);
@@ -21,9 +22,14 @@ const CreateNodeResult = props => {
   };
 
   const onEditNode = () => {
+    const current = categories.find(v => v.id === detail.category_id);
     dispatch({
       type: action.CREATE_NODE,
-      value: {...detail, cover: {cover_id: detail.cover_id, cover_url: detail.cover_url}},
+      value: {
+        ...detail,
+        category: current,
+        cover: {cover_id: detail.cover_id, cover_url: detail.cover_url},
+      },
     });
     navigation.navigate('CreateNodeInfo', {nodeId});
   };
@@ -51,8 +57,6 @@ const CreateNodeResult = props => {
       });
     }
   }, [navigation, detail]);
-
-  console.log('detail result', detail);
 
   return detail ? (
     <View style={styles.wrapper}>

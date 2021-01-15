@@ -101,6 +101,7 @@ class App extends Component {
     this.getIndexTabData(); //获取首页频道信息
     // 打开app 首页关注 分享设置为true
     store.dispatch({type: action.CHANGE_SHARE_STATUS, value: true});
+    store.dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: true});
   }
 
   loadSplashImg = () => {
