@@ -58,7 +58,7 @@ const CreateNodeInfo = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <Pressable onPress={chooseImage} style={styles.addphoto}>
             <FastImg
@@ -116,7 +116,7 @@ const boxShadow = {
   shadowColor: '#bdbdbd',
   shadowRadius: 3,
   shadowOpacity: 0.5,
-  shadowOffset: {width: 1, height: 2},
+  shadowOffset: {width: 1, height: 2} ,
 };
 
 const styles = StyleSheet.create({
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: RFValue(35),
     paddingHorizontal: RFValue(30),
-    justifyContent: 'center',
+    // justifyContent: 'center',
     overflow: 'hidden',
   },
   addphoto: {

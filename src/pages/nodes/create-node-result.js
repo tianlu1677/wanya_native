@@ -6,7 +6,7 @@ import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
-import {getCheckNodesDetail} from '@/api/node_api';
+import {getCheckNodesDetail, checkCheckNodes} from '@/api/node_api';
 
 const CreateNodeResult = props => {
   const navigation = props.navigation;
@@ -17,6 +17,8 @@ const CreateNodeResult = props => {
   const [detail, setDetail] = useState(null);
 
   const loadData = async () => {
+    const check_res = await checkCheckNodes(nodeId);
+    console.log('check_res', check_res);
     const res = await getCheckNodesDetail(nodeId);
     setDetail(res.data.check_node);
   };

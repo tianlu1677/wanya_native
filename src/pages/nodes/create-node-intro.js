@@ -13,7 +13,7 @@ const CreateNodeIntro = ({navigation}) => {
     <View style={styles.wrapper}>
       <FastImg
         source={require('../../assets/images/node-intro.png')}
-        style={{width: width, height: (width * 2434) / 1500}}
+        style={{width: width, height: '100%'}}
       />
       <View style={styles.bottom}>
         <Pressable

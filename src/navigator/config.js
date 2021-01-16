@@ -224,7 +224,7 @@ const nodeRouter = [
   {
     name: 'CreateNodeIntro',
     component: CreateNodeIntro,
-    safeArea: false,
+    safeArea: true,
     barColor: 'dark',
     options: {title: '创建圈子'},
   },

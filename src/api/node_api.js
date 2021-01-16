@@ -78,6 +78,16 @@ export const submitCheckNodes = async id => {
   return res;
 };
 
+// 检测是否符合
+export const checkCheckNodes = async id => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}/check`,
+    method: 'POST',
+    data: {},
+  });
+  return res;
+};
+
 //修改审核圈子
 export const editCheckNodes = async (params, id) => {
   const res = await request({
