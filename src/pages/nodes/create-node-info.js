@@ -21,9 +21,8 @@ const {width} = Dimensions.get('window');
 
 const CreateNodeInfo = props => {
   const dispatch = useDispatch();
-  const [nodeId] = useState(props.route.params ? props.route.params.nodeId : null);
+  const [nodeId] = useState(props.route.params?.nodeId || null);
   const {createNode} = useSelector(state => state.node);
-  const [values, setValues] = useState({});
 
   const chooseImage = () => {
     props.removeAllPhoto();
@@ -32,28 +31,25 @@ const CreateNodeInfo = props => {
       if (err) {
         return;
       }
-      setValues({...values, cover: res[0]});
+      dispatch({type: action.CREATE_NODE, value: {...createNode, cover: res[0]}});
     });
   };
 
   const onChangeText = (value, key) => {
-    setValues({...values, [key]: value});
+    dispatch({type: action.CREATE_NODE, value: {...createNode, [key]: value}});
   };
 
-  const isClick = () => (values && values.cover && values.name && values.desc ? true : false);
+  const isClick = () =>
+    createNode && createNode.cover && createNode.name && createNode.desc ? true : false;
 
   const goStepClick = () => {
     if (isClick()) {
-      console.log('values', values)
-      dispatch({type: action.CREATE_NODE, value: values});
       props.navigation.push('CreateNodeType');
     }
   };
 
   useEffect(() => {
-    if (nodeId) {
-      setValues({...createNode});
-    } else {
+    if (!nodeId) {
       dispatch({type: action.CREATE_NODE, value: {}});
     }
   }, []);
@@ -68,8 +64,8 @@ const CreateNodeInfo = props => {
             <FastImg
               style={styles.addphoto}
               source={
-                values.cover
-                  ? {uri: values.cover.uri || values.cover.cover_url}
+                createNode.cover
+                  ? {uri: createNode.cover.uri || createNode.cover.cover_url}
                   : require('@/assets/images/avator_upload.png')
               }
               resizeMode={'cover'}
@@ -77,7 +73,7 @@ const CreateNodeInfo = props => {
           </Pressable>
           <TextInput
             style={styles.textInput}
-            value={values.name || ''}
+            value={createNode.name || ''}
             selectionColor={'#ff193a'}
             placeholderTextColor={'#bdbdbd'}
             placeholder="请输入圈子名称（20字以内）"
@@ -86,7 +82,7 @@ const CreateNodeInfo = props => {
           />
           <TextInput
             style={[styles.textInput, styles.introInput]}
-            value={values.desc || ''}
+            value={createNode.desc || ''}
             selectionColor={'#ff193a'}
             placeholderTextColor={'#bdbdbd'}
             placeholder="请输入圈子简介（50字以内）"
@@ -97,7 +93,7 @@ const CreateNodeInfo = props => {
           <View>
             <TextInput
               style={[styles.textInput, {marginBottom: 0}]}
-              value={values.nickname || ''}
+              value={createNode.nickname || ''}
               selectionColor={'#ff193a'}
               placeholderTextColor={'#bdbdbd'}
               placeholder="请输入圈子成员昵称，默认「顽友」"

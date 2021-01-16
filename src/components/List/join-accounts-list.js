@@ -46,7 +46,6 @@ const JoinAccountsList = ({navigation, route}) => {
   useEffect(() => {
     loadData();
     navigation.setOptions({title});
-    console.log('route', route.params);
   }, []);
 
   return (

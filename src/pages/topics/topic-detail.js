@@ -60,8 +60,7 @@ const TopicDetail = ({navigation, route}) => {
     try {
       setVisible(false);
       Toast.showLoading('发送中');
-      const comment_res = await createComment(data);
-      // console.log('comment_res', comment_res);
+      await createComment(data);
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
       Toast.hide();
       Toast.show('评论成功啦');
@@ -305,8 +304,7 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
-    >
+      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
       {/* 不带header */}
       {/*{!isHeader() && (*/}
       {/*  <>*/}

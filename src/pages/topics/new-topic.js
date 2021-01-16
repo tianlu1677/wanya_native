@@ -70,10 +70,10 @@ const NewTopic = props => {
         const {city} = cityData.data;
         dispatch({
           type: action.GET_LOCATION,
-          value: {...res.position.coords, currentcity: city},
+          value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
         });
       }
-      navigation.navigate('AddSpace');
+      navigation.navigate('AddSpace', {type: 'topic'});
     }
   };
 
@@ -254,6 +254,7 @@ const NewTopic = props => {
       mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
+      location_id: savetopic.location ? savetopic.location.id : '',
     };
     return data;
   };
@@ -345,6 +346,7 @@ const NewTopic = props => {
   }, [savetopic]);
 
   useEffect(() => {
+    dispatch({type: action.GET_LOCATION, value: {}});
     // 清空数据
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
@@ -518,9 +520,19 @@ const NewTopic = props => {
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </Pressable>
             <GetLocation handleClick={getCurrentLocation} style={styles.addSlide}>
-              <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
-              <Text style={[styles.addText, savetopic.space && styles.selectText]}>
-                {savetopic.space ? savetopic.space.name : '场地位置'}
+              <IconFont
+                name="space-point"
+                color={savetopic.space || savetopic.location ? '#000' : '#c2c2c2'}
+                size={16}
+              />
+              <Text
+                style={[
+                  styles.addText,
+                  (savetopic.space || savetopic.location) && styles.selectText,
+                ]}>
+                {savetopic.space || savetopic.location
+                  ? savetopic.space?.name || savetopic.location?.name
+                  : '场地位置'}
               </Text>
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </GetLocation>

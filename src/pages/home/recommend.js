@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
+import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {SAFE_TOP} from '@/utils/navbar';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
@@ -13,12 +14,8 @@ import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {RFValue} from '@/utils/response-fontsize';
-import {
-  getRecommendPosts,
-  getFollowedPosts,
-  getFollowedNodePosts,
-  getChannelPosts,
-} from '@/api/home_api';
+import {getChannelPosts} from '@/api/home_api';
+import {getLocation} from './getLocation';
 import {
   dispatchFetchCategoryList,
   dispatchBaseCurrentAccount,
@@ -26,9 +23,10 @@ import {
   dispatchFetchUploadTopic,
   changeUploadStatus,
 } from '@/redux/actions';
-import NodeScrollView from './node-scroll-view';
-import RelatedRecommend from './related-recommend';
-import ShareComponent from './share-component';
+import FollowListPage from './follow-list-post';
+import NodeListPage from './node-list-page';
+import RecommendListPage from './recommend-list-post';
+import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -76,60 +74,6 @@ const Recommend = props => {
     );
   };
 
-  const FollowListPage = () => (
-    <SingleList
-      request={{api: getFollowedPosts}}
-      type="follow"
-      insertComponent={RelatedRecommend}
-      shareComponent={ShareComponent}
-    />
-  );
-
-  const RecommendPage = () => (
-    <SingleList request={{api: getRecommendPosts}} type="recommend" loadType="more" />
-  );
-
-  const NodeListPage = () => {
-    return (
-      <SingleList
-        type="node-recommend"
-        request={{api: getFollowedNodePosts}}
-        ListHeaderComponent={<NodeScrollView {...props} />}
-        renderEmpty={
-          <View style={styles.emptyWrap}>
-            <View style={styles.emptyTextWrap}>
-              <Text style={styles.emptyText}>你还没有加入圈子</Text>
-              <Text style={styles.emptyText}>点击发现更多圈子</Text>
-            </View>
-            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-              发现更多圈子
-            </Text>
-          </View>
-        }
-      />
-    );
-  };
-
-  const NearbyListPage = () => {
-    return (
-      <SingleList
-        type="node-recommend"
-        request={{api: getFollowedNodePosts}}
-        renderEmpty={
-          <View style={styles.emptyWrap}>
-            <View style={[styles.emptyTextWrap, {marginTop: 203}]}>
-              <Text style={styles.emptyText}>你还没有开启【定位服务】权限</Text>
-              <Text style={styles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
-            </View>
-            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-              开启位置访问权限
-            </Text>
-          </View>
-        }
-      />
-    );
-  };
-
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
@@ -149,6 +93,17 @@ const Recommend = props => {
       return 0;
     }
     return currentAccount.new_message_count;
+  };
+
+  const onChange = async key => {
+    if (key === 'nearby') {
+      getLocation(false, result => {
+        if (result) {
+          dispatch({type: action.GET_LOCATION, value: result.position.coords});
+        }
+      });
+    }
+    setCurrentKey(key);
   };
 
   useFocusEffect(
@@ -210,7 +165,7 @@ const Recommend = props => {
               bottomLine={true}
               lazy={true}
               currentKey={currentKey}
-              onChange={key => setCurrentKey(key)}
+              onChange={onChange}
               size="small"
               tabData={[
                 {
@@ -221,10 +176,10 @@ const Recommend = props => {
                 {
                   key: 'recommend',
                   title: '推荐',
-                  component: RecommendPage,
+                  component: RecommendListPage,
                 },
                 {
-                  key: 'lasted',
+                  key: 'nodes',
                   title: '圈子',
                   component: NodeListPage,
                 },

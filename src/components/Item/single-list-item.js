@@ -28,6 +28,10 @@ export const Header = props => {
     navigation.push('SpaceDetail', {spaceId: data.space.id});
   };
 
+  const goLocationDetail = () => {
+    navigation.push('LocationDetail', {locationId: data.location.id});
+  };
+
   const onStar = async () => {
     const params = {id: data.id, type: 'star'};
     switch (props.type) {
@@ -48,24 +52,6 @@ export const Header = props => {
     }
     setstar(!star);
     Toast.showError(star ? '已取消收藏' : '已收藏');
-  };
-
-  const getOptions = (one, two) => {
-    const isCurrentSelf = data.account.id === currentAccount.id;
-    let options = [];
-    if (isCurrentSelf) {
-      switch (props.type) {
-        case 'topic':
-          options = ['取消', star ? '取消收藏' : '收藏', '删除'];
-          break;
-        case 'article':
-          options = ['取消', star ? '取消收藏' : '收藏'];
-          break;
-      }
-    } else {
-      options = ['取消', star ? '取消收藏' : '收藏', '投诉'];
-    }
-    return options;
   };
 
   const onReportClick = () => {
@@ -140,6 +126,15 @@ export const Header = props => {
                 hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
                 <IconFont name="space-point" size={11} color={'#9C9C9C'} />
                 <Text style={hstyles.spaceText}>{data.space.name}</Text>
+              </Pressable>
+            )}
+            {data.location && (
+              <Pressable
+                style={hstyles.spaceWrapper}
+                onPress={goLocationDetail}
+                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                <IconFont name="space-point" size={11} color={'#9C9C9C'} />
+                <Text style={hstyles.spaceText}>{data.location.name}</Text>
               </Pressable>
             )}
           </View>
