@@ -1,12 +1,12 @@
 import request from './request';
 
 // 获取位置详情
-export const getLocations = async id => {
+export const getLocationDetail = async id => {
   const res = await request({
     url: `/api/v1/locations/${id}`,
     method: 'GET',
   });
-  return res;
+  return res.data;
 };
 
 // 获具体位置id帖子

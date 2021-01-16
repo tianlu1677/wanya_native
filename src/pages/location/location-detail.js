@@ -3,16 +3,19 @@ import {View, Text, StyleSheet} from 'react-native';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import SingleList from '@/components/List/single-list';
-import {getLocations, getLocationsPosts} from '@/api/location_api';
+import {getLocationDetail, getLocationsPosts} from '@/api/location_api';
 import {RFValue} from '@/utils/response-fontsize';
+import IconFont from "@/iconfont"
 
-const LocationDetail = ({route}) => {
+const LocationDetail = ({route, navigation}) => {
   const [locationId] = useState(route.params.locationId);
   const [detail, setDetail] = useState(null);
 
   const loadData = async () => {
-    const res = await getLocations(locationId);
-    setDetail(res.data.location);
+    const res = await getLocationDetail(locationId);
+    setDetail(res.location);
+    console.log('res', res);
+    navigation.setOptions({title: res.location.name || '位置'});
   };
 
   useEffect(() => {
@@ -31,7 +34,7 @@ const LocationDetail = ({route}) => {
             <FastImg
               style={styles.image}
               source={{uri: detail.address_cover_url}}
-              resizeMode={'contain'}
+              mode={'center'}
             />
           </View>
         }

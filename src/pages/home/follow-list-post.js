@@ -18,6 +18,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import {ShareWrapper as lstyles} from '@/styles/baseCommon';
 
 export const FollowShareComponent = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {shareStatus} = useSelector(state => state.home);
 
@@ -31,10 +32,10 @@ export const FollowShareComponent = () => {
     <Pressable style={lstyles.followShareWrap}>
       <View style={lstyles.followShare} onPress={onShare}>
         <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
-        <View>
+        <Pressable onPress={() => { navigation.navigate('InviteDetail') }}>
           <Text>获取更多好友动态</Text>
           <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
-        </View>
+        </Pressable>
         <Pressable
           style={lstyles.deleteIcon}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}

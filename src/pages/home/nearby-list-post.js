@@ -10,6 +10,7 @@ import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
 import {getNearbyPosts} from '@/api/home_api';
 import {getLocation} from './getLocation';
+import {useNavigation} from '@react-navigation/native';
 import {ListEmpty as lstyles, ShareWrapper as styles} from '@/styles/baseCommon';
 
 const NearByListPost = () => {
@@ -111,6 +112,7 @@ const NearByListPost = () => {
 };
 
 const NearbyShareComponent = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {shareNearbyStatus} = useSelector(state => state.home);
 
@@ -127,10 +129,10 @@ const NearbyShareComponent = () => {
           style={styles.followShareImage}
           source={require('@/assets/images/share-nearby.png')}
         />
-        <View>
+        <Pressable onPress={() => { navigation.navigate('InviteDetail') }}>
           <Text>获取更多附近信息</Text>
           <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
-        </View>
+        </Pressable>
         <Pressable
           style={styles.deleteIcon}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
