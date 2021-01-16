@@ -31,7 +31,7 @@ import NearbyListPage from './nearby-list-post';
 const Recommend = props => {
   const dispatch = useDispatch();
   const [inputRef, setinputRef] = useState(null);
-  const [currentKey, setCurrentKey] = useState('follow');
+  const [currentKey, setCurrentKey] = useState('recommend');
 
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);

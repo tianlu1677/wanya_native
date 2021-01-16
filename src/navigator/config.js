@@ -1,3 +1,6 @@
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import * as RootNavigation from '@/navigator/root-navigation';
 // 首页
 import {CardStyleInterpolators} from '@react-navigation/stack';
 import RelatedAccounts from '@/pages/home/related-account-list';
@@ -191,7 +194,23 @@ const nodeRouter = [
     component: NodeIndex,
     barColor: 'dark',
     safeArea: false,
-    options: {title: '全部圈子'},
+    options: {
+      title: '全部圈子',
+      headerRight: ({navigation}) => (
+        <Pressable
+          onPress={() => {
+            RootNavigation.navigate('CreateNodeIntro');
+          }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#bdbdbd',
+            }}>
+            创建圈子
+          </Text>
+        </Pressable>
+      )
+    },
   },
   {
     name: 'NodeDetail',

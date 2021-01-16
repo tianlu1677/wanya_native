@@ -135,7 +135,6 @@ function MainStackList() {
         headerStyle: {
           // backgroundColor: 'white',
           backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
-          
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,

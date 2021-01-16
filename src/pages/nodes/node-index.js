@@ -17,7 +17,6 @@ const NodeIndex = ({navigation}) => {
   const [layoutList, setLayoutList] = useState(Array(categoryList.length).fill({y: -1}));
   const [active, setActive] = useState(1);
   const [allNodes, setAllNodes] = useState([]);
-
   const setLayout = (layout, index) => {
     const list = JSON.parse(JSON.stringify(layoutList));
     list[index] = layout;
@@ -28,19 +27,6 @@ const NodeIndex = ({navigation}) => {
     setActive(index);
     scrollRef.current.scrollTo({y: layoutList[index].y, animated: true});
   };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable
-          onPress={() => {
-            navigation.push('CreateNodeIntro');
-          }}>
-          <Text style={nstyles.cancel}>创建圈子</Text>
-        </Pressable>
-      ),
-    });
-  }, [navigation]);
 
   useEffect(() => {
     dispatch(nodeAction.dispatchUpdateNodes());
