@@ -74,9 +74,9 @@ export default async function requestHttp(options, url = null) {
   const auth_token = await Helper.getData('auth_token');
 
   if (options.method === 'GET') {
-    params = {...options.data, ...options.params};
+    params = {...options.data, ...options.params, version: WANYA_VERSION};
   } else {
-    data = options.data;
+    data = {...options.data, version: WANYA_VERSION};
   }
   let contentType = 'application/json';
   contentType = options.contentType || contentType;

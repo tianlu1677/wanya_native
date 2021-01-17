@@ -6,8 +6,12 @@ import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import {BaseApiUrl} from '@/utils/config';
 import { uploadSystemInfo } from '@/api/settings_api';
 import * as action from '@/redux/constants';
-
+import DeviceInfo from 'react-native-device-info';
 const baseUrl = BaseApiUrl;
+
+
+const deviceId = DeviceInfo.getSystemVersion();
+const systemName = DeviceInfo.getSystemName();
 
 const MediasPicker = WrapperComponent => {
   return props => {
@@ -121,7 +125,7 @@ const MediasPicker = WrapperComponent => {
         useUtf8Charset: true,
       };
       uploadSystemInfo(JSON.stringify(uploadOptions));
-      uploadSystemInfo(JSON.stringify(file));
+      uploadSystemInfo(`OS: ${systemName}, systemVersion: ${deviceId} => ${JSON.stringify(file)}`);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -134,7 +138,7 @@ const MediasPicker = WrapperComponent => {
             Upload.addListener('completed', uploadId, data => {
               uploadSystemInfo(JSON.stringify(data));
               let upload_res = JSON.parse(data.responseBody);
-              if (upload_res.key) {
+              if (upload_res.key && data.responseCode === 200) {
                 const body = {
                   asset: {
                     file_key: upload_res.key,
