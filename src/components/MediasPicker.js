@@ -4,6 +4,7 @@ import Helper from '@/utils/helper';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import {BaseApiUrl} from '@/utils/config';
+import { uploadSystemInfo } from '@/api/settings_api';
 import * as action from '@/redux/constants';
 
 const baseUrl = BaseApiUrl;
@@ -119,6 +120,8 @@ const MediasPicker = WrapperComponent => {
         },
         useUtf8Charset: true,
       };
+      uploadSystemInfo(JSON.stringify(uploadOptions));
+      uploadSystemInfo(JSON.stringify(file));
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -129,6 +132,7 @@ const MediasPicker = WrapperComponent => {
               reject(data.error);
             });
             Upload.addListener('completed', uploadId, data => {
+              uploadSystemInfo(JSON.stringify(data));
               let upload_res = JSON.parse(data.responseBody);
               if (upload_res.key) {
                 const body = {
