@@ -11,7 +11,7 @@ const LocationItem = props => {
   return (
     <Pressable style={styles.spaceWrapper} onPress={() => props.itemOnPress(data)}>
       <Text style={styles.name}>{data.name}</Text>
-      {data.address ? <Text style={styles.address}>{data.address}</Text> : null}
+      {(data.address || data.district) ? <Text style={styles.address}>{data.address ? data.address : data.district}</Text> : null}
     </Pressable>
   );
 };
