@@ -52,7 +52,6 @@ const LocationDetail = ({route, navigation}) => {
           <View style={styles.header}>
             <Text style={styles.name}>{detail.name}</Text>
             <Text style={styles.address}>{detail.address}</Text>
-            <Text onPress={handleChange}>ssss</Text>
             <Pressable onPress={handleChange}>
               <FastImg
                 style={styles.image}
