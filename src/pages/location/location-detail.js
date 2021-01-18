@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import SingleList from '@/components/List/single-list';
 import {getLocationDetail, getLocationsPosts} from '@/api/location_api';
 import {RFValue} from '@/utils/response-fontsize';
-import IconFont from "@/iconfont"
+import MapLinking from '@/components/MapLink';
+
+import IconFont from '@/iconfont';
 
 const LocationDetail = ({route, navigation}) => {
   const [locationId] = useState(route.params.locationId);
@@ -22,6 +24,25 @@ const LocationDetail = ({route, navigation}) => {
     loadData();
   }, []);
 
+  //https://github.com/iwubida/react-native-map-linking
+  const handleChange = () => {
+    // 起点坐标信息
+    const startLocation = {
+      lng: 106.534892,
+      lat: 29.551891,
+      title: '李子坝抗战遗址公园',
+    };
+
+    // 终点坐标信息
+    const destLocation = {
+      lng: 106.27613,
+      lat: 29.972084,
+      title: '合川区邮政局(重庆市南园路198号)',
+    };
+
+    MapLinking.planRoute({startLocation, destLocation});
+  };
+
   return detail ? (
     <View style={styles.wrapper}>
       <SingleList
@@ -31,11 +52,14 @@ const LocationDetail = ({route, navigation}) => {
           <View style={styles.header}>
             <Text style={styles.name}>{detail.name}</Text>
             <Text style={styles.address}>{detail.address}</Text>
-            <FastImg
-              style={styles.image}
-              source={{uri: detail.address_cover_url}}
-              mode={'center'}
-            />
+            <Text onPress={handleChange}>ssss</Text>
+            <Pressable onPress={handleChange}>
+              <FastImg
+                style={styles.image}
+                source={{uri: detail.address_cover_url}}
+                mode={'center'}
+              />
+            </Pressable>
           </View>
         }
       />
