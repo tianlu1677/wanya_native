@@ -32,7 +32,10 @@ export const FollowShareComponent = () => {
     <Pressable style={lstyles.followShareWrap}>
       <View style={lstyles.followShare} onPress={onShare}>
         <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
-        <Pressable onPress={() => { navigation.navigate('InviteDetail') }}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('InviteDetail');
+          }}>
           <Text>获取更多好友动态</Text>
           <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
         </Pressable>
@@ -40,7 +43,7 @@ export const FollowShareComponent = () => {
           style={lstyles.deleteIcon}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           onPress={onShareClose}>
-          <IconFont name="closed" size={16} />
+          <IconFont name="qingkong" size={16} />
         </Pressable>
       </View>
     </Pressable>
@@ -167,6 +170,12 @@ const FollowListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
+      renderEmpty={
+        <View>
+          {FollowShareComponent()}
+          {RelatedRecommend()}
+        </View>
+      }
     />
   );
 };

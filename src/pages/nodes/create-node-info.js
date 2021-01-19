@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {debounce, throttle} from 'lodash';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
@@ -101,11 +102,13 @@ const CreateNodeInfo = props => {
             />
             <Text style={styles.introText}>例如：输入「板友」，则圈子成员统称为「板友」</Text>
           </View>
-          <Pressable style={styles.surebtnWrap} onPress={goStepClick}>
+          <Pressable style={styles.surebtnWrap} onPress={throttle(goStepClick, 1500)}>
             <Text style={[styles.surebtn, isClick() ? styles.canClick : styles.disabled]}>
               下一步
             </Text>
           </Pressable>
+          {/* 页面往上推占位 */}
+          <View style={{backgroundColor: '#fff', flex: 1}} />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -115,8 +118,8 @@ const CreateNodeInfo = props => {
 const boxShadow = {
   shadowColor: '#bdbdbd',
   shadowRadius: 3,
-  shadowOpacity: 0.5,
-  shadowOffset: {width: 1, height: 2} ,
+  shadowOpacity: 0.2,
+  shadowOffset: {width: 1, height: 2},
 };
 
 const styles = StyleSheet.create({
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: RFValue(35),
     paddingHorizontal: RFValue(30),
-    // justifyContent: 'center',
+    justifyContent: 'center',
     overflow: 'hidden',
   },
   addphoto: {
@@ -143,7 +146,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingLeft: RFValue(15),
     marginBottom: RFValue(20),
-    fontSize: 14,
+    fontSize: RFValue(14),
+    borderRadius: 4,
     ...boxShadow,
   },
   introInput: {
@@ -155,7 +159,7 @@ const styles = StyleSheet.create({
   introText: {
     color: '#bdbdbd',
     marginTop: RFValue(12),
-    fontSize: 12,
+    fontSize: RFValue(12),
     lineHeight: RFValue(20),
   },
   surebtnWrap: {
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     overflow: 'hidden',
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: RFValue(16),
     marginTop: RFValue(60),
   },
   canClick: {

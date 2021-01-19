@@ -256,31 +256,6 @@ const styles = StyleSheet.create({
     left: '50%',
     marginLeft: -17,
   },
-  emptyWrap: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  emptyTextWrap: {
-    flexDirection: 'column',
-    marginTop: 110,
-  },
-  emptyText: {
-    lineHeight: 23,
-    fontSize: 14,
-    textAlign: 'center',
-    color: '#BDBDBD',
-  },
-  moreNode: {
-    width: 243,
-    height: 45,
-    lineHeight: 45,
-    backgroundColor: '#000',
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginTop: 20,
-    color: '#fff',
-    textAlign: 'center',
-  },
   uploadWrap: {
     width: 72,
     height: 84,

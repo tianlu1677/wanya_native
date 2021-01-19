@@ -109,7 +109,12 @@ const NodeListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
-      ListHeaderComponent={<NodeScrollView />}
+      ListHeaderComponent={
+        <>
+          <NodeScrollView />
+          <View style={styles.separator} />
+        </>
+      }
       renderEmpty={
         <View style={lstyles.emptyWrap}>
           <View style={lstyles.emptyTextWrap}>
@@ -167,6 +172,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: '50%',
     marginLeft: -17,
+  },
+  separator: {
+    backgroundColor: '#FAFAFA',
+    height: 9,
   },
 });
 

@@ -41,8 +41,6 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 13,
     position: 'relative',
-    backgroundColor: 'pink',
-    // height: 200,
   },
   titleWrapper: {
     height: 64,

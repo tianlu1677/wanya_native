@@ -135,7 +135,9 @@ const CreateNodeType = props => {
             <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
           </GetLocation>
           <Text style={styles.introText}>选择所在位置后，将方便附近顽友发现该圈子</Text>
-          <Pressable style={styles.surebtnWrap} onPress={createNode.category ? onCreateClick : () => {} }>
+          <Pressable
+            style={styles.surebtnWrap}
+            onPress={createNode.category ? onCreateClick : () => {}}>
             <Text style={[styles.surebtn, createNode.category ? styles.canClick : styles.disabled]}>
               {nodeId ? '确认修改' : '确认创建'}
             </Text>
@@ -157,7 +159,7 @@ const CreateNodeType = props => {
 const boxShadow = {
   shadowColor: '#bdbdbd',
   shadowRadius: 3,
-  shadowOpacity: 0.5,
+  shadowOpacity: 0.2,
   shadowOffset: {width: 1, height: 2},
 };
 

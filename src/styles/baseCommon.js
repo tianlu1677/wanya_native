@@ -97,7 +97,7 @@ export const ShareWrapper = {
   followShareWrap: {
     paddingHorizontal: 14,
     paddingVertical: 12,
-    backgroundColor: '#efefef',
+    backgroundColor: '#FAFAFA',
   },
   followShare: {
     height: RFValue(75),

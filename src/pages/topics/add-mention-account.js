@@ -36,8 +36,8 @@ const MentionAccounts = ({navigation, route}) => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          inputStyle={{borderRadius: RFValue(5), backgroundColor: '#EBEBEB'}}
-          height={RFValue(30)}
+          inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
+          height={RFValue(36)}
           cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多顽友"
