@@ -23,7 +23,7 @@ const CreateNodeIntro = ({navigation}) => {
           <View style={styles.checkbox}>
             {check && <IconFont name="yixuan" size={16} color="#000" />}
           </View>
-          <Text style={styles.ruletext}>所建圈子符合将符合法律和社区规范</Text>
+          <Text style={styles.ruletext}>所建圈子将符合法律和社区规范</Text>
         </Pressable>
         <Pressable
           style={styles.surebtnWrap}
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     position: 'absolute',
-    bottom: RFValue(75),
+    bottom: RFValue(85),
     left: RFValue(30),
     right: RFValue(30),
   },
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     borderColor: '#bdbdbd',
     borderWidth: StyleSheet.hairlineWidth,
     marginHorizontal: 15,
+    marginRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 3,
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     color: '#BDBDBD',
     fontSize: 12,
     fontWeight: '300',
-    lineHeight: 20,
+    lineHeight: 12,
   },
   surebtnWrap: {
     ...boxShadow,

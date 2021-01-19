@@ -35,12 +35,12 @@ const LocationDetail = ({route, navigation}) => {
 
     // 终点坐标信息
     const destLocation = {
-      lng: 106.27613,
-      lat: 29.972084,
-      title: '合川区邮政局(重庆市南园路198号)',
+      lng: detail.longitude,
+      lat: detail.latitude,
+      title: detail.name,
     };
 
-    MapLinking.planRoute({startLocation, destLocation});
+    MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
   };
 
   return detail ? (
