@@ -346,7 +346,7 @@ const NewTopic = props => {
   }, [savetopic]);
 
   useEffect(() => {
-    dispatch({type: action.GET_LOCATION, value: {}});
+    // dispatch({type: action.GET_LOCATION, value: {}}); ? 为啥要清空
     // 清空数据
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});

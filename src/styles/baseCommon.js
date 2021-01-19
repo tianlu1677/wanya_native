@@ -108,8 +108,8 @@ export const ShareWrapper = {
     borderRadius: 2,
   },
   followShareImage: {
-    width: RFValue(42),
-    height: RFValue(40),
+    width: 50,
+    height: 47,
     marginRight: 16,
   },
   shareText: {

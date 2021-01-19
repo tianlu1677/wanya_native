@@ -129,6 +129,7 @@ const NearbyShareComponent = () => {
         <FastImg
           style={styles.followShareImage}
           source={require('@/assets/images/share-nearby.png')}
+          mode={'cover'}
         />
         <Pressable
           onPress={() => {

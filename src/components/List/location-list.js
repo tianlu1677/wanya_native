@@ -39,7 +39,7 @@ const LocationList = props => {
     let data = res.data.answer.tips;
 
     if (props.type === 'add-location' && data.length > 0) {
-      data = [noLocation, {id: '000', name: positionCity, location: ''}, ...data];
+      data = [noLocation, {id: '000', name: positionCity.includes('市') ? positionCity : `${positionCity}市`, location: ''}, ...data];
     }
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
