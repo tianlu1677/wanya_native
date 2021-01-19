@@ -30,7 +30,7 @@ const LocationDetail = ({route, navigation}) => {
     const startLocation = {
       lng: 106.534892,
       lat: 29.551891,
-      title: '李子坝抗战遗址公园',
+      title: '我的位置',
     };
 
     // 终点坐标信息
