@@ -3,6 +3,7 @@ import {View, Text, Pressable, Platform} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {throttle} from 'lodash';
+import {RFValue} from '@/utils/response-fontsize';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
@@ -29,14 +30,14 @@ const NearByListPost = () => {
 
   const RenderItem = React.memo(({item, index}) => {
     return (
-      <>
+      <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
         {index === 0 && NearbyShareComponent()}
         {item.item_type === 'Topic' ? (
           <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
         ) : (
           <BaseArticle data={item.item} />
         )}
-      </>
+      </View>
     );
   });
 
@@ -90,7 +91,7 @@ const NearByListPost = () => {
       windowSize={Platform.OS === 'ios' ? 8 : 20}
       renderEmpty={
         <View style={lstyles.emptyWrap}>
-          <View style={lstyles.emptyTextWrap}>
+          <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(180)}]}>
             <Text style={lstyles.emptyText}>附近还没有更多顽友</Text>
             <Text style={lstyles.emptyText}>邀请小伙伴一起玩呀</Text>
           </View>
@@ -100,7 +101,7 @@ const NearByListPost = () => {
     />
   ) : (
     <View style={lstyles.emptyWrap}>
-      <View style={lstyles.emptyTextWrap}>
+      <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(180)}]}>
         <Text style={lstyles.emptyText}>你还没有开启【定位服务】权限</Text>
         <Text style={lstyles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
       </View>
@@ -129,7 +130,10 @@ const NearbyShareComponent = () => {
           style={styles.followShareImage}
           source={require('@/assets/images/share-nearby.png')}
         />
-        <Pressable onPress={() => { navigation.navigate('InviteDetail') }}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('InviteDetail');
+          }}>
           <Text>获取更多附近信息</Text>
           <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
         </Pressable>
@@ -137,7 +141,7 @@ const NearbyShareComponent = () => {
           style={styles.deleteIcon}
           hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
           onPress={onShareClose}>
-          <IconFont name="closed" size={16} />
+          <IconFont name="qingkong" size={16} />
         </Pressable>
       </View>
     </Pressable>

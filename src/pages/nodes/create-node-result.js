@@ -116,7 +116,7 @@ const CreateNodeResult = props => {
 const boxShadow = {
   shadowColor: '#bdbdbd',
   shadowRadius: 3,
-  shadowOpacity: 0.5,
+  shadowOpacity: 0.2,
   shadowOffset: {width: 1, height: 2},
 };
 
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: RFValue(30),
-    paddingTop: RFValue(30),
+    paddingTop: RFValue(36),
   },
   imageWrap: {
     flexDirection: 'row',
@@ -141,28 +141,29 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#7F7F81',
-    fontSize: 14,
-    lineHeight: 16,
+    fontSize: RFValue(14),
+    lineHeight: RFValue(16),
   },
   time: {
     color: '#BDBDBD',
-    fontSize: 12,
-    marginTop: 5,
+    fontSize: RFValue(12),
+    marginTop: RFValue(5),
   },
   tips: {
     marginTop: RFValue(25),
-    fontSize: 14,
+    fontSize: RFValue(14),
+    lineHeight: RFValue(20),
     marginBottom: RFValue(20),
   },
   slideView: {
-    height: RFValue(60),
+    height: RFValue(70),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: RFValue(15),
-    paddingVertical: RFValue(10),
-    marginBottom: RFValue(15),
+    marginBottom: RFValue(20),
+    borderRadius: 4,
     ...boxShadow,
   },
   textWrap: {
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
   },
   introText: {
     color: '#bdbdbd',
-    fontSize: 12,
+    fontSize: RFValue(12),
     lineHeight: RFValue(17),
   },
   error: {
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     overflow: 'hidden',
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: RFValue(16),
     marginTop: RFValue(60),
     backgroundColor: '#000',
     color: '#fff',

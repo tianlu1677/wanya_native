@@ -110,11 +110,11 @@ const AddSpace = props => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wrapper}>
         <Search
-          inputStyle={{borderRadius: RFValue(5), backgroundColor: '#EBEBEB'}}
-          height={RFValue(30)}
+          inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
+          height={RFValue(36)}
           cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"
-          placeholder="搜索更多场地"
+          placeholder="搜索更多场地位置"
           onChangeText={debounce(onChangeText, 500)}
           onCancel={() => navigation.goBack()}
           prefix={
