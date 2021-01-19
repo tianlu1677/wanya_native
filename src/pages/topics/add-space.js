@@ -65,6 +65,7 @@ const AddSpace = props => {
           longitude: item.location.split(',')[0],
         };
         const res = await createLocations({location: params});
+        console.log('res', res)
         data = res.data.location;
       }
       const update = {location: data.id === 0 ? null : data, space: null};

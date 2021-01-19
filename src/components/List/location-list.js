@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import {RFValue} from '@/utils/response-fontsize';
+import {useSelector, useDispatch} from 'react-redux';
 
 const noLocation = {id: 0, name: '不选择位置'};
 
@@ -20,6 +21,8 @@ const LocationList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
+  const {savetopic, location} = useSelector(state => state.home);
+  const {latitude, longitude, positionCity, chooseCity} = location;
 
   const renderItem = ({item}) => {
     return <LocationItem data={item} itemOnPress={() => props.onPress(item)} />;
@@ -34,8 +37,9 @@ const LocationList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     let data = res.data.answer.tips;
+
     if (props.type === 'add-location' && data.length > 0) {
-      data = [noLocation, ...data];
+      data = [noLocation, {id: '000', name: positionCity, location: ''}, ...data];
     }
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
@@ -54,7 +58,7 @@ const LocationList = props => {
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
-      {...props}
+      settings={props}
     />
   );
 };

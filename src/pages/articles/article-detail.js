@@ -9,7 +9,7 @@ import {
   Pressable,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {getArticle} from '@/api/article_api';
+import {getArticle, createArticleAction} from '@/api/article_api';
 import RichHtml from '@/components/RichHtml';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
@@ -64,6 +64,7 @@ const ArticleDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getArticle(articleId);
     setDetail(res.data.article);
+    createArticleAction({id: articleId, type: 'view'});
     dispatch(dispatchArticleDetail(res.data.article));
   };
 

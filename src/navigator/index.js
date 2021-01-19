@@ -321,7 +321,7 @@ const Navigation = () => {
 const styles = StyleSheet.create({
   blurView: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
     left: '23%', // 23%
     right: '23%',
     height: 55,

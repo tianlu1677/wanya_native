@@ -23,7 +23,7 @@ import CommentList from '@/components/List/comment-list';
 import {PlainContent} from '@/components/Item/single-list-item';
 import {GoBack} from '@/components/NodeComponents';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
-import {getTopic, deleteTopic} from '@/api/topic_api';
+import {getTopic, deleteTopic, createTopicAction} from '@/api/topic_api';
 import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {BOTTOM_HEIGHT, NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT, SAFE_TOP, IsIos} from '@/utils/navbar';
 import * as action from '@/redux/constants';
@@ -52,6 +52,7 @@ const TopicDetail = ({navigation, route}) => {
       navigation.goBack();
     } else {
       setDetail(res.data.topic);
+      createTopicAction({id: topicId, type: 'view'});
       dispatch(dispatchTopicDetail(res.data.topic));
     }
   };
