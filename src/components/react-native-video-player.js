@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video'; // eslint-disable-line
 
-const { VideoPlayerManager } = NativeModules;
+const {VideoPlayerManager} = NativeModules;
 
 const BackgroundImage = ImageBackground || Image; // fall back to Image if RN < 0.46
 
@@ -167,6 +167,7 @@ export default class VideoPlayer extends Component {
       isPlaying: true,
     });
   }
+
   componentWillUnmount() {
     // console.log('xxx', 'xxxx')
     if (this.controlsTimeout) {
@@ -238,13 +239,19 @@ export default class VideoPlayer extends Component {
   }
 
   onLoadStart = () => {
-    this.setState({opacity: 1});
-  }
+    // this.setState({opacity: 1});
+  };
 
   onBuffer = ({isBuffering}) => {
-    // console.log('onBuffer', isBuffering)
-    this.setState({opacity: isBuffering ? 1 : 0});
-  }
+    console.log('onBuffer', isBuffering);
+    console.log('progress', this.state.progress);
+
+    if (this.state.progress > 10 && isBuffering) {
+      this.setState({opacity: isBuffering ? 1 : 0});
+    } else {
+      this.setState({opacity: 0});
+    }
+  };
 
   onPlayPress() {
     if (this.props.onPlayPress) {
@@ -270,14 +277,11 @@ export default class VideoPlayer extends Component {
 
   onToggleFullScreen() {
     // this.player.presentFullscreenPlayer();
-    const { video } = this.props;
-    if(Platform.OS === "android")
-    {
+    const {video} = this.props;
+    if (Platform.OS === 'android') {
       // VideoPlayerManager.showVideoPlayer(video.uri);
       this.player.presentFullscreenPlayer();
-    }
-    else
-    {
+    } else {
       this.player.presentFullscreenPlayer();
     }
   }
@@ -291,7 +295,7 @@ export default class VideoPlayer extends Component {
       } else {
         position = Math.floor(position / 1000);
         let progress = position / this.state.duration;
-        this.setState({progress,});
+        this.setState({progress});
         this.player.seek(position);
       }
     } catch (e) {
@@ -358,7 +362,7 @@ export default class VideoPlayer extends Component {
     const ratio = videoHeight / videoWidth;
     return {
       height: videoHeight,
-      width: videoWidth
+      width: videoWidth,
     };
   }
 
@@ -510,7 +514,7 @@ export default class VideoPlayer extends Component {
             />
           </TouchableOpacity>
         )}
-        {(this.props.disableFullscreen || Platform.OS !== 'ios') ? null : (
+        {this.props.disableFullscreen || Platform.OS !== 'ios' ? null : (
           <TouchableOpacity onPress={this.onToggleFullScreen} style={customStyles.controlButton}>
             <Icon
               style={[styles.extraControl, customStyles.controlIcon]}
@@ -564,18 +568,18 @@ export default class VideoPlayer extends Component {
             minBufferMs: 15000,
             maxBufferMs: 50000,
             bufferForPlaybackMs: 1000,
-            bufferForPlaybackAfterRebufferMs: 1000
+            bufferForPlaybackAfterRebufferMs: 1000,
           }}
           // fullscreenOrientation={'landscape'}
         />
-        {
-          this.state.opacity > 0 && <ActivityIndicator
+        {this.state.opacity > 0 && (
+          <ActivityIndicator
             animating
             size="small"
             color={'white'}
             style={[styles.activityIndicator, {opacity: this.state.opacity}]}
           />
-        }
+        )}
 
         <View style={[this.getSizeStyles(), {marginTop: -this.getSizeStyles().height}]}>
           <TouchableOpacity
@@ -613,7 +617,6 @@ export default class VideoPlayer extends Component {
     }
     return this.renderVideo();
   }
-
 
   render() {
     // console.log('xxxxxxxxxxxxx')
