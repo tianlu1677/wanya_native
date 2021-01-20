@@ -284,8 +284,8 @@ const NewTopic = props => {
       dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
     } else {
       //other
-      const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       Toast.showLoading('正在发布中...');
+      const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       try {
         const res = await createTopic(data);
         await waitTime(1500);
