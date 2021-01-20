@@ -71,7 +71,7 @@ export const ListEmpty = {
   },
   emptyTextWrap: {
     flexDirection: 'column',
-    marginTop: 110,
+    marginTop: RFValue(110),
   },
   emptyText: {
     lineHeight: 23,
@@ -81,12 +81,12 @@ export const ListEmpty = {
   },
   moreNode: {
     width: 243,
-    height: 45,
-    lineHeight: 45,
+    height: RFValue(45),
+    lineHeight: RFValue(45),
     backgroundColor: '#000',
     borderRadius: 6,
     overflow: 'hidden',
-    marginTop: 20,
+    marginTop: RFValue(20),
     color: '#fff',
     textAlign: 'center',
   },
@@ -101,11 +101,12 @@ export const ShareWrapper = {
   },
   followShare: {
     height: RFValue(75),
-    backgroundColor: '#fafafa',
+    backgroundColor: '#F2F3F5',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 14,
     borderRadius: 2,
+    overflow: 'hidden',
   },
   followShareImage: {
     width: 50,

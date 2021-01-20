@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     paddingLeft: RFValue(16),
     color: '#bdbdbd',
-    fontSize: RFValue(12),
+    fontSize: 12,
   },
   follow: {
     flexDirection: 'row',

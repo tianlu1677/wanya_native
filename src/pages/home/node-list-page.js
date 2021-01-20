@@ -135,8 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingLeft: 14,
     paddingTop: 12,
-    paddingBottom: 7,
-    marginBottom: 9,
+    paddingBottom: 9,
   },
   nodeWrap: {
     width: 56,

@@ -7,6 +7,7 @@ import {throttle} from 'lodash';
 import Toast from '@/components/Toast';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
+import {BlurView} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
@@ -26,27 +27,26 @@ export const FollowShareComponent = () => {
     dispatch({type: action.CHANGE_SHARE_STATUS, value: false});
   };
 
-  const onShare = () => {};
+  const onShare = () => {
+    navigation.navigate('InviteDetail');
+  };
 
   return shareStatus ? (
-    <Pressable style={lstyles.followShareWrap}>
-      <View style={lstyles.followShare} onPress={onShare}>
-        <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
-        <Pressable
-          onPress={() => {
-            navigation.navigate('InviteDetail');
-          }}>
+    <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
+      <Pressable style={lstyles.followShareWrap} onPress={onShare}>
+        <View style={lstyles.followShare}>
+          <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
           <Text>获取更多好友动态</Text>
           <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
-        </Pressable>
-        <Pressable
-          style={lstyles.deleteIcon}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          onPress={onShareClose}>
-          <IconFont name="qingkong" size={16} />
-        </Pressable>
-      </View>
-    </Pressable>
+          <Pressable
+            style={lstyles.deleteIcon}
+            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+            onPress={onShareClose}>
+            <IconFont name="qingkong" size={16} />
+          </Pressable>
+        </View>
+      </Pressable>
+    </BlurView>
   ) : null;
 };
 
