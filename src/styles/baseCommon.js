@@ -113,6 +113,9 @@ export const ShareWrapper = {
     height: 47,
     marginRight: 16,
   },
+  shareTitle: {
+    fontWeight: '300',
+  },
   shareText: {
     fontSize: 11,
     color: '#BDBDBD',

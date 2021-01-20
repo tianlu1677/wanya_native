@@ -128,22 +128,26 @@ const NearbyShareComponent = () => {
 
   return shareNearbyStatus ? (
     <Pressable style={styles.followShareWrap} onPress={onShare}>
-      <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
-        <View style={styles.followShare}>
-          <FastImg
-            style={styles.followShareImage}
-            source={require('@/assets/images/share-nearby.png')}
-            mode={'cover'}
-          />
-          <Text>获取更多附近信息</Text>
+      <BlurView
+        blurType="light"
+        blurAmount={100}
+        reducedTransparencyFallbackColor="white"
+        style={styles.followShare}>
+        <FastImg
+          style={styles.followShareImage}
+          source={require('@/assets/images/share-nearby.png')}
+          mode={'cover'}
+        />
+        <View>
+          <Text style={styles.shareTitle}>获取更多附近信息</Text>
           <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
-          <Pressable
-            style={styles.deleteIcon}
-            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-            onPress={onShareClose}>
-            <IconFont name="qingkong" size={16} />
-          </Pressable>
         </View>
+        <Pressable
+          style={styles.deleteIcon}
+          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          onPress={onShareClose}>
+          <IconFont name="qingkong" size={16} />
+        </Pressable>
       </BlurView>
     </Pressable>
   ) : null;

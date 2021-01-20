@@ -59,20 +59,12 @@ const NewTopic = props => {
     if (res.position && res.position.coords) {
       // 获取到权限信息
       const {latitude, longitude} = res.position.coords;
-      if (
-        parseInt(latitude) === parseInt(location.latitude) &&
-        parseInt(longitude) === parseInt(location.longitude)
-      ) {
-        // 相同不需要重新获取位置
-        dispatch({type: action.GET_LOCATION, value: {...location}});
-      } else {
-        const cityData = await getLocation({latitude, longitude});
-        const {city} = cityData.data;
-        dispatch({
-          type: action.GET_LOCATION,
-          value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
-        });
-      }
+      const cityData = await getLocation({latitude, longitude});
+      const {city} = cityData.data;
+      dispatch({
+        type: action.GET_LOCATION,
+        value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
+      });
       navigation.navigate('AddSpace', {type: 'topic'});
     }
   };
@@ -292,11 +284,11 @@ const NewTopic = props => {
       dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
     } else {
       //other
-      const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       Toast.showLoading('正在发布中...');
+      // const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       try {
         const res = await createTopic(data);
-        await waitTime(1500);
+        // await waitTime(1500);
         Toast.hide();
         props.navigation.reset({
           index: 0,
