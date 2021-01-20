@@ -122,24 +122,21 @@ const NearbyShareComponent = () => {
     dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: false});
   };
 
-  const onShare = () => {};
+  const onShare = () => {
+    navigation.navigate('InviteDetail');
+  };
 
   return shareNearbyStatus ? (
-    <Pressable style={styles.followShareWrap}>
+    <Pressable style={styles.followShareWrap} onPress={onShare}>
       <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
-        <View style={styles.followShare} onPress={onShare}>
+        <View style={styles.followShare}>
           <FastImg
             style={styles.followShareImage}
             source={require('@/assets/images/share-nearby.png')}
             mode={'cover'}
           />
-          <Pressable
-            onPress={() => {
-              navigation.navigate('InviteDetail');
-            }}>
-            <Text>获取更多附近信息</Text>
-            <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
-          </Pressable>
+          <Text>获取更多附近信息</Text>
+          <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
           <Pressable
             style={styles.deleteIcon}
             hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}

@@ -27,20 +27,17 @@ export const FollowShareComponent = () => {
     dispatch({type: action.CHANGE_SHARE_STATUS, value: false});
   };
 
-  const onShare = () => {};
+  const onShare = () => {
+    navigation.navigate('InviteDetail');
+  };
 
   return shareStatus ? (
     <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
-      <Pressable style={lstyles.followShareWrap}>
-        <View style={lstyles.followShare} onPress={onShare}>
+      <Pressable style={lstyles.followShareWrap} onPress={onShare}>
+        <View style={lstyles.followShare}>
           <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
-          <Pressable
-            onPress={() => {
-              navigation.navigate('InviteDetail');
-            }}>
-            <Text>获取更多好友动态</Text>
-            <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
-          </Pressable>
+          <Text>获取更多好友动态</Text>
+          <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
           <Pressable
             style={lstyles.deleteIcon}
             hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
