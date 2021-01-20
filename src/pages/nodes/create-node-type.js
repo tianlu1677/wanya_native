@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     marginTop: RFValue(12),
     fontSize: 12,
+    fontWeight: '300',
     lineHeight: RFValue(20),
   },
   surebtnWrap: {
