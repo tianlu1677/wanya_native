@@ -83,7 +83,7 @@ export const PublishRelated = props => {
           <View>
             <View style={pstyles.formTitleWrap}>
               <Text style={pstyles.formTitle}>来自</Text>
-              <IconFont name="node-solid" size={16} color={'#000'} style={{marginLeft: 10}} />
+              <IconFont name="node-solid" size={16} color={'#000'} style={pstyles.formIcon} />
               <Text style={pstyles.formTitle}>{data.node.name}</Text>
             </View>
 
@@ -378,6 +378,10 @@ const pstyles = StyleSheet.create({
   formTitle: {
     fontSize: 15,
     fontWeight: '500',
+  },
+  formIcon: {
+    marginLeft: 10,
+    marginRight: 3,
   },
   formInfo: {
     fontSize: 12,

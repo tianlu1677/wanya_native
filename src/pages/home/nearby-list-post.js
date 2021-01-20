@@ -5,6 +5,7 @@ import * as action from '@/redux/constants';
 import {throttle} from 'lodash';
 import {RFValue} from '@/utils/response-fontsize';
 import IconFont from '@/iconfont';
+import {BlurView} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
@@ -91,7 +92,7 @@ const NearByListPost = () => {
       windowSize={Platform.OS === 'ios' ? 8 : 20}
       renderEmpty={
         <View style={lstyles.emptyWrap}>
-          <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(180)}]}>
+          <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(165)}]}>
             <Text style={lstyles.emptyText}>附近还没有更多顽友</Text>
             <Text style={lstyles.emptyText}>邀请小伙伴一起玩呀</Text>
           </View>
@@ -101,7 +102,7 @@ const NearByListPost = () => {
     />
   ) : (
     <View style={lstyles.emptyWrap}>
-      <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(180)}]}>
+      <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(165)}]}>
         <Text style={lstyles.emptyText}>你还没有开启【定位服务】权限</Text>
         <Text style={lstyles.emptyText}>在【设置】中授权后将获得更多附近信息</Text>
       </View>
@@ -125,26 +126,28 @@ const NearbyShareComponent = () => {
 
   return shareNearbyStatus ? (
     <Pressable style={styles.followShareWrap}>
-      <View style={styles.followShare} onPress={onShare}>
-        <FastImg
-          style={styles.followShareImage}
-          source={require('@/assets/images/share-nearby.png')}
-          mode={'cover'}
-        />
-        <Pressable
-          onPress={() => {
-            navigation.navigate('InviteDetail');
-          }}>
-          <Text>获取更多附近信息</Text>
-          <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
-        </Pressable>
-        <Pressable
-          style={styles.deleteIcon}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          onPress={onShareClose}>
-          <IconFont name="qingkong" size={16} />
-        </Pressable>
-      </View>
+      <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
+        <View style={styles.followShare} onPress={onShare}>
+          <FastImg
+            style={styles.followShareImage}
+            source={require('@/assets/images/share-nearby.png')}
+            mode={'cover'}
+          />
+          <Pressable
+            onPress={() => {
+              navigation.navigate('InviteDetail');
+            }}>
+            <Text>获取更多附近信息</Text>
+            <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
+          </Pressable>
+          <Pressable
+            style={styles.deleteIcon}
+            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+            onPress={onShareClose}>
+            <IconFont name="qingkong" size={16} />
+          </Pressable>
+        </View>
+      </BlurView>
     </Pressable>
   ) : null;
 };
