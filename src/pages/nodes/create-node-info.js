@@ -11,7 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {debounce, throttle} from 'lodash';
+import {throttle} from 'lodash';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingLeft: RFValue(15),
     marginBottom: RFValue(20),
-    fontSize: RFValue(14),
+    fontSize: 14,
     borderRadius: 4,
     ...boxShadow,
   },
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   introText: {
     color: '#bdbdbd',
     marginTop: RFValue(12),
-    fontSize: RFValue(12),
+    fontSize: 12,
     lineHeight: RFValue(20),
   },
   surebtnWrap: {
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     overflow: 'hidden',
     fontWeight: '500',
-    fontSize: RFValue(16),
+    fontSize: 16,
     marginTop: RFValue(60),
   },
   canClick: {

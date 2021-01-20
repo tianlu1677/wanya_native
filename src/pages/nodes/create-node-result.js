@@ -17,8 +17,7 @@ const CreateNodeResult = props => {
   const [detail, setDetail] = useState(null);
 
   const loadData = async () => {
-    const check_res = await checkCheckNodes(nodeId);
-    console.log('check_res', check_res);
+    await checkCheckNodes(nodeId);
     const res = await getCheckNodesDetail(nodeId);
     setDetail(res.data.check_node);
   };
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: RFValue(30),
-    paddingTop: RFValue(36),
+    paddingTop: RFValue(35),
   },
   imageWrap: {
     flexDirection: 'row',
@@ -141,28 +140,28 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#7F7F81',
-    fontSize: RFValue(14),
+    fontSize: 14,
     lineHeight: RFValue(16),
   },
   time: {
     color: '#BDBDBD',
-    fontSize: RFValue(12),
+    fontSize: 12,
     marginTop: RFValue(5),
   },
   tips: {
     marginTop: RFValue(25),
-    fontSize: RFValue(14),
+    fontSize: 14,
     lineHeight: RFValue(20),
     marginBottom: RFValue(20),
   },
   slideView: {
-    height: RFValue(70),
+    height: RFValue(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: RFValue(15),
-    marginBottom: RFValue(20),
+    marginBottom: RFValue(15),
     borderRadius: 4,
     ...boxShadow,
   },
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
   },
   introText: {
     color: '#bdbdbd',
-    fontSize: RFValue(12),
+    fontSize: 12,
     lineHeight: RFValue(17),
   },
   error: {
@@ -199,7 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     overflow: 'hidden',
     fontWeight: '500',
-    fontSize: RFValue(16),
+    fontSize: 16,
     marginTop: RFValue(60),
     backgroundColor: '#000',
     color: '#fff',

@@ -74,17 +74,17 @@ const styles = StyleSheet.create({
     top: '50%',
     marginTop: RFValue(-7),
     left: RFValue(13),
-    fontSize: RFValue(10),
+    fontSize: 10,
   },
   textInput: {
     paddingLeft: RFValue(35),
-    fontSize: RFValue(14),
+    fontSize: 14,
     color: '#000',
     fontWeight: '300',
   },
   cancel: {
     textAlign: 'center',
-    fontSize: RFValue(15),
+    fontSize: 15,
     color: '#bdbdbd',
   },
 });

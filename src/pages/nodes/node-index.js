@@ -110,7 +110,7 @@ const nstyles = StyleSheet.create({
   },
   noNodes: {
     color: '#bdbdbd',
-    fontSize: RFValue(12),
+    fontSize: 12,
     marginTop: RFValue(25),
     marginBottom: RFValue(25),
     textAlign: 'center',
