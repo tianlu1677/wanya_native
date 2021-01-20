@@ -285,10 +285,10 @@ const NewTopic = props => {
     } else {
       //other
       Toast.showLoading('正在发布中...');
-      const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
+      // const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       try {
         const res = await createTopic(data);
-        await waitTime(1500);
+        // await waitTime(1500);
         Toast.hide();
         props.navigation.reset({
           index: 0,
