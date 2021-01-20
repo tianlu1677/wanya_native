@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     paddingLeft: RFValue(15),
     marginBottom: RFValue(20),
     fontSize: 14,
+    fontWeight: '300',
     borderRadius: 4,
     ...boxShadow,
   },

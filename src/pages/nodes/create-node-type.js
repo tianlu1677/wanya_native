@@ -75,20 +75,12 @@ const CreateNodeType = props => {
     if (res.position && res.position.coords) {
       // 获取到权限信息
       const {latitude, longitude} = res.position.coords;
-      if (
-        parseInt(latitude) === parseInt(location.latitude) &&
-        parseInt(longitude) === parseInt(location.longitude)
-      ) {
-        // 相同不需要重新获取位置
-        dispatch({type: action.GET_LOCATION, value: {...location}});
-      } else {
-        const cityData = await getLocation({latitude, longitude});
-        const {city} = cityData.data;
-        dispatch({
-          type: action.GET_LOCATION,
-          value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
-        });
-      }
+      const cityData = await getLocation({latitude, longitude});
+      const {city} = cityData.data;
+      dispatch({
+        type: action.GET_LOCATION,
+        value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
+      });
       props.navigation.navigate('AddSpace', {type: 'node'});
     }
   };
@@ -189,6 +181,7 @@ const styles = StyleSheet.create({
   },
   slidetext: {
     fontSize: 14,
+    fontWeight: '300',
   },
   introText: {
     color: '#bdbdbd',

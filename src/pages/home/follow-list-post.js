@@ -32,12 +32,14 @@ export const FollowShareComponent = () => {
   };
 
   return shareStatus ? (
-    <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
-      <Pressable style={lstyles.followShareWrap} onPress={onShare}>
+    <Pressable style={lstyles.followShareWrap} onPress={onShare}>
+      <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
         <View style={lstyles.followShare}>
           <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
-          <Text>获取更多好友动态</Text>
-          <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
+          <View>
+            <Text style={lstyles.shareTitle}>获取更多好友动态</Text>
+            <Text style={lstyles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
+          </View>
           <Pressable
             style={lstyles.deleteIcon}
             hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
@@ -45,8 +47,8 @@ export const FollowShareComponent = () => {
             <IconFont name="qingkong" size={16} />
           </Pressable>
         </View>
-      </Pressable>
-    </BlurView>
+      </BlurView>
+    </Pressable>
   ) : null;
 };
 
