@@ -19,6 +19,7 @@ import {CategoryDrawer} from '@/components/NodeComponents';
 import GetLocation from '@/components/GetLocation';
 import {createCheckNodes, editCheckNodes, submitCheckNodes} from '@/api/node_api';
 import {getLocation} from '@/api/space_api';
+import {debounce} from 'lodash';
 
 const CreateNodeType = props => {
   const dispatch = useDispatch();
@@ -41,29 +42,40 @@ const CreateNodeType = props => {
 
   const onCreateClick = async () => {
     Toast.showLoading();
-    const {cover} = createNode;
-    let cover_id = cover.cover_id || null;
-    if (cover.uri) {
-      const result = await props.uploadImage({uploadType: 'multipart', ...cover});
-      cover_id = result.asset.id;
+    try {
+      const {cover} = createNode;
+      let cover_id = cover.cover_id || null;
+      if (cover.uri) {
+        const result = await props.uploadImage({uploadType: 'multipart', ...cover});
+        cover_id = result.asset.id;
+      }
+      const params = {...getValidateForm(), cover_id};
+      let res = null;
+      if (nodeId) {
+        res = await editCheckNodes({check_node: params}, nodeId);
+      } else {
+        res = await createCheckNodes({check_node: params});
+      }
+      if (res.error) {
+        res.error.map(detail => {
+          Toast.showError(detail.name);
+        });
+      } else {
+        await submitCheckNodes(res.check_node.id);
+        Toast.hide();
+        props.navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'CreateNodeResult',
+              params: {nodeId: res.check_node.id, prevPage: 'create-node-type'},
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      Toast.hide();
     }
-    const params = {...getValidateForm(), cover_id};
-    let res = null;
-    if (nodeId) {
-      res = await editCheckNodes({check_node: params}, nodeId);
-    } else {
-      res = await createCheckNodes({check_node: params});
-    }
-    await submitCheckNodes(res.data.check_node.id);
-    props.navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'CreateNodeResult',
-          params: {nodeId: res.data.check_node.id, prevPage: 'create-node-type'},
-        },
-      ],
-    });
   };
 
   const getCurrentLocation = async res => {
@@ -137,7 +149,7 @@ const CreateNodeType = props => {
           <Text style={styles.introText}>选择所在位置后，将方便附近顽友发现该圈子</Text>
           <Pressable
             style={styles.surebtnWrap}
-            onPress={createNode.category ? onCreateClick : () => {}}>
+            onPress={createNode.category ? debounce(onCreateClick, 800) : () => {}}>
             <Text style={[styles.surebtn, createNode.category ? styles.canClick : styles.disabled]}>
               {nodeId ? '确认修改' : '确认创建'}
             </Text>

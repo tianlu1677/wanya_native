@@ -65,7 +65,7 @@ export const createCheckNodes = async params => {
     method: 'POST',
     data: params,
   });
-  return res;
+  return res.data;
 };
 
 // 请求是否符合条件
@@ -95,7 +95,7 @@ export const editCheckNodes = async (params, id) => {
     method: 'PUT',
     data: params,
   });
-  return res;
+  return res.data;
 };
 
 //审核圈子详情
