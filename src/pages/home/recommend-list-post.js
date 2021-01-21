@@ -42,12 +42,14 @@ const RecommendListPost = () => {
     }
     // 加载置顶
     let top_posts_res = await getRecommendTopPosts();
-    let itemList = top_posts_res.data.posts.map(item => ({...item, is_top: true}));
+    let topItemList = top_posts_res.data.posts;
     const res = await getRecommendPosts({page});
-    itemList = itemList.concat(res.data.posts);
-    setListData(onChangeListDataText(itemList));
-    setHeaders(res.headers);
+    let itemList = page === 1 ? res.data.posts : [...listData, ...res.data.posts];
+    itemList = itemList.concat(topItemList);
+    itemList = onChangeListDataText(itemList);
+    setListData(itemList);
     setLoading(false);
+    setHeaders(res.headers);
   };
 
   const onRefresh = (page = 1) => {
