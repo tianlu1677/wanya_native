@@ -15,6 +15,8 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {RFValue} from '@/utils/response-fontsize';
 import {getChannelPosts} from '@/api/home_api';
+import { recordDeviceInfo } from '@/api/settings_api';
+import deviceInfo from '@/utils/device_info'
 import {getLocation} from './getLocation';
 import {
   dispatchFetchCategoryList,
@@ -111,6 +113,10 @@ const Recommend = props => {
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
+  useEffect(() => {
+    // console.log('deviceInfo', deviceInfo)
+    recordDeviceInfo(deviceInfo);
+  }, [])
 
   useEffect(() => {
     dispatch(dispatchCurrentAccount());

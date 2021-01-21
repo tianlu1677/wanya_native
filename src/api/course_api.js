@@ -32,7 +32,7 @@ export async function createLearning(lesson_id = '') {
   const res = await request({
     url: '/api/v1/learnings',
     method: 'POST',
-    data: {lesson_id: lesson_id},,
+    data: {lesson_id: lesson_id},
   });
   return res.data;
 }
