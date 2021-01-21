@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     color: '#BDBDBD',
     fontSize: 12,
     marginTop: RFValue(5),
+    lineHeight: 15,
   },
   tips: {
     marginTop: RFValue(25),

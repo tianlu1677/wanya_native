@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {ListEmpty as lstyles, ShareWrapper as styles} from '@/styles/baseCommon';
 
 const NearByListPost = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {location} = useSelector(state => state.home);
 
@@ -91,13 +92,13 @@ const NearByListPost = () => {
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
       renderEmpty={
-        <View style={lstyles.emptyWrap}>
+        <Pressable style={lstyles.emptyWrap} onPress={() => navigation.navigate('InviteDetail')}>
           <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(165)}]}>
             <Text style={lstyles.emptyText}>附近还没有更多顽友</Text>
             <Text style={lstyles.emptyText}>邀请小伙伴一起玩呀</Text>
           </View>
           <Text style={lstyles.moreNode}>分享给身边好友</Text>
-        </View>
+        </Pressable>
       }
     />
   ) : (
