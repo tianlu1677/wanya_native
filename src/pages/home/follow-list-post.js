@@ -131,19 +131,31 @@ const FollowListPost = () => {
   const RenderItem = React.memo(({item, index}) => {
     return (
       <>
-        {index === 0 && FollowShareComponent()}
         {item.item_type === 'Topic' ? (
           <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
         ) : (
           <BaseArticle data={item.item} />
         )}
-        {index === 0 && RelatedRecommend()}
       </>
     );
   });
 
-  const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
-
+  const renderItemMemo = useCallback(
+    itemProps => {
+      console.log('itemProps....', itemProps, itemProps.id === 0);
+      if (itemProps.index === 1) {
+        return (
+          <View>
+            <RelatedRecommend />
+            <RenderItem {...itemProps} />
+          </View>
+        );
+      } else {
+        return <RenderItem {...itemProps} />;
+      }
+    },
+    [listData]
+  );
   const onRefresh = (page = 1) => {
     loadData(page);
   };
@@ -154,8 +166,8 @@ const FollowListPost = () => {
     }
     const res = await getFollowedPosts({page, ...params});
     setListData(page === 1 ? res.data.posts : [...listData, ...res.data.posts]);
-    setLoading(false);
     setHeaders(res.headers);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -171,7 +183,8 @@ const FollowListPost = () => {
       renderItem={renderItemMemo}
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
-      windowSize={Platform.OS === 'ios' ? 8 : 20}
+      windowSize={Platform.OS === 'ios' ? 10 : 20}
+      ListHeaderComponent={FollowShareComponent()}
       renderEmpty={
         <View>
           {FollowShareComponent()}
@@ -181,7 +194,6 @@ const FollowListPost = () => {
     />
   );
 };
-
 const styles = StyleSheet.create({
   wrapper: {
     paddingLeft: 14,
