@@ -5,6 +5,18 @@ import Helper from '../utils/helper';
 import Toast from '@/components/Toast';
 import * as RootNavigation from '@/navigator/root-navigation';
 import {BaseApiUrl, WANYA_VERSION} from '@/utils/config';
+import DeviceInfo from 'react-native-device-info';
+
+const deviceId = DeviceInfo.getSystemVersion();
+const systemName = DeviceInfo.getSystemName();
+
+const deviceDefaultInfo = {
+  deviceInfo: {
+    deviceId: deviceId,
+    systemName: systemName,
+    Version: WANYA_VERSION,
+  },
+};
 
 axios.defaults.baseURL = `${BaseApiUrl}`;
 axios.defaults.timeout = 20000;
@@ -78,9 +90,9 @@ export default async function requestHttp(options, url = null) {
   const auth_token = await Helper.getData('auth_token');
 
   if (options.method === 'GET') {
-    params = {...options.data, ...options.params, version: WANYA_VERSION};
+    params = {...options.data, ...options.params};
   } else {
-    data = {...options.data, version: WANYA_VERSION};
+    data = {...options.data, ...deviceDefaultInfo};
   }
   let contentType = 'application/json';
   contentType = options.contentType || contentType;
