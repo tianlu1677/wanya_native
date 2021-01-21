@@ -27,6 +27,7 @@ import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
+import IconFont from '@/iconfont';
 
 const NodeDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const NodeDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
     setDetail(res.data.node);
+    // console.log('res', res.data.node);
   };
 
   const onFollowNode = async () => {
@@ -127,7 +129,30 @@ const NodeDetail = ({navigation, route}) => {
               <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
               <View style={styles.nodewrap}>
                 <Text style={styles.nodeName}>{detail.name}</Text>
-                <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+                  {(detail.space || detail.location) && <Text style={{color: 'white', marginTop: 12}}> · </Text>}
+                  {detail.space && (
+                    <Pressable
+                      style={styles.spaceWrapper}
+                      onPress={() => navigation.push('SpaceDetail', {spaceId: detail.space.id})}
+                      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                      <IconFont name="space-point" size={11} color={'white'} style={{marginTop: 12}} />
+                      <Text style={styles.spaceText}>{detail.space.name}</Text>
+                    </Pressable>
+                  )}
+                  {!detail.space && detail.location && (
+                    <Pressable
+                      style={styles.spaceWrapper}
+                      onPress={() =>
+                        navigation.push('LocationDetail', {locationId: detail.location.id})
+                      }
+                      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+                      <IconFont name="space-point" size={11} color={'white'} style={{marginTop: 12}} />
+                      <Text style={styles.spaceText}>{detail.location.name}</Text>
+                    </Pressable>
+                  )}
+                </View>
               </View>
             </View>
           </View>
@@ -252,6 +277,19 @@ const styles = StyleSheet.create({
     marginLeft: 1,
     borderWidth: 3,
     borderColor: '#ffff00',
+  },
+  spaceWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 4,
+  },
+  spaceText: {
+    color: 'white',
+    marginLeft: 2,
+    marginTop: 11,
+    fontSize: 11,
+    fontWeight: '400',
   },
   nodewrap: {
     alignItems: 'flex-start',
