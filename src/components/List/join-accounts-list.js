@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import {Avator, PlayScore} from '@/components/NodeComponents';
-import PropTypes from 'prop-types';
 import {RFValue} from '@/utils/response-fontsize';
 
 const JoinAccountsList = ({navigation, route}) => {
@@ -113,11 +112,5 @@ export const styles = StyleSheet.create({
     marginLeft: RFValue(16),
   },
 });
-
-JoinAccountsList.propTypes = {
-  title: PropTypes.string.isRequired,
-  request: PropTypes.object.isRequired,
-  listOption: PropTypes.any,
-};
 
 export default JoinAccountsList;
