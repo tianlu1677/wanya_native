@@ -64,7 +64,20 @@ const CreateNodeResult = props => {
       <View style={styles.imageWrap}>
         <FastImg style={styles.image} mode={'cover'} source={{uri: detail.cover_url}} />
         <View style={styles.imageInfo}>
-          <Text style={styles.text}>{detail.audit_status_text}</Text>
+          <Text
+            style={[
+              styles.text,
+              {
+                color:
+                  detail.audit_status === 'failed'
+                    ? '#FF2242'
+                    : detail.audit_status === 'success'
+                    ? '#4DEE7C'
+                    : '#7F7F81',
+              },
+            ]}>
+            {detail.audit_status_text}
+          </Text>
           <Text style={styles.time}>{detail.response_reason}</Text>
         </View>
       </View>
