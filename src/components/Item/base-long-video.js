@@ -5,26 +5,27 @@ import {Header, NoActionBottom} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 
-const BaseArticle = props => {
+const BaseLongVideo = props => {
   const {data} = props;
   const navigation = useNavigation();
-
   const goArticleDetail = () => {
-    navigation.push('ArticleDetail', {articleId: data.id});
+    // navigation.push('LongVideoDetail', {longVideoId: data.id});
+    navigation.push('TopicDetail', {topicId: data.id});
   };
+
+  const url = 'http://xinxuefile.meirixinxue.com/assets/3cf9bdc33c0ea0d12ef8a6c29169eacb.jpg';
 
   return (
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
       <Header data={data} type="article" onRemove={props.onRemove} />
       <View style={styles.content}>
-        {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
-        <View style={styles.titleInfo}>
-          <Text style={styles.titleText} numberOfLines={2}>
-            {data.title}
-          </Text>
+        <Text style={styles.titleText}>
+          滑板世锦赛即将开幕了，来自全球众多个国家的滑手齐聚来自全球众多来自个国家的滑上海
+        </Text>
+        <FastImg source={{uri: url}} style={styles.imageCover} />
+        <View style={styles.bottom}>
           <NoActionBottom data={data} />
         </View>
-        <FastImg source={{uri: data.cover_url}} style={styles.imageCover} />
       </View>
     </Pressable>
   );
@@ -38,14 +39,6 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: 13,
-    marginBottom: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    position: 'relative',
-  },
-  titleInfo: {
-    flex: 1,
-    justifyContent: 'space-between',
   },
   titleText: {
     fontSize: 14,
@@ -53,25 +46,14 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   imageCover: {
-    width: RFValue(105),
-    height: RFValue(75),
-    marginLeft: RFValue(22),
+    width: '100%',
+    height: RFValue(193),
+    marginTop: 5,
   },
-  excellentLabel: {
-    width: 30,
-    height: 16,
-    lineHeight: 16,
-    textAlign: 'center',
-    fontSize: 10,
-    color: 'white',
-    backgroundColor: '#FF2242',
-    borderRadius: 2,
-    overflow: 'hidden',
-    position: 'absolute',
-    right: 8,
-    top: 8,
-    zIndex: 1,
+  bottom: {
+    height: RFValue(35),
+    justifyContent: 'center',
   },
 });
 
-export default BaseArticle;
+export default BaseLongVideo;

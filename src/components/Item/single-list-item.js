@@ -137,7 +137,9 @@ export const Header = props => {
                 <Text style={hstyles.spaceText}>{data.location.name}</Text>
               </Pressable>
             )}
-            {data.distance && data.distance > 0 && <Text style={hstyles.spaceText}>· {(data.distance / 1000).toFixed(1)}km</Text>}
+            {data.distance && data.distance > 0 && (
+              <Text style={hstyles.spaceText}>· {(data.distance / 1000).toFixed(1)}km</Text>
+            )}
           </View>
         </Pressable>
       </View>
@@ -405,5 +407,25 @@ const cstyles = StyleSheet.create({
   hashtagText: {
     color: '#ff8d00',
     marginRight: 3,
+  },
+});
+
+export const NoActionBottom = props => {
+  const {node_name, praises_count, comments_count} = props.data;
+  return (
+    <Text style={nbstyles.infotext}>
+      {node_name ? `${node_name}` : ''}
+      {node_name && praises_count ? '·' : ''}
+      {praises_count ? `赞${praises_count}` : ''}
+      {(node_name || praises_count) && comments_count ? '·' : ''}
+      {comments_count ? `评论${comments_count}` : ''}
+    </Text>
+  );
+};
+
+const nbstyles = StyleSheet.create({
+  infotext: {
+    color: '#BDBDBD',
+    fontSize: 12,
   },
 });

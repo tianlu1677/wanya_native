@@ -133,8 +133,6 @@ const SingleItem = props => {
           />
         )}
 
-        {/* {props.isTop && <IsTopIcon />} */}
-        {/* {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>} */}
         <View style={styles.singleBottom}>
           <Avator account={data.account} size={16} />
           <Pressable
@@ -383,22 +381,6 @@ const styles = StyleSheet.create({
     left: 8,
     top: 8,
   },
-  excellentLabel: {
-    width: 30,
-    height: 16,
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 10,
-    lineHeight: 16,
-    backgroundColor: '#FF2242',
-    borderRadius: 2,
-    overflow: 'hidden',
-    color: 'white',
-    position: 'absolute',
-    left: 8,
-    top: 8,
-  },
-
   topText: {
     width: 30,
     height: 16,
