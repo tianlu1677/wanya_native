@@ -15,8 +15,8 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {RFValue} from '@/utils/response-fontsize';
 import {getChannelPosts} from '@/api/home_api';
-import { recordDeviceInfo } from '@/api/settings_api';
-import deviceInfo from '@/utils/device_info'
+import {recordDeviceInfo} from '@/api/settings_api';
+import deviceInfo from '@/utils/device_info';
 import {getLocation} from './getLocation';
 import {
   dispatchFetchCategoryList,
@@ -25,6 +25,7 @@ import {
   dispatchFetchUploadTopic,
   changeUploadStatus,
 } from '@/redux/actions';
+import LongVideoList from '@/components/List/long-video-list';
 import FollowListPage from './follow-list-post';
 import NodeListPage from './node-list-page';
 import RecommendListPage from './recommend-list-post';
@@ -81,12 +82,19 @@ const Recommend = props => {
     return {
       key: item.name,
       title: item.name,
-      component: () =>
-        item.display_style === 'single' ? (
-          <SingleList request={{api: getChannelPosts, params}} />
-        ) : (
-          <DoubleList request={{api: getChannelPosts, params}} />
-        ),
+      component: () => {
+        let component = null;
+        if (item.display_style === 'single') {
+          component = <SingleList request={{api: getChannelPosts, params}} />;
+        }
+        if (item.display_style === 'double') {
+          component = <DoubleList request={{api: getChannelPosts, params}} />;
+        }
+        if (item.display_style === 'long_video') {
+          component = <LongVideoList request={{api: getChannelPosts, params}} />;
+        }
+        return component;
+      },
     };
   });
 
@@ -108,6 +116,12 @@ const Recommend = props => {
     setCurrentKey(key);
   };
 
+  // const LongVideoListPage = () => {
+  //   return (
+  //       <LongVideoList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
+  //   );
+  // };
+
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchBaseCurrentAccount());
@@ -116,7 +130,7 @@ const Recommend = props => {
   useEffect(() => {
     // console.log('deviceInfo', deviceInfo)
     recordDeviceInfo(deviceInfo);
-  }, [])
+  }, []);
 
   useEffect(() => {
     dispatch(dispatchCurrentAccount());

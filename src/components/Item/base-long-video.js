@@ -8,21 +8,17 @@ import {RFValue} from '@/utils/response-fontsize';
 const BaseLongVideo = props => {
   const {data} = props;
   const navigation = useNavigation();
+
   const goArticleDetail = () => {
-    // navigation.push('LongVideoDetail', {longVideoId: data.id});
     navigation.push('TopicDetail', {topicId: data.id});
   };
-
-  const url = 'http://xinxuefile.meirixinxue.com/assets/3cf9bdc33c0ea0d12ef8a6c29169eacb.jpg';
 
   return (
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
       <Header data={data} type="article" onRemove={props.onRemove} />
       <View style={styles.content}>
-        <Text style={styles.titleText}>
-          滑板世锦赛即将开幕了，来自全球众多个国家的滑手齐聚来自全球众多来自个国家的滑上海
-        </Text>
-        <FastImg source={{uri: url}} style={styles.imageCover} />
+        <Text style={styles.titleText}>{data.title}</Text>
+        <FastImg source={{uri: data.single_cover.cover_url}} style={styles.imageCover} />
         <View style={styles.bottom}>
           <NoActionBottom data={data} />
         </View>

@@ -1,8 +1,10 @@
-import React, {useRef, useCallback} from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import React, {useState, useRef, useCallback} from 'react';
+import {View, Text, StyleSheet, Dimensions, Pressable} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {SAFE_TOP} from '@/utils/navbar';
+import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
 import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
 import {PlainContent} from '@/components/Item/single-list-item';
 import VideoPlayerContent from '@/components/react-native-video-player';
@@ -11,6 +13,7 @@ const {width: screenWidth} = Dimensions.get('window');
 
 const RenderLongVideo = props => {
   const videoRef = useRef(null);
+  const [check, setCkeck] = useState(false);
   const currentAccount = useSelector(state => state.account.currentAccount);
   const {detail} = props;
   const {width, height} = detail.media_video;
@@ -30,6 +33,7 @@ const RenderLongVideo = props => {
     }, [])
   );
 
+  console.log('RenderLongVideo');
   return (
     <>
       <View style={{position: 'relative'}}>
@@ -52,21 +56,33 @@ const RenderLongVideo = props => {
         />
       </View>
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-      {detail.plain_content ? (
-        <View style={styles.content}>
-          <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
+      <View style={styles.introWrap}>
+        <View style={styles.titleInfo}>
+          <Text style={styles.title}>{detail.title}</Text>
+          <Pressable
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+            onPress={() => setCkeck(!check)}>
+            <IconFont
+              name={check ? 'upper' : 'down'}
+              size={11}
+              color={'#000'}
+              style={styles.titleIcon}
+            />
+          </Pressable>
         </View>
-      ) : null}
+        {check && <Text style={styles.intro}>{detail.plain_content}</Text>}
+      </View>
       <PublishRelated data={detail} />
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  content: {
-    padding: 15,
-    paddingRight: 24,
-    paddingBottom: 10,
+  introWrap: {
+    paddingHorizontal: 15,
+    paddingTop: RFValue(14),
+    paddingBottom: RFValue(15),
+    // backgroundColor: 'pink',
   },
   multiLineText: {
     fontSize: 14,
@@ -88,6 +104,29 @@ const styles = StyleSheet.create({
     top: SAFE_TOP,
     zIndex: 1,
     marginTop: 9,
+  },
+  titleInfo: {
+    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '500',
+    lineHeight: RFValue(25),
+    textAlign: 'justify',
+    marginRight: 'auto',
+    flex: 1,
+  },
+  titleIcon: {
+    marginTop: RFValue(8),
+    marginLeft: RFValue(14),
+  },
+  intro: {
+    color: '#BDBDBD',
+    lineHeight: RFValue(17),
+    marginTop: RFValue(15),
+    textAlign: 'justify',
   },
 });
 

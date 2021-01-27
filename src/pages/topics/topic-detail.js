@@ -34,6 +34,7 @@ const TopicDetail = ({navigation, route}) => {
   const currentTopic = useSelector(state => state.topic.topicDetail);
 
   const [topicId] = useState(route.params.topicId);
+
   const [detail, setDetail] = useState();
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
@@ -103,6 +104,8 @@ const TopicDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
+  console.log('detail', detail);
+
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -143,8 +146,12 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            {detail.content_style === 'long-video' && <RenderLongVideo detail={detail} />}
-            {detail.content_style === 'video' && <RenderVideo detail={detail} />}
+            {detail.content_style === 'video' && detail.is_long_video && (
+              <RenderLongVideo detail={detail} />
+            )}
+            {detail.content_style === 'video' && !detail.is_long_video && (
+              <RenderVideo detail={detail} />
+            )}
             {detail.content_style === 'img' && <RenderImage detail={detail} />}
             {detail.content_style === 'link' && <RenderLink detail={detail} />}
             {detail.content_style === 'text' && <RenderText detail={detail} />}

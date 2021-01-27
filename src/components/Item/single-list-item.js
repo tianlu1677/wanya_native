@@ -248,6 +248,7 @@ export const Bottom = props => {
     const shareContent = {...shareOptions, visible: true};
     dispatch(dispatchShareItem(shareContent));
   };
+
   const zoomOut = {
     0: {
       opacity: 0,
@@ -265,7 +266,7 @@ export const Bottom = props => {
   };
 
   return (
-    <View style={bstyles.botView}>
+    <View style={[bstyles.botView, props.style]}>
       <Pressable style={bstyles.botCon} onPress={onPraise}>
         <Animatable.View animation={an} useNativeDriver easing="ease-out" iterationCount={1}>
           <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
@@ -274,18 +275,20 @@ export const Bottom = props => {
           {praiseCount > 0 ? praiseCount : ''}
         </Animatable.Text>
       </Pressable>
-      <View style={bstyles.botCon}>
+      <Pressable style={bstyles.botCon}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />
-        <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
-      </View>
-      <Pressable
-        style={{marginLeft: 'auto'}}
-        onPress={() => {
-          onShare();
-        }}
-        hitSlop={{left: 30, right: 20, top: 20, bottom: 10}}>
-        <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
+        <Text style={bstyles.botNum}>{data.comments_count || ''}99</Text>
       </Pressable>
+      {props.share ? (
+        <Pressable
+          style={{marginLeft: 'auto'}}
+          onPress={() => {
+            onShare();
+          }}
+          hitSlop={{left: 30, right: 20, top: 20, bottom: 10}}>
+          <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
+        </Pressable>
+      ) : null}
     </View>
   );
 };
@@ -385,7 +388,7 @@ const bstyles = StyleSheet.create({
     alignItems: 'center',
   },
   botCon: {
-    width: 60,
+    width: 70,
     flexDirection: 'row',
     alignItems: 'center',
   },

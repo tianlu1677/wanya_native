@@ -12,6 +12,8 @@ import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseLongVideo from '@/components/Item/base-long-video';
+
 import {getFollowedPosts} from '@/api/home_api';
 import {recommendAccounts} from '@/api/mine_api';
 import {followAccount} from '@/api/account_api';
@@ -129,31 +131,23 @@ const FollowListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    return (
-      <>
-        {item.item_type === 'Topic' ? (
-          <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-        ) : (
-          <BaseArticle data={item.item} />
-        )}
-      </>
+    return item.item_type === 'Topic' ? (
+      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+    ) : (
+      <BaseArticle data={item.item} />
     );
   });
 
   const renderItemMemo = useCallback(
-    itemProps => {
-      console.log('itemProps....', itemProps, itemProps.id === 0);
-      if (itemProps.index === 1) {
-        return (
-          <View>
-            <RelatedRecommend />
-            <RenderItem {...itemProps} />
-          </View>
-        );
-      } else {
-        return <RenderItem {...itemProps} />;
-      }
-    },
+    itemProps =>
+      itemProps.index === 1 ? (
+        <>
+          <RelatedRecommend />
+          <RenderItem {...itemProps} />
+        </>
+      ) : (
+        <RenderItem {...itemProps} />
+      ),
     [listData]
   );
   const onRefresh = (page = 1) => {

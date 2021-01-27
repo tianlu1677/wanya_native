@@ -243,9 +243,6 @@ export default class VideoPlayer extends Component {
   };
 
   onBuffer = ({isBuffering}) => {
-    console.log('onBuffer', isBuffering);
-    console.log('progress', this.state.progress);
-
     if (this.state.progress > 10 && isBuffering) {
       this.setState({opacity: isBuffering ? 1 : 0});
     } else {
@@ -586,10 +583,14 @@ export default class VideoPlayer extends Component {
             style={styles.overlayButton}
             onPress={() => {
               this.showControls();
-              if (pauseOnPress) this.onPlayPress();
+              if (pauseOnPress) {
+                this.onPlayPress();
+              }
             }}
             onLongPress={() => {
-              if (fullScreenOnLongPress && Platform.OS !== 'android') this.onToggleFullScreen();
+              if (fullScreenOnLongPress && Platform.OS !== 'android') {
+                this.onToggleFullScreen();
+              }
             }}
           />
         </View>

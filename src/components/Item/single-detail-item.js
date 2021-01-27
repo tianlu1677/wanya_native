@@ -351,7 +351,6 @@ const pstyles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingLeft: 15,
     paddingRight: 53,
-    marginBottom: 12,
   },
   tagsText: {
     paddingLeft: 9,
