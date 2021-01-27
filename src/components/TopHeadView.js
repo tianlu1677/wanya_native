@@ -65,7 +65,7 @@ const TopHeaderView = props => {
           <View style={styles.title}>
             {Title && typeof Title === 'string' ? (
               <Text numberOfLines={1} style={styles.titleText}>
-                {Title}
+                {Title.length > 16 ? `${Title.substr(0,16)}...` : Title}
               </Text>
             ) : (
               <Title />
@@ -116,6 +116,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     color: 'black',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   rightButton: {
     flex: 1,

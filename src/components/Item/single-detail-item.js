@@ -232,10 +232,10 @@ export const ActionComment = props => {
 
   useEffect(() => {
     if (comment.content) {
-      setValue(comment.content);
       setTimeout(() => {
         props.changeVisible(true);
-      }, 600);
+        setValue(comment.content);
+      }, 500);
     }
   }, [comment]);
 
