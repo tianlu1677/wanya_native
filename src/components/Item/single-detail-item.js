@@ -3,6 +3,7 @@ import {View, Text, Image, StyleSheet, Pressable, TextInput} from 'react-native'
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
 import {Avator} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchArticleDetail} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
@@ -67,6 +68,7 @@ export const PublishRelated = props => {
     navigation.push('NodeDetail', {nodeId: data.node.id});
   };
 
+  console.log(data);
   return (
     <>
       {data.tag_list.length > 0 && (
@@ -86,10 +88,9 @@ export const PublishRelated = props => {
               <IconFont name="node-solid" size={16} color={'#000'} style={pstyles.formIcon} />
               <Text style={pstyles.formTitle}>{data.node.name}</Text>
             </View>
-
             <Text style={pstyles.formInfo}>
-              {data.node.topics_count}篇帖子 · {data.node.accounts_count}位
-              {data.node.nickname || '圈友'}
+              {props.type === 'topic' && `${data.node.topics_count}篇帖子 · `}
+              {data.node.accounts_count}位{data.node.nickname || '圈友'}
             </Text>
           </View>
           <Image style={pstyles.formImage} source={{uri: data.node.cover_url}} />
@@ -351,6 +352,7 @@ const pstyles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingLeft: 15,
     paddingRight: 53,
+    marginTop: 16,
   },
   tagsText: {
     paddingLeft: 9,
@@ -362,11 +364,11 @@ const pstyles = StyleSheet.create({
     fontSize: 11,
   },
   fromWrapper: {
-    height: 90,
     flexDirection: 'row',
     paddingLeft: 15,
     paddingRight: 19,
     alignItems: 'center',
+    marginTop: RFValue(16),
   },
   formTitleWrap: {
     flexDirection: 'row',

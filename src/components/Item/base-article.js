@@ -24,7 +24,9 @@ const BaseArticle = props => {
           </Text>
           <NoActionBottom data={data} />
         </View>
-        <FastImg source={{uri: data.cover_url}} style={styles.imageCover} />
+        <View style={styles.imageCover}>
+          <FastImg source={{uri: data.cover_url}} style={styles.image} />
+        </View>
       </View>
     </Pressable>
   );
@@ -56,6 +58,11 @@ const styles = StyleSheet.create({
     width: RFValue(105),
     height: RFValue(75),
     marginLeft: RFValue(22),
+    position: 'relative',
+  },
+  image: {
+    width: RFValue(105),
+    height: RFValue(75),
   },
   excellentLabel: {
     width: 30,

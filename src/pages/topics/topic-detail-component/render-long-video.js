@@ -6,7 +6,6 @@ import {SAFE_TOP} from '@/utils/navbar';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
-import {PlainContent} from '@/components/Item/single-list-item';
 import VideoPlayerContent from '@/components/react-native-video-player';
 
 const {width: screenWidth} = Dimensions.get('window');
@@ -33,7 +32,6 @@ const RenderLongVideo = props => {
     }, [])
   );
 
-  console.log('RenderLongVideo');
   return (
     <>
       <View style={{position: 'relative'}}>
@@ -72,7 +70,7 @@ const RenderLongVideo = props => {
         </View>
         {check && <Text style={styles.intro}>{detail.plain_content}</Text>}
       </View>
-      <PublishRelated data={detail} />
+      <PublishRelated data={detail} type="topic" />
     </>
   );
 };
@@ -80,30 +78,7 @@ const RenderLongVideo = props => {
 const styles = StyleSheet.create({
   introWrap: {
     paddingHorizontal: 15,
-    paddingTop: RFValue(14),
-    paddingBottom: RFValue(15),
-    // backgroundColor: 'pink',
-  },
-  multiLineText: {
-    fontSize: 14,
-    lineHeight: 23,
-    color: '#000',
-  },
-  excellentLabel: {
-    width: 30,
-    height: 16,
-    lineHeight: 16,
-    textAlign: 'center',
-    fontSize: 10,
-    color: 'white',
-    backgroundColor: '#FF2242',
-    borderRadius: 2,
-    overflow: 'hidden',
-    position: 'absolute',
-    left: 40,
-    top: SAFE_TOP,
-    zIndex: 1,
-    marginTop: 9,
+    marginTop: RFValue(14),
   },
   titleInfo: {
     position: 'relative',
@@ -127,6 +102,22 @@ const styles = StyleSheet.create({
     lineHeight: RFValue(17),
     marginTop: RFValue(15),
     textAlign: 'justify',
+  },
+  excellentLabel: {
+    width: 30,
+    height: 16,
+    lineHeight: 16,
+    textAlign: 'center',
+    fontSize: 10,
+    color: 'white',
+    backgroundColor: '#FF2242',
+    borderRadius: 2,
+    overflow: 'hidden',
+    position: 'absolute',
+    left: 40,
+    top: SAFE_TOP,
+    zIndex: 1,
+    marginTop: 9,
   },
 });
 

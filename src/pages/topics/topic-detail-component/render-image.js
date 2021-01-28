@@ -78,7 +78,7 @@ const RenderImage = props => {
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
         </View>
       ) : null}
-      <PublishRelated data={detail} />
+      <PublishRelated data={detail} type="topic" />
     </>
   );
 };

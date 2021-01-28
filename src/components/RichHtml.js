@@ -12,6 +12,7 @@ const RichHTML = props => {
       return <View />;
     } else {
       const findImg = images_info.find(x => x.url === htmlAttribs.src);
+      console.log(images_info);
       return (
         <View style={{flex: 1}} key={htmlAttribs.src}>
           <FastImg

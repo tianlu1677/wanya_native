@@ -5,6 +5,7 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import NodeList from '@/components/List/node-list';
 import DoubleList from '@/components/List/double-list';
+import LongVideoList from '@/components/List/long-video-list';
 import SpaceList from '@/components/List/space-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import AccountsList from '@/components/List/accounts-list';
@@ -40,6 +41,11 @@ const SearchIndex = ({navigation, route}) => {
   const ShortVideoPage = () =>
     request.params.type === 'duanshipin' ? (
       <DoubleList request={request} enableRefresh={false} dataKey="items" />
+    ) : null;
+
+  const LongVideoPage = () =>
+    request.params.type === 'long_video' ? (
+      <LongVideoList request={request} enableRefresh={false} dataKey="items" />
     ) : null;
 
   const SpaceListPage = () =>
@@ -109,6 +115,11 @@ const SearchIndex = ({navigation, route}) => {
             key: 'duanshipin',
             title: '短视频',
             component: ShortVideoPage,
+          },
+          {
+            key: 'long_video',
+            title: '长视频',
+            component: LongVideoPage,
           },
           {
             key: 'space',

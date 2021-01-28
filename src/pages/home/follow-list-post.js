@@ -12,8 +12,6 @@ import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
-import BaseLongVideo from '@/components/Item/base-long-video';
-
 import {getFollowedPosts} from '@/api/home_api';
 import {recommendAccounts} from '@/api/mine_api';
 import {followAccount} from '@/api/account_api';

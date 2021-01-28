@@ -9,18 +9,19 @@ import {
   Pressable,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {getArticle, createArticleAction} from '@/api/article_api';
-import RichHtml from '@/components/RichHtml';
-import Loading from '@/components/Loading';
+import * as action from '@/redux/constants';
+import {dispatchArticleDetail} from '@/redux/actions';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
-import * as action from '@/redux/constants';
+import Loading from '@/components/Loading';
+import ActionSheet from '@/components/ActionSheet';
+import RichHtml from '@/components/RichHtml';
+import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {RFValue} from '@/utils/response-fontsize';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
+import {getArticle, createArticleAction} from '@/api/article_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
-import {dispatchArticleDetail} from '@/redux/actions';
-import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
-import ActionSheet from '@/components/ActionSheet';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -115,36 +116,30 @@ const ArticleDetail = ({navigation, route}) => {
         deleteComment={deleteArticleComment}
         ListHeaderComponent={
           <>
-            <Text style={styles.title}>{detail.title}</Text>
-            <View style={{marginBottom: 20}}>
+            <View style={{paddingBottom: RFValue(20)}}>
+              <Text style={styles.title}>{detail.title}</Text>
               <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
+              <RichHtml
+                containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 20}}
+                enableExperimentalPercentWidth
+                allowFontScaling={true}
+                textSelectable
+                tagsStyles={{
+                  p: {
+                    fontSize: 15,
+                    lineHeight: 25,
+                    marginBottom: 10,
+                    fontWeight: '300',
+                  },
+                }}
+                imagesMaxWidth={Dimensions.get('window').width - 20}
+                imagesInitialDimensions={{width: Dimensions.get('window').width}}
+                baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
+                images_info={detail.images_info}
+                content={detail.content}
+              />
+              <PublishRelated data={detail} type="article" />
             </View>
-
-            <RichHtml
-              containerStyle={{
-                backgroundColor: '#fff',
-                paddingLeft: 10,
-                paddingRight: 10,
-              }}
-              enableExperimentalPercentWidth
-              allowFontScaling={true}
-              textSelectable
-              tagsStyles={{
-                p: {
-                  fontSize: 16,
-                  lineHeight: 26,
-                  marginTop: 10,
-                  marginBottom: 10,
-                  letterSpacing: 1,
-                },
-              }}
-              imagesMaxWidth={Dimensions.get('window').width - 20}
-              imagesInitialDimensions={{width: Dimensions.get('window').width}}
-              baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
-              images_info={detail.images_info}
-              content={detail.content}
-            />
-            <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
@@ -171,13 +166,11 @@ const ArticleDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   title: {
     fontSize: 20,
-    paddingTop: 8,
     paddingRight: 14,
     paddingLeft: 14,
-    paddingBottom: 8,
     fontWeight: '500',
     lineHeight: 28,
-    marginTop: 20,
+    marginTop: 18,
   },
   commentTitle: {
     fontSize: 15,

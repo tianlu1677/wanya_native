@@ -8,65 +8,69 @@ import FastImg from '@/components/FastImg';
 import LinearGradient from 'react-native-linear-gradient';
 import {Bottom} from '@/components/Item/single-list-item';
 import {Avator} from '@/components/NodeComponents';
+import VideoPlayImg from '@/assets/images/video-play.png';
+
+const LongVideoItem = props => {
+  const {data} = props;
+  const navigation = useNavigation();
+
+  const goAccountDetail = () => {
+    navigation.push('AccountDetail', {accountId: data.account.id});
+  };
+
+  const goTopicDetail = () => {
+    navigation.push('TopicDetail', {topicId: data.id});
+  };
+
+  return (
+    <Pressable style={styles.itemWrap} onPress={goTopicDetail}>
+      <View style={styles.imageWrap}>
+        <FastImg style={styles.image} source={{uri: data.single_cover.cover_url}} />
+        <LinearGradient
+          style={styles.imageLinear}
+          start={{x: 0, y: 0}}
+          end={{x: 0, y: 1}}
+          colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0)']}>
+          <Text style={styles.title}>{data.title}</Text>
+        </LinearGradient>
+        <FastImg style={styles.playImage} source={VideoPlayImg} />
+      </View>
+      <View style={styles.userInfo}>
+        <Avator account={data.account} size={40} />
+        <Pressable onPress={goAccountDetail} style={styles.content}>
+          <Text style={styles.nameText}>{data.account.nickname}</Text>
+          <Text style={styles.timeText}>{data.published_at_text}</Text>
+        </Pressable>
+        <Bottom
+          data={data}
+          type="topic"
+          share={false}
+          style={{paddingBottom: 0, paddingTop: 0, marginLeft: 'auto'}}
+        />
+      </View>
+    </Pressable>
+  );
+};
 
 const LongVideoList = props => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const RenderItem = React.memo(({item, index}) => {
-    const data = item.item;
-    const navigation = useNavigation();
-
-    const goAccountDetail = () => {
-      navigation.push('AccountDetail', {accountId: data.account.id});
-    };
-
-    const goTopicDetail = () => {
-      console.log(data.id);
-      navigation.push('TopicDetail', {topicId: data.id});
-    };
-
-    return (
-      <Pressable style={styles.itemWrap} onPress={goTopicDetail}>
-        <View style={styles.imageWrap}>
-          <FastImg style={styles.image} source={{uri: data.single_cover.cover_url}} />
-          <LinearGradient
-            style={styles.imageLinear}
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
-            colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0)']}>
-            <Text style={styles.title}>{data.title}</Text>
-          </LinearGradient>
-        </View>
-        <View style={styles.userInfo}>
-          <Avator account={data.account} size={40} />
-          <Pressable onPress={goAccountDetail} style={styles.content}>
-            <Text style={styles.nameText}>{data.account.nickname}</Text>
-            <Text style={styles.timeText}>{data.published_at_text}</Text>
-          </Pressable>
-          <Bottom
-            data={data}
-            type="topic"
-            share={false}
-            style={{paddingBottom: 0, paddingTop: 0, marginLeft: 'auto'}}
-          />
-        </View>
-      </Pressable>
-    );
-  });
+  const RenderItem = React.memo(({item}) => <LongVideoItem data={item.item} />);
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
   const loadData = async (page = 1) => {
-    setLoading(true);
+    if (page === 1) {
+      setLoading(true);
+    }
     const {api, params} = props.request;
     const res = await api({...params, page});
-    console.log(res);
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
-    setHeaders(res.headers);
-    setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
+    setListData(page === 1 ? data : [...listData, ...data]);
+    setHeaders(res.headers);
   };
 
   useEffect(() => {
@@ -113,11 +117,21 @@ const styles = StyleSheet.create({
     width: '100%',
     height: RFValue(210),
   },
+  playImage: {
+    width: RFValue(40),
+    height: RFValue(40),
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginTop: -RFValue(20),
+    marginLeft: -RFValue(20),
+  },
   title: {
     fontSize: 17,
     lineHeight: RFValue(22),
     fontWeight: '500',
     color: '#fff',
+    textAlign: 'justify',
   },
   userInfo: {
     paddingLeft: 14,

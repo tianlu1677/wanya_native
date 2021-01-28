@@ -149,9 +149,6 @@ export const Header = props => {
         style={{marginLeft: 'auto'}}>
         <IconFont name="gengduo" color="#bdbdbd" size={20} />
       </Pressable>
-      {/* <Text style={hstyles.joinBtn} onPress={goNodeDetail}>
-        进入圈子
-      </Text> */}
 
       <ActionSheet
         actionItems={actionItems}
@@ -366,17 +363,6 @@ const hstyles = StyleSheet.create({
     marginLeft: 4,
     fontSize: 11,
     fontWeight: '400',
-  },
-  joinBtn: {
-    width: 75,
-    height: 34,
-    lineHeight: 34,
-    backgroundColor: '#fafafa',
-    borderRadius: 17,
-    fontSize: 11,
-    overflow: 'hidden',
-    marginLeft: 'auto',
-    textAlign: 'center',
   },
 });
 

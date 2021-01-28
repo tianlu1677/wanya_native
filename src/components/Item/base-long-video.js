@@ -17,7 +17,10 @@ const BaseLongVideo = props => {
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
       <Header data={data} type="article" onRemove={props.onRemove} />
       <View style={styles.content}>
-        <Text style={styles.titleText}>{data.title}</Text>
+        <Text style={styles.titleText} numberOfLines={2}>
+          {data.title}
+          NIHAOnihaonihao你好NIHAOnihaonihao你好NIHAOnihaonihao你好NIHAOnihaonihao你好NIHAOnihaonihao你好NIHAOnihaonihao你好NIHAOnihaonihao你好NIHAOnihaonihao你好
+        </Text>
         <FastImg source={{uri: data.single_cover.cover_url}} style={styles.imageCover} />
         <View style={styles.bottom}>
           <NoActionBottom data={data} />
@@ -34,17 +37,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   content: {
-    marginTop: 13,
+    marginTop: RFValue(13),
   },
   titleText: {
     fontSize: 14,
-    lineHeight: 22,
+    lineHeight: RFValue(21),
     textAlign: 'justify',
   },
   imageCover: {
     width: '100%',
     height: RFValue(193),
-    marginTop: 5,
+    marginTop: RFValue(5),
   },
   bottom: {
     height: RFValue(35),

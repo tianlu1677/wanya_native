@@ -167,6 +167,12 @@ const articleRouter = [
     component: ArticleDetail,
     safeArea: false,
     barColor: 'dark',
+    options: {
+      title: '',
+      animationEnabled: true,
+      gestureEnabled: false,
+      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+    },
   },
   {
     name: 'HashtagDetail',
@@ -209,7 +215,7 @@ const nodeRouter = [
             创建圈子
           </Text>
         </Pressable>
-      )
+      ),
     },
   },
   {

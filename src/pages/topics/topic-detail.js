@@ -15,6 +15,7 @@ import {STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
+import {RFValue} from '@/utils/response-fontsize';
 import ActionSheet from '@/components/ActionSheet';
 import TopHeaderView from '@/components/TopHeadView';
 import {GoBack} from '@/components/NodeComponents';
@@ -146,15 +147,17 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            {detail.content_style === 'video' && detail.is_long_video && (
-              <RenderLongVideo detail={detail} />
-            )}
-            {detail.content_style === 'video' && !detail.is_long_video && (
-              <RenderVideo detail={detail} />
-            )}
-            {detail.content_style === 'img' && <RenderImage detail={detail} />}
-            {detail.content_style === 'link' && <RenderLink detail={detail} />}
-            {detail.content_style === 'text' && <RenderText detail={detail} />}
+            <View style={{paddingBottom: RFValue(20)}}>
+              {detail.content_style === 'video' && detail.is_long_video && (
+                <RenderLongVideo detail={detail} />
+              )}
+              {detail.content_style === 'video' && !detail.is_long_video && (
+                <RenderVideo detail={detail} />
+              )}
+              {detail.content_style === 'img' && <RenderImage detail={detail} />}
+              {detail.content_style === 'link' && <RenderLink detail={detail} />}
+              {detail.content_style === 'text' && <RenderText detail={detail} />}
+            </View>
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
