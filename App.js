@@ -17,7 +17,7 @@ import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
 import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
-// import NotifyService from '@/notifyservice/NotifyService';
+import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
@@ -65,7 +65,7 @@ class App extends Component {
     this.loadSettings();
     this.checkPermission();
     this.loadNetworkInfo();
-    // this.notif = new NotifyService(this.onRegister, this.onNotification);
+    this.notif = new NotifyService(this.onRegister, this.onNotification);
     this.loadDeviceInfo();
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
