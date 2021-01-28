@@ -142,7 +142,7 @@ const FollowListPost = () => {
 
   const renderItemMemo = useCallback(
     itemProps => {
-      console.log('itemProps....', itemProps, itemProps.id === 0);
+      // console.log('itemProps....', itemProps, itemProps.id === 0);
       if (itemProps.index === 1) {
         return (
           <View>

@@ -86,14 +86,24 @@ const CreateNodeType = props => {
 
     if (res.position && res.position.coords) {
       // 获取到权限信息
+      props.navigation.navigate('AddSpace', {type: 'node'});
       const {latitude, longitude} = res.position.coords;
-      const cityData = await getLocation({latitude, longitude});
-      const {city} = cityData.data;
+
+      let city = '';
+      if (res.location && res.location.city) {
+        city = res.location.city
+        console.log('res.position', res.location)
+      } else {
+        const cityData = await getLocation({latitude, longitude});
+        city = cityData.data.city
+      }
+
+      // const cityData = await getLocation({latitude, longitude});
+      // const {city} = cityData.data;
       dispatch({
         type: action.GET_LOCATION,
         value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
       });
-      props.navigation.navigate('AddSpace', {type: 'node'});
     }
   };
 

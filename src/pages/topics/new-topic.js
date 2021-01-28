@@ -54,18 +54,25 @@ const NewTopic = props => {
     if (res === false) {
       // 拒绝权限
       dispatch({type: action.GET_LOCATION, value: {}});
+      return
     }
-
     if (res.position && res.position.coords) {
       // 获取到权限信息
+      navigation.navigate('AddSpace', {type: 'topic'});
       const {latitude, longitude} = res.position.coords;
-      const cityData = await getLocation({latitude, longitude});
-      const {city} = cityData.data;
+      // console.log('res.position', res.position)
+      let city = '';
+      if (res.location && res.location.city) {
+        city = res.location.city
+        console.log('res.position', res.location)
+      } else {
+        const cityData = await getLocation({latitude, longitude});
+        city = cityData.data.city
+      }
       dispatch({
         type: action.GET_LOCATION,
         value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
       });
-      navigation.navigate('AddSpace', {type: 'topic'});
     }
   };
 

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Linking, ActionSheetIOS, Platform} from 'react-native';
 // import ActionSheet from '@/components/ActionSheet.android';
 // import ActionSheet from '@/components/GeneralActionSheet/index';
-// import ActionSheet from '@/components/ActionSheet';
+import ActionSheet from '@/components/ActionSheet';
 
 // 腾讯地图开发者key
 let tmapKey = '';
@@ -300,10 +300,13 @@ const downloadTip = () => {
 /**
  * 显示已经存在的第三方地图应用
  */
-const showExistApp = maps => {
+const showExistApp = (maps, showActionSheet) => {
   console.log('map...', maps)
-  console.log('showActionSheetWithOptions')
-
+  console.log('showActionSheetWithOptions', Platform.OS)
+  if(Platform.OS === 'android') {
+    console.log('sssssssssssss')
+    return <ActionSheet actionItems={[{id: 1, label: 'xxx', onPress: () => {}}]} showActionSheet={true} />
+  }
   const obj = Platform.OS === 'android' ? {} : ActionSheetIOS;
   const options = ['取消', ...maps.map(item => item[0])];
   obj.showActionSheetWithOptions(
@@ -329,6 +332,7 @@ const planRoute = ({
   mode = 'ride',
   type = 'gcj02',
   appName = 'MapLinking',
+  showActionSheet = false
 }) => {
   const maps = openUrl({startLocation, destLocation, mode, type, appName});
   const promises = maps.map(item => {
@@ -344,7 +348,7 @@ const planRoute = ({
         // 系统内没有任何地图，展示推荐下载列表
         downloadTip();
       } else {
-        showExistApp(choices);
+        showExistApp(choices, showActionSheet);
       }
     });
 };
@@ -363,5 +367,6 @@ const MapLinking = () => {
 
 MapLinking.planRoute = planRoute;
 MapLinking.init = init;
+MapLinking.openUrl = openUrl;
 
 export default MapLinking;
