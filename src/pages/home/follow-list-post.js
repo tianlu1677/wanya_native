@@ -33,7 +33,7 @@ export const FollowShareComponent = () => {
 
   return shareStatus ? (
     <Pressable style={lstyles.followShareWrap} onPress={onShare}>
-      <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white">
+      <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white" style={{backgroundColor: '#F2F3F5', borderRadius: 10}}>
         <View style={lstyles.followShare}>
           <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
           <View>

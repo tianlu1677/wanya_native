@@ -6,7 +6,7 @@ import SingleList from '@/components/List/single-list';
 import {getLocationDetail, getLocationsPosts} from '@/api/location_api';
 import {RFValue} from '@/utils/response-fontsize';
 import MapLinking from '@/components/MapLink';
-
+import { SCREEN_WIDTH } from '@/utils/navbar'
 import IconFont from '@/iconfont';
 
 const LocationDetail = ({route, navigation}) => {
@@ -56,7 +56,7 @@ const LocationDetail = ({route, navigation}) => {
               <FastImg
                 style={styles.image}
                 source={{uri: detail.address_cover_url}}
-                mode={'center'}
+                // mode={'center'}
               />
             </Pressable>
           </View>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   image: {
-    width: '100%',
+    width: SCREEN_WIDTH - 28,
     height: RFValue(160),
   },
 });

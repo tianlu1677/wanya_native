@@ -165,6 +165,8 @@ const boxShadow = {
   shadowRadius: 3,
   shadowOpacity: 0.2,
   shadowOffset: {width: 1, height: 2},
+  elevation: 3,
+  zIndex: -1
 };
 
 const styles = StyleSheet.create({

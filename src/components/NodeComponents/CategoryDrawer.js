@@ -36,10 +36,13 @@ const dstyles = StyleSheet.create({
   drawerOpacity: {
     backgroundColor: '#000',
     opacity: 0.3,
+    elevation: 4
   },
   content: {
     backgroundColor: '#fff',
     width: '44%',
+    zIndex: 1000,
+    elevation: 4
   },
   item: {
     height: 45,

@@ -58,6 +58,7 @@
     "react-native-modals": "0.22.3",
     "react-native-permissions": "2.2.2",
     "react-native-picker-select": "^8.0.3",
+    "react-native-push-notification": "^6.1.1",
     "react-native-reanimated": "^1.10.1",
     "react-native-render-html": "^5.0.0",
     "react-native-root-siblings": "^4.1.0",

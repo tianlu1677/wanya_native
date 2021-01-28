@@ -120,6 +120,7 @@ const boxShadow = {
   shadowRadius: 3,
   shadowOpacity: 0.2,
   shadowOffset: {width: 1, height: 2},
+  elevation: 3
 };
 
 const styles = StyleSheet.create({
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
     paddingTop: RFValue(15),
     paddingBottom: RFValue(15),
     lineHeight: RFValue(17),
+    textAlignVertical: 'top',
   },
   introText: {
     color: '#bdbdbd',

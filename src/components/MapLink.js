@@ -1,9 +1,11 @@
+import React, {useState, useEffect} from 'react';
 import {Linking, ActionSheetIOS, Platform} from 'react-native';
-// import ActionSheet from 'react-native-general-actionsheet';
+// import ActionSheet from '@/components/ActionSheet.android';
+// import ActionSheet from '@/components/GeneralActionSheet/index';
+// import ActionSheet from '@/components/ActionSheet';
 
 // 腾讯地图开发者key
 let tmapKey = '';
-
 // 下载地图app地址
 const DownloadUrl = {
   android: {
@@ -43,6 +45,38 @@ const openUrl = ({startLocation, destLocation, mode, type, appName}) => {
   const IOSDirflg = mode === 'drive' ? 'd' : mode === 'bus' ? 'r' : 'w';
 
   if (Platform.OS === 'android') {
+    // let gaoUrl = `amapuri://route/plan/?sourceApplication=${appName}${
+    //   startLocation.title
+    //     ? '&slat=' +
+    //       startLocation.lat +
+    //       '&slon=' +
+    //       startLocation.lng +
+    //       '&sname=' +
+    //       startLocation.title
+    //     : ''
+    // }&dlat=${destLocation.lat}&dlon=${destLocation.lng}&dname=${
+    //   destLocation.title
+    // }&dev=${GaoDeDev}&m=0&t=${GaoDeT}&rideType=elebike`;
+    //
+    // let baiUrl = `baidumap://map/direction?${
+    //   startLocation.title
+    //     ? 'origin=name:' +
+    //       startLocation.title +
+    //       '|latlng:' +
+    //       startLocation.lat +
+    //       ',' +
+    //       startLocation.lng +
+    //       '&'
+    //     : ''
+    // }destination=name:${destLocation.title}|latlng:${destLocation.lat},${
+    //   destLocation.lng
+    // }&mode=${BaiDuMode}&coord_type=${BaiDuCoordType}&src=${appName}`;
+    //
+    // let qqUrl = `qqmap://map/routeplan?type=${TengXunType}&from=${
+    //   startLocation.title
+    //     ? startLocation.title + '&fromcoord=' + startLocation.lat + ',' + startLocation.lng
+    //     : '&fromcoord=CurrentLocation'
+    // }&to=${destLocation.title}&tocoord=${destLocation.lat},${destLocation.lng}&referer=${tmapKey}`;
     return [
       [
         '高德地图',
@@ -86,6 +120,42 @@ const openUrl = ({startLocation, destLocation, mode, type, appName}) => {
         }&referer=${tmapKey}`,
       ],
     ];
+
+    // return [
+    //   {
+    //     id: 1,
+    //     label: '高德地图',
+    //     onPress: () => {
+    //       Linking.canOpenURL(gaoUrl).then(result => {
+    //         if (result) {
+    //           Linking.openURL(gaoUrl);
+    //         }
+    //       });
+    //     },
+    //   },
+    //   {
+    //     id: 2,
+    //     label: '百度地图',
+    //     onPress: () => {
+    //       Linking.canOpenURL(baiUrl).then(result => {
+    //         if (result) {
+    //           Linking.openURL(baiUrl);
+    //         }
+    //       });
+    //     },
+    //   },
+    //   {
+    //     id: 3,
+    //     label: '腾讯地图',
+    //     onPress: () => {
+    //       Linking.canOpenURL(qqUrl).then(result => {
+    //         if (result) {
+    //           Linking.openURL(qqUrl);
+    //         }
+    //       });
+    //     },
+    //   },
+    // ];
   }
   return [
     [
@@ -188,7 +258,13 @@ const openUrl = ({startLocation, destLocation, mode, type, appName}) => {
 /**
  * 系统内没有任何第三方地图应用，提示推荐下载列表
  */
+
+const openSheet = () => {
+
+}
+
 const downloadTip = () => {
+  // console.log('map...', maps)
   const obj = Platform.OS === 'android' ? {} : ActionSheetIOS;
   obj.showActionSheetWithOptions(
     {
@@ -225,7 +301,10 @@ const downloadTip = () => {
  * 显示已经存在的第三方地图应用
  */
 const showExistApp = maps => {
-  const obj = Platform.OS === 'android' ? ActionSheet : ActionSheetIOS;
+  console.log('map...', maps)
+  console.log('showActionSheetWithOptions')
+
+  const obj = Platform.OS === 'android' ? {} : ActionSheetIOS;
   const options = ['取消', ...maps.map(item => item[0])];
   obj.showActionSheetWithOptions(
     {
@@ -278,7 +357,9 @@ const init = ({tmapKey: refererKey = ''}) => {
   tmapKey = refererKey;
 };
 
-const MapLinking = () => {};
+const MapLinking = () => {
+  const [a, setA] = useState(false);
+};
 
 MapLinking.planRoute = planRoute;
 MapLinking.init = init;
