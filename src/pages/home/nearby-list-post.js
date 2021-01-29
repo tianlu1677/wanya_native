@@ -79,7 +79,7 @@ const NearByListPost = () => {
       const {latitude, longitude} = location;
       loadData(1, {latitude, longitude});
     }
-  }, [location]);
+  }, [location.latitude, location.longitude]);
 
   return location.latitude && location.longitude ? (
     <ScrollList

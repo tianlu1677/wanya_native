@@ -18,7 +18,8 @@ export const getLocation = async (open, handleClick) => {
   if (!answer) {
     console.log('没权限');
     if (open) {
-      openSettings().catch(() => console.warn('cannot open settings'));
+      // console.log('没权限1111');
+      await openSettings().then((s) => console.log('s', s))
     } else {
       handleClick && handleClick(false);
     }
@@ -46,7 +47,7 @@ export const getLocation = async (open, handleClick) => {
         handleClick && handleClick({position: position});
       },
       error => {
-        console.log(error.code, error.message);
+        // console.log(error.code, error.message);
         handleClick(false);
       },
       {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}

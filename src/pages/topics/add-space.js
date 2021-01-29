@@ -105,7 +105,7 @@ const AddSpace = props => {
 
   useEffect(() => {
     setRequest(returnParams(currentKey, searchKey));
-  }, [location]);
+  }, [location.chooseCity, location.latitude, location.longitude]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

@@ -102,8 +102,10 @@ const CreateNodeInfo = props => {
             />
             <Text style={styles.introText}>例如：输入「板友」，则圈子成员统称为「板友」</Text>
           </View>
-          <Pressable style={styles.surebtnWrap} onPress={throttle(goStepClick, 1500)}>
-            <Text style={[styles.surebtn, isClick() ? styles.canClick : styles.disabled]}>
+          <Pressable style={styles.surebtnWrap}>
+            <Text
+              style={[styles.surebtn, isClick() ? styles.canClick : styles.disabled]}
+              onPress={throttle(goStepClick, 1500)}>
               下一步
             </Text>
           </Pressable>
@@ -120,7 +122,7 @@ const boxShadow = {
   shadowRadius: 3,
   shadowOpacity: 0.2,
   shadowOffset: {width: 1, height: 2},
-  elevation: 3
+  elevation: 3,
 };
 
 const styles = StyleSheet.create({

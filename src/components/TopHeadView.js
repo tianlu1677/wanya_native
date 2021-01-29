@@ -65,7 +65,7 @@ const TopHeaderView = props => {
           <View style={styles.title}>
             {Title && typeof Title === 'string' ? (
               <Text numberOfLines={1} style={styles.titleText}>
-                {Title.length > 16 ? `${Title.substr(0,16)}...` : Title}
+                {Title.length > 10 ? `${Title.substr(0,10)}...` : Title}
               </Text>
             ) : (
               <Title />
