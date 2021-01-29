@@ -365,7 +365,7 @@ const TopicDetail = ({navigation, route}) => {
                 {detail.content_style === 'img' && renderImg()}
               </View>
             )}
-            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} space={detail.sapce} location={detail.location} />
             {detail.content_style === 'link' && (
               <>
                 <View>{renderLink()}</View>

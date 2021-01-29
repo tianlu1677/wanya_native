@@ -9,7 +9,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
-
+import LocationBar from '@/components/LocationBar'
 export const PublishAccount = props => {
   const {data} = props;
   const navigation = useNavigation();
@@ -39,15 +39,7 @@ export const PublishAccount = props => {
         <Text style={hstyles.nameText}>{data.account.nickname}</Text>
         <View style={hstyles.info}>
           <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-          {data.space && (
-            <Pressable
-              style={hstyles.spaceWrapper}
-              onPress={goSpaceDetail}
-              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-              <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-              <Text style={hstyles.spaceText}>{data.space.name}</Text>
-            </Pressable>
-          )}
+          <LocationBar space={data.space} location={data.location} />
         </View>
       </Pressable>
       {props.showFollow && (
