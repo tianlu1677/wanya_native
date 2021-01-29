@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
+import LocationBar from '@/components/LocationBar'
 import {useDispatch, useSelector} from 'react-redux';
 import {createTopicAction, destroyTopicAction, deleteTopic} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
@@ -116,30 +117,11 @@ export const Header = props => {
       <Avator account={data.account} size={40} />
       <View style={hstyles.content}>
         <Pressable onPress={goAccountDetail}>
-          <Text style={hstyles.nameText}>{data.account.nickname}</Text>
+          <Text style={hstyles.nameText}>{data.account?.nickname}</Text>
           <View style={hstyles.info}>
             <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-            {data.space && (
-              <Pressable
-                style={hstyles.spaceWrapper}
-                onPress={goSpaceDetail}
-                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-                <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-                <Text style={hstyles.spaceText}>{data.space.name}</Text>
-              </Pressable>
-            )}
-            {data.location && (
-              <Pressable
-                style={hstyles.spaceWrapper}
-                onPress={goLocationDetail}
-                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-                <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-                <Text style={hstyles.spaceText}>{data.location.name}</Text>
-              </Pressable>
-            )}
-            {data.distance && data.distance > 0 && (
-              <Text style={hstyles.spaceText}>· {(data.distance / 1000).toFixed(1)}km</Text>
-            )}
+            <LocationBar space={data.space} location={data.location} />
+            {data.distance && data.distance > 0 && <Text style={hstyles.spaceText}>· {(data.distance / 1000).toFixed(1)}km</Text>}
           </View>
         </Pressable>
       </View>

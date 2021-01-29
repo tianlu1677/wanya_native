@@ -86,14 +86,24 @@ const CreateNodeType = props => {
 
     if (res.position && res.position.coords) {
       // 获取到权限信息
+      props.navigation.navigate('AddSpace', {type: 'node'});
       const {latitude, longitude} = res.position.coords;
-      const cityData = await getLocation({latitude, longitude});
-      const {city} = cityData.data;
+
+      let city = '';
+      if (res.location && res.location.city) {
+        city = res.location.city;
+        console.log('res.position', res.location);
+      } else {
+        const cityData = await getLocation({latitude, longitude});
+        city = cityData.data.city;
+      }
+
+      // const cityData = await getLocation({latitude, longitude});
+      // const {city} = cityData.data;
       dispatch({
         type: action.GET_LOCATION,
         value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
       });
-      props.navigation.navigate('AddSpace', {type: 'node'});
     }
   };
 
@@ -139,10 +149,10 @@ const CreateNodeType = props => {
             <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
           </GetLocation>
           <Text style={styles.introText}>选择所在位置后，将方便附近顽友发现该圈子</Text>
-          <Pressable
-            style={styles.surebtnWrap}
-            onPress={createNode.category ? debounce(onCreateClick, 800) : () => {}}>
-            <Text style={[styles.surebtn, createNode.category ? styles.canClick : styles.disabled]}>
+          <Pressable style={styles.surebtnWrap}>
+            <Text
+              style={[styles.surebtn, createNode.category ? styles.canClick : styles.disabled]}
+              onPress={createNode.category ? debounce(onCreateClick, 800) : () => {}}>
               {nodeId ? '确认修改' : '确认创建'}
             </Text>
           </Pressable>
@@ -165,6 +175,8 @@ const boxShadow = {
   shadowRadius: 3,
   shadowOpacity: 0.2,
   shadowOffset: {width: 1, height: 2},
+  elevation: 3,
+  zIndex: -1,
 };
 
 const styles = StyleSheet.create({

@@ -72,7 +72,12 @@ const RenderImage = props => {
           ))}
         </Swiper>
       </View>
-      <PublishAccount data={props.detail} showFollow={currentAccount.id !== detail.account_id} />
+      <PublishAccount
+        data={props.detail}
+        showFollow={currentAccount.id !== detail.account_id}
+        space={props.detail.space}
+        location={props.detail.location}
+      />
       {detail.plain_content ? (
         <View style={styles.content}>
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />

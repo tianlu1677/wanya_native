@@ -67,7 +67,7 @@ const GetLocation = ({children, handleClick, style}) => {
         },
         error => {
           // See error code charts below.
-          console.log(error.code, error.message);
+          // console.log(error.code, error.message);
           handleClick(false);
         },
         {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}

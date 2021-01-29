@@ -1,7 +1,7 @@
-import {Platform} from 'react-native';
+import {Platform, PermissionsAndroid} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {check, request, openSettings, PERMISSIONS, RESULTS} from 'react-native-permissions';
-import {Geolocation as GeolocationAndroid} from 'react-native-amap-geolocation';
+import {Geolocation as GeolocationAndroid1} from 'react-native-amap-geolocation';
 
 const iosLocationPermission =
   Platform.OS === 'ios'
@@ -18,7 +18,8 @@ export const getLocation = async (open, handleClick) => {
   if (!answer) {
     console.log('没权限');
     if (open) {
-      openSettings().catch(() => console.warn('cannot open settings'));
+      // console.log('没权限1111');
+      await openSettings().then((s) => console.log('s', s))
     } else {
       handleClick && handleClick(false);
     }
@@ -36,13 +37,17 @@ export const getLocation = async (open, handleClick) => {
       {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}
     );
   } else {
-    GeolocationAndroid.getCurrentPosition(
-      position => {
+    const re = await PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    ]);
+    console.log('res', re);
+    GeolocationAndroid1.getCurrentPosition((position) => {
         console.log('position => ', position);
         handleClick && handleClick({position: position});
       },
       error => {
-        console.log(error.code, error.message);
+        // console.log(error.code, error.message);
         handleClick(false);
       },
       {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}

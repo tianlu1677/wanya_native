@@ -44,7 +44,7 @@ const ActionSheetAndroid = props => {
       statusBarTranslucent
       useNativeDriver={false}
       animationInTiming={400}
-      deviceHeight={Dimensions.get("window").height}
+      // deviceHeight={Dimensions.get("window").height}
       // animationOutTiming={400}
       style={{
         margin: 0,

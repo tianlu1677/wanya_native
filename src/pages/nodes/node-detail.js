@@ -27,6 +27,7 @@ import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
+import LocationBar from '@/components/LocationBar'
 import IconFont from '@/iconfont';
 
 const NodeDetail = ({navigation, route}) => {
@@ -132,26 +133,7 @@ const NodeDetail = ({navigation, route}) => {
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
                   {(detail.space || detail.location) && <Text style={{color: 'white', marginTop: 12}}> · </Text>}
-                  {detail.space && (
-                    <Pressable
-                      style={styles.spaceWrapper}
-                      onPress={() => navigation.push('SpaceDetail', {spaceId: detail.space.id})}
-                      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-                      <IconFont name="space-point" size={11} color={'white'} style={{marginTop: 12}} />
-                      <Text style={styles.spaceText}>{detail.space.name}</Text>
-                    </Pressable>
-                  )}
-                  {!detail.space && detail.location && (
-                    <Pressable
-                      style={styles.spaceWrapper}
-                      onPress={() =>
-                        navigation.push('LocationDetail', {locationId: detail.location.id})
-                      }
-                      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-                      <IconFont name="space-point" size={11} color={'white'} style={{marginTop: 12}} />
-                      <Text style={styles.spaceText}>{detail.location.name}</Text>
-                    </Pressable>
-                  )}
+                  <LocationBar location={detail.location} space={detail.space} />
                 </View>
               </View>
             </View>

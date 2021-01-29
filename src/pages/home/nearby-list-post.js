@@ -53,6 +53,8 @@ const NearByListPost = () => {
           type: action.GET_LOCATION,
           value: {...result.position.coords},
         });
+        const {latitude, longitude} = result.position.coords;
+        loadData(1, {latitude, longitude});
       } else {
         dispatch({type: action.GET_LOCATION, value: {}});
       }
@@ -79,7 +81,7 @@ const NearByListPost = () => {
       const {latitude, longitude} = location;
       loadData(1, {latitude, longitude});
     }
-  }, [location]);
+  }, [location.latitude, location.longitude]);
 
   return location.latitude && location.longitude ? (
     <ScrollList

@@ -8,12 +8,12 @@ import DoubleList from '@/components/List/double-list';
 import LongVideoList from '@/components/List/long-video-list';
 import SpaceList from '@/components/List/space-list';
 import HashtagList from '@/components/List/hash-tag-list';
-import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
+import AccountsNormalList from '@/components/List/accounts-normal-list';
 
 const SearchIndex = ({navigation, route}) => {
   const [currentKey, setCurrentKey] = useState('topic');
@@ -60,7 +60,12 @@ const SearchIndex = ({navigation, route}) => {
 
   const AccountListPage = () =>
     request.params.type === 'account' ? (
-      <AccountsList request={request} enableRefresh={false} dataKey="items" itemType="normal" />
+      <AccountsNormalList
+        request={request}
+        enableRefresh={false}
+        dataKey="items"
+        itemType="normal"
+      />
     ) : null;
 
   const onChangeText = text => {

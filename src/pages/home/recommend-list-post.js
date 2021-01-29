@@ -43,8 +43,9 @@ const RecommendListPost = () => {
     // 加载置顶
     let top_posts_res = await getRecommendTopPosts();
     let topItemList = top_posts_res.data.posts;
+    console.log('topItemList', topItemList)
     const res = await getRecommendPosts({page});
-    let itemList = page === 1 ? res.data.posts : [...listData, ...res.data.posts];
+    let itemList = page === 1 ? [...topItemList, ...res.data.posts] : [...listData, ...res.data.posts];
     itemList = itemList.concat(topItemList);
     itemList = onChangeListDataText(itemList);
     setListData(itemList);
@@ -52,9 +53,19 @@ const RecommendListPost = () => {
     setHeaders(res.headers);
   };
 
+  const indexLoadData = async (page = 1) => {
+    let itemList = []
+    const res = await getRecommendPosts({page});
+    itemList = itemList.concat(res.data.posts);
+    setListData(itemList);
+    setLoading(false);
+    setHeaders(res.headers);
+  };
+
+
   const onRefresh = (page = 1) => {
     if (page === 1 || !page) {
-      loadData(pagination(headers).nextPage);
+      indexLoadData(pagination(headers).nextPage);
     } else {
       loadData(page);
     }

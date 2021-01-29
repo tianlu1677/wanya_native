@@ -9,41 +9,10 @@ import {Avator} from '@/components/NodeComponents';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 
 // follow normal text
-const AccountsList = props => {
+const AccountsNormalList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const savetopic = useSelector(state => state.home.savetopic);
-  const savecomment = useSelector(state => state.home.commentTopic);
-
-  const onPress = item => {
-    if (props.type === 'topicDetail') {
-      const comments = {
-        ...savecomment,
-        content: savecomment.content
-          ? `${savecomment.content} @${item.nickname} `
-          : `@${item.nickname} `,
-        mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, item.id] : [item.id],
-      };
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: comments});
-    }
-
-    if (props.type === 'add-node') {
-      const topics = {
-        ...savetopic,
-        plan_content: savetopic.plan_content
-          ? `${savetopic.plan_content} @${item.nickname} `
-          : `@${item.nickname} `,
-        mention: savetopic.mention ? [...savetopic.mention, item] : [item],
-      };
-      dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    }
-
-    navigation.goBack();
-  };
 
   const onFollowed = async (item, index) => {
     if (item.followed) {
@@ -57,31 +26,23 @@ const AccountsList = props => {
 
   const renderItem = ({item, index}) => {
     return (
-      <Pressable style={styles.follow} onPress={() => onPress(item)}>
-        <Avator account={item} size={40} handleClick={() => onPress(item)} />
-        {['follow', 'normal'].includes(props.itemType) && (
-          <Text style={styles.nickname}>{item.nickname}</Text>
-        )}
-
-        {['text'].includes(props.itemType) && (
-          <View>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styles.nickname}>{item.nickname}</Text>
-              {item.right_text && <Text style={styles.right_text}>{item.right_text}</Text>}
-            </View>
-            {item.created_at_text && (
-              <Text style={styles.created_at_text}>{item.created_at_text}</Text>
-            )}
-          </View>
-        )}
-
-        {['follow', 'text'].includes(props.itemType) && (
-          <Text
-            style={[styles.btn, {color: item.followed ? '#bdbdbd' : '#000'}]}
-            onPress={() => onFollowed(item, index)}>
-            {item.followed && item.following ? '互相关注' : item.followed ? '已关注' : '关注'}
-          </Text>
-        )}
+      <Pressable style={styles.follow} >
+        <Avator account={item} size={40} />
+        <Text style={styles.nickname}>{item.nickname}</Text>
+        {/*<View>*/}
+        {/*  <View style={{flexDirection: 'row'}}>*/}
+        {/*    <Text style={styles.nickname}>{item.nickname}</Text>*/}
+        {/*    {item.right_text && <Text style={styles.right_text}>{item.right_text}</Text>}*/}
+        {/*  </View>*/}
+        {/*  {item.created_at_text && (*/}
+        {/*    <Text style={styles.created_at_text}>{item.created_at_text}</Text>*/}
+        {/*  )}*/}
+        {/*</View>*/}
+        <Text
+          style={[styles.btn, {color: item.followed ? '#bdbdbd' : '#000'}]}
+          onPress={() => onFollowed(item, index)}>
+          {item.followed && item.following ? '互相关注' : item.followed ? '已关注' : '关注'}
+        </Text>
       </Pressable>
     );
   };
@@ -94,19 +55,10 @@ const AccountsList = props => {
     if (page === 1) {
       setLoading(true);
     }
-    const {api, params, account_type, right_text} = props.request;
+    const {api, params} = props.request;
     let data = [];
     const res = await api({...params, page});
-    if (account_type === 'account_recent_follow') {
-      data = props.dataKey ? res.data[props.dataKey] : res.data.follows;
-      data = data.map(follow => ({
-        ...follow.account,
-        created_at_text: follow.created_at_text,
-        right_text: right_text,
-      }));
-    } else {
-      data = props.dataKey ? res.data[props.dataKey] : (res.data.accounts || res.data.items);
-    }
+    data = props.dataKey ? res.data[props.dataKey] : res.data.accounts;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -133,7 +85,7 @@ const AccountsList = props => {
   );
 };
 
-AccountsList.propTypes = {
+AccountsNormalList.propTypes = {
   request: PropTypes.object.isRequired,
   onPress: PropTypes.func,
   ref: PropTypes.any,
@@ -179,4 +131,4 @@ export const styles = StyleSheet.create({
   },
 });
 
-export default AccountsList;
+export default AccountsNormalList;

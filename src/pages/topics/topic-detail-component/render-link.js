@@ -44,7 +44,7 @@ const RenderLink = props => {
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
         </View>
       ) : null}
-      <PublishRelated data={detail} type="topic" />
+      <PublishRelated data={detail} type="topic" space={props.detail.space} location={props.detail.location} />
     </>
   );
 };
