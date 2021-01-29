@@ -32,11 +32,11 @@ const RichHTML = props => {
       source={{html: props.content}}
       // html={props.content}
       imagesMaxWidth={Dimensions.get('window').width}
-      renderers={{
-        img: (htmlAttribs, children, convertedCSSStyles, passProps) => {
-          return renderImg(htmlAttribs, children, convertedCSSStyles, passProps);
-        },
-      }}
+      // renderers={{
+      //   img: (htmlAttribs, children, convertedCSSStyles, passProps) => {
+      //     return renderImg(htmlAttribs, children, convertedCSSStyles, passProps);
+      //   },
+      // }}
       {...props}
     />
   );

@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {KeyboardAvoidingView} from 'react-native';
-import {View, Text, StyleSheet, Platform, Dimensions, Pressable} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator, Platform, Dimensions, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchArticleDetail} from '@/redux/actions';
@@ -17,6 +17,8 @@ import {getArticle, createArticleAction} from '@/api/article_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 const {width} = Dimensions.get('window');
+import AutoHeightWebView from 'react-native-autoheight-webview'
+import {WebView} from 'react-native-webview';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const ArticleDetail = ({navigation, route}) => {
   const currentArticle = useSelector(state => state.topic.articleDetail);
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
+  const [height, setHeight] = useState(100);
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
 
