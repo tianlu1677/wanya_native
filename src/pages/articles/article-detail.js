@@ -1,13 +1,6 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  Dimensions,
-  Pressable,
-} from 'react-native';
+import {KeyboardAvoidingView} from 'react-native';
+import {View, Text, StyleSheet, Platform, Dimensions, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchArticleDetail} from '@/redux/actions';
@@ -15,19 +8,20 @@ import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
 import ActionSheet from '@/components/ActionSheet';
+import {Avator} from '@/components/NodeComponents';
 import RichHtml from '@/components/RichHtml';
-import {NAV_BAR_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {getArticle, createArticleAction} from '@/api/article_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
+const {width} = Dimensions.get('window');
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const currentArticle = useSelector(state => state.topic.articleDetail);
-
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -58,10 +52,6 @@ const ArticleDetail = ({navigation, route}) => {
     },
   ];
 
-  const onReportClick = () => {
-    setShowActionSheet(true);
-  };
-
   const loadData = async () => {
     const res = await getArticle(articleId);
     setDetail(res.data.article);
@@ -83,29 +73,44 @@ const ArticleDetail = ({navigation, route}) => {
   }, [currentArticle]);
 
   useLayoutEffect(() => {
+    const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
+
+    const goAccountDetail = () => {
+      navigation.push('AccountDetail', {accountId: detail.account.id});
+    };
+
+    const onReportClick = () => {
+      setShowActionSheet(true);
+    };
+
     if (detail) {
       navigation.setOptions({
-        headerTitle: detail.title,
-        headerShown: true,
-        headerTransparent: false,
-        safeArea: false,
-        headerStyle: {
-          borderBottomColor: '#EBEBEB',
-          borderBottomWidth: StyleSheet.hairlineWidth,
-        },
+        headerTitle: () => (
+          <Pressable style={styles.headerTitle} onPress={goAccountDetail}>
+            <Avator account={detail.account} size={25} />
+            <Text style={styles.headerText}>{detail.account.nickname}</Text>
+          </Pressable>
+        ),
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()} style={{marginLeft: 5}} hitSlop={hitSlop}>
+            <IconFont name={'close'} size={14} />
+          </Pressable>
+        ),
         headerRight: () =>
           detail.account_id === currentAccount.id ? null : (
-            <Pressable onPress={onReportClick} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-              <IconFont name="ziyuan" color="#000" size={20} />
+            <Pressable onPress={onReportClick} hitSlop={hitSlop}>
+              <IconFont name="gengduo" color="#000" size={20} />
             </Pressable>
           ),
       });
     }
   }, [navigation, detail]);
 
+  const richHtmlPStyle = {fontSize: 15, lineHeight: 25, marginBottom: 10, fontWeight: '300'};
+
   return detail && currentAccount ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={NAV_BAR_HEIGHT + STATUS_BAR_HEIGHT}
+      keyboardVerticalOffset={NAV_BAR_HEIGHT + SAFE_TOP}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff'}}>
       <CommentList
@@ -124,16 +129,9 @@ const ArticleDetail = ({navigation, route}) => {
                 enableExperimentalPercentWidth
                 allowFontScaling={true}
                 textSelectable
-                tagsStyles={{
-                  p: {
-                    fontSize: 15,
-                    lineHeight: 25,
-                    marginBottom: 10,
-                    fontWeight: '300',
-                  },
-                }}
-                imagesMaxWidth={Dimensions.get('window').width - 20}
-                imagesInitialDimensions={{width: Dimensions.get('window').width}}
+                tagsStyles={{p: {...richHtmlPStyle}}}
+                imagesMaxWidth={width - 20}
+                imagesInitialDimensions={{width: width}}
                 baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
                 images_info={detail.images_info}
                 content={detail.content}
@@ -180,6 +178,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: '#fff',
     paddingBottom: 5,
+  },
+  headerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 12,
+    marginLeft: 5,
   },
 });
 

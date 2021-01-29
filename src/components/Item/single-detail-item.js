@@ -68,7 +68,6 @@ export const PublishRelated = props => {
     navigation.push('NodeDetail', {nodeId: data.node.id});
   };
 
-  console.log(data);
   return (
     <>
       {data.tag_list.length > 0 && (
