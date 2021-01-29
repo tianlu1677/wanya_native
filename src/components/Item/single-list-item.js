@@ -116,7 +116,7 @@ export const Header = props => {
       <Avator account={data.account} size={40} />
       <View style={hstyles.content}>
         <Pressable onPress={goAccountDetail}>
-          <Text style={hstyles.nameText}>{data.account.nickname}</Text>
+          <Text style={hstyles.nameText}>{data.account?.nickname}</Text>
           <View style={hstyles.info}>
             <Text style={hstyles.timeText}>{data.published_at_text}</Text>
             {data.space && (
