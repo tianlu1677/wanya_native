@@ -29,6 +29,8 @@ const AccountsList = props => {
         mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, item.id] : [item.id],
       };
       dispatch({type: action.SAVE_COMMENT_TOPIC, value: comments});
+      navigation.goBack();
+      return;
     }
 
     if (props.type === 'add-node') {
@@ -40,9 +42,13 @@ const AccountsList = props => {
         mention: savetopic.mention ? [...savetopic.mention, item] : [item],
       };
       dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+      navigation.goBack();
+      return;
     }
 
-    navigation.goBack();
+    navigation.push('AccountDetail', {
+      accountId: item.id,
+    });
   };
 
   const onFollowed = async (item, index) => {
@@ -105,7 +111,7 @@ const AccountsList = props => {
         right_text: right_text,
       }));
     } else {
-      data = props.dataKey ? res.data[props.dataKey] : (res.data.accounts || res.data.items);
+      data = props.dataKey ? res.data[props.dataKey] : res.data.accounts || res.data.items;
     }
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

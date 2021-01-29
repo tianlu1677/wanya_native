@@ -19,9 +19,9 @@ export const getLocation = async (open, handleClick) => {
     console.log('没权限');
     if (open) {
       // console.log('没权限1111');
-      await openSettings().then((s) => console.log('s', s))
+      await openSettings()
     } else {
-      handleClick && handleClick(false);
+      handleClick(false);
     }
   }
 
@@ -39,43 +39,42 @@ export const getLocation = async (open, handleClick) => {
   } else {
     const re = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
     ]);
     console.log('res', re);
-    GeolocationAndroid1.getCurrentPosition((position) => {
-        console.log('position => ', position);
-        handleClick && handleClick({position: position});
-      },
-      error => {
-        // console.log(error.code, error.message);
-        handleClick(false);
-      },
-      {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}
-    );
+    if (re['"android.permission.ACCESS_FINE_LOCATION"'] === 'never_ask_again') {
+      return false;
+    }
+    // console.log('persmiiiso', re)
+    GeolocationAndroid1.getCurrentPosition(position => {
+      console.log('position => ', position);
+      handleClick({position: position});
+    });
   }
 };
 
-export const checkPermission = async () => {
+const checkPermission = async () => {
   const result = await check(iosLocationPermission);
   let Permission = false;
   switch (result) {
     case RESULTS.UNAVAILABLE:
       console.log('This feature is not available (on this device / in this context)');
-      break;
+      return false;
     case RESULTS.DENIED:
       // 还是可以再次请求
-      request(iosLocationPermission).then(res => {
-        console.log('result', res);
-        getLocation();
-      });
-      return 'WAIT';
+      // request(iosLocationPermission).then(res => {
+      //   console.log('checkPermission result', res);
+      //   // getLocation();
+      // });
+      return false;
     case RESULTS.GRANTED:
       //拥有此权限
       console.log('The permission is granted');
+      // getLocation();
       return true;
     case RESULTS.BLOCKED:
       console.log('The permission is denied and not requestable anymore');
-      break;
+      return false;
   }
   return Permission;
 };
