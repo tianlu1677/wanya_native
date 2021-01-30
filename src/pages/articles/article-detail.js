@@ -1,6 +1,14 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {KeyboardAvoidingView} from 'react-native';
-import {View, Text, StyleSheet, ActivityIndicator, Platform, Dimensions, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Platform,
+  Dimensions,
+  Pressable,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchArticleDetail} from '@/redux/actions';
@@ -16,8 +24,9 @@ import {getArticleCommentList, createComment, deleteComment} from '@/api/comment
 import {getArticle, createArticleAction} from '@/api/article_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
+
 const {width} = Dimensions.get('window');
-import AutoHeightWebView from 'react-native-autoheight-webview'
+import AutoHeightWebView from 'react-native-autoheight-webview';
 import {WebView} from 'react-native-webview';
 
 const ArticleDetail = ({navigation, route}) => {
@@ -26,7 +35,6 @@ const ArticleDetail = ({navigation, route}) => {
   const currentArticle = useSelector(state => state.topic.articleDetail);
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
-  const [height, setHeight] = useState(100);
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
 
@@ -109,7 +117,33 @@ const ArticleDetail = ({navigation, route}) => {
     }
   }, [navigation, detail]);
 
-  const richHtmlPStyle = {fontSize: 15, lineHeight: 25, marginBottom: 10, fontWeight: '300'};
+  const richHtmlPStyle = {
+    p: {
+      fontSize: 15,
+      color: '#1F1F1F',
+      letterSpacing: 1,
+      lineHeight: 25,
+      marginBottom: 10,
+      fontWeight: '300',
+    },
+    figue: {
+      marginTop: 10
+    },
+    img: {
+      width: '93%',
+      marginBottom: 10,
+      minHeight: 30,
+    },
+    span: {
+      fontSize: 15,
+      color: '#1F1F1F',
+      letterSpacing: 1,
+      lineHeight: 25,
+      marginBottom: 10,
+      fontWeight: '300',
+    }
+  };
+  const classesStyles = {last: {textAlign: 'center'}};
 
   return detail && currentAccount ? (
     <KeyboardAvoidingView
@@ -128,15 +162,13 @@ const ArticleDetail = ({navigation, route}) => {
               <Text style={styles.title}>{detail.title}</Text>
               <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
               <RichHtml
-                containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 20}}
+                containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 25}}
                 enableExperimentalPercentWidth
                 allowFontScaling={true}
-                textSelectable
-                tagsStyles={{p: {...richHtmlPStyle}}}
-                imagesMaxWidth={width - 20}
+                tagsStyles={richHtmlPStyle}
+                classesStyles={classesStyles}
                 imagesInitialDimensions={{width: width}}
                 baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
-                images_info={detail.images_info}
                 content={detail.content}
               />
               <PublishRelated data={detail} type="article" />
@@ -172,6 +204,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 28,
     marginTop: 18,
+    color: '#1F1F1F',
+    letterSpacing: 1,
   },
   commentTitle: {
     fontSize: 15,
