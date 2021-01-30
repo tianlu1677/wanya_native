@@ -25,7 +25,7 @@ const LongVideoItem = props => {
   return (
     <Pressable style={styles.itemWrap} onPress={goTopicDetail}>
       <View style={styles.imageWrap}>
-        <FastImg style={styles.image} source={{uri: data.single_cover.cover_url}} />
+        <FastImg style={styles.image} source={{uri: data.single_cover.cover_url}} mode={'cover'} />
         <LinearGradient
           style={styles.imageLinear}
           start={{x: 0, y: 0}}
@@ -84,7 +84,7 @@ const LongVideoList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItemMemo}
-      renderSeparator={() => null}
+      renderSeparator={() => <View style={{height: 5, backgroundColor: '#F9F9F9'}} />}
       style={styles.wrapper}
       {...props}
     />
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingBottom: 100,
   },
   itemWrap: {
     flexDirection: 'column',
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: RFValue(210),
+    borderRadius: 0,
   },
   playImage: {
     width: RFValue(40),
@@ -135,9 +137,12 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     paddingLeft: 14,
-    paddingTop: RFValue(7),
-    paddingBottom: RFValue(11),
+    // paddingTop: RFValue(7),
+    // paddingBottom: RFValue(11),
+    paddingTop: RFValue(12),
+    paddingBottom: RFValue(12),
     flexDirection: 'row',
+    // backgroundColor: 'red',
     alignItems: 'center',
   },
   content: {
