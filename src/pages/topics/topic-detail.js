@@ -149,7 +149,7 @@ const TopicDetail = ({navigation, route}) => {
           <>
             <View style={{paddingBottom: RFValue(20)}}>
               {detail.content_style === 'video' && detail.is_long_video && (
-                <RenderLongVideo detail={detail} />
+                <RenderLongVideo detail={{...detail, node: {...detail.node, topics_count: 0} }} />
               )}
               {detail.content_style === 'video' && !detail.is_long_video && (
                 <RenderVideo detail={detail} />

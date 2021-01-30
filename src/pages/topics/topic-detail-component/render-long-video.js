@@ -99,9 +99,11 @@ const styles = StyleSheet.create({
   },
   intro: {
     color: '#BDBDBD',
-    lineHeight: RFValue(17),
+    lineHeight: RFValue(16),
     marginTop: RFValue(15),
     textAlign: 'justify',
+    fontSize: 12,
+    fontWeight: '300',
   },
   excellentLabel: {
     width: 30,

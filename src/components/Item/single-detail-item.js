@@ -80,7 +80,7 @@ export const PublishRelated = props => {
               <Text style={pstyles.formTitle}>{data.node.name}</Text>
             </View>
             <Text style={pstyles.formInfo}>
-              {props.type === 'topic' && `${data.node.topics_count}篇帖子 · `}
+              {props.type === 'topic' && data.node && data.node.topics_count > 0 && `${data.node.topics_count}篇帖子 · `}
               {data.node.accounts_count}位{data.node.nickname || '圈友'}
             </Text>
           </View>
@@ -295,7 +295,7 @@ const hstyles = StyleSheet.create({
     height: 40,
     paddingLeft: 15,
     paddingRight: 14,
-    marginTop: 20,
+    marginTop: 15,
   },
   content: {
     marginLeft: 12,
@@ -353,6 +353,7 @@ const pstyles = StyleSheet.create({
     marginRight: 8,
     marginBottom: 8,
     fontSize: 11,
+    fontWeight: '300',
   },
   fromWrapper: {
     flexDirection: 'row',
