@@ -25,14 +25,6 @@ export const Header = props => {
     navigation.push('AccountDetail', {accountId: data.account.id});
   };
 
-  const goSpaceDetail = () => {
-    navigation.push('SpaceDetail', {spaceId: data.space.id});
-  };
-
-  const goLocationDetail = () => {
-    navigation.push('LocationDetail', {locationId: data.location.id});
-  };
-
   const onStar = async () => {
     const params = {id: data.id, type: 'star'};
     switch (props.type) {
@@ -325,6 +317,7 @@ const hstyles = StyleSheet.create({
   nameText: {
     fontSize: 12,
     lineHeight: 20,
+    color: '#1F1F1F'
   },
   info: {
     flexDirection: 'row',

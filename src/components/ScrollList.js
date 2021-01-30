@@ -270,7 +270,7 @@ const scrollStyle = StyleSheet.create({
   },
   separator: {
     backgroundColor: '#FAFAFA',
-    height: 9,
+    height: 5,
   },
 });
 

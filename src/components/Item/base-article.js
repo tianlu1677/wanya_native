@@ -25,7 +25,7 @@ const BaseArticle = props => {
           <NoActionBottom data={data} />
         </View>
         <View style={styles.imageCover}>
-          <FastImg source={{uri: data.cover_url}} style={styles.image} />
+          <FastImg source={{uri: data.cover_url}} style={styles.image} mode={'cover'} />
         </View>
       </View>
     </Pressable>
