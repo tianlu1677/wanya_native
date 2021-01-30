@@ -14,6 +14,8 @@ const AccountsNormalList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
+  const navigation = useNavigation();
+
   const onFollowed = async (item, index) => {
     if (item.followed) {
       await unfollowAccount(item.id);
@@ -26,7 +28,7 @@ const AccountsNormalList = props => {
 
   const renderItem = ({item, index}) => {
     return (
-      <Pressable style={styles.follow} >
+      <Pressable style={styles.follow} onPress={() => navigation.push('AccountDetail', { accountId: item.id})}>
         <Avator account={item} size={40} />
         <Text style={styles.nickname}>{item.nickname}</Text>
         {/*<View>*/}

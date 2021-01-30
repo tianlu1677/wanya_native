@@ -107,11 +107,14 @@ const Recommend = props => {
 
   const onChange = async key => {
     if (key === 'nearby') {
-      getLocation(false, result => {
-        if (result) {
-          dispatch({type: action.GET_LOCATION, value: result.position.coords});
-        }
-      });
+      setTimeout(() => {
+        getLocation(false, result => {
+          if (result) {
+            console.log('result', result)
+            dispatch({type: action.GET_LOCATION, value: result.position.coords});
+          }
+        });
+      }, 300);
     }
     setCurrentKey(key);
   };
