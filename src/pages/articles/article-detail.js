@@ -95,11 +95,11 @@ const ArticleDetail = ({navigation, route}) => {
               <Text style={styles.headerText}>{detail.account.nickname}</Text>
             </Pressable>
           ) : null,
-        headerLeft: () => (
-          <Pressable onPress={() => navigation.goBack()} style={{marginLeft: 5}} hitSlop={hitSlop}>
-            <IconFont name={'close'} size={14} />
-          </Pressable>
-        ),
+        // headerLeft: () => (
+        //   <Pressable onPress={() => navigation.goBack()} style={{marginLeft: 5}} hitSlop={hitSlop}>
+        //     <IconFont name={'close'} size={14} />
+        //   </Pressable>
+        // ),
         headerRight: () =>
           detail.account_id === currentAccount.id ? null : (
             <Pressable onPress={onReportClick} hitSlop={hitSlop}>

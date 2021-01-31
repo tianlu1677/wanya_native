@@ -169,9 +169,9 @@ const articleRouter = [
     barColor: 'dark',
     options: {
       title: '',
-      animationEnabled: true,
-      gestureEnabled: true,
-      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+      // animationEnabled: true,
+      // gestureEnabled: true,
+      // cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
     },
   },
   {
