@@ -27,6 +27,8 @@ const ArticleDetail = ({navigation, route}) => {
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [contentY, setContentY] = useState(0);
+  const [headerShowUser, setHeaderShowUser] = useState(false);
 
   const publishComment = async data => {
     setVisible(false);
@@ -86,12 +88,13 @@ const ArticleDetail = ({navigation, route}) => {
 
     if (detail) {
       navigation.setOptions({
-        headerTitle: () => (
-          <Pressable style={styles.headerTitle} onPress={goAccountDetail}>
-            <Avator account={detail.account} size={25} />
-            <Text style={styles.headerText}>{detail.account.nickname}</Text>
-          </Pressable>
-        ),
+        headerTitle: () =>
+          headerShowUser ? (
+            <Pressable style={styles.headerTitle} onPress={goAccountDetail}>
+              <Avator account={detail.account} size={25} />
+              <Text style={styles.headerText}>{detail.account.nickname}</Text>
+            </Pressable>
+          ) : null,
         headerLeft: () => (
           <Pressable onPress={() => navigation.goBack()} style={{marginLeft: 5}} hitSlop={hitSlop}>
             <IconFont name={'close'} size={14} />
@@ -105,43 +108,11 @@ const ArticleDetail = ({navigation, route}) => {
           ),
       });
     }
-  }, [navigation, detail]);
+  }, [navigation, detail, headerShowUser]);
 
-  const richHtmlPStyle = {
-    p: {
-      fontSize: 15,
-      color: '#1F1F1F',
-      letterSpacing: 1,
-      lineHeight: 25,
-      marginBottom: 10,
-      fontWeight: '300',
-    },
-    figue: {
-      marginTop: 10,
-    },
-    img: {
-      width: '93%',
-      marginBottom: 10,
-      minHeight: 30,
-    },
-    h4: {
-      fontSize: 30,
-      color: '#1F1F1F',
-      letterSpacing: 1,
-      lineHeight: 25,
-      marginBottom: 10,
-      fontWeight: '300',
-    },
-    span: {
-      // fontSize: 15,
-      color: '#1F1F1F',
-      letterSpacing: 1,
-      lineHeight: 25,
-      marginBottom: 10,
-      fontWeight: '300',
-    },
+  const getScrollY = value => {
+    value > contentY ? setHeaderShowUser(true) : setHeaderShowUser(false);
   };
-  const classesStyles = {last: {textAlign: 'center'}};
 
   return detail && currentAccount ? (
     <KeyboardAvoidingView
@@ -154,22 +125,15 @@ const ArticleDetail = ({navigation, route}) => {
         type="Article"
         changeVisible={value => setVisible(value)}
         deleteComment={deleteArticleComment}
+        getScrollY={getScrollY}
         ListHeaderComponent={
           <>
             <View style={{paddingBottom: RFValue(20)}}>
               <Text style={styles.title}>{detail.title}</Text>
               <ArticleHeader data={detail} showFollow={detail.account_id !== currentAccount.id} />
-              <RichContent content={detail.content} baseColor={'#1F1F1F'} />
-              {/*<RichHtml*/}
-              {/*  containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 25}}*/}
-              {/*  enableExperimentalPercentWidth*/}
-              {/*  allowFontScaling={true}*/}
-              {/*  tagsStyles={richHtmlPStyle}*/}
-              {/*  classesStyles={classesStyles}*/}
-              {/*  imagesInitialDimensions={{width: width}}*/}
-              {/*  baseFontStyle={{lineHeight: 26, letterSpacing: 1}}*/}
-              {/*  content={detail.content}*/}
-              {/*/>*/}
+              <View onLayout={e => setContentY(e.nativeEvent.layout.y)}>
+                <RichContent content={detail.content} baseColor={'#1F1F1F'} />
+              </View>
               <PublishRelated data={detail} type="article" />
             </View>
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
