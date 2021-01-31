@@ -1,5 +1,5 @@
 import React, {useState, useRef, useCallback} from 'react';
-import {View, Text, StyleSheet, Dimensions, Pressable} from 'react-native';
+import {View, Text, StatusBar, StyleSheet, Dimensions, Pressable} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {SAFE_TOP} from '@/utils/navbar';
@@ -34,6 +34,7 @@ const RenderLongVideo = props => {
 
   return (
     <>
+      <StatusBar barStyle={'dark-content'} />
       <View style={{position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}

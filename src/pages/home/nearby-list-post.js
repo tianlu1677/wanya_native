@@ -14,6 +14,7 @@ import {getNearbyPosts} from '@/api/home_api';
 import {getLocation} from './getLocation';
 import {useNavigation} from '@react-navigation/native';
 import {ListEmpty as lstyles, ShareWrapper as styles} from '@/styles/baseCommon';
+import ShareNearByImg from '@/assets/images/share-nearby.png'
 
 const NearByListPost = () => {
   const navigation = useNavigation();
@@ -138,8 +139,8 @@ const NearbyShareComponent = () => {
         style={styles.followShare}>
         <FastImg
           style={styles.followShareImage}
-          source={require('@/assets/images/share-nearby.png')}
-          mode={'cover'}
+          source={ShareNearByImg}
+          mode={'center'}
         />
         <View>
           <Text style={styles.shareTitle}>获取更多附近信息</Text>

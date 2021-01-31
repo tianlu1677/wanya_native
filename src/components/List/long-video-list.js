@@ -45,7 +45,7 @@ const LongVideoItem = props => {
           data={data}
           type="topic"
           share={false}
-          style={{paddingBottom: 0, paddingTop: 0, marginLeft: 'auto'}}
+          style={{paddingBottom: 0, paddingTop: 0, marginLeft: 145}}
         />
       </View>
     </Pressable>
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     paddingBottom: RFValue(7),
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 100
   },
   content: {
     marginLeft: 12,

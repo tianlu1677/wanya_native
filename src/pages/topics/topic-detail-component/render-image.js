@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, StatusBar, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import {dispatchPreviewImage} from '@/redux/actions';
@@ -45,6 +45,7 @@ const RenderImage = props => {
 
   return (
     <>
+      <StatusBar barStyle={'dark-content'} />
       <View style={{minHeight: maxHeight, width: screenWidth, position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {props.detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}

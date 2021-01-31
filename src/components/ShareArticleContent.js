@@ -23,7 +23,7 @@ const ShareArticleContent = props => {
 
   const bg_img_url = wx_share_image_url ? wx_share_image_url.split('?')[0] : '';
   const desc = `${published_at_text} 发布了一篇文章`;
-  const node_name = node ? 'goood' : null;
+  const node_name = node ? node.name : null;
   // account: topic.account,
   //   node_name: topic.node.name,
   //   content: topic.plain_content,

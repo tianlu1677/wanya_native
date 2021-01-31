@@ -10,7 +10,7 @@ import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
 import ActionSheet from '@/components/ActionSheet';
 import {Avator} from '@/components/NodeComponents';
-import {NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {IsIos, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {getArticle, createArticleAction} from '@/api/article_api';
@@ -116,9 +116,10 @@ const ArticleDetail = ({navigation, route}) => {
 
   return detail && currentAccount ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={NAV_BAR_HEIGHT + SAFE_TOP}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff'}}>
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
+      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT + 55}
+    >
       <CommentList
         detail={detail}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     fontWeight: '500',
     lineHeight: 28,
-    marginTop: 18,
+    // marginTop: 18,
     color: '#1F1F1F',
     letterSpacing: 1,
   },

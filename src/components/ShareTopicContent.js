@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     // maxHeight: 260,
     backgroundColor: 'pink',
     width: '100%',
+    borderRadius: 0,
     // height: '100%',
   },
   playVideo: {

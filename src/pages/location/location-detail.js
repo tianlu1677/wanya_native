@@ -7,7 +7,6 @@ import {getLocationDetail, getLocationsPosts} from '@/api/location_api';
 import {RFValue} from '@/utils/response-fontsize';
 import MapLinking from '@/components/MapLink';
 import {SCREEN_WIDTH} from '@/utils/navbar';
-import IconFont from '@/iconfont';
 import ActionSheet from '@/components/ActionSheet.android';
 
 const LocationDetail = ({route, navigation}) => {
@@ -19,8 +18,8 @@ const LocationDetail = ({route, navigation}) => {
   const loadData = async () => {
     const res = await getLocationDetail(locationId);
     setDetail(res.location);
-    console.log('res', res);
-    navigation.setOptions({title: res.location.name || '位置'});
+    // console.log('res', res);
+    navigation.setOptions({title: '位置'});
   };
 
   useEffect(() => {
