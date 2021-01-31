@@ -63,7 +63,6 @@ const TabList = props => {
     <View
       style={[
         tabBarStyle.tabWrap,
-        tabBarStyle[`tab${size}`],
         bottomLine ? tabBarStyle.bottomLine : null,
         {
           alignItems: center ? 'center' : 'flex-start',
@@ -74,6 +73,7 @@ const TabList = props => {
         showsHorizontalScrollIndicator={false}
         ref={scrollRef}
         centerContent={center}
+        style={tabBarStyle[`tab${size}`]}
         scrollEnabled={scrollEnabled}>
         {props.data.length > 0 &&
           props.data.map((item, index) => {
