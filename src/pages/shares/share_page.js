@@ -23,6 +23,8 @@ import ViewShotPage from '@/components/SharePage';
 import {uploadBase64File, getShareUrl} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
 import Loading from '@/components/Loading';
+import ShareTopicContent from "@/components/ShareTopicContent"
+import ShareArticleContent from "@/components/ShareArticleContent"
 
 const SharePageModal = props => {
   const defaultShareContent = {
@@ -65,36 +67,6 @@ const SharePageModal = props => {
   };
 
   const loadShareData = () => {
-    if (item_type === 'Topic') {
-      // console.log('topic', topic);
-      setShareContent({
-        account: topic.account,
-        node_name: topic.node.name,
-        content: topic.plain_content,
-        bg_img_url: topic.wx_share_image_url
-          ? `${topic.wx_share_image_url.split('?')[0]}?imageView2/0/interlace/1/format/jpg`
-          : '',
-        desc: `${topic.published_at_text} 发布了一篇帖子`,
-        content_style: topic.content_style,
-        topic_link: topic.topic_link,
-        qrcode_url: topic.qrcode_url,
-      });
-      // console.log('shareContent', shareContent);
-    } else if (item_type === 'Article') {
-      // console.log('article', article.intro)
-      setShareContent({
-        account: article.account,
-        node_name: article.node.name,
-        content: article.intro,
-        bg_img_url: article.wx_share_image_url ? article.wx_share_image_url.split('?')[0] : '',
-        desc: `${article.published_at_text} 发布了一篇文章`,
-        content_style: '',
-        qrcode_url: article.qrcode_url,
-      });
-    } else {
-      console.log('no support');
-    }
-
     setTimeout(() => {
       setLoadingView(false);
     }, 1000);
@@ -165,7 +137,8 @@ const SharePageModal = props => {
       <ScrollView
         style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : 'flex'}}
         showsVerticalScrollIndicator={false}>
-        <ViewShotPage pageShareContent={shareContent} viewShotRef={viewShotRef} />
+        { item_type === 'Topic' && <ShareTopicContent  topicDetail={topic} viewShotRef={viewShotRef} />}
+        { item_type === 'Article' && <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />}
       </ScrollView>
       <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
         <TouchableOpacity

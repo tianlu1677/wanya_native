@@ -134,14 +134,22 @@ const ArticleDetail = ({navigation, route}) => {
       marginBottom: 10,
       minHeight: 30,
     },
-    span: {
-      fontSize: 15,
+    h4: {
+      fontSize: 30,
       color: '#1F1F1F',
       letterSpacing: 1,
       lineHeight: 25,
       marginBottom: 10,
       fontWeight: '300',
-    }
+    },
+    span: {
+      // fontSize: 15,
+      color: '#1F1F1F',
+      letterSpacing: 1,
+      lineHeight: 25,
+      marginBottom: 10,
+      fontWeight: '300',
+    },
   };
   const classesStyles = {last: {textAlign: 'center'}};
 
