@@ -41,12 +41,14 @@ const LongVideoItem = props => {
           <Text style={styles.nameText}>{data.account.nickname}</Text>
           <Text style={styles.timeText}>{data.published_at_text}</Text>
         </Pressable>
-        <Bottom
-          data={data}
-          type="topic"
-          share={false}
-          style={{paddingBottom: 0, paddingTop: 0, marginLeft: 145}}
-        />
+        <View style={{position: 'absolute', right: -16}}>
+          <Bottom
+            data={data}
+            type="topic"
+            share={false}
+            style={{paddingBottom: 0, paddingTop: 0}}
+          />
+        </View>
       </View>
     </Pressable>
   );
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     paddingBottom: RFValue(7),
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 100
+    // marginRight: 100
   },
   content: {
     marginLeft: 12,
