@@ -50,7 +50,7 @@ const RichContent = props => {
     <RichHtml
       containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 25}}
       enableExperimentalPercentWidth
-      allowFontScaling={true}
+      // allowFontScaling={true}
       tagsStyles={richHtmlPStyle}
       classesStyles={classesStyles}
       imagesInitialDimensions={{width: width}}
