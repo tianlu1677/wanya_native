@@ -1,8 +1,6 @@
-import React, {Component} from 'react';
-import {ScrollView, Dimensions, Image, Text, View} from 'react-native';
-import HTML from 'react-native-render-html';
-import FastImg from '@/components/FastImg';
-import WebView from 'react-native-webview';
+import React from 'react';
+import {Dimensions} from 'react-native';
+import {RFValue} from '@/utils/response-fontsize';
 import RichHtml from '@/components/RichHtml';
 
 const {width} = Dimensions.get('window');
@@ -12,7 +10,7 @@ const RichContent = props => {
 
   const richHtmlPStyle = {
     p: {
-      fontSize: 15,
+      fontSize: RFValue(15),
       color: baseColor,
       letterSpacing: 1,
       lineHeight: 25,

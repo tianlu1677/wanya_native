@@ -129,7 +129,7 @@ const TopicDetail = ({navigation, route}) => {
               <Pressable
                 onPress={onReportClick}
                 hitSlop={{left: 30, right: 30, top: 30, bottom: 30}}
-                style={{marginRight: 10}}>
+                style={{marginRight: 16}}>
                 <IconFont name="gengduo" color="#000" size={20} />
               </Pressable>
             )}

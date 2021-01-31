@@ -42,7 +42,7 @@ const AddSpace = props => {
     return requestParams;
   };
 
-  const [request, setRequest] = useState(returnParams());
+  const [request, setRequest] = useState(null);
 
   const dispatchData = data => {
     const {type} = props.route.params;
@@ -65,7 +65,6 @@ const AddSpace = props => {
           longitude: item.location.split(',')[0],
         };
         const res = await createLocations({location: params});
-        console.log('res', res)
         data = res.data.location;
       }
       const update = {location: data.id === 0 ? null : data, space: null};
@@ -105,7 +104,7 @@ const AddSpace = props => {
 
   useEffect(() => {
     setRequest(returnParams(currentKey, searchKey));
-  }, [location.chooseCity, location.latitude, location.longitude]);
+  }, [location.chooseCity]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -125,28 +124,29 @@ const AddSpace = props => {
             </Pressable>
           }
         />
-
-        <TabViewList
-          center={false}
-          bottomLine={true}
-          lazy={true}
-          currentKey={currentKey}
-          onChange={onChangeKey}
-          request={request}
-          size="small"
-          tabData={[
-            {
-              key: 'space',
-              title: '场地',
-              component: SpaceListPage,
-            },
-            {
-              key: 'location',
-              title: '位置',
-              component: LocationListPage,
-            },
-          ]}
-        />
+        {request ? (
+          <TabViewList
+            center={false}
+            bottomLine={true}
+            lazy={true}
+            currentKey={currentKey}
+            onChange={onChangeKey}
+            request={request}
+            size="small"
+            tabData={[
+              {
+                key: 'space',
+                title: '场地',
+                component: SpaceListPage,
+              },
+              {
+                key: 'location',
+                title: '位置',
+                component: LocationListPage,
+              },
+            ]}
+          />
+        ) : null}
       </View>
     </TouchableWithoutFeedback>
   );

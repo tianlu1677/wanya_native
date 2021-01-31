@@ -138,13 +138,12 @@ const styles = StyleSheet.create({
   userInfo: {
     paddingLeft: 14,
     paddingTop: RFValue(7),
-    paddingBottom: RFValue(11),
+    paddingBottom: RFValue(7),
     flexDirection: 'row',
     alignItems: 'center',
   },
   content: {
     marginLeft: 12,
-    paddingTop: 4,
   },
   nameText: {
     fontSize: 12,
