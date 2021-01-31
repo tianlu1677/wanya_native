@@ -94,11 +94,11 @@ const LongVideoList = props => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: '#fff',
     paddingBottom: 100,
   },
   itemWrap: {
     flexDirection: 'column',
+    backgroundColor: '#fff',
   },
   imageWrap: {
     height: RFValue(210),
