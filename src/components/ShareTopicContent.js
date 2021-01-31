@@ -204,6 +204,8 @@ const styles = StyleSheet.create({
     marginLeft: 17,
     marginRight: 17,
     fontWeight: '500',
+    letterSpacing: 1,
+    lineHeight: 23
   },
   text: {
     color: '#fff',
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginLeft: 17,
     marginRight: 17,
-    paddingTop: 15,
+    paddingTop: 18,
     // minHeight: 150,
     letterSpacing: 1,
     textAlign: 'justify',

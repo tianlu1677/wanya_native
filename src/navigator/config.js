@@ -170,7 +170,7 @@ const articleRouter = [
     options: {
       title: '',
       animationEnabled: true,
-      gestureEnabled: false,
+      gestureEnabled: true,
       cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
     },
   },

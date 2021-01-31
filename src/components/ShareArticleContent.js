@@ -7,6 +7,7 @@ import {Avator} from '@/components/NodeComponents';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
 import {prosettings} from '@/api/settings_api';
 import RichContent from '@/pages/articles/components/RichContent';
+import {RFValue} from "@/utils/response-fontsize"
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
@@ -62,6 +63,41 @@ const ShareArticleContent = props => {
     });
   }, []);
 
+  const richHtmlPStyle = {
+    p: {
+      fontSize: RFValue(15),
+      color: 'white',
+      letterSpacing: 1,
+      lineHeight: 25,
+      marginBottom: 10,
+      fontWeight: '300',
+    },
+    figue: {
+      marginTop: 10,
+    },
+    img: {
+      width: '88%',
+      marginBottom: 10,
+      minHeight: 30,
+    },
+    h4: {
+      fontSize: 30,
+      color: 'white',
+      letterSpacing: 1,
+      lineHeight: 25,
+      marginBottom: 10,
+      fontWeight: '300',
+    },
+    span: {
+      fontSize: 15,
+      color: 'white',
+      letterSpacing: 1,
+      lineHeight: 25,
+      marginBottom: 10,
+      fontWeight: '300',
+    },
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
       <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 1}} style={{flex: 1}}>
@@ -93,9 +129,17 @@ const ShareArticleContent = props => {
             <RichContent
               content={content}
               baseColor={'white'}
+
               settings={{
-                containerStyle: {paddingLeft: 14, paddingRight: 14, marginTop: 5, color: 'white', fontSize: 14},
-                baseFontStyle: { color: 'white' }
+                containerStyle: {
+                  paddingLeft: 14,
+                  paddingRight: 14,
+                  marginTop: 5,
+                  color: 'white',
+                  fontSize: 14,
+                },
+                tagsStyles: richHtmlPStyle,
+                baseFontStyle: {color: 'white'},
               }}
             />
             <View style={styles.footer}>
