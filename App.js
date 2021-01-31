@@ -125,7 +125,7 @@ class App extends Component {
       requestMultiple([PERMISSIONS.IOS.LOCATION_WHEN_IN_USE, PERMISSIONS.IOS.PHOTO_LIBRARY]).then(
         statuses => {
           // console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-          // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+          console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
           // console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
         }
       );
@@ -206,9 +206,7 @@ class App extends Component {
     this.networdunsubscribe && this.networdunsubscribe();
   }
 
-  loadDeviceInfo = () => {
-
-  };
+  loadDeviceInfo = () => {};
 
   loadImgList = () => {
     // FastImage.preload(ImageList.map((u) => ({uri: u})))

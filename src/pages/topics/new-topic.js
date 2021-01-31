@@ -28,6 +28,7 @@ import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
 import FastImg from '@/components/FastImg';
 import {getLocation} from '@/api/space_api';
+import {loadLocation} from '@/pages/home/getLocation';
 
 const windowWidth = Dimensions.get('window').width;
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -54,25 +55,24 @@ const NewTopic = props => {
     if (res === false) {
       // 拒绝权限
       dispatch({type: action.GET_LOCATION, value: {}});
-      return
+      return;
     }
-    if (res.position && res.position.coords) {
-      // 获取到权限信息
+
+    if (location) {
+      // loction 缓存
       navigation.navigate('AddSpace', {type: 'topic'});
+      return;
+    }
+
+    // 获取到权限信息
+    if (res.position && res.position.coords) {
       const {latitude, longitude} = res.position.coords;
-      // console.log('res.position', res.position)
-      let city = '';
-      if (res.location && res.location.city) {
-        city = res.location.city
-        console.log('res.position', res.location)
-      } else {
-        const cityData = await getLocation({latitude, longitude});
-        city = cityData.data.city
-      }
+      const {city} = (await getLocation({latitude, longitude})).data;
       dispatch({
         type: action.GET_LOCATION,
         value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
       });
+      navigation.navigate('AddSpace', {type: 'topic'});
     }
   };
 
@@ -80,7 +80,6 @@ const NewTopic = props => {
     const imagePermission =
       Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
     const status = await check(imagePermission);
-    console.log('imagePermission', status);
     if (status === RESULTS.GRANTED) {
       return true;
     }
@@ -345,8 +344,9 @@ const NewTopic = props => {
   }, [savetopic]);
 
   useEffect(() => {
-    // dispatch({type: action.GET_LOCATION, value: {}}); ? 为啥要清空
-    // 清空数据
+    if (!location) {
+      loadLocation(dispatch);
+    }
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
       props.removeAllPhoto();

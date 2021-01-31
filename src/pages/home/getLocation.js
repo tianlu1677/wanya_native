@@ -1,14 +1,16 @@
 import {Platform, PermissionsAndroid} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+import * as action from '@/redux/constants';
 import {check, request, openSettings, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {Geolocation as GeolocationAndroid1} from 'react-native-amap-geolocation';
+import {getLocation} from '@/api/space_api';
 
 const iosLocationPermission =
   Platform.OS === 'ios'
     ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
     : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
 
-export const getLocation = async (open, handleClick) => {
+export const getLocationInfo = async (open, handleClick) => {
   const answer = await checkPermission();
 
   if (answer === 'WAIT') {
@@ -19,7 +21,7 @@ export const getLocation = async (open, handleClick) => {
     console.log('没权限');
     if (open) {
       // console.log('没权限1111');
-      await openSettings()
+      await openSettings();
     } else {
       handleClick(false);
     }
@@ -77,4 +79,18 @@ const checkPermission = async () => {
       return false;
   }
   return Permission;
+};
+
+export const loadLocation = dispatch => {
+  getLocationInfo(false, async result => {
+    if (result) {
+      const {latitude, longitude} = result.position.coords;
+      const res = await getLocation({latitude, longitude});
+      const {city} = res.data;
+      dispatch({
+        type: action.GET_LOCATION,
+        value: {...result.position.coords, positionCity: city, chooseCity: city},
+      });
+    }
+  });
 };

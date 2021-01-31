@@ -16,8 +16,8 @@ import DoubleList from '@/components/List/double-list';
 import {RFValue} from '@/utils/response-fontsize';
 import {getChannelPosts} from '@/api/home_api';
 import {recordDeviceInfo} from '@/api/settings_api';
+import {getLocationInfo, loadLocation} from './getLocation';
 import deviceInfo from '@/utils/device_info';
-import {getLocation} from './getLocation';
 import {
   dispatchFetchCategoryList,
   dispatchBaseCurrentAccount,
@@ -106,36 +106,27 @@ const Recommend = props => {
   };
 
   const onChange = async key => {
-    if (key === 'nearby') {
-      setTimeout(() => {
-        getLocation(false, result => {
-          if (result) {
-            console.log('result', result)
-            dispatch({type: action.GET_LOCATION, value: result.position.coords});
-          }
-        });
-      }, 300);
+    const {location} = home;
+    if (key === 'nearby' && (!location.latitude || !location.longitude)) {
+      getLocationInfo(false, result => {
+        if (result) {
+          dispatch({type: action.GET_LOCATION, value: result.position.coords});
+        }
+        setCurrentKey(key);
+      });
+    } else {
+      setCurrentKey(key);
     }
-    setCurrentKey(key);
   };
-
-  // const LongVideoListPage = () => {
-  //   return (
-  //       <LongVideoList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
-  //   );
-  // };
 
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
-  useEffect(() => {
-    // console.log('deviceInfo', deviceInfo)
-    recordDeviceInfo(deviceInfo);
-  }, []);
 
   useEffect(() => {
+    recordDeviceInfo(deviceInfo);
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
     if (uploadStatus) {
@@ -143,7 +134,12 @@ const Recommend = props => {
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
       dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
     }
+    loadLocation(dispatch);
   }, []);
+
+  // useEffect(() => {
+  //   console.log(home.location);
+  // }, [home.location]);
 
   return (
     <>
