@@ -21,9 +21,10 @@ const ShareTopicContent = props => {
     plain_content,
     published_at_text,
     title,
+    is_long_video
   } = props.topicDetail
 
-  const desc = `${published_at_text} 发布了一篇帖子`;
+  const desc = `${published_at_text} 发布了一篇${is_long_video ? '长视频' : '帖子'}`;
   const bg_img_url = wx_share_image_url ? wx_share_image_url.split('?')[0] : '';
   const content = plain_content;
   const node_name = node ? node.name : '';
