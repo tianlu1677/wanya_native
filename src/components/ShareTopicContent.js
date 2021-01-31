@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     marginTop: 9,
   },
   time: {
-    color: '#fff',
+    color: '#BDBDBD',
     fontSize: 10,
     lineHeight: 20,
   },

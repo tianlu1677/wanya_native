@@ -4,11 +4,10 @@ import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
 import FastImg from '@/components/FastImg';
 import {Avator} from '@/components/NodeComponents';
-import PlayVideoImg from '@/assets/images/play-video.png';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
 import {prosettings} from '@/api/settings_api';
+import RichContent from '@/pages/articles/components/RichContent';
 
-// import CameraRoll from "@react-native-community/cameraroll";
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
 const ShareArticleContent = props => {
@@ -90,7 +89,15 @@ const ShareArticleContent = props => {
               )}
             </View>
 
-            <Text style={styles.text}>{content}</Text>
+            <Text style={styles.title}>{title}</Text>
+            <RichContent
+              content={content}
+              baseColor={'white'}
+              settings={{
+                containerStyle: {paddingLeft: 14, paddingRight: 14, marginTop: 0, color: 'white'},
+                baseFontStyle: { color: 'white'}
+              }}
+            />
             <View style={styles.footer}>
               <FastImg
                 style={styles.shareLogo}
@@ -151,7 +158,7 @@ const styles = StyleSheet.create({
     marginTop: 9,
   },
   time: {
-    color: '#fff',
+    color: '#BDBDBD',
     fontSize: 10,
     lineHeight: 20,
   },
@@ -181,6 +188,16 @@ const styles = StyleSheet.create({
     height: 18,
     right: 10,
     top: 10,
+  },
+  title: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '500',
+    marginLeft: 17,
+    marginRight: 17,
+    marginBottom: 20,
+    lineHeight: 23,
+    letterSpacing: 1
   },
   text: {
     color: '#fff',

@@ -24,10 +24,7 @@ import {getArticleCommentList, createComment, deleteComment} from '@/api/comment
 import {getArticle, createArticleAction} from '@/api/article_api';
 import CommentList from '@/components/List/comment-list';
 import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
-
-const {width} = Dimensions.get('window');
-import AutoHeightWebView from 'react-native-autoheight-webview';
-import {WebView} from 'react-native-webview';
+import RichContent from './components/RichContent';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -169,16 +166,20 @@ const ArticleDetail = ({navigation, route}) => {
             <View style={{paddingBottom: RFValue(20)}}>
               <Text style={styles.title}>{detail.title}</Text>
               <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
-              <RichHtml
-                containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 25}}
-                enableExperimentalPercentWidth
-                allowFontScaling={true}
-                tagsStyles={richHtmlPStyle}
-                classesStyles={classesStyles}
-                imagesInitialDimensions={{width: width}}
-                baseFontStyle={{lineHeight: 26, letterSpacing: 1}}
+              <RichContent
                 content={detail.content}
+                baseColor={'#1F1F1F'}
               />
+              {/*<RichHtml*/}
+              {/*  containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 25}}*/}
+              {/*  enableExperimentalPercentWidth*/}
+              {/*  allowFontScaling={true}*/}
+              {/*  tagsStyles={richHtmlPStyle}*/}
+              {/*  classesStyles={classesStyles}*/}
+              {/*  imagesInitialDimensions={{width: width}}*/}
+              {/*  baseFontStyle={{lineHeight: 26, letterSpacing: 1}}*/}
+              {/*  content={detail.content}*/}
+              {/*/>*/}
               <PublishRelated data={detail} type="article" />
             </View>
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
