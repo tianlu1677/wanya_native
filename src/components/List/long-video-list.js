@@ -137,12 +137,9 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     paddingLeft: 14,
-    // paddingTop: RFValue(7),
-    // paddingBottom: RFValue(11),
-    paddingTop: RFValue(12),
-    paddingBottom: RFValue(12),
+    paddingTop: RFValue(7),
+    paddingBottom: RFValue(11),
     flexDirection: 'row',
-    // backgroundColor: 'red',
     alignItems: 'center',
   },
   content: {

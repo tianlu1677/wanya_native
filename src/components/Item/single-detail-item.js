@@ -10,7 +10,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
-import LocationBar from '@/components/LocationBar'
+import LocationBar from '@/components/LocationBar';
 export const PublishAccount = props => {
   const {data} = props;
   const navigation = useNavigation();
@@ -80,7 +80,10 @@ export const PublishRelated = props => {
               <Text style={pstyles.formTitle}>{data.node.name}</Text>
             </View>
             <Text style={pstyles.formInfo}>
-              {props.type === 'topic' && data.node && data.node.topics_count > 0 && `${data.node.topics_count}篇帖子 · `}
+              {props.type === 'topic' &&
+                data.node &&
+                data.node.topics_count > 0 &&
+                `${data.node.topics_count}篇帖子 · `}
               {data.node.accounts_count}位{data.node.nickname || '圈友'}
             </Text>
           </View>
@@ -214,6 +217,7 @@ export const ActionComment = props => {
     }
     navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
   };
+
   useEffect(() => {
     setPraise(props.detail.praise);
     setStar(props.detail.star);

@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Vibration} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
-import LocationBar from '@/components/LocationBar'
-import {useDispatch, useSelector} from 'react-redux';
+import {RFValue} from '@/utils/response-fontsize';
+import LocationBar from '@/components/LocationBar';
 import {createTopicAction, destroyTopicAction, deleteTopic} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
@@ -113,7 +114,9 @@ export const Header = props => {
           <View style={hstyles.info}>
             <Text style={hstyles.timeText}>{data.published_at_text}</Text>
             <LocationBar space={data.space} location={data.location} />
-            {data.distance && data.distance > 0 && <Text style={hstyles.spaceText}>· {(data.distance / 1000).toFixed(1)}km</Text>}
+            {data.distance && data.distance > 0 && (
+              <Text style={hstyles.spaceText}>· {(data.distance / 1000).toFixed(1)}km</Text>
+            )}
           </View>
         </Pressable>
       </View>
@@ -248,7 +251,7 @@ export const Bottom = props => {
       </Pressable>
       <Pressable style={bstyles.botCon}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />
-        <Text style={bstyles.botNum}>{data.comments_count || ''}99</Text>
+        <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
       </Pressable>
       {props.share ? (
         <Pressable
@@ -315,9 +318,10 @@ const hstyles = StyleSheet.create({
     paddingTop: 4,
   },
   nameText: {
+    // fontSize: RFValue(12),
     fontSize: 12,
-    lineHeight: 20,
-    color: '#1F1F1F'
+    // lineHeight: 20,
+    color: '#1F1F1F',
   },
   info: {
     flexDirection: 'row',
@@ -390,6 +394,6 @@ export const NoActionBottom = props => {
 const nbstyles = StyleSheet.create({
   infotext: {
     color: '#BDBDBD',
-    fontSize: 12,
+    fontSize: 11,
   },
 });

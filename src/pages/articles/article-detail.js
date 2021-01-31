@@ -1,14 +1,7 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {KeyboardAvoidingView} from 'react-native';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Platform,
-  Dimensions,
-  Pressable,
-} from 'react-native';
+import {View, Text, StyleSheet, Platform, Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchArticleDetail} from '@/redux/actions';
@@ -17,19 +10,19 @@ import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
 import ActionSheet from '@/components/ActionSheet';
 import {Avator} from '@/components/NodeComponents';
-import RichHtml from '@/components/RichHtml';
 import {NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {getArticle, createArticleAction} from '@/api/article_api';
+import {followAccount, unfollowAccount} from '@/api/account_api';
 import CommentList from '@/components/List/comment-list';
-import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
+import {PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import RichContent from './components/RichContent';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
-  const currentArticle = useSelector(state => state.topic.articleDetail);
+  const currentArticle = useSelector(state => state.article.articleDetail);
   const [articleId] = useState(route.params.articleId);
   const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -124,7 +117,7 @@ const ArticleDetail = ({navigation, route}) => {
       fontWeight: '300',
     },
     figue: {
-      marginTop: 10
+      marginTop: 10,
     },
     img: {
       width: '93%',
@@ -165,11 +158,8 @@ const ArticleDetail = ({navigation, route}) => {
           <>
             <View style={{paddingBottom: RFValue(20)}}>
               <Text style={styles.title}>{detail.title}</Text>
-              <PublishAccount data={detail} showFollow={detail.account_id !== currentAccount.id} />
-              <RichContent
-                content={detail.content}
-                baseColor={'#1F1F1F'}
-              />
+              <ArticleHeader data={detail} showFollow={detail.account_id !== currentAccount.id} />
+              <RichContent content={detail.content} baseColor={'#1F1F1F'} />
               {/*<RichHtml*/}
               {/*  containerStyle={{paddingLeft: 14, paddingRight: 14, marginTop: 25}}*/}
               {/*  enableExperimentalPercentWidth*/}
@@ -204,6 +194,69 @@ const ArticleDetail = ({navigation, route}) => {
     <Loading />
   );
 };
+
+const ArticleHeader = props => {
+  const {data} = props;
+  const navigation = useNavigation();
+  const [followed, setFollowed] = useState(props.data.account.followed);
+
+  const goAccountDetail = () => {
+    navigation.push('AccountDetail', {accountId: data.account.id});
+  };
+
+  const onFollow = async () => {
+    if (followed) {
+      await unfollowAccount(data.account_id);
+    } else {
+      await followAccount(data.account_id);
+    }
+    setFollowed(!followed);
+  };
+
+  return (
+    <View style={hstyles.headerView}>
+      <Pressable style={hstyles.content} onPress={goAccountDetail}>
+        <Avator account={data.account} size={25} />
+        <Text style={hstyles.nameText}>{data.account.nickname}</Text>
+        <Text style={hstyles.timeText}>{data.published_at_text}</Text>
+      </Pressable>
+      {props.showFollow && (
+        <Text style={[hstyles.joinBtn, {color: followed ? '#bdbdbd' : '#000'}]} onPress={onFollow}>
+          {followed ? '已关注' : '关注'}
+        </Text>
+      )}
+    </View>
+  );
+};
+const hstyles = StyleSheet.create({
+  headerView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    marginTop: RFValue(10),
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  nameText: {
+    fontSize: 12,
+    marginLeft: 7,
+    marginRight: 7,
+  },
+  timeText: {
+    color: '#bdbdbd',
+    fontSize: 12,
+  },
+  joinBtn: {
+    paddingLeft: 12,
+    paddingRight: 12,
+    marginLeft: 'auto',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+});
 
 const styles = StyleSheet.create({
   title: {

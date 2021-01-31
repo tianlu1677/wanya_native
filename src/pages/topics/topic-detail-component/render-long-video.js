@@ -70,7 +70,12 @@ const RenderLongVideo = props => {
         </View>
         {check && <Text style={styles.intro}>{detail.plain_content}</Text>}
       </View>
-      <PublishRelated data={detail} type="topic" space={props.detail.space} location={props.detail.location} />
+      <PublishRelated
+        data={detail}
+        type="topic"
+        space={props.detail.space}
+        location={props.detail.location}
+      />
     </>
   );
 };
