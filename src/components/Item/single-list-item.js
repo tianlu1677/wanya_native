@@ -320,7 +320,7 @@ const hstyles = StyleSheet.create({
   nameText: {
     // fontSize: RFValue(12),
     fontSize: 12,
-    // lineHeight: 20,
+    lineHeight: 20,
     color: '#1F1F1F',
   },
   info: {
