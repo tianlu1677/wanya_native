@@ -94,8 +94,8 @@ const ShareArticleContent = props => {
               content={content}
               baseColor={'white'}
               settings={{
-                containerStyle: {paddingLeft: 14, paddingRight: 14, marginTop: 0, color: 'white'},
-                baseFontStyle: { color: 'white'}
+                containerStyle: {paddingLeft: 14, paddingRight: 14, marginTop: 5, color: 'white', fontSize: 14},
+                baseFontStyle: { color: 'white' }
               }}
             />
             <View style={styles.footer}>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     marginRight: 18,
     marginTop: 31,
     flexDirection: 'row',
-    marginBottom: 12,
+    marginBottom: 20,
   },
   info: {
     color: '#fff',
@@ -175,20 +175,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginLeft: 6,
   },
-  cover: {
-    // minHeight: 300,
-    // maxHeight: 260,
-    backgroundColor: 'pink',
-    width: '100%',
-    // height: '100%',
-  },
-  playVideo: {
-    position: 'absolute',
-    width: 18,
-    height: 18,
-    right: 10,
-    top: 10,
-  },
   title: {
     color: '#fff',
     fontSize: 18,
@@ -197,7 +183,7 @@ const styles = StyleSheet.create({
     marginRight: 17,
     marginBottom: 20,
     lineHeight: 23,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
   text: {
     color: '#fff',
@@ -210,26 +196,6 @@ const styles = StyleSheet.create({
     // minHeight: 150,
     letterSpacing: 1,
     textAlign: 'justify',
-  },
-  linkWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 61,
-    paddingLeft: 8,
-    marginLeft: 17,
-    marginRight: 17,
-    backgroundColor: '#303030',
-  },
-  linkText: {
-    flex: 1,
-    flexWrap: 'wrap',
-    paddingLeft: 10,
-    fontWeight: '400',
-    fontSize: 13,
-    color: 'white',
-    lineHeight: 22,
-    letterSpacing: 1,
-    paddingRight: 10,
   },
   footer: {
     flex: 1,
