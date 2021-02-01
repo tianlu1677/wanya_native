@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Pressable, Text, StyleSheet} from 'react-native';
+import {View, Pressable, Text, StyleSheet, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Bottom} from '@/components/Item/single-list-item';
 import {Avator} from '@/components/NodeComponents';
 import VideoPlayImg from '@/assets/images/video-play.png';
+const {width} = Dimensions.get('window');
 
 const LongVideoItem = props => {
   const {data} = props;
@@ -93,6 +94,8 @@ const LongVideoList = props => {
   );
 };
 
+const ImageHeight = parseInt((width * 420) / 750);
+
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   imageWrap: {
-    height: RFValue(210),
+    height: ImageHeight,
     position: 'relative',
     backgroundColor: '#000',
   },
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: RFValue(210),
+    height: ImageHeight,
     borderRadius: 0,
   },
   playImage: {

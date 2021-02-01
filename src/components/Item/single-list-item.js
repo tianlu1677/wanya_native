@@ -249,10 +249,10 @@ export const Bottom = props => {
           {praiseCount > 0 ? praiseCount : ''}
         </Animatable.Text>
       </Pressable>
-      <Pressable style={bstyles.botCon}>
+      <View style={bstyles.botCon}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />
-        <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
-      </Pressable>
+        <Text style={bstyles.botNum}>{data.comments_count || ''}99</Text>
+      </View>
       {props.share ? (
         <Pressable
           style={{marginLeft: 'auto'}}
@@ -318,7 +318,6 @@ const hstyles = StyleSheet.create({
     paddingTop: 4,
   },
   nameText: {
-    // fontSize: RFValue(12),
     fontSize: 12,
     lineHeight: 20,
     color: '#1F1F1F',
@@ -353,7 +352,8 @@ const bstyles = StyleSheet.create({
     alignItems: 'center',
   },
   botCon: {
-    width: 70,
+    width: 50,
+    marginRight: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },

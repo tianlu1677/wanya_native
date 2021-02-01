@@ -10,7 +10,7 @@ import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
 import ActionSheet from '@/components/ActionSheet';
 import {Avator} from '@/components/NodeComponents';
-import {IsIos, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {getArticle, createArticleAction} from '@/api/article_api';
@@ -118,8 +118,7 @@ const ArticleDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT + 55}
-    >
+      keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
       <CommentList
         detail={detail}
         request={{api: getArticleCommentList, params: {id: detail.id}}}

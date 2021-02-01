@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Header, NoActionBottom} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import VideoPlayImg from '@/assets/images/video-play.png';
+const {width} = Dimensions.get('window');
 
 const BaseLongVideo = props => {
   const {data} = props;
@@ -35,6 +36,7 @@ const BaseLongVideo = props => {
   );
 };
 
+const ImageHeight = parseInt((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
   },
   imageCover: {
     width: '100%',
-    height: RFValue(193),
+    height: ImageHeight,
     marginTop: RFValue(5),
   },
   bottom: {
