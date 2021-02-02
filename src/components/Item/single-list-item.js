@@ -141,6 +141,7 @@ export const Bottom = props => {
   const dispatch = useDispatch();
   const [praise, setPraise] = useState(props.data.praise);
   const [praiseCount, setPraiseCount] = useState(props.data.praises_count);
+
   const [an, setAn] = useState('');
 
   const onPraise = async () => {
@@ -239,28 +240,27 @@ export const Bottom = props => {
     duration: 600,
   };
 
+  const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
+
   return (
     <View style={[bstyles.botView, props.style]}>
-      <Pressable style={bstyles.botCon} onPress={onPraise}>
+      <Pressable style={bstyles.botCon} onPress={onPraise} hitSlop={hitSlop}>
         <Animatable.View animation={an} useNativeDriver easing="ease-out" iterationCount={1}>
           <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
         </Animatable.View>
-        <Animatable.Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
-          {praiseCount > 0 ? praiseCount : ''}
-        </Animatable.Text>
+        {praiseCount > 0 ? (
+          <Animatable.Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
+            {praiseCount}
+          </Animatable.Text>
+        ) : null}
       </Pressable>
-      <View style={bstyles.botCon}>
+      <View style={[bstyles.botCon, bstyles.botConComment]}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />
-        <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
+        {data.comments_count > 0 ? <Text style={bstyles.botNum}>{data.comments_count}</Text> : null}
       </View>
       {props.share ? (
-        <Pressable
-          style={{marginLeft: 'auto'}}
-          onPress={() => {
-            onShare();
-          }}
-          hitSlop={{left: 30, right: 20, top: 20, bottom: 10}}>
-          <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
+        <Pressable style={{marginLeft: 'auto'}} onPress={onShare} hitSlop={hitSlop}>
+          <IconFont name="zhuanfa" size={18} />
         </Pressable>
       ) : null}
     </View>
@@ -352,14 +352,15 @@ const bstyles = StyleSheet.create({
     alignItems: 'center',
   },
   botCon: {
-    width: 50,
-    marginRight: 20,
+    marginRight: 35,
     flexDirection: 'row',
     alignItems: 'center',
   },
+  botConComment: {
+    marginRight: 0,
+  },
   botNum: {
     marginLeft: 5,
-    marginRight: 20,
     color: '#bdbdbd',
     fontSize: 12,
   },
