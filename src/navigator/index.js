@@ -38,9 +38,6 @@ import PasswordLogin from '@/pages/sessions/password-login';
 import WebView from '@/pages/webview/webview';
 
 import {useNavigation} from '@react-navigation/native';
-import BackWhiteImg from '@/assets/images/back-white.png';
-import BackImg from '@/assets/images/back.png';
-import ViewShotPage from '@/components/SharePage';
 import AnalyticsUtil from '@/utils/umeng_analytics_util';
 
 const Tab = createBottomTabNavigator();

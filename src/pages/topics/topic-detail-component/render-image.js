@@ -45,7 +45,7 @@ const RenderImage = props => {
 
   return (
     <>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar barStyle={'light-content'} />
       <View style={{minHeight: maxHeight, width: screenWidth, position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {props.detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}

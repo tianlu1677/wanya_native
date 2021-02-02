@@ -18,8 +18,6 @@ import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
 import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
-import {DefaultLog} from '@/utils/default-image';
-import ViewShotPage from '@/components/SharePage';
 import {uploadBase64File, getShareUrl} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
 import Loading from '@/components/Loading';
@@ -90,7 +88,7 @@ const SharePageModal = props => {
   };
 
   const shareFriend = async () => {
-    Toast.showLoading('正在生成分享图片...');
+    Toast.showLoading('正在生成分享图片...', {duration: 9000});
     let share_url = shareUri;
     if (!share_url || share_url === '') {
       const asset_res = await takeImg();

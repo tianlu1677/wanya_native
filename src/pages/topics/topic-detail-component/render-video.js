@@ -32,7 +32,7 @@ const RenderVideo = props => {
 
   return (
     <>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar barStyle={'light-content'} />
       <View style={{position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}

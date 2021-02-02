@@ -140,7 +140,6 @@ const NearbyShareComponent = () => {
         <FastImg
           style={styles.followShareImage}
           source={ShareNearByImg}
-          mode={'center'}
         />
         <View>
           <Text style={styles.shareTitle}>获取更多附近信息</Text>

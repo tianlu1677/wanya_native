@@ -114,7 +114,7 @@ const TopicDetail = ({navigation, route}) => {
       keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
       {['video', 'img'].includes(detail.content_style) ? (
         <>
-          <StatusBar barStyle={'light-content'} />
+          {/*<StatusBar barStyle={'light-content'} />*/}
           <GoBack color={'white'} report={{report_type: 'Topic', report_id: detail.id}} />
         </>
       ) : null}
