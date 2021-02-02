@@ -251,7 +251,7 @@ export const Bottom = props => {
       </Pressable>
       <View style={bstyles.botCon}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />
-        <Text style={bstyles.botNum}>{data.comments_count || ''}99</Text>
+        <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
       </View>
       {props.share ? (
         <Pressable
