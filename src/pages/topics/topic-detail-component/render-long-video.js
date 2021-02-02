@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     lineHeight: RFValue(25),
-    textAlign: 'justify',
+    // textAlign: 'justify',
     marginRight: 'auto',
     flex: 1,
   },
