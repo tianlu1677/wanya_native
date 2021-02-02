@@ -19,7 +19,12 @@ import {
   openSettings,
 } from 'react-native-permissions';
 
-import {init, Geolocation as GeolocationAndroid, setLocatingWithReGeocode, setNeedAddress} from 'react-native-amap-geolocation';
+import {
+  init,
+  Geolocation as GeolocationAndroid,
+  setLocatingWithReGeocode,
+  setNeedAddress,
+} from 'react-native-amap-geolocation';
 // android
 // setNeedAddress(true);
 
@@ -62,12 +67,12 @@ const GetLocation = ({children, handleClick, style}) => {
     if (Platform.OS === 'ios') {
       Geolocation.getCurrentPosition(
         position => {
-          console.log('position => ', position);
+          // console.log('position => ', position);
           handleClick && handleClick({position: position});
         },
         error => {
           // See error code charts below.
-          console.log(error.code, error.message);
+          // console.log(error.code, error.message);
           handleClick(false);
         },
         {enableHighAccuracy: false, timeout: 3000, maximumAge: 10000, distanceFilter: 100}

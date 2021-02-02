@@ -3,12 +3,14 @@ import {View, Text, Image, StyleSheet, Pressable, TextInput} from 'react-native'
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
 import {Avator} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchArticleDetail} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import * as action from '@/redux/constants';
+import LocationBar from '@/components/LocationBar';
 export const PublishAccount = props => {
   const {data} = props;
   const navigation = useNavigation();
@@ -38,15 +40,7 @@ export const PublishAccount = props => {
         <Text style={hstyles.nameText}>{data.account.nickname}</Text>
         <View style={hstyles.info}>
           <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-          {data.space && (
-            <Pressable
-              style={hstyles.spaceWrapper}
-              onPress={goSpaceDetail}
-              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-              <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-              <Text style={hstyles.spaceText}>{data.space.name}</Text>
-            </Pressable>
-          )}
+          <LocationBar space={data.space} location={data.location} />
         </View>
       </Pressable>
       {props.showFollow && (
@@ -82,13 +76,15 @@ export const PublishRelated = props => {
           <View>
             <View style={pstyles.formTitleWrap}>
               <Text style={pstyles.formTitle}>来自</Text>
-              <IconFont name="node-solid" size={16} color={'#000'} style={{marginLeft: 10}} />
+              <IconFont name="node-solid" size={16} color={'#000'} style={pstyles.formIcon} />
               <Text style={pstyles.formTitle}>{data.node.name}</Text>
             </View>
-
             <Text style={pstyles.formInfo}>
-              {data.node.topics_count}篇帖子 · {data.node.accounts_count}位
-              {data.node.nickname || '圈友'}
+              {props.type === 'topic' &&
+                data.node &&
+                data.node.topics_count > 0 &&
+                `${data.node.topics_count}篇帖子 · `}
+              {data.node.accounts_count}位{data.node.nickname || '圈友'}
             </Text>
           </View>
           <Image style={pstyles.formImage} source={{uri: data.node.cover_url}} />
@@ -139,7 +135,6 @@ export const ActionComment = props => {
 
   const publishComment = () => {
     const data = {...comment, content: value};
-    // console.log(data);
     const params = {
       placeholder: data.placeholder,
       comment: {
@@ -151,7 +146,6 @@ export const ActionComment = props => {
         target_comment_id: data.target_comment_id || '',
       },
     };
-    // console.log(params);
     props.publishComment(params);
   };
 
@@ -223,6 +217,7 @@ export const ActionComment = props => {
     }
     navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
   };
+
   useEffect(() => {
     setPraise(props.detail.praise);
     setStar(props.detail.star);
@@ -233,10 +228,10 @@ export const ActionComment = props => {
 
   useEffect(() => {
     if (comment.content) {
-      setValue(comment.content);
       setTimeout(() => {
         props.changeVisible(true);
-      }, 600)
+        setValue(comment.content);
+      }, 500);
     }
   }, [comment]);
 
@@ -304,7 +299,7 @@ const hstyles = StyleSheet.create({
     height: 40,
     paddingLeft: 15,
     paddingRight: 14,
-    marginTop: 20,
+    marginTop: 15,
   },
   content: {
     marginLeft: 12,
@@ -352,7 +347,7 @@ const pstyles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingLeft: 15,
     paddingRight: 53,
-    marginBottom: 12,
+    marginTop: 16,
   },
   tagsText: {
     paddingLeft: 9,
@@ -362,13 +357,14 @@ const pstyles = StyleSheet.create({
     marginRight: 8,
     marginBottom: 8,
     fontSize: 11,
+    fontWeight: '300',
   },
   fromWrapper: {
-    height: 90,
     flexDirection: 'row',
     paddingLeft: 15,
     paddingRight: 19,
     alignItems: 'center',
+    marginTop: RFValue(16),
   },
   formTitleWrap: {
     flexDirection: 'row',
@@ -379,6 +375,10 @@ const pstyles = StyleSheet.create({
   formTitle: {
     fontSize: 15,
     fontWeight: '500',
+  },
+  formIcon: {
+    marginLeft: 10,
+    marginRight: 3,
   },
   formInfo: {
     fontSize: 12,

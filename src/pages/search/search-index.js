@@ -5,14 +5,15 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import NodeList from '@/components/List/node-list';
 import DoubleList from '@/components/List/double-list';
+import LongVideoList from '@/components/List/long-video-list';
 import SpaceList from '@/components/List/space-list';
 import HashtagList from '@/components/List/hash-tag-list';
-import {AccountList} from '@/components/List/account-list';
 import {Search} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
+import AccountsNormalList from '@/components/List/accounts-normal-list';
 
 const SearchIndex = ({navigation, route}) => {
   const [currentKey, setCurrentKey] = useState('topic');
@@ -42,6 +43,11 @@ const SearchIndex = ({navigation, route}) => {
       <DoubleList request={request} enableRefresh={false} dataKey="items" />
     ) : null;
 
+  const LongVideoPage = () =>
+    request.params.type === 'long_video' ? (
+      <LongVideoList request={request} enableRefresh={false} dataKey="items" />
+    ) : null;
+
   const SpaceListPage = () =>
     request.params.type === 'space' ? (
       <SpaceList request={request} enableRefresh={false} dataKey="items" />
@@ -54,7 +60,12 @@ const SearchIndex = ({navigation, route}) => {
 
   const AccountListPage = () =>
     request.params.type === 'account' ? (
-      <AccountList request={request} enableRefresh={false} dataKey="items" />
+      <AccountsNormalList
+        request={request}
+        enableRefresh={false}
+        dataKey="items"
+        itemType="normal"
+      />
     ) : null;
 
   const onChangeText = text => {
@@ -109,6 +120,11 @@ const SearchIndex = ({navigation, route}) => {
             key: 'duanshipin',
             title: '短视频',
             component: ShortVideoPage,
+          },
+          {
+            key: 'long_video',
+            title: '长视频',
+            component: LongVideoPage,
           },
           {
             key: 'space',

@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, Pressable, Button, FlatList, ScrollView, View, Text} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import GetLocation from '@/components/GetLocation';
-import PushNotification from 'react-native-push-notification';
+// import PushNotification from 'react-native-push-notification';
 import Helper from '@/utils/helper';
 import {
   check,
@@ -30,9 +30,9 @@ const LabIndex = props => {
   };
 
   const checkPermission = () => {
-    PushNotification.checkPermissions(res => {
-      setNotifyPermission(res);
-    });
+    // PushNotification.checkPermissions(res => {
+    //   setNotifyPermission(res);
+    // });
   };
 
   return (

@@ -177,12 +177,18 @@ export const LEARNING_RECORDS_SUCCESS = 'LEARNING_RECORDS_SUCCESS';
 // new topic
 export const SAVE_NEW_TOPIC = 'SAVE_NEW_TOPIC';
 export const SAVE_COMMENT_TOPIC = 'SAVE_COMMENT_TOPIC'; // 帖子评论
-export const CHOOSE_CITY = 'CHOOSE_CITY'; // 视频上传进度
 export const GET_LOCATION = 'GET_LOCATION'; // 经纬度
 export const CHANGE_UPLOAD_STATUS = 'CHANGE_UPLOAD_STATUS'; //视频上传进度
 
 //recommend
-export const UPDATE_NODES = 'UPDATE_NODES'; //更新全部圈子数据
-export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //更新关注圈子数据
 export const UPDATE_CATEGORY_LIST = 'UPDATE_CATEGORY_LIST';
 export const SAVE_CHANNELS = 'SAVE_CHANNELS'; //首页channels
+export const CHANGE_SHARE_STATUS = 'CHANGE_SHARE_STATUS'; //首页关注分享状态
+export const CHANGE_SHARE_NEARBY_STATUS = 'CHANGE_SHARE_NEARBY_STATUS'; //首页附近关注分享状态
+
+// node
+export const CREATE_NODE = 'CREATE_NODE'; //创建node对象
+export const UPDATE_NODES = 'UPDATE_NODES'; //全部圈子
+export const UPDATE_HOME_NODES = 'UPDATE_HOME_NODES'; //更新首页圈子列表
+export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //关注圈子列表（只包含关注的）
+export const UPDATE_CHECK_NODES = 'UPDATE_CHECK_NODES'; //check圈子列表

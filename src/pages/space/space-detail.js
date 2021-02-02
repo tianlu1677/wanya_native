@@ -76,7 +76,7 @@ const SpaceDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={styles.wrapper}>
-      <GoBack />
+      {/*<GoBack />*/}
       <JoinActivity type={'node'} text={'立即打卡'} handleClick={joinNewTopic} />
       <CollapsibleHeader
         headerHeight={HEADER_HEIGHT}

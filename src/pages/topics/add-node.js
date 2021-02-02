@@ -20,8 +20,6 @@ const NodeIndex = ({navigation}) => {
 
 const styles = StyleSheet.create({
   cancel: {
-    paddingLeft: 5,
-    paddingRight: 5,
     textAlign: 'center',
     fontSize: 15,
     color: '#bdbdbd',

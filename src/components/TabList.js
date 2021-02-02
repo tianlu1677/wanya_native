@@ -26,11 +26,12 @@ const TabList = props => {
     let layout = layoutList[index];
     let rx = deviceWidth / 2;
     let sx = layout.x - rx + layout.width / 2;
-    if (sx < 0) {
-      sx = 0;
-    }
-    sx < contentWidth - deviceWidth && scrollRef.current.scrollTo({x: sx, animated: true});
-    sx >= contentWidth - deviceWidth && scrollRef.current.scrollToEnd({animated: true});
+    scrollRef.current.scrollTo({x: sx, animated: true});
+    // if (sx < 0) {
+    //   sx = 0;
+    // }
+    // sx < contentWidth - deviceWidth && scrollRef.current.scrollTo({x: sx, animated: true});
+    // sx >= contentWidth - deviceWidth && scrollRef.current.scrollToEnd({animated: true});
   };
 
   const setLayout = (layout, index) => {
@@ -50,7 +51,9 @@ const TabList = props => {
 
   useEffect(() => {
     const index = props.data.findIndex(v => v.key === props.current);
+    const current = props.data.find(v => v.key === props.current);
     setCurrentIndex(index);
+    setIndex(current, index);
   }, [props.current]);
 
   useEffect(() => {
@@ -70,10 +73,11 @@ const TabList = props => {
         },
       ]}>
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
         ref={scrollRef}
         centerContent={center}
+        style={tabBarStyle[`tabScroll${size}`]}
         scrollEnabled={scrollEnabled}>
         {props.data.length > 0 &&
           props.data.map((item, index) => {
@@ -123,6 +127,8 @@ const tabBarStyle = StyleSheet.create({
   },
   tabsmall: {
     height: RFValue(36),
+  },
+  tabScrollsmall: {
     paddingLeft: RFValue(8),
   },
   bottomLine: {

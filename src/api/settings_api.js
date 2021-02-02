@@ -51,3 +51,12 @@ export async function uploadSystemInfo(system_detail = '') {
   });
   return res.data;
 }
+
+export async function recordDeviceInfo(params) {
+  const res = await request({
+    url: '/api/v1/records/record_device_info',
+    method: 'POST',
+    data: params
+  });
+  return res.data;
+}

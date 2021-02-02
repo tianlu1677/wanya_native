@@ -27,6 +27,8 @@ import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
 import FastImg from '@/components/FastImg';
+import {getLocation} from '@/api/space_api';
+import {loadLocation} from '@/pages/home/getLocation';
 
 const windowWidth = Dimensions.get('window').width;
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -35,8 +37,7 @@ const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
-  const savetopic = useSelector(state => state.home.savetopic);
-  const location = useSelector(state => state.home.location);
+  const {savetopic, location} = useSelector(state => state.home);
   const videoRef = useRef('');
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
@@ -50,25 +51,35 @@ const NewTopic = props => {
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
   };
 
-  const getLocation = res => {
+  const getCurrentLocation = async res => {
     if (res === false) {
       // 拒绝权限
       dispatch({type: action.GET_LOCATION, value: {}});
+      return;
     }
 
+    if (location) {
+      // loction 缓存
+      navigation.navigate('AddSpace', {type: 'topic'});
+      return;
+    }
+
+    // 获取到权限信息
     if (res.position && res.position.coords) {
-      // 获取到权限信息
-      dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
+      const {latitude, longitude} = res.position.coords;
+      const {city} = (await getLocation({latitude, longitude})).data;
+      dispatch({
+        type: action.GET_LOCATION,
+        value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
+      });
+      navigation.navigate('AddSpace', {type: 'topic'});
     }
-
-    navigation.navigate('AddSpace');
   };
 
   const checkPermission = async () => {
     const imagePermission =
       Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
     const status = await check(imagePermission);
-    console.log('imagePermission', status);
     if (status === RESULTS.GRANTED) {
       return true;
     }
@@ -232,7 +243,7 @@ const NewTopic = props => {
       medias: imageSource.map(v => v.url),
       topic_link_id: linkSource ? linkSource.id : '',
       plain_content: savetopic.plan_content
-        ? savetopic.plan_content
+        ? savetopic.plan_content.trim()
         : imageSource.length > 0
         ? '分享图片'
         : videoSource.length > 0
@@ -241,6 +252,7 @@ const NewTopic = props => {
       mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
+      location_id: savetopic.location ? savetopic.location.id : '',
     };
     return data;
   };
@@ -278,11 +290,11 @@ const NewTopic = props => {
       dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
     } else {
       //other
-      const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       Toast.showLoading('正在发布中...');
+      // const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       try {
         const res = await createTopic(data);
-        await waitTime(1500);
+        // await waitTime(1500);
         Toast.hide();
         props.navigation.reset({
           index: 0,
@@ -332,7 +344,9 @@ const NewTopic = props => {
   }, [savetopic]);
 
   useEffect(() => {
-    // 清空数据
+    if (!location) {
+      loadLocation(dispatch);
+    }
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
       props.removeAllPhoto();
@@ -504,10 +518,20 @@ const NewTopic = props => {
               </Text>
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </Pressable>
-            <GetLocation handleClick={getLocation} style={styles.addSlide}>
-              <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
-              <Text style={[styles.addText, savetopic.space && styles.selectText]}>
-                {savetopic.space ? savetopic.space.name : '选择场地'}
+            <GetLocation handleClick={getCurrentLocation} style={styles.addSlide}>
+              <IconFont
+                name="space-point"
+                color={savetopic.space || savetopic.location ? '#000' : '#c2c2c2'}
+                size={16}
+              />
+              <Text
+                style={[
+                  styles.addText,
+                  (savetopic.space || savetopic.location) && styles.selectText,
+                ]}>
+                {savetopic.space || savetopic.location
+                  ? savetopic.space?.name || savetopic.location?.name
+                  : '场地位置'}
               </Text>
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </GetLocation>

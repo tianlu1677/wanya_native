@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {KeyboardAvoidingView, ScrollView, Dimensions, Platform} from 'react-native';
+import {KeyboardAvoidingView, ActivityIndicator, ScrollView, Dimensions, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
@@ -76,6 +76,7 @@ const TopicLinkDetail = ({navigation, route}) => {
           source={{uri: detail.topic_link.raw_link}}
           startInLoadingState={true}
           scalesPageToFit={true}
+          renderLoading={() => <ActivityIndicator />}
           scrollEnabled
           style={{ height: Dimensions.get('window').height-70, width: Dimensions.get('window').width, flex: 1}}
           autoManageStatusBarEnabled={false}

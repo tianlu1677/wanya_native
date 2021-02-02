@@ -38,9 +38,6 @@ import PasswordLogin from '@/pages/sessions/password-login';
 import WebView from '@/pages/webview/webview';
 
 import {useNavigation} from '@react-navigation/native';
-import BackWhiteImg from '@/assets/images/back-white.png';
-import BackImg from '@/assets/images/back.png';
-import ViewShotPage from '@/components/SharePage';
 import AnalyticsUtil from '@/utils/umeng_analytics_util';
 
 const Tab = createBottomTabNavigator();
@@ -135,7 +132,6 @@ function MainStackList() {
         headerStyle: {
           // backgroundColor: 'white',
           backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
-          
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
@@ -322,7 +318,7 @@ const Navigation = () => {
 const styles = StyleSheet.create({
   blurView: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
     left: '23%', // 23%
     right: '23%',
     height: 55,

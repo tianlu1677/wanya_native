@@ -9,6 +9,7 @@ import IconFont from '@/iconfont';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import FastImageGif from '@/components/FastImageGif';
 import ExcellentImage from '@/assets/images/excellent.png';
+import BaseLongVideo from '@/components/Item/base-long-video';
 
 const calculateImg = (width, height) => {
   let newWidth = 500;
@@ -146,7 +147,9 @@ const BaseTopic = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
-  return (
+  return data.content_style === 'video' && data.is_long_video ? (
+    <BaseLongVideo data={props.data} />
+  ) : (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
       <View style={{marginTop: 13}}>
@@ -162,7 +165,6 @@ const BaseTopic = props => {
           />
         )}
       </View>
-
       {data.plain_content ? (
         <PlainContent
           data={data}
@@ -176,7 +178,7 @@ const BaseTopic = props => {
           <Text style={styles.nodeName}>{data.node_name}</Text>
         </Pressable>
       </View>
-      <Bottom data={data} type="topic" />
+      <Bottom data={data} type="topic" share={true} />
     </Pressable>
   );
 };

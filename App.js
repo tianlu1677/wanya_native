@@ -99,6 +99,9 @@ class App extends Component {
     // })
 
     this.getIndexTabData(); //获取首页频道信息
+    // 打开app 首页关注 分享设置为true
+    store.dispatch({type: action.CHANGE_SHARE_STATUS, value: true});
+    store.dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: true});
   }
 
   loadSplashImg = () => {
@@ -119,14 +122,13 @@ class App extends Component {
       // console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
       // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
 
-      requestMultiple([
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-        PERMISSIONS.IOS.PHOTO_LIBRARY,
-      ]).then(statuses => {
-        // console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-        // console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
-        // console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-      });
+      requestMultiple([PERMISSIONS.IOS.LOCATION_WHEN_IN_USE, PERMISSIONS.IOS.PHOTO_LIBRARY]).then(
+        statuses => {
+          // console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+          console.log('Location', statuses[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]);
+          // console.log('MEDIA_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+        }
+      );
     });
   };
 
@@ -204,9 +206,7 @@ class App extends Component {
     this.networdunsubscribe && this.networdunsubscribe();
   }
 
-  loadDeviceInfo = () => {
-
-  };
+  loadDeviceInfo = () => {};
 
   loadImgList = () => {
     // FastImage.preload(ImageList.map((u) => ({uri: u})))
@@ -214,11 +214,6 @@ class App extends Component {
 
   getIndexTabData = async () => {
     const res = await getChannels();
-    // for (const item of res.data.channels) {
-    //   const params = {page: 1, per_page: 10, channel_id: item.id, channle_name: item.name};
-    //   const ret = await getChannelPosts(params);
-    //   console.log(ret);
-    // }
     store.dispatch({type: action.SAVE_CHANNELS, value: res.data.channels});
   };
 

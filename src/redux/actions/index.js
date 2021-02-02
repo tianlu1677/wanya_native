@@ -11,16 +11,16 @@ import {
   ARTICLE_DETAIL_SUCCESS,
   ShareView,
   TOPIC_DETAIL_SUCCESS,
-  UPDATE_NODES,
-  UPDATE_FOLLOW_NODES,
   UPDATE_CATEGORY_LIST,
   CHANGE_UPLOAD_STATUS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
-import {getNodeIndex, getFollowNodeIndex} from '@/api/node_api';
 import {createTopic} from '@/api/topic_api';
 import Helper from '@/utils/helper';
+import * as node from './node_action';
+
+export const nodeAction = node;
 
 // 当前用户
 export const dispatchCurrentAccount = () => async dispatch => {
@@ -109,22 +109,12 @@ export const dispatchArticleDetail = (article = {}) => async dispatch => {
 };
 // 帖子详情
 export const dispatchTopicDetail = (topic = {}) => async dispatch => {
-  // console.log('TOPIC_DELETE_SUCCESS', topic)
   dispatch({
     type: TOPIC_DETAIL_SUCCESS,
     topic: topic,
   });
 };
 
-// 更新全部圈子数据
-export const dispathUpdateNodes = account_id => async dispatch => {
-  if (account_id) {
-    const followNodes = await getFollowNodeIndex({account_id});
-    dispatch({type: UPDATE_FOLLOW_NODES, value: followNodes.data.nodes});
-  }
-  const nodes = await getNodeIndex();
-  dispatch({type: UPDATE_NODES, value: nodes});
-};
 // 获取categories的数据
 export const dispatchFetchCategoryList = () => async dispatch => {
   const categories = await getCategoryList();

@@ -2,18 +2,44 @@ import React, {useRef, useState, useEffect} from 'react';
 import {View, Text, Modal, Button, Dimensions, Image, StyleSheet} from 'react-native';
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
-import FastImg from '@/components/FastImg'
+import FastImg from '@/components/FastImg';
 import {Avator} from '@/components/NodeComponents';
-import PlayVideoImg from '@/assets/images/play-video.png';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
 import {prosettings} from '@/api/settings_api';
+import RichContent from '@/pages/articles/components/RichContent';
+import {RFValue} from "@/utils/response-fontsize"
 
-// import CameraRoll from "@react-native-community/cameraroll";
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
-const ViewShotPage = props => {
-  const {account, node_name, height, width, topic_link, bg_img_url, content, content_style, desc} = props.pageShareContent;
-  const [imgWidth, setimgWidth] = useState(screenWidth-20);
+const ShareArticleContent = props => {
+  const {
+    account,
+    node,
+    wx_share_image_url,
+    published_at_text,
+    title,
+    content,
+    cover_url,
+    intro
+  } = props.articleDetail;
+
+  console.log('articleDetail', props.articleDetail);
+  const bg_img_url = cover_url ? cover_url.split('?')[0] : '';
+  const desc = `${published_at_text} 发布了一篇文章`;
+  const node_name = node ? node.name : null;
+  // account: topic.account,
+  //   node_name: topic.node.name,
+  //   content: topic.plain_content,
+  //   bg_img_url: topic.wx_share_image_url
+  //   ? `${topic.wx_share_image_url.split('?')[0]}?imageView2/0/interlace/1/format/jpg`
+  //   : '',
+  //   desc: `${topic.published_at_text} 发布了一篇帖子`,
+  //   content_style: topic.content_style,
+  //   topic_link: topic.topic_link,
+  //   qrcode_url: topic.qrcode_url,
+  //   }
+
+  const [imgWidth, setimgWidth] = useState(screenWidth - 20);
   const [imgHeight, setimgHeight] = useState(300);
   const [qrcode_url, setQrcode_url] = useState('');
   // const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
@@ -23,7 +49,7 @@ const ViewShotPage = props => {
       return;
     }
     Image.prefetch(bg_img_url);
-    console.log('bg_img_url', bg_img_url)
+    console.log('bg_img_url', bg_img_url);
     Image.getSize(bg_img_url, (width, height) => {
       const maxWidth = screenWidth - 20;
       setimgHeight(height * (maxWidth / width));
@@ -39,6 +65,7 @@ const ViewShotPage = props => {
       setQrcode_url(res.share_page_qrcode_img_url);
     });
   }, []);
+
 
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
@@ -59,39 +86,25 @@ const ViewShotPage = props => {
                 <Text style={styles.username}>{account && account.nickname}</Text>
                 <Text style={styles.time}>{desc}</Text>
               </View>
-              <View style={styles.nodeWrap}>
-                <IconFont name="node-solid" size={16} color="#fff" />
-                <Text style={styles.nodeName}>{node_name}</Text>
-              </View>
-            </View>
-            <View style={{width: '100%'}}>
-              {
-                topic_link && <View style={styles.linkWrap}>
-                  <FastImg
-                    style={{width: 45, height: 45}}
-                    mode={'cover'}
-                    source={{uri: topic_link.cover_url}}
-                  />
-                  <Text style={styles.linkText} numberOfLines={2}>
-                    {topic_link.title || topic_link.raw_link}
-                  </Text>
+              {node_name && (
+                <View style={styles.nodeWrap}>
+                  <IconFont name="node-solid" size={16} color="#fff" />
+                  <Text style={styles.nodeName}>{node_name}</Text>
                 </View>
-              }
-
-              {!topic_link && bg_img_url ? (
-                <FastImg
-                  style={{...styles.cover, ...{width: imgWidth, height: imgHeight}}}
-                  resizeMode={'cover'}
-                  source={{uri: bg_img_url}}
-                />
-              ) : <View />}
-              {content_style === 'video' && (
-                <FastImg source={PlayVideoImg} style={styles.playVideo} />
               )}
             </View>
-            <Text style={styles.text}>{content}</Text>
+
+            <FastImg source={{uri: bg_img_url}} style={{width: '100%', height: 300}} mode={'cover'} />
+
+            <Text style={styles.title}>{title}</Text>
+
+            <Text style={styles.text}>{intro}</Text>
+
             <View style={styles.footer}>
-              <FastImg style={styles.shareLogo} source={require('@/assets/images/sharewanyalog.png')} />
+              <FastImg
+                style={styles.shareLogo}
+                source={require('@/assets/images/sharewanyalog.png')}
+              />
               {qrcode_url ? (
                 <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
               ) : (
@@ -133,7 +146,7 @@ const styles = StyleSheet.create({
     marginRight: 18,
     marginTop: 31,
     flexDirection: 'row',
-    marginBottom: 12,
+    marginBottom: 20,
   },
   info: {
     color: '#fff',
@@ -147,7 +160,7 @@ const styles = StyleSheet.create({
     marginTop: 9,
   },
   time: {
-    color: '#fff',
+    color: '#BDBDBD',
     fontSize: 10,
     lineHeight: 20,
   },
@@ -156,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   nodeName: {
     color: '#fff',
@@ -164,19 +177,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginLeft: 6,
   },
-  cover: {
-    // minHeight: 300,
-    // maxHeight: 260,
-    backgroundColor: 'pink',
-    width: '100%',
-    // height: '100%',
-  },
-  playVideo: {
-    position: 'absolute',
-    width: 18,
-    height: 18,
-    right: 10,
-    top: 10,
+  title: {
+    color: '#fff',
+    fontSize: 18,
+    marginTop: 20,
+    fontWeight: '500',
+    marginLeft: 17,
+    marginRight: 17,
+    lineHeight: 23,
+    letterSpacing: 1,
   },
   text: {
     color: '#fff',
@@ -190,26 +199,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     textAlign: 'justify',
   },
-  linkWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 61,
-    paddingLeft: 8,
-    marginLeft: 17,
-    marginRight: 17,
-    backgroundColor: '#303030'
-  },
-  linkText: {
-    flex: 1,
-    flexWrap: 'wrap',
-    paddingLeft: 10,
-    fontWeight: '400',
-    fontSize: 13,
-    color: 'white',
-    lineHeight: 22,
-    letterSpacing: 1,
-    paddingRight: 10,
-  },
   footer: {
     flex: 1,
     flexDirection: 'row',
@@ -222,7 +211,7 @@ const styles = StyleSheet.create({
   shareLogo: {
     marginTop: 10,
     width: 190,
-    height: 300/(790 / 190),
+    height: 300 / (790 / 190),
   },
   shareqrImg: {
     height: 95,
@@ -232,4 +221,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ViewShotPage;
+export default ShareArticleContent;

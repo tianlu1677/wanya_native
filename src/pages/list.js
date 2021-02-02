@@ -38,9 +38,6 @@ const list = () => {
   };
 
   const renderItem = ({item, index}) => {
-    if (item.id === 895) {
-      console.log(item);
-    }
     return (
       <View style={styles.item}>
         <Text>

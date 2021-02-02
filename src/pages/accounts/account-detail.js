@@ -144,7 +144,7 @@ const AccountDetail = ({navigation, route}) => {
             onPress={onReportClick}
             style={styles.report}
             hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-            <IconFont name="ziyuan" color="#fff" size={20} />
+            <IconFont name="gengduo" color="#fff" size={20} />
           </Pressable>
         )}
         <FastImg

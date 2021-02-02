@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
-import { SAFE_TOP } from '@/utils/navbar';
+import {SAFE_TOP} from '@/utils/navbar';
 
 export const GoBack = props => {
   const navigation = useNavigation();
@@ -33,7 +33,11 @@ export const GoBack = props => {
           handleClick();
         }}
         style={{...styles.goBackWrap, top: props.top || SAFE_TOP}}>
-        <IconFont name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'} color={color} size={15} />
+        <IconFont
+          name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+          color={color}
+          size={15}
+        />
       </Pressable>
       {report && (
         <Pressable
@@ -45,7 +49,7 @@ export const GoBack = props => {
           }}
           style={{...styles.report, top: SAFE_TOP}}
           hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-          <IconFont name="ziyuan" color="#fff" size={20} />
+          <IconFont name="gengduo" color="#fff" size={20} />
         </Pressable>
       )}
     </>

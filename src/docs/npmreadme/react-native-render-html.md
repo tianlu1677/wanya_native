@@ -1,4 +1,4 @@
-
+tagsStyles
 [![platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-brightgreen.svg?colorB=191A17)](#)
 [![npm](https://img.shields.io/npm/v/react-native-render-html/latest)](https://www.npmjs.com/package/react-native-render-html)
 [![](https://img.shields.io/npm/v/react-native-render-html/next)](#)

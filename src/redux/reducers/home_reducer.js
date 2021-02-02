@@ -15,13 +15,11 @@ const defaultState = {
     thumbImageUrl: '',
     path: '',
   },
-  commentTopic: {
-    content: '',
-  },
-  location: {},
-  nodes: [],
+  commentTopic: {content: ''},
+  location: {chooseCity: ''},
   categoryList: [],
-  followNodes: [],
+  shareStatus: true,
+  shareNearbyStatus: true,
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -52,31 +50,26 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         commentTopic: action.value,
       };
-    case constants.CHOOSE_CITY:
-      return {
-        ...state,
-        chooseCity: action.value,
-      };
     case constants.GET_LOCATION:
       return {
         ...state,
         location: action.value,
       };
-    case constants.UPDATE_NODES:
-      return {
-        ...state,
-        nodes: action.value,
-      };
-    case constants.UPDATE_FOLLOW_NODES:
-      return {
-        ...state,
-        followNodes: action.value,
-      };
     case constants.UPDATE_CATEGORY_LIST:
       return {
         ...state,
-        categoryList: action.categories
-      }
+        categoryList: action.categories,
+      };
+    case constants.CHANGE_SHARE_STATUS:
+      return {
+        ...state,
+        shareStatus: action.value,
+      };
+    case constants.CHANGE_SHARE_NEARBY_STATUS:
+      return {
+        ...state,
+        shareNearbyStatus: action.value,
+      };
     default:
       return state;
   }
@@ -87,7 +80,6 @@ const formatImagePreviewUrl = (previewImageData, origin = false) => {
     return previewImageData;
   }
 
-  console.log('imageData', previewImageData);
   const images = previewImageData.images.map(data => {
     return {
       ...data,

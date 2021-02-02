@@ -1,34 +1,41 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
+import * as action from '@/redux/constants';
+import IconFont from '@/iconfont';
+import {SAFE_TOP} from '@/utils/navbar';
+import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
+import {Search} from '@/components/NodeComponents';
+import MediasPicker from '@/components/MediasPicker';
+import {BadgeMessage} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-import IconFont from '@/iconfont';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  getRecommendPosts,
-  getFollowedPosts,
-  getFollowedNodePosts,
-  getChannelPosts,
-} from '@/api/home_api';
-import {SAFE_TOP} from '@/utils/navbar';
-import {dispatchFetchUploadTopic, changeUploadStatus} from '@/redux/actions';
-import {BadgeMessage} from '@/components/NodeComponents';
-import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
-import {dispatchCurrentAccount, dispatchFetchCategoryList} from '@/redux/actions';
-import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
-import FastImg from '@/components/FastImg';
-import {AllNodeImg} from '@/utils/default-image';
-import {Search} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
-import MediasPicker from '@/components/MediasPicker';
+import {getChannelPosts} from '@/api/home_api';
+import {recordDeviceInfo} from '@/api/settings_api';
+import {getLocationInfo, loadLocation} from './getLocation';
+import deviceInfo from '@/utils/device_info';
+import {
+  dispatchFetchCategoryList,
+  dispatchBaseCurrentAccount,
+  dispatchCurrentAccount,
+  dispatchFetchUploadTopic,
+  changeUploadStatus,
+} from '@/redux/actions';
+import LongVideoList from '@/components/List/long-video-list';
+import FollowListPage from './follow-list-post';
+import NodeListPage from './node-list-page';
+import RecommendListPage from './recommend-list-post';
+import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
   const [inputRef, setinputRef] = useState(null);
-  const [currentKey, setCurrentKey] = useState('follow');
+  const [currentKey, setCurrentKey] = useState('recommend');
+
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
@@ -70,44 +77,24 @@ const Recommend = props => {
     );
   };
 
-  const FollowListPage = () => <SingleList request={{api: getFollowedPosts}} />;
-
-  const RecommendPage = () => (
-    <SingleList request={{api: getRecommendPosts}} type="recommend" loadType="more" />
-  );
-
-  const NodeListPage = () => {
-    return (
-      <SingleList
-        type="node-recommend"
-        request={{api: getFollowedNodePosts}}
-        ListHeaderComponent={<NodeScrollView {...props} />}
-        renderEmpty={
-          <View style={styles.emptyWrap}>
-            <View style={styles.emptyTextWrap}>
-              <Text style={styles.emptyText}>你还没有加入圈子</Text>
-              <Text style={styles.emptyText}>点击发现更多圈子</Text>
-            </View>
-            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-              发现更多圈子
-            </Text>
-          </View>
-        }
-      />
-    );
-  };
-
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
       key: item.name,
       title: item.name,
-      component: () =>
-        item.display_style === 'single' ? (
-          <SingleList request={{api: getChannelPosts, params}} />
-        ) : (
-          <DoubleList request={{api: getChannelPosts, params}} />
-        ),
+      component: () => {
+        let component = null;
+        if (item.display_style === 'single') {
+          component = <SingleList request={{api: getChannelPosts, params}} />;
+        }
+        if (item.display_style === 'double') {
+          component = <DoubleList request={{api: getChannelPosts, params}} />;
+        }
+        if (item.display_style === 'long_video') {
+          component = <LongVideoList request={{api: getChannelPosts, params}} />;
+        }
+        return component;
+      },
     };
   });
 
@@ -118,6 +105,20 @@ const Recommend = props => {
     return currentAccount.new_message_count;
   };
 
+  const onChange = async key => {
+    const {location} = home;
+    if (key === 'nearby' && (!location.latitude || !location.longitude)) {
+      getLocationInfo(false, result => {
+        if (result) {
+          dispatch({type: action.GET_LOCATION, value: result.position.coords});
+        }
+        setCurrentKey(key);
+      });
+    } else {
+      setCurrentKey(key);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchBaseCurrentAccount());
@@ -125,6 +126,7 @@ const Recommend = props => {
   );
 
   useEffect(() => {
+    recordDeviceInfo(deviceInfo);
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
     if (uploadStatus) {
@@ -132,7 +134,12 @@ const Recommend = props => {
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
       dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
     }
+    loadLocation(dispatch);
   }, []);
+
+  // useEffect(() => {
+  //   console.log(home.location);
+  // }, [home.location]);
 
   return (
     <>
@@ -144,7 +151,6 @@ const Recommend = props => {
             <CallBackVideo />
           </View>
         ) : null}
-
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
@@ -178,7 +184,7 @@ const Recommend = props => {
               bottomLine={true}
               lazy={true}
               currentKey={currentKey}
-              onChange={key => setCurrentKey(key)}
+              onChange={onChange}
               size="small"
               tabData={[
                 {
@@ -189,12 +195,17 @@ const Recommend = props => {
                 {
                   key: 'recommend',
                   title: '推荐',
-                  component: RecommendPage,
+                  component: RecommendListPage,
                 },
                 {
-                  key: 'lasted',
+                  key: 'nodes',
                   title: '圈子',
                   component: NodeListPage,
+                },
+                {
+                  key: 'nearby',
+                  title: '附近',
+                  component: NearbyListPage,
                 },
                 ...channels,
               ]}
@@ -203,48 +214,6 @@ const Recommend = props => {
         )}
       </View>
     </>
-  );
-};
-
-const NodeScrollView = props => {
-  const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentBaseInfo);
-  const nodes = useSelector(state => state.home.followNodes);
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(dispathUpdateNodes(currentAccount.id));
-    }, [])
-  );
-
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
-      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
-        <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
-        <Text style={styles.nodeName} minimumFontScale={1} numberOfLines={1}>
-          全部圈子
-        </Text>
-      </Pressable>
-      {nodes.length > 0 &&
-        nodes.map(node => {
-          return (
-            <Pressable
-              key={node.id}
-              style={styles.nodeWrap}
-              onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}>
-              <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
-              <Text
-                style={styles.nodeName}
-                adjustsFontSizeToFit={false}
-                minimumFontScale={1}
-                numberOfLines={1}
-                ellipsizeMode={'tail'}>
-                {node.name}
-              </Text>
-            </Pressable>
-          );
-        })}
-    </ScrollView>
   );
 };
 
@@ -290,30 +259,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '300',
   },
-  emptyWrap: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  emptyTextWrap: {
-    flexDirection: 'column',
-    marginTop: 110,
-  },
-  emptyText: {
-    lineHeight: 23,
-    fontSize: 14,
+  nodeSelf: {
+    width: 34,
+    height: 18,
+    lineHeight: 18,
     textAlign: 'center',
-    color: '#BDBDBD',
-  },
-  moreNode: {
-    width: 243,
-    height: 45,
-    lineHeight: 45,
-    backgroundColor: '#000',
-    borderRadius: 6,
+    borderRadius: 9,
     overflow: 'hidden',
-    marginTop: 20,
-    color: '#fff',
-    textAlign: 'center',
+    backgroundColor: '#000',
+    opacity: 0.7,
+    color: '#FFFF00',
+    fontSize: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: '50%',
+    marginLeft: -17,
   },
   uploadWrap: {
     width: 72,

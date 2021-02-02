@@ -7,7 +7,8 @@ export const NAV_BAR_HEIGHT_IOS = 44; //导航栏在iOS中的高度
 export const NAV_BAR_HEIGHT_ANDROID = 50; //导航栏在Android中的高度
 export const NAV_BAR_HEIGHT = IsIos ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID;
 
-export const STATUS_BAR_HEIGHT = !IsIos || !isIphoneX ? getStatusBarHeight(false) : getStatusBarHeight(false);
+export const STATUS_BAR_HEIGHT =
+  !IsIos || !isIphoneX ? getStatusBarHeight(false) : getStatusBarHeight(false);
 export const BOTTOM_HEIGHT = IsIos ? getBottomSpace() : 0;
 
 export const BASIC_HEIGHT = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT : STATUS_BAR_HEIGHT;
@@ -20,8 +21,8 @@ export const SAFE_TOP = IsIos ? getStatusBarHeight(true) : 0;
 export const UNSAFE_TOP = IsIos ? getStatusBarHeight(false) : 0;
 
 // 设备的宽高
-export const SCREEN_WIDTH = Dimensions.get('window').width
-export const SCREEN_HEIGHT = Dimensions.get('window').height
+export const SCREEN_WIDTH = Dimensions.get('window').width;
+export const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 // console.log('getStatusBarHeight();', getStatusBarHeight(true))
 // console.log('getStatusBarHeight();', getStatusBarHeight(false))

@@ -1,15 +1,17 @@
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import * as RootNavigation from '@/navigator/root-navigation';
 // 首页
 import {CardStyleInterpolators} from '@react-navigation/stack';
+import RelatedAccounts from '@/pages/home/related-account-list';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
-import GoNewTopic from '@/pages/topics/go-new-topic';
 import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
 import AddNode from '@/pages/topics/add-node';
 import AddLink from '@/pages/topics/add-link';
-
 import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
@@ -19,6 +21,10 @@ import ArticleDetail from '@/pages/articles/article-detail';
 // 圈子
 import NodeIndex from '@/pages/nodes/node-index';
 import NodeDetail from '@/pages/nodes/node-detail';
+import CreateNodeIntro from '@/pages/nodes/create-node-intro';
+import CreateNodeInfo from '@/pages/nodes/create-node-info';
+import CreateNodeType from '@/pages/nodes/create-node-type';
+import CreateNodeResult from '@/pages/nodes/create-node-result';
 
 // 场地
 import SpaceDetail from '@/pages/space/space-detail';
@@ -26,8 +32,10 @@ import SpaceDetail from '@/pages/space/space-detail';
 // 话题
 import HashtagDetail from '@/pages/hashtags/hashtag-detail';
 
+// Location
+import LocationDetail from '@/pages/location/location-detail';
+
 // 我的页面
-import MineDetail from '@/pages/mine/mine-detail';
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
@@ -159,6 +167,12 @@ const articleRouter = [
     component: ArticleDetail,
     safeArea: false,
     barColor: 'dark',
+    options: {
+      title: '',
+      // animationEnabled: true,
+      // gestureEnabled: true,
+      // cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+    },
   },
   {
     name: 'HashtagDetail',
@@ -186,6 +200,23 @@ const nodeRouter = [
     component: NodeIndex,
     barColor: 'dark',
     safeArea: false,
+    options: {
+      title: '全部圈子',
+      headerRight: ({navigation}) => (
+        <Pressable
+          onPress={() => {
+            RootNavigation.navigate('CreateNodeIntro');
+          }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#bdbdbd',
+            }}>
+            创建圈子
+          </Text>
+        </Pressable>
+      ),
+    },
   },
   {
     name: 'NodeDetail',
@@ -195,6 +226,43 @@ const nodeRouter = [
       title: '圈子详情',
       headerShown: false,
     },
+  },
+  {
+    name: 'CreateNodeIntro',
+    component: CreateNodeIntro,
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '创建圈子'},
+  },
+  {
+    name: 'CreateNodeInfo',
+    component: CreateNodeInfo,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '填写圈子资料'},
+  },
+  {
+    name: 'CreateNodeType',
+    component: CreateNodeType,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '选择圈子分类或位置'},
+  },
+  {
+    name: 'CreateNodeResult',
+    component: CreateNodeResult,
+    safeArea: false,
+    barColor: 'dark',
+  },
+];
+
+const locationRouter = [
+  {
+    name: 'LocationDetail',
+    component: LocationDetail,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '位置'},
   },
 ];
 
@@ -214,6 +282,7 @@ const accountRouter = [
   {
     name: 'FollowAccounts',
     component: FollowAccounts,
+    safeArea: false,
     barColor: 'dark',
     options: {title: '关注列表'},
   },
@@ -221,6 +290,7 @@ const accountRouter = [
     name: 'FollowerAccounts',
     barColor: 'dark',
     component: FollowerAccounts,
+    safeArea: false,
     options: {title: '粉丝列表'},
   },
   {
@@ -316,10 +386,18 @@ export const routers = [
   ...articleRouter,
   ...spaceRouter,
   ...nodeRouter,
+  ...locationRouter,
   ...accountRouter,
   ...commonRouter,
   ...searchRouter,
   ...authRouter,
+  {
+    name: 'RelatedAccounts',
+    component: RelatedAccounts,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '相关推荐'},
+  },
   {
     name: 'InviteDetail',
     component: InviteDetail,
