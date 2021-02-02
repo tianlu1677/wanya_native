@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,41 +7,39 @@ import {
   StatusBar,
   StyleSheet,
   Pressable,
-  Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import Swiper from 'react-native-swiper';
-import VideoPlayerContent from '@/components/react-native-video-player';
-import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
+import * as action from '@/redux/constants';
+import {dispatchTopicDetail} from '@/redux/actions';
+import {STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
 import Loading from '@/components/Loading';
-import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
-import CommentList from '@/components/List/comment-list';
-import {PlainContent} from '@/components/Item/single-list-item';
-import {GoBack} from '@/components/NodeComponents';
-import {PublishAccount, PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
-import {getTopic, deleteTopic} from '@/api/topic_api';
-import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {BASIC_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
-import {getStatusBarHeight} from 'react-native-iphone-x-helper';
-import {useFocusEffect} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
+import {RFValue} from '@/utils/response-fontsize';
 import ActionSheet from '@/components/ActionSheet';
-
-const {width: screenWidth} = Dimensions.get('window');
+import TopHeaderView from '@/components/TopHeadView';
+import {GoBack} from '@/components/NodeComponents';
+import CommentList from '@/components/List/comment-list';
+import {ActionComment} from '@/components/Item/single-detail-item';
+import {getTopic, deleteTopic, createTopicAction} from '@/api/topic_api';
+import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
+import RenderImage from './topic-detail-component/render-image';
+import RenderLongVideo from './topic-detail-component/render-long-video';
+import RenderVideo from './topic-detail-component/render-video';
+import RenderLink from './topic-detail-component/render-link';
+import RenderText from './topic-detail-component/render-text';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const videoRef = useRef(null);
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const currentTopic = useSelector(state => state.topic.topicDetail);
+
   const [topicId] = useState(route.params.topicId);
-  const [detail, setDetail] = useState(null);
+
+  const [detail, setDetail] = useState();
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [actionItems, setActionItems] = useState([]);
-
-  const topHeight = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT + 5 : 0;
 
   const loadData = async () => {
     const res = await getTopic(topicId);
@@ -49,18 +47,24 @@ const TopicDetail = ({navigation, route}) => {
       Toast.show('该帖子已删除');
       navigation.goBack();
     } else {
-      setDetail(res.data.topic);
+      createTopicAction({id: topicId, type: 'view'});
       dispatch(dispatchTopicDetail(res.data.topic));
     }
   };
 
   const publishComment = async data => {
-    setVisible(false);
-    Toast.showLoading('发送中');
-    await createComment(data);
-    Toast.hide();
-    Toast.show('评论成功啦');
-    loadData();
+    try {
+      setVisible(false);
+      Toast.showLoading('发送中');
+      await createComment(data);
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      Toast.hide();
+      Toast.show('评论成功啦');
+      loadData();
+    } catch (e) {
+      Toast.show('评论出错了');
+      Toast.hide();
+    }
   };
 
   const deleteTopicComment = async id => {
@@ -70,13 +74,12 @@ const TopicDetail = ({navigation, route}) => {
 
   const onReportClick = () => {
     const isCurrentTopic = detail.account_id === currentAccount.id;
-    const action = [
+    const actions = [
       {
         id: 1,
-        label: isCurrentTopic ? '删除' : '举报',
+        label: isCurrentTopic ? '删除' : '投诉',
         onPress: async () => {
           if (isCurrentTopic) {
-            // 删除
             await deleteTopic(detail.id);
             Toast.show('已删除');
             navigation.goBack();
@@ -86,166 +89,53 @@ const TopicDetail = ({navigation, route}) => {
         },
       },
     ];
-    setActionItems(action);
+    setActionItems(actions);
     setShowActionSheet(true);
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      if (videoRef && videoRef.current) {
-        // 是否继续播放
-        if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
-          videoRef.current.resume();
-        }
-      }
-      return () => {
-        videoRef && videoRef.current && videoRef.current.pause();
-      };
-    }, [])
-  );
-
   useEffect(() => {
     loadData();
+    return () => {
+      dispatch(dispatchTopicDetail(null));
+      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+    };
   }, []);
 
-  const renderImg = () => {
-    // console.log('deta', detail)
-    let {media_images} = detail;
-    let maxHeight = 100;
-    (media_images || []).map(img => {
-      let imgHeight = Math.floor((screenWidth / img.width) * img.height);
-      if (imgHeight > maxHeight) {
-        maxHeight = imgHeight;
-      }
-    });
-
-    media_images = (media_images || []).map(img => {
-      let imgHeight = (screenWidth / img.width) * img.height;
-      if (imgHeight < maxHeight) {
-        return {...img, imgHeight: imgHeight, paddingTop: (maxHeight - imgHeight) / 2};
-      } else {
-        return {...img, imgHeight: imgHeight, paddingTop: 0};
-      }
-    });
-
-    const onPreview = index => {
-      const data = {
-        images: media_images.map(v => {
-          return {url: v.image_url.split('?')[0]};
-        }),
-        visible: true,
-        index,
-      };
-      dispatch(dispatchPreviewImage(data));
-    };
-    return (
-      <View style={{minHeight: maxHeight + topHeight, width: screenWidth}}>
-        <View style={{height: topHeight, backgroundColor: 'black'}} />
-        <Swiper
-          index={0}
-          loop={false}
-          activeDotColor={'yellow'}
-          dotColor={'white'}
-          removeClippedSubviews={false}
-          loadMinimal
-          style={{height: maxHeight, backgroundColor: 'black'}}
-          showsPagination={detail.media_images.length > 0}>
-          {media_images.map((media, index) => (
-            <Pressable
-              onPress={() => onPreview(index)}
-              key={media.image_url}
-              style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
-              <FastImg
-                key={media.image_url}
-                source={{uri: media.image_url}}
-                style={{width: screenWidth, height: media.imgHeight}}
-                mode={'contain'}
-              />
-            </Pressable>
-          ))}
-        </Swiper>
-      </View>
-    );
-  };
-
-  const renderVideo = () => {
-    const {width, height} = detail.media_video;
-    let videoWidth = screenWidth;
-    let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-    return (
-      <View style={{backgroundColor: 'black'}}>
-        <View style={{height: topHeight, backgroundColor: 'black'}} />
-        {detail.excellent && (
-          <Text
-            style={{
-              ...styles.excellentLabel,
-              zIndex: 100,
-              top: Math.max(getStatusBarHeight(), 20),
-            }}>
-            精选
-          </Text>
-        )}
-        <VideoPlayerContent
-          ref={videoRef}
-          customStyles={{position: 'absolute', zIndex: 100, bottom: videoHeight}}
-          video={{uri: detail.video_content_m3u8}}
-          videoWidth={videoWidth}
-          videoHeight={videoHeight}
-          poster={`${detail.video_content_m3u8}?vframe/jpg/offset/0/rotate/auto`}
-          posterResizeMode={'contain'}
-          hideControlsOnStart
-          pauseOnPress
-          muted={false}
-          resizeMode={'cover'}
-          autoplay={true}
-          loop
-        />
-      </View>
-    );
-  };
-
-  const renderLink = () => {
-    const goLinkDetail = () => {
-      navigation.push('WebView', {
-        sourceUrl: detail.topic_link.raw_link,
-        title: detail.topic_link.title,
-      });
-    };
-
-    return (
-      <View>
-        <StatusBar barStyle={'dark-content'} />
-        <View style={{paddingTop: BASIC_HEIGHT, marginTop: 10, paddingBottom: 16}}>
-          <StatusBar barStyle={'dark-content'} />
-        </View>
-        <Pressable style={styles.linkWrap} onPress={goLinkDetail}>
-          <FastImg style={styles.linkImageCover} source={{uri: detail.topic_link.cover_url}} />
-          <LinearGradient
-            style={styles.titleWrapper}
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
-            colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0)']}>
-            <Text style={styles.linkTitle}>{detail.topic_link.title}</Text>
-          </LinearGradient>
-        </Pressable>
-      </View>
-    );
-  };
+  useEffect(() => {
+    setDetail(currentTopic);
+  }, [currentTopic]);
 
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}>
-      <GoBack
-        name={navigation.canGoBack() ? '' : 'home-recommend'}
-        color={['text', 'link'].includes(detail.content_style) ? 'black' : 'white'}
-      />
-      <Pressable
-        onPress={onReportClick}
-        style={styles.report}
-        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-        <IconFont name="ziyuan" color="#fff" size={20} />
-      </Pressable>
+      style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
+      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
+      {['video', 'img'].includes(detail.content_style) ? (
+        <>
+          {/*<StatusBar barStyle={'light-content'} />*/}
+          <GoBack color={'white'} report={{report_type: 'Topic', report_id: detail.id}} />
+        </>
+      ) : null}
+
+      {['link', 'text'].includes(detail.content_style) ? (
+        <>
+          <TopHeaderView
+            Title={'帖子详情'}
+            leftButtonColor={'black'}
+            excellent={detail.excellent}
+            RightButton={() => (
+              <Pressable
+                onPress={onReportClick}
+                hitSlop={{left: 30, right: 30, top: 30, bottom: 30}}
+                style={{marginRight: 16}}>
+                <IconFont name="gengduo" color="#000" size={20} />
+              </Pressable>
+            )}
+          />
+          <StatusBar barStyle={'dark-content'} />
+        </>
+      ) : null}
+
       <CommentList
         type="Topic"
         detail={detail}
@@ -255,26 +145,19 @@ const TopicDetail = ({navigation, route}) => {
         request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
-            <View style={{position: 'relative'}}>
-              {detail.content_style === 'video' && renderVideo()}
-              {detail.content_style === 'link' && renderLink()}
-              {detail.content_style === 'img' && renderImg()}
-              {detail.content_style === 'img' && detail.excellent && (
-                <Text style={{...styles.excellentLabel, top: Math.max(getStatusBarHeight(), 20)}}>
-                  精选
-                </Text>
+            <View style={{paddingBottom: RFValue(20)}}>
+              {detail.content_style === 'video' && detail.is_long_video && (
+                <RenderLongVideo
+                  detail={{...detail, node: detail.node ? {...detail.node, topics_count: 0} : null}}
+                />
               )}
+              {detail.content_style === 'video' && !detail.is_long_video && (
+                <RenderVideo detail={detail} />
+              )}
+              {detail.content_style === 'img' && <RenderImage detail={detail} />}
+              {detail.content_style === 'link' && <RenderLink detail={detail} />}
+              {detail.content_style === 'text' && <RenderText detail={detail} />}
             </View>
-            {detail.content_style === 'text' && (
-              <View style={{paddingTop: BASIC_HEIGHT + 5, paddingBottom: 16}}>
-                <StatusBar barStyle={'dark-content'} />
-              </View>
-            )}
-            <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
-            <View style={{padding: 15, paddingRight: 24, paddingBottom: 10}}>
-              <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
-            </View>
-            <PublishRelated data={detail} />
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={styles.commentTitle}>全部评论</Text>
           </>
@@ -285,10 +168,8 @@ const TopicDetail = ({navigation, route}) => {
         detail={detail}
         publishComment={publishComment}
         type="Topic"
-        setDetail={data => setDetail(data)}
         changeVisible={value => setVisible(value)}
       />
-
       <ActionSheet
         actionItems={actionItems}
         showActionSheet={showActionSheet}
@@ -301,25 +182,6 @@ const TopicDetail = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  report: {
-    position: 'absolute',
-    right: 16,
-    height: 44,
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    top: Math.max(getStatusBarHeight(), 20),
-    zIndex: 1,
-  },
-  title: {
-    fontSize: 20,
-    paddingTop: 8,
-    paddingRight: 14,
-    paddingLeft: 14,
-    paddingBottom: 8,
-    fontWeight: '500',
-    lineHeight: 28,
-  },
   commentTitle: {
     fontSize: 15,
     fontWeight: '500',
@@ -328,55 +190,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: '#fff',
     paddingBottom: 5,
-  },
-  linkWrap: {
-    marginTop: 14,
-    marginRight: 14,
-    marginLeft: 14,
-    height: 167,
-    position: 'relative',
-  },
-  titleWrapper: {
-    height: 64,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    padding: 11,
-    borderRadius: 2,
-  },
-  linkTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#fff',
-    lineHeight: 22,
-  },
-  linkImageCover: {
-    width: '100%',
-    height: 167,
-    flex: 1,
-    borderRadius: 2,
-  },
-  excellentLabel: {
-    width: 30,
-    height: 16,
-    marginTop: 14,
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 10,
-    lineHeight: 16,
-    backgroundColor: '#FF2242',
-    borderRadius: 2,
-    overflow: 'hidden',
-    color: 'white',
-    position: 'absolute',
-    // right: 15,
-    left: 40,
-  },
-  multiLineText: {
-    fontSize: 14,
-    lineHeight: 23,
-    color: '#000',
   },
 });
 

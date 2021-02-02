@@ -6,7 +6,6 @@ export const uploadMultiImage = async (localImages = []) => {
   const formData = new FormData();
 
   localImages.forEach(file => {
-    console.log(file);
     formData.append('multipartFile', file);
   });
 
@@ -16,6 +15,5 @@ export const uploadMultiImage = async (localImages = []) => {
     data: formData,
   });
 
-  console.log(res);
   return [];
 };

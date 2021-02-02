@@ -5,10 +5,12 @@ import SearchNode from './Search';
 import BadgeMessageNode from './BadgeMessage';
 import {JoinBtn} from './Button';
 import CityListNode from './CityList';
-import JoinActivityNode from './JoinActivity'
-import GoBackNode from './GoBack'
+import JoinActivityNode from './JoinActivity';
+import GoBackNode from './GoBack';
 import {Loading} from './Modal';
 import BottomModalNode from './BottomModal';
+import BlurViewNode from './BlurViewComponent';
+import CategoryDrawerNode from './CategoryDrawer';
 
 export const PlayScore = PlayScoreNode;
 export const Avator = AvatorNode;
@@ -21,3 +23,5 @@ export const ModalLoading = Loading;
 export const JoinActivity = JoinActivityNode;
 export const GoBack = GoBackNode;
 export const BottomModal = BottomModalNode;
+export const BlurView = BlurViewNode;
+export const CategoryDrawer = CategoryDrawerNode;

@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {ScrollView, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
+import {RFValue} from '@/utils/response-fontsize';
 const deviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [center] = useState(true || props.center);
+  const [center] = useState(props.center === false ? false : true);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
   const [layoutList, setLayoutList] = useState([]);
@@ -25,11 +26,12 @@ const TabList = props => {
     let layout = layoutList[index];
     let rx = deviceWidth / 2;
     let sx = layout.x - rx + layout.width / 2;
-    if (sx < 0) {
-      sx = 0;
-    }
-    sx < contentWidth - deviceWidth && scrollRef.current.scrollTo({x: sx, animated: true});
-    sx >= contentWidth - deviceWidth && scrollRef.current.scrollToEnd({animated: true});
+    scrollRef.current.scrollTo({x: sx, animated: true});
+    // if (sx < 0) {
+    //   sx = 0;
+    // }
+    // sx < contentWidth - deviceWidth && scrollRef.current.scrollTo({x: sx, animated: true});
+    // sx >= contentWidth - deviceWidth && scrollRef.current.scrollToEnd({animated: true});
   };
 
   const setLayout = (layout, index) => {
@@ -49,7 +51,9 @@ const TabList = props => {
 
   useEffect(() => {
     const index = props.data.findIndex(v => v.key === props.current);
+    const current = props.data.find(v => v.key === props.current);
     setCurrentIndex(index);
+    setIndex(current, index);
   }, [props.current]);
 
   useEffect(() => {
@@ -64,12 +68,16 @@ const TabList = props => {
         tabBarStyle.tabWrap,
         tabBarStyle[`tab${size}`],
         bottomLine ? tabBarStyle.bottomLine : null,
+        {
+          alignItems: center ? 'center' : 'flex-start',
+        },
       ]}>
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
         ref={scrollRef}
         centerContent={center}
+        style={tabBarStyle[`tabScroll${size}`]}
         scrollEnabled={scrollEnabled}>
         {props.data.length > 0 &&
           props.data.map((item, index) => {
@@ -81,12 +89,12 @@ const TabList = props => {
                 style={[tabBarStyle.tabItem]}>
                 <Text
                   style={[
+                    tabBarStyle.textActive,
                     tabBarStyle[`tabItemText${size}`],
                     currentIndex === index && tabBarStyle[`textActive${size}`],
                   ]}>
                   {item.title}
                 </Text>
-
                 {currentIndex === index && (
                   <View
                     style={[
@@ -107,67 +115,83 @@ const TabList = props => {
 const tabBarStyle = StyleSheet.create({
   tabWrap: {
     backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   tabbig: {
     height: 50,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#000',
   },
   tabmiddle: {
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  tabsmall: {
+    height: RFValue(36),
+  },
+  tabScrollsmall: {
+    paddingLeft: RFValue(8),
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
-    borderBottomWidth: 2,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   tabItem: {
     paddingLeft: 10,
     paddingRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
   tabItemTextbig: {
     fontSize: 15,
     color: '#7f7f81',
-    position: 'relative',
   },
   tabItemTextmiddle: {
     fontSize: 14,
     color: '#7f7f81',
-    position: 'relative',
+  },
+  tabItemTextsmall: {
+    fontSize: 15,
+    color: '#000',
+    fontWeight: '300',
+  },
+  textActive: {
+    fontWeight: '500',
+    color: '#000',
   },
   textActivebig: {
     fontSize: 18,
     color: '#fff',
-    fontWeight: '500',
   },
   textActivemiddle: {
     fontSize: 16,
     color: '#000',
+  },
+  textActivesmall: {
+    fontSize: 16,
     fontWeight: '500',
   },
   tabLine: {
     position: 'absolute',
     bottom: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    height: 3,
   },
   lineActivebig: {
     width: 22,
-    height: 3,
-    backgroundColor: '#fff',
     marginTop: 6,
-    borderRadius: 4,
-    overflow: 'hidden',
+    backgroundColor: '#fff',
   },
   lineActivemiddle: {
     width: 14,
-    height: 3,
-    backgroundColor: '#000',
     marginTop: 5,
-    borderRadius: 4,
-    overflow: 'hidden',
+  },
+  lineActivesmall: {
+    width: 18,
+    position: 'absolute',
+    bottom: 0,
   },
   separator: {
     borderBottomColor: '#FAFAFA',

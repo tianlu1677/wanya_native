@@ -10,45 +10,39 @@ import {
   Pressable,
   Dimensions,
   ScrollView,
+  Platform,
 } from 'react-native';
-// import ImagePicker from 'react-native-image-crop-picker'; //暂时删除 android打包失败
+import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
-import PermissionModal from './PhotoPermission';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation, CommonActions} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
+import PermissionModal from './PhotoPermission';
 import * as action from '@/redux/constants';
+import {dispatchPreviewImage, changeUploadStatus} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
-import {dispatchPreviewImage} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
+import {getLocation} from '@/api/space_api';
+import {loadLocation} from '@/pages/home/getLocation';
 
 const windowWidth = Dimensions.get('window').width;
-
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
 
 const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
-  const savetopic = useSelector(state => state.home.savetopic);
-  const uploadProgress = useSelector(state => state.home.uploadProgress);
-  const location = useSelector(state => state.home.location);
+  const {savetopic, location} = useSelector(state => state.home);
   const videoRef = useRef('');
-
-  // const defaultVideo = [
-  //   {id: 1, url: 'http://xinxuefile.meirixinxue.com/assets/d479716443f6aca08c4e45135509bd03.mp4'},
-  // ];
-
-  const defaultVideo = [];
   const [imageSource, setImageSource] = useState([]);
-  const [videoSource, setVideoSource] = useState(defaultVideo);
+  const [videoSource, setVideoSource] = useState([]);
+  const [linkSource, setLinkSource] = useState(null);
   const [permissionModal, setPermissionModal] = useState(false); // 显示权限页面
-
   const [content, setContent] = useState(savetopic.plan_content);
 
   const onChangeContent = text => {
@@ -57,28 +51,41 @@ const NewTopic = props => {
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
   };
 
-  const getLocation = res => {
+  const getCurrentLocation = async res => {
     if (res === false) {
       // 拒绝权限
       dispatch({type: action.GET_LOCATION, value: {}});
+      return;
     }
 
+    if (location) {
+      // loction 缓存
+      navigation.navigate('AddSpace', {type: 'topic'});
+      return;
+    }
+
+    // 获取到权限信息
     if (res.position && res.position.coords) {
-      // 获取到权限信息
-      dispatch({type: action.GET_LOCATION, value: {...location, ...res.position.coords}});
+      const {latitude, longitude} = res.position.coords;
+      const {city} = (await getLocation({latitude, longitude})).data;
+      dispatch({
+        type: action.GET_LOCATION,
+        value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
+      });
+      navigation.navigate('AddSpace', {type: 'topic'});
     }
-
-    navigation.navigate('AddSpace');
   };
 
   const checkPermission = async () => {
-    const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+    const imagePermission =
+      Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
+    const status = await check(imagePermission);
     if (status === RESULTS.GRANTED) {
       return true;
     }
 
     if (status === RESULTS.DENIED) {
-      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+      request(imagePermission).then(result => {
         console.log('result', result);
       });
       return true;
@@ -159,79 +166,100 @@ const NewTopic = props => {
     //     setVideoSource([...res]);
     //     const result = await props.uploadVideo(res[0], dispatch);
     //     setVideoSource([result.asset]);
-    //     dispatch({type: action.UPLOAD_PROGRESS, value: ''});
     //   }
     // );
+    props.removeAllPhoto();
+    const systemVersion = parseInt(DeviceInfo.getSystemVersion());
+    const videoSelectType =
+      Platform.OS === 'ios' && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
 
-    ImagePicker.launchImageLibrary(
-      {
-        mediaType: 'video',
-        videoQuality: 'low',
-      },
-      async response => {
-        if (response.didCancel) {
-          return;
+    if (videoSelectType === 'syanPicker') {
+      props.videoPick(
+        {
+          MaxSecond: 300,
+          MinSecond: 1,
+          recordVideoSecond: 60,
+          videoCount: 1,
+          allowTakeVideo: false,
+        },
+        async (err, res) => {
+          if (err) {
+            return;
+          }
+          console.log(res);
+          setVideoSource(res);
         }
-        console.log('response', response);
-        // return
-        const video = response;
-        props.removeAllPhoto();
-        let videoSourceContent = {
-          uri: video.origURL, //video.uri.replace('file://', ''),
-          // height: video.height,
-          // width: video.width,
-          // duration: video.duration,
-        };
-        setVideoSource([videoSourceContent]);
-        const result = await props.uploadVideo(videoSourceContent, dispatch);
-        setVideoSource([result.asset]);
-        dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-        // Alert.alert(JSON.stringify(video))
-      }
-    );
-    // ImagePicker.openPicker({
-    //   mediaType: 'video',
-    //   writeTempFile: false,
-    //   smartAlbums: ['Videos'],
-    //   loadingLabelText: '导出视频中, 请稍等...',
-    //   sortOrder: 'asc',
-    // }).then(async video => {
-    //   console.log(video);
-    //   props.removeAllPhoto();
-    //   let videoSourceContent = {
-    //     uri: video.path,
-    //     height: video.height,
-    //     width: video.width,
-    //     duration: video.duration,
-    //   };
-    //   setVideoSource([videoSourceContent]);
-    //   const result = await props.uploadVideo(videoSourceContent, dispatch);
-    //   setVideoSource([result.asset]);
-    //   dispatch({type: action.UPLOAD_PROGRESS, value: ''});
-    //   // Alert.alert(JSON.stringify(video))
-    // });
+      );
+    }
+
+    // react-native-image-picker
+    if (videoSelectType === 'imagePicker') {
+      ImagePicker.launchImageLibrary(
+        {
+          mediaType: 'video',
+          videoQuality: 'low',
+        },
+        async response => {
+          if (response.didCancel) {
+            return;
+          }
+          console.log({uri: response.origURL});
+          setVideoSource([{uri: response.origURL}]);
+        }
+      );
+    }
   };
 
   const deleteMedia = index => {
     props.removeImage(index);
     const image = imageSource.filter((v, i) => i !== index);
     const video = videoSource.filter((v, i) => i !== index);
-
     setImageSource([...image]);
     setVideoSource(video);
   };
 
+  const onAddLink = () => {
+    navigation.navigate('AddLink');
+  };
+
+  const onDeleteLink = () => {
+    setLinkSource(null);
+    const topics = {...savetopic, linkContent: null};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+  };
+
   const isValidateForm = () => {
-    if (imageSource.length === 0 && videoSource.length === 0 && !content) {
+    //图片 视频 外链 文字 选1+node
+    if (imageSource.length === 0 && videoSource.length === 0 && !content && !linkSource) {
       return false;
     } else {
       return true;
     }
   };
 
+  const getValidateForm = () => {
+    const data = {
+      type: 'single',
+      medias: imageSource.map(v => v.url),
+      topic_link_id: linkSource ? linkSource.id : '',
+      plain_content: savetopic.plan_content
+        ? savetopic.plan_content.trim()
+        : imageSource.length > 0
+        ? '分享图片'
+        : videoSource.length > 0
+        ? '分享视频'
+        : '',
+      mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
+      node_id: savetopic.node ? savetopic.node.id : '',
+      space_id: savetopic.space ? savetopic.space.id : '',
+      location_id: savetopic.location ? savetopic.location.id : '',
+    };
+    return data;
+  };
+
   const onSubmit = async () => {
     if (!isValidateForm()) {
-      Toast.show('图片/视频不能为空哦~');
+      Toast.show('图片/视频/外链不能为空哦~');
       return false;
     }
 
@@ -243,58 +271,40 @@ const NewTopic = props => {
       }
     }
 
-    if (videoSource.length > 0) {
-      if (!videoSource[0].id) {
-        Toast.show('视频正在上传中');
-        return false;
-      }
-    }
-
     if (!savetopic.node) {
       navigation.navigate('AddNode');
       return false;
     }
 
-    const waitTime = ms => {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    };
-    const data = {
-      type: 'single',
-      medias: imageSource.map(v => v.url),
-      video_content: videoSource.length > 0 ? videoSource[0].url : '',
-      plain_content: savetopic.plan_content
-        ? savetopic.plan_content
-        : imageSource.length > 0
-        ? '分享图片'
-        : videoSource.length > 0
-        ? '分享视频'
-        : '',
-      mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
-      node_id: savetopic.node ? savetopic.node.id : '',
-      space_id: savetopic.space ? savetopic.space.id : '',
-    };
-
-    console.log(data);
-    Toast.showLoading('正在发布中...');
-    try {
-      const res = await createTopic(data);
-      await waitTime(1500);
-      Toast.hide();
-      props.navigation.reset({
-        index: 0,
-        routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
-      });
-
-      // navigation.dispatch(
-      //   CommonActions.reset({
-      //     index: 0,
-      //     routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
-      //   })
-      // );
-
-      dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
-    } catch {
-      Toast.hide();
+    const data = getValidateForm();
+    if (videoSource.length > 0) {
+      // 视频上传
+      navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+      const params = {
+        content: {
+          video: {...videoSource[0]},
+          content: {...data},
+        },
+        upload: (file, cb) => props.uploadVideo(file, cb),
+      };
+      dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
+    } else {
+      //other
+      Toast.showLoading('正在发布中...');
+      // const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
+      try {
+        const res = await createTopic(data);
+        // await waitTime(1500);
+        Toast.hide();
+        props.navigation.reset({
+          index: 0,
+          routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
+        });
+        dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
+      } catch (err) {
+        Toast.hide();
+        console.log(err);
+      }
     }
   };
 
@@ -330,10 +340,13 @@ const NewTopic = props => {
 
   useEffect(() => {
     setContent(savetopic.plan_content);
+    setLinkSource(savetopic.linkContent);
   }, [savetopic]);
 
   useEffect(() => {
-    // 清空数据
+    if (!location) {
+      loadLocation(dispatch);
+    }
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
       props.removeAllPhoto();
@@ -346,7 +359,7 @@ const NewTopic = props => {
       headerLeft: () => <LeftBtn />,
       headerRight: () => <RightBtn />,
     });
-  }, [navigation, imageSource, videoSource, savetopic]);
+  }, [navigation, imageSource, videoSource, savetopic, linkSource]);
 
   return (
     <ScrollView>
@@ -388,7 +401,7 @@ const NewTopic = props => {
                 )}
               </View>
             ))}
-            {videoSource.length === 0 && imageSource.length !== 9 && (
+            {videoSource.length === 0 && !linkSource && imageSource.length !== 9 && (
               <Pressable
                 onPress={onImagePicker}
                 style={[
@@ -401,56 +414,75 @@ const NewTopic = props => {
 
             {/* video */}
             {videoSource.map((v, index) => (
-              <Pressable
-                style={[styles.mediaWrap, {marginRight: (index + 1) % 4 === 0 ? 0 : 10}]}
-                key={index}>
-                {v.id ? (
-                  <>
-                    <Pressable
-                      style={styles.media}
-                      onPress={() => {
-                        videoRef.current.presentFullscreenPlayer();
-                      }}>
-                      <Video
-                        style={{...styles.media, backgroundColor: 'black'}}
-                        ref={videoRef}
-                        source={{uri: v.url}}
-                        posterResizeMode={'center'}
-                        controls={false}
-                        muted={false}
-                        reportBandwidth
-                        ignoreSilentSwitch="ignore"
-                        repeat
-                        onFullscreenPlayerDidDismiss={() => {
-                          videoRef.current.seek(0);
-                        }}
-                      />
-                    </Pressable>
-                    <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                      <Image
-                        style={styles.mediaClose}
-                        source={require('@/assets/images/close.png')}
-                      />
-                    </Pressable>
-                  </>
-                ) : (
-                  <View style={[styles.media, styles.progress]}>
-                    {/* <View style={styles.progressWrap}> */}
-                    <Text style={styles.proNum}>{uploadProgress}</Text>
-                    <Text style={styles.proPercent}>%</Text>
-                    {/* </View> */}
-                  </View>
-                )}
+              <Pressable style={[styles.mediaWrap, {backgroundColor: '#000'}]} key={index}>
+                <Pressable
+                  style={styles.media}
+                  onPress={() => {
+                    videoRef.current.presentFullscreenPlayer();
+                  }}>
+                  <Video
+                    style={styles.media}
+                    ref={videoRef}
+                    source={{uri: v.uri}}
+                    posterResizeMode={'center'}
+                    controls={false}
+                    muted={false}
+                    reportBandwidth
+                    ignoreSilentSwitch="ignore"
+                    repeat
+                    onFullscreenPlayerDidDismiss={() => {
+                      videoRef.current.seek(0);
+                    }}
+                  />
+                </Pressable>
+                <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
+                  <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+                </Pressable>
               </Pressable>
             ))}
-
-            {imageSource.length === 0 && videoSource.length === 0 && (
+            {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (
               <Pressable onPress={onVideoPicker}>
                 <FastImg
                   style={styles.mediaWrap}
                   source={require('@/assets/images/add-video.png')}
                 />
               </Pressable>
+            )}
+
+            {/* link */}
+            {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (
+              <Pressable onPress={onAddLink}>
+                <FastImg
+                  style={styles.mediaWrap}
+                  source={require('@/assets/images/add-link.png')}
+                />
+              </Pressable>
+            )}
+
+            {linkSource && (
+              <View style={styles.linkWrapper}>
+                <View style={styles.linkImageWrap}>
+                  <FastImg
+                    source={{uri: linkSource.cover_url}}
+                    mode={'cover'}
+                    style={{width: 45, height: 45}}
+                  />
+                  {linkSource.outlink_type === 'music' && (
+                    <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
+                  )}
+                </View>
+                <Text style={styles.linkText} numberOfLines={2}>
+                  {linkSource.title || linkSource.raw_link}
+                </Text>
+                <Pressable onPress={onDeleteLink}>
+                  <IconFont
+                    name={'qingchu'}
+                    size={15}
+                    style={{marginLeft: 22, marginRight: 4}}
+                    hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  />
+                </Pressable>
+              </View>
             )}
           </View>
           <TextInput
@@ -473,7 +505,7 @@ const NewTopic = props => {
             </Pressable>
             <Pressable
               style={styles.addTextNameWrap}
-              onPress={() => navigation.navigate('AddMentionAccount')}>
+              onPress={() => navigation.navigate('AddMentionAccount', {type: 'add-node'})}>
               <IconFont name={'at'} size={13} color="#000" />
               <Text style={styles.addTextName}>顽友</Text>
             </Pressable>
@@ -486,32 +518,26 @@ const NewTopic = props => {
               </Text>
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </Pressable>
-            <GetLocation handleClick={getLocation} style={styles.addSlide}>
-              <IconFont name="space-point" color={savetopic.space ? '#000' : '#c2c2c2'} size={16} />
-              <Text style={[styles.addText, savetopic.space && styles.selectText]}>
-                {savetopic.space ? savetopic.space.name : '选择场地'}
+            <GetLocation handleClick={getCurrentLocation} style={styles.addSlide}>
+              <IconFont
+                name="space-point"
+                color={savetopic.space || savetopic.location ? '#000' : '#c2c2c2'}
+                size={16}
+              />
+              <Text
+                style={[
+                  styles.addText,
+                  (savetopic.space || savetopic.location) && styles.selectText,
+                ]}>
+                {savetopic.space || savetopic.location
+                  ? savetopic.space?.name || savetopic.location?.name
+                  : '场地位置'}
               </Text>
               <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
             </GetLocation>
           </View>
         </View>
       </TouchableWithoutFeedback>
-      {/* <Modal
-        transparent={true}
-        visible={true}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>授权后才能设置场地位置</Text>
-            <View style={styles.modalBtnWrap}>
-              <Text style={styles.modalBtn}>取消</Text>
-              <Text style={styles.modalBtn}>去设置</Text>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
     </ScrollView>
   );
 };
@@ -558,13 +584,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#000',
   },
-  progressWrap: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // position: 'relative',
-    // backgroundColor: 'pink',
-    // flexWrap: 'nowrap',
-  },
   proNum: {
     color: '#fff',
     fontSize: 21,
@@ -575,9 +594,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginTop: 8,
     marginLeft: 2,
-    // position: 'absolute',
-    // right: -11,
-    // bottom: 3,
   },
   content: {
     minHeight: 90,
@@ -636,6 +652,37 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: '#BDBDBD',
+  },
+  linkWrapper: {
+    flex: 1,
+    backgroundColor: '#F2F3F5',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 8,
+    alignItems: 'center',
+  },
+  linkImageWrap: {
+    position: 'relative',
+  },
+  linkImage: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginTop: -6,
+    marginLeft: -6,
+  },
+  linkText: {
+    fontSize: 13,
+    lineHeight: 20,
+    marginVertical: 3,
+    color: '#3F3F3F',
+    marginLeft: 10,
+    textAlign: 'justify',
+    flex: 1,
+  },
+  linkIcon: {
+    marginRight: 4,
+    marginLeft: 44,
   },
 });
 

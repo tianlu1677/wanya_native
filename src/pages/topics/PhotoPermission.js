@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
-import Modal, {ModalTitle, ModalContent} from 'react-native-modals';
+import Modal, {ModalTitle, BottomModal, ModalContent} from 'react-native-modals';
 import {openSettings} from 'react-native-permissions';
 const PermissionModal = props => {
   const [photo_permission, setPhotoPermission] = useState(false);
@@ -15,10 +15,11 @@ const PermissionModal = props => {
   };
 
   return (
-    <Modal.BottomModal
+    <BottomModal
       height={0.5}
       width={1}
       rounded
+      statusBarTranslucent
       useNativeDriver={false}
       containerStyle={{flex: 1, zIndex: 10000, elevation: 10}}
       modalStyle={{}}
@@ -45,7 +46,7 @@ const PermissionModal = props => {
           </TouchableOpacity>
         </View>
       </ModalContent>
-    </Modal.BottomModal>
+    </BottomModal>
   );
 };
 

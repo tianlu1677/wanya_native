@@ -47,6 +47,9 @@ const SystemNotify = ({navigation}) => {
       content = notify.article.title;
     } else if (notify.target_type === null) {
       content = 'nothing';
+    } else if (notify.target_type === 'CheckNode'){
+      image_url = notify.target_cover_url
+      has_video = false
     } else {
       content = '已删除';
     }
@@ -69,6 +72,8 @@ const SystemNotify = ({navigation}) => {
     } else if (notify.article) {
       console.log('article, article');
       navigation.push('ArticleDetail', {articleId: notify.article.id});
+    } else if (notify.target_type == 'CheckNode') {
+      navigation.push('CreateNodeResult', {nodeId: notify.target_id});
     }
   };
 

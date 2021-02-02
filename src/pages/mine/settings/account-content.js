@@ -48,6 +48,7 @@ const AccountContent = props => {
     props.removeAllPhoto();
     const options = {
       imageCount: 1,
+      isRecordSelected: false,
       isCrop: true,
       CropW: screenW * 1,
       CropH: screenW * 1,
@@ -72,6 +73,10 @@ const AccountContent = props => {
   };
 
   const setGenderValue = async value => {
+    console.log('xxxx', value)
+    if(value.toString().length <= 0) {
+      return
+    }
     setGender(value);
     await syncAccountInfo({id: currentAccount.id, gender: value});
     dispatch(dispatchCurrentAccount());
@@ -89,6 +94,7 @@ const AccountContent = props => {
     return (
       <RNPickerSelect
         onValueChange={value => setGenderValue(value)}
+        fixAndroidTouchableBug
         placeholder={{
           label: '请选择',
           value: '',
@@ -175,10 +181,7 @@ const AccountContent = props => {
         }}>
         <ItemTitle>性别</ItemTitle>
         <ItemWrap>
-          <ItemTitle>
-            {/*{currentAccount.gender_text}*/}
-            <GenderDropdown />
-          </ItemTitle>
+          <GenderDropdown />
           <ForwardRight />
         </ItemWrap>
       </ItemView>
@@ -244,14 +247,20 @@ const pickerSelectStyles = StyleSheet.create({
     paddingTop: 5,
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'black',
-    borderRadius: 8,
+    fontSize: 10,
+    // paddingHorizontal: 10,
+    // paddingVertical: 8,
+    // borderWidth: StyleSheet.hairlineWidth,
+    // borderColor: 'black',
+    // borderRadius: 8,
+    width: 150,
+    flex: 1,
+    marginLeft: 100,
+    // justifyContent: 'center',
     color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    backgroundColor: 'white',
+    marginRight: -100,
+    paddingRight: 0, // to ensure the text is never behind the icon
   },
 });
 

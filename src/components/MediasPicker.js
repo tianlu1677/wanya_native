@@ -4,9 +4,14 @@ import Helper from '@/utils/helper';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import {BaseApiUrl} from '@/utils/config';
+import { uploadSystemInfo } from '@/api/settings_api';
 import * as action from '@/redux/constants';
-
+import DeviceInfo from 'react-native-device-info';
 const baseUrl = BaseApiUrl;
+
+
+const deviceId = DeviceInfo.getSystemVersion();
+const systemName = DeviceInfo.getSystemName();
 
 const MediasPicker = WrapperComponent => {
   return props => {
@@ -22,6 +27,7 @@ const MediasPicker = WrapperComponent => {
 
     const uploadImage = async file => {
       const token = await Helper.getData('auth_token');
+      const path = file.uri.replace('file://', '');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
@@ -29,18 +35,17 @@ const MediasPicker = WrapperComponent => {
         type: 'multipart',
         field: 'file',
         parameters: {
-          width: file.width,
-          height: file.height,
-          fsize: file.size,
+          width: file.width.toString(),
+          height: file.height.toString(),
+          fsize: file.size.toString(),
           category: 'image',
         },
         headers: {
           'content-type': 'application/octet-stream',
           token: token,
         },
-        path: file.uri,
+        path: path,
       };
-      console.log('uploadOptions', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -59,6 +64,7 @@ const MediasPicker = WrapperComponent => {
 
     const uploadAvatar = async file => {
       const token = await Helper.getData('auth_token');
+      const path = file.uri.replace('file://', '');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/mine/accounts/${file.account_id}`,
         method: 'POST',
@@ -72,10 +78,8 @@ const MediasPicker = WrapperComponent => {
           'content-type': 'application/octet-stream',
           token: token,
         },
-        path: file.uri,
+        path: path,
       };
-
-      console.log('xxx', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
@@ -94,15 +98,15 @@ const MediasPicker = WrapperComponent => {
 
     const videoPick = (option = {}, callback) => {
       const options = {...option};
-      console.log('updaload', options);
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
-    const uploadVideo = async (file, dispatch) => {
+    const uploadVideo = async (file, cb) => {
       const res = await getUploadFileToken({ftype: 'mp4'});
+      const path = file.uri.replace('file://', '');
       let uploadOptions = {
         url: res.qiniu_region,
-        path: file.uri,
+        path: path,
         method: 'POST',
         type: 'multipart',
         field: 'file',
@@ -120,19 +124,21 @@ const MediasPicker = WrapperComponent => {
         },
         useUtf8Charset: true,
       };
-      console.log('uploadVideo options', uploadOptions);
+      uploadSystemInfo(JSON.stringify(uploadOptions));
+      uploadSystemInfo(`OS: ${systemName}, systemVersion: ${deviceId} => ${JSON.stringify(file)}`);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {
-              dispatch({type: action.UPLOAD_PROGRESS, value: parseInt(data.progress)});
+              cb(parseInt(data.progress));
             });
             Upload.addListener('error', uploadId, data => {
               reject(data.error);
             });
             Upload.addListener('completed', uploadId, data => {
+              uploadSystemInfo(JSON.stringify(data));
               let upload_res = JSON.parse(data.responseBody);
-              if (upload_res.key) {
+              if (upload_res.key && data.responseCode === 200) {
                 const body = {
                   asset: {
                     file_key: upload_res.key,
@@ -148,6 +154,7 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
+            console.log('error', err);
             reject(err);
           });
       });

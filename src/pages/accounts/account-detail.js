@@ -19,7 +19,7 @@ import {
   getAccountArticles,
 } from '@/api/account_api';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {BASIC_HEIGHT} from '@/utils/navbar';
+import {BASIC_HEIGHT, IsIos, SAFE_TOP} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {reportContent} from '@/api/secure_check';
@@ -88,7 +88,7 @@ const AccountDetail = ({navigation, route}) => {
     },
     {
       id: 2,
-      label: '举报',
+      label: '投诉',
       onPress: async () => {
         navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
       },
@@ -138,6 +138,15 @@ const AccountDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{flex: 1}}>
+        <GoBack top={IsIos ? null : 20 }/>
+        {account.id !== currentAccount.id && (
+          <Pressable
+            onPress={onReportClick}
+            style={styles.report}
+            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+            <IconFont name="gengduo" color="#fff" size={20} />
+          </Pressable>
+        )}
         <FastImg
           source={{
             uri: account.background_img_url ? account.background_img_url : AccountDetailBgImg,
@@ -147,15 +156,6 @@ const AccountDetail = ({navigation, route}) => {
         />
         <View style={[styles.imageCover, styles.imageCoverOpacity]} />
         <View style={styles.header}>
-          <GoBack />
-          {account.id !== currentAccount.id && (
-            <Pressable
-              onPress={onReportClick}
-              style={styles.report}
-              hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-              <IconFont name="ziyuan" color="#fff" size={20} />
-            </Pressable>
-          )}
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
             <Avator account={account} size={50} isShowSettledIcon={false} handleClick={onPreview} />
@@ -221,7 +221,7 @@ const AccountDetail = ({navigation, route}) => {
           </View>
           <View style={styles.numberWrap}>
             <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-              <Text style={styles.numberCount}>{account.account_feeds_count}</Text>
+              <Text style={styles.numberCount}>{account.publish_topics_count + account.publish_articles_count}</Text>
               <Text style={styles.numberTitle}>动态</Text>
             </Pressable>
             <Pressable style={styles.numberItem} onPress={goFollowList}>
@@ -292,22 +292,24 @@ const AccountDetail = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
+    position: 'relative',
     flex: 1,
   },
   report: {
     position: 'absolute',
     right: 16,
-    height: 44,
+    height: 34,
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
-    top: Math.max(getStatusBarHeight(), 20),
+    top: IsIos ? SAFE_TOP : 20,
+    zIndex: 2
   },
   header: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 68,
-    height: 290,
+    paddingTop: 40 + BASIC_HEIGHT,
+    height: HEADER_HEIGHT,
   },
   imageCover: {
     position: 'absolute',

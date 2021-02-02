@@ -1,61 +1,122 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
+import Video from 'react-native-video';
+import * as action from '@/redux/constants';
+import IconFont from '@/iconfont';
+import {SAFE_TOP} from '@/utils/navbar';
+import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
+import {Search} from '@/components/NodeComponents';
+import MediasPicker from '@/components/MediasPicker';
+import {BadgeMessage} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-import IconFont from '@/iconfont';
-import {useDispatch, useSelector} from 'react-redux';
-import {getRecommendPosts, getFollowedPosts, getFollowedNodePosts} from '@/api/home_api';
-import {BOTTOM_HEIGHT, STATUS_BAR_HEIGHT} from '@/utils/navbar';
-import {BadgeMessage} from '@/components/NodeComponents';
-import {dispatchBaseCurrentAccount, dispathUpdateNodes} from '@/redux/actions';
-import {dispatchCurrentAccount} from '@/redux/actions';
-import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
-import SafeAreaPlus from '@/components/SafeAreaPlus';
-import FastImg from '@/components/FastImg';
-import {AllNodeImg} from '@/utils/default-image';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {RFValue} from '@/utils/response-fontsize';
+import {getChannelPosts} from '@/api/home_api';
+import {recordDeviceInfo} from '@/api/settings_api';
+import {getLocationInfo, loadLocation} from './getLocation';
+import deviceInfo from '@/utils/device_info';
+import {
+  dispatchFetchCategoryList,
+  dispatchBaseCurrentAccount,
+  dispatchCurrentAccount,
+  dispatchFetchUploadTopic,
+  changeUploadStatus,
+} from '@/redux/actions';
+import LongVideoList from '@/components/List/long-video-list';
+import FollowListPage from './follow-list-post';
+import NodeListPage from './node-list-page';
+import RecommendListPage from './recommend-list-post';
+import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
-  const [currentKey, setCurrentKey] = useState('recommend');
   const dispatch = useDispatch();
+  const [inputRef, setinputRef] = useState(null);
+  const [currentKey, setCurrentKey] = useState('recommend');
+
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const uploadStatus = useSelector(state => state.topic.uploadStatus);
+  const home = useSelector(state => state.home);
 
-  const RecommendList = () => {
-    return <DoubleList request={{api: getRecommendPosts}} type="recommend" />;
-  };
-
-  const FollowList = () => {
-    return <SingleList request={{api: getFollowedPosts}} />;
-  };
-
-  const NodeList = () => {
+  const MemoVideo = React.memo(() => {
+    const {content} = uploadStatus;
     return (
-      <SingleList
-        type="node-recommend"
-        request={{api: getFollowedNodePosts}}
-        ListHeaderComponent={<NodeScrollView {...props} />}
-        renderEmpty={
-          <View style={styles.emptyWrap}>
-            <View style={styles.emptyTextWrap}>
-              <Text style={styles.emptyText}>你还没有加入圈子</Text>
-              <Text style={styles.emptyText}>点击发现更多圈子</Text>
-            </View>
-            <Text style={styles.moreNode} onPress={() => props.navigation.navigate('NodeIndex')}>
-              发现更多圈子
-            </Text>
-          </View>
-        }
+      <Video
+        style={styles.video}
+        source={{uri: content.video.uri}}
+        paused={true}
+        resizeMode="cover"
       />
     );
+  });
+
+  const CallBackVideo = useCallback(() => <MemoVideo />, []);
+
+  const UploadTopic = () => {
+    const {status, progress} = uploadStatus;
+    return (
+      <View style={[{zIndex: 3, alignItems: 'center'}]}>
+        <View style={styles.videoWrap}>
+          <View style={[styles.opacity]} />
+          {['upload', 'publish'].includes(status) && (
+            <View style={styles.progress}>
+              <Text style={styles.num}>{progress}</Text>
+              <Text style={styles.percent}>%</Text>
+            </View>
+          )}
+          {status === 'done' && <IconFont name="chose-success" color={'white'} size={20} />}
+        </View>
+        <Text style={styles.uploadText}>
+          {status === 'upload' && '上传中'}
+          {status === 'publish' && '发布中'}
+          {status === 'done' && '已发布'}
+        </Text>
+      </View>
+    );
   };
+
+  const channels = home.channels.map(item => {
+    const params = {channel_id: item.id, channel_name: item.name};
+    return {
+      key: item.name,
+      title: item.name,
+      component: () => {
+        let component = null;
+        if (item.display_style === 'single') {
+          component = <SingleList request={{api: getChannelPosts, params}} />;
+        }
+        if (item.display_style === 'double') {
+          component = <DoubleList request={{api: getChannelPosts, params}} />;
+        }
+        if (item.display_style === 'long_video') {
+          component = <LongVideoList request={{api: getChannelPosts, params}} />;
+        }
+        return component;
+      },
+    };
+  });
 
   const UnreadMessageCount = () => {
     if (!currentAccount || currentAccount.new_message_count === 0) {
       return 0;
     }
     return currentAccount.new_message_count;
+  };
+
+  const onChange = async key => {
+    const {location} = home;
+    if (key === 'nearby' && (!location.latitude || !location.longitude)) {
+      getLocationInfo(false, result => {
+        if (result) {
+          dispatch({type: action.GET_LOCATION, value: result.position.coords});
+        }
+        setCurrentKey(key);
+      });
+    } else {
+      setCurrentKey(key);
+    }
   };
 
   useFocusEffect(
@@ -65,92 +126,94 @@ const Recommend = props => {
   );
 
   useEffect(() => {
+    recordDeviceInfo(deviceInfo);
     dispatch(dispatchCurrentAccount());
+    dispatch(dispatchFetchCategoryList());
+    if (uploadStatus) {
+      const upload = (file, cb) => props.uploadVideo(file, cb);
+      dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
+      dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
+    }
+    loadLocation(dispatch);
   }, []);
 
+  // useEffect(() => {
+  //   console.log(home.location);
+  // }, [home.location]);
+
   return (
-    <View style={{flex: 1}}>
-      <View style={{height: BOTTOM_HEIGHT > 20 ? BOTTOM_HEIGHT : 10, backgroundColor: 'black'}} />
-      {/*<SafeAreaView style={{flex: 0, backgroundColor: 'black'}} edges={['top']} />*/}
-      <FocusAwareStatusBar barStyle="light-content" />
-      <View style={styles.wrapper}>
-        <TabViewList
-          size="big"
-          lazy={true}
-          currentKey={currentKey}
-          tabData={[
-            {
-              key: 'follow',
-              title: '关注',
-              component: FollowList,
-            },
-            {
-              key: 'recommend',
-              title: '推荐',
-              component: RecommendList,
-            },
-            {
-              key: 'lasted',
-              title: '圈子',
-              component: NodeList,
-            },
-          ]}
-          onChange={key => setCurrentKey(key)}
-        />
-        <View style={styles.message}>
+    <>
+      <View style={{flex: 1, position: 'relative'}}>
+        <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
+        {uploadStatus ? (
+          <View style={[styles.uploadWrap]}>
+            <UploadTopic />
+            <CallBackVideo />
+          </View>
+        ) : null}
+        <FocusAwareStatusBar barStyle="light-content" translucent={false} />
+        <Search
+          getRef={refs => setinputRef(refs)}
+          style={{backgroundColor: '#000'}}
+          inputStyle={{borderRadius: RFValue(18), backgroundColor: '#fff'}}
+          height={RFValue(38)}
+          placeholderTextColor="#000"
+          placeholder="搜索帖子、文章、圈子等内容"
+          onFocus={() => {
+            inputRef.blur();
+            props.navigation.push('SearchIndex');
+          }}>
           <Pressable
-            style={styles.message_icon}
-            hitSlop={{left: 20, right: 10, top: 10, bottom: 10}}
+            style={styles.message}
             onPress={() => props.navigation.navigate('NotifyIndex')}>
-            <View style={{position: 'relative'}}>
+            <View style={styles.message_icon}>
               <IconFont name="notice" color={'white'} size={20} />
+              <BadgeMessage
+                size={'small'}
+                value={UnreadMessageCount()}
+                containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
+              />
             </View>
-            <BadgeMessage
-              value={UnreadMessageCount()}
-              containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
-              size={'small'}
-            />
           </Pressable>
-        </View>
+        </Search>
+
+        {channels.length > 0 && (
+          <View style={styles.wrapper}>
+            <TabViewList
+              center={false}
+              bottomLine={true}
+              lazy={true}
+              currentKey={currentKey}
+              onChange={onChange}
+              size="small"
+              tabData={[
+                {
+                  key: 'follow',
+                  title: '关注',
+                  component: FollowListPage,
+                },
+                {
+                  key: 'recommend',
+                  title: '推荐',
+                  component: RecommendListPage,
+                },
+                {
+                  key: 'nodes',
+                  title: '圈子',
+                  component: NodeListPage,
+                },
+                {
+                  key: 'nearby',
+                  title: '附近',
+                  component: NearbyListPage,
+                },
+                ...channels,
+              ]}
+            />
+          </View>
+        )}
       </View>
-    </View>
-  );
-};
-
-const NodeScrollView = props => {
-  const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentBaseInfo);
-  const nodes = useSelector(state => state.home.followNodes);
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(dispathUpdateNodes(currentAccount.id));
-    }, [])
-  );
-
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
-      {nodes.length > 0 &&
-        nodes.map(node => {
-          return (
-            <Pressable
-              key={node.id}
-              style={styles.nodeWrap}
-              onPress={() => props.navigation.push('NodeDetail', {nodeId: node.id})}>
-              <FastImg style={styles.nodeImg} source={{uri: node.cover_url}} />
-              <Text style={styles.nodeName} numberOfLines={1}>
-                {node.name}
-              </Text>
-            </Pressable>
-          );
-        })}
-      <Pressable style={styles.nodeWrap} onPress={() => props.navigation.push('NodeIndex')}>
-        <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
-        <Text style={styles.nodeName} numberOfLines={1}>
-          全部圈子
-        </Text>
-      </Pressable>
-    </ScrollView>
+    </>
   );
 };
 
@@ -165,17 +228,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   message: {
-    position: 'absolute',
-    right: 4,
-    zIndex: 100,
-    top: 15,
-  },
-  message_icon: {
-    height: 20,
-    position: 'absolute',
-    top: 0,
-    right: 18,
-    zIndex: -1,
+    width: 50,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   nodeView: {
     backgroundColor: '#fff',
@@ -194,35 +250,99 @@ const styles = StyleSheet.create({
   },
   nodeName: {
     fontSize: 11,
-    lineHeight: 22,
     marginTop: 5,
+    width: 60,
+    maxHeight: 18,
+    minHeight: 16,
+    height: 18,
+    lineHeight: 18,
     textAlign: 'center',
+    fontWeight: '300',
   },
-  emptyWrap: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  emptyTextWrap: {
-    flexDirection: 'column',
-    marginTop: 110,
-  },
-  emptyText: {
-    lineHeight: 23,
-    fontSize: 14,
+  nodeSelf: {
+    width: 34,
+    height: 18,
+    lineHeight: 18,
     textAlign: 'center',
-    color: '#BDBDBD',
-  },
-  moreNode: {
-    width: 243,
-    height: 45,
-    lineHeight: 45,
-    backgroundColor: '#000',
-    borderRadius: 6,
+    borderRadius: 9,
     overflow: 'hidden',
-    marginTop: 20,
+    backgroundColor: '#000',
+    opacity: 0.7,
+    color: '#FFFF00',
+    fontSize: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: '50%',
+    marginLeft: -17,
+  },
+  uploadWrap: {
+    width: 72,
+    height: 84,
+    backgroundColor: '#000',
+    opacity: 0.8,
+    borderRadius: 5,
+    position: 'absolute',
+    left: 14,
+    top: '50%',
+    marginTop: -42,
+    alignItems: 'center',
+    zIndex: 3,
+  },
+  videoWrap: {
+    width: 46,
+    height: 46,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  video: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    borderColor: '#fff',
+    borderWidth: 2,
+    position: 'absolute',
+    top: '50%',
+    marginTop: -42 + 10,
+    left: 13,
+    zIndex: 2,
+    overflow: 'hidden',
+  },
+  opacity: {
+    width: 46,
+    height: 46,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    backgroundColor: '#000',
+    borderRadius: 23,
+    borderColor: '#fff',
+    borderWidth: 2,
+    opacity: 0.4,
+  },
+  progress: {
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    position: 'relative',
+    zIndex: 2,
+  },
+  num: {
+    fontSize: 16,
     color: '#fff',
-    textAlign: 'center',
+  },
+  percent: {
+    fontSize: 7,
+    color: '#fff',
+    marginBottom: 3,
+    position: 'absolute',
+    bottom: 0,
+    right: -8,
+  },
+  uploadText: {
+    color: '#fff',
+    fontSize: 10,
+    marginTop: 8,
   },
 });
 
-export default Recommend;
+export default MediasPicker(Recommend);

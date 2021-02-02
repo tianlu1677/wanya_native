@@ -22,9 +22,13 @@ const TopicList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.topics;
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setHeaders(res.headers);
-    setListData(page === 1 ? data : [...listData, ...data]);
+    if (!params.name) {
+      setListData([]);
+    } else {
+      setListData(page === 1 ? data : [...listData, ...data]);
+    }
     setLoading(false);
   };
 
@@ -34,7 +38,7 @@ const TopicList = props => {
 
   return (
     <ScrollList
-      data={listData}
+      data={props.data || listData}
       loading={loading}
       onRefresh={loadData}
       headers={headers}

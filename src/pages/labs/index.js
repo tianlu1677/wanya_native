@@ -1,173 +1,98 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {StyleSheet,Pressable, Button, FlatList, View, Text} from 'react-native';
-import SingleList from '@/components/List/single-list';
-import DoubleList from '@/components/List/double-list';
-import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {getRecommendPosts, getFollowedPosts} from '@/api/home_api';
-import BaseTopic from '@/components/Item/base-topic';
-import BaseArticle from '@/components/Item/base-article';
-import RenderItemMemo from './memItem';
-// const HEADER_HEIGHT = 144;
-const TAB_BAR_HEIGHT = 55;
+import {StyleSheet, Pressable, Button, FlatList, ScrollView, View, Text} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import GetLocation from '@/components/GetLocation';
+// import PushNotification from 'react-native-push-notification';
+import Helper from '@/utils/helper';
+import {
+  check,
+  request,
+  addLocationListener,
+  PERMISSIONS,
+  RESULTS,
+  openSettings,
+} from 'react-native-permissions';
 
-const CollapsibleHeaderExample = props => {
-  const [data, setData] = useState([]);
-  const [number, setNumber] = useState(1);
-
-  let data1 = [
-    {
-      id: 1,
-      content: 'aa',
-    },
-    {
-      id: 2,
-      content: 'aa',
-    },
-    {
-      id: 3,
-      content: 'aa',
-    },
-    {
-      id: 4,
-      content: 'aa',
-    },
-    {
-      id: 5,
-      content: 'aa',
-    },
-    {
-      id: 6,
-      content: 'aa',
-    },
-    {
-      id: 7,
-      content: 'aa',
-    },
-    {
-      id: 8,
-      content: 'aa',
-    },
-    {
-      id: 9,
-      content: 'aa',
-    },
-    {
-      id: 10,
-      content: 'aa',
-    },
-  ];
-
-  useEffect(() => {
-    setData(data1);
-  }, []);
-
-  const add = () => {
-    const newdata = [
-      {
-        id: Math.random(),
-        content: Math.random(),
-      },
-    ];
-    setData([...data, ...newdata]);
+const LabIndex = props => {
+  const navigation = props.navigation;
+  const [deviceToken, setDeviceToken] = useState('');
+  const [notifyPermission, setNotifyPermission] = useState({});
+  const [position, setPosition] = useState({});
+  const getDeviceToken = async () => {
+    const device_token = await Helper.getData('device_token');
+    setDeviceToken(device_token);
   };
 
-  // function renderItem({item}) {
-  //   console.log('reding', item);
-  //   return (
-  //     <View style={{height: 100, backgroundColor: 'green'}}>
-  //       <Text>{item.content}</Text>
-  //
-  //     </View>
-  //   );
-  // }
-
-  const renderItem1 = useCallback(({item}) => {
-    return <Child item={item} />;
-  }, []);
-  const renderItem = ({item}) => {
-    return <RenderItemMemo item={item} ></RenderItemMemo>
-  }
-
-  const Child1 = ({item}) => {
-    console.log('ite', item.id)
-    return (
-      <View style={{height: 100, backgroundColor: 'green'}}>
-        <Text>{item.content}</Text>
-        <Button
-          title={'add'}
-          onPress={() => {
-            // add();
-            setNumber(number + 1);
-          }}
-          style={{marginTop: 100, backgroundColor: 'white'}}
-        />
-      </View>
-    );
+  const getLocation = data => {
+    console.log('data', data);
+    // if(data.position && data.position.coords)
+    setPosition(data);
   };
 
-  const Child = React.memo(({item}) => {
-    console.log('item', item.id);
-    return (
-      <View style={{height: 100, backgroundColor: 'green'}}>
-        <Text>{item.content}</Text>
-        <Button
-          title={'add'}
-          onPress={() => {
-            add();
-            // setNumber(number + 1);
-          }}
-          style={{marginTop: 100, backgroundColor: 'white'}}
-        />
-      </View>
-    );
-  });
-
-  // const keyExtractor = useCallback(item => item.id, []);
-  const keyExtractor = (item) => {
-    return item.id
-  }
+  const checkPermission = () => {
+    // PushNotification.checkPermissions(res => {
+    //   setNotifyPermission(res);
+    // });
+  };
 
   return (
-    <View style={{flex: 1}}>
-      <Pressable
-        title={'add'}
-        onPress={() => {
-          add();
-          // setNumber(number + 1);
-        }}
-        style={{marginTop: 0, height: 100, backgroundColor: 'red'}}
-      />
-      <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}  style={{marginTop: 100}}/>
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <ScrollView>
+        <View>
+          <Pressable onPress={getDeviceToken}>
+            <Text style={styles.text}>查看当前的device_token</Text>
+            <Text style={styles.smallText}>{deviceToken}</Text>
+          </Pressable>
+          <View>
+            <GetLocation handleClick={getLocation}>
+              <Text style={styles.text}>获取当前位置</Text>
+              <Text style={styles.smallText}>{JSON.stringify(position)}</Text>
+            </GetLocation>
+          </View>
+
+          <Pressable onPress={checkPermission}>
+            <Text style={styles.text}>通知权限</Text>
+            <Text style={styles.smallText}>{JSON.stringify(notifyPermission)}</Text>
+          </Pressable>
+
+          <Pressable
+            onPress={() => {
+              navigation.navigate('LabNewest');
+            }}>
+            <Text style={styles.text}>最新帖子排序</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('LabGalley');
+            }}>
+            <Text style={styles.text}>最新帖子画廊</Text>
+          </Pressable>
+          <Pressable onPress={openSettings}>
+            <Text style={styles.text}>去设置权限页面</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  tabbar: {
-    backgroundColor: '#3f51b5',
-  },
-  tab: {
-    width: 120,
-  },
-  indicator: {
-    backgroundColor: '#ffeb3b',
-  },
-  label: {
-    fontWeight: '400',
-  },
-  headerRow: {
-    // height: HEADER_HEIGHT,
-    flexDirection: 'row',
-    backgroundColor: '#429BB8',
-  },
-  headerCol: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   text: {
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: 2,
+    marginBottom: 2,
+    color: 'white',
+    backgroundColor: 'orange',
+  },
+  smallText: {
+    textAlign: 'center',
+    fontSize: 12,
+    marginBottom: 10,
+    backgroundColor: 'yellow',
   },
 });
 
-export default CollapsibleHeaderExample;
+export default LabIndex;

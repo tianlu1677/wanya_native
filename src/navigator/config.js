@@ -1,21 +1,30 @@
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import * as RootNavigation from '@/navigator/root-navigation';
 // 首页
-import {CardStyleInterpolators, HeaderStyleInterpolators} from '@react-navigation/stack';
+import {CardStyleInterpolators} from '@react-navigation/stack';
+import RelatedAccounts from '@/pages/home/related-account-list';
 
 // Topic
 import NewTopic from '@/pages/topics/new-topic';
-import GoNewTopic from '@/pages/topics/go-new-topic';
 import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
 import AddNode from '@/pages/topics/add-node';
+import AddLink from '@/pages/topics/add-link';
 import TopicDetail from '@/pages/topics/topic-detail';
+import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
-// article
+// 文章
 import ArticleDetail from '@/pages/articles/article-detail';
 
 // 圈子
 import NodeIndex from '@/pages/nodes/node-index';
 import NodeDetail from '@/pages/nodes/node-detail';
+import CreateNodeIntro from '@/pages/nodes/create-node-intro';
+import CreateNodeInfo from '@/pages/nodes/create-node-info';
+import CreateNodeType from '@/pages/nodes/create-node-type';
+import CreateNodeResult from '@/pages/nodes/create-node-result';
 
 // 场地
 import SpaceDetail from '@/pages/space/space-detail';
@@ -23,11 +32,10 @@ import SpaceDetail from '@/pages/space/space-detail';
 // 话题
 import HashtagDetail from '@/pages/hashtags/hashtag-detail';
 
-import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
-import InviteDetail from '@/pages/mine/invite-detail';
+// Location
+import LocationDetail from '@/pages/location/location-detail';
 
 // 我的页面
-import MineDetail from '@/pages/mine/mine-detail';
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
@@ -53,6 +61,8 @@ import SearchIndex from '@/pages/search/search-index';
 
 // 实验室页面
 import LabIndex from '@/pages/labs/index';
+import LabNewest from '@/pages/labs/newest';
+import LabGalley from '@/pages/labs/galley';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabStorageIndex from '@/pages/labs/storageindex';
 
@@ -61,14 +71,16 @@ import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
 import PasswordLogin from '@/pages/sessions/password-login';
+import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+import InviteDetail from '@/pages/mine/invite-detail';
 
 // 网页显示
 import WebView from '@/pages/webview/webview';
-
 import SharePage from '@/pages/shares/share_page'; //分享
 
-// 举报
+// 投诉
 import Report from '@/pages/reports/report';
+
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
@@ -80,10 +92,17 @@ const topicRouter = [
     name: 'TopicDetail',
     component: TopicDetail,
     safeArea: false,
+    barColor: 'dark',
     options: {
       headerShown: false,
-      title: false,
-      headerTransparent: true,
+    },
+  },
+  {
+    name: 'TopicLinkDetail',
+    component: TopicLinkDetail,
+    safeArea: false,
+    options: {
+      headerShown: false,
     },
   },
   {
@@ -101,24 +120,44 @@ const topicRouter = [
     name: 'AddHashTag',
     barColor: 'dark',
     component: AddHashTag,
-    options: {title: '@话题', headerShown: false},
+    options: {
+      title: '@话题',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddMentionAccount',
     barColor: 'dark',
     component: AddMentionAccount,
-    options: {title: '提及人列表', headerShown: false},
+    options: {
+      title: '提及人列表',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddSpace',
     barColor: 'dark',
     component: AddSpace,
-    options: {title: '场地列表', headerShown: false},
+    options: {
+      title: '场地列表',
+      headerShown: false,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
   },
   {
     name: 'AddNode',
     barColor: 'dark',
     component: AddNode,
+    options: {
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    },
+  },
+  {
+    name: 'AddLink',
+    barColor: 'dark',
+    component: AddLink,
   },
 ];
 
@@ -128,7 +167,12 @@ const articleRouter = [
     component: ArticleDetail,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '文章详情', headerShown: false},
+    options: {
+      title: '',
+      // animationEnabled: true,
+      // gestureEnabled: true,
+      // cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+    },
   },
   {
     name: 'HashtagDetail',
@@ -156,6 +200,23 @@ const nodeRouter = [
     component: NodeIndex,
     barColor: 'dark',
     safeArea: false,
+    options: {
+      title: '全部圈子',
+      headerRight: ({navigation}) => (
+        <Pressable
+          onPress={() => {
+            RootNavigation.navigate('CreateNodeIntro');
+          }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#bdbdbd',
+            }}>
+            创建圈子
+          </Text>
+        </Pressable>
+      ),
+    },
   },
   {
     name: 'NodeDetail',
@@ -165,6 +226,43 @@ const nodeRouter = [
       title: '圈子详情',
       headerShown: false,
     },
+  },
+  {
+    name: 'CreateNodeIntro',
+    component: CreateNodeIntro,
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '创建圈子'},
+  },
+  {
+    name: 'CreateNodeInfo',
+    component: CreateNodeInfo,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '填写圈子资料'},
+  },
+  {
+    name: 'CreateNodeType',
+    component: CreateNodeType,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '选择圈子分类或位置'},
+  },
+  {
+    name: 'CreateNodeResult',
+    component: CreateNodeResult,
+    safeArea: false,
+    barColor: 'dark',
+  },
+];
+
+const locationRouter = [
+  {
+    name: 'LocationDetail',
+    component: LocationDetail,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '位置'},
   },
 ];
 
@@ -184,6 +282,7 @@ const accountRouter = [
   {
     name: 'FollowAccounts',
     component: FollowAccounts,
+    safeArea: false,
     barColor: 'dark',
     options: {title: '关注列表'},
   },
@@ -191,6 +290,7 @@ const accountRouter = [
     name: 'FollowerAccounts',
     barColor: 'dark',
     component: FollowerAccounts,
+    safeArea: false,
     options: {title: '粉丝列表'},
   },
   {
@@ -239,7 +339,7 @@ const commonRouter = [
     component: Report,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '举报', headerShown: true},
+    options: {title: '投诉', headerShown: true},
   },
 ];
 
@@ -247,8 +347,9 @@ const searchRouter = [
   {
     name: 'SearchIndex',
     component: SearchIndex,
+    safeArea: false,
     barColor: 'dark',
-    options: {title: '搜索'},
+    options: {title: '搜索', headerShown: false},
   },
 ];
 
@@ -285,10 +386,18 @@ export const routers = [
   ...articleRouter,
   ...spaceRouter,
   ...nodeRouter,
+  ...locationRouter,
   ...accountRouter,
   ...commonRouter,
   ...searchRouter,
   ...authRouter,
+  {
+    name: 'RelatedAccounts',
+    component: RelatedAccounts,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '相关推荐'},
+  },
   {
     name: 'InviteDetail',
     component: InviteDetail,
@@ -298,8 +407,23 @@ export const routers = [
   {
     name: 'LabIndex',
     component: LabIndex,
-    safeArea: false,
-    options: {title: '实验室主页', headerShown: false},
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '实验室主页', headerShown: true},
+  },
+  {
+    name: 'LabNewest',
+    component: LabNewest,
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '最新', headerShown: true},
+  },
+  {
+    name: 'LabGalley',
+    component: LabGalley,
+    safeArea: true,
+    barColor: 'dark',
+    options: {title: '最新', headerShown: true},
   },
   {
     name: 'LabTabIndex',
@@ -316,12 +440,6 @@ export const routers = [
     name: 'AdminPhoneLogin',
     component: AdminPhoneLogin,
     options: {title: 'AdminPhoneLogin'},
-  },
-  {
-    name: 'MineDetail',
-    component: MineDetail,
-    safeArea: false,
-    options: {title: 'MineDetail', headerShown: false},
   },
 
   {

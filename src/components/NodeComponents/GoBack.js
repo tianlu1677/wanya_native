@@ -6,12 +6,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
-import {isIphoneX, getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {SAFE_TOP} from '@/utils/navbar';
 
 export const GoBack = props => {
   const navigation = useNavigation();
   let name = props.name || 'arrow-left';
   let color = props.color || 'white';
+  const {report} = props; // 投诉信息
   const handleClick = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
@@ -21,27 +22,37 @@ export const GoBack = props => {
         routes: [{name: 'Recommend'}],
       });
       // navigation.navigate('Recommend');
-      console.log('no go');
+      // console.log('no go');
     }
   };
 
-  // console.log('getStatusBarHeight', getStatusBarHeight())
   return (
-    <Pressable
-      onPress={() => {
-        handleClick();
-      }}
-      style={{...styles.goBackWrap, top: Math.max(getStatusBarHeight(), 20)}}>
-      {/*<Text style={styles.button}>*/}
-      {/*  <Icon*/}
-      {/*    name="chevron-back-outline"*/}
-      {/*    size={28}*/}
-      {/*    color={props.color || 'white'}*/}
-      {/*    iconStyle={{marginRight: 1}}*/}
-      {/*  />*/}
-      {/*</Text>*/}
-      <IconFont name={name} color={color} size={15} />
-    </Pressable>
+    <>
+      <Pressable
+        onPress={() => {
+          handleClick();
+        }}
+        style={{...styles.goBackWrap, top: props.top || SAFE_TOP}}>
+        <IconFont
+          name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+          color={color}
+          size={15}
+        />
+      </Pressable>
+      {report && (
+        <Pressable
+          onPress={() => {
+            navigation.push('Report', {
+              report_type: report.report_type,
+              report_type_id: report.report_id,
+            });
+          }}
+          style={{...styles.report, top: SAFE_TOP}}
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+          <IconFont name="gengduo" color="#fff" size={20} />
+        </Pressable>
+      )}
+    </>
   );
 };
 
@@ -55,15 +66,25 @@ export default GoBack;
 const styles = StyleSheet.create({
   goBackWrap: {
     position: 'absolute',
-    zIndex: 100,
+    zIndex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 44,
+    height: 34,
     width: 44,
-    lineHeight: 44,
+    lineHeight: 34,
     flexDirection: 'row',
     color: 'white',
-    // backgroundColor: 'white',
+    // backgroundColor: 'red',
+  },
+
+  report: {
+    position: 'absolute',
+    right: 16,
+    height: 34,
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    zIndex: 1,
   },
 
   button: {

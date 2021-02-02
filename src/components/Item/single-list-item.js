@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Vibration} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
-import {useDispatch, useSelector} from 'react-redux';
+import {RFValue} from '@/utils/response-fontsize';
+import LocationBar from '@/components/LocationBar';
 import {createTopicAction, destroyTopicAction, deleteTopic} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getAccountBaseInfo} from '@/api/account_api';
@@ -22,10 +24,6 @@ export const Header = props => {
 
   const goAccountDetail = () => {
     navigation.push('AccountDetail', {accountId: data.account.id});
-  };
-
-  const goSpaceDetail = () => {
-    navigation.push('SpaceDetail', {spaceId: data.space.id});
   };
 
   const onStar = async () => {
@@ -48,24 +46,6 @@ export const Header = props => {
     }
     setstar(!star);
     Toast.showError(star ? '已取消收藏' : '已收藏');
-  };
-
-  const getOptions = (one, two) => {
-    const isCurrentSelf = data.account.id === currentAccount.id;
-    let options = [];
-    if (isCurrentSelf) {
-      switch (props.type) {
-        case 'topic':
-          options = ['取消', star ? '取消收藏' : '收藏', '删除'];
-          break;
-        case 'article':
-          options = ['取消', star ? '取消收藏' : '收藏'];
-          break;
-      }
-    } else {
-      options = ['取消', star ? '取消收藏' : '收藏', '举报'];
-    }
-    return options;
   };
 
   const onReportClick = () => {
@@ -114,7 +94,7 @@ export const Header = props => {
         },
         {
           id: 2,
-          label: '举报',
+          label: '投诉',
           onPress: async () => {
             navigation.push('Report', {report_type: props.type, report_type_id: data.id});
           },
@@ -130,17 +110,12 @@ export const Header = props => {
       <Avator account={data.account} size={40} />
       <View style={hstyles.content}>
         <Pressable onPress={goAccountDetail}>
-          <Text style={hstyles.nameText}>{data.account.nickname}</Text>
+          <Text style={hstyles.nameText}>{data.account?.nickname}</Text>
           <View style={hstyles.info}>
             <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-            {data.space && (
-              <Pressable
-                style={hstyles.spaceWrapper}
-                onPress={goSpaceDetail}
-                hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-                <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-                <Text style={hstyles.spaceText}>{data.space.name}</Text>
-              </Pressable>
+            <LocationBar space={data.space} location={data.location} />
+            {data.distance && data.distance > 0 && (
+              <Text style={hstyles.spaceText}>· {(data.distance / 1000).toFixed(1)}km</Text>
             )}
           </View>
         </Pressable>
@@ -151,9 +126,6 @@ export const Header = props => {
         style={{marginLeft: 'auto'}}>
         <IconFont name="gengduo" color="#bdbdbd" size={20} />
       </Pressable>
-      {/* <Text style={hstyles.joinBtn} onPress={goNodeDetail}>
-        进入圈子
-      </Text> */}
 
       <ActionSheet
         actionItems={actionItems}
@@ -169,6 +141,7 @@ export const Bottom = props => {
   const dispatch = useDispatch();
   const [praise, setPraise] = useState(props.data.praise);
   const [praiseCount, setPraiseCount] = useState(props.data.praises_count);
+
   const [an, setAn] = useState('');
 
   const onPraise = async () => {
@@ -208,7 +181,7 @@ export const Bottom = props => {
     let shareOptions = {
       title: '顽鸦',
       userName: 'gh_c2b50fe8e928',
-      webpageUrl: '',
+      webpageUrl: 'https://www.vanyah.cn',
       path: '',
       thumbImageUrl: data.wx_share_image_url,
       scene: 0,
@@ -229,7 +202,18 @@ export const Bottom = props => {
           title: data.plain_content,
           path: '/pages/topics/topic-detail?topic_id=' + data.id,
           thumbImageUrl: data.wx_share_image_url,
+          type: data.content_style,
+          topic_link: data.topic_link,
         };
+
+        if (data.content_style === 'link' && data.topic_link) {
+          shareOptions = {
+            ...shareOptions,
+            title: data.topic_link?.title || data.topic_link.raw_link,
+            thumbImageUrl: data.topic_link.cover_url,
+            webpageUrl: data.topic_link.raw_link,
+          };
+        }
         break;
       default:
         shareOptions;
@@ -239,6 +223,7 @@ export const Bottom = props => {
     const shareContent = {...shareOptions, visible: true};
     dispatch(dispatchShareItem(shareContent));
   };
+
   const zoomOut = {
     0: {
       opacity: 0,
@@ -255,28 +240,29 @@ export const Bottom = props => {
     duration: 600,
   };
 
+  const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
+
   return (
-    <View style={bstyles.botView}>
-      <Pressable style={bstyles.botCon} onPress={onPraise}>
+    <View style={[bstyles.botView, props.style]}>
+      <Pressable style={bstyles.botCon} onPress={onPraise} hitSlop={hitSlop}>
         <Animatable.View animation={an} useNativeDriver easing="ease-out" iterationCount={1}>
           <IconFont name={'like'} size={20} color={praise ? '#000' : '#bdbdbd'} />
         </Animatable.View>
-        <Animatable.Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
-          {praiseCount > 0 ? praiseCount : ''}
-        </Animatable.Text>
+        {praiseCount > 0 ? (
+          <Animatable.Text style={{...bstyles.botNum, color: praise ? '#000' : '#bdbdbd'}}>
+            {praiseCount}
+          </Animatable.Text>
+        ) : null}
       </Pressable>
-      <View style={bstyles.botCon}>
+      <View style={[bstyles.botCon, bstyles.botConComment]}>
         <IconFont name="comment" size={20} color={'#bdbdbd'} />
-        <Text style={bstyles.botNum}>{data.comments_count || ''}</Text>
+        {data.comments_count > 0 ? <Text style={bstyles.botNum}>{data.comments_count}</Text> : null}
       </View>
-      <Pressable
-        style={{marginLeft: 'auto'}}
-        onPress={() => {
-          onShare();
-        }}
-        hitSlop={{left: 10, right: 10, top: 5}}>
-        <IconFont name="zhuanfa" size={18} style={{marginLeft: 'auto'}} />
-      </Pressable>
+      {props.share ? (
+        <Pressable style={{marginLeft: 'auto'}} onPress={onShare} hitSlop={hitSlop}>
+          <IconFont name="zhuanfa" size={18} />
+        </Pressable>
+      ) : null}
     </View>
   );
 };
@@ -289,7 +275,7 @@ export const PlainContent = props => {
     navigation.push('HashtagDetail', {hashtag: name.replace('#', '')});
   };
 
-  const AccountDetail = async nickname => {
+  const goAccountDetail = async nickname => {
     const res = await getAccountBaseInfo({name: nickname.replace('@', '')});
     navigation.push('AccountDetail', {accountId: res.data.account.id});
   };
@@ -306,7 +292,7 @@ export const PlainContent = props => {
                 </Text>
               )}
               {v.is_mention && (
-                <Text style={cstyles.hashtagText} onPress={() => AccountDetail(v.content)}>
+                <Text style={cstyles.hashtagText} onPress={() => goAccountDetail(v.content)}>
                   {v.content}&nbsp;
                 </Text>
               )}
@@ -334,6 +320,7 @@ const hstyles = StyleSheet.create({
   nameText: {
     fontSize: 12,
     lineHeight: 20,
+    color: '#1F1F1F',
   },
   info: {
     flexDirection: 'row',
@@ -355,17 +342,6 @@ const hstyles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '400',
   },
-  joinBtn: {
-    width: 75,
-    height: 34,
-    lineHeight: 34,
-    backgroundColor: '#fafafa',
-    borderRadius: 17,
-    fontSize: 11,
-    overflow: 'hidden',
-    marginLeft: 'auto',
-    textAlign: 'center',
-  },
 });
 
 const bstyles = StyleSheet.create({
@@ -376,13 +352,15 @@ const bstyles = StyleSheet.create({
     alignItems: 'center',
   },
   botCon: {
-    width: 60,
+    marginRight: 35,
     flexDirection: 'row',
     alignItems: 'center',
   },
+  botConComment: {
+    marginRight: 0,
+  },
   botNum: {
     marginLeft: 5,
-    marginRight: 20,
     color: '#bdbdbd',
     fontSize: 12,
   },
@@ -398,5 +376,25 @@ const cstyles = StyleSheet.create({
   hashtagText: {
     color: '#ff8d00',
     marginRight: 3,
+  },
+});
+
+export const NoActionBottom = props => {
+  const {node_name, praises_count, comments_count} = props.data;
+  return (
+    <Text style={nbstyles.infotext}>
+      {node_name ? `${node_name}` : ''}
+      {node_name && praises_count ? ' · ' : ''}
+      {praises_count ? `赞${praises_count}` : ''}
+      {(node_name || praises_count) && comments_count ? ' · ' : ''}
+      {comments_count ? `评论${comments_count}` : ''}
+    </Text>
+  );
+};
+
+const nbstyles = StyleSheet.create({
+  infotext: {
+    color: '#BDBDBD',
+    fontSize: 11,
   },
 });

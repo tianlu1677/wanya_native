@@ -17,6 +17,7 @@ const NotifyContent = ({
     handleClickRight && handleClickRight();
   };
 
+  // console.log('item', item)
   return (
     <CardView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
       <Avator size={40} account={account} />
@@ -56,7 +57,7 @@ const NotifyContent = ({
               />
             </View>
           )}
-          {item.content && item.content !== 'nothing' && !item.image_url && (
+          {!!item.content && item.content !== 'nothing' && !item.image_url && (
             <RightText numberOfLines={3}>{item.content}</RightText>
           )}
         </RightWrapView>

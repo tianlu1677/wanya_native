@@ -1,5 +1,6 @@
 import PushNotification from 'react-native-push-notification';
 import { Platform } from 'react-native';
+import Helper from '@/utils/helper';
 class NotificationHandler {
   onNotification(notification) {
     console.log('NotificationHandler:', notification);
@@ -13,14 +14,15 @@ class NotificationHandler {
     console.log('NotificationHandler:', token);
 
     if (typeof this._onRegister === 'function') {
+      Helper.setData('device_token', token.token)
       this._onRegister(token);
     }
   }
 
   onAction(notification) {
     console.log ('Notification action received:');
-    console.log(notification.action);
-    console.log(notification);
+    // console.log(notification.action);
+    // console.log(notification);
 
     if(notification.action === 'Yes') {
       PushNotification.invokeApp(notification);

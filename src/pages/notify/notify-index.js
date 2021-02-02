@@ -19,7 +19,7 @@ const NotifyIndex = ({navigation}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
   const dispatch = useDispatch();
 
-  const goPageMethod = (type = '', event) => {
+  const goPageMethod = async (type = '', event) => {
     if (!currentAccount.id) {
       return;
     }
@@ -53,7 +53,7 @@ const NotifyIndex = ({navigation}) => {
         navigation.navigate('SystemNotify');
         break;
       case 'mention_account_notice':
-        syncAccountInfo({
+        await syncAccountInfo({
           id: currentAccount.id,
           profile_attributes: {unread_mentions_notifies_count: 0},
         });
@@ -84,7 +84,7 @@ const NotifyIndex = ({navigation}) => {
   const unread_comments_notifies_count = currentAccount.unread_comments_notifies_count;
   const unread_follow_messages_count = currentAccount.unread_follow_messages_count;
   const unread_system_messages_count = currentAccount.unread_system_messages_count;
-  const unread_mentions_notifies_count = currentAccount.unread_system_messages_count;
+  const unread_mentions_notifies_count = currentAccount.unread_mentions_notifies_count;
 
   return (
     <View>

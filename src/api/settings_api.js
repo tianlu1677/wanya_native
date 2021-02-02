@@ -38,13 +38,25 @@ export async function prosettings(data = {}) {
 }
 
 // 记录系统信息b
-export async function uploadSystemInfo(data = {system_detail: ''}) {
+export async function uploadSystemInfo(system_detail = '') {
+
   const res = await request({
     url: '/api/v1/records/record_system_info',
     method: 'POST',
     data: {
-      account_system_info: data,
+      account_system_info: {
+        system_detail: system_detail.toString()
+      },
     },
+  });
+  return res.data;
+}
+
+export async function recordDeviceInfo(params) {
+  const res = await request({
+    url: '/api/v1/records/record_device_info',
+    method: 'POST',
+    data: params
   });
   return res.data;
 }

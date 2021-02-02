@@ -111,7 +111,7 @@ export const followItem = async (params = {}) => {
     method: 'POST',
     data: params,
   });
-  return res;
+  return res.data;
 };
 
 //取消关注任意东西
@@ -121,7 +121,7 @@ export const unfollowItem = async (params = {}) => {
     method: 'POST',
     data: params,
   });
-  return res;
+  return res.data;
 };
 
 // 首页关注单排列表

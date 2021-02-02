@@ -1,30 +1,29 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, ScrllView, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
-import PropTypes from 'prop-types';
+import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import PropTypes from 'prop-types';
+import {throttle} from 'lodash';
 import IconFont from '@/iconfont';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
+import {PlainContent} from '@/components/Item/single-list-item';
+import FastImg from '@/components/FastImg';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getRecommendTopPosts} from '@/api/home_api';
-import {PlainContent} from '@/components/Item/single-list-item';
-import FastImg from '@/components/FastImg';
-import VideoPlayImg from '@/assets/images/video-play.png';
-import {RFValue} from '@/utils/response-fontsize';
-import {debounce, throttle} from 'lodash';
 
-const topImage = 'http://file.meirixinxue.com/assets/2020/13cc2946-2a92-4b75-a779-a20a485b1a57.png';
+import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
 
-// const labelList = {'course': '课程', excellent: '精选', is_top: '置顶'}
-const width = Dimensions.get('window').width;
+const {width} = Dimensions.get('window');
 const halfWidth = (width - 15) / 2; // 屏幕去掉两边后（5*2 中间5）的宽度
+
 const SingleItem = props => {
   const navigation = useNavigation();
   const {data} = props;
+
   const [praiseForm, setPraiseForm] = useState({
     praise: data.praise,
     praises_count: data.praises_count,
@@ -42,8 +41,6 @@ const SingleItem = props => {
   };
 
   const onPraise = async () => {
-    // console.log('onPraise', props.data)
-
     switch (props.item_type) {
       case 'Article':
         if (praiseForm.praise) {
@@ -61,25 +58,12 @@ const SingleItem = props => {
         break;
     }
     const praiseCount = praiseForm.praises_count + (praiseForm.praise === true ? -1 : 1);
-    const params = {
-      praise: !praiseForm.praise,
-      praises_count: praiseCount,
-    };
+    const params = {praise: !praiseForm.praise, praises_count: praiseCount};
     setPraiseForm(params);
   };
 
-  // useEffect(() => {
-  //   if (data.single_cover.height) {
-  //     const h = data.single_cover
-  //       ? (data.single_cover.height * halfWidth) / data.single_cover.width
-  //       : 500;
-  //     setheight(h);
-  //   }
-  // });
-
-  // console.log('double list', data.id)
   return (
-    <Pressable key={data.id} onPress={() => onGoDetail(data)}>
+    <Pressable key={data.id} onPress={() => onGoDetail(data)} style={{backgroundColor: '#fff'}}>
       {data.single_cover.cover_url && (
         <FastImageGif
           source={{uri: data.single_cover.cover_url}}
@@ -91,7 +75,6 @@ const SingleItem = props => {
           }}
         />
       )}
-      {/*<Text>{data.single_cover.cover_url}</Text>*/}
       {data.has_video && (
         <FastImg resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
       )}
@@ -112,14 +95,12 @@ const SingleItem = props => {
       {!props.isTop && data.excellent && (
         <FastImg
           source={ExcellentImage}
-          style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
+          style={styles.excellentImage}
           resizeMode={'contain'}
           resizeMethod={'resize'}
         />
       )}
 
-      {/* {props.isTop && <IsTopIcon />} */}
-      {/* {!props.isTop && data.excellent && <Text style={styles.excellentLabel}>精选</Text>} */}
       <View style={styles.singleBottom}>
         <Avator account={data.account} size={16} />
         <Pressable
@@ -146,29 +127,16 @@ const SingleItem = props => {
   );
 };
 
-// const DoubleSingle = props => {
-//   const {data} = props;
-//
-//   return (
-//     <View style={[styles.singleWrap, {marginRight: props.index === 0 ? 0 : 5}]}>
-//       {data.map((v, index) => {
-//         return <SingleItem key={v.id} data={v.item} isTop={v.is_top} item_type={v.item_type} />;
-//       })}
-//     </View>
-//   );
-// };
-
 const DoubleList = props => {
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const compare = (pre, next) => {
-    // console.log(pre, next)
     return true;
   };
+
   const Child = React.memo(({item}) => {
-    // console.log('child item', item)
     return (
       <SingleItem
         data={item.item}
@@ -198,21 +166,13 @@ const DoubleList = props => {
     [listData]
   );
 
-  // const renderItem = ({item, index}) => {
-  //   const leftPostList = listData.filter((v, i) => i % 2 === 0);
-  //   const rightPostList = listData.filter((v, i) => i % 2 !== 0);
-  //   return (
-  //     <DoubleSingle key={index} data={index === 0 ? leftPostList : rightPostList} index={index} />
-  //   );
-  // };
-
   const loadData = async (page = 1) => {
     if (page === 1) {
       setLoading(true);
     }
     const {api, params} = props.request;
     const res = await api({...params, page});
-    const data = res.data.posts;
+    const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
     setHeaders(res.headers);
@@ -220,7 +180,6 @@ const DoubleList = props => {
 
   //首页推荐
   const indexLoadData = async (page = 1) => {
-    console.log('page', page);
     if (page === 1) {
       setLoading(true);
     }
@@ -239,7 +198,6 @@ const DoubleList = props => {
   };
 
   const onRefresh = (page = 1) => {
-    // console.log('props', props)
     if (props.type === 'recommend' && (page === 1 || !page)) {
       indexLoadData(pagination(headers).nextPage);
     } else {
@@ -248,16 +206,11 @@ const DoubleList = props => {
   };
 
   useEffect(() => {
-    const loadFirstData = async () => {
-      if (props.type === 'recommend') {
-        await indexLoadData(1);
-      } else {
-        loadData();
-      }
-    };
-    loadFirstData();
-
-    return () => {};
+    if (props.type === 'recommend') {
+      indexLoadData(1);
+    } else {
+      loadData();
+    }
   }, []);
 
   return (
@@ -275,6 +228,7 @@ const DoubleList = props => {
         progressViewOffset: 0,
         ...props.settings,
       }}
+      {...props}
     />
   );
 };
@@ -328,67 +282,12 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     fontSize: 10,
   },
-  hashtagText: {
-    color: '#ff8d00',
-    marginRight: 3,
-  },
-  imageLabel: {
-    width: RFValue(33),
-    height: RFValue(16),
-    position: 'absolute',
-    left: 8,
-    top: 8,
-  },
-  excellentLabel: {
+  excellentImage: {
     width: 30,
-    height: 16,
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 10,
-    lineHeight: 16,
-    backgroundColor: '#FF2242',
-    borderRadius: 2,
-    overflow: 'hidden',
-    color: 'white',
+    height: 17,
     position: 'absolute',
-    left: 8,
     top: 8,
-  },
-
-  topText: {
-    width: 30,
-    height: 16,
-    // flex: 1,
-    textAlign: 'center',
-    lineHeight: 16,
-    backgroundColor: '#FFFF00',
-    borderRadius: 2,
-    overflow: 'hidden',
-    color: 'black',
-    fontSize: 10,
-    alignItems: 'center',
-  },
-  //  sanjia
-  isTopLabel: {
-    position: 'absolute',
     left: 8,
-    top: 8,
-  },
-  sanjia: {
-    position: 'absolute',
-    right: -15,
-    top: 0,
-    width: 0,
-    height: 0,
-    borderStyle: 'solid',
-    borderColor: 'transparent',
-    borderTopWidth: 8,
-    borderLeftWidth: 8,
-    borderRightWidth: 8,
-    borderBottomWidth: 8,
-    borderLeftColor: '#FFFF00', //右箭头颜色
-    borderBottomColor: 'transparent', //上箭头颜色
-    borderRightColor: 'transparent', //左箭头颜色
   },
 });
 

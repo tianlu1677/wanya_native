@@ -1,16 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Keyboard, TouchableWithoutFeedback} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {getAccountFollowings} from '@/api/account_api';
 import {searchApi} from '@/api/search_api';
-import {MentionsAccountList} from '@/components/List/account-list';
+import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
+import {RFValue} from '@/utils/response-fontsize';
+import * as action from "@/redux/constants"
 
-const MentionAccounts = ({navigation}) => {
+const MentionAccounts = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const dispatch = useDispatch();
   const [request, setRequest] = useState(null);
   const [searchKey, setSearchKey] = useState(null);
+  const comment = useSelector(state => state.home.commentTopic);
+
+  const goBack = () => {
+    navigation.goBack();
+    dispatch({ type: action.SAVE_COMMENT_TOPIC, value: {...comment, content: comment.content}});
+  };
 
   useEffect(() => {
     if (searchKey) {
@@ -35,15 +44,27 @@ const MentionAccounts = ({navigation}) => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          style={styles.search}
+          inputStyle={{ borderRadius: RFValue(19), lineHeight: RFValue(36),  backgroundColor: '#F2F3F5'}}
+          height={RFValue(36)}
+          cancelWidth={RFValue(66)}
+          placeholderTextColor="#7F7F81"
           placeholder="搜索更多顽友"
           onChangeText={text => setSearchKey(text)}
-          onCancel={() => navigation.goBack()}
+          onCancel={() => goBack()}
         />
+
         <View style={pstyles.proWrapper}>
           <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
         </View>
-        {request && <MentionsAccountList request={request} enableRefresh={false} />}
+
+        {request && (
+          <AccountsList
+            request={request}
+            enableRefresh={false}
+            type={route.params.type}
+            itemType="normal"
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -52,9 +73,6 @@ const MentionAccounts = ({navigation}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-  },
-  search: {
-    paddingLeft: 14,
   },
 });
 

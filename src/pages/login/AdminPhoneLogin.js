@@ -35,7 +35,6 @@ class AdminPhoneLogin extends Component {
         this.props.dispatchSetAuthToken(res.token);
         this.props.dispatchCurrentAccount();
 
-
         this.props.navigation.reset({
           index: 0,
           routes: [{name: 'Recommend'}],

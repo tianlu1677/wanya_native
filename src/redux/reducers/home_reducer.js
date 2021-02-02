@@ -1,6 +1,7 @@
 import * as constants from '../constants';
 
 const defaultState = {
+  channels: [],
   savetopic: {},
   previewImageData: {
     images: [],
@@ -14,25 +15,30 @@ const defaultState = {
     thumbImageUrl: '',
     path: '',
   },
-  commentTopic: {},
-  uploadProgress: 100,
-  location: {},
-  nodes: [],
-  followNodes: [],
+  commentTopic: {content: ''},
+  location: {chooseCity: ''},
+  categoryList: [],
+  shareStatus: true,
+  shareNearbyStatus: true,
 };
 
 export const homeReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case constants.SAVE_CHANNELS:
+      return {
+        ...state,
+        channels: action.value,
+      };
     case constants.SAVE_NEW_TOPIC:
       return {
         ...state,
         savetopic: action.value,
       };
     case constants.PREVIEW_IMAGES:
-      const imageData = formatImagePreviewUrl(action.previewImageData, action.origin)
+      const imageData = formatImagePreviewUrl(action.previewImageData, action.origin);
       return {
         ...state,
-        previewImageData: imageData
+        previewImageData: imageData,
       };
     case constants.ShareView:
       return {
@@ -44,30 +50,25 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         commentTopic: action.value,
       };
-    case constants.UPLOAD_PROGRESS:
-      return {
-        ...state,
-        uploadProgress: action.value,
-      };
-    case constants.CHOOSE_CITY:
-      return {
-        ...state,
-        chooseCity: action.value,
-      };
     case constants.GET_LOCATION:
       return {
         ...state,
         location: action.value,
       };
-    case constants.UPDATE_NODES:
+    case constants.UPDATE_CATEGORY_LIST:
       return {
         ...state,
-        nodes: action.value,
+        categoryList: action.categories,
       };
-    case constants.UPDATE_FOLLOW_NODES:
+    case constants.CHANGE_SHARE_STATUS:
       return {
         ...state,
-        followNodes: action.value,
+        shareStatus: action.value,
+      };
+    case constants.CHANGE_SHARE_NEARBY_STATUS:
+      return {
+        ...state,
+        shareNearbyStatus: action.value,
       };
     default:
       return state;
@@ -79,7 +80,6 @@ const formatImagePreviewUrl = (previewImageData, origin = false) => {
     return previewImageData;
   }
 
-  console.log('imageData', previewImageData)
   const images = previewImageData.images.map(data => {
     return {
       ...data,
@@ -88,6 +88,6 @@ const formatImagePreviewUrl = (previewImageData, origin = false) => {
   });
   return {
     ...previewImageData,
-    images: images
-  }
+    images: images,
+  };
 };

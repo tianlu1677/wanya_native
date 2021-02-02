@@ -1,15 +1,14 @@
 import React, {useEffect, useRef} from 'react';
-import {Animated, Dimensions, StyleSheet, View, Text} from 'react-native';
+import {Animated, Platform, StatusBar, Dimensions, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
-import {NAVIGATION_BAR_HEIGHT} from '@/utils/navbar';
+import {NAV_BAR_HEIGHT, IsIos, UNSAFE_TOP} from '@/utils/navbar';
 
 const tabBarHeight = 45; // tabbar middle高度
-const titleHeight = NAVIGATION_BAR_HEIGHT; // 标题高度
+const titleHeight = IsIos ? NAV_BAR_HEIGHT + UNSAFE_TOP : NAV_BAR_HEIGHT; // 标题高度
 
 const CollapsibleHeader = props => {
   const {tabData, currentKey, headerHeight} = props;
-  // console.log(headerHeight);
 
   const index = tabData.findIndex(v => v.key === currentKey);
   const navigationState = {
@@ -23,11 +22,17 @@ const CollapsibleHeader = props => {
   const listRefArr = useRef([]);
   const listOffset = useRef({});
   const isListGliding = useRef(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current // 透明度
+  const fadeAnim = useRef(new Animated.Value(0)).current; // 透明度
 
   useEffect(() => {
     scrollY.addListener(({value}) => {
       listOffset.current[currentKey] = value;
+      if(value > 80) {
+        // StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
+      } else {
+        // StatusBar.setBackgroundColor('black');
+      }
+      // console.log('x', value)
     });
     return () => {
       scrollY.removeAllListeners();
@@ -143,7 +148,7 @@ const CollapsibleHeader = props => {
       position: 'absolute',
       transform: [{translateY: y}],
       width: '100%',
-      backgroundColor: 'white'
+      backgroundColor: 'white',
     };
 
     return (
@@ -163,6 +168,8 @@ const CollapsibleHeader = props => {
 
   const renderTabView = () => {
     const onIndexChange = i => {
+      // console.log('change...')
+      // StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
       const key = tabData[i].key;
       props.onKeyChange(key);
     };
@@ -205,7 +212,6 @@ const CollapsibleHeader = props => {
       extrapolate: 'clamp',
     });
 
-
     // console.log('opacity', titleHeight);
     // console.log('opacity', opacity);
     return (
@@ -230,12 +236,13 @@ const localStyles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    zIndex: 2,
+    zIndex: 1,
   },
   header: {
     width: '100%',
     position: 'absolute',
     top: 0,
+    backgroundColor: '#000'
   },
 });
 

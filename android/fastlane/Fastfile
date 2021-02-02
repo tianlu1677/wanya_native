@@ -1,0 +1,41 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    gradle(task: 'assemble', build_type: 'Release')
+    apk_path = "#{Dir.pwd.gsub('fastlane', '')}app/build/outputs/apk/release/app-release.apk"
+    puts "url => #{apk_path}"
+    fir_cli api_token: "f684f86f55c235e73a1dbe75a7ce365d", specify_file_path: apk_path
+  end
+
+  desc "Deploy a new version to the production fir"
+  lane :deploy do
+    token = "c683bb22bd659a43cd3254fa6400d666"
+    #gradle(task: 'assemble', build_type: 'Release')
+    apk_path = "#{Dir.pwd.gsub('fastlane', '')}app/build/outputs/apk/release/app-release.apk"
+    puts "url => #{apk_path}"
+    fir_cli api_token: token, specify_file_path: apk_path
+  end
+end

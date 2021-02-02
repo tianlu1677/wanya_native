@@ -51,7 +51,9 @@ const ImagePreview = () => {
       style={{flex: 1, margin: 0}}
       // deviceHeight={1000}
       // transparent={true}
+      onRequestClose={() => onOpen(false)}
       onBackdropPress={() => onOpen(false)}
+      statusBarTranslucent
       // onSwipeComplete={() => onOpen(false)}
       useNativeDriver
       propagateSwipe

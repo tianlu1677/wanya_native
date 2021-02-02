@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
-import {AccountList} from '@/components/List/account-list';
+import AccountsList from '@/components/List/accounts-list';
 import {getAccountFollowers} from '@/api/account_api';
 
 const FollowerAccounts = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
-  return <AccountList request={{api: getAccountFollowers, params: {id: accountId}}} />;
+
+  return (
+    <AccountsList
+      request={{api: getAccountFollowers, params: {id: accountId}}}
+      itemType="normal"
+      enableRefresh={false}
+    />
+  );
 };
 
 export default FollowerAccounts;

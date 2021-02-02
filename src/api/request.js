@@ -4,16 +4,27 @@ import qs from 'querystring';
 import Helper from '../utils/helper';
 import Toast from '@/components/Toast';
 import * as RootNavigation from '@/navigator/root-navigation';
-import {BaseApiUrl} from '@/utils/config';
+import {BaseApiUrl, WANYA_VERSION} from '@/utils/config';
+import DeviceInfo from 'react-native-device-info';
 
-const VERSION = '1.0.0';
+const deviceId = DeviceInfo.getSystemVersion();
+const systemName = DeviceInfo.getSystemName();
+
+const deviceDefaultInfo = {
+  deviceInfo: {
+    deviceId: deviceId,
+    systemName: systemName,
+    Version: WANYA_VERSION,
+  },
+};
 
 axios.defaults.baseURL = `${BaseApiUrl}`;
+axios.defaults.timeout = 20000;
 
 // Add a request interceptor
 axios.interceptors.request.use(
   async function (config) {
-    config.headers.common.version = VERSION;
+    config.headers.common.version = WANYA_VERSION;
     // let token = await Helper.getData('auth_token');
     // config.headers.common.Token = token
     return config;
@@ -45,8 +56,12 @@ axios.interceptors.response.use(
         Toast.showError(Object.values(error.response.data)[0]);
         break;
       case 400:
-        console.log('error', error);
-        break;
+        // debugger
+        console.log('error', error.response.data.error);
+        if (error.response.data && error.response.data.error) {
+          Toast.showError(error.response.data.error);
+        }
+        return;
       case 401:
         Toast.showError('请重新登录');
         Helper.clearAllData();
@@ -77,7 +92,7 @@ export default async function requestHttp(options, url = null) {
   if (options.method === 'GET') {
     params = {...options.data, ...options.params};
   } else {
-    data = options.data;
+    data = {...options.data, ...deviceDefaultInfo};
   }
   let contentType = 'application/json';
   contentType = options.contentType || contentType;

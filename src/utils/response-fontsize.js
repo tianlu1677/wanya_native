@@ -13,8 +13,8 @@ export function RFPercentage(percent) {
   return Math.round(heightPercent);
 }
 
-// guideline height for standard 5" device screen is 680
-export function RFValue(fontSize, standardScreenHeight = 680) {
+// guideline height for standard 5" device screen is 680  667 = 1334/2
+export function RFValue(fontSize, standardScreenHeight = 667) {
   const heightPercent = (fontSize * deviceHeight) / standardScreenHeight;
   return Math.round(heightPercent);
 }

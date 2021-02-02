@@ -1,5 +1,6 @@
-import {View, Text, Image} from 'react-native';
+import {Text} from 'react-native';
 import styled from 'styled-components/native';
+import {RFValue} from '@/utils/response-fontsize';
 
 export const BaseButton = {
   join: styled(Text)`
@@ -60,22 +61,67 @@ export const ProWrapper = {
     height: 40,
     lineHeight: 40,
   },
-  proCity: {
+};
+
+// list为空
+export const ListEmpty = {
+  emptyWrap: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  emptyTextWrap: {
+    flexDirection: 'column',
+    marginTop: RFValue(110),
+  },
+  emptyText: {
+    lineHeight: 23,
+    fontSize: 14,
+    textAlign: 'center',
+    color: '#BDBDBD',
+  },
+  moreNode: {
+    width: 243,
+    height: RFValue(45),
+    lineHeight: RFValue(45),
+    backgroundColor: '#000',
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginTop: RFValue(20),
+    color: '#fff',
+    textAlign: 'center',
+  },
+};
+
+// 首页分享
+export const ShareWrapper = {
+  followShareWrap: {
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    backgroundColor: '#FAFAFA',
+  },
+  followShare: {
+    height: RFValue(75),
+    backgroundColor: '#F2F3F5',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 14,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  followShareImage: {
+    width: 50,
+    height: 47,
+    marginRight: 16,
+  },
+  shareTitle: {
+    fontWeight: '300',
+  },
+  shareText: {
+    fontSize: 11,
+    color: '#BDBDBD',
+    marginTop: 7,
+  },
+  deleteIcon: {
     marginLeft: 'auto',
-  },
-  proAddressIcon: {
-    marginRight: 6,
-  },
-  proDownIcon: {
-    marginLeft: 6,
-    marginTop: 3,
-  },
-  proCityText: {
-    fontSize: 12,
-    height: 40,
-    lineHeight: 40,
   },
 };

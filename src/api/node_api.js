@@ -7,7 +7,7 @@ export const getNodeIndex = async (params = {}) => {
     method: 'GET',
     params,
   });
-  return res.data.nodes;
+  return res;
 };
 
 // 圈子详情
@@ -36,7 +36,7 @@ export const getFollowNodeIndex = async params => {
     method: 'GET',
     data: params,
   });
-  return res.data.nodes;
+  return res;
 };
 
 // 圈子加入用户
@@ -45,6 +45,64 @@ export const getRecentAccounts = async params => {
     url: `/api/v1/nodes/${params.id}/recent_accounts`,
     method: 'GET',
     params,
+  });
+  return res;
+};
+
+// 审核圈子列表
+export const getCheckNodes = async () => {
+  const res = await request({
+    url: '/api/v1/check_nodes',
+    method: 'GET',
+  });
+  return res;
+};
+
+// 审核圈子
+export const createCheckNodes = async params => {
+  const res = await request({
+    url: '/api/v1/check_nodes',
+    method: 'POST',
+    data: params,
+  });
+  return res.data;
+};
+
+// 请求是否符合条件
+export const submitCheckNodes = async id => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}/submit_audit`,
+    method: 'POST',
+    data: {},
+  });
+  return res;
+};
+
+// 检测是否符合
+export const checkCheckNodes = async id => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}/check`,
+    method: 'POST',
+    data: {},
+  });
+  return res;
+};
+
+//修改审核圈子
+export const editCheckNodes = async (params, id) => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}`,
+    method: 'PUT',
+    data: params,
+  });
+  return res.data;
+};
+
+//审核圈子详情
+export const getCheckNodesDetail = async id => {
+  const res = await request({
+    url: `/api/v1/check_nodes/${id}`,
+    method: 'GET',
   });
   return res;
 };

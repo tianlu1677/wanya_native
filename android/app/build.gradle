@@ -78,7 +78,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+    enableHermes: true,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -127,14 +127,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+     }
 
     defaultConfig {
-        applicationId "com.wanya_native"
+        applicationId "com.vanyah.androidnative"
         vectorDrawables.useSupportLibrary = true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.13"
     }
     splits {
         abi {
@@ -151,20 +157,29 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+
+        release {
+            storeFile file('vanyah.keystore')
+            storePassword 'vanyah'
+            keyAlias 'vanyah'
+            keyPassword 'vanyah'
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
             buildConfigField "String", "CodePushDeploymentKey", '""'
         }
-//        release {
-//            // Caution! In production, you need to generate your own keystore file.
-//            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-//            buildConfigField "String", "CodePushDeploymentKey", '""'
-//            signingConfig signingConfigs.release
-//            minifyEnabled enableProguardInReleaseBuilds
-//            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-//        }
+
+
+       release {
+           // Caution! In production, you need to generate your own keystore file.
+           // see https://facebook.github.io/react-native/docs/signed-apk-android.
+           buildConfigField "String", "CodePushDeploymentKey", '""'
+           signingConfig signingConfigs.release
+           minifyEnabled enableProguardInReleaseBuilds
+           proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+       }
 //        // 对应Staging环境
 //        releaseStaging {
 //            // 从 release 拷贝配置，只修改了 pushKey
@@ -194,8 +209,24 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+    implementation "com.umeng.umsdk:analytics:8.1.3"
+
+    implementation 'com.umeng.umsdk:xiaomi-push:3.7.0'
+    implementation 'com.umeng.umsdk:xiaomi-umengaccs:1.1.4'
+
+    implementation 'com.umeng.umsdk:huawei-basetb:2.6.3.306'
+    implementation 'com.umeng.umsdk:huawei-pushtb:2.6.3.306'
+    implementation 'com.umeng.umsdk:huawei-umengaccs:1.2.4'
+
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation project(':react-native-code-push')
+    implementation project(':lottie-react-native')
+
+    compile project(':react-native-video')
+    implementation "androidx.appcompat:appcompat:1.0.0"
+
+    compile project(':push')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

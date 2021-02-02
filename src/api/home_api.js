@@ -1,5 +1,23 @@
 import request from './request';
 
+// 首页频道信息流
+export const getChannels = async () => {
+  const res = await request({
+    url: '/api/v1/channels',
+    method: 'GET',
+  });
+  return res;
+};
+
+export const getChannelPosts = async (params = {}) => {
+  const res = await request({
+    url: '/api/v1/recommend/channel_posts',
+    method: 'GET',
+    params,
+  });
+  return res;
+};
+
 // 推荐帖子
 export const getRecommendPosts = async (params = {}) => {
   const res = await request({
@@ -14,6 +32,17 @@ export const getRecommendPosts = async (params = {}) => {
 export const getFollowedPosts = async (params = {}) => {
   const res = request({
     url: '/api/v1/recommend/followed_posts',
+    method: 'GET',
+    params: params,
+  });
+  return res;
+};
+
+// 附近帖子
+// 会在最外层有一个距离 ( distance )如果 distance = -1 不显示
+export const getNearbyPosts = async (params = {}) => {
+  const res = request({
+    url: '/api/v1/recommend/nearby_posts',
     method: 'GET',
     params: params,
   });

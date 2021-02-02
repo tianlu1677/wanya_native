@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
   },
   smallContent: {
     fontSize: 9,
+    height: 10,
+    lineHeight: 10,
     color: '#ffffff',
-    textAlign: 'right',
-    marginLeft: 0,
   },
 
   middleWrap: {

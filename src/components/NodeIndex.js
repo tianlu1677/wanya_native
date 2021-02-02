@@ -1,24 +1,17 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {dispathUpdateNodes} from '@/redux/actions';
-import {getCategoryList} from '@/api/category_api';
+import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import NodeItem from '@/components/Item/node-item';
 
 const NodeIndex = ({type}) => {
   const dispatch = useDispatch();
   const scrollRef = useRef(null);
-  const nodes = useSelector(state => state.home.nodes);
-
-  const [categories, setCategories] = useState(null);
+  const {categoryList} = useSelector(state => state.home);
+  const {nodes} = useSelector(state => state.node);
   const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(0);
-
-  const loadCategoryData = async () => {
-    const category = await getCategoryList();
-    setCategories(category);
-  };
 
   const setLayout = (layout, index) => {
     layoutList[index] = layout;
@@ -32,14 +25,13 @@ const NodeIndex = ({type}) => {
   };
 
   useEffect(() => {
-    loadCategoryData();
-    dispatch(dispathUpdateNodes());
+    dispatch(nodeAction.dispatchUpdateNodes());
   }, []);
 
-  return categories && nodes ? (
+  return nodes.length > 0 ? (
     <View style={styles.wrapper}>
       <View style={styles.cateWrap}>
-        {categories.map((categorie, index) => (
+        {categoryList.map((categorie, index) => (
           <Pressable
             key={index}
             onPress={() => onChange(index)}
@@ -50,7 +42,7 @@ const NodeIndex = ({type}) => {
         ))}
       </View>
       <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
-        {categories.map((categorie, index) => (
+        {categoryList.map((categorie, index) => (
           <View
             style={styles.nodeContent}
             key={categorie.id}
@@ -75,7 +67,7 @@ const NodeIndex = ({type}) => {
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'row',

@@ -1,5 +1,14 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
+import {
+  SafeAreaView,
+  StatusBar,
+  Linking,
+  StyleSheet,
+  View,
+  TextInput,
+  Pressable,
+  Text,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
@@ -10,6 +19,7 @@ import Toast from '@/components/Toast';
 import CodePush from 'react-native-code-push';
 import checkHotUpdate from '@/utils/codepush';
 import {BaseApiUrl} from '@/utils/config';
+import {IsIos} from '@/utils/navbar';
 // import ListItem from '@/components/ListItem';
 
 const Settings = ({navigation, route}) => {
@@ -55,14 +65,14 @@ const Settings = ({navigation, route}) => {
 
         break;
       case 'checkupdate':
-        // Toast.showError('正在检测更新，请稍等')
-        // CodePush.sync({
-        //   updateDialog: true,
-        //   installMode: CodePush.InstallMode.IMMEDIATE
-        // });
-
-        // CodePush.disallowRestart(); // 禁止重启
         checkHotUpdate(CodePush); // 开始检查更新
+        break;
+      case 'goFir':
+        let url = 'http://app.firim.cn/vanyah';
+        if (!IsIos) {
+          url = 'http://app.firim.cn/vanyah111';
+        }
+        Linking.openURL(url);
         break;
       case 'logout':
         // console.log('logout');
@@ -138,14 +148,26 @@ const Settings = ({navigation, route}) => {
         </ItemView>
 
         {currentAccount.role === 'admin' && (
-          <ItemView
-            style={[styles.bottomBorder1px, styles.nestLine]}
-            onPress={() => {
-              goPages('checkupdate');
-            }}>
-            <ItemTitle>检测更新</ItemTitle>
-            <ForwardRight />
-          </ItemView>
+          <>
+            {IsIos && (
+              <ItemView
+                style={[styles.bottomBorder1px, styles.nestLine]}
+                onPress={() => {
+                  goPages('checkupdate');
+                }}>
+                <ItemTitle>检测更新</ItemTitle>
+                <ForwardRight />
+              </ItemView>
+            )}
+            <ItemView
+              style={[styles.bottomBorder1px, styles.nestLine]}
+              onPress={() => {
+                goPages('goFir');
+              }}>
+              <ItemTitle>Fir更新</ItemTitle>
+              <ForwardRight />
+            </ItemView>
+          </>
         )}
         {currentAccount.role === 'admin' && (
           <ItemView

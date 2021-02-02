@@ -31,7 +31,6 @@ export const destroyArticleAction = async params => {
 
 //文章列表
 export const getArticleList = async params => {
-  console.log(`/api/v1/articles?${params.queryUrl}`);
   const res = await request({
     url: `/api/v1/articles?${params.queryUrl}`,
     method: 'GET',

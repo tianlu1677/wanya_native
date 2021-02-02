@@ -1,9 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {BlurView} from '@react-native-community/blur';
 import Loading from '@/components/Loading';
-import TabViewList from '@/components/TabView';
 import {
   JoinButton,
   JoinAccounts,
@@ -11,6 +9,7 @@ import {
   JoinActivity,
   GoBack,
   BottomModal,
+  BlurView,
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
@@ -21,21 +20,22 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {NAVIGATION_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
-import {dispathUpdateNodes} from '@/redux/actions';
+import {NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {nodeAction} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
+import LocationBar from '@/components/LocationBar'
+import IconFont from '@/iconfont';
 
 const NodeDetail = ({navigation, route}) => {
-  const home = useSelector(state => state.home);
-  const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const dispatch = useDispatch();
-
-  const [detail, setDetail] = useState(null);
+  const home = useSelector(state => state.home);
   const [nodeId] = useState(route.params.nodeId);
+  const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
 
@@ -61,14 +61,24 @@ const NodeDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
     setDetail(res.data.node);
+    // console.log('res', res.data.node);
   };
 
   const onFollowNode = async () => {
-    if (detail.followed) {
-      await unfollowItem({followable_type: 'Node', followable_id: detail.id});
+    if (detail.role === 'super_admin') {
+      if (detail.check_node_id) {
+        navigation.push('CreateNodeResult', {nodeId: detail.check_node_id});
+      } else {
+        Toast.showError('暂时无法管理');
+      }
     } else {
-      await followItem({followable_type: 'Node', followable_id: detail.id});
+      if (detail.followed) {
+        await unfollowItem({followable_type: 'Node', followable_id: detail.id});
+      } else {
+        await followItem({followable_type: 'Node', followable_id: detail.id});
+      }
     }
+
     loadData();
   };
 
@@ -76,6 +86,7 @@ const NodeDetail = ({navigation, route}) => {
     navigation.navigate('JoinAccountsList', {
       title: detail.name,
       request: {api: getRecentAccounts, params: {id: detail.id}},
+      account: detail.account ? {title: '圈主', account: detail.account} : null,
     });
   };
 
@@ -96,30 +107,34 @@ const NodeDetail = ({navigation, route}) => {
   useEffect(() => {
     loadData();
     return () => {
-      dispatch(dispathUpdateNodes());
+      dispatch(nodeAction.dispatchUpdateNodes());
+      dispatch(nodeAction.dispatchUpdateFollowNodes(currentAccount.id));
     };
   }, []);
 
   const Header = () => {
     return (
-      <View style={{position: 'relative'}}>
-        <GoBack />
+      <View style={{position: 'relative', flex: 1}}>
         <View>
           <FastImg
             source={{uri: detail.backgroud_cover_url}}
-            resizeMode={'cover'}
+            mode={'cover'}
             style={styles.imageCover}
           />
           <View style={styles.imageCoverOpacity} />
         </View>
-
+        <GoBack />
         <View style={styles.header}>
           <View style={styles.nodeContent}>
             <View style={styles.nodeInfo}>
               <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
               <View style={styles.nodewrap}>
                 <Text style={styles.nodeName}>{detail.name}</Text>
-                <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+                  {(detail.space || detail.location) && <Text style={{color: 'white', marginTop: 12}}> · </Text>}
+                  <LocationBar location={detail.location} space={detail.space} />
+                </View>
               </View>
             </View>
           </View>
@@ -129,21 +144,19 @@ const NodeDetail = ({navigation, route}) => {
             </Text>
             <PlayScore score={detail.play_score} onPress={onPlay} />
           </View>
-          <Pressable
-            onPress={goJoinAccounts}
-            style={{position: 'absolute', bottom: 22, left: 15, right: 15}}>
+          <Pressable onPress={goJoinAccounts} style={styles.accountInfoWrap}>
             <BlurView
               style={styles.accountInfo}
               blurType="light"
               blurAmount={10}
-              reducedTransparencyFallbackColor="#white">
+              reducedTransparencyFallbackColor="white">
               <JoinAccounts accounts={detail.accounts} size={25} />
               <Text style={styles.count}>
                 {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
               </Text>
               <JoinButton
-                join={detail.followed}
-                text={detail.followed ? '已加入' : '加入'}
+                join={detail.role === 'super_admin' ? true : detail.followed}
+                text={detail.role === 'super_admin' ? '管理' : detail.followed ? '已加入' : '加入'}
                 onPress={onFollowNode}
               />
             </BlurView>
@@ -154,7 +167,7 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   return detail ? (
-    <View style={{...styles.wrapper}}>
+    <View style={styles.wrapper}>
       <CollapsibleHeader
         tabBarHeight={NAV_BAR_HEIGHT}
         headerHeight={283}
@@ -194,43 +207,6 @@ const NodeDetail = ({navigation, route}) => {
         content={detail.desc}
       />
       <JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />
-
-      {/*<Header />*/}
-
-      {/*<TabViewList*/}
-      {/*  currentKey={currentKey}*/}
-      {/*  separator={true}*/}
-      {/*  tabData={[*/}
-      {/*    {*/}
-      {/*      key: 'publish',*/}
-      {/*      title: '动态',*/}
-      {/*      component: PublishListPage,*/}
-      {/*    },*/}
-      {/*    {*/}
-      {/*      key: 'posts',*/}
-      {/*      title: '帖子',*/}
-      {/*      component: PostsListPage,*/}
-      {/*    },*/}
-      {/*    {*/}
-      {/*      key: 'article',*/}
-      {/*      title: '文章',*/}
-      {/*      component: ArticleListPage,*/}
-      {/*    },*/}
-      {/*    {*/}
-      {/*      key: 'hashTag',*/}
-      {/*      title: '话题',*/}
-      {/*      component: TopicListPage,*/}
-      {/*    },*/}
-      {/*  ]}*/}
-      {/*  onChange={key => setCurrentKey(key)}*/}
-      {/*/>*/}
-      {/*<BottomModal*/}
-      {/*  visible={showModal}*/}
-      {/*  cancleClick={() => setShowModal(false)}*/}
-      {/*  title={detail.name}*/}
-      {/*  content={detail.desc}*/}
-      {/*/>*/}
-      {/*<JoinActivity type={'node'} text={'立刻参与'} handleClick={joinNewTopic} />*/}
     </View>
   ) : (
     <Loading />
@@ -245,7 +221,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: NAVIGATION_BAR_HEIGHT + 1,
+    paddingTop: SAFE_TOP + 34,
     height: 283,
     position: 'relative',
   },
@@ -284,6 +260,19 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#ffff00',
   },
+  spaceWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 4,
+  },
+  spaceText: {
+    color: 'white',
+    marginLeft: 2,
+    marginTop: 11,
+    fontSize: 11,
+    fontWeight: '400',
+  },
   nodewrap: {
     alignItems: 'flex-start',
   },
@@ -314,6 +303,12 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     marginRight: 'auto',
   },
+  accountInfoWrap: {
+    position: 'absolute',
+    bottom: 22,
+    left: 15,
+    right: 15,
+  },
   accountInfo: {
     height: RFValue(45),
     flexDirection: 'row',
@@ -321,13 +316,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-    zIndex: 2,
     borderRadius: 2,
     overflow: 'hidden',
-    // position: 'absolute',
-    // bottom: 22,
-    // left: 15,
-    // right: 15,
   },
   count: {
     color: '#dbdbdb',

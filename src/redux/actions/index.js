@@ -1,6 +1,4 @@
 import {
-  CURRENT_ACCOUNT_REQUEST,
-  BASE_CURRENT_ACCOUNT_REQUEST,
   ACCOUNT_DETAIL_REQUEST,
   ACCOUNT_FOLLOW_REQUEST,
   ACCOUNT_UN_FOLLOW_REQUEST,
@@ -11,16 +9,18 @@ import {
   PREVIEW_IMAGES,
   BASE_CURRENT_ACCOUNT_SUCCESS,
   ARTICLE_DETAIL_SUCCESS,
-  TOPIC_DELETE_SUCCESS,
   ShareView,
   TOPIC_DETAIL_SUCCESS,
-  UPDATE_NODES,
-  UPDATE_FOLLOW_NODES,
+  UPDATE_CATEGORY_LIST,
+  CHANGE_UPLOAD_STATUS,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
-import {getNodeIndex, getFollowNodeIndex} from '@/api/node_api';
+import {createTopic} from '@/api/topic_api';
 import Helper from '@/utils/helper';
+import * as node from './node_action';
+
+export const nodeAction = node;
 
 // 当前用户
 export const dispatchCurrentAccount = () => async dispatch => {
@@ -30,7 +30,6 @@ export const dispatchCurrentAccount = () => async dispatch => {
 
 export const dispatchBaseCurrentAccount = () => async dispatch => {
   const res = await getCurrentAccountBaseInfo();
-  // console.log('dispatchBaseCurrentAccount', res);
   dispatch({
     type: BASE_CURRENT_ACCOUNT_SUCCESS,
     account: res.account,
@@ -80,7 +79,6 @@ export const changeProgress = value => {
 
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
-  // console.log('dispatchSetAuthToken', token);
   dispatchCurrentAccount();
   Helper.setData('auth_token', token);
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
@@ -111,19 +109,40 @@ export const dispatchArticleDetail = (article = {}) => async dispatch => {
 };
 // 帖子详情
 export const dispatchTopicDetail = (topic = {}) => async dispatch => {
-  // console.log('TOPIC_DELETE_SUCCESS', topic)
   dispatch({
     type: TOPIC_DETAIL_SUCCESS,
     topic: topic,
   });
 };
 
-// 更新全部圈子数据
-export const dispathUpdateNodes = account_id => async dispatch => {
-  if (account_id) {
-    const followNodes = await getFollowNodeIndex({account_id});
-    dispatch({type: UPDATE_FOLLOW_NODES, value: followNodes});
-  }
-  const nodes = await getNodeIndex();
-  dispatch({type: UPDATE_NODES, value: nodes});
+// 获取categories的数据
+export const dispatchFetchCategoryList = () => async dispatch => {
+  const categories = await getCategoryList();
+  dispatch({type: UPDATE_CATEGORY_LIST, categories: categories});
+};
+
+export const changeUploadStatus = value => {
+  return {
+    type: CHANGE_UPLOAD_STATUS,
+    value,
+  };
+};
+
+// 上传视频topic
+export const dispatchFetchUploadTopic = data => async dispatch => {
+  const {video, content} = data.content;
+  const videoRes = await data.upload(video, progress => {
+    if (progress === 100) {
+      dispatch(changeUploadStatus({...data, status: 'publish', progress}));
+    } else {
+      dispatch(changeUploadStatus({...data, status: 'upload', progress}));
+    }
+  });
+  const params = {...content, video_content: videoRes.asset.video_url};
+  await createTopic(params);
+  // 设置progress 为发布成功 done
+  dispatch(changeUploadStatus({...data, status: 'done', progress: '发布成功'}));
+  setTimeout(() => {
+    dispatch(changeUploadStatus(null));
+  }, 1000);
 };

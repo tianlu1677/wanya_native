@@ -80,7 +80,7 @@ const CommentNotify = ({navigation}) => {
 
   const renderItem = ({item}) => {
     let comment = item;
-    console.log('comment', comment);
+    // console.log('comment', comment);
     return (
       <NotifyContent
         account={comment.account}

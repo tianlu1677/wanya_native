@@ -44,7 +44,7 @@ const ScrollList = props => {
   // const [currentY, setCurrentY] = useState(0);
   // const [title, setTitle] = useState('努力加载中...');
   const [refreshing, setRefreshing] = useState(false);
-  // const [isFree, setIsFree] = useState(true);
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const onRefresh = () => {
     console.log('onRefresh start =============', state, refreshing);
@@ -85,7 +85,7 @@ const ScrollList = props => {
 
   const renderFooter = () => {
     let footer = null;
-    if (pagin && pagin.hasMore) {
+    if (pagin && pagin.hasMore && props.loading) {
       footer = (
         <View
           style={{
@@ -191,6 +191,16 @@ const ScrollList = props => {
   //   }
   // };
 
+  useEffect(() => {
+    scrollY.addListener(({value}) => {
+      // 滚动距离
+      props.getScrollY && props.getScrollY(value);
+    });
+    return () => {
+      scrollY.removeAllListeners();
+    };
+  }, [scrollY]);
+
   const keyExtractor = useCallback(item => String(item[props.itemKey || 'id']), []);
 
   return (
@@ -207,9 +217,9 @@ const ScrollList = props => {
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
       data={props.data}
       // scrollEventThrottle={60}
-      // onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
-      //   useNativeDriver: true,
-      // })}
+      onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+        useNativeDriver: true,
+      })}
       // onScroll={onscroll}
       onScrollEndDrag={() => {
         setFinishContent(true);
@@ -270,7 +280,7 @@ const scrollStyle = StyleSheet.create({
   },
   separator: {
     backgroundColor: '#FAFAFA',
-    height: 9,
+    height: 5,
   },
 });
 
