@@ -561,12 +561,12 @@ export default class VideoPlayer extends Component {
           onBuffer={this.onBuffer}
           ignoreSilentSwitch="ignore"
           onFullscreenPlayerDidDismiss={this.onFullscreenPlayerDidDismiss}
-          bufferConfig={{
-            minBufferMs: 15000,
-            maxBufferMs: 50000,
-            bufferForPlaybackMs: 1000,
-            bufferForPlaybackAfterRebufferMs: 1000,
-          }}
+          // bufferConfig={{
+          //   minBufferMs: 15000,
+          //   maxBufferMs: 50000,
+          //   bufferForPlaybackMs: 1000,
+          //   bufferForPlaybackAfterRebufferMs: 1000,
+          // }}
           // fullscreenOrientation={'landscape'}
         />
         {this.state.opacity > 0 && (

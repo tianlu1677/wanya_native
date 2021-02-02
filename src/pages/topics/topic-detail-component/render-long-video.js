@@ -34,7 +34,7 @@ const RenderLongVideo = props => {
 
   return (
     <>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={'light-content'} translucent={false} backgroundColor={'black'} />
       <View style={{position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}

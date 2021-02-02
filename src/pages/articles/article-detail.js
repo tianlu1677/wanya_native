@@ -118,8 +118,7 @@ const ArticleDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT + 55}
-    >
+      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT + 55}>
       <CommentList
         detail={detail}
         request={{api: getArticleCommentList, params: {id: detail.id}}}
@@ -133,7 +132,11 @@ const ArticleDetail = ({navigation, route}) => {
               <Text style={styles.title}>{detail.title}</Text>
               <ArticleHeader data={detail} showFollow={detail.account_id !== currentAccount.id} />
               <View onLayout={e => setContentY(e.nativeEvent.layout.y)}>
-                <RichContent content={detail.content} baseColor={'#1F1F1F'} />
+                <RichContent
+                  content={detail.content}
+                  baseColor={'#1F1F1F'}
+                  images_info={detail.images_info}
+                />
               </View>
               <PublishRelated data={detail} type="article" />
             </View>

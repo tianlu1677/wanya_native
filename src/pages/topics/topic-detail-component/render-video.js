@@ -2,7 +2,7 @@ import React, {useRef, useCallback} from 'react';
 import {View, Text, StatusBar, StyleSheet, Dimensions} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {SAFE_TOP} from '@/utils/navbar';
+import {SAFE_TOP, SCREEN_HEIGHT} from '@/utils/navbar';
 import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
 import {PlainContent} from '@/components/Item/single-list-item';
 import VideoPlayerContent from '@/components/react-native-video-player';
@@ -14,7 +14,10 @@ const RenderVideo = props => {
   const currentAccount = useSelector(state => state.account.currentAccount);
   const {detail} = props;
   const {width, height} = detail.media_video;
-  const videoHeight = height ? height * (screenWidth / width) : screenWidth;
+  let videoHeight = height ? height * (screenWidth / width) : screenWidth;
+  if(videoHeight > SCREEN_HEIGHT) {
+    videoHeight = SCREEN_HEIGHT - 500
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -32,7 +35,7 @@ const RenderVideo = props => {
 
   return (
     <>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={'black'} />
       <View style={{position: 'relative'}}>
         <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}

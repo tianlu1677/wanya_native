@@ -6,13 +6,13 @@ import WebView from 'react-native-webview';
 
 const RichHTML = props => {
   const {images_info} = props;
-  const imageWidth = Dimensions.get('window').width - 20;
+  const imageWidth = Dimensions.get('window').width - 28;
   const renderImg = (htmlAttribs, children, convertedCSSStyles, passProps) => {
     if (!htmlAttribs || !htmlAttribs.src) {
       return <View />;
     } else {
       const findImg = images_info.find(x => x.url === htmlAttribs.src);
-      console.log(images_info);
+      // console.log(images_info);
       return (
         <View style={{flex: 1}} key={htmlAttribs.src}>
           <FastImg
