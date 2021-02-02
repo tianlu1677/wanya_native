@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     lineHeight: RFValue(22),
     fontWeight: '500',
     color: '#fff',
-    textAlign: 'justify',
+    // textAlign: 'justify',
   },
   userInfo: {
     paddingLeft: 14,

@@ -19,9 +19,12 @@ const ShareArticleContent = props => {
     published_at_text,
     title,
     content,
+    cover_url,
+    intro
   } = props.articleDetail;
 
-  const bg_img_url = wx_share_image_url ? wx_share_image_url.split('?')[0] : '';
+  console.log('articleDetail', props.articleDetail);
+  const bg_img_url = cover_url ? cover_url.split('?')[0] : '';
   const desc = `${published_at_text} 发布了一篇文章`;
   const node_name = node ? node.name : null;
   // account: topic.account,
@@ -63,40 +66,6 @@ const ShareArticleContent = props => {
     });
   }, []);
 
-  const richHtmlPStyle = {
-    p: {
-      fontSize: RFValue(15),
-      color: 'white',
-      letterSpacing: 1,
-      lineHeight: 25,
-      marginBottom: 10,
-      fontWeight: '300',
-    },
-    figue: {
-      marginTop: 10,
-    },
-    img: {
-      width: '88%',
-      marginBottom: 10,
-      minHeight: 30,
-    },
-    h4: {
-      fontSize: 30,
-      color: 'white',
-      letterSpacing: 1,
-      lineHeight: 25,
-      marginBottom: 10,
-      fontWeight: '300',
-    },
-    span: {
-      fontSize: 15,
-      color: 'white',
-      letterSpacing: 1,
-      lineHeight: 25,
-      marginBottom: 10,
-      fontWeight: '300',
-    },
-  };
 
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
@@ -125,23 +94,12 @@ const ShareArticleContent = props => {
               )}
             </View>
 
-            <Text style={styles.title}>{title}</Text>
-            <RichContent
-              content={content}
-              baseColor={'white'}
+            <FastImg source={{uri: bg_img_url}} style={{width: '100%', height: 300}} mode={'cover'} />
 
-              settings={{
-                containerStyle: {
-                  paddingLeft: 14,
-                  paddingRight: 14,
-                  marginTop: 5,
-                  color: 'white',
-                  fontSize: 14,
-                },
-                tagsStyles: richHtmlPStyle,
-                baseFontStyle: {color: 'white'},
-              }}
-            />
+            <Text style={styles.title}>{title}</Text>
+
+            <Text style={styles.text}>{intro}</Text>
+
             <View style={styles.footer}>
               <FastImg
                 style={styles.shareLogo}
@@ -222,10 +180,10 @@ const styles = StyleSheet.create({
   title: {
     color: '#fff',
     fontSize: 18,
+    marginTop: 20,
     fontWeight: '500',
     marginLeft: 17,
     marginRight: 17,
-    marginBottom: 20,
     lineHeight: 23,
     letterSpacing: 1,
   },
