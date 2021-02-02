@@ -138,17 +138,16 @@ const styles = StyleSheet.create({
     paddingBottom: 9,
   },
   nodeWrap: {
-    width: 56,
+    width: 57,
     marginRight: 15,
   },
   nodeImg: {
-    width: 56,
-    height: 56,
+    width: 57,
+    height: 57,
   },
   nodeName: {
     fontSize: 11,
     marginTop: 5,
-    width: 60,
     maxHeight: 18,
     minHeight: 16,
     height: 18,

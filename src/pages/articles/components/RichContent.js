@@ -16,7 +16,7 @@ const RichContent = props => {
       color: baseColor,
       letterSpacing: 1,
       lineHeight: 25,
-      marginBottom: 10,
+      marginBottom: 12,
       fontWeight: '300',
     },
     figue: {
@@ -24,7 +24,8 @@ const RichContent = props => {
     },
     img: {
       width: '93%',
-      marginBottom: 10,
+      marginBottom: 17,
+      marginTop: 2,
       minHeight: 30,
     },
     h4: {
