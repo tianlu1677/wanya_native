@@ -15,6 +15,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 #import <UMPush/UMessage.h>
+#import <RCTJPushModule.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -68,24 +69,41 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
+  // JPUSH
+  [JPUSHService setupWithOption:launchOptions appKey:@"7cd75000d5932000b3d4ca59" channel:@"release" apsForProduction:YES];
+  
+  // APNS
+  JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+  if (@available(iOS 12.0, *)) {
+    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionProvidesAppNotificationSettings;
+  }
+  [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+  [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+  // 自定义消息
+  NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+  [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+  // 地理围栏
+  [JPUSHService registerLbsGeofenceDelegate:self withLaunchOptions:launchOptions];
+// JPUSHEND
+  
   // 使用 UNUserNotificationCenter 来管理通知
-  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   //监听回调事件
-  center.delegate = (id)self;
-  
-  //iOS 10 使用以下方法注册，才能得到授权
-  [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
-                        completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                            if(granted) {
-                                NSLog(@"授权成功");
-                            }
-                        }];
-  
-  //获取当前的通知设置，UNNotificationSettings 是只读对象，不能直接修改，只能通过以下方法获取
-  [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-  }];
-  
-  [[UIApplication sharedApplication] registerForRemoteNotifications];
+//  center.delegate = (id)self;
+//
+//  //iOS 10 使用以下方法注册，才能得到授权
+//  [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
+//                        completionHandler:^(BOOL granted, NSError * _Nullable error) {
+//                            if(granted) {
+//                                NSLog(@"授权成功");
+//                            }
+//                        }];
+//
+//  //获取当前的通知设置，UNNotificationSettings 是只读对象，不能直接修改，只能通过以下方法获取
+//  [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+//  }];
+//
+//  [[UIApplication sharedApplication] registerForRemoteNotifications];
   
   // Register WebP format support
   [SDImageCodersManager.sharedManager addCoder:SDImageWebPCoder.sharedCoder];
@@ -95,57 +113,124 @@ static void InitializeFlipper(UIApplication *application) {
   [RNUMConfigure initWithAppkey:@"5f32492fd30932215476edfe" channel:@"App Store"];
   [MobClick setScenarioType:E_UM_NORMAL];
   
-  UMessageRegisterEntity * entity = [[UMessageRegisterEntity alloc] init];
-  entity.types = UMessageAuthorizationOptionBadge|UMessageAuthorizationOptionAlert|UMessageAuthorizationOptionSound;
-  [UNUserNotificationCenter currentNotificationCenter].delegate=self;
-
-  [UMessage registerForRemoteNotificationsWithLaunchOptions:launchOptions Entity:nil completionHandler:^(BOOL granted, NSError * _Nullable error) {
-    if (granted) {
-      NSLog(@"deviceToken+++++++++");
-    } else {
-      
-    }
-  }];
-  
+//  UMessageRegisterEntity * entity = [[UMessageRegisterEntity alloc] init];
+//  entity.types = UMessageAuthorizationOptionBadge|UMessageAuthorizationOptionAlert|UMessageAuthorizationOptionSound;
+//  [UNUserNotificationCenter currentNotificationCenter].delegate=self;
+//
+//  [UMessage registerForRemoteNotificationsWithLaunchOptions:launchOptions Entity:nil completionHandler:^(BOOL granted, NSError * _Nullable error) {
+//    if (granted) {
+//      NSLog(@"deviceToken+++++++++");
+//    } else {
+//
+//    }
+//  }];
+//
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // <- initialization using the storyboard file name
   
   return YES;
 }
 
 //Called when a notification is delivered to a foreground app.
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
-{
-  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+//-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+//{
+//  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+//}
+
+//************************************************JPush start************************************************
+
+//注册 APNS 成功并上报 DeviceToken
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  [JPUSHService registerDeviceToken:deviceToken];
 }
 
-// Required to register for notifications
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
- [RNCPushNotificationIOS didRegisterUserNotificationSettings:notificationSettings];
+//iOS 7 APNS
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:  (NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+  // iOS 10 以下 Required
+  NSLog(@"iOS 7 APNS");
+  [JPUSHService handleRemoteNotification:userInfo];
+  [[NSNotificationCenter defaultCenter] postNotificationName:J_APNS_NOTIFICATION_ARRIVED_EVENT object:userInfo];
+  completionHandler(UIBackgroundFetchResultNewData);
 }
-// Required for the register event.
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
-{
- [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+
+//iOS 10 前台收到消息
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center  willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
+  NSDictionary * userInfo = notification.request.content.userInfo;
+  if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    // Apns
+    NSLog(@"iOS 10 APNS 前台收到消息");
+    [JPUSHService handleRemoteNotification:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:J_APNS_NOTIFICATION_ARRIVED_EVENT object:userInfo];
+  }
+  else {
+    // 本地通知 todo
+    NSLog(@"iOS 10 本地通知 前台收到消息");
+    [[NSNotificationCenter defaultCenter] postNotificationName:J_LOCAL_NOTIFICATION_ARRIVED_EVENT object:userInfo];
+  }
+  //需要执行这个方法，选择是否提醒用户，有 Badge、Sound、Alert 三种类型可以选择设置
+  completionHandler(UNNotificationPresentationOptionAlert);
 }
-// Required for the notification event. You must call the completion handler after handling the remote notification.
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-{
-  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+
+
+//iOS 10 消息事件回调
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler: (void (^)(void))completionHandler {
+  NSDictionary * userInfo = response.notification.request.content.userInfo;
+  if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    // Apns
+    NSLog(@"iOS 10 APNS 消息事件回调");
+    [JPUSHService handleRemoteNotification:userInfo];
+    // 保障应用被杀死状态下，用户点击推送消息，打开app后可以收到点击通知事件
+    [[RCTJPushEventQueue sharedInstance]._notificationQueue insertObject:userInfo atIndex:0];
+    [[NSNotificationCenter defaultCenter] postNotificationName:J_APNS_NOTIFICATION_OPENED_EVENT object:userInfo];
+  }
+  else {
+    // 本地通知
+    NSLog(@"iOS 10 本地通知 消息事件回调");
+    // 保障应用被杀死状态下，用户点击推送消息，打开app后可以收到点击通知事件
+    [[RCTJPushEventQueue sharedInstance]._localNotificationQueue insertObject:userInfo atIndex:0];
+    [[NSNotificationCenter defaultCenter] postNotificationName:J_LOCAL_NOTIFICATION_OPENED_EVENT object:userInfo];
+  }
+  // 系统要求执行这个方法
+  completionHandler();
 }
-// Required for the registrationError event.
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
- [RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error];
+
+//自定义消息
+- (void)networkDidReceiveMessage:(NSNotification *)notification {
+  NSDictionary * userInfo = [notification userInfo];
+  [[NSNotificationCenter defaultCenter] postNotificationName:J_CUSTOM_NOTIFICATION_EVENT object:userInfo];
 }
-// Required for localNotification event
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-didReceiveNotificationResponse:(UNNotificationResponse *)response
-         withCompletionHandler:(void (^)(void))completionHandler
-{
-  [RNCPushNotificationIOS didReceiveNotificationResponse:response];
-}
+
+//************************************************JPush end************************************************
+
+
+//
+//// Required to register for notifications
+//- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+//{
+// [RNCPushNotificationIOS didRegisterUserNotificationSettings:notificationSettings];
+//}
+//// Required for the register event.
+//- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+//{
+// [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+//}
+//// Required for the notification event. You must call the completion handler after handling the remote notification.
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+//fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+//{
+//  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+//}
+//// Required for the registrationError event.
+//- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+//{
+// [RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error];
+//}
+//// Required for localNotification event
+//- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+//didReceiveNotificationResponse:(UNNotificationResponse *)response
+//         withCompletionHandler:(void (^)(void))completionHandler
+//{
+//  [RNCPushNotificationIOS didReceiveNotificationResponse:response];
+//}
 
 
 - (BOOL)application:(UIApplication *)application
