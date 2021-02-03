@@ -11,13 +11,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		247E7A69E5CCC6E1309631F3 /* libPods-wanya_native-wanya_nativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 564A1EEE75303D204EF286F2 /* libPods-wanya_native-wanya_nativeTests.a */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2DCD954D1E0B4F2C00145EB5 /* wanya_nativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wanya_nativeTests.m */; };
+		56FA6E3A7936808AE07A5A5D /* libPods-wanya_native.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9834DD02964AA7A776B84138 /* libPods-wanya_native.a */; };
 		6D12ABA7254B0B8900B94E18 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D12ABA6254B0B8900B94E18 /* AuthenticationServices.framework */; };
 		6D16FE1A2568230F00B31B84 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D16FE192568230E00B31B84 /* UserNotifications.framework */; };
 		6D44BB1F2500897F0001DB04 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6DACBFBCBF47F6EFB81ED10F /* libPods-wanya_native-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BA087F317269BA0DB590D3 /* libPods-wanya_native-tvOSTests.a */; };
 		6DAE6F6724F7C27700149152 /* UMPushModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6124F7C27500149152 /* UMPushModule.m */; };
 		6DAE6F6824F7C27700149152 /* UMAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */; };
 		6DAE6F6924F7C27700149152 /* RNUMConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6424F7C27600149152 /* RNUMConfigure.m */; };
@@ -28,8 +27,9 @@
 		6DAE6F7724F8027300149152 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7624F8027300149152 /* libc++.tbd */; };
 		6DAE6F7924F8027E00149152 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7824F8027D00149152 /* libz.tbd */; };
 		6DD198BE24E0F54900728256 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */; };
-		E0192CF2BB94C9F148491C13 /* libPods-wanya_native.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA9FA1CDA1CFA9D9F6EF167 /* libPods-wanya_native.a */; };
-		E86E2944B826503BBA2A7DB8 /* libPods-wanya_native-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17BAD5D977ADC3C515E84CB1 /* libPods-wanya_native-tvOS.a */; };
+		8C40103C406F0505CD70EF21 /* libPods-wanya_native-wanya_nativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043254F79EF21522414A986B /* libPods-wanya_native-wanya_nativeTests.a */; };
+		99301F3D8BA3C82148D60326 /* libPods-wanya_native-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13228FEB59A22B676FBD01BE /* libPods-wanya_native-tvOS.a */; };
+		EA2973BAC0F966CE4CFBE69B /* libPods-wanya_native-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20278696FBBA00BAD9E2F929 /* libPods-wanya_native-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,23 +54,24 @@
 		00E356EE1AD99517003FC87E /* wanya_nativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wanya_nativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* wanya_nativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wanya_nativeTests.m; sourceTree = "<group>"; };
-		0BD0CB71B988248CA60F8CA9 /* Pods-wanya_native-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		043254F79EF21522414A986B /* libPods-wanya_native-wanya_nativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native-wanya_nativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13228FEB59A22B676FBD01BE /* libPods-wanya_native-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* 顽鸦.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "顽鸦.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = wanya_native/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = wanya_native/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = wanya_native/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = wanya_native/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = wanya_native/main.m; sourceTree = "<group>"; wrapsLines = 0; };
-		17BAD5D977ADC3C515E84CB1 /* libPods-wanya_native-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		20BA087F317269BA0DB590D3 /* libPods-wanya_native-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		14C87D7A6900EBEFAE260BFF /* Pods-wanya_native-wanya_nativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-wanya_nativeTests.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-wanya_nativeTests/Pods-wanya_native-wanya_nativeTests.release.xcconfig"; sourceTree = "<group>"; };
+		20278696FBBA00BAD9E2F929 /* libPods-wanya_native-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* wanya_native-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wanya_native-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* wanya_native-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wanya_native-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		313FA090FDF2646337F02807 /* Pods-wanya_native.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native/Pods-wanya_native.debug.xcconfig"; sourceTree = "<group>"; };
-		564A1EEE75303D204EF286F2 /* libPods-wanya_native-wanya_nativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native-wanya_nativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43C425A07FCA1E23243F8BC8 /* Pods-wanya_native.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native.release.xcconfig"; path = "Target Support Files/Pods-wanya_native/Pods-wanya_native.release.xcconfig"; sourceTree = "<group>"; };
+		519C93C2353D7BD3AF1899A5 /* Pods-wanya_native-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		6B8FCECC5A16D12132231AAB /* Pods-wanya_native-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6D12ABA6254B0B8900B94E18 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		6D16FE192568230E00B31B84 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		6D23E3B2250B5584003E7609 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		6D8EA25F180FB3F52E9F6B26 /* Pods-wanya_native-wanya_nativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-wanya_nativeTests.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-wanya_nativeTests/Pods-wanya_native-wanya_nativeTests.release.xcconfig"; sourceTree = "<group>"; };
 		6DAE6F5424F6A6A100149152 /* wanya_nativeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeRelease.entitlements; path = wanya_native/wanya_nativeRelease.entitlements; sourceTree = "<group>"; };
 		6DAE6F5724F6C83400149152 /* wanya_nativeDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeDebug.entitlements; path = wanya_native/wanya_nativeDebug.entitlements; sourceTree = "<group>"; };
 		6DAE6F6124F7C27500149152 /* UMPushModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMPushModule.m; path = wanya_native/UMPushModule.m; sourceTree = "<group>"; };
@@ -86,14 +87,13 @@
 		6DAE6F7624F8027300149152 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		6DAE6F7824F8027D00149152 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wanya_native/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		87C900C47F6543AD3A9515E5 /* Pods-wanya_native.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native.release.xcconfig"; path = "Target Support Files/Pods-wanya_native/Pods-wanya_native.release.xcconfig"; sourceTree = "<group>"; };
-		9BA9FA1CDA1CFA9D9F6EF167 /* libPods-wanya_native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B714A4E1FE25DB659084D750 /* Pods-wanya_native-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOS.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOS/Pods-wanya_native-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		EAD91C4E3714CD8CC82F4FA7 /* Pods-wanya_native-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		9834DD02964AA7A776B84138 /* libPods-wanya_native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD6AD6AAF03AE427C5A77409 /* Pods-wanya_native-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOS.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOS/Pods-wanya_native-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		BF6C8E6AADDB255D8300F8E9 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-wanya_nativeTests.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-wanya_nativeTests/Pods-wanya_native-wanya_nativeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DA8B545800E538161730C778 /* Pods-wanya_native-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOS/Pods-wanya_native-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		E6383D3CDA8FFC16B13CB2FE /* Pods-wanya_native.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native/Pods-wanya_native.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F19D8855FB5DB5FB402F6D56 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-wanya_nativeTests.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-wanya_nativeTests/Pods-wanya_native-wanya_nativeTests.debug.xcconfig"; sourceTree = "<group>"; };
-		F3AB1D7D285418D1BACA3B11 /* Pods-wanya_native-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOS/Pods-wanya_native-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				247E7A69E5CCC6E1309631F3 /* libPods-wanya_native-wanya_nativeTests.a in Frameworks */,
+				8C40103C406F0505CD70EF21 /* libPods-wanya_native-wanya_nativeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +117,7 @@
 				6DAE6F7324F8025A00149152 /* CoreTelephony.framework in Frameworks */,
 				6DAE6F7124F8025200149152 /* SystemConfiguration.framework in Frameworks */,
 				6DAE6F6F24F8024800149152 /* WebKit.framework in Frameworks */,
-				E0192CF2BB94C9F148491C13 /* libPods-wanya_native.a in Frameworks */,
+				56FA6E3A7936808AE07A5A5D /* libPods-wanya_native.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E86E2944B826503BBA2A7DB8 /* libPods-wanya_native-tvOS.a in Frameworks */,
+				99301F3D8BA3C82148D60326 /* libPods-wanya_native-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DACBFBCBF47F6EFB81ED10F /* libPods-wanya_native-tvOSTests.a in Frameworks */,
+				EA2973BAC0F966CE4CFBE69B /* libPods-wanya_native-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,10 +193,10 @@
 				6DAE6F6E24F8024800149152 /* WebKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				9BA9FA1CDA1CFA9D9F6EF167 /* libPods-wanya_native.a */,
-				17BAD5D977ADC3C515E84CB1 /* libPods-wanya_native-tvOS.a */,
-				20BA087F317269BA0DB590D3 /* libPods-wanya_native-tvOSTests.a */,
-				564A1EEE75303D204EF286F2 /* libPods-wanya_native-wanya_nativeTests.a */,
+				9834DD02964AA7A776B84138 /* libPods-wanya_native.a */,
+				043254F79EF21522414A986B /* libPods-wanya_native-wanya_nativeTests.a */,
+				13228FEB59A22B676FBD01BE /* libPods-wanya_native-tvOS.a */,
+				20278696FBBA00BAD9E2F929 /* libPods-wanya_native-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -204,14 +204,14 @@
 		692A98F6C782C6D2E694F7B2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				313FA090FDF2646337F02807 /* Pods-wanya_native.debug.xcconfig */,
-				87C900C47F6543AD3A9515E5 /* Pods-wanya_native.release.xcconfig */,
-				F3AB1D7D285418D1BACA3B11 /* Pods-wanya_native-tvOS.debug.xcconfig */,
-				B714A4E1FE25DB659084D750 /* Pods-wanya_native-tvOS.release.xcconfig */,
-				0BD0CB71B988248CA60F8CA9 /* Pods-wanya_native-tvOSTests.debug.xcconfig */,
-				EAD91C4E3714CD8CC82F4FA7 /* Pods-wanya_native-tvOSTests.release.xcconfig */,
-				F19D8855FB5DB5FB402F6D56 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */,
-				6D8EA25F180FB3F52E9F6B26 /* Pods-wanya_native-wanya_nativeTests.release.xcconfig */,
+				E6383D3CDA8FFC16B13CB2FE /* Pods-wanya_native.debug.xcconfig */,
+				43C425A07FCA1E23243F8BC8 /* Pods-wanya_native.release.xcconfig */,
+				BF6C8E6AADDB255D8300F8E9 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */,
+				14C87D7A6900EBEFAE260BFF /* Pods-wanya_native-wanya_nativeTests.release.xcconfig */,
+				DA8B545800E538161730C778 /* Pods-wanya_native-tvOS.debug.xcconfig */,
+				AD6AD6AAF03AE427C5A77409 /* Pods-wanya_native-tvOS.release.xcconfig */,
+				6B8FCECC5A16D12132231AAB /* Pods-wanya_native-tvOSTests.debug.xcconfig */,
+				519C93C2353D7BD3AF1899A5 /* Pods-wanya_native-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -256,11 +256,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "wanya_nativeTests" */;
 			buildPhases = (
-				15EA446104B5F42D2AAADCAF /* [CP] Check Pods Manifest.lock */,
+				2A099219D03F59449DB72FAE /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C3ACCFCA952458BC822C6343 /* [CP] Copy Pods Resources */,
+				5CC987BAF3D5B93AA487581F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -276,13 +276,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "wanya_native" */;
 			buildPhases = (
-				D67E17C0CB15CC1C15EFB1C7 /* [CP] Check Pods Manifest.lock */,
+				40C83A7CF1A078A9F8366FDB /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				2CE48D2DB28B55CBF13F0E28 /* [CP] Copy Pods Resources */,
+				D8BB82C201589C761BA8D2B1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -297,7 +297,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "wanya_native-tvOS" */;
 			buildPhases = (
-				AE11EFE9CD4236E14BEEAEE8 /* [CP] Check Pods Manifest.lock */,
+				D67E82A00CE3DE61EF03AC42 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -317,7 +317,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "wanya_native-tvOSTests" */;
 			buildPhases = (
-				20F3642E5F79B82AF9C39FAB /* [CP] Check Pods Manifest.lock */,
+				888A4201397B63488F041724 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -430,7 +430,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		15EA446104B5F42D2AAADCAF /* [CP] Check Pods Manifest.lock */ = {
+		2A099219D03F59449DB72FAE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -452,80 +452,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		20F3642E5F79B82AF9C39FAB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-wanya_native-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2CE48D2DB28B55CBF13F0E28 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wanya_native/Pods-wanya_native-resources.sh",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wanya_native/Pods-wanya_native-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -540,7 +466,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		AE11EFE9CD4236E14BEEAEE8 /* [CP] Check Pods Manifest.lock */ = {
+		40C83A7CF1A078A9F8366FDB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -555,14 +481,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-wanya_native-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wanya_native-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C3ACCFCA952458BC822C6343 /* [CP] Copy Pods Resources */ = {
+		5CC987BAF3D5B93AA487581F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -614,7 +540,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wanya_native-wanya_nativeTests/Pods-wanya_native-wanya_nativeTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D67E17C0CB15CC1C15EFB1C7 /* [CP] Check Pods Manifest.lock */ = {
+		888A4201397B63488F041724 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -629,11 +555,85 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-wanya_native-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wanya_native-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D67E82A00CE3DE61EF03AC42 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-wanya_native-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8BB82C201589C761BA8D2B1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-wanya_native/Pods-wanya_native-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wanya_native/Pods-wanya_native-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -731,7 +731,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F19D8855FB5DB5FB402F6D56 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */;
+			baseConfigurationReference = BF6C8E6AADDB255D8300F8E9 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -754,7 +754,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D8EA25F180FB3F52E9F6B26 /* Pods-wanya_native-wanya_nativeTests.release.xcconfig */;
+			baseConfigurationReference = 14C87D7A6900EBEFAE260BFF /* Pods-wanya_native-wanya_nativeTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -774,12 +774,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 313FA090FDF2646337F02807 /* Pods-wanya_native.debug.xcconfig */;
+			baseConfigurationReference = E6383D3CDA8FFC16B13CB2FE /* Pods-wanya_native.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = icons;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -805,7 +805,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 87C900C47F6543AD3A9515E5 /* Pods-wanya_native.release.xcconfig */;
+			baseConfigurationReference = 43C425A07FCA1E23243F8BC8 /* Pods-wanya_native.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = icons;
 				CLANG_ENABLE_MODULES = YES;
@@ -813,7 +813,7 @@
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 28;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wanya_native/Info.plist;
@@ -835,7 +835,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3AB1D7D285418D1BACA3B11 /* Pods-wanya_native-tvOS.debug.xcconfig */;
+			baseConfigurationReference = DA8B545800E538161730C778 /* Pods-wanya_native-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -863,7 +863,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B714A4E1FE25DB659084D750 /* Pods-wanya_native-tvOS.release.xcconfig */;
+			baseConfigurationReference = AD6AD6AAF03AE427C5A77409 /* Pods-wanya_native-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -891,7 +891,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BD0CB71B988248CA60F8CA9 /* Pods-wanya_native-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 6B8FCECC5A16D12132231AAB /* Pods-wanya_native-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -918,7 +918,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EAD91C4E3714CD8CC82F4FA7 /* Pods-wanya_native-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 519C93C2353D7BD3AF1899A5 /* Pods-wanya_native-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
