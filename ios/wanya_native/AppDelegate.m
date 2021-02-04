@@ -8,13 +8,13 @@
 #import <SDWebImageWebPCoder/SDImageWebPCoder.h>
 #import "RNUMConfigure.h"
 #import "UMAnalyticsModule.h"
-#import "UMPushModule.h"
+//#import "UMPushModule.h"
 #import <UMAnalytics/MobClick.h>
 #import "RNBootSplash.h" // <- add the header import
 #import <CodePush/CodePush.h>
 #import <UserNotifications/UserNotifications.h>
-#import <RNCPushNotificationIOS.h>
-#import <UMPush/UMessage.h>
+//#import <RNCPushNotificationIOS.h>
+//#import <UMPush/UMessage.h>
 #import <RCTJPushModule.h>
 
 #ifdef FB_SONARKIT_ENABLED
@@ -41,8 +41,8 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
-@interface AppDelegate() <UNUserNotificationCenterDelegate>
-@end
+//@interface AppDelegate() <UNUserNotificationCenterDelegate>
+//@end
 
 @implementation AppDelegate
 
