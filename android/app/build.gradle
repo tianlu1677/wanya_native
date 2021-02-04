@@ -141,6 +141,11 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "0.0.13"
+
+        manifestPlaceholders = [
+              JPUSH_APPKEY: "7cd75000d5932000b3d4ca59", //在此替换你的APPKey
+              JPUSH_CHANNEL: "release" //在此替换你的channel
+        ]
     }
     splits {
         abi {
@@ -211,12 +216,15 @@ dependencies {
 
     implementation "com.umeng.umsdk:analytics:8.1.3"
 
-    implementation 'com.umeng.umsdk:xiaomi-push:3.7.0'
-    implementation 'com.umeng.umsdk:xiaomi-umengaccs:1.1.4'
+//     implementation 'com.umeng.umsdk:xiaomi-push:3.7.0'
+//     implementation 'com.umeng.umsdk:xiaomi-umengaccs:1.1.4'
+//
+//     implementation 'com.umeng.umsdk:huawei-basetb:2.6.3.306'
+//     implementation 'com.umeng.umsdk:huawei-pushtb:2.6.3.306'
+//     implementation 'com.umeng.umsdk:huawei-umengaccs:1.2.4'
 
-    implementation 'com.umeng.umsdk:huawei-basetb:2.6.3.306'
-    implementation 'com.umeng.umsdk:huawei-pushtb:2.6.3.306'
-    implementation 'com.umeng.umsdk:huawei-umengaccs:1.2.4'
+    implementation project(':jpush-react-native')  // 添加 jpush 依赖
+    implementation project(':jcore-react-native')  // 添加 jcore 依赖
 
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
@@ -226,7 +234,7 @@ dependencies {
     compile project(':react-native-video')
     implementation "androidx.appcompat:appcompat:1.0.0"
 
-    compile project(':push')
+//     compile project(':push')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

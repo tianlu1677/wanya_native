@@ -19,13 +19,15 @@ import com.brentvatne.react.ReactVideoPackage;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.commonsdk.UMConfigure;
 
-import com.umeng.message.MsgConstant;
-import com.umeng.message.PushAgent;
-import com.umeng.message.UTrack;
-import com.umeng.message.UmengMessageHandler;
-import com.umeng.message.entity.UMessage;
-import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.IUmengRegisterCallback;
+import cn.jiguang.plugins.push.JPushModule;
+
+// import com.umeng.message.MsgConstant;
+// import com.umeng.message.PushAgent;
+// import com.umeng.message.UTrack;
+// import com.umeng.message.UmengMessageHandler;
+// import com.umeng.message.entity.UMessage;
+// import com.umeng.message.UmengNotificationClickHandler;
+// import com.umeng.message.IUmengRegisterCallback;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -48,6 +50,8 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new DplusReactPackage()); // 增加这行
           packages.add(new ReactVideoPackage()); // 增加这行
 
+//           packages.add(new JPushPackage());
+
           return packages;
         }
 
@@ -68,8 +72,9 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
+    JPushModule.registerActivityLifecycle(this);
     UMConfigure.setLogEnabled(true);
-    RNUMConfigure.init(this, "5fd0a85dbed37e4506c7b5a8", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "5fd0a85dbed37e4506c7b5a8");
+    RNUMConfigure.init(this, "5fd0a85dbed37e4506c7b5a8", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
   }
 
   /**

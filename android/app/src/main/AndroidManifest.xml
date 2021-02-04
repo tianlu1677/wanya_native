@@ -62,7 +62,14 @@
             android:taskAffinity="com.vanyah.androidnative"
             android:launchMode="singleTask"
         />
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+        <meta-data
+                android:name="JPUSH_CHANNEL"
+                android:value="${JPUSH_CHANNEL}" />
+        <meta-data
+                android:name="JPUSH_APPKEY"
+                android:value="${JPUSH_APPKEY}" />
+        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 
 </manifest>

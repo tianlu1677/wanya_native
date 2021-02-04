@@ -175,12 +175,15 @@ class App extends Component {
       console.log('onNotification:', notification);
       if (notification.notificationEventType === 'notificationOpened') {
         const auth_token = await Helper.getData('auth_token');
-        if (!auth_token) {
+        if (!auth_token || !notification.extras) {
           return;
         }
         let screen = '';
         let params = '';
         const extras = notification.extras;
+        if(!extras) {
+          return;
+        }
         params = extras.params;
         screen = extras.screen;
         if (!params || !screen) {
