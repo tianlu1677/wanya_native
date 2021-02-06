@@ -4,6 +4,7 @@ import request from './request';
 export async function syncDeviceToken(
   data = {platform: '', device_token: '', app_system_info: ''}
 ) {
+  console.log('data', data)
   const res = await request({
     url: `/api/v1/app_devices`,
     method: 'POST',
