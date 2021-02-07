@@ -80,6 +80,8 @@ import SharePage from '@/pages/shares/share_page'; //分享
 
 // 投诉
 import Report from '@/pages/reports/report';
+// clubhouse
+import ClubhouseIndex from '@/pages/clubhouse/club';
 
 // 公用页面
 import ChooseCity from '@/components/List/choose-city'; //选择城市
@@ -193,6 +195,18 @@ const spaceRouter = [
     },
   },
 ];
+
+const clubRouter = [
+  {
+    name: 'ClubhouseIndex',
+    component: ClubhouseIndex,
+    safeArea: false,
+    barColor: 'dark',
+    options: {
+      title: 'clubhouse',
+    },
+  },
+]
 
 const nodeRouter = [
   {
@@ -391,6 +405,7 @@ export const routers = [
   ...commonRouter,
   ...searchRouter,
   ...authRouter,
+  ...clubRouter,
   {
     name: 'RelatedAccounts',
     component: RelatedAccounts,

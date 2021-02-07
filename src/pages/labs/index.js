@@ -70,6 +70,10 @@ const LabIndex = props => {
           <Pressable onPress={openSettings}>
             <Text style={styles.text}>去设置权限页面</Text>
           </Pressable>
+
+          <Pressable onPress={() => navigation.navigate('ClubhouseIndex', { })}>
+            <Text style={styles.text}>去clubhouse</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </View>

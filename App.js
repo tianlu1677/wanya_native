@@ -140,7 +140,7 @@ class App extends Component {
     JPush.init();
     JPush.setLoggerEnable(true);
     JPush.initCrashHandler();
-    JPush.setBadge({badge: 0, appBadge: 1});
+    JPush.setBadge({badge: 0, appBadge: 0});
     JPush.getRegistrationID(this.onRegister);
 
     JPush.addConnectEventListener(result => {
