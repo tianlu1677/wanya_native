@@ -2,6 +2,8 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, Pressable, Button, FlatList, ScrollView, View, Text} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import GetLocation from '@/components/GetLocation';
+import ShareUtil from '@/utils/umeng_share_util';
+import AnalyticsUtil from '@/utils/umeng_analytics_util';
 // import PushNotification from 'react-native-push-notification';
 import Helper from '@/utils/helper';
 import {
@@ -34,6 +36,81 @@ const LabIndex = props => {
     //   setNotifyPermission(res);
     // });
   };
+
+  const shareQQ = () => {
+    console.log('shareQQ,');
+    try{
+      ShareUtil.share(
+        'sssss',
+        'http://dev.umeng.com/images/tab2_1.png',
+        'http://www.umeng.com/',
+        'title',
+        0,
+        (code, message) => {
+          console.log('code', code, message);
+          // this.setState({result:message});
+        }
+      );
+    } catch (e){
+      console.log('qq', e)
+    }
+
+  };
+
+  const shareQQZone = () => {
+    console.log('shareQQZone,');
+    try{
+      ShareUtil.share(
+        'sssss',
+        'http://dev.umeng.com/images/tab2_1.png',
+        'http://www.umeng.com/',
+        'title',
+        4,
+        (code, message) => {
+          console.log('code', code, message);
+          // this.setState({result:message});
+        }
+      );
+    } catch (e) {
+      console.log('eerr', e)
+    }
+
+
+  };
+
+  const shareWeibo = () => {
+    console.log('shareWeibo');
+    try{
+    ShareUtil.share(
+      'sssss',
+      'http://xinxuefile.meirixinxue.com/assets/2021/b94d2a89-54c5-47a7-8cfe-b70850ab538c.jpg',
+      'http://www.umeng.com/',
+      'title',
+      1,
+      (code, message) => {
+        console.log('code,', code, message);
+        // this.setState({result: message});
+      }
+    );
+    }catch (e) {
+      console.log('error shareWeibo', e)
+    }
+
+  };
+
+  const loginQQ = () => {
+    console.log('shareWeibo');
+    ShareUtil.auth(0, res => {
+      console.log('res', res)
+    });
+  };
+
+  const clickAna = () => {
+    console.log('clickAna')
+    AnalyticsUtil.onEvent('test');
+    // AnalyticsUtil.onEventObject('test', {a: 1});
+  }
+
 
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -71,8 +148,27 @@ const LabIndex = props => {
             <Text style={styles.text}>去设置权限页面</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('ClubhouseIndex', { })}>
+          <Pressable onPress={() => navigation.navigate('ClubhouseIndex', {})}>
             <Text style={styles.text}>去clubhouse</Text>
+          </Pressable>
+
+          <Pressable onPress={() => shareQQ()}>
+            <Text style={styles.text}>分享QQ</Text>
+          </Pressable>
+          <Pressable onPress={() => shareWeibo()}>
+            <Text style={styles.text}>分享微博</Text>
+          </Pressable>
+
+          <Pressable onPress={() => shareQQZone()}>
+            <Text style={styles.text}>分享QQ空间</Text>
+          </Pressable>
+
+          <Pressable onPress={() => loginQQ()}>
+            <Text style={styles.text}>QQ登录</Text>
+          </Pressable>
+
+          <Pressable onPress={() => clickAna()}>
+            <Text style={styles.text}>点击统计</Text>
           </Pressable>
         </View>
       </ScrollView>
