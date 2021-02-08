@@ -77,6 +77,10 @@ public class MainApplication extends Application implements ReactApplication {
     RNUMConfigure.init(this, "5fd0a85dbed37e4506c7b5a8", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
   }
 
+    {
+         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
+         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+    }
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
    * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
