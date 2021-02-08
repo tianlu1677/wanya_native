@@ -23,7 +23,7 @@ import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
 import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
 import NetworkErrorModal from '@/components/NetworkErrorModal';
-import PushUtil from '@/utils/umeng_push_util';
+// import PushUtil from '@/utils/umeng_push_util';
 import {init, Geolocation} from 'react-native-amap-geolocation';
 import * as RootNavigation from '@/navigator/root-navigation';
 import * as action from '@/redux/constants';
@@ -90,12 +90,12 @@ class App extends Component {
     //   // Alert.alert(`${code} ${remain}`)
     // })
 
-    if (Platform.OS === 'ios') {
-      PushUtil.addTag('normal', (code, remain) => {
-        // console.log('code1', code, remain);
-        // Alert.alert(`${code} ${remain}`)
-      });
-    }
+    // if (Platform.OS === 'ios') {
+    //   PushUtil.addTag('normal', (code, remain) => {
+    //     // console.log('code1', code, remain);
+    //     // Alert.alert(`${code} ${remain}`)
+    //   });
+    // }
 
     // PushUtil.addAlias('dddd', 'login_user',(code) =>{
     //   console.log('alias', code)
