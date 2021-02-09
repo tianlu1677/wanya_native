@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useEffect, useRef} from 'react';
-import {StyleSheet, View, TouchableOpacity, Image, Text, Pressable} from 'react-native';
+import {StyleSheet, View, Linking, Image, Text, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Modal, {
   ModalTitle,
@@ -8,13 +8,16 @@ import Modal, {
   BottomModal,
   ModalContent,
 } from 'react-native-modals';
+import ShareUtil from '@/utils/umeng_share_util';
 import * as WeChat from 'react-native-wechat-lib';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import {dispatchShareItem} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
+import Helper from '@/utils/helper';
 import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
 import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
 import {DefaultLog} from '@/utils/default-image';
+import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 
 const ShareMultiModal = () => {
@@ -49,15 +52,58 @@ const ShareMultiModal = () => {
     }
   };
 
-  const shareQQ = () => {};
+  const shareQQ = () => {
+    ShareUtil.share(
+      'sssss',
+      'http://dev.umeng.com/images/tab2_1.png',
+      'http://www.umeng.com/',
+      'title',
+      0,
+      (code, message) => {
+        console.log('code', code, message);
+        // this.setState({result:message});
+      }
+    );
+  };
 
-  const shareQQZone = () => {};
+  const shareQQZone = () => {
+    ShareUtil.share(
+      'sssss',
+      'http://dev.umeng.com/images/tab2_1.png',
+      'http://www.umeng.com/',
+      'title',
+      4,
+      (code, message) => {
+        console.log('code', code, message);
+        // this.setState({result:message});
+      }
+    );
+  };
 
-  const shareWeibo = () => {};
+  const shareWeibo = () => {
+    ShareUtil.share(
+      'sssss',
+      'http://xinxuefile.meirixinxue.com/assets/2021/b94d2a89-54c5-47a7-8cfe-b70850ab538c.jpg',
+      'http://www.umeng.com/',
+      'title',
+      1,
+      (code, message) => {
+        console.log('code,', code, message);
+        // this.setState({result: message});
+      }
+    );
+  };
 
-  const copyLink = () => {};
+  const copyLink = () => {
+    const message = 'https://baidu.com'
+    Helper.setClipboard(message);
+    Toast.showError(`已复制`);
+  };
 
-  const goWebsite = () => {};
+  const goWebsite = () => {
+    const websiteUrl = 'https://baidu.com';
+    Linking.openURL(websiteUrl);
+  };
 
   return (
     <BottomModal
@@ -107,11 +153,11 @@ const ShareMultiModal = () => {
             <Text style={styles.shareText}>生成图片</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareWechatFriend}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg source={ShareFriendImg} style={styles.shareImg} />
             <Text style={styles.shareText}>微信</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareWechatTimeline}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg source={ShareTimeImg} style={styles.shareImg} />
             <Text style={styles.shareText}>朋友圈</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareQQ}>
