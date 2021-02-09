@@ -6,8 +6,8 @@
 //  Copyright (c) 2016年 tendcloud. All rights reserved.
 //
 
-#import <UMAnalytics/MobClick.h>
 
+#import <UMCommon/MobClick.h>
 #import "UMAnalyticsModule.h"
 #import <React/RCTConvert.h>
 #import <React/RCTEventDispatcher.h>

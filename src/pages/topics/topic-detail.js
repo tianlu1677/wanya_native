@@ -28,6 +28,7 @@ import RenderLongVideo from './topic-detail-component/render-long-video';
 import RenderVideo from './topic-detail-component/render-video';
 import RenderLink from './topic-detail-component/render-link';
 import RenderText from './topic-detail-component/render-text';
+import ShareMultiModal from '@/components/ShareMultiModal';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -175,6 +176,8 @@ const TopicDetail = ({navigation, route}) => {
         showActionSheet={showActionSheet}
         changeModal={() => setShowActionSheet(false)}
       />
+
+      <ShareMultiModal />
     </KeyboardAvoidingView>
   ) : (
     <Loading />
