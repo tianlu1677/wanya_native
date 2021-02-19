@@ -177,7 +177,10 @@ const TopicDetail = ({navigation, route}) => {
         changeModal={() => setShowActionSheet(false)}
       />
 
-      <ShareMultiModal />
+      <ShareMultiModal
+        item_type={'Topic'}
+        item_id={detail.id}
+      />
     </KeyboardAvoidingView>
   ) : (
     <Loading />

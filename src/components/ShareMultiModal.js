@@ -12,80 +12,77 @@ import ShareUtil from '@/utils/umeng_share_util';
 import * as WeChat from 'react-native-wechat-lib';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import {dispatchShareItem} from '@/redux/actions';
+import {getShareContent} from '@/api/asset_api';
 import FastImg from '@/components/FastImg';
 import Helper from '@/utils/helper';
 import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
 import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
 import {DefaultLog} from '@/utils/default-image';
+
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 
-const ShareMultiModal = () => {
+const ShareMultiModal = ({item_type, item_id, navigation}) => {
   const [visible, setVisible] = useState(false);
+  const [share_content, setShareContent] = useState({});
   const dispatch = useDispatch();
+
   const shareWechatFriend = e => {
     // e.stopPropagation();
-    const content = {scene: 0};
-    if (content.type === 'link') {
+    if (share_content.content_style === 'link') {
+      const {thumb_url, title, description, website_url} = share_content.wechat;
       WeChat.shareWebpage({
-        ...content,
-        description: '顽鸦APP，新青年文化庇护所',
+        title: title,
+        thumbImageUrl: thumb_url,
+        webpageUrl: website_url,
+        description: description,
         scene: 0,
       });
     } else {
-      WeChat.shareMiniProgram(content);
+      const {thumb_url, title, description, website_url, path} = share_content.miniwechat;
+      WeChat.shareMiniProgram({
+        title: title,
+        userName: 'gh_c2b50fe8e928',
+        webpageUrl: website_url,
+        thumbImageUrl: thumb_url,
+        path: path,
+        scene: 0,
+      });
     }
   };
   const shareWechatTimeline = () => {
-    try {
-      const content = {scene: 0};
-      if (content.type === 'link') {
-        WeChat.shareWebpage({
-          ...content,
-          scene: 1,
-        });
-      } else {
-        WeChat.shareMiniProgram(content);
-      }
-    } catch (e) {
-      console.log('e', e);
-    }
+    const {thumb_url, title, description, website_url} = share_content.wechat;
+    WeChat.shareWebpage({
+      title: title,
+      thumbImageUrl: thumb_url,
+      webpageUrl: website_url,
+      description: description,
+      scene: 1,
+    });
   };
 
   const shareQQ = () => {
-    ShareUtil.share(
-      'sssss',
-      'http://dev.umeng.com/images/tab2_1.png',
-      'http://www.umeng.com/',
-      'title',
-      0,
-      (code, message) => {
-        console.log('code', code, message);
-        // this.setState({result:message});
-      }
-    );
+    const {thumb_url, title, description, website_url} = share_content.qqzone;
+    ShareUtil.share(description, thumb_url, website_url, title, 0, (code, message) => {
+      console.log('code', code, message);
+    });
   };
 
   const shareQQZone = () => {
-    ShareUtil.share(
-      'sssss',
-      'http://dev.umeng.com/images/tab2_1.png',
-      'http://www.umeng.com/',
-      'title',
-      4,
-      (code, message) => {
-        console.log('code', code, message);
-        // this.setState({result:message});
-      }
-    );
+    const {thumb_url, title, description, website_url} = share_content.qqzone;
+    ShareUtil.share(description, thumb_url, website_url, title, 4, (code, message) => {
+      console.log('code', code, message);
+      // this.setState({result:message});
+    });
   };
 
   const shareWeibo = () => {
+    const {thumb_url, title, description, website_url} = share_content.weibo;
     ShareUtil.share(
-      'sssss',
-      'http://xinxuefile.meirixinxue.com/assets/2021/b94d2a89-54c5-47a7-8cfe-b70850ab538c.jpg',
-      'http://www.umeng.com/',
-      'title',
+      `// ${description}`,
+      'https://file.meirixinxue.com/assets/2021/ead46ba6-189d-4ef8-9357-748b5aae4d21.jpg',
+      `// ${website_url}`,
+      `// ${description}`,
       1,
       (code, message) => {
         console.log('code,', code, message);
@@ -95,15 +92,26 @@ const ShareMultiModal = () => {
   };
 
   const copyLink = () => {
-    const message = 'https://baidu.com'
-    Helper.setClipboard(message);
+    const websiteUrl = share_content.gowebsite.website_url;
+    Helper.setClipboard(websiteUrl);
     Toast.showError(`已复制`);
   };
 
   const goWebsite = () => {
-    const websiteUrl = 'https://baidu.com';
+    const websiteUrl = share_content.gowebsite.website_url;
     Linking.openURL(websiteUrl);
   };
+
+  const getShare = async () => {
+    const content = await getShareContent({item_type: item_type, item_id: item_id});
+    console.log('item_type', content);
+    setShareContent(content);
+  };
+
+  useEffect(() => {
+    // console.log('item_type', item_type, item_id);
+    getShare();
+  }, [item_type, item_id]);
 
   return (
     <BottomModal
@@ -149,27 +157,43 @@ const ShareMultiModal = () => {
             flexDirection: 'row',
           }}>
           <Pressable style={styles.shareWrap}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg
+              source={require('../assets/shareimages/goimage.png')}
+              style={styles.shareImg}
+            />
             <Text style={styles.shareText}>生成图片</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareWechatFriend}>
-            <FastImg source={ShareFriendImg} style={styles.shareImg} />
+            <FastImg
+              source={require('../assets/shareimages/wechat.png')}
+              style={{...styles.shareImg, width: 30}}
+            />
             <Text style={styles.shareText}>微信</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareWechatTimeline}>
-            <FastImg source={ShareTimeImg} style={styles.shareImg} />
+            <FastImg
+              source={require('../assets/shareimages/wechattimeline.png')}
+              style={styles.shareImg}
+            />
             <Text style={styles.shareText}>朋友圈</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareQQ}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg
+              source={require('../assets/shareimages/QQ.png')}
+              style={{...styles.shareImg, width: 23}}
+            />
             <Text style={styles.shareText}>QQ</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareQQZone}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg source={require('../assets/shareimages/QQZone.png')} style={styles.shareImg} />
             <Text style={styles.shareText}>QQ空间</Text>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareWeibo}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg
+              source={require('../assets/shareimages/weibo.png')}
+              mode={'cover'}
+              style={{...styles.shareImg, width: 32}}
+            />
             <Text style={styles.shareText}>微博</Text>
           </Pressable>
         </View>
@@ -183,11 +207,14 @@ const ShareMultiModal = () => {
             flexDirection: 'row',
           }}>
           <Pressable style={styles.secondShareWrap} onPress={copyLink}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg source={require('../assets/shareimages/copy.png')} style={styles.shareImg} />
             <Text style={styles.shareText}>复制链接</Text>
           </Pressable>
           <Pressable style={styles.secondShareWrap} onPress={goWebsite}>
-            <FastImg source={{uri: DefaultLog}} style={styles.shareImg} />
+            <FastImg
+              source={require('../assets/shareimages/website.png')}
+              style={styles.shareImg}
+            />
             <Text style={styles.shareText}>浏览器</Text>
           </Pressable>
         </View>
