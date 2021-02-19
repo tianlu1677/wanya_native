@@ -13,6 +13,7 @@ import {
 } from 'react-native-permissions';
 import {ModalPortal} from 'react-native-modals';
 import Navigation from './src/navigator/index';
+import ShareMultiModal from "@/components/ShareMultiModal"
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
 import RNBootSplash from 'react-native-bootsplash';
@@ -264,7 +265,8 @@ class App extends Component {
               }}
             />
             <ImagePreview />
-            <ShareItem />
+            {/*<ShareItem />*/}
+            <ShareMultiModal />
             <ModalPortal />
           </PersistGate>
         </Provider>

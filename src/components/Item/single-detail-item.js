@@ -5,7 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import {Avator} from '@/components/NodeComponents';
-import {dispatchTopicDetail, dispatchArticleDetail} from '@/redux/actions';
+import {dispatchTopicDetail, dispatchArticleDetail, dispatchShareItem} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
 import {createArticleAction, destroyArticleAction} from '@/api/article_api';
@@ -215,7 +215,9 @@ export const ActionComment = props => {
       props.onShare();
       return;
     }
-    navigation.navigate('SharePage', {item_type: props.type, item_id: props.detail.id});
+
+    const shareContent = {item_type: props.type, item_id: props.detail.id, visible: true};
+    dispatch(dispatchShareItem(shareContent));
   };
 
   useEffect(() => {

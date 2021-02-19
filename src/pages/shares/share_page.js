@@ -13,7 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
@@ -21,25 +21,18 @@ import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
 import {uploadBase64File, getShareUrl} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
 import Loading from '@/components/Loading';
-import ShareTopicContent from "@/components/ShareTopicContent"
-import ShareArticleContent from "@/components/ShareArticleContent"
+import ShareTopicContent from '@/components/ShareTopicContent';
+import ShareArticleContent from '@/components/ShareArticleContent';
+import ShareUtil from '@/utils/umeng_share_util';
 
 const SharePageModal = props => {
-  const defaultShareContent = {
-    account: {},
-    node_name: '',
-    content: '',
-    bg_img_url: '',
-    topic_link: {}
-  };
-  const {route} = props;
-  const item_type = route.params.item_type;
-  const item_id = route.params.item_id;
+  const {item_type, item_id} = props.route.params;
   const [shareUri, setShareUri] = useState('');
-  const [shareContent, setShareContent] = useState({});
   const [loadingView, setLoadingView] = useState(true);
   const topic = useSelector(state => state.topic.topicDetail);
   const article = useSelector(state => state.article.articleDetail);
+
+  // console.log('route.params', route.params)
 
   const [assetable, setAssetable] = useState({
     assetable_type: item_type,
@@ -71,6 +64,10 @@ const SharePageModal = props => {
   };
 
   const takeImg = async () => {
+    if (shareUri) {
+      return;
+    }
+    Toast.showLoading('正在生成分享图片...', {duration: 9000});
     let asset = {};
     await viewShotRef.current.capture().then(async uri => {
       let localUri = await ImgToBase64.getBase64String(uri);
@@ -81,24 +78,16 @@ const SharePageModal = props => {
         assetable_name: assetable.assetable_name || 'app_share_image',
       });
       asset = asset_res;
-      // console.log('assets', asset_res.asset.original_url);
-      // await setShareUri(asset_res.asset.original_url);
     });
-    return asset;
+    setShareUri(asset.original_url);
+    Toast.hide();
   };
 
   const shareFriend = async () => {
-    Toast.showLoading('正在生成分享图片...', {duration: 9000});
-    let share_url = shareUri;
-    if (!share_url || share_url === '') {
-      const asset_res = await takeImg();
-      share_url = asset_res.asset.original_url;
-      Toast.hide();
-    }
-
+    await takeImg();
     WeChat.shareImage(
       {
-        imageUrl: share_url,
+        imageUrl: shareUri,
         scene: 0,
       },
       error => {
@@ -109,16 +98,10 @@ const SharePageModal = props => {
     Toast.hide();
   };
   const shareTimeline = async () => {
-    Toast.showLoading('正在生成分享图片...');
-    let share_url = shareUri;
-    if (!share_url || share_url === '') {
-      const asset_res = await takeImg();
-      share_url = asset_res.asset.original_url;
-      Toast.hide();
-    }
+    await takeImg();
     WeChat.shareImage(
       {
-        imageUrl: share_url,
+        imageUrl: shareUri,
         scene: 1,
       },
       error => {
@@ -129,35 +112,93 @@ const SharePageModal = props => {
     Toast.hide();
   };
 
+  const shareQQ = async () => {
+    await takeImg();
+    ShareUtil.share('', shareUri, '', '', 0, (code, message) => {
+      console.log('code', code, message);
+    });
+  };
+
+  const shareQQZone = async () => {
+    await takeImg();
+    ShareUtil.share('', shareUri, '', '', 4, (code, message) => {
+      console.log('code', code, message);
+      // this.setState({result:message});
+    });
+  };
+
+  const shareWeibo = async () => {
+    await takeImg();
+    ShareUtil.share('xxxx', shareUri, '', '', 1, (code, message) => {
+      console.log('code,', code, message);
+      // this.setState({result: message});
+    });
+  };
+
   return (
     <ModelWrap>
       {loadingView ? <Loading /> : <View />}
       <ScrollView
         style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : 'flex'}}
         showsVerticalScrollIndicator={false}>
-        { item_type === 'Topic' && <ShareTopicContent  topicDetail={topic} viewShotRef={viewShotRef} />}
-        { item_type === 'Article' && <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />}
+        {item_type === 'Topic' && (
+          <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
+        )}
+        {item_type === 'Article' && (
+          <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />
+        )}
       </ScrollView>
-      <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
-        <TouchableOpacity
-          style={{display: 'flex', alignItems: 'center'}}
-          onPress={() => {
-            shareFriend();
-          }}
-          hitSlop={{left: 40, right: 10, top: 20, bottom: 10}}>
-          <FastImg source={ShareFriendImg} style={{width: 28, height: 22}} resizeMode={'contain'} />
-          <ShareText>微信好友</ShareText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{display: 'flex', alignItems: 'center'}}
-          onPress={() => {
-            shareTimeline();
-          }}
-          hitSlop={{left: 10, right: 50, top: 20, bottom: 10}}>
-          <FastImg source={ShareTimeImg} style={{width: 20, height: 20}} />
-          <ShareText>分享朋友圈</ShareText>
-        </TouchableOpacity>
-      </ShareCardView>
+
+      <View style={styles.shareBottomWrap}>
+        <View>
+          <Text style={styles.shareTitle}>分享到</Text>
+        </View>
+        <View style={styles.shareBottom}>
+          <Pressable style={styles.shareWrap} onPress={() => {}}>
+            <FastImg
+              source={require('../../assets/shareimages/goimage.png')}
+              style={styles.shareImg}
+            />
+            <Text style={styles.shareText}>生成图片</Text>
+          </Pressable>
+          <Pressable style={styles.shareWrap} onPress={shareFriend}>
+            <FastImg
+              source={require('../../assets/shareimages/wechat.png')}
+              style={{...styles.shareImg, width: 30}}
+            />
+            <Text style={styles.shareText}>微信</Text>
+          </Pressable>
+          <Pressable style={styles.shareWrap} onPress={shareTimeline}>
+            <FastImg
+              source={require('../../assets/shareimages/wechattimeline.png')}
+              style={styles.shareImg}
+            />
+            <Text style={styles.shareText}>朋友圈</Text>
+          </Pressable>
+          <Pressable style={styles.shareWrap} onPress={shareQQ}>
+            <FastImg
+              source={require('../../assets/shareimages/QQ.png')}
+              style={{...styles.shareImg, width: 23}}
+            />
+            <Text style={styles.shareText}>QQ</Text>
+          </Pressable>
+          <Pressable style={styles.shareWrap} onPress={shareQQZone}>
+            <FastImg
+              source={require('../../assets/shareimages/QQZone.png')}
+              style={styles.shareImg}
+            />
+            <Text style={styles.shareText}>QQ空间</Text>
+          </Pressable>
+          <Pressable style={styles.shareWrap} onPress={shareWeibo}>
+            <FastImg
+              source={require('../../assets/shareimages/weibo.png')}
+              mode={'cover'}
+              style={{...styles.shareImg, width: 32}}
+            />
+            <Text style={styles.shareText}>微博</Text>
+          </Pressable>
+        </View>
+      </View>
     </ModelWrap>
   );
 };
@@ -173,6 +214,53 @@ const styles = StyleSheet.create({
     right: 0,
     height: 300,
     width: '100%',
+  },
+  shareBottomWrap: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'black',
+    height: 110,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  shareTitle: {
+    color: '#9C9C9C',
+    fontWeight: '400',
+    fontSize: 13,
+    textAlign: 'center',
+    paddingTop: 10,
+  },
+  shareBottom: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: -5,
+    paddingHorizontal: 0,
+  },
+
+  shareWrap: {
+    marginTop: 20,
+    alignItems: 'center',
+    width: SCREEN_WIDTH / 6,
+  },
+  secondShareWrap: {
+    alignItems: 'center',
+    width: SCREEN_WIDTH / 6,
+    // backgroundColor: 'red',
+    marginTop: 0,
+  },
+  shareImg: {
+    width: 25,
+    height: 25,
+  },
+  shareText: {
+    marginTop: 10,
+    fontSize: 10,
+    fontWeight: '400',
+    color: '#9C9C9C',
+    lineHeight: 14,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
   },
 });
 

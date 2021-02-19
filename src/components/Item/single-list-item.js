@@ -179,41 +179,23 @@ export const Bottom = props => {
 
   const onShare = () => {
     let shareOptions = {
-      title: '顽鸦',
-      userName: 'gh_c2b50fe8e928',
-      webpageUrl: 'https://www.vanyah.cn',
-      path: '',
-      thumbImageUrl: data.wx_share_image_url,
-      scene: 0,
+      item_type: '',
+      item_id: '',
+      visible: true
     };
 
     switch (props.type) {
       case 'article':
         shareOptions = {
-          ...shareOptions,
-          title: data.plain_content,
-          path: '/pages/articles/article-detail?article_id=' + data.id,
-          thumbImageUrl: data.wx_share_image_url,
+          item_type: 'Article',
+          item_id: data.id
         };
         break;
       case 'topic':
         shareOptions = {
-          ...shareOptions,
-          title: data.plain_content,
-          path: '/pages/topics/topic-detail?topic_id=' + data.id,
-          thumbImageUrl: data.wx_share_image_url,
-          type: data.content_style,
-          topic_link: data.topic_link,
+          item_type: 'Topic',
+          item_id: data.id
         };
-
-        if (data.content_style === 'link' && data.topic_link) {
-          shareOptions = {
-            ...shareOptions,
-            title: data.topic_link?.title || data.topic_link.raw_link,
-            thumbImageUrl: data.topic_link.cover_url,
-            webpageUrl: data.topic_link.raw_link,
-          };
-        }
         break;
       default:
         shareOptions;

@@ -10,10 +10,8 @@ const defaultState = {
   },
   shareContent: {
     visible: false,
-    title: '',
-    desc: '',
-    thumbImageUrl: '',
-    path: '',
+    item_id: '',
+    item_type: '',
   },
   commentTopic: {content: ''},
   location: {chooseCity: ''},

@@ -15,20 +15,18 @@ import {dispatchShareItem} from '@/redux/actions';
 import {getShareContent} from '@/api/asset_api';
 import FastImg from '@/components/FastImg';
 import Helper from '@/utils/helper';
-import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
-import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
-import {DefaultLog} from '@/utils/default-image';
-
 import Toast from '@/components/Toast';
+import {useNavigation} from '@react-navigation/native';
+import * as RootNavigation from '@/navigator/root-navigation';
 import IconFont from '@/iconfont';
 
-const ShareMultiModal = ({item_type, item_id, navigation}) => {
-  const [visible, setVisible] = useState(false);
-  const [share_content, setShareContent] = useState({});
+const ShareMultiModal = () => {
   const dispatch = useDispatch();
+  let shareContent = useSelector(state => state.home.shareContent);
+  const {item_type, item_id} = shareContent;
+  const [share_content, setShareContent] = useState({});
 
   const shareWechatFriend = e => {
-    // e.stopPropagation();
     if (share_content.content_style === 'link') {
       const {thumb_url, title, description, website_url} = share_content.wechat;
       WeChat.shareWebpage({
@@ -79,10 +77,10 @@ const ShareMultiModal = ({item_type, item_id, navigation}) => {
   const shareWeibo = () => {
     const {thumb_url, title, description, website_url} = share_content.weibo;
     ShareUtil.share(
-      `// ${description}`,
-      'https://file.meirixinxue.com/assets/2021/ead46ba6-189d-4ef8-9357-748b5aae4d21.jpg',
-      `// ${website_url}`,
-      `// ${description}`,
+      `${description}`,
+      thumb_url,
+      '',
+      '',
       1,
       (code, message) => {
         console.log('code,', code, message);
@@ -108,8 +106,21 @@ const ShareMultiModal = ({item_type, item_id, navigation}) => {
     setShareContent(content);
   };
 
+  const closeModal = () => {
+    dispatch(dispatchShareItem({...shareContent, visible: false}));
+  };
+  // 去生成图片
+  const goGenerateImage = () => {
+    if (item_type.toLowerCase() === 'topic') {
+      RootNavigation.push('SharePage', {item_type: 'Topic', item_id: item_id});
+    }
+    if (item_type.toLowerCase() === 'article') {
+      RootNavigation.push('SharePage', {item_type: 'Article', item_id: item_id});
+    }
+    closeModal()
+  };
+
   useEffect(() => {
-    // console.log('item_type', item_type, item_id);
     getShare();
   }, [item_type, item_id]);
 
@@ -118,17 +129,13 @@ const ShareMultiModal = ({item_type, item_id, navigation}) => {
       height={0.4}
       width={1}
       rounded
-      useNativeDriver={false}
+      useNativeDriver={true}
       containerStyle={{zIndex: 10000, backgroundColor: 'red'}}
-      modalStyle={
-        {
-          // backgroundColor: '#F8F8F8',
-        }
-      }
+      modalStyle={{}}
       overlayOpacity={0.3}
-      visible={true}
-      onTouchOutside={() => setVisible(false)}
-      onSwipeOut={() => setVisible(false)}
+      visible={shareContent.visible}
+      onTouchOutside={closeModal}
+      onSwipeOut={closeModal}
       modalTitle={
         <ModalTitle
           hasTitleBar={false}
@@ -143,7 +150,7 @@ const ShareMultiModal = ({item_type, item_id, navigation}) => {
             text="取消"
             style={{height: 50, lineHeight: 45}}
             textStyle={{fontSize: 15, color: '#9C9C9C', fontWeight: '400'}}
-            onPress={() => {}}
+            onPress={closeModal}
           />
         </ModalFooter>
       }>
@@ -156,7 +163,7 @@ const ShareMultiModal = ({item_type, item_id, navigation}) => {
             flex: 1,
             flexDirection: 'row',
           }}>
-          <Pressable style={styles.shareWrap}>
+          <Pressable style={styles.shareWrap} onPress={goGenerateImage}>
             <FastImg
               source={require('../assets/shareimages/goimage.png')}
               style={styles.shareImg}
