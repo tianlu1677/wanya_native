@@ -44,7 +44,6 @@ const codePushOptions = {
 // https://github.com/react-native-community/react-native-device-info#installation
 import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
-import ShareItem from '@/components/ShareItem';
 import PolicyModal from '@/components/PolicyModal';
 import Toast from '@/components/Toast';
 
@@ -265,7 +264,6 @@ class App extends Component {
               }}
             />
             <ImagePreview />
-            {/*<ShareItem />*/}
             <ShareMultiModal />
             <ModalPortal />
           </PersistGate>

@@ -19,9 +19,9 @@ import Toast from '@/components/Toast';
 import {uploadBase64File, getShareUrl, getShareContent} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
 import Loading from '@/components/Loading';
-import ShareTopicContent from '@/components/ShareTopicContent';
-import ShareArticleContent from '@/components/ShareArticleContent';
-import ShareInviteContent from '@/components/ShareInviteContent';
+import ShareTopicContent from '@/pages/shares/components/ShareTopicContent';
+import ShareArticleContent from '@/pages/shares/components/ShareArticleContent';
+import ShareInviteContent from '@/pages/shares/components/ShareInviteContent';
 import ShareUtil from '@/utils/umeng_share_util';
 import CameraRoll from '@react-native-community/cameraroll';
 import GetStorage from '@/components/GetStorage';
@@ -67,7 +67,7 @@ const SharePageModal = props => {
   };
   // 加载分享的文章/帖子/
   const loadInitData = async () => {
-    if (!topic && item_type === 'Topic') {
+    if (item_type === 'Topic') {
       const res = await getTopic(item_id);
       if (res.data.status === 404) {
         Toast.show('该帖子已删除');
@@ -77,7 +77,7 @@ const SharePageModal = props => {
       }
     }
 
-    if (!article && item_type === 'Article') {
+    if (item_type === 'Article') {
       const res = await getArticle(item_id);
       if (res.data.status === 404) {
         Toast.show('该帖子已删除');
