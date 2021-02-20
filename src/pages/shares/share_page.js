@@ -25,12 +25,19 @@ import ShareInviteContent from '@/components/ShareInviteContent';
 import ShareUtil from '@/utils/umeng_share_util';
 import CameraRoll from '@react-native-community/cameraroll';
 import GetStorage from '@/components/GetStorage';
+import {createTopicAction, getTopic} from '@/api/topic_api';
+import {dispatchArticleDetail, dispatchTopicDetail} from '@/redux/actions';
+import {getArticle} from '@/api/article_api';
 
 const SharePageModal = props => {
+  const dispatch = useDispatch();
+  const viewShotRef = useRef(null);
+
   const {item_type, item_id} = props.route.params;
   const [shareUri, setShareUri] = useState('');
   const [share_content, setShareContent] = useState({});
   const [loadingView, setLoadingView] = useState(true);
+
   const topic = useSelector(state => state.topic.topicDetail);
   const article = useSelector(state => state.article.articleDetail);
 
@@ -39,16 +46,15 @@ const SharePageModal = props => {
     assetable_id: item_id,
     assetable_name: 'app_share_image',
   });
-  const viewShotRef = useRef(null);
 
   useEffect(() => {
     loadShareData();
-
   }, []);
 
   useEffect(() => {
+    loadInitData();
     loadRemoteShareUrl();
-    getShare()
+    getShare();
   }, [item_type, item_id]);
 
   // 加载已经生过的图片
@@ -60,6 +66,27 @@ const SharePageModal = props => {
     }
   };
   // 加载分享的文章/帖子/
+  const loadInitData = async () => {
+    if (!topic && item_type === 'Topic') {
+      const res = await getTopic(item_id);
+      if (res.data.status === 404) {
+        Toast.show('该帖子已删除');
+        // navigation.goBack();
+      } else {
+        dispatch(dispatchTopicDetail(res.data.topic));
+      }
+    }
+
+    if (!article && item_type === 'Article') {
+      const res = await getArticle(item_id);
+      if (res.data.status === 404) {
+        Toast.show('该帖子已删除');
+        // navigation.goBack();
+      } else {
+        dispatch(dispatchArticleDetail(res.data.article));
+      }
+    }
+  };
 
   // 加载分享的相关设置
   const getShare = async () => {
@@ -67,8 +94,8 @@ const SharePageModal = props => {
       const content = await getShareContent({item_type: item_type, item_id: item_id});
       console.log('item_type', content);
       setShareContent(content);
-      if(content.download_img_url) {
-        setShareUri(content.download_img_url)
+      if (content.download_img_url) {
+        setShareUri(content.download_img_url);
       }
     }
   };
@@ -162,23 +189,22 @@ const SharePageModal = props => {
 
   return (
     <ModelWrap>
-      {loadingView ? <Loading /> : <View />}
-      <ScrollView
-        style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : 'flex'}}
-        showsVerticalScrollIndicator={false}>
-        {item_type === 'Topic' && (
-          <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
-        )}
-        {item_type === 'Article' && (
-          <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />
-        )}
+      {loadingView ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : 'flex'}}
+          showsVerticalScrollIndicator={false}>
+          {item_type === 'Topic' && (
+            <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
+          )}
+          {item_type === 'Article' && (
+            <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />
+          )}
 
-        {item_type === 'Account' && (
-          <ShareInviteContent
-            imgUrl={shareUri}
-          />
-        )}
-      </ScrollView>
+          {item_type === 'Account' && <ShareInviteContent imgUrl={shareUri} />}
+        </ScrollView>
+      )}
 
       <View style={styles.shareBottomWrap}>
         <View>
