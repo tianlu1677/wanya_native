@@ -24,6 +24,9 @@ import Loading from '@/components/Loading';
 import ShareTopicContent from '@/components/ShareTopicContent';
 import ShareArticleContent from '@/components/ShareArticleContent';
 import ShareUtil from '@/utils/umeng_share_util';
+import CameraRoll from '@react-native-community/cameraroll';
+import GetStorage from '@/components/GetStorage';
+import GetLocation from '@/components/GetLocation';
 
 const SharePageModal = props => {
   const {item_type, item_id} = props.route.params;
@@ -135,6 +138,16 @@ const SharePageModal = props => {
     });
   };
 
+  const savePhoto = async (had_permission) => {
+    if (had_permission) {
+      await takeImg();
+      CameraRoll.save(shareUri, {type: 'photo'}).then(res => {
+        console.log('res', res);
+        Toast.showError('已存储到相册');
+      });
+    }
+  };
+
   return (
     <ModelWrap>
       {loadingView ? <Loading /> : <View />}
@@ -154,12 +167,14 @@ const SharePageModal = props => {
           <Text style={styles.shareTitle}>分享到</Text>
         </View>
         <View style={styles.shareBottom}>
-          <Pressable style={styles.shareWrap} onPress={() => {}}>
-            <FastImg
-              source={require('../../assets/shareimages/goimage.png')}
-              style={styles.shareImg}
-            />
-            <Text style={styles.shareText}>生成图片</Text>
+          <Pressable style={styles.shareWrap}>
+            <GetStorage handleClick={savePhoto}>
+              <FastImg
+                source={require('../../assets/shareimages/goimage.png')}
+                style={styles.shareImg}
+              />
+              <Text style={styles.shareText}>生成图片</Text>
+            </GetStorage>
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareFriend}>
             <FastImg
@@ -222,6 +237,8 @@ const styles = StyleSheet.create({
     height: 110,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    paddingLeft: 20,
+    paddingRight: 20
   },
   shareTitle: {
     color: '#9C9C9C',
@@ -240,7 +257,7 @@ const styles = StyleSheet.create({
   shareWrap: {
     marginTop: 20,
     alignItems: 'center',
-    width: SCREEN_WIDTH / 6,
+    width: (SCREEN_WIDTH - 40) / 6,
   },
   secondShareWrap: {
     alignItems: 'center',
