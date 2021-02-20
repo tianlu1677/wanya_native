@@ -16,26 +16,23 @@ import styled from 'styled-components/native';
 import {BOTTOM_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
-import ShareFriendImg from '@/assets/images/sharewchatfrient.png';
-import ShareTimeImg from '@/assets/images/sharewechattimeline.png';
-import {uploadBase64File, getShareUrl} from '@/api/asset_api';
+import {uploadBase64File, getShareUrl, getShareContent} from '@/api/asset_api';
 import ImgToBase64 from 'react-native-image-base64';
 import Loading from '@/components/Loading';
 import ShareTopicContent from '@/components/ShareTopicContent';
 import ShareArticleContent from '@/components/ShareArticleContent';
+import ShareInviteContent from '@/components/ShareInviteContent';
 import ShareUtil from '@/utils/umeng_share_util';
 import CameraRoll from '@react-native-community/cameraroll';
 import GetStorage from '@/components/GetStorage';
-import GetLocation from '@/components/GetLocation';
 
 const SharePageModal = props => {
   const {item_type, item_id} = props.route.params;
   const [shareUri, setShareUri] = useState('');
+  const [share_content, setShareContent] = useState({});
   const [loadingView, setLoadingView] = useState(true);
   const topic = useSelector(state => state.topic.topicDetail);
   const article = useSelector(state => state.article.articleDetail);
-
-  // console.log('route.params', route.params)
 
   const [assetable, setAssetable] = useState({
     assetable_type: item_type,
@@ -46,12 +43,15 @@ const SharePageModal = props => {
 
   useEffect(() => {
     loadShareData();
+
   }, []);
 
   useEffect(() => {
     loadRemoteShareUrl();
+    getShare()
   }, [item_type, item_id]);
 
+  // 加载已经生过的图片
   const loadRemoteShareUrl = async () => {
     const shareRes = await getShareUrl({item_id: item_id, item_type: item_type});
     console.log('assetable', assetable);
@@ -59,7 +59,19 @@ const SharePageModal = props => {
       setShareUri(shareRes.share_url);
     }
   };
+  // 加载分享的文章/帖子/
 
+  // 加载分享的相关设置
+  const getShare = async () => {
+    if (item_type && item_id) {
+      const content = await getShareContent({item_type: item_type, item_id: item_id});
+      console.log('item_type', content);
+      setShareContent(content);
+      if(content.download_img_url) {
+        setShareUri(content.download_img_url)
+      }
+    }
+  };
   const loadShareData = () => {
     setTimeout(() => {
       setLoadingView(false);
@@ -138,7 +150,7 @@ const SharePageModal = props => {
     });
   };
 
-  const savePhoto = async (had_permission) => {
+  const savePhoto = async had_permission => {
     if (had_permission) {
       await takeImg();
       CameraRoll.save(shareUri, {type: 'photo'}).then(res => {
@@ -159,6 +171,12 @@ const SharePageModal = props => {
         )}
         {item_type === 'Article' && (
           <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />
+        )}
+
+        {item_type === 'Account' && (
+          <ShareInviteContent
+            imgUrl={shareUri}
+          />
         )}
       </ScrollView>
 
@@ -238,7 +256,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   shareTitle: {
     color: '#9C9C9C',

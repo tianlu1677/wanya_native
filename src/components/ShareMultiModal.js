@@ -27,16 +27,7 @@ const ShareMultiModal = () => {
   const [share_content, setShareContent] = useState({});
 
   const shareWechatFriend = e => {
-    if (share_content.content_style === 'link') {
-      const {thumb_url, title, description, website_url} = share_content.wechat;
-      WeChat.shareWebpage({
-        title: title,
-        thumbImageUrl: thumb_url,
-        webpageUrl: website_url,
-        description: description,
-        scene: 0,
-      });
-    } else {
+    if (share_content.wechat_type === 'mini') {
       const {thumb_url, title, description, website_url, path} = share_content.miniwechat;
       WeChat.shareMiniProgram({
         title: title,
@@ -44,6 +35,16 @@ const ShareMultiModal = () => {
         webpageUrl: website_url,
         thumbImageUrl: thumb_url,
         path: path,
+        scene: 0,
+      });
+    }
+    if (share_content.wechat_type === 'website') {
+      const {thumb_url, title, description, website_url} = share_content.wechat;
+      WeChat.shareWebpage({
+        title: title,
+        thumbImageUrl: thumb_url,
+        webpageUrl: website_url,
+        description: description,
         scene: 0,
       });
     }
@@ -76,17 +77,10 @@ const ShareMultiModal = () => {
 
   const shareWeibo = () => {
     const {thumb_url, title, description, website_url} = share_content.weibo;
-    ShareUtil.share(
-      `${description}`,
-      thumb_url,
-      '',
-      '',
-      1,
-      (code, message) => {
-        console.log('code,', code, message);
-        // this.setState({result: message});
-      }
-    );
+    ShareUtil.share(`${description}`, thumb_url, '', '', 1, (code, message) => {
+      console.log('code,', code, message);
+      // this.setState({result: message});
+    });
   };
 
   const copyLink = () => {
@@ -101,9 +95,11 @@ const ShareMultiModal = () => {
   };
 
   const getShare = async () => {
-    const content = await getShareContent({item_type: item_type, item_id: item_id});
-    console.log('item_type', content);
-    setShareContent(content);
+    if (item_type && item_id) {
+      const content = await getShareContent({item_type: item_type, item_id: item_id});
+      console.log('item_type', content);
+      setShareContent(content);
+    }
   };
 
   const closeModal = () => {
@@ -117,7 +113,10 @@ const ShareMultiModal = () => {
     if (item_type.toLowerCase() === 'article') {
       RootNavigation.push('SharePage', {item_type: 'Article', item_id: item_id});
     }
-    closeModal()
+    if (item_type.toLowerCase() === 'account') {
+      RootNavigation.push('SharePage', {item_type: 'Account', item_id: item_id});
+    }
+    closeModal();
   };
 
   useEffect(() => {
