@@ -97,7 +97,7 @@ const ShareMultiModal = () => {
   const getShare = async () => {
     if (item_type && item_id) {
       const content = await getShareContent({item_type: item_type, item_id: item_id});
-      console.log('item_type', content);
+      // console.log('item_type', content);
       setShareContent(content);
     }
   };
@@ -125,7 +125,7 @@ const ShareMultiModal = () => {
 
   return (
     <BottomModal
-      height={0.4}
+      height={0.35}
       width={1}
       rounded
       useNativeDriver={true}

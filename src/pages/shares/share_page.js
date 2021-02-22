@@ -171,10 +171,17 @@ const SharePageModal = props => {
 
   const shareWeibo = async () => {
     await takeImg();
-    ShareUtil.share('xxxx', shareUri, '', '', 1, (code, message) => {
-      console.log('code,', code, message);
-      // this.setState({result: message});
-    });
+    ShareUtil.share(
+      `${share_content.weibo.website_url}  来源：@顽鸦`,
+      shareUri,
+      '',
+      '',
+      1,
+      (code, message) => {
+        console.log('code,', code, message);
+        // this.setState({result: message});
+      }
+    );
   };
 
   const savePhoto = async had_permission => {
@@ -211,15 +218,15 @@ const SharePageModal = props => {
           <Text style={styles.shareTitle}>分享到</Text>
         </View>
         <View style={styles.shareBottom}>
-          <Pressable style={styles.shareWrap}>
-            <GetStorage handleClick={savePhoto}>
+          <GetStorage handleClick={savePhoto}>
+            <View style={styles.shareWrap}>
               <FastImg
                 source={require('../../assets/shareimages/goimage.png')}
                 style={styles.shareImg}
               />
               <Text style={styles.shareText}>生成图片</Text>
-            </GetStorage>
-          </Pressable>
+            </View>
+          </GetStorage>
           <Pressable style={styles.shareWrap} onPress={shareFriend}>
             <FastImg
               source={require('../../assets/shareimages/wechat.png')}
@@ -250,7 +257,7 @@ const SharePageModal = props => {
           </Pressable>
           <Pressable style={styles.shareWrap} onPress={shareWeibo}>
             <FastImg
-              source={require('../../assets/shareimages/weibo.png')}
+              source={require('../../assets/shareimages/weibo-white.png')}
               mode={'cover'}
               style={{...styles.shareImg, width: 32}}
             />

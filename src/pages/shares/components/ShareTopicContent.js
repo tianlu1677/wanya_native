@@ -2,7 +2,7 @@ import React, {useRef, useState, useEffect} from 'react';
 import {View, Text, Modal, Button, Dimensions, Image, StyleSheet} from 'react-native';
 import IconFont from '@/iconfont';
 import ViewShot from 'react-native-view-shot';
-import FastImg from '@/components/FastImg'
+import FastImg from '@/components/FastImg';
 import {Avator} from '@/components/NodeComponents';
 import PlayVideoImg from '@/assets/images/play-video.png';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
@@ -21,16 +21,16 @@ const ShareTopicContent = props => {
     plain_content,
     published_at_text,
     title,
-    is_long_video
-  } = props.topicDetail
+    is_long_video,
+  } = props.topicDetail;
 
   const desc = `${published_at_text} 发布了一篇${is_long_video ? '长视频' : '帖子'}`;
   const bg_img_url = wx_share_image_url ? wx_share_image_url.split('?')[0] : '';
   const content = plain_content;
   const node_name = node ? node.name : '';
-  const [imgWidth, setimgWidth] = useState(screenWidth-20);
+  const [imgWidth, setimgWidth] = useState(screenWidth - 20);
   const [imgHeight, setimgHeight] = useState(300);
-  const [qrcode_url, setQrcode_url] = useState('');
+  const [qrcodeUrl, setQrcodeUrl] = useState('');
   // const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
   const loadCoverStyle = () => {
@@ -38,7 +38,7 @@ const ShareTopicContent = props => {
       return;
     }
     Image.prefetch(bg_img_url);
-    console.log('bg_img_url', bg_img_url)
+    console.log('bg_img_url', bg_img_url);
     Image.getSize(bg_img_url, (width, height) => {
       const maxWidth = screenWidth - 20;
       setimgHeight(height * (maxWidth / width));
@@ -51,7 +51,8 @@ const ShareTopicContent = props => {
 
   useEffect(() => {
     prosettings().then(res => {
-      setQrcode_url(res.share_page_qrcode_img_url);
+      // console.log('res',res)
+      setQrcodeUrl(res.share_page_qrcode_img_url);
     });
   }, []);
 
@@ -80,8 +81,8 @@ const ShareTopicContent = props => {
               </View>
             </View>
             <View style={{width: '100%'}}>
-              {
-                topic_link && <View style={styles.linkWrap}>
+              {topic_link && (
+                <View style={styles.linkWrap}>
                   <FastImg
                     style={{width: 45, height: 45}}
                     mode={'cover'}
@@ -91,7 +92,7 @@ const ShareTopicContent = props => {
                     {topic_link.title || topic_link.raw_link}
                   </Text>
                 </View>
-              }
+              )}
 
               {!topic_link && bg_img_url ? (
                 <FastImg
@@ -99,20 +100,23 @@ const ShareTopicContent = props => {
                   resizeMode={'cover'}
                   source={{uri: bg_img_url}}
                 />
-              ) : <View />}
+              ) : (
+                <View />
+              )}
               {content_style === 'video' && (
                 <FastImg source={PlayVideoImg} style={styles.playVideo} />
               )}
             </View>
 
-            {
-              title && <Text style={styles.title}>{title}</Text>
-            }
+            {title && <Text style={styles.title}>{title}</Text>}
             <Text style={styles.text}>{content}</Text>
             <View style={styles.footer}>
-              <FastImg style={styles.shareLogo} source={require('@/assets/images/sharewanyalog.png')} />
-              {qrcode_url ? (
-                <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
+              <FastImg
+                style={styles.shareLogo}
+                source={require('@/assets/images/sharewanyalog.png')}
+              />
+              {qrcodeUrl ? (
+                <FastImg style={styles.shareqrImg} source={{uri: qrcodeUrl}} />
               ) : (
                 <View />
               )}
@@ -175,7 +179,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   nodeName: {
     color: '#fff',
@@ -206,7 +210,7 @@ const styles = StyleSheet.create({
     marginRight: 17,
     fontWeight: '500',
     letterSpacing: 1,
-    lineHeight: 23
+    lineHeight: 23,
   },
   text: {
     color: '#fff',
@@ -227,7 +231,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     marginLeft: 17,
     marginRight: 17,
-    backgroundColor: '#303030'
+    backgroundColor: '#303030',
   },
   linkText: {
     flex: 1,
@@ -252,7 +256,7 @@ const styles = StyleSheet.create({
   shareLogo: {
     marginTop: 10,
     width: 190,
-    height: 300/(790 / 190),
+    height: 300 / (790 / 190),
   },
   shareqrImg: {
     height: 95,
