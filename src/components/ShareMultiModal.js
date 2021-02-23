@@ -84,9 +84,10 @@ const ShareMultiModal = () => {
   };
 
   const copyLink = () => {
+    console.log('xxxx')
+    Toast.showError(`已复制分享链接`);
     const websiteUrl = share_content.gowebsite.website_url;
     Helper.setClipboard(websiteUrl);
-    Toast.showError(`已复制`);
   };
 
   const goWebsite = () => {
@@ -125,12 +126,12 @@ const ShareMultiModal = () => {
 
   return (
     <BottomModal
-      height={0.35}
+      height={0.37}
       width={1}
       rounded
       useNativeDriver={true}
       containerStyle={{zIndex: 10000, backgroundColor: 'red'}}
-      modalStyle={{}}
+      // modalStyle={}
       overlayOpacity={0.3}
       visible={shareContent.visible}
       onTouchOutside={closeModal}
@@ -156,7 +157,7 @@ const ShareMultiModal = () => {
       <ModalContent style={styles.contentWrap}>
         <View
           style={{
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
             paddingVertical: 0,
             paddingHorizontal: 0,
             flex: 1,
@@ -209,7 +210,7 @@ const ShareMultiModal = () => {
             justifyContent: 'flex-start',
             paddingVertical: 0,
             paddingHorizontal: 0,
-            flex: 1,
+            // flex: 1,
             flexDirection: 'row',
           }}>
           <Pressable style={styles.secondShareWrap} onPress={copyLink}>
@@ -234,7 +235,8 @@ export default ShareMultiModal;
 const styles = StyleSheet.create({
   contentWrap: {
     flex: 1,
-    padding: 0,
+    // padding: 0,
+    alignContent: 'center',
     paddingVertical: 0,
     paddingHorizontal: 0,
     backgroundColor: '#F8F8F8',
@@ -260,13 +262,11 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: 'center',
     width: SCREEN_WIDTH / 6,
-    // backgroundColor: 'red'
   },
   secondShareWrap: {
     alignItems: 'center',
     width: SCREEN_WIDTH / 6,
-    // backgroundColor: 'red',
-    marginTop: 0,
+    paddingBottom: 30,
   },
   shareImg: {
     width: 25,

@@ -28,15 +28,20 @@ import GetStorage from '@/components/GetStorage';
 import {createTopicAction, getTopic} from '@/api/topic_api';
 import {dispatchArticleDetail, dispatchTopicDetail} from '@/redux/actions';
 import {getArticle} from '@/api/article_api';
+import {useNavigation} from '@react-navigation/native';
 
 const SharePageModal = props => {
   const dispatch = useDispatch();
-  const viewShotRef = useRef(null);
 
   const {item_type, item_id} = props.route.params;
   const [shareUri, setShareUri] = useState('');
   const [share_content, setShareContent] = useState({});
+  const [downloadUri, setDownloadUri] = useState('');
   const [loadingView, setLoadingView] = useState(true);
+
+  const viewShotRef = useRef(null);
+  const navigation = useNavigation();
+  // shareUri = '';
 
   const topic = useSelector(state => state.topic.topicDetail);
   const article = useSelector(state => state.article.articleDetail);
@@ -52,26 +57,30 @@ const SharePageModal = props => {
   }, []);
 
   useEffect(() => {
-    loadInitData();
-    loadRemoteShareUrl();
-    getShare();
+    initData();
   }, [item_type, item_id]);
+
+  const initData = async () => {
+    await loadItemData();
+    await loadRemoteShareUrl();
+    await getShare();
+  };
 
   // 加载已经生过的图片
   const loadRemoteShareUrl = async () => {
     const shareRes = await getShareUrl({item_id: item_id, item_type: item_type});
-    console.log('assetable', assetable);
     if (shareRes.share_url) {
+      console.log('shareResshare_url', shareRes.share_url);
       setShareUri(shareRes.share_url);
     }
   };
   // 加载分享的文章/帖子/
-  const loadInitData = async () => {
+  const loadItemData = async () => {
     if (item_type === 'Topic') {
       const res = await getTopic(item_id);
       if (res.data.status === 404) {
         Toast.show('该帖子已删除');
-        // navigation.goBack();
+        navigation.goBack();
       } else {
         dispatch(dispatchTopicDetail(res.data.topic));
       }
@@ -81,7 +90,7 @@ const SharePageModal = props => {
       const res = await getArticle(item_id);
       if (res.data.status === 404) {
         Toast.show('该帖子已删除');
-        // navigation.goBack();
+        navigation.goBack();
       } else {
         dispatch(dispatchArticleDetail(res.data.article));
       }
@@ -92,10 +101,11 @@ const SharePageModal = props => {
   const getShare = async () => {
     if (item_type && item_id) {
       const content = await getShareContent({item_type: item_type, item_id: item_id});
-      console.log('item_type', content);
       setShareContent(content);
       if (content.download_img_url) {
         setShareUri(content.download_img_url);
+        setDownloadUri(content.download_img_url);
+        console.log('xshareUri', shareUri, content);
       }
     }
   };
@@ -106,30 +116,33 @@ const SharePageModal = props => {
   };
 
   const takeImg = async () => {
+    // await loadRemoteShareUrl();
+    // await getShare();
+    // console.log('shareUri', shareUri);
     if (shareUri) {
-      return;
+      return shareUri;
     }
     Toast.showLoading('正在生成分享图片...', {duration: 9000});
-    let asset = {};
-    await viewShotRef.current.capture().then(async uri => {
-      let localUri = await ImgToBase64.getBase64String(uri);
-      const asset_res = await uploadBase64File({
-        file: encodeURIComponent(localUri),
-        assetable_type: assetable.assetable_type,
-        assetable_id: assetable.assetable_id,
-        assetable_name: assetable.assetable_name || 'app_share_image',
-      });
-      asset = asset_res;
+    const uri = await viewShotRef.current.capture();
+    let localUri = await ImgToBase64.getBase64String(uri);
+    const asset_res = await uploadBase64File({
+      file: encodeURIComponent(localUri),
+      assetable_type: assetable.assetable_type,
+      assetable_id: assetable.assetable_id,
+      assetable_name: assetable.assetable_name || 'app_share_image',
     });
-    setShareUri(asset.original_url);
+    setShareUri(asset_res.asset.original_url);
+    console.log('asset', asset_res);
     Toast.hide();
+    return asset_res.asset.original_url;
   };
 
   const shareFriend = async () => {
-    await takeImg();
+    const thumb_url = await takeImg();
+    console.log('thumb_url', thumb_url);
     WeChat.shareImage(
       {
-        imageUrl: shareUri,
+        imageUrl: thumb_url,
         scene: 0,
       },
       error => {
@@ -140,10 +153,10 @@ const SharePageModal = props => {
     Toast.hide();
   };
   const shareTimeline = async () => {
-    await takeImg();
+    const thumb_url = await takeImg();
     WeChat.shareImage(
       {
-        imageUrl: shareUri,
+        imageUrl: thumb_url,
         scene: 1,
       },
       error => {
@@ -155,25 +168,25 @@ const SharePageModal = props => {
   };
 
   const shareQQ = async () => {
-    await takeImg();
-    ShareUtil.share('', shareUri, '', '', 0, (code, message) => {
+    const thumb_url = await takeImg();
+    ShareUtil.share('', thumb_url, '', '', 0, (code, message) => {
       console.log('code', code, message);
     });
   };
 
   const shareQQZone = async () => {
-    await takeImg();
-    ShareUtil.share('', shareUri, '', '', 4, (code, message) => {
+    const thumb_url = await takeImg();
+    ShareUtil.share('', thumb_url, '', '', 4, (code, message) => {
       console.log('code', code, message);
       // this.setState({result:message});
     });
   };
 
   const shareWeibo = async () => {
-    await takeImg();
+    const thumb_url = await takeImg();
     ShareUtil.share(
       `${share_content.weibo.website_url}  来源：@顽鸦`,
-      shareUri,
+      thumb_url,
       '',
       '',
       1,
@@ -185,15 +198,18 @@ const SharePageModal = props => {
   };
 
   const savePhoto = async had_permission => {
-    if (had_permission) {
-      await takeImg();
-      CameraRoll.save(shareUri, {type: 'photo'}).then(res => {
-        console.log('res', res);
-        Toast.showError('已存储到相册');
-      });
-    }
+    const thumb_url = await takeImg();
+    setTimeout(() => {
+      if (had_permission) {
+        console.log('savePhoto shareUri', thumb_url);
+        CameraRoll.save(thumb_url, {type: 'photo'}).then(res => {
+          console.log('res', res);
+          Toast.showError('已存储到相册');
+        });
+      }
+    }, 500);
   };
-
+  console.log('shareUri', shareUri);
   return (
     <ModelWrap>
       {loadingView ? (
@@ -208,8 +224,7 @@ const SharePageModal = props => {
           {item_type === 'Article' && (
             <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />
           )}
-
-          {item_type === 'Account' && <ShareInviteContent imgUrl={shareUri} />}
+          {item_type === 'Account' && <ShareInviteContent imgUrl={downloadUri} />}
         </ScrollView>
       )}
 
