@@ -188,7 +188,7 @@ continueUserActivity:(NSUserActivity *)userActivity
   /*
    * 打开图片水印
    */
-  [UMSocialGlobal shareInstance].isUsingWaterMark = YES;
+  [UMSocialGlobal shareInstance].isUsingWaterMark = NO;
   /*
    * 关闭强制验证https，可允许http图片分享，但需要在info.plist设置安全域名
    <key>NSAppTransportSecurity</key>
@@ -200,7 +200,7 @@ continueUserActivity:(NSUserActivity *)userActivity
   [UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
   //配置微信平台的Universal Links
   //微信和QQ完整版会校验合法的universalLink，不设置会在初始化平台失败
-  [UMSocialGlobal shareInstance].universalLinkDic = @{@(UMSocialPlatformType_QQ):@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/qq_conn/101830139"};
+  [UMSocialGlobal shareInstance].universalLinkDic = @{@(UMSocialPlatformType_QQ):@"https://app.meirixinxue.com/"};
 }
 - (void)configUSharePlatforms
 {
@@ -209,7 +209,7 @@ continueUserActivity:(NSUserActivity *)userActivity
   /* 设置分享到QQ互联的appID
    * U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
    */
-  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:@"1105821097"/*设置QQ平台的appID*/  appSecret:nil redirectURL:@"http://mobile.umeng.com/social"];
+  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:@"1111465959"/*设置QQ平台的appID*/  appSecret:@"FIgd8iM2p5CeQjdw" redirectURL:@"http://mobile.umeng.com/social"];
   /* 设置新浪的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"3691201000"  appSecret:@"08b8e8ad55f0681b8ae109bbe8806652" redirectURL:@"https://app.meirixinxue.com/"];
 }
