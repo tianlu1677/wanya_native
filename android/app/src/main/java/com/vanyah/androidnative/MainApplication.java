@@ -79,7 +79,7 @@ public class MainApplication extends Application implements ReactApplication {
 
     {
          PlatformConfig.setSinaWeibo("3691201000", "08b8e8ad55f0681b8ae109bbe8806652", "https://app.meirixinxue.com/");
-         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+         PlatformConfig.setQQZone("1111498808", "9J2y7keKBcjYZHDs");
     }
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like

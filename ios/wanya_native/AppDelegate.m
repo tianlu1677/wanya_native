@@ -209,7 +209,7 @@ continueUserActivity:(NSUserActivity *)userActivity
   /* 设置分享到QQ互联的appID
    * U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
    */
-  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:@"1111465959"/*设置QQ平台的appID*/  appSecret:@"FIgd8iM2p5CeQjdw" redirectURL:@"http://mobile.umeng.com/social"];
+  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:@"1111498808"/*设置QQ平台的appID*/  appSecret:@"9J2y7keKBcjYZHDs" redirectURL:@"http://mobile.umeng.com/social"];
   /* 设置新浪的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"3691201000"  appSecret:@"08b8e8ad55f0681b8ae109bbe8806652" redirectURL:@"https://app.meirixinxue.com/"];
 }
