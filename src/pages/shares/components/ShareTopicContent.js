@@ -75,10 +75,13 @@ const ShareTopicContent = props => {
                 <Text style={styles.username}>{account && account.nickname}</Text>
                 <Text style={styles.time}>{desc}</Text>
               </View>
-              <View style={styles.nodeWrap}>
+              {
+                !!node_name && <View style={styles.nodeWrap}>
                 <IconFont name="node-solid" size={16} color="#fff" />
                 <Text style={styles.nodeName}>{node_name}</Text>
               </View>
+              }
+              
             </View>
             <View style={{width: '100%'}}>
               {topic_link && (

@@ -124,7 +124,7 @@ const SharePageModal = props => {
     if (shareUri) {
       return shareUri;
     }
-    Toast.showLoading('正在生成分享图片...', {duration: 9000});
+    Toast.showLoading('正在生成分享图片...', {duration: 30000});
     const uri = await viewShotRef.current.capture();
     let localUri = await ImgToBase64.getBase64String(uri);
     const asset_res = await uploadBase64File({
@@ -215,7 +215,8 @@ const SharePageModal = props => {
                  promise.then(function(result) {                    
                     console.log("图片已保存至相册111")
                  }).catch(function(error) {
-                    Toast.showError('保存失败');
+                    alert(JSON.stringify(error))
+                    Toast.showError(`保存失败`);
                     console.log("保存失败")
                  })
              }

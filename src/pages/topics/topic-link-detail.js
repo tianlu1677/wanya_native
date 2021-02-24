@@ -41,18 +41,10 @@ const TopicLinkDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
-  const onShare = () => {
-    let shareOptions = {
-      userName: 'gh_c2b50fe8e928',
-      path: '',
-      scene: 0,
-      title: currentTopic.topic_link?.title || currentTopic.topic_link.raw_link,
-      thumbImageUrl: currentTopic.topic_link.cover_url,
-      webpageUrl: currentTopic.topic_link.raw_link,
-      visible: true,
-      type: 'link'
-    };
-    dispatch(dispatchShareItem(shareOptions));
+  const onShare = () => {    
+    const shareContent = {item_type: 'Topic', item_id: currentTopic.id, visible: true};
+    dispatch(dispatchShareItem(shareContent));
+    
   }
 
   return detail ? (
