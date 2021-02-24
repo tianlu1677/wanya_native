@@ -23,7 +23,7 @@ const ShareArticleContent = props => {
     intro
   } = props.articleDetail;
 
-  console.log('articleDetail', props.articleDetail);
+  // console.log('articleDetail', props.articleDetail);
   const bg_img_url = cover_url ? cover_url.split('?')[0] : '';
   const desc = `${published_at_text} 发布了一篇文章`;
   const node_name = node ? node.name : null;

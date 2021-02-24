@@ -78,7 +78,7 @@ public class MainApplication extends Application implements ReactApplication {
   }
 
     {
-         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
+         PlatformConfig.setSinaWeibo("3691201000", "08b8e8ad55f0681b8ae109bbe8806652", "https://app.meirixinxue.com/");
          PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
     }
   /**

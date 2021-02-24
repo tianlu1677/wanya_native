@@ -13,7 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
-import {BOTTOM_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, SCREEN_WIDTH, IsIos} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import {uploadBase64File, getShareUrl, getShareContent} from '@/api/asset_api';
@@ -29,6 +29,8 @@ import {createTopicAction, getTopic} from '@/api/topic_api';
 import {dispatchArticleDetail, dispatchTopicDetail} from '@/redux/actions';
 import {getArticle} from '@/api/article_api';
 import {useNavigation} from '@react-navigation/native';
+
+const RNFS = require('react-native-fs'); //文件处理
 
 const SharePageModal = props => {
   const dispatch = useDispatch();
@@ -197,15 +199,34 @@ const SharePageModal = props => {
     );
   };
 
-  const savePhoto = async had_permission => {
+  const savePhoto = async had_permission => {    
     const thumb_url = await takeImg();
     setTimeout(() => {
       if (had_permission) {
-        console.log('savePhoto shareUri', thumb_url);
-        CameraRoll.save(thumb_url, {type: 'photo'}).then(res => {
+        if(!IsIos) {
+          const storeLocation = `${RNFS.DocumentDirectoryPath}`;
+          let pathName = new Date().getTime() + "顽鸦分享图.png"
+          let downloadDest = `${storeLocation}/${pathName}`;
+          const ret = RNFS.downloadFile({fromUrl: thumb_url, toFile:downloadDest});
+          ret.promise.then(res => {
+             if(res && res.statusCode === 200){
+                 var promise = CameraRoll.save("file://" + downloadDest);
+                 Toast.showError('已存储到相册');
+                 promise.then(function(result) {                    
+                    console.log("图片已保存至相册111")
+                 }).catch(function(error) {
+                    Toast.showError('保存失败');
+                    console.log("保存失败")
+                 })
+             }
+           })
+        } else {
+          console.log('savePhoto shareUri', thumb_url);
+          CameraRoll.save(thumb_url, {type: 'photo'}).then(res => {
           console.log('res', res);
           Toast.showError('已存储到相册');
         });
+        }        
       }
     }, 500);
   };
@@ -216,7 +237,7 @@ const SharePageModal = props => {
         <Loading />
       ) : (
         <ScrollView
-          style={{flex: 1, marginBottom: 90, display: loadingView ? 'none' : 'flex'}}
+          style={{flex: 1, marginBottom: 100, display: loadingView ? 'none' : 'flex'}}
           showsVerticalScrollIndicator={false}>
           {item_type === 'Topic' && (
             <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
@@ -300,7 +321,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     backgroundColor: 'black',
-    height: 110,
+    height: 130,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     paddingLeft: 20,
@@ -321,9 +342,10 @@ const styles = StyleSheet.create({
   },
 
   shareWrap: {
-    marginTop: 20,
+    paddingTop: 20,
     alignItems: 'center',
     width: (SCREEN_WIDTH - 40) / 6,
+    // backgroundColor: 'red',
   },
   secondShareWrap: {
     alignItems: 'center',
