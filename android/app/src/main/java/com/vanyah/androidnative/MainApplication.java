@@ -20,6 +20,8 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.commonsdk.UMConfigure;
 
 import cn.jiguang.plugins.push.JPushModule;
+import com.microsoft.codepush.react.CodePush;
+
 
 // import com.umeng.message.MsgConstant;
 // import com.umeng.message.PushAgent;
