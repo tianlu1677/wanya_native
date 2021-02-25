@@ -148,10 +148,6 @@ const LabIndex = props => {
             <Text style={styles.text}>去设置权限页面</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('ClubhouseIndex', {})}>
-            <Text style={styles.text}>去clubhouse</Text>
-          </Pressable>
-
           <Pressable onPress={() => shareQQ()}>
             <Text style={styles.text}>分享QQ</Text>
           </Pressable>
