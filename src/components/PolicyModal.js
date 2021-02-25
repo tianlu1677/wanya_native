@@ -71,7 +71,7 @@ const PolicyModal = ({navigation, route}) => {
                   请你务必审核阅读、充分理解“服务协议”和隐私政策个条款，包括但不限于：为了向你提供即时通讯、内容分享等服务，我们需要手机你的设备信息、操作日志等个人信息。你可以在“设置”中查看、变更、删除跟人信息并管理你的授权。
                   你可阅读{' '}
                   <Text style={styles.linkTxtColor}>
-                    《<Text onPress={() => goPolicy('user')} style={{color: 'blue'}}>服务协议</Text> 与 <Text onPress={() => goPolicy('private')} style={{color: 'blue'}}>隐私政策</Text>》
+                    《<Text onPress={() => goPolicy('user')} style={{color: '#01AAF5'}}>服务协议</Text> 与 <Text onPress={() => goPolicy('private')} style={{color: '#01AAF5'}}>隐私政策</Text>》
                   </Text>
                   了解详细信息。如你同意，请点击“同意”开始接受我们的服务。
                 </Text>
