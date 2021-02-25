@@ -8,10 +8,11 @@ import * as WeChat from 'react-native-wechat-lib';
 import {appWechatSignIn, appAppleSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
-import {BOTTOM_HEIGHT, SCALE} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, SCALE, IsIos} from '@/utils/navbar';
 import {AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import PolicyModal from '@/components/PolicyModal';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -244,6 +245,8 @@ const SocialLogin = ({navigation, route}) => {
           </Pressable>
         </View>
       </ImageBackground>
+
+      { !IsIos && <PolicyModal /> }
     </View>
   );
 };

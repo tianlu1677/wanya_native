@@ -267,8 +267,7 @@ class App extends Component {
             <ShareMultiModal />
             <ModalPortal />
           </PersistGate>
-        </Provider>
-        {Platform.OS !== 'ios' && <PolicyModal />}
+        </Provider>        
       </>
     );
   }
