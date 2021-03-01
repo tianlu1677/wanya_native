@@ -15,6 +15,10 @@ import AddLink from '@/pages/topics/add-link';
 import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
+// theory
+import NewTheory from '@/pages/theorys/new-theory';
+import NewTheoryContent from '@/pages/theorys/new-theory-content';
+
 // 文章
 import ArticleDetail from '@/pages/articles/article-detail';
 
@@ -163,6 +167,25 @@ const topicRouter = [
   },
 ];
 
+const theoryRouter = [
+  {
+    name: 'NewTheory',
+    component: NewTheory,
+    barColor: 'dark',
+    options: {
+      animationEnabled: true,
+      gestureEnabled: false,
+      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+    },
+  },
+  {
+    name: 'NewTheoryContent',
+    component: NewTheoryContent,
+    safeArea: false,
+    barColor: 'dark',
+  },
+];
+
 const articleRouter = [
   {
     name: 'ArticleDetail',
@@ -206,7 +229,7 @@ const clubRouter = [
       title: 'clubhouse',
     },
   },
-]
+];
 
 const nodeRouter = [
   {
@@ -397,6 +420,7 @@ const authRouter = [
 ];
 export const routers = [
   ...topicRouter,
+  ...theoryRouter,
   ...articleRouter,
   ...spaceRouter,
   ...nodeRouter,

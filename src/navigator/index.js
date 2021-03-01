@@ -69,12 +69,12 @@ const PublishModal = props => {
         alignItems: 'center',
       }}>
       <Pressable
-        style={{...imgStyle, marginTop: RFValue(15)}}
+        style={imgStyle}
         onPress={() => {
           onCancel();
-          navigation.navigate('NewTopic');
+          navigation.navigate('NewTheory');
         }}>
-        <FastImg source={require('../assets/images/add-topic.png')} style={imgStyle} />
+        <FastImg source={require('../assets/images/add-theory.png')} style={imgStyle} />
       </Pressable>
       <Pressable
         style={{...imgStyle, marginTop: RFValue(15)}}
@@ -82,7 +82,7 @@ const PublishModal = props => {
           onCancel();
           navigation.navigate('NewTopic');
         }}>
-        <FastImg source={require('../assets/images/add-theory.png')} style={imgStyle} />
+        <FastImg source={require('../assets/images/add-topic.png')} style={imgStyle} />
       </Pressable>
       <Pressable onPress={onCancel}>
         <IconFont name="close" size={22} color="#fff" style={{marginTop: RFValue(25)}} />

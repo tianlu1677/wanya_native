@@ -4,6 +4,7 @@ import {throttle} from 'lodash';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {getRecommendPosts, getRecommendTopPosts} from '@/api/home_api';
 
 const RecommendListPost = () => {
@@ -17,13 +18,17 @@ const RecommendListPost = () => {
     setListData([...data]);
   };
 
-  const RenderItem = React.memo(({item, index}) =>
-    item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    )
-  );
+  const RenderItem = React.memo(({item, index}) => {
+    switch (item.item_type) {
+      case 'Topic':
+        return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+      // return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+      case 'Article':
+        return <BaseArticle data={item.item} />;
+      case 'Theory':
+        return <BaseTheory data={item.item} />;
+    }
+  });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
