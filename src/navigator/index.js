@@ -1,35 +1,34 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import 'react-native-gesture-handler';
 import {
-  Text,
   StatusBar,
   SafeAreaView,
   StyleSheet,
-  Image,
   Linking,
   Platform,
   View,
   ActivityIndicator,
+  Dimensions,
+  Pressable,
 } from 'react-native';
+import {useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
-import {useSelector} from 'react-redux';
 import {navigationRef} from '@/navigator/root-navigation';
-import {routers, tabRouters, createTopicRouter} from './config'; //router 配置
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
-import NewTopic from '@/pages/topics/new-topic';
-
-import {HeaderBackButton} from '@react-navigation/stack';
+import {BottomModal, BlurView} from '@/components/NodeComponents';
+import FastImg from '@/components/FastImg';
 import Helper from '@/utils/helper';
-import AsyncStorage from '@react-native-community/async-storage';
-import { BlurView } from '@/components/NodeComponents';
-// import {BlurView, VibrancyView} from '@react-native-community/blur';
+import {RFValue} from '@/utils/response-fontsize';
+import AnalyticsUtil from '@/utils/umeng_analytics_util';
 import IconFont from '@/iconfont';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {routers} from './config'; //router 配置
+
 import Recommend from '@/pages/home/recommend';
-import GoNewTopic from '@/pages/topics/go-new-topic';
+import NewTopic from '@/pages/topics/new-topic';
 import MineDetail from '@/pages/mine/mine-detail';
+
 //登录页面
 import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
@@ -37,15 +36,11 @@ import InviteLogin from '@/pages/sessions/invite-login';
 import PasswordLogin from '@/pages/sessions/password-login';
 import WebView from '@/pages/webview/webview';
 
-import {useNavigation} from '@react-navigation/native';
-import AnalyticsUtil from '@/utils/umeng_analytics_util';
-
 const Tab = createBottomTabNavigator();
-const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
-const TopicStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'; // 存储上次打开的位置
+const {width} = Dimensions.get('window');
 
 const TabBar = props => (
   <BlurView
@@ -57,65 +52,100 @@ const TabBar = props => (
   </BlurView>
 );
 
-function HomeTabList() {
-  const navigation = useNavigation();
-  return (
-    <Tab.Navigator
-      tabBar={TabBar}
-      initialRouteName={'Recommend'}
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
-          let icon_list = {
-            focused_Recommend: 'home-recommend',
-            unfocused_Recommend: 'home-recommend-outline',
-            unfocused_MineDetail: 'home-mine-outline',
-            focused_MineDetail: 'home-mine',
-            unfocused_GoNewTopic: 'home-newtopic',
-          };
-          let iconName = 'search';
-          if (route.name === 'Recommend') {
-            iconName = 'search';
-          } else if (route.name === 'MineDetail') {
-            iconName = focused ? 'white-circle' : 'double-circle';
-          }
+const PublishModal = props => {
+  const {navigation, visible, onCancel} = props;
+  const imgStyle = {width: '100%', height: ((width - 60) * 260) / 1260};
 
-          let icon_name = `${focused ? 'focused' : 'unfocused'}_${route.name}`;
-          return <IconFont name={icon_list[icon_name]} size={22} color="black" />;
-          // return <IconFont name={iconName} color={focused ? 'black' : 'red'} />;
-        },
-      })}
-      tabBarOptions={{
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
-        activeBackgroundColor: 'none',
-        inactiveBackgroundColor: 'none',
-        safeAreaInsets: {bottom: 0},
-        tabStyle: {display: 'flex', justifyContent: 'center', lineHeight: 55},
-        showLabel: false,
-        style: {
-          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
-          borderTopWidth: 0,
-          height: 55,
-          borderRadius: 30
-        },
+  return (
+    <BottomModal
+      visible={visible}
+      height={0.31}
+      cancleClick={onCancel}
+      contentWrapStyle={{
+        backgroundColor: '#000000',
+        paddingTop: RFValue(25),
+        paddingLeft: 30,
+        paddingRight: 30,
+        alignItems: 'center',
       }}>
-      <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{}} />
-      <Tab.Screen
-        key={'GoNewTopic'}
-        name={'GoNewTopic'}
-        component={GoNewTopic}
-        listeners={({navigation}) => ({
-          tabPress: e => {
-            e.preventDefault();
-            navigation.navigate('NewTopic');
+      <Pressable
+        style={{...imgStyle, marginTop: RFValue(15)}}
+        onPress={() => {
+          onCancel();
+          navigation.navigate('NewTopic');
+        }}>
+        <FastImg source={require('../assets/images/add-topic.png')} style={imgStyle} />
+      </Pressable>
+      <Pressable
+        style={{...imgStyle, marginTop: RFValue(15)}}
+        onPress={() => {
+          onCancel();
+          navigation.navigate('NewTopic');
+        }}>
+        <FastImg source={require('../assets/images/add-theory.png')} style={imgStyle} />
+      </Pressable>
+      <Pressable onPress={onCancel}>
+        <IconFont name="close" size={22} color="#fff" style={{marginTop: RFValue(25)}} />
+      </Pressable>
+    </BottomModal>
+  );
+};
+
+function HomeTabList(props) {
+  const [visible, setVisible] = useState(false);
+  const icon_list = {
+    focused_Recommend: 'home-recommend',
+    unfocused_Recommend: 'home-recommend-outline',
+    unfocused_MineDetail: 'home-mine-outline',
+    focused_MineDetail: 'home-mine',
+    unfocused_GoNewTopic: 'home-newtopic',
+  };
+
+  return (
+    <>
+      <PublishModal {...props} visible={visible} onCancel={() => setVisible(false)} />
+      <Tab.Navigator
+        tabBar={TabBar}
+        initialRouteName={'Recommend'}
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused}) => {
+            const icon_name = `${focused ? 'focused' : 'unfocused'}_${route.name}`;
+            return <IconFont name={icon_list[icon_name]} size={22} color="black" />;
           },
         })}
-        options={{
-          gestureEnabled: false,
-        }}
-      />
-      <Tab.Screen key={'MineDetail'} name={'MineDetail'} component={MineDetail} options={{}} />
-    </Tab.Navigator>
+        tabBarOptions={{
+          activeTintColor: 'black',
+          inactiveTintColor: 'gray',
+          activeBackgroundColor: 'none',
+          inactiveBackgroundColor: 'none',
+          safeAreaInsets: {bottom: 0},
+          tabStyle: {display: 'flex', justifyContent: 'center', lineHeight: 55},
+          showLabel: false,
+          style: {
+            backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
+            borderTopWidth: 0,
+            height: 55,
+            borderRadius: 30,
+          },
+        }}>
+        <Tab.Screen key={'Recommend'} name={'Recommend'} component={Recommend} options={{}} />
+        <Tab.Screen
+          key={'GoNewTopic'}
+          name={'GoNewTopic'}
+          component={NewTopic}
+          listeners={() => ({
+            tabPress: e => {
+              e.preventDefault();
+              setVisible(true);
+            },
+          })}
+          options={{
+            gestureEnabled: false,
+          }}
+        />
+        <Tab.Screen key={'MineDetail'} name={'MineDetail'} component={MineDetail} options={{}} />
+      </Tab.Navigator>
+    </>
   );
 }
 
@@ -130,16 +160,11 @@ function MainStackList() {
       headerMode="screen"
       screenOptions={({route}) => ({
         headerStyle: {
-          // backgroundColor: 'white',
           backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
           borderTopWidth: 0,
-          // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight.toFixed(1),
-          // borderBottomColor: 'red',
-          // justifyContent: 'center',
-          // alignItems: 'center'
         },
         headerBackTitleVisible: false,
         headerTintColor: 'black',
@@ -156,7 +181,7 @@ function MainStackList() {
         },
         headerBackImage: () => (
           <View style={{flex: 1, paddingRight: 20}}>
-            <Image
+            <FastImg
               source={require('../assets/images/back.png')}
               style={{width: 9, height: 15, paddingLeft: 0}}
             />
@@ -172,7 +197,6 @@ function MainStackList() {
               {route.bar !== false && (
                 <StatusBar
                   barStyle={`${route.barColor || 'light'}-content`}
-                  // translucent={true}
                   backgroundColor="transparent"
                 />
               )}
@@ -222,7 +246,7 @@ function AuthStackList() {
           paddingLeft: 15,
         },
         headerBackImage: () => (
-          <Image
+          <FastImg
             source={require('../assets/images/back-white.png')}
             style={{width: 9, height: 15}}
           />
@@ -255,17 +279,14 @@ const Navigation = () => {
         const initialUrl = await Linking.getInitialURL();
 
         if (Platform.OS !== 'web' && initialUrl == null) {
-          // Only restore state if there's no deep link and we're not on web
           const savedStateString = await Helper.getData(PERSISTENCE_KEY);
           const state = savedStateString ? JSON.parse(savedStateString) : undefined;
 
           if (state !== undefined) {
-            // console.log('state', state)
             setInitialState(state);
           }
         }
       } catch (e) {
-        // console.log('e', e)
         setInitialState();
       } finally {
         setIsReady(true);
@@ -281,35 +302,26 @@ const Navigation = () => {
     return <ActivityIndicator />;
   }
 
-  // https://reactnavigation.org/docs/screen-tracking
-  const onStateChangeRecord = (state) => {
+  const onStateChangeRecord = state => {
     const previousRouteName = routeNameRef.current;
-    const currentRouteName = navigationRef.current.getCurrentRoute().name
+    const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
     if (previousRouteName !== currentRouteName) {
-      // The line below uses the expo-firebase-analytics tracker
-      // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
-      // Change this line to use another Mobile analytics SDK
-      // Analytics.setCurrentScreen(currentRouteName);
-      AnalyticsUtil.onPageStart(currentRouteName)
-      // console.log('currentRouteName', currentRouteName)
+      AnalyticsUtil.onPageStart(currentRouteName);
     }
-    // console.log('currentRouteName', currentRouteName)
-    AnalyticsUtil.onPageEnd(currentRouteName)
-    // Save the current route name for later comparision
+    AnalyticsUtil.onPageEnd(currentRouteName);
     routeNameRef.current = currentRouteName;
-  }
+  };
 
   return (
     <NavigationContainer
       ref={navigationRef}
-      onReady={() => routeNameRef.current = navigationRef.current.getCurrentRoute().name}
-      onStateChange={(state) => {
-        onStateChangeRecord(state)
+      onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
+      onStateChange={state => {
+        onStateChangeRecord(state);
       }}
       // initialState={initialState}
-      onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}
-    >
+      onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}>
       <>{!login.auth_token ? AuthStackList() : MainStackList()}</>
     </NavigationContainer>
   );
@@ -323,11 +335,8 @@ const styles = StyleSheet.create({
     right: '23%',
     height: 55,
     borderRadius: 28,
-    zIndex: 1000
+    zIndex: 1000,
   },
-  // bottomTabBar: {
-  //   backgroundColor: 'transparent',
-  // },
 });
 
 export default Navigation;

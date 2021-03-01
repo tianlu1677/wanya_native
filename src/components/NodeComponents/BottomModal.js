@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Modal, {ModalTitle, BottomModal, ModalContent} from 'react-native-modals';
 
 const BottomModalView = props => {
@@ -9,7 +9,7 @@ const BottomModalView = props => {
 
   return (
     <BottomModal
-      height={0.5}
+      height={props.height || 0.5}
       width={1}
       rounded
       statusBarTranslucent
@@ -21,8 +21,8 @@ const BottomModalView = props => {
       onTouchOutside={() => cancel()}
       onSwipeOut={() => cancel()}
       modalTitle={props.title ? <ModalTitle title={props.title} /> : false}>
-      <ModalContent style={styles.content}>
-        {props.content ? <Text style={styles.body}>{props.content}</Text> : props.children}
+      <ModalContent style={{...styles.content, ...props.contentWrapStyle}}>
+        {props.content ? <View style={styles.body}>{props.content}</View> : props.children}
       </ModalContent>
     </BottomModal>
   );
