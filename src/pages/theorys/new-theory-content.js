@@ -1,42 +1,26 @@
 import React, {useState, useLayoutEffect} from 'react';
-import ReactNative, {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from 'react-native';
+import {View, Text, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
+import {KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
-import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import StepCompoment, {defaultProps} from './component/StepCompoment';
 
-console.log(STATUS_BAR_HEIGHT);
-console.log(NAV_BAR_HEIGHT);
-const TextInput = props => {
-  return (
-    <ReactNative.TextInput
-      style={props.style}
-      autoCorrect={false}
-      autoComplete={false}
-      caretHidden={false}
-      selectionColor={'#ff193a'}
-      placeholderTextColor={'#9F9F9F'}
-      maxLength={30}
-      {...props}
-    />
-  );
-};
+const defaultData = {title: '标题', media: null, intro: '简介'};
 
 const TheoryStepContent = props => {
   const {navigation} = props;
-  const [textValue, setTextValue] = useState('你好');
+  const [title, setTitle] = useState('玩法总标题');
+  const [intro, setIntro] = useState('玩法总内容');
+  const [stepData, setStepData] = useState([defaultData, defaultData, defaultData]);
+
+  const onChangeData = (data, index) => {
+    stepData[index] = data;
+    setStepData([...stepData]);
+  };
+  // console.log(stepData);
 
   useLayoutEffect(() => {
     const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
-
     const onSubmit = () => {
       navigation.navigate('NewTheoryContent');
     };
@@ -50,78 +34,49 @@ const TheoryStepContent = props => {
       ),
       headerRight: () => (
         <Pressable onPress={onSubmit} style={{flexDirection: 'row'}}>
-          <Text style={{fontSize: 15, color: textValue ? '#000' : '#bdbdbd'}}>预览</Text>
-          <Text style={{fontSize: 15, marginLeft: 18, color: textValue ? '#000' : '#bdbdbd'}}>
+          <Text style={{fontSize: 15, color: title ? '#000' : '#bdbdbd'}}>预览</Text>
+          <Text style={{fontSize: 15, marginLeft: 18, color: title ? '#000' : '#bdbdbd'}}>
             发布
           </Text>
         </Pressable>
       ),
     });
-  }, [navigation, textValue]);
+  }, [navigation, title]);
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.wrapper}
-      keyboardVerticalOffset={9}>
+      style={styles.wrapper}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <View style={styles.addMedia}>
+        <ScrollView style={styles.container}>
+          <View style={styles.mediaWrap}>
             <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />
             <Text style={styles.mediaText}>上传这个顽法的完整介绍视频或封面图</Text>
           </View>
-          <View style={styles.stepWrap}>
-            {/* <TextInput
-              style={styles.inputContent}
-              autoCorrect={false}
-              autoComplete={false}
-              caretHidden={false}
-              selectionColor={'#ff193a'}
-              placeholderTextColor={'#9F9F9F'}
-              placeholder="添加顽法名称"
+          <View style={styles.contentWrap}>
+            <TextInput
+              {...defaultProps}
               maxLength={30}
-              value={textValue}
-              onChangeText={value => setTextValue(value)}
+              placeholder="添加顽法名称"
+              value={title}
+              onChangeText={value => setTitle(value)}
+              style={styles.theoryTitle}
             />
             <TextInput
-              style={[styles.inputContent, styles.multiInput]}
-              autoCorrect={false}
-              autoComplete={false}
-              caretHidden={false}
+              {...defaultProps}
               multiline
-              selectionColor={'#ff193a'}
-              placeholderTextColor={'#9F9F9F'}
               placeholder="添加顽法名称"
-              maxLength={30}
-              value={textValue}
-              onChangeText={value => setTextValue(value)}
-            /> */}
-            <Text style={[styles.height, styles.title]}>顽法步骤</Text>
-            <View style={styles.stepTitleWrap}>
-              <Text style={[styles.height, styles.stepTitleText]}>第一步</Text>
-              <TextInput
-                value={textValue}
-                onChangeText={value => setTextValue(value)}
-                style={styles.stepTitle}
-              />
-            </View>
-            <View style={[styles.addMedia, styles.stepMedia]}>
-              <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />
-              <Text style={styles.mediaText}>上传步骤图/视频/GIF</Text>
-            </View>
-            <TextInput
-              multiline
-              value={textValue}
-              onChangeText={value => setTextValue(value)}
-              style={styles.stepIntro}
               maxLength={200}
-              numberOfLine={4}
-              // textAlignVertical="center"
+              value={intro}
+              onChangeText={value => setIntro(value)}
+              style={styles.theoryIntro}
             />
+            <Text style={styles.introTitle}>顽法步骤</Text>
+            {stepData.map((step, index) => {
+              return <StepCompoment data={step} index={index} change={onChangeData} />;
+            })}
           </View>
-          {/* 页面往上推占位 */}
-          <View style={{backgroundColor: '#fff', flex: 1}} />
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -135,13 +90,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // paddingTop: RFValue(35),
-    // paddingHorizontal: RFValue(30),
-    justifyContent: 'center',
-    overflow: 'hidden',
-    // backgroundColor: 'pink',
   },
-  addMedia: {
+  mediaWrap: {
     height: RFValue(130),
     backgroundColor: greyColor,
     flexDirection: 'row',
@@ -149,14 +99,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mediaText: {
-    color: '#9F9F9F',
     fontSize: 14,
+    color: '#9F9F9F',
     fontWeight: '300',
     marginLeft: 5,
   },
-  stepWrap: {
-    paddingLeft: 15,
-    paddingRight: 15,
+  contentWrap: {
+    paddingHorizontal: 15,
+  },
+  theoryTitle: {
+    height: RFValue(45),
+    fontSize: 16,
+    fontWeight: '500',
+    paddingHorizontal: 15,
+    backgroundColor: greyColor,
+    marginTop: RFValue(15),
+  },
+  theoryIntro: {
+    minHeight: RFValue(120),
+    lineHeight: RFValue(20),
+    fontSize: 14,
+    fontWeight: '300',
+    color: '#9F9F9F',
+    paddingHorizontal: 15,
+    paddingTop: RFValue(5),
+    backgroundColor: greyColor,
+    marginTop: RFValue(15),
   },
   inputContent: {
     height: RFValue(45),
@@ -172,58 +140,11 @@ const styles = StyleSheet.create({
     textAlign: 'auto',
     padding: RFValue(15),
   },
-  title: {
+  introTitle: {
     fontSize: 20,
     fontWeight: '500',
     marginTop: RFValue(25),
     marginBottom: RFValue(15),
-  },
-  height: {
-    height: RFValue(45),
-    lineHeight: RFValue(45),
-    backgroundColor: greyColor,
-  },
-  stepText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#000',
-  },
-  stepTitleWrap: {
-    flexDirection: 'row',
-    paddingLeft: 15,
-    backgroundColor: greyColor,
-    borderRadius: 5,
-  },
-  stepTitleText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#000',
-  },
-  stepTitle: {
-    flex: 1,
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#000',
-    marginLeft: 10,
-    paddingRight: 10,
-  },
-  stepMedia: {
-    marginTop: RFValue(10),
-    height: RFValue(120),
-    borderRadius: 10,
-  },
-  stepIntro: {
-    // fontSize: 14,
-    // fontWeight: '300',
-    // color: '#9F9F9F',
-    // marginTop: RFValue(10),
-    backgroundColor: 'pink',
-    // paddingHorizontal: 14,
-    // paddingTop: RFValue(12),
-    // paddingBottom: RFValue(12),
-    // borderRadius: 5,
-    // lineHeight: RFValue(20),
-    color: 'green',
   },
 });
 
