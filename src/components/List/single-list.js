@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import PropTypes from 'prop-types';
 import {throttle} from 'lodash';
 import ScrollList, {pagination} from '@/components/ScrollList';
@@ -23,12 +23,16 @@ const SingleList = props => {
   ]);
 
   const Child = React.memo(({item, index}) => {
-    const ItemComponent = () =>
-      item.item_type === 'Topic' ? (
-        <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-      ) : (
-        <BaseArticle data={item.item} />
-      );
+    const ItemComponent = () => {
+      let component = <View />;
+      if(item.item_type === 'Topic') {
+        component = <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+      }
+      if(item.item_type === 'Article') {
+        component = <BaseArticle data={item.item} />
+      }
+      return component
+    }
 
     if (props.type === 'follow' && index === 0) {
       return (

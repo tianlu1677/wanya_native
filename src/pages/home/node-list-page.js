@@ -71,12 +71,16 @@ const NodeListPost = () => {
     setListData([...data]);
   };
 
-  const RenderItem = React.memo(({item, index}) =>
-    item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    )
+  const RenderItem = React.memo(({item, index}) =>  {
+      let component = <View />;
+      if(item.item_type === 'Topic') {
+        component = <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+      }
+      if(item.item_type === 'Article') {
+        component = <BaseArticle data={item.item} />        
+      }
+      return component
+    }
   );
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
