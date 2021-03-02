@@ -17,7 +17,6 @@ const TheoryStepContent = props => {
     stepData[index] = data;
     setStepData([...stepData]);
   };
-  // console.log(stepData);
 
   useLayoutEffect(() => {
     const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
@@ -48,7 +47,7 @@ const TheoryStepContent = props => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.container}>
+        <ScrollView>
           <View style={styles.mediaWrap}>
             <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />
             <Text style={styles.mediaText}>上传这个顽法的完整介绍视频或封面图</Text>
@@ -82,26 +81,24 @@ const TheoryStepContent = props => {
   );
 };
 
-const greyColor = '#fafafa';
+const greyColor = {backgroundColor: '#fafafa'};
+const blackText = {fontWeight: '500', fontSize: 16, color: '#000'};
+const greyText = {fontWeight: '300', fontSize: 14, color: '#9F9F9F'};
+
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  container: {
-    flex: 1,
-  },
   mediaWrap: {
     height: RFValue(130),
-    backgroundColor: greyColor,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    ...greyColor,
   },
   mediaText: {
-    fontSize: 14,
-    color: '#9F9F9F',
-    fontWeight: '300',
+    ...greyText,
     marginLeft: 5,
   },
   contentWrap: {
@@ -109,36 +106,19 @@ const styles = StyleSheet.create({
   },
   theoryTitle: {
     height: RFValue(45),
-    fontSize: 16,
-    fontWeight: '500',
     paddingHorizontal: 15,
-    backgroundColor: greyColor,
     marginTop: RFValue(15),
+    ...blackText,
+    ...greyColor,
   },
   theoryIntro: {
     minHeight: RFValue(120),
     lineHeight: RFValue(20),
-    fontSize: 14,
-    fontWeight: '300',
-    color: '#9F9F9F',
     paddingHorizontal: 15,
     paddingTop: RFValue(5),
-    backgroundColor: greyColor,
     marginTop: RFValue(15),
-  },
-  inputContent: {
-    height: RFValue(45),
-    lineHeight: RFValue(45),
-    backgroundColor: greyColor,
-    fontWeight: '500',
-    fontSize: 16,
-    marginTop: RFValue(15),
-  },
-  multiInput: {
-    height: RFValue(120),
-    lineHeight: RFValue(20),
-    textAlign: 'auto',
-    padding: RFValue(15),
+    ...greyText,
+    ...greyColor,
   },
   introTitle: {
     fontSize: 20,
