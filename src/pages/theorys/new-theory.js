@@ -37,7 +37,7 @@ const NewTheory = props => {
         </Pressable>
       ),
       headerRight: () => (
-        <Pressable onPress={onSubmit}>
+        <Pressable onPress={onSubmit} hitSlop={hitSlop}>
           <Text style={{fontSize: 15, color: textValue ? '#000' : '#bdbdbd'}}>下一步</Text>
         </Pressable>
       ),

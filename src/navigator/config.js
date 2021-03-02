@@ -18,6 +18,8 @@ import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 // theory
 import NewTheory from '@/pages/theorys/new-theory';
 import NewTheoryContent from '@/pages/theorys/new-theory-content';
+import TheoryPreview from '@/pages/theorys/theory-preview';
+import TheoryDetail from '@/pages/theorys/theory-detail';
 
 // 文章
 import ArticleDetail from '@/pages/articles/article-detail';
@@ -184,6 +186,22 @@ const theoryRouter = [
     safeArea: false,
     barColor: 'dark',
   },
+  {
+    name: 'TheoryPreview',
+    component: TheoryPreview,
+    safeArea: false,
+    options: {
+      headerShown: false,
+    },
+  },
+  {
+    name: 'TheoryDetail',
+    component: TheoryDetail,
+    safeArea: false,
+    options: {
+      headerShown: false,
+    },
+  },
 ];
 
 const articleRouter = [
@@ -203,7 +221,10 @@ const articleRouter = [
     name: 'HashtagDetail',
     component: HashtagDetail,
     safeArea: false,
-    options: {title: '话题', headerShown: false},
+    options: {
+      title: '话题',
+      headerShown: false,
+    },
   },
 ];
 
@@ -249,8 +270,8 @@ const nodeRouter = [
               fontSize: 15,
               color: '#bdbdbd',
             }}>
-            创建圈子
-          </Text>
+            创建圈子{' '}
+          </Text>{' '}
         </Pressable>
       ),
     },
@@ -269,21 +290,27 @@ const nodeRouter = [
     component: CreateNodeIntro,
     safeArea: true,
     barColor: 'dark',
-    options: {title: '创建圈子'},
+    options: {
+      title: '创建圈子',
+    },
   },
   {
     name: 'CreateNodeInfo',
     component: CreateNodeInfo,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '填写圈子资料'},
+    options: {
+      title: '填写圈子资料',
+    },
   },
   {
     name: 'CreateNodeType',
     component: CreateNodeType,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '选择圈子分类或位置'},
+    options: {
+      title: '选择圈子分类或位置',
+    },
   },
   {
     name: 'CreateNodeResult',
@@ -299,7 +326,9 @@ const locationRouter = [
     component: LocationDetail,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '位置'},
+    options: {
+      title: '位置',
+    },
   },
 ];
 
@@ -308,46 +337,61 @@ const accountRouter = [
     name: 'AccountDetail',
     component: AccountDetail,
     safeArea: false,
-    options: {title: '用户详情', headerShown: false},
+    options: {
+      title: '用户详情',
+      headerShown: false,
+    },
   },
   {
     name: 'FollowNodes',
     component: FollowNodes,
     barColor: 'dark',
-    options: {title: '圈子列表'},
+    options: {
+      title: '圈子列表',
+    },
   },
   {
     name: 'FollowAccounts',
     component: FollowAccounts,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '关注列表'},
+    options: {
+      title: '关注列表',
+    },
   },
   {
     name: 'FollowerAccounts',
     barColor: 'dark',
     component: FollowerAccounts,
     safeArea: false,
-    options: {title: '粉丝列表'},
+    options: {
+      title: '粉丝列表',
+    },
   },
   {
     name: 'Settings',
     component: Settings,
     barColor: 'dark',
-    options: {title: '设置'},
+    options: {
+      title: '设置',
+    },
   },
   {
     name: 'About',
     component: About,
     barColor: 'dark',
-    options: {title: '关于顽鸦'},
+    options: {
+      title: '关于顽鸦',
+    },
   },
   {
     name: 'Feedback',
     component: Feedback,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '反馈'},
+    options: {
+      title: '反馈',
+    },
   },
 ];
 
@@ -356,27 +400,37 @@ const commonRouter = [
     name: 'ChooseCity',
     barColor: 'dark',
     component: ChooseCity,
-    options: {title: '选择城市'},
+    options: {
+      title: '选择城市',
+    },
   },
   {
     name: 'JoinAccountsList',
     barColor: 'dark',
     component: JoinAccountsList,
-    options: {title: '最近加入列表'},
+    options: {
+      title: '最近加入列表',
+    },
   },
   {
     name: 'SharePage',
     component: SharePage,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '分享', headerShown: true},
+    options: {
+      title: '分享',
+      headerShown: true,
+    },
   },
   {
     name: 'Report',
     component: Report,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '投诉', headerShown: true},
+    options: {
+      title: '投诉',
+      headerShown: true,
+    },
   },
 ];
 
@@ -386,7 +440,10 @@ const searchRouter = [
     component: SearchIndex,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '搜索', headerShown: false},
+    options: {
+      title: '搜索',
+      headerShown: false,
+    },
   },
 ];
 
@@ -408,13 +465,18 @@ const authRouter = [
   {
     name: 'InviteLogin',
     component: InviteLogin,
-    options: {title: '输入邀请码'},
+    options: {
+      title: '输入邀请码',
+    },
     safeArea: false,
   },
   {
     name: 'PasswordLogin',
     component: PasswordLogin,
-    options: {title: '输入邀请码', headerShown: true},
+    options: {
+      title: '输入邀请码',
+      headerShown: true,
+    },
     safeArea: false,
   },
 ];
@@ -435,109 +497,149 @@ export const routers = [
     component: RelatedAccounts,
     safeArea: false,
     barColor: 'dark',
-    options: {title: '相关推荐'},
+    options: {
+      title: '相关推荐',
+    },
   },
   {
     name: 'InviteDetail',
     component: InviteDetail,
     safeArea: false,
-    options: {title: '邀请码'},
+    options: {
+      title: '邀请码',
+    },
   },
   {
     name: 'LabIndex',
     component: LabIndex,
     safeArea: true,
     barColor: 'dark',
-    options: {title: '实验室主页', headerShown: true},
+    options: {
+      title: '实验室主页',
+      headerShown: true,
+    },
   },
   {
     name: 'LabNewest',
     component: LabNewest,
     safeArea: true,
     barColor: 'dark',
-    options: {title: '最新', headerShown: true},
+    options: {
+      title: '最新',
+      headerShown: true,
+    },
   },
   {
     name: 'LabGalley',
     component: LabGalley,
     safeArea: true,
     barColor: 'dark',
-    options: {title: '最新', headerShown: true},
+    options: {
+      title: '最新',
+      headerShown: true,
+    },
   },
   {
     name: 'LabTabIndex',
     component: LabTabIndex,
-    options: {title: '实验室标签页'},
+    options: {
+      title: '实验室标签页',
+    },
   },
   {
     name: 'LabStorageIndex',
     component: LabStorageIndex,
     safeArea: false,
-    options: {title: 'LabStorageIndex'},
+    options: {
+      title: 'LabStorageIndex',
+    },
   },
   {
     name: 'AdminPhoneLogin',
     component: AdminPhoneLogin,
-    options: {title: 'AdminPhoneLogin'},
+    options: {
+      title: 'AdminPhoneLogin',
+    },
   },
 
   {
     name: 'NotifyIndex',
     component: NotifyIndex,
     barColor: 'dark',
-    options: {title: '消息', headerShown: true},
+    options: {
+      title: '消息',
+      headerShown: true,
+    },
   },
   {
     name: 'CommentNotify',
     component: CommentNotify,
     barColor: 'dark',
-    options: {title: '评论及回复'},
+    options: {
+      title: '评论及回复',
+    },
   },
   {
     name: 'PraiseNotify',
     component: PraiseNotify,
     barColor: 'dark',
-    options: {title: '赞和收藏'},
+    options: {
+      title: '赞和收藏',
+    },
   },
   {
     name: 'SystemNotify',
     component: SystemNotify,
     barColor: 'dark',
-    options: {title: '顽鸦小助手'},
+    options: {
+      title: '顽鸦小助手',
+    },
   },
   {
     name: 'FollowNotify',
     barColor: 'dark',
     component: FollowNotify,
-    options: {title: '新增粉丝'},
+    options: {
+      title: '新增粉丝',
+    },
   },
   {
     name: 'MentionNotify',
     barColor: 'dark',
     component: MentionNotify,
-    options: {title: '@我的'},
+    options: {
+      title: '@我的',
+    },
   },
   {
     name: 'WebView',
     component: WebView,
     safeArea: false,
-    options: {title: 'WebView'},
+    options: {
+      title: 'WebView',
+    },
   },
   {
     name: 'AccountContent',
     component: AccountContent,
-    options: {title: '编辑信息'},
+    options: {
+      title: '编辑信息',
+    },
   },
   {
     name: 'EditAccountContent',
     safeArea: false,
     component: EditAccountContent,
-    options: {title: '编辑信息'},
+    options: {
+      title: '编辑信息',
+    },
   },
   {
     name: 'list',
     safeArea: false,
     component: List,
-    options: {title: '列表'},
+    options: {
+      title: '列表',
+    },
   },
 ];

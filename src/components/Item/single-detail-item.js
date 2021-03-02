@@ -299,13 +299,11 @@ const hstyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 40,
-    paddingLeft: 15,
-    paddingRight: 14,
+    paddingHorizontal: 15,
     marginTop: 15,
   },
   content: {
     marginLeft: 12,
-    paddingTop: 4,
   },
   nameText: {
     fontSize: 12,
@@ -314,7 +312,7 @@ const hstyles = StyleSheet.create({
   info: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 3,
+    marginTop: 4,
   },
   spaceWrapper: {
     flexDirection: 'row',
