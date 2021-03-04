@@ -1,19 +1,37 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
 import {KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
+import {check, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
-import StepCompoment, {defaultProps} from './component/StepCompoment';
+import ActionSheet from '@/components/ActionSheet';
+import StepCompoment, {defaultProps} from './component/step-component';
+import SyanImagePicker from 'react-native-syan-image-picker';
+import TheoryMediaPicker from './component/theory-media-picker';
 
+const imagePermission =
+  Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
 const defaultData = {title: '标题', media: null, intro: '简介'};
+
+const checkPermission = async props => {
+  const status = await check(imagePermission);
+  if ([RESULTS.GRANTED, RESULTS.DENIED].includes(status)) {
+    return true;
+  }
+
+  if (status === RESULTS.BLOCKED) {
+    return false;
+  }
+};
 
 const TheoryStepContent = props => {
   const {navigation} = props;
   const [title, setTitle] = useState('玩法总标题');
   const [intro, setIntro] = useState('玩法总内容');
   const [tips, setTips] = useState(null);
-
   const [stepData, setStepData] = useState([defaultData]);
+  const [actionItems, setActionItems] = useState([]);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const onChangeData = (data, index) => {
     stepData[index] = data;
@@ -23,6 +41,18 @@ const TheoryStepContent = props => {
   const addStep = () => {
     setStepData([...stepData, defaultData]);
   };
+
+  const onMediaPicker = async () => {
+    const hasPermission = await checkPermission();
+    console.log('hasPermission', hasPermission);
+    if (!hasPermission) {
+      return;
+    }
+
+    setShowActionSheet(true);
+  };
+
+  useEffect(() => {}, []);
 
   useLayoutEffect(() => {
     const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
@@ -66,10 +96,10 @@ const TheoryStepContent = props => {
       style={styles.wrapper}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView>
-          <View style={styles.mediaWrap}>
+          <Pressable style={styles.mediaWrap} onPress={onMediaPicker}>
             <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />
             <Text style={styles.mediaText}>上传这个顽法的完整介绍视频或封面图</Text>
-          </View>
+          </Pressable>
           <View style={styles.contentWrap}>
             <TextInput
               {...defaultProps}
@@ -109,6 +139,35 @@ const TheoryStepContent = props => {
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
+      <ActionSheet
+        actionItems={[
+          {
+            id: 1,
+            label: '照片',
+            onPress: async () => {
+              console.log('zhaopian');
+              props.removeAllPhoto();
+              props.imagePicker(async (err, res) => {
+                if (err) {
+                  return;
+                }
+                console.log(res);
+                const result = await props.uploadImage(res[0]);
+                console.log(result);
+              });
+            },
+          },
+          {
+            id: 2,
+            label: '视频',
+            onPress: async () => {
+              console.log('shipin');
+            },
+          },
+        ]}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
     </KeyboardAvoidingView>
   );
 };
@@ -169,4 +228,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TheoryStepContent;
+export default TheoryMediaPicker(TheoryStepContent);
+
+// export default TheoryStepContent;

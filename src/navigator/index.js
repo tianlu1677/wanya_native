@@ -72,7 +72,7 @@ const PublishModal = props => {
         style={imgStyle}
         onPress={() => {
           onCancel();
-          navigation.navigate('NewTheory');
+          navigation.navigate('NewTheoryContent');
         }}>
         <FastImg source={require('../assets/images/add-theory.png')} style={imgStyle} />
       </Pressable>
