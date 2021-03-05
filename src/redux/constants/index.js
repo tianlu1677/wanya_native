@@ -192,3 +192,6 @@ export const UPDATE_NODES = 'UPDATE_NODES'; //全部圈子
 export const UPDATE_HOME_NODES = 'UPDATE_HOME_NODES'; //更新首页圈子列表
 export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //关注圈子列表（只包含关注的）
 export const UPDATE_CHECK_NODES = 'UPDATE_CHECK_NODES'; //check圈子列表
+
+// theory
+export const UPDATE_THEORY = 'UPDATE_THEORY'; //更新theory

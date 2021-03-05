@@ -4,15 +4,14 @@ import Upload from 'react-native-background-upload';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import {BaseApiUrl} from '@/utils/config';
 import Helper from '@/utils/helper';
-import {uploadSystemInfo} from '@/api/settings_api';
-import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
+import {getUploadFileToken, saveToAsset, uploadSystemInfo} from '@/api/settings_api';
 
 const baseUrl = BaseApiUrl;
 
 const deviceId = DeviceInfo.getSystemVersion();
 const systemName = DeviceInfo.getSystemName();
 
-const defaultOptions = {method: 'POST', type: 'multipart', field: 'file'};
+const config = {method: 'POST', type: 'multipart', field: 'file'};
 
 const StepMediaPicker = WrapperComponent => {
   return props => {
@@ -21,22 +20,22 @@ const StepMediaPicker = WrapperComponent => {
       SyanImagePicker.showImagePicker(options, callback);
     };
 
-    const uploadImage = async file => {
+    const uploadImage = async (file, params) => {
       const token = await Helper.getData('auth_token');
       const options = {
-        ...defaultOptions,
+        ...config,
         url: `${baseUrl}/api/v1/assets`,
         parameters: {
           width: file.width.toString(),
           height: file.height.toString(),
           fsize: file.size.toString(),
           category: 'image',
+          ...params,
         },
         path: file.uri.replace('file://', ''),
         headers: {'content-type': 'application/octet-stream', token: token},
       };
 
-      console.log(options);
       return new Promise(async (resolve, reject) => {
         Upload.startUpload(options)
           .then(uploadId => {
@@ -58,10 +57,10 @@ const StepMediaPicker = WrapperComponent => {
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
-    const uploadVideo = async (file, cb) => {
+    const uploadVideo = async (file, params, cb) => {
       const res = await getUploadFileToken({ftype: 'mp4'});
       let options = {
-        ...defaultOptions,
+        ...config,
         url: res.qiniu_region,
         path: file.uri.replace('file://', ''),
         parameters: {token: res.token, key: res.file_key, name: 'file'},
@@ -73,28 +72,31 @@ const StepMediaPicker = WrapperComponent => {
       return new Promise((resolve, reject) => {
         Upload.startUpload(options)
           .then(uploadId => {
-            Upload.addListener('progress', uploadId, data => {
-              cb(parseInt(data.progress));
-            });
             Upload.addListener('error', uploadId, data => {
               reject(data.error);
+            });
+            Upload.addListener('progress', uploadId, data => {
+              cb(parseInt(data.progress));
             });
             Upload.addListener('completed', uploadId, data => {
               uploadSystemInfo(JSON.stringify(data));
               let upload_res = JSON.parse(data.responseBody);
-              if (upload_res.key && data.responseCode === 200) {
-                const body = {
-                  asset: {
-                    file_key: upload_res.key,
-                    fname: upload_res.key,
-                    category: 'video',
-                    video_m3u8: upload_res.key.replace('mp4', 'm3u8'),
-                  },
-                };
-                saveToAsset(body).then(ret => {
-                  resolve(ret);
-                });
-              }
+              console.log(data);
+              console.log(JSON.parse(data.responseBody));
+
+              // if (upload_res.key && data.responseCode === 200) {
+              //   const body = {
+              //     asset: {
+              //       file_key: upload_res.key,
+              //       fname: upload_res.key,
+              //       category: 'video',
+              //       video_m3u8: upload_res.key.replace('mp4', 'm3u8'),
+              //     },
+              //   };
+              //   saveToAsset(body).then(ret => {
+              //     resolve(ret);
+              //   });
+              // }
             });
           })
           .catch(err => {

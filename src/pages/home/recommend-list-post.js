@@ -26,7 +26,7 @@ const RecommendListPost = () => {
       case 'Article':
         return <BaseArticle data={item.item} />;
       case 'Theory':
-        return <BaseTheory data={item.item} />;
+      // return <BaseTheory data={item.item} />;
     }
   });
 

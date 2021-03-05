@@ -7,6 +7,7 @@ import {loginReducer} from './login_reducer';
 import articleReducer from './article_reducer';
 import topicReducer from './topic_reducer';
 import nodeReducer from './node_reducer';
+import theoryReducer from './theory_reducer';
 
 // import counterReducer from './counterReducer';
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   article: articleReducer,
   topic: topicReducer,
   node: nodeReducer,
+  theory: theoryReducer,
 });
 // Exports
 export default rootReducer;
