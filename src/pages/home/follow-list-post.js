@@ -129,11 +129,19 @@ const FollowListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    return item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    );
+    // return item.item_type === 'Topic' ? (
+    //   <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+    // ) : (
+    //   <BaseArticle data={item.item} />
+    // );
+    let component = <View />;
+    if(item.item_type === 'Topic') {
+      component = <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+    }
+    if(item.item_type === 'Article') {
+      component = <BaseArticle data={item.item} />
+    }
+    return component
   });
 
   const renderItemMemo = useCallback(

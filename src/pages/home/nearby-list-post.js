@@ -35,11 +35,8 @@ const NearByListPost = () => {
     return (
       <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
         {index === 0 && NearbyShareComponent()}
-        {item.item_type === 'Topic' ? (
-          <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-        ) : (
-          <BaseArticle data={item.item} />
-        )}
+        {item.item_type === 'Topic' && <BaseTopic data={item.item} onRemove={() => onRemove(index)} /> }
+        {item.item_type === 'Article' && <BaseArticle data={item.item} /> }
       </View>
     );
   });
