@@ -13,7 +13,7 @@ import {
 } from 'react-native-permissions';
 import {ModalPortal} from 'react-native-modals';
 import Navigation from './src/navigator/index';
-import ShareMultiModal from "@/components/ShareMultiModal"
+import ShareMultiModal from '@/components/ShareMultiModal';
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
 import RNBootSplash from 'react-native-bootsplash';
@@ -42,10 +42,7 @@ const codePushOptions = {
   checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
 // https://github.com/react-native-community/react-native-device-info#installation
-import DeviceInfo from 'react-native-device-info';
 import ImagePreview from '@/components/ImagePreview';
-import PolicyModal from '@/components/PolicyModal';
-import Toast from '@/components/Toast';
 
 class App extends Component {
   constructor(props) {
@@ -56,6 +53,11 @@ class App extends Component {
   }
 
   componentDidMount() {
+    init({
+      ios: '6da6626cf6588fb6e3052deff1e8d4e9',
+      android: '648f6e4ce8f5b83b30e2eabcac060eee',
+    });
+
     let scale = Dimensions.get('window').width / 375;
     if (scale > 1) {
       scale = 1.08;
@@ -181,7 +183,7 @@ class App extends Component {
         let screen = '';
         let params = '';
         const extras = notification.extras;
-        if(!extras) {
+        if (!extras) {
           return;
         }
         params = extras.params;
@@ -214,10 +216,7 @@ class App extends Component {
   };
 
   loadNetworkInfo = async () => {
-    await init({
-      ios: '6da6626cf6588fb6e3052deff1e8d4e9',
-      android: '648f6e4ce8f5b83b30e2eabcac060eee',
-    });
+
 
     this.networdunsubscribe = NetInfo.addEventListener(state => {
       // console.log('state', state)
@@ -267,7 +266,7 @@ class App extends Component {
             <ShareMultiModal />
             <ModalPortal />
           </PersistGate>
-        </Provider>        
+        </Provider>
       </>
     );
   }

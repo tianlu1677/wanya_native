@@ -345,7 +345,10 @@ const NewTopic = props => {
 
   useEffect(() => {
     if (!location) {
-      loadLocation(dispatch);
+      setTimeout(() => {
+        // 如果在effect里面，必须等待500ms
+        loadLocation(dispatch);
+      }, 500)
     }
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
