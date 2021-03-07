@@ -194,4 +194,5 @@ export const UPDATE_FOLLOW_NODES = 'UPDATE_FOLLOW_NODES'; //关注圈子列表�
 export const UPDATE_CHECK_NODES = 'UPDATE_CHECK_NODES'; //check圈子列表
 
 // theory
+export const THEORY_DETAIL = 'THEORY_DETAIL'; //theory详情
 export const UPDATE_THEORY = 'UPDATE_THEORY'; //更新theory

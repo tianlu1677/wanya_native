@@ -1,29 +1,38 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, KeyboardAvoidingView, Dimensions, Platform, StyleSheet} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
-import {dispatchTopicDetail} from '@/redux/actions';
 import {STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
-import FastImg from '@/components/FastImg';
 import {SAFE_TOP} from '@/utils/navbar';
 import ActionSheet from '@/components/ActionSheet';
 import {GoBack} from '@/components/NodeComponents';
 import CommentList from '@/components/List/comment-list';
 import {ActionComment} from '@/components/Item/single-detail-item';
-import {getTopic, deleteTopic, createTopicAction} from '@/api/topic_api';
-import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
-const {width} = Dimensions.get('window');
+import {deleteTopic, createTopicAction} from '@/api/topic_api';
+import {
+  getTopicCommentList,
+  getTheoryCommentList,
+  createComment,
+  deleteComment,
+} from '@/api/comment_api';
+import TheoryMedia from './component/theory-media.js';
+import {PublishAccount} from '@/components/Item/single-detail-item';
+import {getTheoriy} from '@/api/theory_api';
 
-const img =
-  'http://xinxuefile.meirixinxue.com/uploads/node/backgroud_cover/2020/5bf3c320-53f1-4546-9455-cd3eb6c9f8ca.gif?imageMogr2/thumbnail/!750x485r/gravity/Center/crop/750x485';
+import {styles} from './theory-preview';
 
 const TheoryDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentAccount);
-  const currentTopic = useSelector(state => state.topic.topicDetail);
-  const [topicId] = useState(1353);
+  const theoryId = route.params.theoryId;
+
+  const {
+    account: {currentAccount},
+    theory: {theoryDetail},
+  } = useSelector(state => state);
+
+  console.log('theoryDetail', theoryDetail);
 
   const [detail, setDetail] = useState();
   const [visible, setVisible] = useState(false);
@@ -31,13 +40,13 @@ const TheoryDetail = ({navigation, route}) => {
   const [actionItems, setActionItems] = useState([]);
 
   const loadData = async () => {
-    const res = await getTopic(topicId);
+    const res = await getTheoriy(theoryId);
     if (res.data.status === 404) {
-      Toast.show('该帖子已删除');
+      Toast.show('该玩法已删除');
       navigation.goBack();
     } else {
-      createTopicAction({id: topicId, type: 'view'});
-      dispatch(dispatchTopicDetail(res.data.topic));
+      // createTopicAction({id: theoryId, type: 'view'});
+      dispatch({type: action.THEORY_DETAIL, value: res.data.theory});
     }
   };
 
@@ -85,34 +94,54 @@ const TheoryDetail = ({navigation, route}) => {
   useEffect(() => {
     loadData();
     return () => {
-      dispatch(dispatchTopicDetail(null));
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      // dispatch(dispatchTopicDetail(null));
+      // dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
     };
   }, []);
 
   useEffect(() => {
-    setDetail(currentTopic);
-  }, [currentTopic]);
+    setDetail(theoryDetail);
+  }, [theoryDetail]);
 
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
-      style={styles.wrapper}>
+      style={ptyles.wrapper}>
       <GoBack color={'white'} report={{report_type: 'Topic', report_id: detail.id}} />
       <CommentList
-        type="Topic"
+        type="Theory"
         detail={detail}
         enableLoadMore={false}
         changeVisible={value => setVisible(value)}
         deleteComment={deleteTopicComment}
-        request={{api: getTopicCommentList, params: {id: detail.id}}}
+        request={{api: getTheoryCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
             <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-            <FastImg source={{uri: img}} style={{width, height: 200}} />
+            <TheoryMedia media={detail.media} type="theory_media" isShowDetele={false} />
+            <Text style={styles.title}>{detail.title}</Text>
+            <PublishAccount data={detail} showFollow={false} />
+            <View style={styles.content}>
+              <Text style={styles.intro}>{detail.plain_content}</Text>
+              <Text style={styles.introTitle}>顽法步骤</Text>
+              {(detail.theory_bodies || []).map((item, index) => (
+                <View key={index}>
+                  <Text style={styles.stepTitle}>
+                    步骤{item.position}/{detail.theory_bodies.length} {item.title}
+                  </Text>
+                  <View style={styles.stepMedia}>
+                    <TheoryMedia media={item.media} type="theory_body_media" isShowDetele={false} />
+                  </View>
+                  <Text style={styles.stepIntro}>{item.desc}</Text>
+                </View>
+              ))}
+              <Text style={styles.introTitle}>小贴士</Text>
+              <Text style={styles.tips}>{detail.tip}</Text>
+            </View>
+
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
-            <Text style={styles.commentTitle}>全部评论</Text>
+            <Text style={ptyles.commentTitle}>全部评论</Text>
           </>
         }
       />
@@ -136,7 +165,7 @@ const TheoryDetail = ({navigation, route}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const ptyles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',

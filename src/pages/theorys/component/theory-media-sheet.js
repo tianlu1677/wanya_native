@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Platform} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {check, RESULTS, PERMISSIONS} from 'react-native-permissions';
+import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
 
 const imagePermission =
@@ -18,7 +20,11 @@ export const checkPermission = async props => {
 };
 
 const TheoryMediaSheet = props => {
+  const dispatch = useDispatch();
+  const {theory} = useSelector(state => state.theory);
   const {params, showActionSheet, changeModal} = props;
+
+  const {assetable_name, assetable_id} = params;
 
   const actionItems = [
     {
@@ -30,29 +36,30 @@ const TheoryMediaSheet = props => {
           if (err) {
             return;
           }
-          console.log(res);
-          const result = await props.uploadImage(res[0], params);
-          console.log(result.asset);
+          const file = res[0];
+          const result = await props.uploadImage(file, params, ret => {
+            if (assetable_name === 'theory_media') {
+              const newTheory = {...theory, media: {...file, category: 'image', progress: ret}};
+              dispatch({type: action.UPDATE_THEORY, value: newTheory});
+            }
+
+            if (assetable_name === 'theory_body_media') {
+              // const bodyMedia = {media: {...file, category: 'image', progress: ret}};
+              // theory.theory_bodies[assetable_id] = bodyMedia;
+              // const newBodies = theory.theory_bodies;
+              // dispatch({
+              //   type: action.UPDATE_THEORY,
+              //   value: {...theory, newBodies},
+              // });
+
+              const index = theory.theory_bodies.findIndex(item => item.id === assetable_id);
+              const current = {...file, category: 'video', progress: ret};
+              theory.theory_bodies[index] = current;
+              dispatch({type: action.UPDATE_THEORY, value: {...theory}});
+            }
+          });
           props.loadData();
-          // const result = {
-          //   assetable_id: 2,
-          //   assetable_name: 'theory_media',
-          //   assetable_type: 'Theory',
-          //   category: 'image',
-          //   fname: 'DC94983B-FAA2-4553-AA7F-FE56FD6005D9IMG_7979.jpg',
-          //   fsize: 168942,
-          //   ftype: 'image/jpeg',
-          //   height: 1102,
-          //   id: 3713,
-          //   m3u8_video_url: '',
-          //   original_url:
-          //     'http://xinxuefile.meirixinxue.com/assets/2021/9bae3ef5-4e8d-4419-93be-4c4df04c13ec.jpg',
-          //   url:
-          //     'http://xinxuefile.meirixinxue.com/assets/2021/9bae3ef5-4e8d-4419-93be-4c4df04c13ec.jpg',
-          //   video_cover_url: '',
-          //   video_url: '',
-          //   width: 826,
-          // };
+          console.log('result', result);
         });
       },
     },
@@ -65,10 +72,26 @@ const TheoryMediaSheet = props => {
           if (err) {
             return;
           }
-          console.log(JSON.stringify(res));
-          console.log('params', params);
-          const result = await props.uploadVideo(res[0], params);
-          console.log(result);
+          const file = res[0];
+
+          const result = await props.uploadVideo(file, params, ret => {
+            if (assetable_name === 'theory_media') {
+              const newTheory = {...theory, media: {...file, category: 'video', progress: ret}};
+              dispatch({type: action.UPDATE_THEORY, value: newTheory});
+            }
+
+            if (assetable_name === 'theory_body_media') {
+              const bodyMedia = {media: {...file, category: 'video', progress: ret}};
+              theory.theory_bodies[assetable_id] = bodyMedia;
+              const newBodies = theory.theory_bodies;
+              dispatch({
+                type: action.UPDATE_THEORY,
+                value: {...theory, newBodies},
+              });
+            }
+          });
+          console.log('result', result);
+          props.loadData();
         });
       },
     },

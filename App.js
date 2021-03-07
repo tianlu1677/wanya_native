@@ -13,7 +13,7 @@ import {
 } from 'react-native-permissions';
 import {ModalPortal} from 'react-native-modals';
 import Navigation from './src/navigator/index';
-import ShareMultiModal from "@/components/ShareMultiModal"
+import ShareMultiModal from '@/components/ShareMultiModal';
 import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
 import RNBootSplash from 'react-native-bootsplash';
@@ -144,7 +144,7 @@ class App extends Component {
     JPush.getRegistrationID(this.onRegister);
 
     JPush.addConnectEventListener(result => {
-      console.log('addConnectEventListener result', result);
+      // console.log('addConnectEventListener result', result);
     });
 
     //通知回调
@@ -181,7 +181,7 @@ class App extends Component {
         let screen = '';
         let params = '';
         const extras = notification.extras;
-        if(!extras) {
+        if (!extras) {
           return;
         }
         params = extras.params;
@@ -267,7 +267,7 @@ class App extends Component {
             <ShareMultiModal />
             <ModalPortal />
           </PersistGate>
-        </Provider>        
+        </Provider>
       </>
     );
   }

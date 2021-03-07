@@ -21,12 +21,11 @@ const RecommendListPost = () => {
   const RenderItem = React.memo(({item, index}) => {
     switch (item.item_type) {
       case 'Topic':
-        return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
-      // return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+        return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
       case 'Article':
         return <BaseArticle data={item.item} />;
       case 'Theory':
-      // return <BaseTheory data={item.item} />;
+        return <BaseTheory data={item.item} />;
     }
   });
 

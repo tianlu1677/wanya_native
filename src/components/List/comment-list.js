@@ -64,7 +64,7 @@ const CommentList = props => {
         },
       ];
     }
-    if(Platform.OS === 'ios') {
+    if (Platform.OS === 'ios') {
       const cancelItem = {
         id: '#cancel',
         label: '取消',
@@ -74,14 +74,14 @@ const CommentList = props => {
       const actionSheetItems = [...options, cancelItem];
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          options: actionSheetItems.map((x) => x.label),
+          options: actionSheetItems.map(x => x.label),
           // destructiveButtonIndex: actionSheetItems.length - 1,
           cancelButtonIndex: actionSheetItems.length - 1,
         },
         buttonIndex => {
           actionSheetItems[buttonIndex].onPress();
         }
-      )
+      );
     } else {
       setActionItems(options);
       setShowActionSheet(true);

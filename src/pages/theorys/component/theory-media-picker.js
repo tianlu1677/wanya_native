@@ -20,7 +20,7 @@ const StepMediaPicker = WrapperComponent => {
       SyanImagePicker.showImagePicker(options, callback);
     };
 
-    const uploadImage = async (file, params) => {
+    const uploadImage = async (file, params, cb) => {
       const token = await Helper.getData('auth_token');
       const options = {
         ...config,
@@ -42,7 +42,11 @@ const StepMediaPicker = WrapperComponent => {
             Upload.addListener('error', uploadId, data => {
               reject(data.error);
             });
+            Upload.addListener('progress', uploadId, data => {
+              cb(parseInt(data.progress));
+            });
             Upload.addListener('completed', uploadId, data => {
+              console.log('data', data);
               resolve(JSON.parse(data.responseBody));
             });
           })
@@ -79,24 +83,21 @@ const StepMediaPicker = WrapperComponent => {
               cb(parseInt(data.progress));
             });
             Upload.addListener('completed', uploadId, data => {
-              uploadSystemInfo(JSON.stringify(data));
-              let upload_res = JSON.parse(data.responseBody);
-              console.log(data);
-              console.log(JSON.parse(data.responseBody));
-
-              // if (upload_res.key && data.responseCode === 200) {
-              //   const body = {
-              //     asset: {
-              //       file_key: upload_res.key,
-              //       fname: upload_res.key,
-              //       category: 'video',
-              //       video_m3u8: upload_res.key.replace('mp4', 'm3u8'),
-              //     },
-              //   };
-              //   saveToAsset(body).then(ret => {
-              //     resolve(ret);
-              //   });
-              // }
+              const {key} = JSON.parse(data.responseBody);
+              if (key && data.responseCode === 200) {
+                const body = {
+                  asset: {
+                    file_key: key,
+                    fname: key,
+                    video_m3u8: key.replace('mp4', 'm3u8'),
+                    category: 'video',
+                    ...params,
+                  },
+                };
+                saveToAsset(body).then(ret => {
+                  resolve(ret);
+                });
+              }
             });
           })
           .catch(err => {

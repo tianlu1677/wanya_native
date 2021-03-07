@@ -6,6 +6,8 @@ import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import TheoryMedia from './theory-media.js';
 import TheoryMediaSheet, {checkPermission} from './theory-media-sheet';
+import {refreshTheoryBody} from '@/api/theory_api';
+import * as action from '@/redux/constants';
 
 export const defaultProps = {
   autoCorrect: false,
@@ -16,20 +18,33 @@ export const defaultProps = {
 };
 
 const TheorySteps = props => {
+  const dispatch = useDispatch();
   const {theory} = useSelector(state => state.theory);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [step, setStep] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(1);
 
-  const onChangeText = (value, attr) => {
-    // change({...data, [attr]: value}, index);
-  };
-
-  const onMediaPicker = async index => {
-    setStep(index + 1);
+  const onMediaPicker = async id => {
+    setStep(id);
     const hasPermission = await checkPermission();
     if (hasPermission) {
       setShowActionSheet(true);
     }
+  };
+
+  const updateTheoryText = async id => {
+    const current = theory.theory_bodies.find(item => item.id === id);
+    const {title, desc} = current;
+    const data = {id: theory.id, theory_body_id: id, theory_body: {title, desc}};
+    await refreshTheoryBody(theory.id, data);
+    props.loadData();
+  };
+
+  const updateTheory = async (value, attr, id) => {
+    const index = theory.theory_bodies.findIndex(item => item.id === id);
+    const current = {...theory.theory_bodies[index], [attr]: value};
+    theory.theory_bodies[index] = current;
+    dispatch({type: action.UPDATE_THEORY, value: {...theory}});
   };
 
   return (
@@ -38,19 +53,26 @@ const TheorySteps = props => {
         return (
           <View style={styles.wrapper} key={index}>
             <View style={styles.titleWrap}>
-              <Text style={styles.titleText}>第{index + 1}步</Text>
+              <Text style={styles.titleText}>第{item.position}步</Text>
               <TextInput
                 {...defaultProps}
                 maxLength={30}
                 style={styles.titleInput}
                 value={item.title}
-                onChangeText={text => onChangeText(text, 'title')}
+                onBlur={() => updateTheoryText(item.id)}
+                onChangeText={value => updateTheory(value, 'title', item.id)}
               />
             </View>
+
             {item.media ? (
-              <TheoryMedia media={item.media} type="body" loadData={props.loadData} />
+              <TheoryMedia
+                media={item.media}
+                type="theory_body_media"
+                loadData={props.loadData}
+                isShowDetele={true}
+              />
             ) : (
-              <Pressable style={styles.mediaWrap} onPress={() => onMediaPicker(index)}>
+              <Pressable style={styles.mediaWrap} onPress={() => onMediaPicker(item.id)}>
                 <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />
                 <Text style={styles.mediaText}>上传步骤图/视频/GIF</Text>
               </Pressable>
@@ -59,10 +81,12 @@ const TheorySteps = props => {
             <TextInput
               {...defaultProps}
               multiline
-              maxLength={30}
+              maxLength={200}
+              placeholder="步骤描述越详细越好"
               style={styles.stepIntro}
               value={item.desc}
-              onChangeText={text => onChangeText(text, 'desc')}
+              onBlur={() => updateTheoryText(item.id)}
+              onChangeText={value => updateTheory(value, 'desc', item.id)}
             />
           </View>
         );
@@ -84,7 +108,7 @@ const TheorySteps = props => {
 };
 
 TheorySteps.propTypes = {
-  loadData: PropTypes.array.func, //更新
+  loadData: PropTypes.func.isRequired, //更新
 };
 
 const greyColor = {backgroundColor: '#fafafa'};

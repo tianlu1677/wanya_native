@@ -12,22 +12,23 @@ const BaseTheory = props => {
   const navigation = useNavigation();
 
   const goArticleDetail = () => {
-    navigation.push('TopicDetail', {topicId: data.id});
+    navigation.push('TheoryDetail', {theoryId: data.id});
   };
+  console.log('data', data);
 
   return (
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
-      <Header data={data} type="article" onRemove={props.onRemove} />
+      {/* <Header data={data} type="article" onRemove={props.onRemove} /> */}
       <View style={styles.content}>
         <Text style={styles.titleText} numberOfLines={2}>
           {/* {data.title} */}玩法玩法
         </Text>
-        <FastImg
+        {/* <FastImg
           source={{uri: data.single_cover.cover_url}}
           style={styles.imageCover}
           mode={'cover'}
-        />
-        <FastImg style={styles.playImage} source={VideoPlayImg} />
+        /> */}
+        {/* <FastImg style={styles.playImage} source={VideoPlayImg} /> */}
         <View style={styles.bottom}>
           <NoActionBottom data={data} />
         </View>

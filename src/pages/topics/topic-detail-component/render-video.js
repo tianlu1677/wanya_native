@@ -15,8 +15,8 @@ const RenderVideo = props => {
   const {detail} = props;
   const {width, height} = detail.media_video;
   let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-  if(videoHeight > SCREEN_HEIGHT) {
-    videoHeight = SCREEN_HEIGHT - 500
+  if (videoHeight > SCREEN_HEIGHT) {
+    videoHeight = SCREEN_HEIGHT - 500;
   }
 
   useFocusEffect(
@@ -61,8 +61,7 @@ const RenderVideo = props => {
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
         </View>
       ) : null}
-      <PublishRelated data={detail} type="topic"  space={detail.space}
-                      location={detail.location} />
+      <PublishRelated data={detail} type="topic" space={detail.space} location={detail.location} />
     </>
   );
 };
