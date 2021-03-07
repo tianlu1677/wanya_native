@@ -1,5 +1,5 @@
 import React, {Component, useState, useLayoutEffect, useEffect, useCallback, useRef} from 'react';
-import {StyleSheet, View, TouchableOpacity, Modal, Image, Text, Pressable} from 'react-native';
+import {StyleSheet, BackHandler, View, TouchableOpacity, Modal, Image, Text, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Helper from '../utils/helper';
 import IconFont from '@/iconfont';
@@ -9,6 +9,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 const PolicyModal = ({navigation, route}) => {
   const [showModal, setShowModal] = useState(false);
+  const [cancelText, setCancelText] = useState('拒绝');
   const agreePolicy = async () => {
     console.log('cancel');
     Helper.setData('agree_policy', 'ok');
@@ -24,7 +25,7 @@ const PolicyModal = ({navigation, route}) => {
     }
   };
 
-  goPolicy = (type) => {
+  const goPolicy = (type) => {
     if (type === 'private') {
       RootNavigation.navigate('WebView', {
         sourceUrl: `${BaseApiUrl}/home/private_policy`,
@@ -40,6 +41,15 @@ const PolicyModal = ({navigation, route}) => {
         bgColor: 'black',
       });
       setShowModal(false);
+    }
+  }
+
+  const rejectPolicy = () => {
+    if(cancelText === '拒绝') {
+      setCancelText('拒绝并退出')
+    } else {
+      console.log('exist');
+      BackHandler.exitApp()
     }
   }
 
@@ -66,7 +76,7 @@ const PolicyModal = ({navigation, route}) => {
               <View style={styles.tipBoxTil}>
                 <Text style={styles.tipBoxTilTxt}>服务协议和隐私政策</Text>
               </View>
-              <View>
+              <View style={{paddingLeft: 15, paddingRight: 15,}}>
                 <Text style={styles.tipBoxDec}>
                   请你务必审核阅读、充分理解“服务协议”和隐私政策个条款，包括但不限于：为了向你提供即时通讯、内容分享等服务，我们需要手机你的设备信息、操作日志等个人信息。你可以在“设置”中查看、变更、删除跟人信息并管理你的授权。
                   你可阅读{' '}
@@ -76,9 +86,14 @@ const PolicyModal = ({navigation, route}) => {
                   了解详细信息。如你同意，请点击“同意”开始接受我们的服务。
                 </Text>
               </View>
-              <TouchableOpacity style={styles.sureBtn} onPress={() => agreePolicy()}>
-                <Text style={styles.sureBtnTxt}>同意</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Pressable style={styles.cancelBtn} onPress={() => rejectPolicy()}>
+                  <Text style={styles.sureBtnTxt}>{cancelText}</Text>
+                </Pressable>
+                <Pressable style={styles.sureBtn} onPress={() => agreePolicy()}>
+                  <Text style={styles.sureBtnTxt}>同意</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </Modal>
@@ -99,8 +114,6 @@ const styles = StyleSheet.create({
   tipBox: {
     width: 320,
     paddingTop: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
     borderRadius: 5,
     backgroundColor: '#FFFFFF',
   },
@@ -122,11 +135,26 @@ const styles = StyleSheet.create({
   sureBtn: {
     marginTop: 10,
     height: 40,
+    width: '60%',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FF2242',
+    color: 'white',
+    borderBottomRightRadius: 5,
+
+  },
+  cancelBtn: {
+    marginTop: 10,
+    height: 40,
+    width: '40%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#BDBDBD',
+    color: 'white',
+    borderBottomLeftRadius: 5,
   },
   sureBtnTxt: {
-    color: '#51aaf9',
+    color: 'white',
   },
   policyHeader: {
     height: 60,
