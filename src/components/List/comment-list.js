@@ -29,7 +29,7 @@ const CommentList = props => {
       content: '',
       target_comment_id: v.id,
     };
-    dispatch({type: action.SAVE_COMMENT_TOPIC, value: comment});
+    dispatch({type: action.SAVE_COMMENT_CONTENT, value: comment});
     props.changeVisible(true);
   };
 

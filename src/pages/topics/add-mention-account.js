@@ -7,18 +7,18 @@ import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
 import {RFValue} from '@/utils/response-fontsize';
-import * as action from "@/redux/constants"
+import * as action from '@/redux/constants';
 
 const MentionAccounts = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
   const dispatch = useDispatch();
   const [request, setRequest] = useState(null);
   const [searchKey, setSearchKey] = useState(null);
-  const comment = useSelector(state => state.home.commentTopic);
+  const comment = useSelector(state => state.home.commentContent);
 
   const goBack = () => {
     navigation.goBack();
-    dispatch({ type: action.SAVE_COMMENT_TOPIC, value: {...comment, content: comment.content}});
+    dispatch({type: action.SAVE_COMMENT_CONTENT, value: {...comment, content: comment.content}});
   };
 
   useEffect(() => {
@@ -44,7 +44,11 @@ const MentionAccounts = ({navigation, route}) => {
       }}>
       <View style={styles.wrapper}>
         <Search
-          inputStyle={{ borderRadius: RFValue(19), lineHeight: RFValue(36),  backgroundColor: '#F2F3F5'}}
+          inputStyle={{
+            borderRadius: RFValue(19),
+            lineHeight: RFValue(36),
+            backgroundColor: '#F2F3F5',
+          }}
           height={RFValue(36)}
           cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"

@@ -5,14 +5,14 @@ import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
-import {RFValue} from '@/utils/response-fontsize';
 import LocationBar from '@/components/LocationBar';
 import {deleteTopic} from '@/api/topic_api';
+import {deleteTheory} from '@/api/theory_api';
 import {getAccountBaseInfo} from '@/api/account_api';
 import * as Animatable from 'react-native-animatable';
 import {dispatchShareItem} from '@/redux/actions';
 import ActionSheet from '@/components/ActionSheet';
-import {cancelAction, createAction} from "@/api/action_api"
+import {cancelAction, createAction} from '@/api/action_api';
 
 export const Header = props => {
   const {data} = props;
@@ -50,7 +50,32 @@ export const Header = props => {
 
   const onReportClick = () => {
     const isCurrentSelf = data.account.id === currentAccount.id;
+    console.log('isCurrentSelf', isCurrentSelf);
     let options = [];
+
+    if (isCurrentSelf) {
+      options = [
+        {
+          id: 1,
+          label: star ? '取消收藏' : '收藏',
+          onPress: async () => onStar(),
+        },
+        {
+          id: 2,
+          label: '删除',
+          onPress: async () => {
+            try {
+              await deleteTopic(data.id);
+              Toast.showError('已删除');
+              props.onRemove();
+            } catch (err) {
+              Toast.error('删除失败，请稍后再试');
+            }
+          },
+        },
+      ];
+    }
+
     if (isCurrentSelf) {
       switch (props.type) {
         case 'topic':
@@ -81,6 +106,28 @@ export const Header = props => {
               id: 1,
               label: star ? '取消收藏' : '收藏',
               onPress: async () => onStar(),
+            },
+          ];
+          break;
+        case 'theory':
+          options = [
+            {
+              id: 1,
+              label: star ? '取消收藏' : '收藏',
+              onPress: async () => onStar(),
+            },
+            {
+              id: 2,
+              label: '删除',
+              onPress: async () => {
+                try {
+                  await deleteTheory(data.id);
+                  Toast.showError('已删除');
+                  props.onRemove();
+                } catch (err) {
+                  Toast.error('删除失败，请稍后再试');
+                }
+              },
             },
           ];
           break;
@@ -181,20 +228,20 @@ export const Bottom = props => {
     let shareOptions = {
       item_type: '',
       item_id: '',
-      visible: true
+      visible: true,
     };
 
     switch (props.type) {
       case 'article':
         shareOptions = {
           item_type: 'Article',
-          item_id: data.id
+          item_id: data.id,
         };
         break;
       case 'topic':
         shareOptions = {
           item_type: 'Topic',
-          item_id: data.id
+          item_id: data.id,
         };
         break;
       default:

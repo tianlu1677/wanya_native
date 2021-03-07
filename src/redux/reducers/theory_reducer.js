@@ -2,7 +2,7 @@ import * as constants from '../constants';
 
 const defaultState = {
   theory: {},
-  theoryDetail: {},
+  theoryDetail: null,
 };
 
 function theoryReducer(state = defaultState, action) {

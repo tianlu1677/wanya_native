@@ -17,7 +17,7 @@ const AccountsList = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const savetopic = useSelector(state => state.home.savetopic);
-  const savecomment = useSelector(state => state.home.commentTopic);
+  const savecomment = useSelector(state => state.home.commentContent);
 
   const onPress = item => {
     if (props.type === 'topicDetail') {
@@ -28,7 +28,7 @@ const AccountsList = props => {
           : `@${item.nickname} `,
         mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, item.id] : [item.id],
       };
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: comments});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: comments});
       navigation.goBack();
       return;
     }

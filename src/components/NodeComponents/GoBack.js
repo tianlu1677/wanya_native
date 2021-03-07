@@ -41,12 +41,13 @@ export const GoBack = props => {
       </Pressable>
       {report && (
         <Pressable
-          onPress={() => {
-            navigation.push('Report', {
-              report_type: report.report_type,
-              report_type_id: report.report_id,
-            });
-          }}
+          // onPress={() => {
+          //   navigation.push('Report', {
+          //     report_type: report.report_type,
+          //     report_type_id: report.report_id,
+          //   });
+          // }}
+          onPress={props.onReportClick}
           style={{...styles.report, top: SAFE_TOP}}
           hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <IconFont name="gengduo" color="#fff" size={20} />

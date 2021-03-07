@@ -28,7 +28,7 @@ import RenderLongVideo from './topic-detail-component/render-long-video';
 import RenderVideo from './topic-detail-component/render-video';
 import RenderLink from './topic-detail-component/render-link';
 import RenderText from './topic-detail-component/render-text';
-import {createAction} from "@/api/action_api"
+import {createAction} from '@/api/action_api';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const TopicDetail = ({navigation, route}) => {
       setVisible(false);
       Toast.showLoading('发送中');
       await createComment(data);
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
       Toast.hide();
       Toast.show('评论成功啦');
       loadData();
@@ -98,7 +98,7 @@ const TopicDetail = ({navigation, route}) => {
     loadData();
     return () => {
       dispatch(dispatchTopicDetail(null));
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
     };
   }, []);
 
@@ -112,10 +112,7 @@ const TopicDetail = ({navigation, route}) => {
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
       keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
       {['video', 'img'].includes(detail.content_style) ? (
-        <>
-          {/*<StatusBar barStyle={'light-content'} />*/}
-          <GoBack color={'white'} report={{report_type: 'Topic', report_id: detail.id}} />
-        </>
+        <GoBack color={'white'} report={true} onReportClick={onReportClick} />
       ) : null}
 
       {['link', 'text'].includes(detail.content_style) ? (

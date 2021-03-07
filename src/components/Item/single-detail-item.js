@@ -7,7 +7,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import {Avator} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchArticleDetail, dispatchShareItem} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
-import { createAction, cancelAction} from "@/api/action_api"
+import {createAction, cancelAction} from '@/api/action_api';
 import * as action from '@/redux/constants';
 import LocationBar from '@/components/LocationBar';
 export const PublishAccount = props => {
@@ -95,7 +95,7 @@ export const PublishRelated = props => {
 
 export const ActionComment = props => {
   const navigation = useNavigation();
-  const comment = useSelector(state => state.home.commentTopic);
+  const comment = useSelector(state => state.home.commentContent);
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const [praise, setPraise] = useState(props.detail.praise);
@@ -114,21 +114,21 @@ export const ActionComment = props => {
       if (text.substr(-1) === '@') {
         navigation.push('AddMentionAccount', {type: 'topicDetail'});
         const saveComments = {...comment, content: text.substr(0, text.length - 1)};
-        dispatch({type: action.SAVE_COMMENT_TOPIC, value: saveComments});
+        dispatch({type: action.SAVE_COMMENT_CONTENT, value: saveComments});
       }
     }
     setValue(text);
   };
 
   const onCreateComment = v => {
-    const commentTopic = {
+    const commentContent = {
       placeholder: '写点评论吧',
       comment_type: 'topic',
       commentable_type: props.type,
       commentable_id: props.detail.id,
       content: '',
     };
-    dispatch({type: action.SAVE_COMMENT_TOPIC, value: commentTopic});
+    dispatch({type: action.SAVE_COMMENT_CONTENT, value: commentContent});
     props.changeVisible(true);
   };
 
@@ -169,9 +169,17 @@ export const ActionComment = props => {
       case 'Theory':
         if (type === 'praise') {
           if (praise) {
-            await cancelAction({target_id: props.detail.id, target_type: props.type, type: 'praise'});
+            await cancelAction({
+              target_id: props.detail.id,
+              target_type: props.type,
+              type: 'praise',
+            });
           } else {
-            await createAction({target_id: props.detail.id, target_type: props.type, type: 'praise'});
+            await createAction({
+              target_id: props.detail.id,
+              target_type: props.type,
+              type: 'praise',
+            });
           }
         }
         if (type === 'star') {

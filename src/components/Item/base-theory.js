@@ -3,9 +3,12 @@ import {View, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Header, NoActionBottom} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
-import {RFValue} from '@/utils/response-fontsize';
 import VideoPlayImg from '@/assets/images/video-play.png';
-const {width} = Dimensions.get('window');
+import {RFValue} from '@/utils/response-fontsize';
+import {scaleSize} from '@/utils/scale';
+
+const {width: screenWidth} = Dimensions.get('window');
+const innerWidth = screenWidth - 28;
 
 const BaseTheory = props => {
   const {data} = props;
@@ -14,21 +17,22 @@ const BaseTheory = props => {
   const goArticleDetail = () => {
     navigation.push('TheoryDetail', {theoryId: data.id});
   };
-  console.log('data', data);
+
+  const {
+    single_cover: {cover_url, category, width: imageWidth, height: imageHeight},
+  } = data;
+
+  const {width, height} = scaleSize({width: imageWidth, height: imageHeight}, innerWidth);
 
   return (
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
-      {/* <Header data={data} type="article" onRemove={props.onRemove} /> */}
+      <Header data={data} type="theory" onRemove={props.onRemove} />
       <View style={styles.content}>
-        <Text style={styles.titleText} numberOfLines={2}>
-          {/* {data.title} */}玩法玩法
-        </Text>
-        {/* <FastImg
-          source={{uri: data.single_cover.cover_url}}
-          style={styles.imageCover}
-          mode={'cover'}
-        /> */}
-        {/* <FastImg style={styles.playImage} source={VideoPlayImg} /> */}
+        <Text style={styles.titleText}>{data.title}</Text>
+        <View style={styles.imageCover}>
+          <FastImg source={{uri: cover_url}} style={{width, height}} mode={'cover'} />
+          {category === 'video' && <FastImg style={styles.playImage} source={VideoPlayImg} />}
+        </View>
         <View style={styles.bottom}>
           <NoActionBottom data={data} />
         </View>
@@ -36,8 +40,6 @@ const BaseTheory = props => {
     </Pressable>
   );
 };
-
-const ImageHeight = parseInt((width * 420) / 750);
 
 const styles = StyleSheet.create({
   postSlide: {
@@ -53,6 +55,10 @@ const styles = StyleSheet.create({
     lineHeight: RFValue(21),
     textAlign: 'justify',
   },
+  imageCover: {
+    marginTop: RFValue(5),
+    position: 'relative',
+  },
   playImage: {
     width: RFValue(40),
     height: RFValue(40),
@@ -61,11 +67,6 @@ const styles = StyleSheet.create({
     top: '50%',
     marginTop: -RFValue(20),
     marginLeft: -RFValue(20),
-  },
-  imageCover: {
-    width: '100%',
-    height: ImageHeight,
-    marginTop: RFValue(5),
   },
   bottom: {
     height: RFValue(35),

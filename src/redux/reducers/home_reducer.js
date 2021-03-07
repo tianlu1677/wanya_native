@@ -13,7 +13,7 @@ const defaultState = {
     item_id: '',
     item_type: '',
   },
-  commentTopic: {content: ''},
+  commentContent: {content: ''},
   location: {chooseCity: ''},
   categoryList: [],
   shareStatus: true,
@@ -43,10 +43,10 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         shareContent: action.shareContent,
       };
-    case constants.SAVE_COMMENT_TOPIC:
+    case constants.SAVE_COMMENT_CONTENT:
       return {
         ...state,
-        commentTopic: action.value,
+        commentContent: action.value,
       };
     case constants.GET_LOCATION:
       return {

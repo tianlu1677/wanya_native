@@ -2,11 +2,10 @@ import request from './request';
 
 //获取评论列表
 export const getCommentList = async params => {
-  console.log('cccc', params)
   const res = await request({
-    url: `/api/v1/comments`,
-    params: params,
+    url: '/api/v1/comments',
     method: 'GET',
+    params: params,
   });
   return res;
 };

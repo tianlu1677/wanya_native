@@ -20,6 +20,15 @@ export const publishTheory = async (id, data) => {
   return res.data;
 };
 
+// 删除玩法
+export const deleteTheory = async id => {
+  const res = await request({
+    url: `/api/v1/theories/${id}`,
+    method: 'DELETE',
+  });
+  return res.data;
+};
+
 // 编辑玩法
 export const refreshTheory = async (id, data) => {
   const res = await request({

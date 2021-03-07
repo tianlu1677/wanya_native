@@ -2,39 +2,30 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
-import {STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
+import {SAFE_TOP, STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
-import {SAFE_TOP} from '@/utils/navbar';
 import ActionSheet from '@/components/ActionSheet';
 import {GoBack} from '@/components/NodeComponents';
 import CommentList from '@/components/List/comment-list';
 import {ActionComment} from '@/components/Item/single-detail-item';
-import {deleteTopic} from '@/api/topic_api';
-import {
-  createComment,
-  deleteComment,
-  getCommentList,
-} from '@/api/comment_api';
-import { createAction } from '@/api/action_api'
-import TheoryMedia from './component/theory-media.js';
+import {getTheoriy, deleteTheory} from '@/api/theory_api';
+import {getCommentList, createComment, deleteComment} from '@/api/comment_api';
+import {createAction} from '@/api/action_api';
 import {PublishAccount} from '@/components/Item/single-detail-item';
-import {getTheoriy} from '@/api/theory_api';
+import TheoryMedia from '@/pages/theorys/component/theory-media';
 
 import {styles} from './theory-preview';
 
 const TheoryDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const theoryId = route.params.theoryId;
-
   const {
     account: {currentAccount},
     theory: {theoryDetail},
   } = useSelector(state => state);
 
-  console.log('theoryDetail', theoryDetail);
-
-  const [detail, setDetail] = useState();
+  const [detail, setDetail] = useState(null);
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [actionItems, setActionItems] = useState([]);
@@ -55,7 +46,7 @@ const TheoryDetail = ({navigation, route}) => {
       setVisible(false);
       Toast.showLoading('发送中');
       await createComment(data);
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
       Toast.hide();
       Toast.show('评论成功啦');
       loadData();
@@ -71,14 +62,14 @@ const TheoryDetail = ({navigation, route}) => {
   };
 
   const onReportClick = () => {
-    const isCurrentTopic = detail.account_id === currentAccount.id;
+    const isCurrent = detail.account_id === currentAccount.id;
     const actions = [
       {
         id: 1,
-        label: isCurrentTopic ? '删除' : '投诉',
+        label: isCurrent ? '删除' : '投诉',
         onPress: async () => {
-          if (isCurrentTopic) {
-            await deleteTopic(detail.id);
+          if (isCurrent) {
+            await deleteTheory(detail.id);
             Toast.show('已删除');
             navigation.goBack();
           } else {
@@ -94,8 +85,8 @@ const TheoryDetail = ({navigation, route}) => {
   useEffect(() => {
     loadData();
     return () => {
-      // dispatch(dispatchTopicDetail(null));
-      // dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      dispatch({type: action.THEORY_DETAIL, value: null});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
     };
   }, []);
 
@@ -108,7 +99,7 @@ const TheoryDetail = ({navigation, route}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
       style={ptyles.wrapper}>
-      <GoBack color={'white'} report={{report_type: 'Topic', report_id: detail.id}} />
+      <GoBack color={'white'} report={true} onReportClick={onReportClick} />
       <CommentList
         type="Theory"
         detail={detail}
@@ -139,7 +130,6 @@ const TheoryDetail = ({navigation, route}) => {
               <Text style={styles.introTitle}>小贴士</Text>
               <Text style={styles.tips}>{detail.tip}</Text>
             </View>
-
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={ptyles.commentTitle}>全部评论</Text>
           </>
@@ -154,6 +144,7 @@ const TheoryDetail = ({navigation, route}) => {
         changeVisible={value => setVisible(value)}
       />
 
+      {/* 投诉删除 */}
       <ActionSheet
         actionItems={actionItems}
         showActionSheet={showActionSheet}

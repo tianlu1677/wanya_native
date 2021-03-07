@@ -16,7 +16,7 @@ import {getCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {getArticle} from '@/api/article_api';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import CommentList from '@/components/List/comment-list';
-import { createAction } from '@/api/action_api'
+import {createAction} from '@/api/action_api';
 import {PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import RichContent from './components/RichContent';
 
@@ -35,7 +35,7 @@ const ArticleDetail = ({navigation, route}) => {
     setVisible(false);
     Toast.showLoading('发送中');
     await createComment(data);
-    dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+    dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
     Toast.hide();
     Toast.show('评论成功啦');
     loadData();
@@ -68,7 +68,7 @@ const ArticleDetail = ({navigation, route}) => {
     // 清空评论数据
     return () => {
       dispatch(dispatchArticleDetail(null));
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
     };
   }, []);
 

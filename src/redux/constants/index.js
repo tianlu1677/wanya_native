@@ -174,9 +174,11 @@ export const ARTICLE_UN_STAR_SUCCESS = 'ARTICLE_UN_STAR_SUCCESS'; // 帖子取�
 export const LEARNING_RECORDS_REQUEST = 'LEARNING_RECORDS';
 export const LEARNING_RECORDS_SUCCESS = 'LEARNING_RECORDS_SUCCESS';
 
+// common
+export const SAVE_COMMENT_CONTENT = 'SAVE_COMMENT_CONTENT'; // 评论内容
+
 // new topic
 export const SAVE_NEW_TOPIC = 'SAVE_NEW_TOPIC';
-export const SAVE_COMMENT_TOPIC = 'SAVE_COMMENT_TOPIC'; // 帖子评论
 export const GET_LOCATION = 'GET_LOCATION'; // 经纬度
 export const CHANGE_UPLOAD_STATUS = 'CHANGE_UPLOAD_STATUS'; //视频上传进度
 
