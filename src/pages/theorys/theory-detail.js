@@ -150,7 +150,7 @@ const TheoryDetail = ({navigation, route}) => {
         visible={visible}
         detail={detail}
         publishComment={publishComment}
-        type="Topic"
+        type="Theory"
         changeVisible={value => setVisible(value)}
       />
 
