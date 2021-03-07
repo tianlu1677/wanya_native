@@ -193,7 +193,7 @@ const CommentList = props => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params} = props.request;
-    const res = await api({id: params.id, page});
+    const res = await api({item_id: params.item_id, item_type: params.item_type, page});
     const data = res.data.comments;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

@@ -7,12 +7,12 @@ import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import {RFValue} from '@/utils/response-fontsize';
 import LocationBar from '@/components/LocationBar';
-import {createTopicAction, destroyTopicAction, deleteTopic} from '@/api/topic_api';
-import {createArticleAction, destroyArticleAction} from '@/api/article_api';
+import {deleteTopic} from '@/api/topic_api';
 import {getAccountBaseInfo} from '@/api/account_api';
 import * as Animatable from 'react-native-animatable';
 import {dispatchShareItem} from '@/redux/actions';
 import ActionSheet from '@/components/ActionSheet';
+import {cancelAction, createAction} from "@/api/action_api"
 
 export const Header = props => {
   const {data} = props;
@@ -31,16 +31,16 @@ export const Header = props => {
     switch (props.type) {
       case 'topic':
         if (star) {
-          await destroyTopicAction(params);
+          await cancelAction({target_id: data.id, target_type: 'Topic', type: 'star'});
         } else {
-          await createTopicAction(params);
+          await createAction({target_id: data.id, target_type: 'Topic', type: 'star'});
         }
         break;
       case 'article':
         if (star) {
-          await destroyArticleAction(params);
+          await cancelAction({target_id: data.id, target_type: 'Article', type: 'star'});
         } else {
-          await createArticleAction(params);
+          await createAction({target_id: data.id, target_type: 'Article', type: 'star'});
         }
         break;
     }
@@ -149,16 +149,16 @@ export const Bottom = props => {
     switch (props.type) {
       case 'article':
         if (praise) {
-          res = await destroyArticleAction({id: data.id, type: 'praise'});
+          res = await cancelAction({target_id: data.id, target_type: 'Article', type: 'praise'});
         } else {
-          res = await createArticleAction({id: data.id, type: 'praise'});
+          res = await createAction({target_id: data.id, target_type: 'Article', type: 'praise'});
         }
         break;
       case 'topic':
         if (praise) {
-          res = await destroyTopicAction({id: data.id, type: 'praise'});
+          res = await cancelAction({target_id: data.id, target_type: 'Topic', type: 'praise'});
         } else {
-          res = await createTopicAction({id: data.id, type: 'praise'});
+          res = await createAction({target_id: data.id, target_type: 'Topic', type: 'praise'});
         }
         break;
     }

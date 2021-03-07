@@ -25,7 +25,7 @@ import ShareInviteContent from '@/pages/shares/components/ShareInviteContent';
 import ShareUtil from '@/utils/umeng_share_util';
 import CameraRoll from '@react-native-community/cameraroll';
 import GetStorage from '@/components/GetStorage';
-import {createTopicAction, getTopic} from '@/api/topic_api';
+import {getTopic} from '@/api/topic_api';
 import {dispatchArticleDetail, dispatchTopicDetail} from '@/redux/actions';
 import {getArticle} from '@/api/article_api';
 import {useNavigation} from '@react-navigation/native';

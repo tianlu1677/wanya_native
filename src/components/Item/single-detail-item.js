@@ -7,8 +7,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import {Avator} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchArticleDetail, dispatchShareItem} from '@/redux/actions';
 import {followAccount, unfollowAccount} from '@/api/account_api';
-import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
-import {createArticleAction, destroyArticleAction} from '@/api/article_api';
+import { createAction, cancelAction} from "@/api/action_api"
 import * as action from '@/redux/constants';
 import LocationBar from '@/components/LocationBar';
 export const PublishAccount = props => {
@@ -157,40 +156,29 @@ export const ActionComment = props => {
       case 'Topic':
         dispatch(dispatchTopicDetail(params));
         break;
+      case 'Theory':
+        // dispatch(dispatchTheoryDetail(params));
+        break;
     }
   };
 
   const onCreate = async type => {
     switch (props.type) {
       case 'Article':
-        if (type === 'praise') {
-          if (praise) {
-            await destroyArticleAction({id: props.detail.id, type});
-          } else {
-            await createArticleAction({id: props.detail.id, type});
-          }
-        }
-        if (type === 'star') {
-          if (star) {
-            await destroyArticleAction({id: props.detail.id, type});
-          } else {
-            await createArticleAction({id: props.detail.id, type});
-          }
-        }
-        break;
       case 'Topic':
+      case 'Theory':
         if (type === 'praise') {
           if (praise) {
-            await destroyTopicAction({id: props.detail.id, type});
+            await cancelAction({target_id: props.detail.id, target_type: props.type, type: 'praise'});
           } else {
-            await createTopicAction({id: props.detail.id, type});
+            await createAction({target_id: props.detail.id, target_type: props.type, type: 'praise'});
           }
         }
         if (type === 'star') {
           if (star) {
-            await destroyTopicAction({id: props.detail.id, type});
+            await cancelAction({target_id: props.detail.id, target_type: props.type, type: 'star'});
           } else {
-            await createTopicAction({id: props.detail.id, type});
+            await createAction({target_id: props.detail.id, target_type: props.type, type: 'star'});
           }
         }
         break;

@@ -8,14 +8,13 @@ import ScrollList, {pagination} from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
-import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
-import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getRecommendTopPosts} from '@/api/home_api';
 
 import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
+import {cancelAction, createAction} from "@/api/action_api"
 
 const {width} = Dimensions.get('window');
 const halfWidth = (width - 15) / 2; // 屏幕去掉两边后（5*2 中间5）的宽度
@@ -43,17 +42,12 @@ const SingleItem = props => {
   const onPraise = async () => {
     switch (props.item_type) {
       case 'Article':
-        if (praiseForm.praise) {
-          await destroyArticleAction({id: data.id, type: 'praise'});
-        } else {
-          await createArticleAction({id: data.id, type: 'praise'});
-        }
-        break;
       case 'Topic':
+
         if (praiseForm.praise) {
-          await destroyTopicAction({id: data.id, type: 'praise'});
+          await cancelAction({target_id: data.id, target_type: props.item_type, type: 'praise'});
         } else {
-          await createTopicAction({id: data.id, type: 'praise'});
+          await createAction({target_id: data.id, target_type: props.item_type, type: 'praise'});
         }
         break;
     }

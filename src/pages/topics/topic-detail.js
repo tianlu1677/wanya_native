@@ -21,13 +21,14 @@ import TopHeaderView from '@/components/TopHeadView';
 import {GoBack} from '@/components/NodeComponents';
 import CommentList from '@/components/List/comment-list';
 import {ActionComment} from '@/components/Item/single-detail-item';
-import {getTopic, deleteTopic, createTopicAction} from '@/api/topic_api';
-import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
+import {getTopic, deleteTopic} from '@/api/topic_api';
+import {createComment, deleteComment, getCommentList} from '@/api/comment_api';
 import RenderImage from './topic-detail-component/render-image';
 import RenderLongVideo from './topic-detail-component/render-long-video';
 import RenderVideo from './topic-detail-component/render-video';
 import RenderLink from './topic-detail-component/render-link';
 import RenderText from './topic-detail-component/render-text';
+import {createAction} from "@/api/action_api"
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const TopicDetail = ({navigation, route}) => {
       Toast.show('该帖子已删除');
       navigation.goBack();
     } else {
-      createTopicAction({id: topicId, type: 'view'});
+      createAction({target_id: topicId, type: 'view', target_type: 'Topic'});
       dispatch(dispatchTopicDetail(res.data.topic));
     }
   };
@@ -142,7 +143,8 @@ const TopicDetail = ({navigation, route}) => {
         enableLoadMore={false}
         changeVisible={value => setVisible(value)}
         deleteComment={deleteTopicComment}
-        request={{api: getTopicCommentList, params: {id: detail.id}}}
+        request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Topic'}}}
+        // request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
             <View style={{paddingBottom: RFValue(20)}}>

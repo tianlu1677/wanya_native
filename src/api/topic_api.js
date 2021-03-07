@@ -30,24 +30,24 @@ export const getTopic = async id => {
 };
 
 // 点赞
-export const createTopicAction = async params => {
-  const res = await request({
-    url: `/api/v1/topics/${params.id}/create_actions`,
-    method: 'POST',
-    data: {type: params.type},
-  });
-  return res;
-};
+// export const createTopicAction = async params => {
+//   const res = await request({
+//     url: `/api/v1/topics/${params.id}/create_actions`,
+//     method: 'POST',
+//     data: {type: params.type},
+//   });
+//   return res;
+// };
 
 // 取消点赞
-export const destroyTopicAction = async params => {
-  const res = await request({
-    url: `/api/v1/topics/${params.id}/destroy_actions`,
-    method: 'POST',
-    data: {type: params.type},
-  });
-  return res;
-};
+// export const destroyTopicAction = async params => {
+//   const res = await request({
+//     url: `/api/v1/topics/${params.id}/destroy_actions`,
+//     method: 'POST',
+//     data: {type: params.type},
+//   });
+//   return res;
+// };
 
 // 删除帖子
 export const deleteTopic = async id => {

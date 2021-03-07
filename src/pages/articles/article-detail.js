@@ -12,10 +12,11 @@ import ActionSheet from '@/components/ActionSheet';
 import {Avator} from '@/components/NodeComponents';
 import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
-import {getArticleCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {getArticle, createArticleAction} from '@/api/article_api';
+import {getCommentList, createComment, deleteComment} from '@/api/comment_api';
+import {getArticle} from '@/api/article_api';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 import CommentList from '@/components/List/comment-list';
+import { createAction } from '@/api/action_api'
 import {PublishRelated, ActionComment} from '@/components/Item/single-detail-item';
 import RichContent from './components/RichContent';
 
@@ -58,7 +59,7 @@ const ArticleDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getArticle(articleId);
     setDetail(res.data.article);
-    createArticleAction({id: articleId, type: 'view'});
+    createAction({target_id: articleId, type: 'view', target_type: 'Article'});
     dispatch(dispatchArticleDetail(res.data.article));
   };
 
@@ -121,7 +122,7 @@ const ArticleDetail = ({navigation, route}) => {
       keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
       <CommentList
         detail={detail}
-        request={{api: getArticleCommentList, params: {id: detail.id}}}
+        request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Article'}}}
         type="Article"
         changeVisible={value => setVisible(value)}
         deleteComment={deleteArticleComment}

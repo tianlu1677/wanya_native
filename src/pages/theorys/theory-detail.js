@@ -10,13 +10,13 @@ import ActionSheet from '@/components/ActionSheet';
 import {GoBack} from '@/components/NodeComponents';
 import CommentList from '@/components/List/comment-list';
 import {ActionComment} from '@/components/Item/single-detail-item';
-import {deleteTopic, createTopicAction} from '@/api/topic_api';
+import {deleteTopic} from '@/api/topic_api';
 import {
-  getTopicCommentList,
-  getTheoryCommentList,
   createComment,
   deleteComment,
+  getCommentList,
 } from '@/api/comment_api';
+import { createAction } from '@/api/action_api'
 import TheoryMedia from './component/theory-media.js';
 import {PublishAccount} from '@/components/Item/single-detail-item';
 import {getTheoriy} from '@/api/theory_api';
@@ -45,7 +45,7 @@ const TheoryDetail = ({navigation, route}) => {
       Toast.show('该玩法已删除');
       navigation.goBack();
     } else {
-      // createTopicAction({id: theoryId, type: 'view'});
+      createAction({target_id: theoryId, type: 'view', target_type: 'Theory'});
       dispatch({type: action.THEORY_DETAIL, value: res.data.theory});
     }
   };
@@ -82,7 +82,7 @@ const TheoryDetail = ({navigation, route}) => {
             Toast.show('已删除');
             navigation.goBack();
           } else {
-            navigation.push('Report', {report_type: 'Account', report_type_id: detail.id});
+            navigation.push('Report', {report_type: 'Theory', report_type_id: detail.id});
           }
         },
       },
@@ -115,7 +115,7 @@ const TheoryDetail = ({navigation, route}) => {
         enableLoadMore={false}
         changeVisible={value => setVisible(value)}
         deleteComment={deleteTopicComment}
-        request={{api: getTheoryCommentList, params: {id: detail.id}}}
+        request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Theory'}}}
         ListHeaderComponent={
           <>
             <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
