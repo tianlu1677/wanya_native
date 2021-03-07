@@ -7,7 +7,7 @@ export async function createAction(data = {type: '', target_id: '', target_type:
     method: 'POST',
     data: data
   })
-  return res.data
+  return res
 }
 
 
@@ -18,5 +18,5 @@ export async function cancelAction(data = {type: '', target_id: '', target_type:
     method: 'POST',
     data: data
   })
-  return res.data
+  return res
 }
