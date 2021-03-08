@@ -2,84 +2,48 @@ import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
 import {KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import _ from 'lodash';
+import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
+import Toast from '@/components/Toast';
+import ActionSheet from '@/components/ActionSheet';
 import {RFValue} from '@/utils/response-fontsize';
-// import ActionSheet from '@/components/ActionSheet';
-import TheorySteps, {defaultProps} from './component/theory-steps';
-import TheoryMediaPicker from './component/theory-media-picker';
+import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import TheorySteps from '@/pages/theories/component/theory-steps';
+import TheoryMedia from '@/pages/theories/component/theory-media.js';
+import TheoryMediaPicker from '@/pages/theories/component/theory-media-picker';
+import TheoryMediaSheet, {checkPermission} from '@/pages/theories/component/theory-media-sheet';
 import {
   getTheoriy,
   refreshTheory,
   addTheoryBody,
   deleteTheoryBody,
   publishTheory,
+  wastedTheory,
 } from '@/api/theory_api';
-import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
-import TheoryMedia from './component/theory-media.js';
-import TheoryMediaSheet, {checkPermission} from './component/theory-media-sheet';
-import Toast from '@/components/Toast';
 
-import * as action from '@/redux/constants';
-
-const media = {
-  assetable_id: 1,
-  assetable_name: 'theory_media',
-  assetable_type: 'Theory',
-  category: 'video',
-  height: 2160,
-  mediaType: 2,
-  fileName: 'IMG_7512.MOV',
-  mime: 'video/mp4',
-  width: 3840,
-  size: 33835097,
-  coverUri:
-    '/private/var/mobile/Containers/Data/Application/7575233A-3EAE-43BA-B66F-B43D8BD4CE20/tmp/SyanImageCaches/6D7829F2-99A1-431B-AC98-30DA4228AB95IMG_7512.jpg',
-  duration: 7.681666666666667,
-  type: 'video',
-  favorite: false,
-  uri:
-    '/var/mobile/Containers/Data/Application/7575233A-3EAE-43BA-B66F-B43D8BD4CE20/tmp/video-2021-03-05-14:40:51-790.mp4',
+const defaultProps = {
+  autoCorrect: false,
+  autoComplete: false,
+  caretHidden: false,
+  selectionColor: '#ff193a',
+  placeholderTextColor: '#9F9F9F',
 };
 
-// const imagePermission =
-//   Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
-
-const defaultData = {title: '标题', media: null, intro: '简介'};
-
-// const checkPermission = async props => {
-//   const status = await check(imagePermission);
-//   if ([RESULTS.GRANTED, RESULTS.DENIED].includes(status)) {
-//     return true;
-//   }
-
-//   if (status === RESULTS.BLOCKED) {
-//     return false;
-//   }
-// };
-
 const TheoryStepContent = props => {
-  const {navigation} = props;
   const dispatch = useDispatch();
-  const [tips, setTips] = useState(null);
-  // const [stepData, setStepData] = useState([defaultData]);
+  const {navigation} = props;
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [showCloseSheet, setShowCloseSheet] = useState(false);
   const {theory} = useSelector(state => state.theory);
-
-  const onChangeData = (data, index) => {
-    // stepData[index] = data;
-    // setStepData([...stepData]);
-  };
 
   const addStep = async () => {
     // add
-    // const res = await addTheoryBody(theory.id);
-    // console.log(res);
+    await addTheoryBody(theory.id);
 
     //remove
-    const data = {id: theory.id, theory_body_id: 2};
-    const rest = await deleteTheoryBody(theory.id, data);
-    console.log('rest', rest);
+    // const data = {id: theory.id, theory_body_id: 2};
+    // await deleteTheoryBody(theory.id, data);
+
     loadData();
   };
 
@@ -101,11 +65,8 @@ const TheoryStepContent = props => {
     dispatch({type: action.UPDATE_THEORY, value: update});
   };
 
-  const updateMediaTheory = values => {};
-
-  // 下一步的时候保存
   const loadData = async () => {
-    const res = await getTheoriy(2);
+    const res = await getTheoriy(props.route.params.id);
     dispatch({type: action.UPDATE_THEORY, value: res.data.theory});
   };
 
@@ -113,47 +74,59 @@ const TheoryStepContent = props => {
     loadData();
   }, []);
 
-  console.log('theory', theory);
-
   useLayoutEffect(() => {
-    const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
-    const onSubmit = () => {
-      navigation.navigate('NewTheoryContent');
+    const isValidateForm = () => {
+      //封面，标题 步骤1标题
+      const {title, media, theory_bodies = []} = theory;
+      if (title && media && media.url && theory_bodies.length > 0 && theory_bodies[0].title) {
+        return true;
+      } else {
+        return false;
+      }
     };
 
     const onPreview = () => {
+      if (!isValidateForm()) {
+        Toast.show('标题/顽法介绍/步骤标题不能为空哦~');
+        return;
+      }
       navigation.navigate('TheoryPreview');
     };
 
     const onPublish = async () => {
-      console.log(theory);
+      if (!isValidateForm()) {
+        Toast.show('标题/顽法介绍/步骤标题不能为空哦~');
+        return;
+      }
       Toast.showLoading('正在发布中...');
       const res = await publishTheory(theory.id, theory);
-      console.log('res', res);
+      Toast.showError('发布成功');
       Toast.hide();
-      navigation.navigate('TheoryDetail');
+      navigation.navigate('TheoryDetail', {theoryId: res.theory.id});
     };
+
+    const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
+    const colorStyle = {fontSize: 15, color: isValidateForm() ? '#000' : '#bdbdbd'};
 
     navigation.setOptions({
       headerTitle: '写顽法',
       headerLeft: () => (
-        <Pressable onPress={() => navigation.goBack()} hitSlop={hitSlop}>
+        <Pressable onPress={() => setShowCloseSheet(true)} hitSlop={hitSlop}>
           <IconFont name={'close'} size={14} />
         </Pressable>
       ),
       headerRight: () => (
-        <Pressable onPress={onSubmit} style={{flexDirection: 'row'}}>
-          {/* color: title ? '#000' : '#bdbdbd' */}
-          <Text style={{fontSize: 15}} onPress={onPreview}>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={colorStyle} onPress={onPreview}>
             预览
           </Text>
-          <Text style={{fontSize: 15, marginLeft: 18}} onPress={onPublish}>
+          <Text style={{...colorStyle, marginLeft: 18}} onPress={onPublish}>
             发布
           </Text>
-        </Pressable>
+        </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, theory]);
 
   return (
     <KeyboardAvoidingView
@@ -161,14 +134,13 @@ const TheoryStepContent = props => {
       style={styles.wrapper}
       keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        {/* <View style={styles.container}> */}
         <ScrollView>
           {theory.media ? (
             <TheoryMedia
               media={theory.media}
               type="theory_media"
               loadData={loadData}
-              isShowDetele={true}
+              showDetele={true}
             />
           ) : (
             <Pressable style={styles.mediaWrap} onPress={onMediaPicker}>
@@ -215,15 +187,36 @@ const TheoryStepContent = props => {
             />
           </View>
         </ScrollView>
-        {/* </View> */}
       </TouchableWithoutFeedback>
 
+      {/* choose media sheet */}
       <TheoryMediaSheet
         {...props}
         showActionSheet={showActionSheet}
         changeModal={() => setShowActionSheet(false)}
         params={{assetable_type: 'Theory', assetable_id: theory.id, assetable_name: 'theory_media'}}
         loadData={loadData}
+      />
+
+      {/* close sheet */}
+      <ActionSheet
+        actionItems={[
+          {
+            label: '直接退出',
+            onPress: async () => {
+              await wastedTheory(theory.id);
+              navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+            },
+          },
+          {
+            label: '保存到草稿箱',
+            onPress: async () => {
+              navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+            },
+          },
+        ]}
+        showActionSheet={showCloseSheet}
+        changeModal={() => setShowCloseSheet(false)}
       />
     </KeyboardAvoidingView>
   );
@@ -237,10 +230,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
   },
   mediaWrap: {
     height: RFValue(130),

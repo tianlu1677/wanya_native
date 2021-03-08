@@ -68,6 +68,24 @@ export const deleteTheoryBody = async (id, data) => {
   return res.data;
 };
 
+// 是否存在最新的草稿顽法
+export const draftTheory = async () => {
+  const res = await request({
+    url: '/api/v1/theories/draft',
+    method: 'GET',
+  });
+  return res.data;
+};
+
+// 取消保存顽法
+export const wastedTheory = async id => {
+  const res = await request({
+    url: `/api/v1/theories/${id}/wasted`,
+    method: 'POST',
+  });
+  return res.data;
+};
+
 //玩法详情
 export const getTheoriy = async id => {
   const res = await request({

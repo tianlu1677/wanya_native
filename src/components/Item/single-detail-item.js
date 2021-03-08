@@ -157,7 +157,7 @@ export const ActionComment = props => {
         dispatch(dispatchTopicDetail(params));
         break;
       case 'Theory':
-        // dispatch(dispatchTheoryDetail(params));
+        dispatch({type: action.THEORY_DETAIL, value: params});
         break;
     }
   };

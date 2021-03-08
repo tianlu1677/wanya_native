@@ -22,7 +22,7 @@ import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import AddFriendImg from '@/assets/images/add-invite.png';
 import FastImg from '@/components/FastImg';
-import {dispatchShareItem} from "@/redux/actions"
+import {dispatchShareItem} from '@/redux/actions';
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
@@ -42,7 +42,6 @@ const InviteDetail = ({navigation, route}) => {
     setShareUri(codeRes.shareimg_url);
 
     getAccountInviteList().then(res => {
-      console.log('res', res);
       setAccountList(res.invites);
     });
   };
@@ -83,16 +82,15 @@ const InviteDetail = ({navigation, route}) => {
     }
   };
 
-
   const onShare = () => {
     const shareContent = {item_type: 'Account', item_id: currentAccount.id, visible: true};
     dispatch(dispatchShareItem(shareContent));
-  }
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <StatusBar barStyle={'dark-content'} />
-      <ScrollView >
+      <ScrollView>
         <CardView colors={['#4e4e4e', '#181818']}>
           <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
             <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
@@ -190,7 +188,6 @@ const InviteDetail = ({navigation, route}) => {
           backgroundColor: 'black',
         }}
       />
-
     </View>
   );
 };

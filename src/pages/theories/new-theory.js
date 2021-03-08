@@ -1,38 +1,37 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from 'react-native';
+import {View, Text, TextInput, Pressable, StyleSheet, Platform, Keyboard} from 'react-native';
+import {TouchableWithoutFeedback, KeyboardAvoidingView} from 'react-native';
+import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
-import Toast from '@/components/Toast';
+import {createTheory} from '@/api/theory_api';
 
 const NewTheory = props => {
   const {navigation} = props;
-  const [textValue, setTextValue] = useState();
+  const [textValue, setTextValue] = useState(null);
 
   useLayoutEffect(() => {
     const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
       if (!textValue) {
         Toast.show('顽法名称不能为空哦~');
         return false;
       }
-      navigation.navigate('NewTheoryContent');
+      const params = {theory: {title: textValue}};
+      const res = await createTheory(params);
+      navigation.navigate('NewTheoryContent', {id: res.theory.id});
+    };
+
+    const goBack = () => {
+      // 不需要保存
+      navigation.goBack();
     };
 
     navigation.setOptions({
       headerTitle: '写顽法',
       headerLeft: () => (
-        <Pressable onPress={() => navigation.goBack()} hitSlop={hitSlop}>
+        <Pressable onPress={goBack} hitSlop={hitSlop}>
           <IconFont name={'close'} size={14} />
         </Pressable>
       ),
