@@ -8,8 +8,7 @@ import TheoryMedia from './theory-media.js';
 import TheoryMediaSheet, {checkPermission} from './theory-media-sheet';
 import {refreshTheoryBody} from '@/api/theory_api';
 import * as action from '@/redux/constants';
-
-export const defaultProps = {
+const defaultProps = {
   autoCorrect: false,
   autoComplete: false,
   caretHidden: false,
@@ -22,7 +21,6 @@ const TheorySteps = props => {
   const {theory} = useSelector(state => state.theory);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [step, setStep] = useState(1);
-  const [currentIndex, setCurrentIndex] = useState(1);
 
   const onMediaPicker = async id => {
     setStep(id);
@@ -65,12 +63,14 @@ const TheorySteps = props => {
             </View>
 
             {item.media ? (
-              <TheoryMedia
-                media={item.media}
-                type="theory_body_media"
-                loadData={props.loadData}
-                isShowDetele={true}
-              />
+              <View style={{marginTop: RFValue(10)}}>
+                <TheoryMedia
+                  media={item.media}
+                  type="theory_body_media"
+                  loadData={props.loadData}
+                  showDetele={true}
+                />
+              </View>
             ) : (
               <Pressable style={styles.mediaWrap} onPress={() => onMediaPicker(item.id)}>
                 <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />

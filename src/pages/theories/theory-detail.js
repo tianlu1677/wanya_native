@@ -9,11 +9,11 @@ import ActionSheet from '@/components/ActionSheet';
 import {GoBack} from '@/components/NodeComponents';
 import CommentList from '@/components/List/comment-list';
 import {ActionComment} from '@/components/Item/single-detail-item';
+import {PublishAccount} from '@/components/Item/single-detail-item';
+import TheoryMedia from '@/pages/theories/component/theory-media';
 import {getTheoriy, deleteTheory} from '@/api/theory_api';
 import {getCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {createAction} from '@/api/action_api';
-import {PublishAccount} from '@/components/Item/single-detail-item';
-import TheoryMedia from '@/pages/theorys/component/theory-media';
 
 import {styles} from './theory-preview';
 
@@ -110,25 +110,43 @@ const TheoryDetail = ({navigation, route}) => {
         ListHeaderComponent={
           <>
             <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-            <TheoryMedia media={detail.media} type="theory_media" isShowDetele={false} />
+            {detail.media && (
+              <TheoryMedia media={detail.media} type="theory_media" showDetele={false} />
+            )}
             <Text style={styles.title}>{detail.title}</Text>
             <PublishAccount data={detail} showFollow={false} />
             <View style={styles.content}>
               <Text style={styles.intro}>{detail.plain_content}</Text>
               <Text style={styles.introTitle}>顽法步骤</Text>
-              {(detail.theory_bodies || []).map((item, index) => (
-                <View key={index}>
-                  <Text style={styles.stepTitle}>
-                    步骤{item.position}/{detail.theory_bodies.length} {item.title}
-                  </Text>
-                  <View style={styles.stepMedia}>
-                    <TheoryMedia media={item.media} type="theory_body_media" isShowDetele={false} />
+              {(detail.theory_bodies || []).map((item, index) =>
+                item.title && item.media && item.desc ? (
+                  <View key={index}>
+                    {item.title && (
+                      <Text style={styles.stepTitle}>
+                        步骤{item.position}/{detail.theory_bodies.length} {item.title}
+                      </Text>
+                    )}
+
+                    {item.media && (
+                      <View style={styles.stepMedia}>
+                        <TheoryMedia
+                          media={item.media}
+                          type="theory_body_media"
+                          showDetele={false}
+                        />
+                      </View>
+                    )}
+
+                    {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
                   </View>
-                  <Text style={styles.stepIntro}>{item.desc}</Text>
-                </View>
-              ))}
-              <Text style={styles.introTitle}>小贴士</Text>
-              <Text style={styles.tips}>{detail.tip}</Text>
+                ) : null
+              )}
+              {detail.tip && (
+                <>
+                  <Text style={styles.introTitle}>小贴士</Text>
+                  <Text style={styles.tips}>{detail.tip}</Text>
+                </>
+              )}
             </View>
             <View style={{backgroundColor: '#FAFAFA', height: 9}} />
             <Text style={ptyles.commentTitle}>全部评论</Text>

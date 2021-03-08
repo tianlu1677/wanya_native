@@ -15,7 +15,7 @@ const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
 const deleteImage = require('@/assets/images/delete.png');
 
 const RenderVideo = props => {
-  const {media, type, isShowDetele} = props;
+  const {media, type, showDetele} = props;
   const innerWidth = type === 'theory_media' ? screenWidth : screenWidth - 30;
   const {width, height} = scaleSize(media, innerWidth);
 
@@ -39,7 +39,7 @@ const RenderVideo = props => {
             resizeMode={'cover'}
             posterResizeMode={'cover'}
           />
-          {isShowDetele && (
+          {showDetele && (
             <Pressable onPress={onDelete} style={styles.deleteWrap}>
               <FastImg source={deleteImage} style={styles.delete} hitSlop={hitSlop} />
             </Pressable>
@@ -47,7 +47,12 @@ const RenderVideo = props => {
         </>
       ) : (
         <>
-          <Video style={{width: screenWidth, height}} source={{uri: media.uri}} paused={true} />
+          <Video
+            style={{width, height}}
+            source={{uri: media.uri}}
+            paused={true}
+            resizeMode={'cover'}
+          />
           <View style={styles.opacity} />
           <View style={styles.uploadWrap}>
             <Text style={styles.uploadText}>上传中 {media.progress}%</Text>
@@ -60,7 +65,7 @@ const RenderVideo = props => {
 
 const RenderImage = props => {
   const dispatch = useDispatch();
-  const {media, type, isShowDetele} = props;
+  const {media, type, showDetele} = props;
 
   const innerWidth = type === 'theory_media' ? screenWidth : screenWidth - 30;
   const {width, height} = scaleSize(media, innerWidth);
@@ -77,13 +82,19 @@ const RenderImage = props => {
 
   return (
     <View style={styles.wrapper}>
-      <Pressable onPress={onPreview}>
-        <FastImg source={{uri: media.url}} style={{width, height}} mode="cover" />
-      </Pressable>
-      {isShowDetele && (
-        <Pressable onPress={onDelete} style={styles.deleteWrap}>
-          <FastImg source={deleteImage} style={styles.delete} hitSlop={hitSlop} />
-        </Pressable>
+      {media.url ? (
+        <>
+          <Pressable onPress={onPreview}>
+            <FastImg source={{uri: media.url}} style={{width, height}} mode="cover" />
+          </Pressable>
+          {showDetele && (
+            <Pressable onPress={onDelete} style={styles.deleteWrap}>
+              <FastImg source={deleteImage} style={styles.delete} hitSlop={hitSlop} />
+            </Pressable>
+          )}
+        </>
+      ) : (
+        <FastImg source={{uri: media.uri}} style={{width, height}} mode="cover" />
       )}
     </View>
   );
@@ -100,8 +111,8 @@ const TheoryMedia = props => {
 };
 
 TheoryMedia.propTypes = {
-  isShowDetele: PropTypes.bool.isRequired, //是否需要删除
-  loadData: PropTypes.func, //isShowDetele true => 更新
+  showDetele: PropTypes.bool.isRequired, //是否需要删除
+  loadData: PropTypes.func, //showDetele true => 更新
 };
 
 const center = {position: 'absolute', top: 0, right: 0, bottom: 0, left: 0};

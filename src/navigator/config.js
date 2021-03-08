@@ -16,10 +16,10 @@ import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
 // theory
-import NewTheory from '@/pages/theorys/new-theory';
-import NewTheoryContent from '@/pages/theorys/new-theory-content';
-import TheoryPreview from '@/pages/theorys/theory-preview';
-import TheoryDetail from '@/pages/theorys/theory-detail';
+import NewTheory from '@/pages/theories/new-theory';
+import NewTheoryContent from '@/pages/theories/new-theory-content';
+import TheoryPreview from '@/pages/theories/theory-preview';
+import TheoryDetail from '@/pages/theories/theory-detail';
 
 // 文章
 import ArticleDetail from '@/pages/articles/article-detail';

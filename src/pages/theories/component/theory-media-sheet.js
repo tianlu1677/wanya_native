@@ -1,5 +1,6 @@
 import React from 'react';
 import {Platform} from 'react-native';
+import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import {check, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import * as action from '@/redux/constants';
@@ -23,12 +24,22 @@ const TheoryMediaSheet = props => {
   const dispatch = useDispatch();
   const {theory} = useSelector(state => state.theory);
   const {params, showActionSheet, changeModal} = props;
-
   const {assetable_name, assetable_id} = params;
+
+  const dispatchTheory = (file, ret, type) => {
+    const index = theory.theory_bodies.findIndex(item => item.id === assetable_id);
+    const current = {
+      ...theory.theory_bodies[index],
+      ...file,
+      category: type,
+      progress: ret,
+    };
+    theory.theory_bodies[index] = current;
+    dispatch({type: action.UPDATE_THEORY, value: {...theory}});
+  };
 
   const actionItems = [
     {
-      id: 1,
       label: '照片',
       onPress: async () => {
         props.removeAllPhoto();
@@ -37,6 +48,7 @@ const TheoryMediaSheet = props => {
             return;
           }
           const file = res[0];
+          console.log('image file', file);
           const result = await props.uploadImage(file, params, ret => {
             if (assetable_name === 'theory_media') {
               const newTheory = {...theory, media: {...file, category: 'image', progress: ret}};
@@ -44,27 +56,15 @@ const TheoryMediaSheet = props => {
             }
 
             if (assetable_name === 'theory_body_media') {
-              // const bodyMedia = {media: {...file, category: 'image', progress: ret}};
-              // theory.theory_bodies[assetable_id] = bodyMedia;
-              // const newBodies = theory.theory_bodies;
-              // dispatch({
-              //   type: action.UPDATE_THEORY,
-              //   value: {...theory, newBodies},
-              // });
-
-              const index = theory.theory_bodies.findIndex(item => item.id === assetable_id);
-              const current = {...file, category: 'video', progress: ret};
-              theory.theory_bodies[index] = current;
-              dispatch({type: action.UPDATE_THEORY, value: {...theory}});
+              dispatchTheory(file, ret, 'image');
             }
           });
           props.loadData();
-          console.log('result', result);
+          console.log('upload image result', result);
         });
       },
     },
     {
-      id: 2,
       label: '视频',
       onPress: async () => {
         props.removeAllPhoto();
@@ -73,7 +73,7 @@ const TheoryMediaSheet = props => {
             return;
           }
           const file = res[0];
-
+          console.log('video file', file);
           const result = await props.uploadVideo(file, params, ret => {
             if (assetable_name === 'theory_media') {
               const newTheory = {...theory, media: {...file, category: 'video', progress: ret}};
@@ -81,17 +81,11 @@ const TheoryMediaSheet = props => {
             }
 
             if (assetable_name === 'theory_body_media') {
-              const bodyMedia = {media: {...file, category: 'video', progress: ret}};
-              theory.theory_bodies[assetable_id] = bodyMedia;
-              const newBodies = theory.theory_bodies;
-              dispatch({
-                type: action.UPDATE_THEORY,
-                value: {...theory, newBodies},
-              });
+              dispatchTheory(file, ret, 'video');
             }
           });
-          console.log('result', result);
           props.loadData();
+          console.log('upload video result', result);
         });
       },
     },
@@ -104,6 +98,13 @@ const TheoryMediaSheet = props => {
       changeModal={changeModal}
     />
   );
+};
+
+TheoryMediaSheet.propTypes = {
+  showActionSheet: PropTypes.bool.isRequired,
+  changeModal: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
+  loadData: PropTypes.func.isRequired,
 };
 
 export default TheoryMediaSheet;

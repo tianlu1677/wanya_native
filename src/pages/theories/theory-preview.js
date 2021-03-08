@@ -14,7 +14,7 @@ const TheoryPreview = () => {
     <ScrollView style={styles.wrapper}>
       <GoBack color={'white'} />
       <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-      <TheoryMedia media={theory.media} type="theory_media" isShowDetele={false} />
+      {theory.media && <TheoryMedia media={theory.media} type="theory_media" showDetele={false} />}
       <Text style={styles.title}>{theory.title}</Text>
       <PublishAccount
         data={{account: theory.account, published_at_text: '刚刚'}}
@@ -23,19 +23,29 @@ const TheoryPreview = () => {
       <View style={styles.content}>
         <Text style={styles.intro}>{theory.plain_content}</Text>
         <Text style={styles.introTitle}>顽法步骤</Text>
-        {(theory.theory_bodies || []).map((item, index) => (
-          <View key={index}>
-            <Text style={styles.stepTitle}>
-              步骤{item.position}/{theory.theory_bodies.length} {item.title}
-            </Text>
-            <View style={styles.stepMedia}>
-              <TheoryMedia media={item.media} type="theory_body_media" isShowDetele={false} />
+        {(theory.theory_bodies || []).map((item, index) =>
+          item.title && item.media && item.desc ? (
+            <View key={index}>
+              {item.tiele && (
+                <Text style={styles.stepTitle}>
+                  步骤{item.position}/{theory.theory_bodies.length} {item.title}
+                </Text>
+              )}
+              {item.media && (
+                <View style={styles.stepMedia}>
+                  <TheoryMedia media={item.media} type="theory_body_media" showDetele={false} />
+                </View>
+              )}
+              {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
             </View>
-            <Text style={styles.stepIntro}>{item.desc}</Text>
-          </View>
-        ))}
-        <Text style={styles.introTitle}>小贴士</Text>
-        <Text style={styles.tips}>{theory.tip}</Text>
+          ) : null
+        )}
+        {theory.tip && (
+          <>
+            <Text style={styles.introTitle}>小贴士</Text>
+            <Text style={styles.tips}>{theory.tip}</Text>
+          </>
+        )}
       </View>
     </ScrollView>
   );

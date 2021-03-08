@@ -7,11 +7,9 @@ import Helper from '@/utils/helper';
 import {getUploadFileToken, saveToAsset, uploadSystemInfo} from '@/api/settings_api';
 
 const baseUrl = BaseApiUrl;
-
+const config = {method: 'POST', type: 'multipart', field: 'file'};
 const deviceId = DeviceInfo.getSystemVersion();
 const systemName = DeviceInfo.getSystemName();
-
-const config = {method: 'POST', type: 'multipart', field: 'file'};
 
 const StepMediaPicker = WrapperComponent => {
   return props => {
@@ -46,7 +44,6 @@ const StepMediaPicker = WrapperComponent => {
               cb(parseInt(data.progress));
             });
             Upload.addListener('completed', uploadId, data => {
-              console.log('data', data);
               resolve(JSON.parse(data.responseBody));
             });
           })
@@ -101,14 +98,9 @@ const StepMediaPicker = WrapperComponent => {
             });
           })
           .catch(err => {
-            console.log('error', err);
             reject(err);
           });
       });
-    };
-
-    const removeImage = index => {
-      SyanImagePicker.removePhotoAtIndex(index);
     };
 
     const removeAllPhoto = () => {
@@ -122,7 +114,6 @@ const StepMediaPicker = WrapperComponent => {
         uploadImage={uploadImage}
         videoPicker={videoPicker}
         uploadVideo={uploadVideo}
-        removeImage={removeImage}
         removeAllPhoto={removeAllPhoto}
       />
     );

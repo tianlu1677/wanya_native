@@ -11,12 +11,12 @@ import {
   Dimensions,
   Pressable,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
 import {navigationRef} from '@/navigator/root-navigation';
-import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+import * as action from '@/redux/constants';
 import {BottomModal, BlurView} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
 import Helper from '@/utils/helper';
@@ -24,12 +24,15 @@ import {RFValue} from '@/utils/response-fontsize';
 import AnalyticsUtil from '@/utils/umeng_analytics_util';
 import IconFont from '@/iconfont';
 import {routers} from './config'; //router 配置
+import {draftTheory} from '@/api/theory_api';
 
+// tab
 import Recommend from '@/pages/home/recommend';
 import NewTopic from '@/pages/topics/new-topic';
 import MineDetail from '@/pages/mine/mine-detail';
 
 //登录页面
+import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import SocialLogin from '@/pages/sessions/social-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
@@ -55,6 +58,7 @@ const TabBar = props => (
 const PublishModal = props => {
   const {navigation, visible, onCancel} = props;
   const imgStyle = {width: '100%', height: ((width - 60) * 260) / 1260};
+  const {theory} = useSelector(state => state.theory);
 
   return (
     <BottomModal
@@ -72,7 +76,11 @@ const PublishModal = props => {
         style={imgStyle}
         onPress={() => {
           onCancel();
-          navigation.navigate('NewTheoryContent');
+          if (theory.id) {
+            navigation.navigate('NewTheoryContent', {id: theory.id});
+          } else {
+            navigation.navigate('NewTheory');
+          }
         }}>
         <FastImg source={require('../assets/images/add-theory.png')} style={imgStyle} />
       </Pressable>
@@ -92,6 +100,7 @@ const PublishModal = props => {
 };
 
 function HomeTabList(props) {
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const icon_list = {
     focused_Recommend: 'home-recommend',
@@ -134,9 +143,12 @@ function HomeTabList(props) {
           name={'GoNewTopic'}
           component={NewTopic}
           listeners={() => ({
-            tabPress: e => {
+            tabPress: async e => {
               e.preventDefault();
               setVisible(true);
+              const res = await draftTheory();
+              console.log('res', res);
+              dispatch({type: action.UPDATE_THEORY, value: res.theory ? res.theory : {}});
             },
           })}
           options={{

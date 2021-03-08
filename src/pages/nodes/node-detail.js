@@ -27,7 +27,7 @@ import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
-import LocationBar from '@/components/LocationBar'
+import LocationBar from '@/components/LocationBar';
 import IconFont from '@/iconfont';
 
 const NodeDetail = ({navigation, route}) => {
@@ -61,7 +61,6 @@ const NodeDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
     setDetail(res.data.node);
-    // console.log('res', res.data.node);
   };
 
   const onFollowNode = async () => {
@@ -130,9 +129,12 @@ const NodeDetail = ({navigation, route}) => {
               <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
               <View style={styles.nodewrap}>
                 <Text style={styles.nodeName}>{detail.name}</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                <View
+                  style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
-                  {(detail.space || detail.location) && <Text style={{color: 'white', marginTop: 12}}> · </Text>}
+                  {(detail.space || detail.location) && (
+                    <Text style={{color: 'white', marginTop: 12}}> · </Text>
+                  )}
                   <LocationBar location={detail.location} space={detail.space} />
                 </View>
               </View>
