@@ -98,7 +98,8 @@ const ShareMultiModal = () => {
   const getShare = async () => {
     if (item_type && item_id) {
       const content = await getShareContent({item_type: item_type, item_id: item_id});
-      // console.log('item_type', content);
+      // console.log('share item_type', content, item_type, item_id);
+
       setShareContent(content);
     }
   };
@@ -116,6 +117,9 @@ const ShareMultiModal = () => {
     }
     if (item_type.toLowerCase() === 'account') {
       RootNavigation.push('SharePage', {item_type: 'Account', item_id: item_id});
+    }
+    if (item_type.toLowerCase() === 'theory') {
+      RootNavigation.push('SharePage', {item_type: 'Theory', item_id: item_id});
     }
     closeModal();
   };

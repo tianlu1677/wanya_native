@@ -61,12 +61,18 @@ const MentionNotify = ({navigation}) => {
       if (comment.commentable_type === 'Article') {
         navigation.push('ArticleDetail', {articleId: comment.commentable_id});
       }
+      if (comment.commentable_type === 'Theory') {
+        navigation.push('TheoryDetail', {theoryId: comment.commentable_id});
+      }
     } else if (notify.topic) {
       console.log('topic, topic');
       navigation.push('TopicDetail', {topicId: notify.topic.id});
     } else if (notify.article) {
       console.log('article, article');
       navigation.push('ArticleDetail', {articleId: notify.article.id});
+    } else if (notify.theory) {
+      console.log('article, article');
+      navigation.push('TheoryDetail', {theoryId: notify.theory.id});
     }
   };
 

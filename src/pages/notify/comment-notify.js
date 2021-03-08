@@ -31,6 +31,8 @@ const CommentNotify = ({navigation}) => {
   }, []);
 
   const formatComment = comment => {
+    // console.log(comment)
+
     let commentable = comment.commentable;
     let type = comment.commentable_type;
     let image_url = '';
@@ -52,6 +54,15 @@ const CommentNotify = ({navigation}) => {
     if (type === 'Article') {
       return {...comment, item: {image_url: commentable.cover_url, has_video: false}};
     }
+    if (type === 'Theory') {
+      return {
+        ...comment,
+        item: {
+          image_url: commentable.single_cover.cover_url,
+          has_video: commentable.single_cover.category === 'video',
+        },
+      };
+    }
 
     if (type === 'Topic') {
       image_url = commentable.video_content_thumb
@@ -66,15 +77,16 @@ const CommentNotify = ({navigation}) => {
   };
 
   const goInsideNotify = comment => {
-    // console.log('xxxxxxxx')
     if (comment.commentable_type === 'Topic' && comment.commentable) {
-      // goPage.goTopicDetailUrl(comment.commentable_id)
       navigation.navigate('TopicDetail', {topicId: comment.commentable_id});
       return;
     }
     if (comment.commentable_type === 'Article' && comment.commentable) {
-      // goPage.goArticleDetailUrl(comment.commentable_id)
       navigation.navigate('ArticleDetail', {articleId: comment.commentable_id});
+    }
+
+    if (comment.commentable_type === 'Theory' && comment.commentable) {
+      navigation.navigate('TheoryDetail', {theoryId: comment.commentable_id});
     }
   };
 

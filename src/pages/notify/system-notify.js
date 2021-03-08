@@ -50,6 +50,10 @@ const SystemNotify = ({navigation}) => {
     } else if (notify.target_type === 'CheckNode'){
       image_url = notify.target_cover_url
       has_video = false
+    } else if (notify.target_type === 'Theory' && notify.theory){
+      image_url = notify.theory.single_cover && notify.theory.single_cover.cover_url;
+      content = notify.theory.title;
+      has_video = notify.theory.single_cover.category === 'video'
     } else {
       content = '已删除';
     }

@@ -39,6 +39,7 @@ const PraiseNotify = ({navigation}) => {
   };
 
   const formatNotify = notify => {
+    console.log('notify', notify)
     let image_url = '';
     let has_video = false;
     let content = '';
@@ -52,6 +53,10 @@ const PraiseNotify = ({navigation}) => {
     } else if (notify.target_type === 'Article') {
       image_url = notify.article.cover_url;
       content = notify.article.title;
+    } else if (notify.target_type === 'Theory' && notify.theory) {
+      image_url = notify.theory.single_cover && notify.theory.single_cover.cover_url;
+      content = notify.theory.title;
+      has_video = notify.theory.single_cover.category === 'video'
     } else {
       content = '已删除';
     }
@@ -68,6 +73,9 @@ const PraiseNotify = ({navigation}) => {
       }
       if (comment.commentable_type === 'Article') {
         navigation.push('ArticleDetail', {articleId: comment.commentable_id});
+      }
+      if (comment.commentable_type === 'Theory') {
+        navigation.push('TheoryDetail', {theoryId: comment.commentable_id});
       }
     } else if (notify.topic) {
       console.log('topic, topic');
