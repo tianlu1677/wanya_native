@@ -26,9 +26,11 @@ import ShareUtil from '@/utils/umeng_share_util';
 import CameraRoll from '@react-native-community/cameraroll';
 import GetStorage from '@/components/GetStorage';
 import {getTopic} from '@/api/topic_api';
-import {dispatchArticleDetail, dispatchTopicDetail} from '@/redux/actions';
+import {dispatchArticleDetail, dispatchTheoryDetail, dispatchTopicDetail} from '@/redux/actions';
 import {getArticle} from '@/api/article_api';
+import { getTheoriy} from "@/api/theory_api"
 import {useNavigation} from '@react-navigation/native';
+import ShareTheoryContent from "@/pages/shares/components/ShareTheoryContent"
 
 const RNFS = require('react-native-fs'); //文件处理
 
@@ -47,6 +49,7 @@ const SharePageModal = props => {
 
   const topic = useSelector(state => state.topic.topicDetail);
   const article = useSelector(state => state.article.articleDetail);
+  const theory = useSelector(state => state.theory.theoryDetail);
 
   const [assetable, setAssetable] = useState({
     assetable_type: item_type,
@@ -95,6 +98,15 @@ const SharePageModal = props => {
         navigation.goBack();
       } else {
         dispatch(dispatchArticleDetail(res.data.article));
+      }
+    }
+    if(item_type === 'Theory') {
+      const res = await getTheoriy(item_id);
+      if (res.data.status === 404) {
+        Toast.show('已删除');
+        navigation.goBack();
+      } else {
+        dispatch(dispatchTheoryDetail(res.data.theory));
       }
     }
   };
@@ -245,6 +257,10 @@ const SharePageModal = props => {
           )}
           {item_type === 'Article' && (
             <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />
+          )}
+
+          {item_type === 'Theory' && (
+            <ShareTheoryContent theoryDetail={theory} viewShotRef={viewShotRef} />
           )}
           {item_type === 'Account' && <ShareInviteContent imgUrl={downloadUri} />}
         </ScrollView>

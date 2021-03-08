@@ -13,6 +13,7 @@ import {
   TOPIC_DETAIL_SUCCESS,
   UPDATE_CATEGORY_LIST,
   CHANGE_UPLOAD_STATUS,
+  Theory_DETAIL
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -107,6 +108,14 @@ export const dispatchArticleDetail = (article = {}) => async dispatch => {
     article: article,
   });
 };
+
+export const dispatchTheoryDetail = (theory = {}) => async dispatch => {
+  dispatch({
+    type: Theory_DETAIL,
+    theory: theory,
+  });
+};
+
 // 帖子详情
 export const dispatchTopicDetail = (topic = {}) => async dispatch => {
   dispatch({

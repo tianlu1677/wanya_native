@@ -106,7 +106,7 @@ const TheoryDetail = ({navigation, route}) => {
         enableLoadMore={false}
         changeVisible={value => setVisible(value)}
         deleteComment={deleteTopicComment}
-        request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Theory'}}}
+        request={{api: getCommentList, params: {item_id: theoryId, item_type: 'Theory'}}}
         ListHeaderComponent={
           <>
             <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
