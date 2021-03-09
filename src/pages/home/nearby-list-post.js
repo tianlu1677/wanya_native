@@ -10,11 +10,12 @@ import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {getNearbyPosts} from '@/api/home_api';
 import {getLocation} from './getLocation';
 import {useNavigation} from '@react-navigation/native';
 import {ListEmpty as lstyles, ShareWrapper as styles} from '@/styles/baseCommon';
-import ShareNearByImg from '@/assets/images/share-nearby.png'
+import ShareNearByImg from '@/assets/images/share-nearby.png';
 
 const NearByListPost = () => {
   const navigation = useNavigation();
@@ -35,8 +36,13 @@ const NearByListPost = () => {
     return (
       <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
         {index === 0 && NearbyShareComponent()}
-        {item.item_type === 'Topic' && <BaseTopic data={item.item} onRemove={() => onRemove(index)} /> }
-        {item.item_type === 'Article' && <BaseArticle data={item.item} /> }
+        {item.item_type === 'Topic' && (
+          <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+        )}
+        {item.item_type === 'Article' && <BaseArticle data={item.item} />}
+        {item.item_type === 'Theory' && (
+          <BaseTheory data={item.item} onRemove={() => onRemove(index)} />
+        )}
       </View>
     );
   });
@@ -134,10 +140,7 @@ const NearbyShareComponent = () => {
         blurAmount={100}
         reducedTransparencyFallbackColor="white"
         style={styles.followShare}>
-        <FastImg
-          style={styles.followShareImage}
-          source={ShareNearByImg}
-        />
+        <FastImg style={styles.followShareImage} source={ShareNearByImg} />
         <View>
           <Text style={styles.shareTitle}>获取更多附近信息</Text>
           <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Platform} from 'react-native';
+import {View, Platform} from 'react-native';
 import {throttle} from 'lodash';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
@@ -26,6 +26,8 @@ const RecommendListPost = () => {
         return <BaseArticle data={item.item} />;
       case 'Theory':
         return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+      default:
+        return <View />;
     }
   });
 

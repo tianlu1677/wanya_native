@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   stepIntro: {
     minHeight: RFValue(45),
-    lineHeight: RFValue(20),
+    lineHeight: 20,
     paddingHorizontal: RFValue(15),
     paddingTop: RFValue(5),
     paddingBottom: RFValue(10),

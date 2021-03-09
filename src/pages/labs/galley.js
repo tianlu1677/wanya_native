@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {Platform, Text, View} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {getRecommendPosts, getRecommendLatestPosts, getFollowedNodePosts} from '@/api/home_api';
-import { SCREEN_WIDTH } from '@/utils/navbar'
+import {SCREEN_WIDTH} from '@/utils/navbar';
 
 const Galley = props => {
   const [loading, setLoading] = useState(false);
@@ -24,18 +25,23 @@ const Galley = props => {
   ]);
 
   const Child = React.memo(({item, index}) => {
-    return item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    );
+    switch (item.item_type) {
+      case 'Topic':
+        return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+      case 'Article':
+        return <BaseArticle data={item.item} />;
+      case 'Theory':
+        return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+      default:
+        return <View />;
+    }
   });
 
   const loadData = async (page = 1) => {
     if (page === 1) {
       setLoading(true);
     }
-    const res = await getRecommendLatestPosts({page: page})
+    const res = await getRecommendLatestPosts({page: page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
