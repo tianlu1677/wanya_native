@@ -165,6 +165,8 @@ const TheoryStepContent = props => {
               placeholder="可以写写这个技巧顽法背后的故事，或者描述下掌握这个顽法的准备工作，包括装备、脚位等"
               value={theory.plain_content}
               onBlur={updateTheoryText}
+              textAlignVertical={'left'}
+              underlineColorAndroid={'transparent'}
               onChangeText={value => updateTheory({plain_content: value})}
               style={styles.theoryIntro}
             />
@@ -253,12 +255,12 @@ const styles = StyleSheet.create({
   },
   theoryIntro: {
     minHeight: RFValue(120),
-    lineHeight: RFValue(20),
+    lineHeight: RFValue(16),
     paddingHorizontal: 15,
     paddingTop: RFValue(5),
     marginTop: RFValue(15),
-    ...greyText,
-    ...greyColor,
+    paddingVertical: 0,
+    padding: 0,
   },
   introTitle: {
     fontSize: 20,

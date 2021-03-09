@@ -28,9 +28,9 @@ import GetStorage from '@/components/GetStorage';
 import {getTopic} from '@/api/topic_api';
 import {dispatchArticleDetail, dispatchTheoryDetail, dispatchTopicDetail} from '@/redux/actions';
 import {getArticle} from '@/api/article_api';
-import { getTheoriy} from "@/api/theory_api"
+import {getTheoriy} from '@/api/theory_api';
 import {useNavigation} from '@react-navigation/native';
-import ShareTheoryContent from "@/pages/shares/components/ShareTheoryContent"
+import ShareTheoryContent from '@/pages/shares/components/ShareTheoryContent';
 
 const RNFS = require('react-native-fs'); //文件处理
 
@@ -100,7 +100,7 @@ const SharePageModal = props => {
         dispatch(dispatchArticleDetail(res.data.article));
       }
     }
-    if(item_type === 'Theory') {
+    if (item_type === 'Theory') {
       const res = await getTheoriy(item_id);
       if (res.data.status === 404) {
         Toast.show('已删除');
@@ -211,35 +211,37 @@ const SharePageModal = props => {
     );
   };
 
-  const savePhoto = async had_permission => {    
+  const savePhoto = async had_permission => {
     const thumb_url = await takeImg();
     setTimeout(() => {
       if (had_permission) {
-        if(!IsIos) {
+        if (!IsIos) {
           const storeLocation = `${RNFS.DocumentDirectoryPath}`;
-          let pathName = new Date().getTime() + "顽鸦分享图.png"
+          let pathName = new Date().getTime() + '顽鸦分享图.png';
           let downloadDest = `${storeLocation}/${pathName}`;
-          const ret = RNFS.downloadFile({fromUrl: thumb_url, toFile:downloadDest});
+          const ret = RNFS.downloadFile({fromUrl: thumb_url, toFile: downloadDest});
           ret.promise.then(res => {
-             if(res && res.statusCode === 200){
-                 var promise = CameraRoll.save("file://" + downloadDest);
-                 Toast.showError('已存储到相册');
-                 promise.then(function(result) {                    
-                    console.log("图片已保存至相册111")
-                 }).catch(function(error) {
-                    alert(JSON.stringify(error))
-                    Toast.showError(`保存失败`);
-                    console.log("保存失败")
-                 })
-             }
-           })
+            if (res && res.statusCode === 200) {
+              var promise = CameraRoll.save('file://' + downloadDest);
+              Toast.showError('已存储到相册');
+              promise
+                .then(function (result) {
+                  console.log('图片已保存至相册111');
+                })
+                .catch(function (error) {
+                  alert(JSON.stringify(error));
+                  Toast.showError(`保存失败`);
+                  console.log('保存失败');
+                });
+            }
+          });
         } else {
           console.log('savePhoto shareUri', thumb_url);
           CameraRoll.save(thumb_url, {type: 'photo'}).then(res => {
-          console.log('res', res);
-          Toast.showError('已存储到相册');
-        });
-        }        
+            console.log('res', res);
+            Toast.showError('已存储到相册');
+          });
+        }
       }
     }, 500);
   };

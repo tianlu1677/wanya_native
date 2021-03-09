@@ -54,58 +54,60 @@ const ShareTheoryContent = props => {
   }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: 'red'}}>
+    <View style={{flex: 1}}>
       <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 1}} style={{flex: 1}}>
-        <View style={styles.content}>
-          <View style={styles.avator}>
-            <Avator size={50} account={{...account, id: null}} />
-          </View>
-          <FastImg source={ShareLogoImg} style={styles.shareLogoTop} />
-          <View style={styles.headerInfo}>
-            <Text style={styles.username}>{account && account.nickname}</Text>
-            <Text style={styles.time}>{published_at_text} 发布了一篇顽法</Text>
-          </View>
-          {media && (
-            <View style={{marginTop: 20}}>
-              <ShareTheoryMedia media={media} type="theory_media" />
+        <View style={{backgroundColor: 'red'}}>
+          <View style={styles.content}>
+            <View style={styles.avator}>
+              <Avator size={50} account={{...account, id: null}} />
             </View>
-          )}
-          <View style={styles.mainContent}>
-            {title && <Text style={styles.theoryTitle}>{title}</Text>}
-            {plain_content && <Text style={styles.planContent}>{plain_content}</Text>}
-            <Text style={styles.introTitle}>顽法步骤</Text>
-            {(theory_bodies || []).map((item, index) =>
-              item.title && item.media && item.desc ? (
-                <View key={index}>
-                  {item.title && (
-                    <Text style={styles.stepTitle}>
-                      步骤{item.position}/{theory_bodies.length} {item.title}
-                    </Text>
-                  )}
-                  {item.media && (
-                    <View style={styles.stepMedia}>
-                      <ShareTheoryMedia media={item.media} type="theory_body_media" />
-                    </View>
-                  )}
-                  {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
-                </View>
-              ) : null
+            <FastImg source={ShareLogoImg} style={styles.shareLogoTop} />
+            <View style={styles.headerInfo}>
+              <Text style={styles.username}>{account && account.nickname}</Text>
+              <Text style={styles.time}>{published_at_text} 发布了一篇顽法</Text>
+            </View>
+            {media && (
+              <View style={{marginTop: 20}}>
+                <ShareTheoryMedia media={media} type="theory_media" />
+              </View>
             )}
-            {tip && (
-              <>
-                <Text style={styles.introTitle}>小贴士</Text>
-                <Text style={styles.tips}>{tip}</Text>
-              </>
-            )}
-          </View>
+            <View style={styles.mainContent}>
+              {title && <Text style={styles.theoryTitle}>{title}</Text>}
+              {plain_content && <Text style={styles.planContent}>{plain_content}</Text>}
+              <Text style={styles.introTitle}>顽法步骤</Text>
+              {(theory_bodies || []).map((item, index) =>
+                item.title && item.media && item.desc ? (
+                  <View key={index}>
+                    {item.title && (
+                      <Text style={styles.stepTitle}>
+                        步骤{item.position}/{theory_bodies.length} {item.title}
+                      </Text>
+                    )}
+                    {item.media && (
+                      <View style={styles.stepMedia}>
+                        <ShareTheoryMedia media={item.media} type="theory_body_media" />
+                      </View>
+                    )}
+                    {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
+                  </View>
+                ) : null
+              )}
+              {tip && (
+                <>
+                  <Text style={styles.introTitle}>小贴士</Text>
+                  <Text style={styles.tips}>{tip}</Text>
+                </>
+              )}
+            </View>
 
-          <View style={styles.footer}>
-            <FastImg style={styles.shareLogo} source={ShareWanyaLog} />
-            {qrcode_url ? (
-              <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
-            ) : (
-              <View />
-            )}
+            <View style={styles.footer}>
+              <FastImg style={styles.shareLogo} source={ShareWanyaLog} />
+              {qrcode_url ? (
+                <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
+              ) : (
+                <View />
+              )}
+            </View>
           </View>
         </View>
       </ViewShot>
