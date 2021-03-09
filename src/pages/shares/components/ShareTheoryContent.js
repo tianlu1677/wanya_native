@@ -1,27 +1,51 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {View, Text, Modal, Button, Dimensions, Image, StyleSheet} from 'react-native';
-import IconFont from '@/iconfont';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Dimensions, StyleSheet} from 'react-native';
 import ViewShot from 'react-native-view-shot';
 import FastImg from '@/components/FastImg';
 import {Avator} from '@/components/NodeComponents';
-import ShareLogoImg from '@/assets/images/sharelogo.png';
+import {RFValue} from '@/utils/response-fontsize';
+import {scaleSize} from '@/utils/scale';
 import {prosettings} from '@/api/settings_api';
-import RichContent from '@/pages/articles/components/RichContent';
-import {RFValue} from "@/utils/response-fontsize"
 
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+import PlayVideoImg from '@/assets/images/play-video.png';
+import ShareLogoImg from '@/assets/images/sharelogo.png';
+import ShareWanyaLog from '@/assets/images/sharewanyalog.png';
+const {width: screenWidth} = Dimensions.get('window');
+
+const ShareTheoryMedia = props => {
+  const {media, type} = props;
+  const innerWidth = type === 'theory_media' ? screenWidth - 20 : screenWidth - 50;
+  const {width, height} = scaleSize(media, innerWidth);
+  const style = {width, height};
+
+  return (
+    <View style={mstyles.mediaWrapper}>
+      {media.category === 'image' ? (
+        <FastImg resizeMode={'cover'} source={{uri: media.original_url}} style={style} />
+      ) : media.category === 'video' ? (
+        <FastImg
+          resizeMode={'cover'}
+          source={{uri: `${media.url}?vframe/jpg/offset/0/rotate/auto`}}
+          style={style}
+        />
+      ) : null}
+      <FastImg source={PlayVideoImg} style={mstyles.playVideo} />
+    </View>
+  );
+};
 
 const ShareTheoryContent = props => {
   const {
     account,
-    title
+    title,
+    published_at_text,
+    media,
+    plain_content,
+    theory_bodies,
+    tip,
   } = props.theoryDetail;
 
   const [qrcode_url, setQrcode_url] = useState('');
-
-  useEffect(() => {
-
-  }, []);
 
   useEffect(() => {
     prosettings().then(res => {
@@ -32,79 +56,103 @@ const ShareTheoryContent = props => {
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
       <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 1}} style={{flex: 1}}>
-        <View style={styles.wrapper}>
-          <View style={styles.content}>
-            <View style={styles.avator}>
-              <Avator size={50} account={{...account, id: null}} />
+        <View style={styles.content}>
+          <View style={styles.avator}>
+            <Avator size={50} account={{...account, id: null}} />
+          </View>
+          <FastImg source={ShareLogoImg} style={styles.shareLogoTop} />
+          <View style={styles.headerInfo}>
+            <Text style={styles.username}>{account && account.nickname}</Text>
+            <Text style={styles.time}>{published_at_text} 发布了一篇顽法</Text>
+          </View>
+          {media && (
+            <View style={{marginTop: 20}}>
+              <ShareTheoryMedia media={media} type="theory_media" />
             </View>
+          )}
+          <View style={styles.mainContent}>
+            {title && <Text style={styles.theoryTitle}>{title}</Text>}
+            {plain_content && <Text style={styles.planContent}>{plain_content}</Text>}
+            <Text style={styles.introTitle}>顽法步骤</Text>
+            {(theory_bodies || []).map((item, index) =>
+              item.title && item.media && item.desc ? (
+                <View key={index}>
+                  {item.title && (
+                    <Text style={styles.stepTitle}>
+                      步骤{item.position}/{theory_bodies.length} {item.title}
+                    </Text>
+                  )}
+                  {item.media && (
+                    <View style={styles.stepMedia}>
+                      <ShareTheoryMedia media={item.media} type="theory_body_media" />
+                    </View>
+                  )}
+                  {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
+                </View>
+              ) : null
+            )}
+            {tip && (
+              <>
+                <Text style={styles.introTitle}>小贴士</Text>
+                <Text style={styles.tips}>{tip}</Text>
+              </>
+            )}
+          </View>
 
-            <View
-              style={{flex: 1, flexDirection: 'row', position: 'absolute', right: 10, top: -24}}>
-              <Image source={ShareLogoImg} style={{height: 20, width: 58}} />
-            </View>
-
-            <View style={styles.headerInfo}>
-              <View style={styles.info}>
-                <Text style={styles.username}>{account && account.nickname}</Text>
-                <Text style={styles.time}>{'xxxxxx'}</Text>
-              </View>
-            </View>
-
-
-            <Text style={styles.title}>{title}</Text>
-
-
-            <View style={styles.footer}>
-              <FastImg
-                style={styles.shareLogo}
-                source={require('@/assets/images/sharewanyalog.png')}
-              />
-              {qrcode_url ? (
-                <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
-              ) : (
-                <View />
-              )}
-            </View>
+          <View style={styles.footer}>
+            <FastImg style={styles.shareLogo} source={ShareWanyaLog} />
+            {qrcode_url ? (
+              <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
+            ) : (
+              <View />
+            )}
           </View>
         </View>
       </ViewShot>
     </View>
   );
 };
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    // height: '100%',
-    backgroundColor: '#ff193a',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 40,
-    paddingBottom: 16,
+
+const mstyles = StyleSheet.create({
+  mediaWrapper: {
+    position: 'relative',
+    backgroundColor: 'pink',
   },
+  playVideo: {
+    width: RFValue(40),
+    height: RFValue(40),
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    marginLeft: -RFValue(20),
+    marginTop: -RFValue(20),
+  },
+});
+
+const styles = StyleSheet.create({
   content: {
+    marginHorizontal: 10,
+    marginTop: RFValue(40),
+    marginBottom: RFValue(35),
     backgroundColor: '#000',
-    flex: 1,
     borderRadius: 25,
     position: 'relative',
   },
   avator: {
-    width: 45,
-    height: 45,
-    borderRadius: 22,
     position: 'absolute',
     top: -22,
     left: 18,
   },
-  headerInfo: {
-    marginLeft: 18,
-    marginRight: 18,
-    marginTop: 31,
-    flexDirection: 'row',
-    marginBottom: 20,
+  shareLogoTop: {
+    width: 58,
+    height: 20,
+    position: 'absolute',
+    right: 10,
+    top: -24,
   },
-  info: {
-    color: '#fff',
-    display: 'flex',
+  headerInfo: {
+    marginHorizontal: 18,
+    marginTop: 30,
   },
   username: {
     color: '#fff',
@@ -118,48 +166,55 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 20,
   },
-  nodeWrap: {
-    marginLeft: 'auto',
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 20,
-    marginTop: 10,
+  mainContent: {
+    paddingHorizontal: 15,
   },
-  nodeName: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '500',
-    marginLeft: 6,
-  },
-  title: {
+  theoryTitle: {
     color: '#fff',
     fontSize: 18,
-    marginTop: 20,
     fontWeight: '500',
-    marginLeft: 17,
-    marginRight: 17,
-    lineHeight: 23,
-    letterSpacing: 1,
+    lineHeight: RFValue(25),
+    marginTop: RFValue(10),
   },
-  text: {
+  planContent: {
     color: '#fff',
-    lineHeight: 23,
-    fontSize: 14,
+    marginTop: RFValue(16),
+  },
+  introTitle: {
+    color: '#fff',
+    fontSize: 20,
     fontWeight: '500',
-    marginLeft: 17,
-    marginRight: 17,
-    paddingTop: 15,
-    // minHeight: 150,
-    letterSpacing: 1,
-    textAlign: 'justify',
+    marginTop: RFValue(20),
+  },
+  stepTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: RFValue(20),
+    marginTop: RFValue(15),
+  },
+  stepMedia: {
+    marginTop: RFValue(15),
+  },
+  stepIntro: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '300',
+    lineHeight: RFValue(20),
+    marginTop: RFValue(12),
+  },
+  tips: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '300',
+    lineHeight: RFValue(20),
+    marginTop: RFValue(20),
   },
   footer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginHorizontal: 15,
     marginTop: 35,
-    paddingLeft: 17,
-    paddingRight: 17,
     marginBottom: 40,
   },
   shareLogo: {

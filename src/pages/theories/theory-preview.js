@@ -26,7 +26,7 @@ const TheoryPreview = () => {
         {(theory.theory_bodies || []).map((item, index) =>
           item.title && item.media && item.desc ? (
             <View key={index}>
-              {item.tiele && (
+              {item.title && (
                 <Text style={styles.stepTitle}>
                   步骤{item.position}/{theory.theory_bodies.length} {item.title}
                 </Text>
