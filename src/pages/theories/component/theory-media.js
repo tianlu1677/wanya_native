@@ -47,12 +47,14 @@ const RenderVideo = props => {
         </>
       ) : (
         <>
-          <Video
-            style={{width, height}}
-            source={{uri: media.uri}}
-            paused={true}
-            resizeMode={'cover'}
-          />
+          {media.uri && (
+            <Video
+              style={{width, height}}
+              source={{uri: media.uri}}
+              paused={true}
+              resizeMode={'cover'}
+            />
+          )}
           <View style={styles.opacity} />
           <View style={styles.uploadWrap}>
             <Text style={styles.uploadText}>上传中 {media.progress}%</Text>
@@ -94,7 +96,13 @@ const RenderImage = props => {
           )}
         </>
       ) : (
-        <FastImg source={{uri: media.uri}} style={{width, height}} mode="cover" />
+        <>
+          {media.uri && <FastImg source={{uri: media.uri}} style={{width, height}} mode="cover" />}
+          <View style={styles.opacity} />
+          <View style={styles.uploadWrap}>
+            <Text style={styles.uploadText}>上传中 {media.progress}%</Text>
+          </View>
+        </>
       )}
     </View>
   );
@@ -122,6 +130,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#000',
   },
   opacity: {
     ...center,

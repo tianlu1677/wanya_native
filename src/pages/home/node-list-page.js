@@ -8,6 +8,7 @@ import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {AllNodeImg} from '@/utils/default-image';
 import {getFollowedNodePosts} from '@/api/home_api';
 import {ListEmpty as lstyles} from '@/styles/baseCommon';
@@ -71,17 +72,18 @@ const NodeListPost = () => {
     setListData([...data]);
   };
 
-  const RenderItem = React.memo(({item, index}) =>  {
-      let component = <View />;
-      if(item.item_type === 'Topic') {
-        component = <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-      }
-      if(item.item_type === 'Article') {
-        component = <BaseArticle data={item.item} />        
-      }
-      return component
+  const RenderItem = React.memo(({item, index}) => {
+    switch (item.item_type) {
+      case 'Topic':
+        return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+      case 'Article':
+        return <BaseArticle data={item.item} />;
+      case 'Theory':
+        return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+      default:
+        return <View />;
     }
-  );
+  });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 

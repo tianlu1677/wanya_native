@@ -5,6 +5,7 @@ import {throttle} from 'lodash';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {getRecommendTopPosts} from '@/api/home_api';
 
 const SingleList = props => {
@@ -24,15 +25,17 @@ const SingleList = props => {
 
   const Child = React.memo(({item, index}) => {
     const ItemComponent = () => {
-      let component = <View />;
-      if(item.item_type === 'Topic') {
-        component = <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+      switch (item.item_type) {
+        case 'Topic':
+          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+        case 'Article':
+          return <BaseArticle data={item.item} />;
+        case 'Theory':
+          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+        default:
+          return <View />;
       }
-      if(item.item_type === 'Article') {
-        component = <BaseArticle data={item.item} />
-      }
-      return component
-    }
+    };
 
     if (props.type === 'follow' && index === 0) {
       return (

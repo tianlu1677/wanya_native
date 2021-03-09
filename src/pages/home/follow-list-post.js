@@ -12,6 +12,7 @@ import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {getFollowedPosts} from '@/api/home_api';
 import {recommendAccounts} from '@/api/mine_api';
 import {followAccount} from '@/api/account_api';
@@ -33,7 +34,11 @@ export const FollowShareComponent = () => {
 
   return shareStatus ? (
     <Pressable style={lstyles.followShareWrap} onPress={onShare}>
-      <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white" style={{backgroundColor: '#F2F3F5', borderRadius: 10}}>
+      <BlurView
+        blurType="light"
+        blurAmount={100}
+        reducedTransparencyFallbackColor="white"
+        style={{backgroundColor: '#F2F3F5', borderRadius: 10}}>
         <View style={lstyles.followShare}>
           <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
           <View>
@@ -129,19 +134,16 @@ const FollowListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    // return item.item_type === 'Topic' ? (
-    //   <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    // ) : (
-    //   <BaseArticle data={item.item} />
-    // );
-    let component = <View />;
-    if(item.item_type === 'Topic') {
-      component = <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+    switch (item.item_type) {
+      case 'Topic':
+        return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+      case 'Article':
+        return <BaseArticle data={item.item} />;
+      case 'Theory':
+        return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+      default:
+        return <View />;
     }
-    if(item.item_type === 'Article') {
-      component = <BaseArticle data={item.item} />
-    }
-    return component
   });
 
   const renderItemMemo = useCallback(
