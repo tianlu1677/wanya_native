@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   },
   theoryIntro: {
     minHeight: RFValue(120),
-    lineHeight: RFValue(16),
+    lineHeight: 20,
     paddingHorizontal: 15,
     paddingTop: RFValue(5),
     marginTop: RFValue(15),
