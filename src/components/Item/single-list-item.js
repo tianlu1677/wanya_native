@@ -27,20 +27,16 @@ export const Header = props => {
   };
 
   const onStar = async () => {
-    const params = {id: data.id, type: 'star'};
-    switch (props.type) {
-      case 'topic':
+    const item_type = props.type.replace(/^\S/, s => s.toUpperCase());
+    const actionData = {target_id: data.id, target_type: item_type, type: 'star'}
+    switch (item_type) {
+      case 'Topic':
+      case 'Article':
+      case 'Theory':
         if (star) {
-          await cancelAction({target_id: data.id, target_type: 'Topic', type: 'star'});
+          await cancelAction(actionData);
         } else {
-          await createAction({target_id: data.id, target_type: 'Topic', type: 'star'});
-        }
-        break;
-      case 'article':
-        if (star) {
-          await cancelAction({target_id: data.id, target_type: 'Article', type: 'star'});
-        } else {
-          await createAction({target_id: data.id, target_type: 'Article', type: 'star'});
+          await createAction(actionData);
         }
         break;
     }
