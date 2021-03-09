@@ -94,15 +94,25 @@ const TheoryStepContent = props => {
     };
 
     const onPublish = async () => {
-      if (!isValidateForm()) {
-        Toast.show('标题/顽法介绍/步骤标题不能为空哦~');
-        return;
+      try {
+        if (!isValidateForm()) {
+          Toast.show('标题/顽法介绍/步骤标题不能为空哦~');
+          return;
+        }
+        Toast.showLoading('正在发布中...');
+        const res = await publishTheory(theory.id, theory);
+        Toast.showError('发布成功');
+        Toast.hide();
+        // navigation.navigate('TheoryDetail', {theoryId: res.theory.id});
+        props.navigation.reset({
+          index: 0,
+          routes: [{name: 'TheoryDetail', params: {theoryId: res.theory.id}}],
+        });
+      } catch (e) {
+        Toast.hide();
+        Toast.showError('发布失败');
+        alert(e);
       }
-      Toast.showLoading('正在发布中...');
-      const res = await publishTheory(theory.id, theory);
-      Toast.showError('发布成功');
-      Toast.hide();
-      navigation.navigate('TheoryDetail', {theoryId: res.theory.id});
     };
 
     const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
