@@ -30,9 +30,11 @@ const TheoryMediaSheet = props => {
     const index = theory.theory_bodies.findIndex(item => item.id === assetable_id);
     const current = {
       ...theory.theory_bodies[index],
-      ...file,
-      category: type,
-      progress: ret,
+      media: {
+        ...file,
+        category: type,
+        progress: ret,
+      },
     };
     theory.theory_bodies[index] = current;
     dispatch({type: action.UPDATE_THEORY, value: {...theory}});

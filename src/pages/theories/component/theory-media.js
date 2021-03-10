@@ -25,7 +25,7 @@ const RenderVideo = props => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, {borderRadius: type === 'theory_media' ? 0 : 5}]}>
       {media.url ? (
         <>
           <VideoPlayerContent
@@ -83,7 +83,7 @@ const RenderImage = props => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, {borderRadius: type === 'theory_media' ? 0 : 5}]}>
       {media.url ? (
         <>
           <Pressable onPress={onPreview}>
@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000',
+    overflow: 'hidden',
   },
   opacity: {
     ...center,

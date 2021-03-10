@@ -214,15 +214,15 @@ const TheoryStepContent = props => {
       <ActionSheet
         actionItems={[
           {
-            label: '直接退出',
+            label: '保存到草稿箱',
             onPress: async () => {
-              await wastedTheory(theory.id);
               navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
             },
           },
           {
-            label: '保存到草稿箱',
+            label: '直接退出',
             onPress: async () => {
+              await wastedTheory(theory.id);
               navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
             },
           },
