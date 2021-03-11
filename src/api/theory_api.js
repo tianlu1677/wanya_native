@@ -59,6 +59,11 @@ export const refreshTheoryBody = async (id, data) => {
 };
 
 // 删除步骤
+
+//remove
+// const data = {id: theory.id, theory_body_id: 2};
+// await deleteTheoryBody(theory.id, data);
+
 export const deleteTheoryBody = async (id, data) => {
   const res = await request({
     url: `/api/v1/theories/${id}/delete_theory_body`,

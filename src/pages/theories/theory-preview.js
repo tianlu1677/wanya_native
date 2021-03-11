@@ -10,6 +10,10 @@ import TheoryMedia from './component/theory-media.js';
 const TheoryPreview = () => {
   const {theory} = useSelector(state => state.theory);
 
+  const filter_theory_bodies = (theory.theory_bodies || []).filter(
+    ({title, media, desc}) => title || media || desc
+  );
+
   return (
     <ScrollView style={styles.wrapper}>
       <GoBack color={'white'} />
@@ -23,23 +27,24 @@ const TheoryPreview = () => {
       <View style={styles.content}>
         <Text style={styles.intro}>{theory.plain_content}</Text>
         <Text style={styles.introTitle}>顽法步骤</Text>
-        {(theory.theory_bodies || []).map((item, index) =>
-          item.title && item.media && item.desc ? (
-            <View key={index}>
-              {item.title && (
+        {filter_theory_bodies.map((item, index) => (
+          <View key={index}>
+            {item.title && (
+              <View style={styles.stepTitleWrap}>
                 <Text style={styles.stepTitle}>
-                  步骤{item.position}/{theory.theory_bodies.length} {item.title}
+                  步骤{index + 1}/{filter_theory_bodies.length}
                 </Text>
-              )}
-              {item.media && (
-                <View style={styles.stepMedia}>
-                  <TheoryMedia media={item.media} type="theory_body_media" showDetele={false} />
-                </View>
-              )}
-              {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
-            </View>
-          ) : null
-        )}
+                <Text style={[styles.stepTitle, {marginLeft: 10}]}>{item.title}</Text>
+              </View>
+            )}
+            {item.media && (
+              <View style={styles.stepMedia}>
+                <TheoryMedia media={item.media} type="theory_body_media" showDetele={false} />
+              </View>
+            )}
+            {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
+          </View>
+        ))}
         {theory.tip && (
           <>
             <Text style={styles.introTitle}>小贴士</Text>
@@ -79,11 +84,15 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: RFValue(20),
   },
+  stepTitleWrap: {
+    marginTop: RFValue(15),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   stepTitle: {
     fontSize: 16,
     fontWeight: '500',
     lineHeight: RFValue(20),
-    marginTop: RFValue(15),
   },
   stepMedia: {
     marginTop: RFValue(15),

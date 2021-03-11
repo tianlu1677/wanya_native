@@ -52,6 +52,9 @@ const RenderLongVideo = props => {
           resizeMode={'cover'}
           autoplay={true}
           loop
+          onLoad={() => {
+            console.log('onBuffer');
+          }}
         />
       </View>
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />

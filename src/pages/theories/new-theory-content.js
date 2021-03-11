@@ -16,7 +16,6 @@ import {
   getTheoriy,
   refreshTheory,
   addTheoryBody,
-  deleteTheoryBody,
   publishTheory,
   wastedTheory,
 } from '@/api/theory_api';
@@ -37,13 +36,7 @@ const TheoryStepContent = props => {
   const {theory} = useSelector(state => state.theory);
 
   const addStep = async () => {
-    // add
     await addTheoryBody(theory.id);
-
-    //remove
-    // const data = {id: theory.id, theory_body_id: 2};
-    // await deleteTheoryBody(theory.id, data);
-
     loadData();
   };
 
@@ -103,7 +96,6 @@ const TheoryStepContent = props => {
         const res = await publishTheory(theory.id, theory);
         Toast.showError('发布成功');
         Toast.hide();
-        // navigation.navigate('TheoryDetail', {theoryId: res.theory.id});
         props.navigation.reset({
           index: 0,
           routes: [{name: 'TheoryDetail', params: {theoryId: res.theory.id}}],
@@ -262,15 +254,18 @@ const styles = StyleSheet.create({
     marginTop: RFValue(15),
     ...blackText,
     ...greyColor,
+    fontSize: 18,
   },
   theoryIntro: {
     minHeight: RFValue(120),
     lineHeight: 20,
-    paddingHorizontal: 15,
-    paddingTop: RFValue(5),
+    paddingHorizontal: RFValue(15),
+    paddingTop: RFValue(15),
+    paddingBottom: RFValue(15),
     marginTop: RFValue(15),
     paddingVertical: 0,
-    padding: 0,
+    ...greyText,
+    ...greyColor,
   },
   introTitle: {
     fontSize: 20,

@@ -45,6 +45,10 @@ const ShareTheoryContent = props => {
     tip,
   } = props.theoryDetail;
 
+  const filter_theory_bodies = (theory_bodies || []).filter(
+    item => item.title || item.media || item.desc
+  );
+
   const [qrcode_url, setQrcode_url] = useState('');
 
   useEffect(() => {
@@ -75,23 +79,24 @@ const ShareTheoryContent = props => {
               {title && <Text style={styles.theoryTitle}>{title}</Text>}
               {plain_content && <Text style={styles.planContent}>{plain_content}</Text>}
               <Text style={styles.introTitle}>顽法步骤</Text>
-              {(theory_bodies || []).map((item, index) =>
-                item.title && item.media && item.desc ? (
-                  <View key={index}>
-                    {item.title && (
+              {filter_theory_bodies.map((item, index) => (
+                <View key={index}>
+                  {item.title && (
+                    <View style={styles.stepTitleWrap}>
                       <Text style={styles.stepTitle}>
-                        步骤{item.position}/{theory_bodies.length} {item.title}
+                        步骤{index + 1}/{filter_theory_bodies.length}
                       </Text>
-                    )}
-                    {item.media && (
-                      <View style={styles.stepMedia}>
-                        <ShareTheoryMedia media={item.media} type="theory_body_media" />
-                      </View>
-                    )}
-                    {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
-                  </View>
-                ) : null
-              )}
+                      <Text style={[styles.stepTitle, {marginLeft: 10}]}>{item.title}</Text>
+                    </View>
+                  )}
+                  {item.media && (
+                    <View style={styles.stepMedia}>
+                      <ShareTheoryMedia media={item.media} type="theory_body_media" />
+                    </View>
+                  )}
+                  {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
+                </View>
+              ))}
               {tip && (
                 <>
                   <Text style={styles.introTitle}>小贴士</Text>
@@ -188,12 +193,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: RFValue(20),
   },
+  stepTitleWrap: {
+    marginTop: RFValue(15),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   stepTitle: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '500',
     lineHeight: RFValue(20),
-    marginTop: RFValue(15),
   },
   stepMedia: {
     marginTop: RFValue(15),

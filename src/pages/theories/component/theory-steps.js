@@ -55,6 +55,7 @@ const TheorySteps = props => {
               <TextInput
                 {...defaultProps}
                 maxLength={30}
+                placeholder="输入步骤标题"
                 style={styles.titleInput}
                 value={item.title}
                 onBlur={() => updateTheoryText(item.id)}
@@ -112,8 +113,8 @@ TheorySteps.propTypes = {
 };
 
 const greyColor = {backgroundColor: '#fafafa'};
-const blackText = {fontWeight: '500', fontSize: 16, color: '#000'};
-const greyText = {fontWeight: '300', fontSize: 14, color: '#9F9F9F'};
+const blackText = {fontWeight: '500', color: '#000'};
+const greyText = {fontWeight: '300', fontSize: 15, color: '#2C2C2C'};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -130,11 +131,13 @@ const styles = StyleSheet.create({
     lineHeight: RFValue(45),
     ...blackText,
     ...greyColor,
+    fontSize: 18,
   },
   titleInput: {
     flex: 1,
     marginLeft: 10,
     ...blackText,
+    fontSize: 16,
   },
   mediaWrap: {
     height: RFValue(120),
@@ -151,10 +154,10 @@ const styles = StyleSheet.create({
   },
   stepIntro: {
     minHeight: RFValue(45),
-    lineHeight: 20,
+    lineHeight: RFValue(15),
     paddingHorizontal: RFValue(15),
-    paddingTop: RFValue(5),
-    paddingBottom: RFValue(10),
+    paddingTop: RFValue(15),
+    paddingBottom: RFValue(15),
     borderRadius: 5,
     marginTop: RFValue(10),
     ...greyText,

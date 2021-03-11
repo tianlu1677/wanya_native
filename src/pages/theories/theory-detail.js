@@ -94,6 +94,10 @@ const TheoryDetail = ({navigation, route}) => {
     setDetail(theoryDetail);
   }, [theoryDetail]);
 
+  const filter_theory_bodies = ((detail && detail.theory_bodies) || []).filter(
+    ({title, media, desc}) => title || media || desc
+  );
+
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -118,29 +122,26 @@ const TheoryDetail = ({navigation, route}) => {
             <View style={styles.content}>
               <Text style={styles.intro}>{detail.plain_content}</Text>
               <Text style={styles.introTitle}>顽法步骤</Text>
-              {(detail.theory_bodies || []).map((item, index) =>
-                item.title && item.media && item.desc ? (
-                  <View key={index}>
-                    {item.title && (
+              {filter_theory_bodies.map((item, index) => (
+                <View key={index}>
+                  {item.title && (
+                    <View style={styles.stepTitleWrap}>
                       <Text style={styles.stepTitle}>
-                        步骤{item.position}/{detail.theory_bodies.length} {item.title}
+                        步骤{index + 1}/{filter_theory_bodies.length}
                       </Text>
-                    )}
+                      <Text style={[styles.stepTitle, {marginLeft: 10}]}>{item.title}</Text>
+                    </View>
+                  )}
 
-                    {item.media && (
-                      <View style={styles.stepMedia}>
-                        <TheoryMedia
-                          media={item.media}
-                          type="theory_body_media"
-                          showDetele={false}
-                        />
-                      </View>
-                    )}
+                  {item.media && (
+                    <View style={styles.stepMedia}>
+                      <TheoryMedia media={item.media} type="theory_body_media" showDetele={false} />
+                    </View>
+                  )}
 
-                    {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
-                  </View>
-                ) : null
-              )}
+                  {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
+                </View>
+              ))}
               {detail.tip && (
                 <>
                   <Text style={styles.introTitle}>小贴士</Text>
