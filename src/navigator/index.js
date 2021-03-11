@@ -17,6 +17,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
 import {navigationRef} from '@/navigator/root-navigation';
 import * as action from '@/redux/constants';
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BottomModal, BlurView} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
 import Helper from '@/utils/helper';
@@ -64,7 +65,7 @@ const PublishModal = props => {
     <BottomModal
       visible={visible}
       cancleClick={onCancel}
-      modalStyle={{height: 300}}
+      modalStyle={{height: 270 + BOTTOM_HEIGHT}}
       contentWrapStyle={{
         backgroundColor: '#000000',
         paddingTop: RFValue(25),
@@ -93,10 +94,10 @@ const PublishModal = props => {
         }}>
         <FastImg source={require('../assets/images/add-topic.png')} style={imgStyle} />
       </Pressable>
-      <Pressable onPress={onCancel}>
+      <Pressable onPress={onCancel} hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
         <IconFont
           name="close"
-          size={22}
+          size={18}
           color="#fff"
           style={{marginTop: RFValue(25), paddingBottom: RFValue(30)}}
         />
