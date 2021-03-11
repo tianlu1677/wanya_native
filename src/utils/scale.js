@@ -1,5 +1,5 @@
 export const scaleSize = (media, innerWidth) => {
-  const defaultScale = 3 / 4;
+  const defaultScale = 4 / 3;
 
   const defaultWidth = media.width || innerWidth;
   const defaultHeight = media.height || innerWidth;
