@@ -63,14 +63,15 @@ const PublishModal = props => {
   return (
     <BottomModal
       visible={visible}
-      height={0.31}
       cancleClick={onCancel}
+      modalStyle={{height: 300}}
       contentWrapStyle={{
         backgroundColor: '#000000',
         paddingTop: RFValue(25),
         paddingLeft: 30,
         paddingRight: 30,
         alignItems: 'center',
+        bottom: 0,
       }}>
       <Pressable
         style={imgStyle}
@@ -93,7 +94,12 @@ const PublishModal = props => {
         <FastImg source={require('../assets/images/add-topic.png')} style={imgStyle} />
       </Pressable>
       <Pressable onPress={onCancel}>
-        <IconFont name="close" size={22} color="#fff" style={{marginTop: RFValue(25)}} />
+        <IconFont
+          name="close"
+          size={22}
+          color="#fff"
+          style={{marginTop: RFValue(25), paddingBottom: RFValue(30)}}
+        />
       </Pressable>
     </BottomModal>
   );

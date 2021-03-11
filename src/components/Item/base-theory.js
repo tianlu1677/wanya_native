@@ -5,10 +5,8 @@ import {Header, NoActionBottom} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import {RFValue} from '@/utils/response-fontsize';
-import {scaleSize} from '@/utils/scale';
 
-const {width: screenWidth} = Dimensions.get('window');
-const innerWidth = screenWidth - 28;
+const {width} = Dimensions.get('window');
 
 const BaseTheory = props => {
   const {data} = props;
@@ -19,20 +17,16 @@ const BaseTheory = props => {
   };
 
   const {
-    single_cover: {cover_url, category, width: imageWidth, height: imageHeight},
+    single_cover: {cover_url, category},
   } = data;
-
-  const {width, height} = scaleSize({width: imageWidth, height: imageHeight}, innerWidth);
 
   return (
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
       <Header data={data} type="theory" onRemove={props.onRemove} />
       <View style={styles.content}>
         <Text style={styles.titleText}>{data.title}</Text>
-        <View style={styles.imageCover}>
-          <FastImg source={{uri: cover_url}} style={{width, height}} mode={'cover'} />
-          {category === 'video' && <FastImg style={styles.playImage} source={VideoPlayImg} />}
-        </View>
+        <FastImg source={{uri: cover_url}} style={styles.imageCover} mode={'cover'} />
+        {category === 'video' && <FastImg style={styles.playImage} source={VideoPlayImg} />}
         <View style={styles.bottom}>
           <NoActionBottom data={data} />
         </View>
@@ -41,6 +35,7 @@ const BaseTheory = props => {
   );
 };
 
+const ImageHeight = parseInt((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
@@ -56,8 +51,9 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   imageCover: {
+    width: '100%',
+    height: ImageHeight,
     marginTop: RFValue(5),
-    position: 'relative',
   },
   playImage: {
     width: RFValue(40),

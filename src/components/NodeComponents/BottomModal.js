@@ -15,7 +15,7 @@ const BottomModalView = props => {
       statusBarTranslucent
       useNativeDriver={false}
       containerStyle={{flex: 1, zIndex: 10000, elevation: 10}}
-      modalStyle={{}}
+      modalStyle={props.modalStyle}
       overlayOpacity={0.6}
       visible={props.visible}
       onTouchOutside={() => cancel()}

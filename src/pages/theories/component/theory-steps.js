@@ -114,7 +114,7 @@ TheorySteps.propTypes = {
 
 const greyColor = {backgroundColor: '#fafafa'};
 const blackText = {fontWeight: '500', color: '#000'};
-const greyText = {fontWeight: '300', fontSize: 15, color: '#2C2C2C'};
+const greyText = {fontWeight: '300', fontSize: 14, color: '#9F9F9F'};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -136,8 +136,9 @@ const styles = StyleSheet.create({
   titleInput: {
     flex: 1,
     marginLeft: 10,
-    ...blackText,
     fontSize: 16,
+    fontWeight: '500',
+    color: '#bdbdbd',
   },
   mediaWrap: {
     height: RFValue(120),

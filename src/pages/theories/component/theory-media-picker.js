@@ -14,7 +14,7 @@ const systemName = DeviceInfo.getSystemName();
 const StepMediaPicker = WrapperComponent => {
   return props => {
     const imagePicker = callback => {
-      const options = {imageCount: 1, isCamera: false, isRecordSelected: true};
+      const options = {imageCount: 1, isCamera: false, isGif: true, isRecordSelected: true};
       SyanImagePicker.showImagePicker(options, callback);
     };
 
