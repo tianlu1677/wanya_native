@@ -546,10 +546,9 @@ export default class VideoPlayer extends Component {
             props.playerRef = p;
           }}
           muted={this.props.muted || this.state.isMuted}
-          // paused={
-          //   this.props.paused ? this.props.paused || !this.state.isPlaying : !this.state.isPlaying
-          // }
-          paused={this.props.paused}
+          paused={
+            this.props.paused ? this.props.paused || !this.state.isPlaying : !this.state.isPlaying
+          }
           onLoadStart={this.onLoadStart}
           onProgress={this.onProgress}
           onEnd={this.onEnd}
@@ -585,7 +584,6 @@ export default class VideoPlayer extends Component {
           <TouchableOpacity
             style={styles.overlayButton}
             onPress={() => {
-              console.log('232323');
               this.showControls();
               if (pauseOnPress) {
                 this.onPlayPress();
