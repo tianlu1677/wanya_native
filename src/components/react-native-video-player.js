@@ -13,7 +13,9 @@ import {
   NativeModules,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Video from 'react-native-video'; // eslint-disable-line
+import Video from 'react-native-video';
+import FastImg from '@/components/FastImg';
+import PlayVideoImg from '@/assets/images/play-video.png';
 
 const {VideoPlayerManager} = NativeModules;
 
@@ -39,15 +41,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   playButton: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    // width: 64,
+    // height: 64,
+    // borderRadius: 32,
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   playArrow: {
     color: 'white',
+    width: 40,
+    height: 40,
   },
   video:
     Platform.Version >= 24
@@ -427,7 +431,8 @@ export default class VideoPlayer extends Component {
       <TouchableOpacity
         style={[styles.playButton, customStyles.playButton]}
         onPress={this.onStartPress}>
-        <Icon style={[styles.playArrow, customStyles.playArrow]} name="play-arrow" size={42} />
+        {/* <Icon style={[styles.playArrow, customStyles.playArrow]} name="play-arrow" size={42} /> */}
+        <FastImg source={PlayVideoImg} style={{...styles.playArrow, ...customStyles.playArrow}} />
       </TouchableOpacity>
     );
   }

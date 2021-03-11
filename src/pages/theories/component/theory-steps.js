@@ -54,6 +54,7 @@ const TheorySteps = props => {
               <Text style={styles.titleText}>第{item.position}步</Text>
               <TextInput
                 {...defaultProps}
+                placeholderTextColor="#bdbdbd"
                 maxLength={30}
                 placeholder="输入步骤标题"
                 style={styles.titleInput}
@@ -113,8 +114,6 @@ TheorySteps.propTypes = {
 };
 
 const greyColor = {backgroundColor: '#fafafa'};
-const blackText = {fontWeight: '500', color: '#000'};
-const greyText = {fontWeight: '300', fontSize: 14, color: '#9F9F9F'};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -129,16 +128,15 @@ const styles = StyleSheet.create({
   titleText: {
     height: RFValue(45),
     lineHeight: RFValue(45),
-    ...blackText,
-    ...greyColor,
     fontSize: 18,
+    fontWeight: '500',
+    ...greyColor,
   },
   titleInput: {
     flex: 1,
     marginLeft: 10,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '500',
-    color: '#bdbdbd',
   },
   mediaWrap: {
     height: RFValue(120),
@@ -151,7 +149,9 @@ const styles = StyleSheet.create({
   },
   mediaText: {
     marginLeft: 5,
-    ...greyText,
+    fontSize: 14,
+    color: '#9F9F9F',
+    fontWeight: '300',
   },
   stepIntro: {
     minHeight: RFValue(45),
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
     paddingBottom: RFValue(15),
     borderRadius: 5,
     marginTop: RFValue(10),
-    ...greyText,
+    fontSize: 15,
+    color: '#2C2C2C',
     ...greyColor,
   },
 });

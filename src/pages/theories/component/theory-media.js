@@ -87,7 +87,11 @@ const RenderImage = props => {
       {media.url ? (
         <>
           <Pressable onPress={onPreview}>
-            <FastImg source={{uri: media.url}} style={{width, height}} mode="cover" />
+            <FastImg
+              source={{uri: media.url}}
+              style={{width, height, borderRadius: 0}}
+              mode="cover"
+            />
           </Pressable>
           {showDetele && (
             <Pressable onPress={onDelete} style={styles.deleteWrap}>
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     overflow: 'hidden',
   },
   opacity: {

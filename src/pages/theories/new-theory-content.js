@@ -71,7 +71,14 @@ const TheoryStepContent = props => {
     const isValidateForm = () => {
       //封面，标题 步骤1标题
       const {title, media, theory_bodies = []} = theory;
-      if (title && media && media.url && theory_bodies.length > 0 && theory_bodies[0].title) {
+      if (
+        title &&
+        media &&
+        media.url &&
+        theory_bodies.length > 0 &&
+        theory_bodies[0].title &&
+        theory_bodies[0].desc
+      ) {
         return true;
       } else {
         return false;
@@ -227,8 +234,6 @@ const TheoryStepContent = props => {
 };
 
 const greyColor = {backgroundColor: '#fafafa'};
-const blackText = {fontWeight: '500', fontSize: 16, color: '#000'};
-const greyText = {fontWeight: '300', fontSize: 14, color: '#9F9F9F'};
 const center = {flexDirection: 'row', alignItems: 'center', justifyContent: 'center'};
 const styles = StyleSheet.create({
   wrapper: {
@@ -241,7 +246,9 @@ const styles = StyleSheet.create({
     ...greyColor,
   },
   mediaText: {
-    ...greyText,
+    fontSize: 14,
+    color: '#9F9F9F',
+    fontWeight: '300',
     marginLeft: 5,
   },
   contentWrap: {
@@ -252,9 +259,9 @@ const styles = StyleSheet.create({
     height: RFValue(45),
     paddingHorizontal: 15,
     marginTop: RFValue(15),
-    ...blackText,
-    ...greyColor,
     fontSize: 18,
+    fontWeight: '500',
+    ...greyColor,
   },
   theoryIntro: {
     minHeight: RFValue(120),
@@ -264,7 +271,8 @@ const styles = StyleSheet.create({
     paddingBottom: RFValue(15),
     marginTop: RFValue(15),
     paddingVertical: 0,
-    ...greyText,
+    fontSize: 15,
+    fontWeight: '300',
     ...greyColor,
   },
   introTitle: {
