@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video';
 import FastImg from '@/components/FastImg';
-import PlayVideoImg from '@/assets/images/play-video.png';
+import PlayVideoImg from '@/assets/images/video-play.png';
 
 const {VideoPlayerManager} = NativeModules;
 

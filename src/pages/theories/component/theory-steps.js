@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: RFValue(10),
     fontSize: 15,
+    fontWeight: '300',
     color: '#2C2C2C',
     ...greyColor,
   },
