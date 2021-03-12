@@ -205,7 +205,11 @@ const TheoryStepContent = props => {
         {...props}
         showActionSheet={showActionSheet}
         changeModal={() => setShowActionSheet(false)}
-        params={{assetable_type: 'Theory', assetable_id: theory.id.toString(), assetable_name: 'theory_media'}}
+        params={{
+          assetable_type: 'Theory',
+          assetable_id: theory.id.toString(),
+          assetable_name: 'theory_media',
+        }}
         loadData={loadData}
       />
 
