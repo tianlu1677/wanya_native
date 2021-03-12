@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {View, Text, StatusBar, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import {SAFE_TOP, STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
@@ -104,6 +104,7 @@ const TheoryDetail = ({navigation, route}) => {
       keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
       style={ptyles.wrapper}>
       <GoBack color={'white'} report={true} onReportClick={onReportClick} />
+      <StatusBar barStyle={'light-content'} backgroundColor={'black'} />
       <CommentList
         type="Theory"
         detail={detail}

@@ -13,7 +13,7 @@ import {
   TOPIC_DETAIL_SUCCESS,
   UPDATE_CATEGORY_LIST,
   CHANGE_UPLOAD_STATUS,
-  Theory_DETAIL
+  THEORY_DETAIL
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -111,8 +111,8 @@ export const dispatchArticleDetail = (article = {}) => async dispatch => {
 
 export const dispatchTheoryDetail = (theory = {}) => async dispatch => {
   dispatch({
-    type: Theory_DETAIL,
-    theory: theory,
+    type: THEORY_DETAIL,
+    value: theory,
   });
 };
 
