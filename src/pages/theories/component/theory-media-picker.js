@@ -34,6 +34,7 @@ const StepMediaPicker = WrapperComponent => {
         headers: {'content-type': 'application/octet-stream', token: token},
       };
 
+      console.log('options', options)
       return new Promise(async (resolve, reject) => {
         Upload.startUpload(options)
           .then(uploadId => {
@@ -48,6 +49,7 @@ const StepMediaPicker = WrapperComponent => {
             });
           })
           .catch(err => {
+            console.log('erro', err)
             reject(err);
           });
       });

@@ -174,7 +174,7 @@ const TheoryStepContent = props => {
               placeholder="可以写写这个技巧顽法背后的故事，或者描述下掌握这个顽法的准备工作，包括装备、脚位等"
               value={theory.plain_content}
               onBlur={updateTheoryText}
-              textAlignVertical={'left'}
+              textAlignVertical={'top'}
               underlineColorAndroid={'transparent'}
               onChangeText={value => updateTheory({plain_content: value})}
               style={styles.theoryIntro}
@@ -205,7 +205,7 @@ const TheoryStepContent = props => {
         {...props}
         showActionSheet={showActionSheet}
         changeModal={() => setShowActionSheet(false)}
-        params={{assetable_type: 'Theory', assetable_id: theory.id, assetable_name: 'theory_media'}}
+        params={{assetable_type: 'Theory', assetable_id: theory.id.toString(), assetable_name: 'theory_media'}}
         loadData={loadData}
       />
 
