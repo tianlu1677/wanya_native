@@ -29,7 +29,7 @@ const TheoryPreview = () => {
         <Text style={styles.introTitle}>顽法步骤</Text>
         {filter_theory_bodies.map((item, index) => (
           <View key={index}>
-            {item.title && (
+            {!!item.title && (
               <View style={styles.stepTitleWrap}>
                 <Text style={styles.stepTitle}>
                   步骤{index + 1}/{filter_theory_bodies.length}
@@ -37,15 +37,16 @@ const TheoryPreview = () => {
                 <Text style={[styles.stepTitle, {marginLeft: 10}]}>{item.title}</Text>
               </View>
             )}
-            {item.media && (
+            {item.media && item.media.id && (
               <View style={styles.stepMedia}>
                 <TheoryMedia media={item.media} type="theory_body_media" showDelete={false} />
               </View>
             )}
-            {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
+            {!!item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
           </View>
         ))}
-        {theory.tip && (
+
+        {!!theory.tip && (
           <>
             <Text style={styles.introTitle}>小贴士</Text>
             <Text style={styles.tips}>{theory.tip}</Text>
