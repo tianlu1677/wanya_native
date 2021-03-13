@@ -83,6 +83,7 @@ const TheorySteps = props => {
             <TextInput
               {...defaultProps}
               multiline
+              scrollEnabled={false}
               maxLength={200}
               placeholder="步骤描述越详细越好"
               style={styles.stepIntro}

@@ -142,63 +142,61 @@ const TheoryStepContent = props => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}
       keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView>
-          {theory.media ? (
-            <TheoryMedia
-              media={theory.media}
-              type="theory_media"
-              loadData={loadData}
-              showDetele={true}
-            />
-          ) : (
-            <Pressable style={styles.mediaWrap} onPress={onMediaPicker}>
-              <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />
-              <Text style={styles.mediaText}>上传这个顽法的完整介绍视频或封面图</Text>
-            </Pressable>
-          )}
-          <View style={styles.contentWrap}>
-            <TextInput
-              {...defaultProps}
-              maxLength={30}
-              placeholder="添加顽法名称"
-              value={theory.title}
-              onBlur={updateTheoryText}
-              onChangeText={value => updateTheory({title: value})}
-              style={[styles.theoryTitle, {textAlign: 'center'}]}
-            />
-            <TextInput
-              {...defaultProps}
-              multiline
-              maxLength={200}
-              placeholder="可以写写这个技巧顽法背后的故事，或者描述下掌握这个顽法的准备工作，包括装备、脚位等"
-              value={theory.plain_content}
-              onBlur={updateTheoryText}
-              textAlignVertical={'top'}
-              underlineColorAndroid={'transparent'}
-              onChangeText={value => updateTheory({plain_content: value})}
-              style={styles.theoryIntro}
-            />
-            <Text style={styles.introTitle}>顽法步骤</Text>
-            <TheorySteps {...props} loadData={loadData} />
-            <Pressable style={styles.addStep} onPress={addStep}>
-              <IconFont name={'plus'} size={14} />
-              <Text style={styles.addStepText}>增加步骤</Text>
-            </Pressable>
-            <Text style={styles.introTitle}>小贴士</Text>
-            <TextInput
-              {...defaultProps}
-              multiline
-              maxLength={200}
-              placeholder="这套玩法有哪些小技巧或者注意事项，需要提醒大家"
-              value={theory.tip}
-              onBlur={updateTheoryText}
-              onChangeText={value => updateTheory({tip: value})}
-              style={[styles.theoryIntro, {marginTop: 0}]}
-            />
-          </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
+      <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps={'always'}>
+        {theory.media ? (
+          <TheoryMedia
+            media={theory.media}
+            type="theory_media"
+            loadData={loadData}
+            showDetele={true}
+          />
+        ) : (
+          <Pressable style={styles.mediaWrap} onPress={onMediaPicker}>
+            <IconFont name={'shangchuan'} size={18} color="#9F9F9F" />
+            <Text style={styles.mediaText}>上传这个顽法的完整介绍视频或封面图</Text>
+          </Pressable>
+        )}
+        <View style={styles.contentWrap}>
+          <TextInput
+            {...defaultProps}
+            maxLength={30}
+            placeholder="添加顽法名称"
+            value={theory.title}
+            onBlur={updateTheoryText}
+            onChangeText={value => updateTheory({title: value})}
+            style={[styles.theoryTitle, {textAlign: 'center'}]}
+          />
+          <TextInput
+            {...defaultProps}
+            multiline
+            maxLength={200}
+            placeholder="可以写写这个技巧顽法背后的故事，或者描述下掌握这个顽法的准备工作，包括装备、脚位等"
+            value={theory.plain_content}
+            onBlur={updateTheoryText}
+            textAlignVertical={'top'}
+            underlineColorAndroid={'transparent'}
+            onChangeText={value => updateTheory({plain_content: value})}
+            style={styles.theoryIntro}
+          />
+          <Text style={styles.introTitle}>顽法步骤</Text>
+          <TheorySteps {...props} loadData={loadData} />
+          <Pressable style={styles.addStep} onPress={addStep}>
+            <IconFont name={'plus'} size={14} />
+            <Text style={styles.addStepText}>增加步骤</Text>
+          </Pressable>
+          <Text style={styles.introTitle}>小贴士</Text>
+          <TextInput
+            {...defaultProps}
+            multiline
+            maxLength={200}
+            placeholder="这套玩法有哪些小技巧或者注意事项，需要提醒大家"
+            value={theory.tip}
+            onBlur={updateTheoryText}
+            onChangeText={value => updateTheory({tip: value})}
+            style={[styles.theoryIntro, {marginTop: 0}]}
+          />
+        </View>
+      </ScrollView>
 
       {/* choose media sheet */}
       <TheoryMediaSheet
