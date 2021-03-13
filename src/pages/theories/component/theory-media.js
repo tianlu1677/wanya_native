@@ -32,10 +32,10 @@ const RenderVideo = props => {
   useFocusEffect(
     useCallback(() => {
       if (videoRef && videoRef.current) {
-        // 是否继续播放
-        if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
-          // videoRef.current.resume();
-        }
+        // // 是否继续播放
+        // if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
+        //   // videoRef.current.resume();
+        // }
       }
       return () => {
         videoRef && videoRef.current && videoRef.current.pause();
@@ -70,7 +70,7 @@ const RenderVideo = props => {
             pauseOnPress
             hideControlsOnStart
             muted={false}
-            paused={videoList[refId]}
+            paused={(refId && videoList && videoList[refId]) ? true : false}
             onStart={onStart}
             onPlayPress={onPlayPress}
             resizeMode={'cover'}
