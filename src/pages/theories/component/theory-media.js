@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
 import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
+import {useFocusEffect} from '@react-navigation/native';
 import VideoPlayerContent from '@/components/react-native-video-player';
 import Video from 'react-native-video';
 import {dispatchPreviewImage} from '@/redux/actions';
@@ -9,19 +10,51 @@ import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import {deleteAssets} from '@/api/asset_api';
 import {scaleSize} from '@/utils/scale';
+import {updateTheoryVideo} from '@/redux/actions';
 
 const {width: screenWidth} = Dimensions.get('window');
 const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
 const deleteImage = require('@/assets/images/delete.png');
 
 const RenderVideo = props => {
-  const {media, type, showDelete} = props;
+  const dispatch = useDispatch();
+  const {videoList} = useSelector(state => state.theory);
+  const {media, type, showDelete, refId} = props;
   const innerWidth = type === 'theory_media' ? screenWidth : screenWidth - 30;
   const {width, height} = scaleSize(media, innerWidth);
 
+  const videoRef = useRef(null);
   const onDelete = async () => {
     await deleteAssets(media.id);
     props.loadData();
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (videoRef && videoRef.current) {
+        // 是否继续播放
+        if (videoRef.current.state.isControlsVisible && !videoRef.current.state.isPlaying) {
+          // videoRef.current.resume();
+        }
+      }
+      return () => {
+        videoRef && videoRef.current && videoRef.current.pause();
+      };
+    }, [])
+  );
+  const onStart = () => {
+    dispatch(updateTheoryVideo(refId, false));
+  };
+
+  const onPlayPress = async playing => {
+    // console.log('videoList', videoList, playing.toString());
+    // console.log('onPlayPress', videoList[refId]);
+    if (playing) {
+      videoRef.current.resume();
+      videoList[refId] = true;
+    }
+    await dispatch(updateTheoryVideo(refId, !playing));
+    // console.log('videoList', videoList);
   };
 
   return (
@@ -29,6 +62,7 @@ const RenderVideo = props => {
       {media.url ? (
         <>
           <VideoPlayerContent
+            ref={videoRef}
             videoWidth={width}
             videoHeight={height}
             video={{uri: media.url}}
@@ -36,6 +70,9 @@ const RenderVideo = props => {
             pauseOnPress
             hideControlsOnStart
             muted={false}
+            paused={videoList[refId]}
+            onStart={onStart}
+            onPlayPress={onPlayPress}
             resizeMode={'cover'}
             posterResizeMode={'cover'}
           />
@@ -64,7 +101,6 @@ const RenderVideo = props => {
     </View>
   );
 };
-
 const RenderImage = props => {
   const dispatch = useDispatch();
   const {media, type, showDelete} = props;

@@ -198,3 +198,6 @@ export const UPDATE_CHECK_NODES = 'UPDATE_CHECK_NODES'; //check圈子列表
 // theory
 export const THEORY_DETAIL = 'THEORY_DETAIL'; //theory详情
 export const UPDATE_THEORY = 'UPDATE_THEORY'; //更新theory
+
+//视频播放
+export const THEORY_VIDEO_STATE = 'THEORY_VIDEO_STATE';

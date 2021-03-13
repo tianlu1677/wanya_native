@@ -116,7 +116,7 @@ const TheoryDetail = ({navigation, route}) => {
           <>
             <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
             {detail.media && (
-              <TheoryMedia media={detail.media} type="theory_media" showDelete={false} />
+              <TheoryMedia media={detail.media} type="theory_media" showDelete={false} refId={"video_1"} />
             )}
             <Text style={styles.title}>{detail.title}</Text>
             <PublishAccount data={detail} showFollow={false} />
@@ -136,7 +136,7 @@ const TheoryDetail = ({navigation, route}) => {
 
                   {item.media && (
                     <View style={styles.stepMedia}>
-                      <TheoryMedia media={item.media} type="theory_body_media" showDelete={false} />
+                      <TheoryMedia media={item.media} type="theory_body_media" showDelete={false} refId={`video_${index+2}`} />
                     </View>
                   )}
 

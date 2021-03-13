@@ -11,6 +11,7 @@ import {
   ViewPropTypes,
   ActivityIndicator,
   NativeModules,
+  Pressable
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video';
@@ -256,14 +257,25 @@ export default class VideoPlayer extends Component {
   };
 
   onPlayPress() {
-    console.log('onPlayPress');
-    if (this.props.onPlayPress) {
-      this.props.onPlayPress();
-    }
+    // console.log('onPlayPress');
+    // if (this.props.onPlayPress) {
+    //   this.props.onPlayPress(!this.state.isPlaying);
+    // }
+    //
+    // this.setState({
+    //   isPlaying: !this.state.isPlaying,
+    // });
 
-    this.setState({
-      isPlaying: !this.state.isPlaying,
-    });
+    this.setState(
+      {
+        isPlaying: !this.state.isPlaying,
+      },
+      () => {
+        if (this.props.onPlayPress) {
+          this.props.onPlayPress(this.state.isPlaying);
+        }
+      }
+    );
     this.showControls();
   }
 
@@ -428,12 +440,13 @@ export default class VideoPlayer extends Component {
   renderStartButton() {
     const {customStyles} = this.props;
     return (
-      <TouchableOpacity
+      <Pressable
         style={[styles.playButton, customStyles.playButton]}
+        hitSlop={{top: 30, bottom: 50, left: 30, right: 50}}
         onPress={this.onStartPress}>
         {/* <Icon style={[styles.playArrow, customStyles.playArrow]} name="play-arrow" size={42} /> */}
         <FastImg source={PlayVideoImg} style={{...styles.playArrow, ...customStyles.playArrow}} />
-      </TouchableOpacity>
+      </Pressable>
     );
   }
 

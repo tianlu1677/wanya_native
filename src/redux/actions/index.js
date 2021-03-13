@@ -13,6 +13,7 @@ import {
   TOPIC_DETAIL_SUCCESS,
   UPDATE_CATEGORY_LIST,
   CHANGE_UPLOAD_STATUS,
+  THEORY_VIDEO_STATE,
   THEORY_DETAIL
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
@@ -154,4 +155,12 @@ export const dispatchFetchUploadTopic = data => async dispatch => {
   setTimeout(() => {
     dispatch(changeUploadStatus(null));
   }, 1000);
+};
+
+export const updateTheoryVideo = (videoId, pause) => async dispatch => {
+  await dispatch({
+    type: THEORY_VIDEO_STATE,
+    videoId: videoId,
+    pause: pause,
+  });
 };
