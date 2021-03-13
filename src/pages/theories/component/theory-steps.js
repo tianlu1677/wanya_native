@@ -70,7 +70,7 @@ const TheorySteps = props => {
                   media={item.media}
                   type="theory_body_media"
                   loadData={props.loadData}
-                  showDetele={true}
+                  showDelete={true}
                 />
               </View>
             ) : (

@@ -148,7 +148,7 @@ const TheoryStepContent = props => {
             media={theory.media}
             type="theory_media"
             loadData={loadData}
-            showDetele={true}
+            showDelete={true}
           />
         ) : (
           <Pressable style={styles.mediaWrap} onPress={onMediaPicker}>
@@ -188,6 +188,7 @@ const TheoryStepContent = props => {
           <TextInput
             {...defaultProps}
             multiline
+            scrollEnabled={false}
             maxLength={200}
             placeholder="这套玩法有哪些小技巧或者注意事项，需要提醒大家"
             value={theory.tip}

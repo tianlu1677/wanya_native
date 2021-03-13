@@ -15,7 +15,7 @@ const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
 const deleteImage = require('@/assets/images/delete.png');
 
 const RenderVideo = props => {
-  const {media, type, showDetele} = props;
+  const {media, type, showDelete} = props;
   const innerWidth = type === 'theory_media' ? screenWidth : screenWidth - 30;
   const {width, height} = scaleSize(media, innerWidth);
 
@@ -39,7 +39,7 @@ const RenderVideo = props => {
             resizeMode={'cover'}
             posterResizeMode={'cover'}
           />
-          {showDetele && (
+          {showDelete && (
             <Pressable onPress={onDelete} style={styles.deleteWrap}>
               <FastImg source={deleteImage} style={styles.delete} hitSlop={hitSlop} />
             </Pressable>
@@ -67,7 +67,7 @@ const RenderVideo = props => {
 
 const RenderImage = props => {
   const dispatch = useDispatch();
-  const {media, type, showDetele} = props;
+  const {media, type, showDelete} = props;
 
   const innerWidth = type === 'theory_media' ? screenWidth : screenWidth - 30;
   const {width, height} = scaleSize(media, innerWidth);
@@ -93,7 +93,7 @@ const RenderImage = props => {
               mode="cover"
             />
           </Pressable>
-          {showDetele && (
+          {showDelete && (
             <Pressable onPress={onDelete} style={styles.deleteWrap}>
               <FastImg source={deleteImage} style={styles.delete} hitSlop={hitSlop} />
             </Pressable>
@@ -123,8 +123,8 @@ const TheoryMedia = props => {
 };
 
 TheoryMedia.propTypes = {
-  showDetele: PropTypes.bool.isRequired, //是否需要删除
-  loadData: PropTypes.func, //showDetele true => 更新
+  showDelete: PropTypes.bool.isRequired, //是否需要删除
+  loadData: PropTypes.func, //showDelete true => 更新
 };
 
 const center = {position: 'absolute', top: 0, right: 0, bottom: 0, left: 0};

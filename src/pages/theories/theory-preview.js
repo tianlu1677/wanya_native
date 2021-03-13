@@ -18,7 +18,7 @@ const TheoryPreview = () => {
     <ScrollView style={styles.wrapper}>
       <GoBack color={'white'} />
       <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-      {theory.media && <TheoryMedia media={theory.media} type="theory_media" showDetele={false} />}
+      {theory.media && <TheoryMedia media={theory.media} type="theory_media" showDelete={false} />}
       <Text style={styles.title}>{theory.title}</Text>
       <PublishAccount
         data={{account: theory.account, published_at_text: '刚刚'}}
@@ -39,7 +39,7 @@ const TheoryPreview = () => {
             )}
             {item.media && (
               <View style={styles.stepMedia}>
-                <TheoryMedia media={item.media} type="theory_body_media" showDetele={false} />
+                <TheoryMedia media={item.media} type="theory_body_media" showDelete={false} />
               </View>
             )}
             {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
