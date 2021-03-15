@@ -13,6 +13,7 @@ import {AppleButton, appleAuth} from '@invertase/react-native-apple-authenticati
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import PolicyModal from '@/components/PolicyModal';
+import {RFValue} from "@/utils/response-fontsize"
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -227,6 +228,16 @@ const SocialLogin = ({navigation, route}) => {
         </View>
 
         <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
+
+          <Pressable
+            style={styles.ruleWrapper}
+            hitSlop={{left: 10, right: 10, top: 30}}
+            onPress={() => {}}>
+            <View style={styles.checkbox}>
+              <IconFont name="yixuan" size={16} color="red" />
+            </View>
+          </Pressable>
+
           <Text style={styles.textContent}>我已阅读并同意</Text>
           <Pressable
             onPress={() => {
@@ -307,6 +318,22 @@ const styles = StyleSheet.create({
   textContent: {
     fontSize: 11,
     color: '#BDBDBD',
+  },
+  ruleWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: 'white',
+  },
+  checkbox: {
+    width: 15,
+    height: 15,
+    borderColor: 'white',
+    borderWidth: StyleSheet.hairlineWidth,
+    marginHorizontal: 15,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 3,
   },
 });
 

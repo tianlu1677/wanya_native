@@ -31,7 +31,7 @@ const SystemNotify = ({navigation}) => {
   };
 
   const formatNotify = notify => {
-    console.log('noti', notify);
+    // console.log('noti', notify);
     let image_url = '';
     let has_video = false;
     let content = '';

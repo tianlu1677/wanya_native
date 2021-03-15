@@ -54,7 +54,7 @@ const CommentNotify = ({navigation}) => {
     if (type === 'Article') {
       return {...comment, item: {image_url: commentable.cover_url, has_video: false}};
     }
-    if (type === 'Theory') {
+    if (type === 'Theory' && commentable) {
       return {
         ...comment,
         item: {

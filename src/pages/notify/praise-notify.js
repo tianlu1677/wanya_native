@@ -39,7 +39,7 @@ const PraiseNotify = ({navigation}) => {
   };
 
   const formatNotify = notify => {
-    console.log('notify', notify)
+    // console.log('notify', notify)
     let image_url = '';
     let has_video = false;
     let content = '';

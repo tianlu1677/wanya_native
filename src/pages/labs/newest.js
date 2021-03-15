@@ -9,7 +9,7 @@ const Newest = props => {
 
   return (
     <View style={{flex: 1}}>
-      <SingleList request={{api: getRecommendLatestPosts}} />
+      {/*<SingleList request={{api: getRecommendLatestPosts}} />*/}
     </View>
   );
 };
