@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Platform} from 'react-native';
 import {throttle} from 'lodash';
+import {TransFormType} from '@/utils';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
@@ -19,28 +20,20 @@ const RecommendListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
+    const data = {...item.item, published_at_text: `发布了${TransFormType(item.item)}`};
     switch (item.item_type) {
       case 'Topic':
-        return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+        return <BaseTopic data={data} onRemove={() => onRemove(index)} />;
       case 'Article':
-        return <BaseArticle data={item.item} />;
+        return <BaseArticle data={data} />;
       case 'Theory':
-        return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+        return <BaseTheory data={data} onRemove={() => onRemove(index)} />;
       default:
         return <View />;
     }
   });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
-
-  const onChangeListDataText = data => {
-    const changeData = data.map(v => {
-      const newItem = {...v.item, published_at_text: '发布了'};
-      const item = {...v, item: newItem};
-      return item;
-    });
-    return changeData;
-  };
 
   const loadData = async (page = 1) => {
     if (page === 1) {
@@ -53,7 +46,6 @@ const RecommendListPost = () => {
     let itemList =
       page === 1 ? [...topItemList, ...res.data.posts] : [...listData, ...res.data.posts];
     itemList = itemList.concat(topItemList);
-    itemList = onChangeListDataText(itemList);
     setListData(itemList);
     setLoading(false);
     setHeaders(res.headers);

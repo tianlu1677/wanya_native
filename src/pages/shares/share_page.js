@@ -22,6 +22,7 @@ import Loading from '@/components/Loading';
 import ShareTopicContent from '@/pages/shares/components/ShareTopicContent';
 import ShareArticleContent from '@/pages/shares/components/ShareArticleContent';
 import ShareInviteContent from '@/pages/shares/components/ShareInviteContent';
+import ShareNodeContent from '@/pages/shares/components/ShareNodeContent';
 import ShareUtil from '@/utils/umeng_share_util';
 import CameraRoll from '@react-native-community/cameraroll';
 import GetStorage from '@/components/GetStorage';
@@ -230,7 +231,7 @@ const SharePageModal = props => {
                 })
                 .catch(function (error) {
                   alert(JSON.stringify(error));
-                  Toast.showError(`保存失败`);
+                  Toast.showError('保存失败');
                   console.log('保存失败');
                 });
             }
@@ -255,7 +256,9 @@ const SharePageModal = props => {
           style={{flex: 1, marginBottom: 100, display: loadingView ? 'none' : 'flex'}}
           showsVerticalScrollIndicator={false}>
           {item_type === 'Topic' && (
-            <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
+            <ShareNodeContent topicDetail={topic} viewShotRef={viewShotRef} />
+
+            // <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
           )}
           {item_type === 'Article' && (
             <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />

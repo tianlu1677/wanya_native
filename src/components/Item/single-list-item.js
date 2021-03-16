@@ -28,7 +28,7 @@ export const Header = props => {
 
   const onStar = async () => {
     const item_type = props.type.replace(/^\S/, s => s.toUpperCase());
-    const actionData = {target_id: data.id, target_type: item_type, type: 'star'}
+    const actionData = {target_id: data.id, target_type: item_type, type: 'star'};
     switch (item_type) {
       case 'Topic':
       case 'Article':
@@ -221,6 +221,7 @@ export const Bottom = props => {
   };
 
   const onShare = () => {
+    console.log(data);
     let shareOptions = {
       item_type: '',
       item_id: '',

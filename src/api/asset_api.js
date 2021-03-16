@@ -56,5 +56,6 @@ export async function getShareContent(data = {item_type: '', item_id: ''}) {
     method: 'GET',
     data: data,
   });
+  console.log('res', res);
   return res.data.share_content;
 }

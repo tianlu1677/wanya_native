@@ -7,7 +7,7 @@ import {
   JoinAccounts,
   PlayScore,
   JoinActivity,
-  GoBack,
+  CustomizeHeader,
   BottomModal,
   BlurView,
 } from '@/components/NodeComponents';
@@ -25,10 +25,11 @@ import {nodeAction} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
+import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
 import LocationBar from '@/components/LocationBar';
-import IconFont from '@/iconfont';
+import {dispatchShareItem} from '@/redux/actions';
 
 const NodeDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -103,6 +104,11 @@ const NodeDetail = ({navigation, route}) => {
     setShowModal(true);
   };
 
+  const handleOnShare = () => {
+    const shareContent = {item_type: 'topic', item_id: 1362, visible: true};
+    dispatch(dispatchShareItem(shareContent));
+  };
+
   useEffect(() => {
     loadData();
     return () => {
@@ -114,15 +120,13 @@ const NodeDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{position: 'relative', flex: 1}}>
-        <View>
-          <FastImg
-            source={{uri: detail.backgroud_cover_url}}
-            mode={'cover'}
-            style={styles.imageCover}
-          />
-          <View style={styles.imageCoverOpacity} />
-        </View>
-        <GoBack />
+        <FastImg
+          source={{uri: detail.backgroud_cover_url}}
+          mode={'cover'}
+          style={styles.imageCover}
+        />
+        <View style={styles.imageCoverOpacity} />
+
         <View style={styles.header}>
           <View style={styles.nodeContent}>
             <View style={styles.nodeInfo}>
@@ -170,6 +174,14 @@ const NodeDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={styles.wrapper}>
+      <CustomizeHeader
+        back={{color: '#fff'}}
+        rightButton={
+          <Pressable onPress={handleOnShare} hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+            <IconFont name="zhuanfa" color="white" size={17} />
+          </Pressable>
+        }
+      />
       <CollapsibleHeader
         tabBarHeight={NAV_BAR_HEIGHT}
         headerHeight={283}
