@@ -123,9 +123,10 @@ const TheoryDetail = ({navigation, route}) => {
             <View style={styles.content}>
               <Text style={styles.intro}>{detail.plain_content}</Text>
               <Text style={styles.introTitle}>顽法步骤</Text>
-              {filter_theory_bodies.map((item, index) => (
+
+                {filter_theory_bodies.map((item, index) => (
                 <View key={index}>
-                  {item.title && (
+                  {!!item.title && (
                     <View style={styles.stepTitleWrap}>
                       <Text style={styles.stepTitle}>
                         步骤{index + 1}/{filter_theory_bodies.length}
@@ -140,10 +141,10 @@ const TheoryDetail = ({navigation, route}) => {
                     </View>
                   )}
 
-                  {item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
+                  {!!item.desc && <Text style={styles.stepIntro}>{item.desc}</Text>}
                 </View>
               ))}
-              {detail.tip && (
+              {!!detail.tip && (
                 <>
                   <Text style={styles.introTitle}>小贴士</Text>
                   <Text style={styles.tips}>{detail.tip}</Text>

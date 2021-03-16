@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
+import {View, Text, StatusBar, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
 import {KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -142,6 +142,7 @@ const TheoryStepContent = props => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}
       keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps={'always'}>
         {theory.media ? (
           <TheoryMedia
