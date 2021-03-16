@@ -7,6 +7,7 @@ import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import ActionSheet from '@/components/ActionSheet';
 import {RFValue} from '@/utils/response-fontsize';
+import Loading from '@/components/Loading';
 import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import TheorySteps from '@/pages/theories/component/theory-steps';
 import TheoryMedia from '@/pages/theories/component/theory-media.js';
@@ -137,13 +138,13 @@ const TheoryStepContent = props => {
     });
   }, [navigation, theory]);
 
-  return (
+  return theory && theory.id ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}
-      keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
-      <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps={'always'}>
+      <ScrollView style={{flex: 1}}>
         {theory.media ? (
           <TheoryMedia
             media={theory.media}
@@ -235,7 +236,7 @@ const TheoryStepContent = props => {
         changeModal={() => setShowCloseSheet(false)}
       />
     </KeyboardAvoidingView>
-  );
+  ) : <Loading />;
 };
 
 const greyColor = {backgroundColor: '#fafafa'};
