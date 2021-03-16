@@ -141,7 +141,7 @@ const TheoryStepContent = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}
-      keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
+      keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps={'always'}>
         {theory.media ? (
@@ -193,6 +193,7 @@ const TheoryStepContent = props => {
             maxLength={200}
             placeholder="这套玩法有哪些小技巧或者注意事项，需要提醒大家"
             value={theory.tip}
+            textAlignVertical={'top'}
             onBlur={updateTheoryText}
             onChangeText={value => updateTheory({tip: value})}
             style={[styles.theoryIntro, {marginTop: 0}]}
@@ -275,6 +276,7 @@ const styles = StyleSheet.create({
     paddingBottom: RFValue(15),
     marginTop: RFValue(15),
     paddingVertical: 0,
+    padding: 0,
     fontSize: 15,
     fontWeight: '300',
     ...greyColor,
