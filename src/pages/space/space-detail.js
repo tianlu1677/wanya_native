@@ -3,7 +3,14 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
-import {PlayScore, Avator, JoinActivity, GoBack, BottomModal} from '@/components/NodeComponents';
+import {
+  PlayScore,
+  Avator,
+  JoinActivity,
+  GoBack,
+  BottomModal,
+  CustomizeHeader,
+} from '@/components/NodeComponents';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {dispatchPreviewImage} from '@/redux/actions';
@@ -15,6 +22,8 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import TopHeader from '@/components/TopHeader';
 import StickTopHeader from '@/components/StickTopHeader';
+import {dispatchShareItem} from '@/redux/actions';
+
 const HEADER_HEIGHT = 275;
 
 const SpaceDetail = ({navigation, route}) => {
@@ -70,12 +79,26 @@ const SpaceDetail = ({navigation, route}) => {
     navigation.navigate('NewTopic');
   };
 
+  const handleOnShare = () => {
+    const shareContent = {item_type: 'topic', item_id: 1362, visible: true};
+    dispatch(dispatchShareItem(shareContent));
+  };
+
   useEffect(() => {
     loadData();
   }, []);
 
   return detail ? (
     <View style={styles.wrapper}>
+      <CustomizeHeader
+        back={{color: '#fff'}}
+        rightButton={
+          <Pressable onPress={handleOnShare} hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+            <IconFont name="zhuanfa" color="white" size={17} />
+          </Pressable>
+        }
+      />
+
       {/*<GoBack />*/}
       <JoinActivity type={'node'} text={'立即打卡'} handleClick={joinNewTopic} />
       <CollapsibleHeader

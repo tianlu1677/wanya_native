@@ -61,56 +61,55 @@ const ShareNodeContent = props => {
 
   console.log('props', props.topicDetail);
   return (
-    <View style={{flex: 1}}>
-      <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 1}} style={{flex: 1}}>
-        <View style={{backgroundColor: 'red'}}>
-          <View style={styles.wrapper}>
-            <View style={styles.avator}>
-              <Avator size={50} account={{...account, id: null}} />
-            </View>
-            <FastImg source={ShareLogoImg} style={styles.shareLogoTop} />
-            <View style={styles.nodeWrap}>
-              <View style={styles.headerInfo}>
-                <Text style={styles.username}>{account && account.nickname}</Text>
-                <Text style={styles.time}>{published_at_text} 分享了一个圈子</Text>
-              </View>
-              <View style={styles.nodeInfo}>
-                <IconFont name="node-solid" size={16} color={'#fff'} />
-                <Text style={styles.nodeText}>护板大水解</Text>
-              </View>
-            </View>
-            <View style={styles.imageCover}>
-              <FastImg
-                source={{
-                  uri:
-                    'http://xinxuefile.meirixinxue.com/assets/2021/ee674662-f0ea-4720-8b23-3b8f3ce9d56a.jpg',
-                }}
-                style={{...styles.nodeImage, width: screenWidth - 20, height: 200}}
-                mode="center"
-              />
-            </View>
-            <Text style={styles.nodeName}>去阿紫名称</Text>
-            <Text style={styles.nodeIntro}>
-              去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介
-            </Text>
-            <View style={styles.footer}>
-              <FastImg style={styles.shareLogo} source={ShareWanyaLog} />
-              {qrcode_url ? (
-                <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
-              ) : (
-                <View />
-              )}
-            </View>
-            <View />
+    <View style={styles.content}>
+      <ViewShot
+        ref={props.viewShotRef}
+        options={{format: 'jpg', quality: 1}}
+        style={styles.wrapper}>
+        <View style={styles.avator}>
+          <Avator size={50} account={{...account, id: null}} />
+        </View>
+        <FastImg source={ShareLogoImg} style={styles.shareLogoTop} />
+        <View style={styles.nodeWrap}>
+          <View style={styles.headerInfo}>
+            <Text style={styles.username}>{account && account.nickname}</Text>
+            <Text style={styles.time}>{published_at_text} 分享了一个场地</Text>
+          </View>
+          <View style={styles.nodeInfo}>
+            <IconFont name="node-solid" size={16} color={'#fff'} />
+            <Text style={styles.nodeText}>护板大水解</Text>
           </View>
         </View>
+        <View style={styles.imageCover}>
+          <FastImg
+            source={{
+              uri:
+                'http://xinxuefile.meirixinxue.com/assets/2021/ee674662-f0ea-4720-8b23-3b8f3ce9d56a.jpg',
+            }}
+            style={{...styles.nodeImage, width: screenWidth - 20, height: 200}}
+            mode="center"
+          />
+        </View>
+        <Text style={styles.nodeName}>去阿紫名称</Text>
+        <Text style={styles.nodeIntro}>
+          去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介
+        </Text>
+        <View style={styles.footer}>
+          <FastImg style={styles.shareLogo} source={ShareWanyaLog} />
+          {qrcode_url ? <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} /> : <View />}
+        </View>
+        <View />
       </ViewShot>
     </View>
   );
 };
 const styles = StyleSheet.create({
   ...commonStyles,
+  content: {
+    flex: 1,
+  },
   wrapper: {
+    flex: 1,
     marginHorizontal: 10,
     marginTop: RFValue(40),
     marginBottom: RFValue(35),
