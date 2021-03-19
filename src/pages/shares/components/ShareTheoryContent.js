@@ -29,9 +29,7 @@ const ShareTheoryMedia = props => {
           style={style}
         />
       ) : null}
-      {
-        media.category === 'video' && <FastImg source={PlayVideoImg} style={mstyles.playVideo} />
-      }
+      {media.category === 'video' && <FastImg source={PlayVideoImg} style={mstyles.playVideo} />}
     </View>
   );
 };
@@ -125,7 +123,6 @@ const ShareTheoryContent = props => {
 const mstyles = StyleSheet.create({
   mediaWrapper: {
     position: 'relative',
-    backgroundColor: 'pink',
   },
   playVideo: {
     width: RFValue(40),

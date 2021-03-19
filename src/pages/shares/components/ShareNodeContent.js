@@ -1,65 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Dimensions, Image, StyleSheet} from 'react-native';
-import IconFont from '@/iconfont';
+import {View, Text, Dimensions, StyleSheet} from 'react-native';
 import ViewShot from 'react-native-view-shot';
+import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {Avator} from '@/components/NodeComponents';
-import ShareLogoImg from '@/assets/images/sharelogo.png';
-import {prosettings} from '@/api/settings_api';
 import {RFValue} from '@/utils/response-fontsize';
+import {prosettings} from '@/api/settings_api';
+import ShareLogoImg from '@/assets/images/sharelogo.png';
+import ShareWanyaLog from '@/assets/images/sharewanyalog.png';
 import {commonStyles} from './common';
 
 const {width: screenWidth} = Dimensions.get('window');
-import ShareWanyaLog from '@/assets/images/sharewanyalog.png';
 
 const ShareNodeContent = props => {
-  const {
-    account,
-    node,
-    wx_share_image_url,
-    content_style,
-    topic_link,
-    plain_content,
-    published_at_text,
-    title,
-    is_long_video,
-  } = props.topicDetail;
-
-  const desc = `${published_at_text} 发布了一篇${is_long_video ? '长视频' : '帖子'}`;
-  const bg_img_url = wx_share_image_url ? wx_share_image_url.split('?')[0] : '';
-  const content = plain_content;
-  const node_name = node ? node.name : '';
-  const [imgWidth, setimgWidth] = useState(screenWidth - 20);
-  const [imgHeight, setimgHeight] = useState(300);
-  const [qrcodeUrl, setQrcodeUrl] = useState('');
-  // const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
-
-  const loadCoverStyle = () => {
-    if (!bg_img_url) {
-      return;
-    }
-    Image.prefetch(bg_img_url);
-    console.log('bg_img_url', bg_img_url);
-    Image.getSize(bg_img_url, (width, height) => {
-      const maxWidth = screenWidth - 20;
-      setimgHeight(height * (maxWidth / width));
-    });
-  };
-
-  const [qrcode_url, setQrcode_url] = useState('');
-
-  useEffect(() => {
-    loadCoverStyle();
-  }, [content]);
+  const {account, name, backgroud_cover_url, desc} = props.nodeDetail;
+  const [qrcodeUrl, setQrcodeUrl] = useState(null);
 
   useEffect(() => {
     prosettings().then(res => {
-      console.log('res', res);
       setQrcodeUrl(res.share_page_qrcode_img_url);
     });
   }, []);
 
-  console.log('props', props.topicDetail);
   return (
     <View style={{flex: 1}}>
       <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 1}} style={{flex: 1}}>
@@ -72,31 +34,26 @@ const ShareNodeContent = props => {
             <View style={styles.nodeWrap}>
               <View style={styles.headerInfo}>
                 <Text style={styles.username}>{account && account.nickname}</Text>
-                <Text style={styles.time}>{published_at_text} 分享了一个圈子</Text>
+                <Text style={styles.time}>刚刚 分享了一个圈子</Text>
               </View>
               <View style={styles.nodeInfo}>
                 <IconFont name="node-solid" size={16} color={'#fff'} />
-                <Text style={styles.nodeText}>护板大水解</Text>
+                <Text style={styles.nodeText}>{name}</Text>
               </View>
             </View>
             <View style={styles.imageCover}>
               <FastImg
-                source={{
-                  uri:
-                    'http://xinxuefile.meirixinxue.com/assets/2021/ee674662-f0ea-4720-8b23-3b8f3ce9d56a.jpg',
-                }}
-                style={{...styles.nodeImage, width: screenWidth - 20, height: 200}}
+                source={{uri: backgroud_cover_url}}
+                style={{...styles.nodeImage, width: screenWidth - 20, height: 280}}
                 mode="center"
               />
             </View>
-            <Text style={styles.nodeName}>去阿紫名称</Text>
-            <Text style={styles.nodeIntro}>
-              去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介去阿紫名称jianjie简介
-            </Text>
+            <Text style={styles.nodeName}>{name}</Text>
+            <Text style={styles.nodeIntro}>{desc}</Text>
             <View style={styles.footer}>
               <FastImg style={styles.shareLogo} source={ShareWanyaLog} />
-              {qrcode_url ? (
-                <FastImg style={styles.shareqrImg} source={{uri: qrcode_url}} />
+              {qrcodeUrl ? (
+                <FastImg style={styles.shareqrImg} source={{uri: qrcodeUrl}} />
               ) : (
                 <View />
               )}
@@ -108,6 +65,7 @@ const ShareNodeContent = props => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   ...commonStyles,
   wrapper: {
@@ -130,15 +88,15 @@ const styles = StyleSheet.create({
   },
   nodeText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: 5,
   },
   imageCover: {
-    height: 200,
+    height: 280,
     marginTop: 12,
   },
   nodeName: {
-    marginTop: 31,
+    marginTop: 20,
     color: '#fff',
     textAlign: 'center',
     fontSize: 18,
@@ -148,7 +106,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     lineHeight: 20,
-    marginTop: 30,
+    marginTop: 20,
     marginHorizontal: 10,
   },
 });

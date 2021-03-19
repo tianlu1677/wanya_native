@@ -75,13 +75,12 @@ const ShareTopicContent = props => {
                 <Text style={styles.username}>{account && account.nickname}</Text>
                 <Text style={styles.time}>{desc}</Text>
               </View>
-              {
-                !!node_name && <View style={styles.nodeWrap}>
-                <IconFont name="node-solid" size={16} color="#fff" />
-                <Text style={styles.nodeName}>{node_name}</Text>
-              </View>
-              }
-              
+              {!!node_name && (
+                <View style={styles.nodeWrap}>
+                  <IconFont name="node-solid" size={16} color="#fff" />
+                  <Text style={styles.nodeName}>{node_name}</Text>
+                </View>
+              )}
             </View>
             <View style={{width: '100%'}}>
               {topic_link && (
@@ -193,7 +192,6 @@ const styles = StyleSheet.create({
   cover: {
     // minHeight: 300,
     // maxHeight: 260,
-    backgroundColor: 'pink',
     width: '100%',
     borderRadius: 0,
     // height: '100%',

@@ -36,6 +36,7 @@ const NodeDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
   const [nodeId] = useState(route.params.nodeId);
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const {nodeDetail} = useSelector(state => state.node);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
@@ -62,6 +63,7 @@ const NodeDetail = ({navigation, route}) => {
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
     setDetail(res.data.node);
+    dispatch({type: action.UPDATE_NODE_DETAIL, value: res.data.node});
   };
 
   const onFollowNode = async () => {
@@ -78,7 +80,6 @@ const NodeDetail = ({navigation, route}) => {
         await followItem({followable_type: 'Node', followable_id: detail.id});
       }
     }
-
     loadData();
   };
 
@@ -105,13 +106,18 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const handleOnShare = () => {
-    const shareContent = {item_type: 'topic', item_id: 1362, visible: true};
+    const shareContent = {item_type: 'Node', item_id: detail.id, visible: true};
     dispatch(dispatchShareItem(shareContent));
   };
 
   useEffect(() => {
+    setDetail(nodeDetail);
+  }, [nodeDetail]);
+
+  useEffect(() => {
     loadData();
     return () => {
+      dispatch({type: action.UPDATE_NODE_DETAIL, value: null});
       dispatch(nodeAction.dispatchUpdateNodes());
       dispatch(nodeAction.dispatchUpdateFollowNodes(currentAccount.id));
     };
@@ -126,7 +132,6 @@ const NodeDetail = ({navigation, route}) => {
           style={styles.imageCover}
         />
         <View style={styles.imageCoverOpacity} />
-
         <View style={styles.header}>
           <View style={styles.nodeContent}>
             <View style={styles.nodeInfo}>
@@ -187,6 +192,9 @@ const NodeDetail = ({navigation, route}) => {
         headerHeight={283}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
+        renderHeader={<Header />}
+        renderTopHeader={<StickTopHeader title={detail.name} />}
+        separator={true}
         tabData={[
           {
             key: 'publish',
@@ -209,9 +217,6 @@ const NodeDetail = ({navigation, route}) => {
             component: TopicListPage,
           },
         ]}
-        renderHeader={<Header />}
-        renderTopHeader={<StickTopHeader title={detail.name} />}
-        separator={true}
       />
 
       <BottomModal

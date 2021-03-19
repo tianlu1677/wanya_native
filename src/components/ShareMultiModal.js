@@ -84,8 +84,6 @@ const ShareMultiModal = () => {
   };
 
   const copyLink = () => {
-    console.log('xxxx')
-    Toast.showError(`已复制分享链接`);
     const websiteUrl = share_content.gowebsite.website_url;
     Helper.setClipboard(websiteUrl);
   };
@@ -112,15 +110,27 @@ const ShareMultiModal = () => {
     if (item_type.toLowerCase() === 'topic') {
       RootNavigation.push('SharePage', {item_type: 'Topic', item_id: item_id});
     }
+
     if (item_type.toLowerCase() === 'article') {
       RootNavigation.push('SharePage', {item_type: 'Article', item_id: item_id});
     }
+
     if (item_type.toLowerCase() === 'account') {
       RootNavigation.push('SharePage', {item_type: 'Account', item_id: item_id});
     }
+
     if (item_type.toLowerCase() === 'theory') {
       RootNavigation.push('SharePage', {item_type: 'Theory', item_id: item_id});
     }
+
+    if (item_type.toLowerCase() === 'node') {
+      RootNavigation.push('SharePage', {item_type: 'Node', item_id: item_id});
+    }
+
+    if (item_type.toLowerCase() === 'space') {
+      RootNavigation.push('SharePage', {item_type: 'Space', item_id: item_id});
+    }
+
     closeModal();
   };
 

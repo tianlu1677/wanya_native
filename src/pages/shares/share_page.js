@@ -23,6 +23,8 @@ import ShareTopicContent from '@/pages/shares/components/ShareTopicContent';
 import ShareArticleContent from '@/pages/shares/components/ShareArticleContent';
 import ShareInviteContent from '@/pages/shares/components/ShareInviteContent';
 import ShareNodeContent from '@/pages/shares/components/ShareNodeContent';
+import ShareSpaceContent from '@/pages/shares/components/ShareSpaceContent';
+
 import ShareUtil from '@/utils/umeng_share_util';
 import CameraRoll from '@react-native-community/cameraroll';
 import GetStorage from '@/components/GetStorage';
@@ -46,11 +48,12 @@ const SharePageModal = props => {
 
   const viewShotRef = useRef(null);
   const navigation = useNavigation();
-  // shareUri = '';
 
   const topic = useSelector(state => state.topic.topicDetail);
   const article = useSelector(state => state.article.articleDetail);
   const theory = useSelector(state => state.theory.theoryDetail);
+  const node = useSelector(state => state.node.nodeDetail);
+  const space = useSelector(state => state.space.spaceDetail);
 
   const [assetable, setAssetable] = useState({
     assetable_type: item_type,
@@ -256,10 +259,9 @@ const SharePageModal = props => {
           style={{flex: 1, marginBottom: 100, display: loadingView ? 'none' : 'flex'}}
           showsVerticalScrollIndicator={false}>
           {item_type === 'Topic' && (
-            <ShareNodeContent topicDetail={topic} viewShotRef={viewShotRef} />
-
-            // <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
+            <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
           )}
+
           {item_type === 'Article' && (
             <ShareArticleContent articleDetail={article} viewShotRef={viewShotRef} />
           )}
@@ -267,7 +269,14 @@ const SharePageModal = props => {
           {item_type === 'Theory' && (
             <ShareTheoryContent theoryDetail={theory} viewShotRef={viewShotRef} />
           )}
+
           {item_type === 'Account' && <ShareInviteContent imgUrl={downloadUri} />}
+
+          {item_type === 'Node' && <ShareNodeContent nodeDetail={node} viewShotRef={viewShotRef} />}
+
+          {item_type === 'Space' && (
+            <ShareSpaceContent spaceDetail={space} viewShotRef={viewShotRef} />
+          )}
         </ScrollView>
       )}
 
