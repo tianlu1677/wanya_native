@@ -27,7 +27,7 @@ const TheoryMediaSheet = props => {
   const {assetable_name, assetable_id} = params;
 
   const dispatchTheory = (file, ret, type) => {
-    const index = theory.theory_bodies.findIndex(item => item.id === assetable_id);
+    const index = theory.theory_bodies.findIndex(item => item.id.toString() === assetable_id);
     const current = {
       ...theory.theory_bodies[index],
       media: {

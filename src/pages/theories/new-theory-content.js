@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
+import {View, Text, StatusBar, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
 import {KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -7,6 +7,7 @@ import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import ActionSheet from '@/components/ActionSheet';
 import {RFValue} from '@/utils/response-fontsize';
+import Loading from '@/components/Loading';
 import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import TheorySteps from '@/pages/theories/component/theory-steps';
 import TheoryMedia from '@/pages/theories/component/theory-media.js';
@@ -137,12 +138,13 @@ const TheoryStepContent = props => {
     });
   }, [navigation, theory]);
 
-  return (
+  return theory && theory.id ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}
-      keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
-      <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps={'always'}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      <ScrollView style={{flex: 1}}>
         {theory.media ? (
           <TheoryMedia
             media={theory.media}
@@ -192,6 +194,7 @@ const TheoryStepContent = props => {
             maxLength={200}
             placeholder="这套玩法有哪些小技巧或者注意事项，需要提醒大家"
             value={theory.tip}
+            textAlignVertical={'top'}
             onBlur={updateTheoryText}
             onChangeText={value => updateTheory({tip: value})}
             style={[styles.theoryIntro, {marginTop: 0}]}
@@ -233,7 +236,7 @@ const TheoryStepContent = props => {
         changeModal={() => setShowCloseSheet(false)}
       />
     </KeyboardAvoidingView>
-  );
+  ) : <Loading />;
 };
 
 const greyColor = {backgroundColor: '#fafafa'};
@@ -274,6 +277,7 @@ const styles = StyleSheet.create({
     paddingBottom: RFValue(15),
     marginTop: RFValue(15),
     paddingVertical: 0,
+    padding: 0,
     fontSize: 15,
     fontWeight: '300',
     ...greyColor,

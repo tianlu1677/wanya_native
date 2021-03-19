@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {View, Text, TextInput, Pressable, StyleSheet, Platform, Keyboard} from 'react-native';
+import {View, Text, StatusBar, TextInput, Pressable, StyleSheet, Platform, Keyboard} from 'react-native';
 import {TouchableWithoutFeedback, KeyboardAvoidingView} from 'react-native';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
@@ -47,6 +47,7 @@ const NewTheory = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <TextInput

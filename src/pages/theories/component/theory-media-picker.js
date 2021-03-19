@@ -20,6 +20,7 @@ const StepMediaPicker = WrapperComponent => {
 
     const uploadImage = async (file, params, cb) => {
       const token = await Helper.getData('auth_token');
+      console.log('file', file)
       const options = {
         ...config,
         url: `${baseUrl}/api/v1/assets`,

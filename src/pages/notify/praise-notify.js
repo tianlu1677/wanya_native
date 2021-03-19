@@ -83,6 +83,9 @@ const PraiseNotify = ({navigation}) => {
     } else if (notify.article) {
       console.log('article, article');
       navigation.push('ArticleDetail', {articleId: notify.article.id});
+    } else if (notify.theory) {
+      // console.log('article, article');
+      navigation.push('TheoryDetail', {theoryId: notify.theory.id});
     }
   };
 
