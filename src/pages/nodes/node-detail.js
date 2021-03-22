@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
+import {isIphoneX} from 'react-native-iphone-x-helper';
 import {useSelector, useDispatch} from 'react-redux';
 import Loading from '@/components/Loading';
 import {
@@ -30,6 +31,8 @@ import {RFValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
 import LocationBar from '@/components/LocationBar';
 import {dispatchShareItem} from '@/redux/actions';
+
+const Top = isIphoneX ? SAFE_TOP - 8 : SAFE_TOP;
 
 const NodeDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -126,6 +129,7 @@ const NodeDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{position: 'relative', flex: 1}}>
+        <View style={{height: Top, backgroundColor: 'black'}} />
         <FastImg
           source={{uri: detail.backgroud_cover_url}}
           mode={'cover'}
@@ -189,7 +193,7 @@ const NodeDetail = ({navigation, route}) => {
       />
       <CollapsibleHeader
         tabBarHeight={NAV_BAR_HEIGHT}
-        headerHeight={283}
+        headerHeight={283 + Top}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         renderHeader={<Header />}
@@ -240,7 +244,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: SAFE_TOP + 34,
+    paddingTop: Top + 34,
     height: 283,
     position: 'relative',
   },
@@ -248,14 +252,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 283,
     position: 'absolute',
-    top: 0,
+    top: Top,
     left: 0,
     right: 0,
     zIndex: -1,
   },
   imageCoverOpacity: {
     position: 'absolute',
-    top: 0,
+    top: Top,
     left: 0,
     right: 0,
     height: 283,
