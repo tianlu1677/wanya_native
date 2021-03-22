@@ -6,7 +6,7 @@ export const TransFormType = item => {
     case 'article':
       return '文章';
     case 'Theory':
-      return '玩法';
+      return '顽法';
     default:
       return '';
   }
