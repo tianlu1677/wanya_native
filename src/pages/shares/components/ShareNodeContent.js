@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Dimensions, StyleSheet} from 'react-native';
+import {useSelector} from 'react-redux';
 import ViewShot from 'react-native-view-shot';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
@@ -13,7 +14,8 @@ import {commonStyles} from './common';
 const {width: screenWidth} = Dimensions.get('window');
 
 const ShareNodeContent = props => {
-  const {account, name, backgroud_cover_url, desc} = props.nodeDetail;
+  const {currentAccount} = useSelector(state => state.account);
+  const {name, backgroud_cover_url, desc} = props.nodeDetail;
   const [qrcodeUrl, setQrcodeUrl] = useState(null);
 
   useEffect(() => {
@@ -28,12 +30,12 @@ const ShareNodeContent = props => {
         <View style={{backgroundColor: 'red'}}>
           <View style={styles.wrapper}>
             <View style={styles.avator}>
-              <Avator size={50} account={{...account, id: null}} />
+              <Avator size={50} account={{...currentAccount, id: null}} />
             </View>
             <FastImg source={ShareLogoImg} style={styles.shareLogoTop} />
             <View style={styles.nodeWrap}>
               <View style={styles.headerInfo}>
-                <Text style={styles.username}>{account && account.nickname}</Text>
+                <Text style={styles.username}>{currentAccount.nickname}</Text>
                 <Text style={styles.time}>刚刚 分享了一个圈子</Text>
               </View>
               <View style={styles.nodeInfo}>

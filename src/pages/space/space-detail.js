@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {isIphoneX} from 'react-native-iphone-x-helper';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
 import {
@@ -21,6 +22,8 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import StickTopHeader from '@/components/StickTopHeader';
 import {dispatchShareItem} from '@/redux/actions';
+
+const Top = isIphoneX ? SAFE_TOP - 8 : SAFE_TOP;
 
 const SpaceDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -96,6 +99,7 @@ const SpaceDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{position: 'relative', flex: 1}}>
+        <View style={{height: Top, backgroundColor: 'black'}} />
         <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
         <View style={styles.imageCoverOpacity} />
         <Pressable onPress={onPreview} style={styles.header}>
@@ -152,7 +156,7 @@ const SpaceDetail = ({navigation, route}) => {
       />
       <CollapsibleHeader
         tabBarHeight={NAV_BAR_HEIGHT}
-        headerHeight={275}
+        headerHeight={275 + Top}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         renderTopHeader={<StickTopHeader title={detail.name} />}
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 14,
     paddingRight: 24,
-    paddingTop: SAFE_TOP + 30,
+    paddingTop: 60,
     height: 275,
     position: 'relative',
   },
@@ -200,14 +204,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 275,
     width: '100%',
-    top: 0,
+    top: Top,
     left: 0,
     right: 0,
     zIndex: -1,
   },
   imageCoverOpacity: {
     position: 'absolute',
-    top: 0,
+    top: Top,
     left: 0,
     right: 0,
     bottom: 0,
