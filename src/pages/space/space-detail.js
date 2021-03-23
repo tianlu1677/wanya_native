@@ -10,6 +10,7 @@ import {
   JoinActivity,
   BottomModal,
   CustomizeHeader,
+  GoBack
 } from '@/components/NodeComponents';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
@@ -99,7 +100,11 @@ const SpaceDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{position: 'relative', flex: 1}}>
-        <View style={{height: Top, backgroundColor: 'black'}} />
+        <GoBack
+          rightBtn={<IconFont name="zhuanfa" color="white" size={17} />}
+          onHandleRight={handleOnShare}
+        />
+        {/*<View style={{height: Top, backgroundColor: 'black'}} />*/}
         <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
         <View style={styles.imageCoverOpacity} />
         <Pressable onPress={onPreview} style={styles.header}>
@@ -146,17 +151,9 @@ const SpaceDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={styles.wrapper}>
-      <CustomizeHeader
-        back={{color: '#fff'}}
-        rightButton={
-          <Pressable onPress={handleOnShare} hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
-            <IconFont name="zhuanfa" color="white" size={17} />
-          </Pressable>
-        }
-      />
       <CollapsibleHeader
         tabBarHeight={NAV_BAR_HEIGHT}
-        headerHeight={275 + Top}
+        headerHeight={275}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         renderTopHeader={<StickTopHeader title={detail.name} />}
@@ -196,7 +193,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 14,
     paddingRight: 24,
-    paddingTop: 60,
+    paddingTop: NAV_BAR_HEIGHT + SAFE_TOP,
     height: 275,
     position: 'relative',
   },
@@ -204,14 +201,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 275,
     width: '100%',
-    top: Top,
+    top: 0,
     left: 0,
     right: 0,
     zIndex: -1,
   },
   imageCoverOpacity: {
     position: 'absolute',
-    top: Top,
+    top: 0,
     left: 0,
     right: 0,
     bottom: 0,

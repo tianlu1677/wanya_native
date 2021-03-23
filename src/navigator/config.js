@@ -271,7 +271,7 @@ const nodeRouter = [
               color: '#bdbdbd',
             }}>
             创建圈子{' '}
-          </Text>{' '}
+          </Text>
         </Pressable>
       ),
     },

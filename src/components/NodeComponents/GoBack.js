@@ -1,10 +1,6 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
+import {StyleSheet, Pressable} from 'react-native';
 import IconFont from '@/iconfont';
-import Icon from 'react-native-vector-icons/Ionicons';
-// import { Icon } from 'react-native-elements'
-
-import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import {SAFE_TOP} from '@/utils/navbar';
 
@@ -21,8 +17,6 @@ export const GoBack = props => {
         index: 0,
         routes: [{name: 'Recommend'}],
       });
-      // navigation.navigate('Recommend');
-      // console.log('no go');
     }
   };
 
@@ -41,16 +35,18 @@ export const GoBack = props => {
       </Pressable>
       {report && (
         <Pressable
-          // onPress={() => {
-          //   navigation.push('Report', {
-          //     report_type: report.report_type,
-          //     report_type_id: report.report_id,
-          //   });
-          // }}
           onPress={props.onReportClick}
           style={{...styles.report, top: SAFE_TOP}}
           hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <IconFont name="gengduo" color="#fff" size={20} />
+        </Pressable>
+      )}
+      {props.rightBtn && (
+        <Pressable
+          onPress={props.onHandleRight}
+          style={{...styles.report, top: SAFE_TOP}}
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+          {props.rightBtn}
         </Pressable>
       )}
     </>
@@ -91,7 +87,6 @@ const styles = StyleSheet.create({
   button: {
     color: 'white',
   },
-
   centerText: {
     paddingLeft: 13,
     fontSize: 14,

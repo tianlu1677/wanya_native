@@ -11,6 +11,7 @@ import {
   CustomizeHeader,
   BottomModal,
   BlurView,
+  GoBack
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
@@ -32,7 +33,7 @@ import StickTopHeader from '@/components/StickTopHeader';
 import LocationBar from '@/components/LocationBar';
 import {dispatchShareItem} from '@/redux/actions';
 
-const Top = isIphoneX ? SAFE_TOP - 8 : SAFE_TOP;
+// const Top = isIphoneX ? SAFE_TOP : SAFE_TOP;
 
 const NodeDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -129,11 +130,14 @@ const NodeDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{position: 'relative', flex: 1}}>
-        <View style={{height: Top, backgroundColor: 'black'}} />
         <FastImg
           source={{uri: detail.backgroud_cover_url}}
           mode={'cover'}
           style={styles.imageCover}
+        />
+        <GoBack
+          rightBtn={<IconFont name="zhuanfa" color="white" size={17} />}
+          onHandleRight={handleOnShare}
         />
         <View style={styles.imageCoverOpacity} />
         <View style={styles.header}>
@@ -183,17 +187,9 @@ const NodeDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={styles.wrapper}>
-      <CustomizeHeader
-        back={{color: '#fff'}}
-        rightButton={
-          <Pressable onPress={handleOnShare} hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
-            <IconFont name="zhuanfa" color="white" size={17} />
-          </Pressable>
-        }
-      />
       <CollapsibleHeader
         tabBarHeight={NAV_BAR_HEIGHT}
-        headerHeight={283 + Top}
+        headerHeight={283}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         renderHeader={<Header />}
@@ -244,7 +240,7 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: Top + 34,
+    paddingTop: SAFE_TOP + 34,
     height: 283,
     position: 'relative',
   },
@@ -252,14 +248,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 283,
     position: 'absolute',
-    top: Top,
+    top: 0,
     left: 0,
     right: 0,
     zIndex: -1,
   },
   imageCoverOpacity: {
     position: 'absolute',
-    top: Top,
+    top: 0,
     left: 0,
     right: 0,
     height: 283,
