@@ -140,7 +140,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "0.0.15"
+        versionName "0.0.16"
 
         manifestPlaceholders = [
               JPUSH_APPKEY: "7cd75000d5932000b3d4ca59", //在此替换你的APPKey
