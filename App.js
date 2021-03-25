@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider, connect} from 'react-redux';
 import {store, persistor} from './src/redux/stores/store';
-import {Text, TextInput, Platform, Dimensions, Modal, Alert, View} from 'react-native';
+import {Text, TextInput, Platform, Dimensions, Alert} from 'react-native';
 import CodePush from 'react-native-code-push';
 import {
   requestMultiple,
@@ -18,19 +18,16 @@ import Helper from './src/utils/helper';
 import NetInfo from '@react-native-community/netinfo';
 import RNBootSplash from 'react-native-bootsplash';
 import * as WeChat from 'react-native-wechat-lib';
-// import NotifyService from '@/notifyservice/NotifyService';
 import FastImage from 'react-native-fast-image';
 import {ImageList} from '@/utils/default-image';
 import {prosettings} from '@/api/settings_api';
 import {syncDeviceToken, callbackNotification} from '@/api/app_device_api';
 import NetworkErrorModal from '@/components/NetworkErrorModal';
-// import PushUtil from '@/utils/umeng_push_util';
 import {init, Geolocation} from 'react-native-amap-geolocation';
 import * as RootNavigation from '@/navigator/root-navigation';
 import * as action from '@/redux/constants';
 import {getChannels, getChannelPosts} from '@/api/home_api';
 import JPush from 'jpush-react-native';
-
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 
 const queryString = require('query-string');
@@ -52,8 +49,8 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    init({
+  async componentDidMount() {
+    await init({
       ios: '6da6626cf6588fb6e3052deff1e8d4e9',
       android: '648f6e4ce8f5b83b30e2eabcac060eee',
     });
@@ -65,12 +62,9 @@ class App extends Component {
     console.log('scale', scale);
 
     this.loadSplashImg();
-    this.loadImgList();
     this.loadSettings();
     this.checkPermission();
     this.loadNetworkInfo();
-    // this.notif = new NotifyService(this.onRegister, this.onNotification);
-    this.loadDeviceInfo();
     this.jpush_notice();
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
@@ -87,26 +81,7 @@ class App extends Component {
       allowFontScaling: false,
     });
 
-    // PushUtil.addTag('normal',(code,remain) =>{
-    //   console.log('code1', code, remain)
-    //   // Alert.alert(`${code} ${remain}`)
-    // })
-
-    // if (Platform.OS === 'ios') {
-    //   PushUtil.addTag('normal', (code, remain) => {
-    //     // console.log('code1', code, remain);
-    //     // Alert.alert(`${code} ${remain}`)
-    //   });
-    // }
-
-    // PushUtil.addAlias('dddd', 'login_user',(code) =>{
-    //   console.log('alias', code)
-    // })
-
     this.getIndexTabData(); //获取首页频道信息
-    // 打开app 首页关注 分享设置为true
-    store.dispatch({type: action.CHANGE_SHARE_STATUS, value: true});
-    store.dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: true});
   }
 
   loadSplashImg = () => {
@@ -140,8 +115,8 @@ class App extends Component {
   // 极光推送
   jpush_notice = async () => {
     JPush.init();
-    JPush.setLoggerEnable(true);
-    JPush.initCrashHandler();
+    // JPush.setLoggerEnable(true);
+    // JPush.initCrashHandler();
     JPush.setBadge({badge: 0, appBadge: 0});
     JPush.getRegistrationID(this.onRegister);
 
@@ -152,7 +127,7 @@ class App extends Component {
     //通知回调
     JPush.addNotificationListener(this.notificationListener);
     //本地通知回调
-    JPush.addLocalNotificationListener(this.localNotificationListener);
+    // JPush.addLocalNotificationListener(this.localNotificationListener);
     //自定义消息回调
     // JPush.addCustomMessagegListener(this.customMessageListener);
     //tag alias事件回调
@@ -205,9 +180,10 @@ class App extends Component {
   };
 
   // 通知相关内容
-  onRegister = response => {
-    // console.log('onRegister', response);
-    const data = {register_token: response.registerID, device_token: '', platform: Platform.OS};
+  onRegister = async (response) => {
+    console.log('onRegister', response);
+    const data = {register_token: response.registerID, platform: Platform.OS};
+    await Helper.setData('registerId', response.registerID);
     syncDeviceToken(data);
   };
 
@@ -216,8 +192,6 @@ class App extends Component {
   };
 
   loadNetworkInfo = async () => {
-
-
     this.networdunsubscribe = NetInfo.addEventListener(state => {
       // console.log('state', state)
       if (this.state.netInfoErr === !state.isConnected) {
@@ -239,15 +213,13 @@ class App extends Component {
     this.networdunsubscribe && this.networdunsubscribe();
   }
 
-  loadDeviceInfo = () => {};
-
-  loadImgList = () => {
-    // FastImage.preload(ImageList.map((u) => ({uri: u})))
-  };
-
   getIndexTabData = async () => {
     const res = await getChannels();
     store.dispatch({type: action.SAVE_CHANNELS, value: res.data.channels});
+
+    // 打开app 首页关注 分享设置为true
+    store.dispatch({type: action.CHANGE_SHARE_STATUS, value: true});
+    store.dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: true});
   };
 
   render() {

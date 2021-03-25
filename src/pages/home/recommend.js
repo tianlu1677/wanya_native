@@ -16,6 +16,7 @@ import DoubleList from '@/components/List/double-list';
 import {RFValue} from '@/utils/response-fontsize';
 import {getChannelPosts} from '@/api/home_api';
 import {recordDeviceInfo} from '@/api/settings_api';
+import { syncDeviceToken } from '@/api/app_device_api';
 import {getLocationInfo, loadLocation} from './getLocation';
 import deviceInfo from '@/utils/device_info';
 import {
@@ -126,6 +127,7 @@ const Recommend = props => {
   );
 
   useEffect(() => {
+    syncDeviceToken();
     recordDeviceInfo(deviceInfo);
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
@@ -136,7 +138,7 @@ const Recommend = props => {
     }
     setTimeout(() => {
       // 如果在这里请求的话，必须要等待1s之后才可以
-      loadLocation(dispatch);
+      // loadLocation(dispatch);
     }, 1000);
   }, []);
 
