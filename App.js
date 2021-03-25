@@ -114,18 +114,16 @@ class App extends Component {
 
   // 极光推送
   jpush_notice = async () => {
-    await JPush.init();
+    JPush.init();
+    JPush.setBadge({badge: 0, appBadge: 0});
     JPush.setLoggerEnable(true);
     JPush.initCrashHandler();
-    if(Platform.OS === 'ios') {
-      JPush.setBadge({badge: 0, appBadge: 0});
-    }
-
     JPush.getRegistrationID(this.onRegister);
 
-    JPush.addConnectEventListener(result => {
-      // console.log('addConnectEventListener result', result);
-    });
+
+    // JPush.addConnectEventListener(result => {
+    //   // console.log('addConnectEventListener result', result);
+    // });
 
     //通知回调
     JPush.addNotificationListener(this.notificationListener);

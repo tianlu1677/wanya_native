@@ -221,6 +221,8 @@ dependencies {
     implementation project(':jpush-react-native')  // 添加 jpush 依赖
     implementation project(':jcore-react-native')  // 添加 jcore 依赖
 
+    implementation 'com.umeng.umsdk:analytics:8.1.6'
+    implementation 'com.umeng.umsdk:common:2.2.5'
     implementation "cn.jiguang.sdk.plugin:xiaomi:3.8.6"
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
