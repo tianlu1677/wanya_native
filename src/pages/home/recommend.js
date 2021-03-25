@@ -138,7 +138,7 @@ const Recommend = props => {
     }
     setTimeout(() => {
       // 如果在这里请求的话，必须要等待1s之后才可以
-      // loadLocation(dispatch);
+      loadLocation(dispatch);
     }, 1000);
   }, []);
 
