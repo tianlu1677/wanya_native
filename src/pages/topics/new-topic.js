@@ -1,22 +1,11 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {
-  View,
-  Keyboard,
-  Image,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  Pressable,
-  Dimensions,
-  ScrollView,
-  Platform,
-} from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import ImagePicker from 'react-native-image-picker';
+import {View, Image, Text, TextInput, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import DeviceInfo from 'react-native-device-info';
+import ImagePicker from 'react-native-image-picker';
 import Video from 'react-native-video';
 import PermissionModal from './PhotoPermission';
 import * as action from '@/redux/constants';
@@ -36,9 +25,9 @@ const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
 const NewTopic = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentAccount);
-  const {savetopic, location} = useSelector(state => state.home);
   const videoRef = useRef('');
+  const {currentAccount} = useSelector(state => state.account);
+  const {savetopic, location} = useSelector(state => state.home);
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
   const [linkSource, setLinkSource] = useState(null);
@@ -101,16 +90,12 @@ const NewTopic = props => {
   };
 
   const onImagePicker = async () => {
-    // console.log('checkPermission()', await checkPermission())
     const hasPermission = await checkPermission();
     if (!hasPermission) {
       return;
     }
     props.removeAllPhoto();
-    const options = {
-      imageCount: 9 - imageSource.length,
-      isCamera: false,
-    };
+    const options = {imageCount: 9 - imageSource.length, isCamera: false};
     props.imagePick(options, async (err, res) => {
       if (err) {
         return;
@@ -126,48 +111,13 @@ const NewTopic = props => {
       }
     });
   };
+
   //TODO 限制描述
   const onVideoPicker = async () => {
     const hasPermission = await checkPermission();
     if (!hasPermission) {
       return;
     }
-    // console.log('staring')
-    // SyanImagePicker.openVideoPicker({
-    //   allowTakeVideo: false,
-    //   // MaxSecond: 500,
-    //   // MinSecond: 0,
-    //   // scaleEnabled: false,
-    //   // recordVideoSecond: 500,
-    //   videoCount: 1,
-    //   quality: 100,
-    //   compress: false,
-    //   minimumCompressSize: 1000000
-    //   // videoMaximumDuration: 500
-    // }, (error, res) => {
-    //   console.log('error', error)
-    //   console.log('res', res)
-    //   console.log('end')
-    // });
-    // props.videoPick(
-    //   {
-    //     MaxSecond: 2,
-    //     MinSecond: 1,
-    //     recordVideoSecond: 2,
-    //     videoCount: 1,
-    //     allowTakeVideo: false,
-    //   },
-    //   async (err, res) => {
-    //     if (err) {
-    //       console.log('uploader error', err, res);
-    //       return;
-    //     }
-    //     console.log('res', res);
-    //     setVideoSource([...res]);
-    //     const result = await props.uploadVideo(res[0], dispatch);
-    //     setVideoSource([result.asset]);
-    //   }
-    // );
     props.removeAllPhoto();
     const systemVersion = parseInt(DeviceInfo.getSystemVersion());
     const videoSelectType =
@@ -309,13 +259,10 @@ const NewTopic = props => {
   };
 
   const onPreview = (index = 0) => {
-    const data = {
-      images: imageSource.map(v => {
-        return {url: v.url};
-      }),
-      visible: true,
-      index,
-    };
+    const images = imageSource.map(v => {
+      return {url: v.url};
+    });
+    const data = {images, visible: true, index};
     dispatch(dispatchPreviewImage(data));
   };
 
@@ -348,13 +295,23 @@ const NewTopic = props => {
       setTimeout(() => {
         // 如果在effect里面，必须等待500ms
         loadLocation(dispatch);
-      }, 500)
+      }, 500);
     }
+
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
       props.removeAllPhoto();
     };
   }, []);
+
+  useEffect(() => {
+    if (location && location.createLocation) {
+      dispatch({
+        type: action.SAVE_NEW_TOPIC,
+        value: {...savetopic, location: location.createLocation},
+      });
+    }
+  }, [location]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -404,6 +361,8 @@ const NewTopic = props => {
                 )}
               </View>
             ))}
+
+            {/* picture empty */}
             {videoSource.length === 0 && !linkSource && imageSource.length !== 9 && (
               <Pressable
                 onPress={onImagePicker}
@@ -443,6 +402,8 @@ const NewTopic = props => {
                 </Pressable>
               </Pressable>
             ))}
+
+            {/* video empty */}
             {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (
               <Pressable onPress={onVideoPicker}>
                 <FastImg
@@ -452,7 +413,7 @@ const NewTopic = props => {
               </Pressable>
             )}
 
-            {/* link */}
+            {/* link empty */}
             {imageSource.length === 0 && videoSource.length === 0 && !linkSource && (
               <Pressable onPress={onAddLink}>
                 <FastImg
@@ -462,6 +423,7 @@ const NewTopic = props => {
               </Pressable>
             )}
 
+            {/* link */}
             {linkSource && (
               <View style={styles.linkWrapper}>
                 <View style={styles.linkImageWrap}>

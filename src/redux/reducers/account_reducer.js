@@ -5,7 +5,6 @@ import {
   CURRENT_ACCOUNT_SUCCESS,
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_UN_FOLLOW_SUCCESS,
-  CHANGE_PROGRESS,
   ACCOUNT_EMPTY_SUCCESS,
 } from '../constants/';
 
@@ -14,7 +13,6 @@ const defaultState = {
   account: {},
   currentBaseInfo: {},
   userToken: '',
-  progress: 0,
 };
 
 function accountReducer(state = defaultState, action) {
@@ -59,11 +57,6 @@ function accountReducer(state = defaultState, action) {
           currentBaseInfo: {},
         });
       }
-    case CHANGE_PROGRESS:
-      return (state = {
-        ...state,
-        progress: action.value,
-      });
     default:
       return state;
   }

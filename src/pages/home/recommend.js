@@ -7,16 +7,15 @@ import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {SAFE_TOP} from '@/utils/navbar';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
-import {Search} from '@/components/NodeComponents';
+import {Search, BadgeMessage} from '@/components/NodeComponents';
 import MediasPicker from '@/components/MediasPicker';
-import {BadgeMessage} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {RFValue} from '@/utils/response-fontsize';
 import {getChannelPosts} from '@/api/home_api';
 import {recordDeviceInfo} from '@/api/settings_api';
-import { syncDeviceToken } from '@/api/app_device_api';
+import {syncDeviceToken} from '@/api/app_device_api';
 import {getLocationInfo, loadLocation} from './getLocation';
 import deviceInfo from '@/utils/device_info';
 import {
@@ -141,10 +140,6 @@ const Recommend = props => {
       loadLocation(dispatch);
     }, 1000);
   }, []);
-
-  // useEffect(() => {
-  //   console.log(home.location);
-  // }, [home.location]);
 
   return (
     <>

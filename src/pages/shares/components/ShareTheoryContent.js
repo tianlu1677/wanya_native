@@ -83,6 +83,7 @@ const ShareTheoryContent = props => {
                 <View key={index}>
                   {!!item.title && (
                     <View style={styles.stepTitleWrap}>
+                      <Text style={styles.greenLine} />
                       <Text style={styles.stepTitle}>
                         步骤{index + 1}/{filter_theory_bodies.length}
                       </Text>
@@ -196,6 +197,13 @@ const styles = StyleSheet.create({
     marginTop: RFValue(15),
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  greenLine: {
+    backgroundColor: '#4EFFA3',
+    width: 3,
+    height: 15,
+    borderRadius: 3,
+    marginRight: 4,
   },
   stepTitle: {
     color: '#fff',

@@ -42,7 +42,7 @@ const AddSpace = props => {
     return requestParams;
   };
 
-  const [request, setRequest] = useState(null);
+  const [request, setRequest] = useState(returnParams('space', ''));
 
   const dispatchData = data => {
     const {type} = props.route.params;
@@ -76,17 +76,29 @@ const AddSpace = props => {
     navigation.goBack();
   };
 
-  const SpaceListPage = () => {
-    return request.type === 'space' ? (
-      <SpaceList request={request} onPress={onPress} enableRefresh={false} type="add-space" />
-    ) : null;
-  };
+  const SpaceListPage = () => (
+    <SpaceList request={request} onPress={onPress} enableRefresh={false} type="add-space" />
+  );
 
-  const LocationListPage = () => {
-    return request.type === 'location' ? (
-      <LocationList request={request} onPress={onPress} enableRefresh={false} type="add-location" />
-    ) : null;
-  };
+  // const SpaceListPage = () => {
+  //   return request.type === 'space' ? (
+  //     <SpaceList request={request} onPress={onPress} enableRefresh={false} type="add-space" />
+  //   ) : (
+  //     <View />
+  //   );
+  // };
+
+  const LocationListPage = () => (
+    <LocationList request={request} onPress={onPress} enableRefresh={false} type="add-location" />
+  );
+
+  // const LocationListPage = () => {
+  //   return request.type === 'location' ? (
+  //     <LocationList request={request} onPress={onPress} enableRefresh={false} type="add-location" />
+  //   ) : (
+  //     <View />
+  //   );
+  // };
 
   const onChangeText = text => {
     setRequest(returnParams(currentKey, text));

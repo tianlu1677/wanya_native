@@ -4,11 +4,9 @@ import Helper from '@/utils/helper';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
 import {BaseApiUrl} from '@/utils/config';
-import { uploadSystemInfo } from '@/api/settings_api';
-import * as action from '@/redux/constants';
+import {uploadSystemInfo} from '@/api/settings_api';
 import DeviceInfo from 'react-native-device-info';
 const baseUrl = BaseApiUrl;
-
 
 const deviceId = DeviceInfo.getSystemVersion();
 const systemName = DeviceInfo.getSystemName();
@@ -57,7 +55,7 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
-            console.log('errr', err)
+            console.log('errr', err);
             reject(err);
           });
       });

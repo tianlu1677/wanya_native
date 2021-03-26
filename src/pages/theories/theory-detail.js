@@ -116,7 +116,12 @@ const TheoryDetail = ({navigation, route}) => {
           <>
             <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
             {detail.media && (
-              <TheoryMedia media={detail.media} type="theory_media" showDelete={false} refId={"video_1"} />
+              <TheoryMedia
+                media={detail.media}
+                type="theory_media"
+                showDelete={false}
+                refId={'video_1'}
+              />
             )}
             <Text style={styles.title}>{detail.title}</Text>
             <PublishAccount data={detail} showFollow={false} />
@@ -124,10 +129,11 @@ const TheoryDetail = ({navigation, route}) => {
               <Text style={styles.intro}>{detail.plain_content}</Text>
               <Text style={styles.introTitle}>顽法步骤</Text>
 
-                {filter_theory_bodies.map((item, index) => (
+              {filter_theory_bodies.map((item, index) => (
                 <View key={index}>
                   {!!item.title && (
                     <View style={styles.stepTitleWrap}>
+                      <Text style={styles.greenLine} />
                       <Text style={styles.stepTitle}>
                         步骤{index + 1}/{filter_theory_bodies.length}
                       </Text>
@@ -137,7 +143,12 @@ const TheoryDetail = ({navigation, route}) => {
 
                   {item.media && (
                     <View style={styles.stepMedia}>
-                      <TheoryMedia media={item.media} type="theory_body_media" showDelete={false} refId={`video_${index+2}`} />
+                      <TheoryMedia
+                        media={item.media}
+                        type="theory_body_media"
+                        showDelete={false}
+                        refId={`video_${index + 2}`}
+                      />
                     </View>
                   )}
 

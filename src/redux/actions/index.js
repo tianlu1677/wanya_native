@@ -3,7 +3,6 @@ import {
   ACCOUNT_FOLLOW_REQUEST,
   ACCOUNT_UN_FOLLOW_REQUEST,
   ACCOUNT_EMPTY_SUCCESS,
-  CHANGE_PROGRESS,
   ADMIN_SIGN_SUCCESS,
   CURRENT_ACCOUNT_SUCCESS,
   PREVIEW_IMAGES,
@@ -14,7 +13,7 @@ import {
   UPDATE_CATEGORY_LIST,
   CHANGE_UPLOAD_STATUS,
   THEORY_VIDEO_STATE,
-  THEORY_DETAIL
+  THEORY_DETAIL,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -69,13 +68,6 @@ export const dispatchEmptyCurrentAccount = account_id => {
   return {
     type: ACCOUNT_EMPTY_SUCCESS,
     account_id: account_id,
-  };
-};
-
-export const changeProgress = value => {
-  return {
-    type: CHANGE_PROGRESS,
-    value,
   };
 };
 
