@@ -79,6 +79,7 @@ class App extends Component {
     TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
       defaultProps: false,
       allowFontScaling: false,
+      textBreakStrategy: 'simple'
     });
 
     this.getIndexTabData(); //获取首页频道信息
