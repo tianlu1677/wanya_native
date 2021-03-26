@@ -14,14 +14,18 @@ import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import AccountsNormalList from '@/components/List/accounts-normal-list';
+import SearchAllList from '@/pages/search/search-all/search-all-list';
 
 const SearchIndex = ({navigation, route}) => {
-  const [currentKey, setCurrentKey] = useState('topic');
+  const [currentKey, setCurrentKey] = useState('all');
   const [searchKey, setSearchKey] = useState(null);
   const [request, setRequest] = useState({
     api: searchApi,
     params: {name: searchKey, type: currentKey},
   });
+
+  const AllListPage = () =>
+    request.params.type === 'all' ? <SearchAllList request={request} /> : null;
 
   const TopicListPage = () =>
     request.params.type === 'topic' ? (
@@ -101,6 +105,11 @@ const SearchIndex = ({navigation, route}) => {
         request={request}
         size="small"
         tabData={[
+          {
+            key: 'all',
+            title: '全部',
+            component: AllListPage,
+          },
           {
             key: 'topic',
             title: '帖子',

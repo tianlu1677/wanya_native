@@ -6,7 +6,7 @@ import {RFValue} from '@/utils/response-fontsize';
 
 const noSpace = {id: 0, name: '不选择场地'};
 
-const SpaceItem = props => {
+export const SpaceItem = props => {
   const {data} = props;
   return (
     <Pressable style={styles.spaceWrapper} onPress={() => props.itemOnPress(data)}>
