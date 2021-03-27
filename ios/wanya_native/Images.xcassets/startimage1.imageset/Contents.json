@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "1500x2666.png",
+      "filename" : "启动页.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "1500x2666-1.png",
+      "filename" : "启动页-1.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "1500x2666-2.png",
+      "filename" : "启动页-2.jpg",
       "idiom" : "universal",
       "scale" : "3x"
     }

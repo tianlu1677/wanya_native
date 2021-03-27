@@ -184,9 +184,9 @@ class App extends Component {
   // 通知相关内容
   onRegister = async (response) => {
     console.log('onRegister', response);
-    const data = {register_token: response.registerID, platform: Platform.OS};
+    // const data = {register_token: response.registerID, platform: Platform.OS};
     await Helper.setData('registerId', response.registerID);
-    syncDeviceToken(data);
+    // syncDeviceToken(data);
   };
 
   customMessageListener = result => {
