@@ -4,6 +4,7 @@ import {RFValue} from '@/utils/response-fontsize';
 
 const BaseSpace = props => {
   const {data} = props;
+
   return (
     <Pressable style={styles.spaceWrapper} onPress={() => props.itemOnPress(data)}>
       <Text style={styles.name}>{data.name}</Text>
@@ -14,10 +15,11 @@ const BaseSpace = props => {
 
 const styles = StyleSheet.create({
   spaceWrapper: {
+    height: RFValue(65),
     justifyContent: 'center',
+    paddingHorizontal: 14,
     paddingVertical: 12,
     backgroundColor: '#fff',
-    height: RFValue(65),
   },
   name: {
     fontSize: 15,
@@ -26,11 +28,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginTop: 8,
     color: '#bdbdbd',
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#ebebeb',
-    marginLeft: 14,
   },
 });
 

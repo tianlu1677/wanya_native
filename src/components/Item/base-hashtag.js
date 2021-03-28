@@ -9,6 +9,7 @@ const BaseHashtag = props => {
 
 const styles = StyleSheet.create({
   hashtagName: {
+    paddingHorizontal: 14,
     height: RFValue(45),
     lineHeight: RFValue(45),
     color: '#FF8D00',

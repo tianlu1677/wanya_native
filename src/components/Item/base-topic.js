@@ -156,7 +156,7 @@ const BaseTopic = props => {
         {data.content_style === 'img' && <TopicImageContent data={data} />}
         {data.content_style === 'video' && <TopicVideoContent data={data} />}
         {data.content_style === 'link' && <TopicLinkContent data={data} />}
-        {data.excellent && (
+        {data.content_style !== 'text' && data.excellent && (
           <FastImg
             style={styles.excellentImage}
             source={ExcellentImage}

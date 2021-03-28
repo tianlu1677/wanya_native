@@ -1,17 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import ScrollList from '@/components/ScrollList';
-import {
-  NodeItemContent,
-  SpaceItemContent,
-  HashtagItemContent,
-  AccountItemContent,
-  TheoryItemContent,
-  LongVideoTopicItemContent,
-  ArticleItemContent,
-  TopicItemContent,
-} from '@/pages/search/search-all/all-item';
-
 import AllItem from '@/pages/search/search-all/all-item';
 
 export const Type = {
@@ -37,19 +26,19 @@ const SearchAllList = props => {
       case Type.node:
         return <AllItem {...itemProps} key="node" title="圈子" />;
       case Type.space:
-        return <AllItem {...itemProps} key="space" title="圈子" />;
+        return <AllItem {...itemProps} key="space" title="场地" />;
       case Type.hashtag:
-        return <AllItem {...itemProps} key="node" title="圈子" />;
+        return <AllItem {...itemProps} key="hashtag" title="话题" />;
       case Type.account:
-        return <AllItem {...itemProps} key="node" title="圈子" />;
+        return <AllItem {...itemProps} key="account" title="用户" />;
       case Type.theory:
-        return <AllItem {...itemProps} key="node" title="圈子" />;
+        return <AllItem {...itemProps} key="theory" title="顽法" />;
       case Type.longTopic:
-        return <AllItem {...itemProps} key="node" title="圈子" />;
+        return <AllItem {...itemProps} key="long_video" title="长视频" />;
       case Type.article:
-        return <AllItem {...itemProps} key="node" title="圈子" />;
+        return <AllItem {...itemProps} key="article" title="文章" />;
       case Type.topic:
-        return <AllItem {...itemProps} key="node" title="圈子" />;
+        return <AllItem {...itemProps} key="topic" title="帖子" />;
       default:
         return <View />;
     }
