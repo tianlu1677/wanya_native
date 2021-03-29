@@ -122,7 +122,7 @@ const ArticleDetail = ({navigation, route}) => {
       keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
       <CommentList
         detail={detail}
-        request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Article'}}}
+        request={{api: getCommentList, params: {item_id: articleId, item_type: 'Article'}}}
         type="Article"
         changeVisible={value => setVisible(value)}
         deleteComment={deleteArticleComment}
