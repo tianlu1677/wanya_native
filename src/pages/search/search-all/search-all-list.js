@@ -4,6 +4,7 @@ import ScrollList from '@/components/ScrollList';
 import AllItem from '@/pages/search/search-all/all-item';
 
 export const Type = {
+  all: 'all',
   node: 'node_content',
   space: 'space_content',
   hashtag: 'hashtag_content',
@@ -19,40 +20,46 @@ const SearchAllList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
+  const {api, params} = props.request;
+
   const renderItem = ({item, index}) => {
-    const itemProps = {type: item.type, data: item.data};
+    const Props = {key: index, type: item.type, data: item.data};
+
+    const onPress = key => {
+      props.onChangeKey(key);
+    };
 
     switch (item.type) {
       case Type.node:
-        return <AllItem {...itemProps} key="node" title="圈子" />;
+        return <AllItem {...Props} title="圈子" onPress={() => onPress('node')} />;
       case Type.space:
-        return <AllItem {...itemProps} key="space" title="场地" />;
+        return <AllItem {...Props} title="场地" onPress={() => onPress('space')} />;
       case Type.hashtag:
-        return <AllItem {...itemProps} key="hashtag" title="话题" />;
+        return <AllItem {...Props} title="话题" onPress={() => onPress('hashtag')} />;
       case Type.account:
-        return <AllItem {...itemProps} key="account" title="用户" />;
+        return <AllItem {...Props} title="用户" onPress={() => onPress('account')} />;
       case Type.theory:
-        return <AllItem {...itemProps} key="theory" title="顽法" />;
+        return <AllItem {...Props} title="顽法" onPress={() => onPress('theory')} />;
       case Type.longTopic:
-        return <AllItem {...itemProps} key="long_video" title="长视频" />;
+        return <AllItem {...Props} title="长视频" onPress={() => onPress('long_video')} />;
       case Type.article:
-        return <AllItem {...itemProps} key="article" title="文章" />;
+        return <AllItem {...Props} title="文章" onPress={() => onPress('article')} />;
       case Type.topic:
-        return <AllItem {...itemProps} key="topic" title="帖子" />;
+        return <AllItem {...Props} title="帖子" onPress={() => onPress('topic')} />;
       default:
         return <View />;
     }
   };
 
   const loadData = async () => {
-    const {api, params} = props.request;
-    const res = await api({...params, name: '板', page: 1});
-    const filterData = Object.entries(res.data).filter(data => data[1].items.length > 0);
-    const newData = filterData.map((item, index) => {
-      return {id: index, type: item[0], data: item[1]};
-    });
-
-    setListData(newData);
+    const res = await api({...params, page: 1});
+    if (!res.data.items) {
+      const filterData = Object.entries(res.data).filter(data => data[1].items.length > 0);
+      const newData = filterData.map((item, index) => {
+        return {id: index, type: item[0], data: item[1]};
+      });
+      setListData(newData);
+    }
     setHeaders(res.headers);
     setLoading(false);
   };

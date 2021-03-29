@@ -16,6 +16,18 @@ import {RFValue} from '@/utils/response-fontsize';
 import AccountsNormalList from '@/components/List/accounts-normal-list';
 import SearchAllList from '@/pages/search/search-all/search-all-list';
 
+export const Type = {
+  all: 'all',
+  node: 'node_content',
+  space: 'space_content',
+  hashtag: 'hashtag_content',
+  account: 'account_content',
+  theory: 'theory_content',
+  longTopic: 'long_topic_content',
+  article: 'article_content',
+  topic: 'topic_content',
+};
+
 const SearchIndex = ({navigation, route}) => {
   const [currentKey, setCurrentKey] = useState('all');
   const [searchKey, setSearchKey] = useState(null);
@@ -24,53 +36,71 @@ const SearchIndex = ({navigation, route}) => {
     params: {name: searchKey, type: currentKey},
   });
 
+  const {type} = request.params;
+
   const AllListPage = () =>
-    request.params.type === 'all' ? <SearchAllList request={request} /> : null;
+    type === 'all' ? <SearchAllList request={request} onChangeKey={onChangeKey} /> : <View />;
 
   const TopicListPage = () =>
-    request.params.type === 'topic' ? (
+    type === 'topic' ? (
       <TopicList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const ArticleListPage = () =>
-    request.params.type === 'article' ? (
+    type === 'article' ? (
       <ArticleList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const NodeListPage = () =>
-    request.params.type === 'node' ? (
+    type === 'node' ? (
       <NodeList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const ShortVideoPage = () =>
-    request.params.type === 'duanshipin' ? (
+    type === 'duanshipin' ? (
       <DoubleList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const LongVideoPage = () =>
-    request.params.type === 'long_video' ? (
+    type === 'long_video' ? (
       <LongVideoList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const SpaceListPage = () =>
-    request.params.type === 'space' ? (
-      <SpaceList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    type === 'space' ? (
+      <SpaceList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
 
   const HashtagListPage = () =>
-    request.params.type === 'hashtag' ? (
-      <HashtagList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    type === 'hashtag' ? (
+      <HashtagList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
 
   const AccountListPage = () =>
-    request.params.type === 'account' ? (
+    type === 'account' ? (
       <AccountsNormalList
         request={request}
         enableRefresh={false}
         dataKey="items"
         itemType="normal"
       />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const onChangeText = text => {
     setSearchKey(text);

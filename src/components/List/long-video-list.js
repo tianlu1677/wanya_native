@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
   itemWrap: {
     flexDirection: 'column',
     backgroundColor: '#fff',
+    // backgroundColor: 'pink',
+    padding: 14,
   },
   imageWrap: {
     height: ImageHeight,

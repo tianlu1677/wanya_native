@@ -1,13 +1,13 @@
-import React, {useLayoutEffect, useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
-import NodeItem from '@/components/Item/node-item';
+import BaseNode from '@/components/Item/base-node';
 import {RFValue} from '@/utils/response-fontsize';
 import {styles} from '@/components/NodeIndex';
 
-const NodeIndex = ({navigation}) => {
+const NodeIndex = () => {
   const scrollRef = useRef(null);
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
@@ -17,6 +17,7 @@ const NodeIndex = ({navigation}) => {
   const [layoutList, setLayoutList] = useState(Array(categoryList.length).fill({y: -1}));
   const [active, setActive] = useState(1);
   const [allNodes, setAllNodes] = useState([]);
+
   const setLayout = (layout, index) => {
     const list = JSON.parse(JSON.stringify(layoutList));
     list[index] = layout;
@@ -51,7 +52,6 @@ const NodeIndex = ({navigation}) => {
     const allMineNodes = mineNodes.map(item => {
       return {...item, category_id: 0};
     });
-    // setAllNodes([...allMineNodes, ...nodes]);
     setAllNodes(allMineNodes.concat(nodes));
   }, [nodes, followNodes, checkNodes]);
 
@@ -82,16 +82,18 @@ const NodeIndex = ({navigation}) => {
                 )}
               {allNodes
                 .filter(v => v.category_id === category.id)
-                .map((node, i) => (
-                  <View key={i}>
-                    <NodeItem
-                      node={{...node}}
-                      key={node.id}
-                      type={node.audit_status ? 'node-index-mine' : 'node-index'}
-                    />
-                    <Text style={styles.separator} />
-                  </View>
-                ))}
+                .map((node, i) => {
+                  return (
+                    <View key={i}>
+                      <BaseNode
+                        data={node}
+                        type={node.audit_status ? 'mine-node' : 'list'}
+                        style={{paddingLeft: 0, paddingRight: 16}}
+                      />
+                      <Text style={styles.separator} />
+                    </View>
+                  );
+                })}
             </View>
           </View>
         ))}

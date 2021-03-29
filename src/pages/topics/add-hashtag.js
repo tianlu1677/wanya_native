@@ -45,7 +45,7 @@ const AddHashTag = ({navigation}) => {
           <HashtagList
             request={request}
             enableRefresh={false}
-            type="add-hash-tag"
+            type="add-hashtag"
             dataKey={searchKey ? 'items' : 'hashtags'}
             ListHeaderComponent={
               <View style={pstyles.proWrapper}>

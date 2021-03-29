@@ -77,7 +77,11 @@ const AddSpace = props => {
   };
 
   const SpaceListPage = () => (
-    <SpaceList request={request} onPress={onPress} enableRefresh={false} type="add-space" />
+    <SpaceList
+      request={request}
+      enableRefresh={false}
+      type={props.route.params.type === 'topic' ? 'add-space' : 'add-node'}
+    />
   );
 
   // const SpaceListPage = () => {
@@ -89,7 +93,11 @@ const AddSpace = props => {
   // };
 
   const LocationListPage = () => (
-    <LocationList request={request} onPress={onPress} enableRefresh={false} type="add-location" />
+    <LocationList
+      request={request}
+      enableRefresh={false}
+      type={props.route.params.type === 'topic' ? 'add-location' : 'add-node'}
+    />
   );
 
   // const LocationListPage = () => {

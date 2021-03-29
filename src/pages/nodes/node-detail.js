@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
-import {isIphoneX} from 'react-native-iphone-x-helper';
 import {useSelector, useDispatch} from 'react-redux';
 import Loading from '@/components/Loading';
 import {
@@ -8,10 +7,9 @@ import {
   JoinAccounts,
   PlayScore,
   JoinActivity,
-  CustomizeHeader,
   BottomModal,
   BlurView,
-  GoBack
+  GoBack,
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
@@ -61,7 +59,13 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const TopicListPage = () => {
-    return <HashtagList request={{api: getNodeTopicList, params: {id: detail.id}}} />;
+    return (
+      <HashtagList
+        request={{api: getNodeTopicList, params: {id: detail.id}}}
+        type="list"
+        dataKey="hashtags"
+      />
+    );
   };
 
   const loadData = async () => {

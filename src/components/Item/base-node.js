@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
@@ -9,7 +9,14 @@ import {followItem, unfollowItem} from '@/api/mine_api';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 
+// add-node  创建帖子圈子选择
+// mine-node 全部圈子 我创建
+// list      圈子列表
 const BaseNode = props => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {savetopic} = useSelector(state => state.home);
+
   const {data, type} = props;
   const [followed, setFollowed] = useState(data.followed);
 
@@ -20,8 +27,32 @@ const BaseNode = props => {
     setFollowed(res.followed);
   };
 
+  const goNodeResult = () => {
+    navigation.push('CreateNodeResult', {nodeId: data.id});
+  };
+
+  const goNodeDetail = () => {
+    if (type === 'list') {
+      navigation.push('NodeDetail', {nodeId: data.id});
+    }
+
+    if (type === 'add-node') {
+      const topics = {...savetopic, node: data};
+      dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+      navigation.goBack();
+    }
+
+    if (type === 'mine-node') {
+      if (data.audit_status === 'success') {
+        navigation.push('NodeDetail', {nodeId: data.node_id});
+      } else {
+        goNodeResult();
+      }
+    }
+  };
+
   return (
-    <Pressable style={[styles.dataItem]}>
+    <Pressable style={[styles.dataItem, props.style]} onPress={goNodeDetail}>
       <FastImg style={styles.dataImg} source={{uri: data.cover_url}} />
       <View style={styles.dataInfo}>
         <View style={styles.dataNameWrap}>
@@ -31,31 +62,31 @@ const BaseNode = props => {
           </Text>
         </View>
 
-        {/* add-data */}
-        {/* {props.type === 'add-data' &&
-            (home.savetopic.data && home.savetopic.data.id === data.id ? (
-              <IconFont name="chose-success" size={15} color={'#000'} style={styles.icon} />
-            ) : (
-              <IconFont name="tianjia1" size={15} color={'#000'} style={styles.icon} />
-            ))} */}
-
-        {/* data-index-mine */}
-        {/* {props.type === 'data-index-mine' && (
-            <View style={{marginRight: 20}}>
-              <Pressable onPress={godataResult}>
-                {data.audit_status === 'new' && <JoinButton join={true} text="未审核" />}
-                {data.audit_status === 'auditing' && <JoinButton join={true} text="审核中" />}
-                {data.audit_status === 'failed' && <JoinButton join={true} text="未通过" />}
-                {data.audit_status === 'success' && <JoinButton join={true} text="管理" />}
-              </Pressable>
-            </View>
-          )} */}
-
         {/* list */}
         {type === 'list' && (
           <View style={{marginRight: props.type === 'data-index' ? 20 : 0}}>
             <JoinButton join={followed} text={followed ? '已加入' : '加入'} onPress={onFollow} />
           </View>
+        )}
+
+        {/* add-node */}
+        {type === 'add-node' && (
+          <IconFont
+            name={savetopic.node && savetopic.node.id === data.id ? 'chose-success' : 'tianjia1'}
+            size={15}
+            color={'#000'}
+            style={styles.icon}
+          />
+        )}
+
+        {/* mine-node */}
+        {type === 'mine-node' && (
+          <Pressable onPress={goNodeResult}>
+            {data.audit_status === 'new' && <JoinButton join={true} text="未审核" />}
+            {data.audit_status === 'auditing' && <JoinButton join={true} text="审核中" />}
+            {data.audit_status === 'failed' && <JoinButton join={true} text="未通过" />}
+            {data.audit_status === 'success' && <JoinButton join={true} text="管理" />}
+          </Pressable>
         )}
       </View>
     </Pressable>
@@ -73,17 +104,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 3,
     borderColor: '#ffff00',
-    marginRight: 10,
-  },
-  cateTitle: {
-    paddingBottom: 13,
-    paddingTop: 15,
-    color: '#7f7f81',
   },
   dataInfo: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
+    marginLeft: 10,
   },
   dataNameWrap: {
     marginRight: 'auto',
@@ -103,7 +129,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 'auto',
-    marginRight: 20,
+    marginRight: 22,
   },
 });
 

@@ -6,28 +6,24 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 
 const BaseAccount = props => {
   const navigation = useNavigation();
-
   const {data, type} = props;
   const [followed, setFollowed] = useState(data.followed);
   const [following] = useState(data.following);
 
-  const onPress = item => {
-    if (type === 'list') {
-      navigation.push('AccountDetail', {
-        accountId: item.id,
-      });
-    }
-  };
-
   const onFollowed = async () => {
-    const res = followed ? await unfollowAccount(data.id) : await followAccount(data.id);
-    console.log('res', res);
+    followed ? await unfollowAccount(data.id) : await followAccount(data.id);
     setFollowed(!followed);
   };
 
+  const goDetail = () => {
+    if (type === 'list') {
+      navigation.push('AccountDetail', {accountId: data.id});
+    }
+  };
+
   return (
-    <Pressable style={styles.wrapper} onPress={() => onPress(data)}>
-      <Avator account={data} size={40} handleClick={() => onPress(data)} />
+    <Pressable style={styles.wrapper} onPress={goDetail}>
+      <Avator account={data} size={40} />
       <Text style={styles.nickname}>{data.nickname}</Text>
       <Text style={[styles.rightText, {color: followed ? '#bdbdbd' : '#000'}]} onPress={onFollowed}>
         {followed && following ? '互相关注' : followed ? '已关注' : '关注'}

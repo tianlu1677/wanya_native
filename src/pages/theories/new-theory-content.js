@@ -142,7 +142,9 @@ const TheoryStepContent = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.wrapper}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT}>
+      keyboardVerticalOffset={
+        Platform.OS === 'ios' ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT
+      }>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <ScrollView style={{flex: 1}}>
         {theory.media ? (
@@ -236,7 +238,9 @@ const TheoryStepContent = props => {
         changeModal={() => setShowCloseSheet(false)}
       />
     </KeyboardAvoidingView>
-  ) : <Loading />;
+  ) : (
+    <Loading />
+  );
 };
 
 const greyColor = {backgroundColor: '#fafafa'};

@@ -38,7 +38,7 @@ const TabViewIndex = props => {
   useEffect(() => {
     // 适配搜索页面
     initScene();
-  }, [props.request]);
+  }, [props.request && props.request.params]);
 
   useEffect(() => {
     const findIndex = props.tabData.findIndex(v => v.key === props.currentKey);

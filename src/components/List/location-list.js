@@ -1,23 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
-import ScrollList from '@/components/ScrollList';
-import {RFValue} from '@/utils/response-fontsize';
 import {useSelector} from 'react-redux';
+import ScrollList from '@/components/ScrollList';
+import BaseLocation from '@/components/Item/base-location';
 
 const noLocation = {id: 0, name: '不选择位置'};
-
-const LocationItem = props => {
-  const {data} = props;
-  return (
-    <Pressable style={styles.spaceWrapper} onPress={() => props.itemOnPress(data)}>
-      <Text style={styles.name}>{data.name}</Text>
-      {data.address || data.district ? (
-        <Text style={styles.address}>{data.address ? data.address : data.district}</Text>
-      ) : null}
-    </Pressable>
-  );
-};
 
 const LocationList = props => {
   const [loading, setLoading] = useState(true);
@@ -26,8 +14,10 @@ const LocationList = props => {
   const {location} = useSelector(state => state.home);
   const {positionCity} = location;
 
+  const {type} = props;
+
   const renderItem = ({item}) => {
-    return <LocationItem data={item} itemOnPress={() => props.onPress(item)} />;
+    return <BaseLocation data={item} type={type} />;
   };
 
   const renderSeparator = () => {
@@ -40,7 +30,7 @@ const LocationList = props => {
     const res = await api({...params, page});
     let data = res.data.answer.tips;
 
-    if (props.type === 'add-location' && data.length > 0) {
+    if (type === 'add-location' && data.length > 0) {
       data = [
         noLocation,
         {
@@ -80,21 +70,6 @@ LocationList.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  spaceWrapper: {
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingLeft: 14,
-    backgroundColor: '#fff',
-    height: RFValue(65),
-  },
-  name: {
-    fontSize: 15,
-  },
-  address: {
-    fontSize: 11,
-    marginTop: 8,
-    color: '#bdbdbd',
-  },
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#ebebeb',

@@ -1,21 +1,80 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import {RFValue} from '@/utils/response-fontsize';
 
 const BaseHashtag = props => {
-  const {data} = props;
-  return <Text style={styles.hashtagName}>#{data.name}</Text>;
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const {savetopic} = useSelector(state => state.home);
+  const {type, data} = props;
+
+  const goDetail = () => {
+    if (type === 'add-hashtag') {
+      const topics = {
+        ...savetopic,
+        plan_content: savetopic.plan_content
+          ? `${savetopic.plan_content} #${data.name} `
+          : `#${data.name} `,
+      };
+      dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+      navigation.goBack();
+    }
+
+    if (type === 'list') {
+      navigation.push('HashtagDetail', {hashtag: data.name});
+    }
+  };
+
+  return (
+    <Pressable style={styles.hashtagWrap} onPress={goDetail}>
+      <Text style={styles.hashtagName}>#{data.name}</Text>
+      {/* <BaseHashtag data={item} type="add-hashtag" /> */}
+      {type === 'add-hashtag' && data.id === 0 && <Text style={styles.newHashTag}>新话题</Text>}
+    </Pressable>
+
+    // <Text style={styles.hashtagName} onPress={goDetail}>
+    //   #{data.name}
+    // </Text>
+  );
 };
 
 const styles = StyleSheet.create({
-  hashtagName: {
+  hashtagWrap: {
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 14,
+  },
+  hashtagName: {
     height: RFValue(45),
     lineHeight: RFValue(45),
     color: '#FF8D00',
     fontSize: 14,
     fontWeight: '400',
     letterSpacing: 1,
+  },
+  // hashtagName: {
+  //   height: 45,
+  //   lineHeight: 45,
+  //   marginLeft: 15,
+  //   color: '#FF8D00',
+  //   fontSize: 14,
+  //   fontWeight: '400',
+  //   letterSpacing: 1,
+  // },
+  newHashTag: {
+    marginLeft: 'auto',
+    marginRight: 15,
+    fontSize: 13,
+    color: '#bdbdbd',
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#ebebeb',
+    marginLeft: 14,
   },
 });
 
