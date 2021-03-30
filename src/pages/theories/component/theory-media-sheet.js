@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {check, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import * as action from '@/redux/constants';
 import ActionSheet from '@/components/ActionSheet';
+import {refreshTheory, refreshTheoryBody} from '@/api/theory_api';
 
 const imagePermission =
   Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
@@ -25,6 +26,24 @@ const TheoryMediaSheet = props => {
   const {theory} = useSelector(state => state.theory);
   const {params, showActionSheet, changeModal} = props;
   const {assetable_name, assetable_id} = params;
+
+  const refreshBody = async () => {
+    theory.theory_bodies.map(async body => {
+      const data = {
+        id: theory.id,
+        theory_body_id: body.id,
+        theory_body: {title: body.title, desc: body.desc},
+      };
+      await refreshTheoryBody(theory.id, data);
+    });
+  };
+
+  const refreshContent = async () => {
+    const data = {
+      theory: {title: theory.title, plain_content: theory.plain_content, tip: theory.title},
+    };
+    await refreshTheory(theory.id, data);
+  };
 
   const dispatchTheory = (file, ret, type) => {
     const index = theory.theory_bodies.findIndex(item => item.id.toString() === assetable_id);
@@ -50,14 +69,17 @@ const TheoryMediaSheet = props => {
             return;
           }
           const file = res[0];
-          console.log('image file', file);
           const result = await props.uploadImage(file, params, ret => {
             if (assetable_name === 'theory_media') {
+              refreshBody();
+
               const newTheory = {...theory, media: {...file, category: 'image', progress: ret}};
               dispatch({type: action.UPDATE_THEORY, value: newTheory});
             }
 
             if (assetable_name === 'theory_body_media') {
+              refreshContent();
+
               dispatchTheory(file, ret, 'image');
             }
           });
@@ -75,14 +97,17 @@ const TheoryMediaSheet = props => {
             return;
           }
           const file = res[0];
-          console.log('video file', file);
           const result = await props.uploadVideo(file, params, ret => {
             if (assetable_name === 'theory_media') {
+              refreshBody();
+
               const newTheory = {...theory, media: {...file, category: 'video', progress: ret}};
               dispatch({type: action.UPDATE_THEORY, value: newTheory});
             }
 
             if (assetable_name === 'theory_body_media') {
+              refreshContent();
+
               dispatchTheory(file, ret, 'video');
             }
           });
