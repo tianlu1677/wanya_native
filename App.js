@@ -79,6 +79,7 @@ class App extends Component {
     TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
       defaultProps: false,
       allowFontScaling: false,
+      textBreakStrategy: 'simple'
     });
 
     this.getIndexTabData(); //获取首页频道信息
@@ -114,19 +115,13 @@ class App extends Component {
 
   // 极光推送
   jpush_notice = async () => {
-    JPush.init();
-    JPush.setBadge({badge: 0, appBadge: 0});
+    JPush.setBadge({"badge": 0, "appBadge": 0});
     JPush.setLoggerEnable(true);
-    JPush.initCrashHandler();
     JPush.getRegistrationID(this.onRegister);
-
-
-    // JPush.addConnectEventListener(result => {
-    //   // console.log('addConnectEventListener result', result);
-    // });
-
-    //通知回调
     JPush.addNotificationListener(this.notificationListener);
+    await JPush.init();
+
+    // JPush.init();
     //本地通知回调
     // JPush.addLocalNotificationListener(this.localNotificationListener);
     //自定义消息回调
@@ -183,9 +178,9 @@ class App extends Component {
   // 通知相关内容
   onRegister = async (response) => {
     console.log('onRegister', response);
-    const data = {register_token: response.registerID, platform: Platform.OS};
+    // const data = {register_token: response.registerID, platform: Platform.OS};
     await Helper.setData('registerId', response.registerID);
-    syncDeviceToken(data);
+    // syncDeviceToken(data);
   };
 
   customMessageListener = result => {

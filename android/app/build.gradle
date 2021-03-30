@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.huawei.agconnect'
 
 import com.android.build.OutputFile
 
@@ -147,7 +148,9 @@ android {
               JPUSH_APPKEY: "7cd75000d5932000b3d4ca59", //在此替换你的APPKey
               JPUSH_CHANNEL: "release", //在此替换你的channel
               XIAOMI_APPKEY: "MI-5701920846886",
-              XIAOMI_APPID: "MI-2882303761519208886"
+              XIAOMI_APPID: "MI-2882303761519208886",
+              HUAWEI_APPID: "103426129"
+
         ]
     }
     splits {
@@ -224,6 +227,9 @@ dependencies {
     implementation 'com.umeng.umsdk:analytics:8.1.6'
     implementation 'com.umeng.umsdk:common:2.2.5'
     implementation "cn.jiguang.sdk.plugin:xiaomi:3.8.6"
+//     implementation 'com.huawei.hms:push:4.0.2.300'
+    implementation 'cn.jiguang.sdk.plugin:huawei:3.8.6'
+    implementation 'com.huawei.hms:push:5.0.4.302'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation project(':react-native-code-push')
