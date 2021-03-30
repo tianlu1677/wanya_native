@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, StatusBar, TextInput, ScrollView, Pressable, StyleSheet} from 'react-native';
-import {KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
+import {KeyboardAvoidingView, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
@@ -8,7 +8,7 @@ import Toast from '@/components/Toast';
 import ActionSheet from '@/components/ActionSheet';
 import {RFValue} from '@/utils/response-fontsize';
 import Loading from '@/components/Loading';
-import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
 import TheorySteps from '@/pages/theories/component/theory-steps';
 import TheoryMedia from '@/pages/theories/component/theory-media.js';
 import TheoryMediaPicker from '@/pages/theories/component/theory-media-picker';

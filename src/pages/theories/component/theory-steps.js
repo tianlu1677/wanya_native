@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, Pressable, TextInput, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
-import {debounce} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
