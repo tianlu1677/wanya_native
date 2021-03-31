@@ -5,14 +5,17 @@ import PropTypes from 'prop-types';
 import {useNavigation} from '@react-navigation/native';
 import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
+import BaseAccount from '@/components/Item/base-account';
 import {Avator} from '@/components/NodeComponents';
 import {followAccount, unfollowAccount} from '@/api/account_api';
 
-// follow normal text
+// type === related 关注——相关推荐（显示前50位)
 const AccountsList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
+
+  const {type} = props;
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -51,46 +54,7 @@ const AccountsList = props => {
     });
   };
 
-  const onFollowed = async (item, index) => {
-    if (item.followed) {
-      await unfollowAccount(item.id);
-    } else {
-      await followAccount(item.id);
-    }
-    listData[index] = {...item, followed: !item.followed};
-    setListData([...listData]);
-  };
-
-  const renderItem = ({item, index}) => {
-    return (
-      <Pressable style={styles.follow} onPress={() => onPress(item)}>
-        <Avator account={item} size={40} handleClick={() => onPress(item)} />
-        {['follow', 'normal'].includes(props.itemType) && (
-          <Text style={styles.nickname}>{item.nickname}</Text>
-        )}
-
-        {['text'].includes(props.itemType) && (
-          <View>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styles.nickname}>{item.nickname}</Text>
-              {item.right_text && <Text style={styles.right_text}>{item.right_text}</Text>}
-            </View>
-            {item.created_at_text && (
-              <Text style={styles.created_at_text}>{item.created_at_text}</Text>
-            )}
-          </View>
-        )}
-
-        {['follow', 'text'].includes(props.itemType) && (
-          <Text
-            style={[styles.btn, {color: item.followed ? '#bdbdbd' : '#000'}]}
-            onPress={() => onFollowed(item, index)}>
-            {item.followed && item.following ? '互相关注' : item.followed ? '已关注' : '关注'}
-          </Text>
-        )}
-      </Pressable>
-    );
-  };
+  const renderItem = ({item}) => <BaseAccount type={type} data={item} />;
 
   const renderSeparator = () => {
     return <View style={styles.separator} />;
@@ -123,8 +87,7 @@ const AccountsList = props => {
   }, [props.request]);
 
   return (
-    <View
-      style={{flex: 1, paddingBottom: props.type === 'related' && listData.length >= 50 ? 50 : 0}}>
+    <View style={{flex: 1, paddingBottom: type === 'related' && listData.length >= 5 ? 5 : 0}}>
       <ScrollList
         data={listData}
         loading={loading}
@@ -134,7 +97,7 @@ const AccountsList = props => {
         renderSeparator={renderSeparator}
         {...props}
       />
-      {props.type === 'related' && listData.length >= 50 && props.renderMoreAccounts}
+      {type === 'related' && listData.length >= 5 && props.renderMoreAccounts}
     </View>
   );
 };

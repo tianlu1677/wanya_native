@@ -112,7 +112,7 @@ export const ActionComment = props => {
     // 输入
     if (getValueLength(text) >= getValueLength(value)) {
       if (text.substr(-1) === '@') {
-        navigation.push('AddMentionAccount', {type: 'topicDetail'});
+        navigation.push('AddMentionAccount', {type: 'comment'});
         const saveComments = {...comment, content: text.substr(0, text.length - 1)};
         dispatch({type: action.SAVE_COMMENT_CONTENT, value: saveComments});
       }
