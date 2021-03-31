@@ -1,13 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
-import {useNavigation} from '@react-navigation/native';
-import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import BaseAccount from '@/components/Item/base-account';
-import {Avator} from '@/components/NodeComponents';
-import {followAccount, unfollowAccount} from '@/api/account_api';
 
 // type === related 关注——相关推荐（显示前50位)
 const AccountsList = props => {
@@ -17,57 +12,18 @@ const AccountsList = props => {
 
   const {type} = props;
 
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const savetopic = useSelector(state => state.home.savetopic);
-  const savecomment = useSelector(state => state.home.commentContent);
-
-  const onPress = item => {
-    if (props.type === 'topicDetail') {
-      const comments = {
-        ...savecomment,
-        content: savecomment.content
-          ? `${savecomment.content} @${item.nickname} `
-          : `@${item.nickname} `,
-        mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, item.id] : [item.id],
-      };
-      dispatch({type: action.SAVE_COMMENT_CONTENT, value: comments});
-      navigation.goBack();
-      return;
-    }
-
-    if (props.type === 'add-node') {
-      const topics = {
-        ...savetopic,
-        plan_content: savetopic.plan_content
-          ? `${savetopic.plan_content} @${item.nickname} `
-          : `@${item.nickname} `,
-        mention: savetopic.mention ? [...savetopic.mention, item] : [item],
-      };
-      dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-      navigation.goBack();
-      return;
-    }
-
-    navigation.push('AccountDetail', {
-      accountId: item.id,
-    });
-  };
-
   const renderItem = ({item}) => <BaseAccount type={type} data={item} />;
 
-  const renderSeparator = () => {
-    return <View style={styles.separator} />;
-  };
+  const renderSeparator = () => <View style={styles.separator} />;
 
   const loadData = async (page = 1) => {
     if (page === 1) {
       setLoading(true);
     }
-    const {api, params, account_type, right_text} = props.request;
+    const {api, params, right_text} = props.request;
     let data = [];
     const res = await api({...params, page});
-    if (account_type === 'account_recent_follow') {
+    if (type === 'newfans') {
       data = props.dataKey ? res.data[props.dataKey] : res.data.follows;
       data = data.map(follow => ({
         ...follow.account,
@@ -108,39 +64,7 @@ AccountsList.propTypes = {
   ref: PropTypes.any,
 };
 
-export const styles = StyleSheet.create({
-  follow: {
-    flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight: 16,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 14,
-    paddingBottom: 14,
-  },
-  nickname: {
-    fontSize: 14,
-    marginLeft: 10,
-    lineHeight: 21,
-  },
-  right_text: {
-    paddingLeft: 8,
-    fontSize: 13,
-    letterSpacing: 1,
-    lineHeight: 21,
-    color: '#BDBDBD',
-  },
-  created_at_text: {
-    marginLeft: 10,
-    fontSize: 11,
-    lineHeight: 20,
-    color: '#BDBDBD',
-  },
-  btn: {
-    marginLeft: 'auto',
-    paddingHorizontal: 3,
-    fontWeight: '500',
-  },
+const styles = StyleSheet.create({
   separator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,

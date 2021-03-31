@@ -11,7 +11,8 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 // related  关注——相关推荐（显示前50位）
 // newfans  新增粉丝text
 // add-node 发布帖子
-// comment   评论
+// comment  评论
+// search   搜索
 const BaseAccount = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ const BaseAccount = props => {
   };
 
   const goDetail = () => {
-    if (['list', 'normal', 'related', 'newfans'].includes(type)) {
+    if (['list', 'normal', 'related', 'newfans', 'search'].includes(type)) {
       navigation.push('AccountDetail', {accountId: data.id});
     }
 
@@ -84,7 +85,7 @@ const BaseAccount = props => {
       <Avator account={data} size={40} />
 
       {/* center */}
-      {['list', 'related', 'add-node', 'comment', 'normal'].includes(type) && (
+      {['list', 'related', 'add-node', 'comment', 'normal', 'search'].includes(type) && (
         <View style={styles.accountCenter}>
           <Text style={styles.nickname}>{data.nickname}</Text>
         </View>
@@ -93,7 +94,7 @@ const BaseAccount = props => {
       {/* center */}
       {['newfans'].includes(type) && <AccountCenter />}
 
-      {['list', 'related', 'newfans'].includes(type) && <AccountRight />}
+      {['list', 'related', 'newfans', 'search'].includes(type) && <AccountRight />}
     </Pressable>
   );
 };
