@@ -14,7 +14,7 @@ import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
-import {cancelAction, createAction} from "@/api/action_api"
+import {cancelAction, createAction} from '@/api/action_api';
 
 const {width} = Dimensions.get('window');
 const halfWidth = (width - 15) / 2; // 屏幕去掉两边后（5*2 中间5）的宽度
@@ -43,7 +43,6 @@ const SingleItem = props => {
     switch (props.item_type) {
       case 'Article':
       case 'Topic':
-
         if (praiseForm.praise) {
           await cancelAction({target_id: data.id, target_type: props.item_type, type: 'praise'});
         } else {

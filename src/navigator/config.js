@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import React from 'react';
+import {Text, Pressable} from 'react-native';
 import * as RootNavigation from '@/navigator/root-navigation';
 // 首页
 import {CardStyleInterpolators} from '@react-navigation/stack';

@@ -91,7 +91,7 @@ const Recommend = props => {
           component = <DoubleList request={{api: getChannelPosts, params}} />;
         }
         if (item.display_style === 'long_video') {
-          component = <LongVideoList request={{api: getChannelPosts, params}} />;
+          component = <LongVideoList request={{api: getChannelPosts, params}} type="wanpian" />;
         }
         return component;
       },

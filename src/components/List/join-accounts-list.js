@@ -13,12 +13,10 @@ const JoinAccountsList = ({navigation, route}) => {
 
   const renderItem = ({item}) => {
     return (
-      <Pressable onPress={() => goAccountDetail(item)}>
-        <View style={styles.follow}>
-          <Avator account={item} size={RFValue(40)} />
-          <Text style={styles.nickname}>{item.nickname}</Text>
-          <PlayScore score={item.play_score} textStyle={styles.textScore} />
-        </View>
+      <Pressable onPress={() => goAccountDetail(item)} style={styles.follow}>
+        <Avator account={item} size={RFValue(40)} />
+        <Text style={styles.nickname}>{item.nickname}</Text>
+        <PlayScore score={item.play_score} textStyle={styles.textScore} />
       </Pressable>
     );
   };
@@ -90,8 +88,8 @@ export const styles = StyleSheet.create({
   },
   follow: {
     flexDirection: 'row',
-    paddingLeft: RFValue(16),
-    paddingRight: RFValue(27),
+    paddingLeft: 14,
+    paddingRight: 27,
     paddingVertical: RFValue(14),
     alignItems: 'center',
     backgroundColor: '#fff',

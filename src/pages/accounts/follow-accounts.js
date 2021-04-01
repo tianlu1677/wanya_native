@@ -8,7 +8,7 @@ const FollowAccounts = ({navigation, route}) => {
   return (
     <AccountsList
       request={{api: getAccountFollowings, params: {id: accountId}}}
-      itemType="follow"
+      type="list"
       enableRefresh={false}
     />
   );

@@ -10,13 +10,9 @@ const HashtagList = props => {
 
   const {type} = props;
 
-  const renderItem = ({item}) => {
-    return <BaseHashtag data={item} type={type} />;
-  };
+  const renderItem = ({item}) => <BaseHashtag data={item} type={type} />;
 
-  const renderSeparator = () => {
-    return <View style={styles.separator} />;
-  };
+  const renderSeparator = () => <View style={styles.separator} />;
 
   const loadData = async (page = 1) => {
     setLoading(true);

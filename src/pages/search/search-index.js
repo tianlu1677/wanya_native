@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {debounce} from 'lodash';
+import SearchAllList from '@/pages/search/search-all/search-all-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import NodeList from '@/components/List/node-list';
@@ -8,13 +9,12 @@ import DoubleList from '@/components/List/double-list';
 import LongVideoList from '@/components/List/long-video-list';
 import SpaceList from '@/components/List/space-list';
 import HashtagList from '@/components/List/hash-tag-list';
+import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import TabViewList from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
-import AccountsNormalList from '@/components/List/accounts-normal-list';
-import SearchAllList from '@/pages/search/search-all/search-all-list';
 
 export const Type = {
   all: 'all',
@@ -71,7 +71,7 @@ const SearchIndex = ({navigation, route}) => {
 
   const LongVideoPage = () =>
     type === 'long_video' ? (
-      <LongVideoList request={request} enableRefresh={false} dataKey="items" />
+      <LongVideoList request={request} enableRefresh={false} dataKey="items" type="list" />
     ) : (
       <View />
     );
@@ -92,12 +92,7 @@ const SearchIndex = ({navigation, route}) => {
 
   const AccountListPage = () =>
     type === 'account' ? (
-      <AccountsNormalList
-        request={request}
-        enableRefresh={false}
-        dataKey="items"
-        itemType="normal"
-      />
+      <AccountsList request={request} dataKey="items" type="search" enableRefresh={false} />
     ) : (
       <View />
     );
