@@ -794,7 +794,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = icons;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -804,7 +804,7 @@
 				INFOPLIST_FILE = wanya_native/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.16;
+				MARKETING_VERSION = 0.0.17;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -830,13 +830,13 @@
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wanya_native/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.16;
+				MARKETING_VERSION = 0.0.17;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
