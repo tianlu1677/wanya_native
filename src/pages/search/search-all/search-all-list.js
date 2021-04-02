@@ -78,6 +78,7 @@ const SearchAllList = props => {
         enableRefresh={false}
         enableLoadMore={false}
         scrollIndicatorInsets={0}
+        renderEmpty={<View />}
       />
     </View>
   );

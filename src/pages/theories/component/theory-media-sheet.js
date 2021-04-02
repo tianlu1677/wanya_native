@@ -27,35 +27,25 @@ const TheoryMediaSheet = props => {
   const {params, showActionSheet, changeModal} = props;
   const {assetable_name, assetable_id} = params;
 
-  const refreshBody = async () => {
+  const onRefresh = async () => {
+    console.log('theory', theory);
+    // 同步更新theory
+    const content = {theory: {...theory}};
+    await refreshTheory(theory.id, content);
+
+    // 同步更新body
     theory.theory_bodies.map(async body => {
-      const data = {
-        id: theory.id,
-        theory_body_id: body.id,
-        theory_body: {title: body.title, desc: body.desc},
-      };
+      const {id, title, desc} = body;
+      const data = {id: theory.id, theory_body_id: id, theory_body: {title, desc}};
       await refreshTheoryBody(theory.id, data);
     });
-  };
 
-  const refreshContent = async () => {
-    const data = {
-      theory: {title: theory.title, plain_content: theory.plain_content, tip: theory.title},
-    };
-    await refreshTheory(theory.id, data);
+    props.loadData();
   };
 
   const dispatchTheory = (file, ret, type) => {
     const index = theory.theory_bodies.findIndex(item => item.id.toString() === assetable_id);
-    const current = {
-      ...theory.theory_bodies[index],
-      media: {
-        ...file,
-        category: type,
-        progress: ret,
-      },
-    };
-    theory.theory_bodies[index] = current;
+    theory.theory_bodies[index].media = {...file, category: type, progress: ret};
     dispatch({type: action.UPDATE_THEORY, value: {...theory}});
   };
 
@@ -71,19 +61,15 @@ const TheoryMediaSheet = props => {
           const file = res[0];
           const result = await props.uploadImage(file, params, ret => {
             if (assetable_name === 'theory_media') {
-              refreshBody();
-
-              const newTheory = {...theory, media: {...file, category: 'image', progress: ret}};
-              dispatch({type: action.UPDATE_THEORY, value: newTheory});
+              theory.media = {...file, category: 'image', progress: ret};
+              dispatch({type: action.UPDATE_THEORY, value: theory});
             }
 
             if (assetable_name === 'theory_body_media') {
-              refreshContent();
-
               dispatchTheory(file, ret, 'image');
             }
           });
-          props.loadData();
+          onRefresh();
           console.log('upload image result', result);
         });
       },
@@ -92,6 +78,7 @@ const TheoryMediaSheet = props => {
       label: '视频',
       onPress: async () => {
         props.removeAllPhoto();
+
         props.videoPicker(async (err, res) => {
           if (err) {
             return;
@@ -99,19 +86,15 @@ const TheoryMediaSheet = props => {
           const file = res[0];
           const result = await props.uploadVideo(file, params, ret => {
             if (assetable_name === 'theory_media') {
-              refreshBody();
-
-              const newTheory = {...theory, media: {...file, category: 'video', progress: ret}};
-              dispatch({type: action.UPDATE_THEORY, value: newTheory});
+              theory.media = {...file, category: 'video', progress: ret};
+              dispatch({type: action.UPDATE_THEORY, value: theory});
             }
 
             if (assetable_name === 'theory_body_media') {
-              refreshContent();
-
               dispatchTheory(file, ret, 'video');
             }
           });
-          props.loadData();
+          onRefresh();
           console.log('upload video result', result);
         });
       },
