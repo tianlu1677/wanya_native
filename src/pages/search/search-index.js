@@ -117,7 +117,7 @@ const SearchIndex = ({navigation, route}) => {
         textColor="#000"
         placeholderTextColor="#000"
         placeholder="搜索帖子、文章、圈子等内容"
-        autoFocus={false}
+        autoFocus={true}
         onChangeText={debounce(onChangeText, 500)}
         onCancel={() => navigation.goBack()}
       />
