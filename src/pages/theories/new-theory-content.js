@@ -52,12 +52,12 @@ const TheoryStepContent = props => {
     const {title, plain_content, tip} = theory;
     const data = {theory: {title, plain_content, tip}};
     await refreshTheory(theory.id, data);
-    loadData();
+    // loadData();
   };
 
-  const updateTheory = async values => {
-    const update = {...theory, ...values};
-    dispatch({type: action.UPDATE_THEORY, value: update});
+  const updateTheory = async (value, key) => {
+    theory[key] = value;
+    dispatch({type: action.UPDATE_THEORY, value: theory});
   };
 
   const loadData = async () => {
@@ -168,7 +168,7 @@ const TheoryStepContent = props => {
             placeholder="添加顽法名称"
             value={theory.title}
             onBlur={updateTheoryText}
-            onChangeText={value => updateTheory({title: value})}
+            onChangeText={value => updateTheory(value, 'title')}
             style={[styles.theoryTitle, {textAlign: 'center'}]}
           />
           <TextInput
@@ -180,7 +180,7 @@ const TheoryStepContent = props => {
             onBlur={updateTheoryText}
             textAlignVertical={'top'}
             underlineColorAndroid={'transparent'}
-            onChangeText={value => updateTheory({plain_content: value})}
+            onChangeText={value => updateTheory(value, 'plain_content')}
             style={styles.theoryIntro}
           />
           <Text style={styles.introTitle}>顽法步骤</Text>
@@ -199,7 +199,7 @@ const TheoryStepContent = props => {
             value={theory.tip}
             textAlignVertical={'top'}
             onBlur={updateTheoryText}
-            onChangeText={value => updateTheory({tip: value})}
+            onChangeText={value => updateTheory(value, 'tip')}
             style={[styles.theoryIntro, {marginTop: 0}]}
           />
         </View>
