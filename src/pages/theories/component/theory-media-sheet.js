@@ -28,10 +28,8 @@ const TheoryMediaSheet = props => {
   const {assetable_name, assetable_id} = params;
 
   const onRefresh = async () => {
-    console.log('theory', theory);
     // 同步更新theory
-    const content = {theory: {...theory}};
-    await refreshTheory(theory.id, content);
+    await refreshTheory(theory.id, {theory});
 
     // 同步更新body
     theory.theory_bodies.map(async body => {
@@ -64,7 +62,6 @@ const TheoryMediaSheet = props => {
               theory.media = {...file, category: 'image', progress: ret};
               dispatch({type: action.UPDATE_THEORY, value: theory});
             }
-
             if (assetable_name === 'theory_body_media') {
               dispatchTheory(file, ret, 'image');
             }
@@ -78,7 +75,6 @@ const TheoryMediaSheet = props => {
       label: '视频',
       onPress: async () => {
         props.removeAllPhoto();
-
         props.videoPicker(async (err, res) => {
           if (err) {
             return;
@@ -89,7 +85,6 @@ const TheoryMediaSheet = props => {
               theory.media = {...file, category: 'video', progress: ret};
               dispatch({type: action.UPDATE_THEORY, value: theory});
             }
-
             if (assetable_name === 'theory_body_media') {
               dispatchTheory(file, ret, 'video');
             }

@@ -40,9 +40,8 @@ const TheorySteps = props => {
 
   const updateTheory = async (value, attr, id) => {
     const index = theory.theory_bodies.findIndex(item => item.id === id);
-    const current = {...theory.theory_bodies[index], [attr]: value};
-    theory.theory_bodies[index] = current;
-    dispatch({type: action.UPDATE_THEORY, value: {...theory}});
+    theory.theory_bodies[index][attr] = value;
+    dispatch({type: action.UPDATE_THEORY, value: theory});
   };
 
   return (
