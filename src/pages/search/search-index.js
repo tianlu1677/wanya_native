@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {debounce} from 'lodash';
 import SearchAllList from '@/pages/search/search-all/search-all-list';
+import TheoryList from '@/components/List/theory-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import NodeList from '@/components/List/node-list';
@@ -44,6 +45,13 @@ const SearchIndex = ({navigation, route}) => {
   const TopicListPage = () =>
     type === 'topic' ? (
       <TopicList request={request} enableRefresh={false} dataKey="items" />
+    ) : (
+      <View />
+    );
+
+  const TheoryListPage = () =>
+    type === 'theory' ? (
+      <TheoryList request={request} enableRefresh={false} dataKey="items" />
     ) : (
       <View />
     );
@@ -134,6 +142,11 @@ const SearchIndex = ({navigation, route}) => {
             key: 'all',
             title: '全部',
             component: AllListPage,
+          },
+          {
+            key: 'theory',
+            title: '顽法',
+            component: TheoryListPage,
           },
           {
             key: 'topic',
