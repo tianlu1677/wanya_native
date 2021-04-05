@@ -24,11 +24,7 @@ const TopicList = props => {
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setHeaders(res.headers);
-    if (!params.name) {
-      setListData([]);
-    } else {
-      setListData(page === 1 ? data : [...listData, ...data]);
-    }
+    setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
   };
 
