@@ -54,6 +54,7 @@ class App extends Component {
       ios: '6da6626cf6588fb6e3052deff1e8d4e9',
       android: '648f6e4ce8f5b83b30e2eabcac060eee',
     });
+    await JPush.init();
 
     let scale = Dimensions.get('window').width / 375;
     if (scale > 1) {
@@ -146,6 +147,7 @@ class App extends Component {
     // {"badge": "1", "content": "顽鸦", "extras": {"params": "topicId=1", "screen": "TopicDetail"}, "messageID": "20266319981952208", "notificationEventType": "notificationOpened", "ring": "default", "title": "顽鸦"}
     try {
       console.log('onNotification:', notification);
+      // Alert.alert(notification)
       if (notification.notificationEventType === 'notificationOpened') {
         const auth_token = await Helper.getData('auth_token');
         if (!auth_token || !notification.extras) {
