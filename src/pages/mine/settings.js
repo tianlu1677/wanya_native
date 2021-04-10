@@ -95,16 +95,15 @@ const Settings = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fafafa'}}>
       <StatusBar barStyle="dark-content" />
-      <Text style={contentBlank} />
+      {/* <Text style={contentBlank} />
       <ItemView
         onPress={() => {
           goPages('edit');
         }}>
         <ItemTitle>编辑个人资料</ItemTitle>
         <ForwardRight />
-      </ItemView>
-
-      <Text style={contentBlank} />
+      </ItemView> */}
+      {/* <Text style={contentBlank} /> */}
       <View style={{backgroundColor: 'white'}}>
         <ItemView
           style={[styles.topBorder1px]}
@@ -114,14 +113,14 @@ const Settings = ({navigation, route}) => {
           <ItemTitle>关于顽鸦</ItemTitle>
           <ForwardRight />
         </ItemView>
-        <ItemView
+        {/* <ItemView
           style={[styles.bottomBorder1px, styles.topBorder1px, styles.nestLine]}
           onPress={() => {
             goPages('feedback');
           }}>
           <ItemTitle>意见反馈</ItemTitle>
           <ForwardRight />
-        </ItemView>
+        </ItemView> */}
         <ItemView
           style={[styles.bottomBorder1px, styles.nestLine]}
           onPress={() => {

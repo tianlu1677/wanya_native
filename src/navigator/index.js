@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
 import {navigationRef} from '@/navigator/root-navigation';
@@ -26,7 +27,7 @@ import AnalyticsUtil from '@/utils/umeng_analytics_util';
 import IconFont from '@/iconfont';
 import {routers} from './config'; //router 配置
 import {draftTheory} from '@/api/theory_api';
-
+import DrawerContent from './drawer-content';
 // tab
 import Recommend from '@/pages/home/recommend';
 import NewTopic from '@/pages/topics/new-topic';
@@ -45,6 +46,7 @@ const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'; // 存储上次打开的位置
 const {width} = Dimensions.get('window');
+const Drawer = createDrawerNavigator();
 
 const TabBar = props => (
   <BlurView
@@ -341,7 +343,13 @@ const Navigation = () => {
       }}
       // initialState={initialState}
       onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}>
-      <>{!login.auth_token ? AuthStackList() : MainStackList()}</>
+      {/* <>{!login.auth_token ? AuthStackList() : MainStackList()}</> */}
+      <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+        <Drawer.Screen
+          name="Recommend"
+          component={login.auth_token ? MainStackList : AuthStackList}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };

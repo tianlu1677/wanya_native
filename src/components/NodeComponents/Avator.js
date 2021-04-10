@@ -11,7 +11,7 @@ const Avator = props => {
   const [isShow] = useState(props.isShowSettledIcon === false ? false : true);
   // const currentAccountId = useSelector(state => state.account.currentAccount.id);
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const imagestyle = {
     width: props.size,
     height: props.size,
@@ -29,7 +29,7 @@ const Avator = props => {
     }
 
     if (props.account && props.account.id) {
-      navigation.navigate('AccountDetail', {accountId: props.account.id});
+      // navigation.navigate('AccountDetail', {accountId: props.account.id});
       // if(currentAccountId && currentAccountId === props.account.id) {
       //   navigation.push('MineDetail');
       // } else {
