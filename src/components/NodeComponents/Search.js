@@ -30,9 +30,17 @@ const Search = props => {
           returnKeyType={'search'}
         />
       </View>
-      {props.children ? (
+      {/* {props.children ? (
         props.children
       ) : (
+        <Pressable onPress={props.onCancel}>
+          <Text style={[styles.cancel, {width: cancelWidth, height: height, lineHeight: height}]}>
+            取消
+          </Text>
+        </Pressable>
+      )} */}
+
+      {props.cancel && (
         <Pressable onPress={props.onCancel}>
           <Text style={[styles.cancel, {width: cancelWidth, height: height, lineHeight: height}]}>
             取消
@@ -53,11 +61,13 @@ Search.propTypes = {
   onChangeText: PropTypes.func,
   cancelWidth: PropTypes.number,
   getRef: PropTypes.func,
+  cancel: PropTypes.bool,
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
     paddingTop: RFValue(6),
     paddingBottom: RFValue(6),

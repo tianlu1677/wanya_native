@@ -136,6 +136,7 @@ const AddSpace = props => {
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多场地位置"
           onChangeText={debounce(onChangeText, 500)}
+          cancel={true}
           onCancel={() => navigation.goBack()}
           prefix={
             <Pressable style={styles.proCity} onPress={goChooseCity}>

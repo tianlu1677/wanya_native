@@ -38,6 +38,7 @@ const AddHashTag = ({navigation}) => {
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多话题"
           onChangeText={text => setSearchKey(text)}
+          cancel={true}
           onCancel={() => navigation.goBack()}
         />
 

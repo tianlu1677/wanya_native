@@ -55,6 +55,7 @@ const MentionAccounts = ({navigation, route}) => {
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多顽友"
           onChangeText={text => setSearchKey(text)}
+          cancel={true}
           onCancel={() => goBack()}
         />
 

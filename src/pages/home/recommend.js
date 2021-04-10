@@ -8,6 +8,7 @@ import IconFont from '@/iconfont';
 import {SAFE_TOP} from '@/utils/navbar';
 import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
 import {Search, BadgeMessage} from '@/components/NodeComponents';
+import FastImg from '@/components/FastImg';
 import MediasPicker from '@/components/MediasPicker';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
@@ -36,7 +37,7 @@ const Recommend = props => {
   const [inputRef, setinputRef] = useState(null);
   const [currentKey, setCurrentKey] = useState('recommend');
 
-  const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const {currentBaseInfo, currentAccount} = useSelector(state => state.account);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
 
@@ -99,10 +100,10 @@ const Recommend = props => {
   });
 
   const UnreadMessageCount = () => {
-    if (!currentAccount || currentAccount.new_message_count === 0) {
+    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
     }
-    return currentAccount.new_message_count;
+    return currentBaseInfo.new_message_count;
   };
 
   const onChange = async key => {
@@ -154,28 +155,24 @@ const Recommend = props => {
         <FocusAwareStatusBar barStyle="light-content" translucent={false} />
         <Search
           getRef={refs => setinputRef(refs)}
-          style={{backgroundColor: '#000'}}
+          style={{backgroundColor: '#000', paddingRight: RFValue(14)}}
           inputStyle={{borderRadius: RFValue(18), backgroundColor: '#fff'}}
           height={RFValue(38)}
           placeholderTextColor="#000"
           placeholder="搜索帖子、文章、圈子等内容"
+          cancel={false}
           onFocus={() => {
             inputRef.blur();
             props.navigation.push('SearchIndex');
-          }}>
-          <Pressable
-            style={styles.message}
-            onPress={() => props.navigation.navigate('NotifyIndex')}>
-            <View style={styles.message_icon}>
-              <IconFont name="notice" color={'white'} size={20} />
-              <BadgeMessage
-                size={'small'}
-                value={UnreadMessageCount()}
-                containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
-              />
-            </View>
-          </Pressable>
-        </Search>
+          }}
+          prefix={
+            <Pressable
+              style={{marginRight: RFValue(14)}}
+              onPress={() => props.navigation.openDrawer()}>
+              <FastImg style={styles.avator} source={{uri: currentAccount.avatar_url}} />
+            </Pressable>
+          }
+        />
 
         {channels.length > 0 && (
           <View style={styles.wrapper}>
@@ -342,6 +339,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 10,
     marginTop: 8,
+  },
+  avator: {
+    width: RFValue(30),
+    height: RFValue(30),
+    borderRadius: RFValue(15),
   },
 });
 
