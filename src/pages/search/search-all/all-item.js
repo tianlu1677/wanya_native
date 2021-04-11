@@ -32,14 +32,14 @@ const Node = props => (
 
 const Space = props => (
   <View key={props.item.id}>
-    <BaseSpace data={props.item} />
+    <BaseSpace data={props.item} type="list" />
     {props.meta.total_count >= 3 && <Text style={styles.separator} />}
   </View>
 );
 
 const Hashtag = props => (
   <View key={props.item.name}>
-    <BaseHashtag data={props.item} />
+    <BaseHashtag data={props.item} type="list" />
     {props.meta.total_count >= 3 && <Text style={styles.separator} />}
   </View>
 );
