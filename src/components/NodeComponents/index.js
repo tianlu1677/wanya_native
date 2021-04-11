@@ -12,6 +12,7 @@ import {Loading} from './Modal';
 import BottomModalNode from './BottomModal';
 import BlurViewNode from './BlurViewComponent';
 import CategoryDrawerNode from './CategoryDrawer';
+import RecommendSearchNode from './RecommendSearch';
 
 export const PlayScore = PlayScoreNode;
 export const Avator = AvatorNode;
@@ -27,3 +28,4 @@ export const CustomizeHeader = CustomizeHeaderNode;
 export const BottomModal = BottomModalNode;
 export const BlurView = BlurViewNode;
 export const CategoryDrawer = CategoryDrawerNode;
+export const RecommendSearch = RecommendSearchNode;

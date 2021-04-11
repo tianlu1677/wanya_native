@@ -26,7 +26,7 @@ const PhoneLogin = ({navigation, route}) => {
 
   const downTimeRunner = () => {
     var timeo = 59;
-    var timeStop = setInterval(function () {
+    var timeStop = setInterval(function() {
       timeo--;
       if (timeo >= 1) {
         let text = `重新获取(${timeo}s)`;
@@ -129,6 +129,7 @@ const PhoneLogin = ({navigation, route}) => {
         shadowOpacity: 0,
         borderBottomWidth: 0,
       },
+      headerLeftContainerStyle: {paddingLeft: 15},
       headerBackImage: () => (
         <Image
           source={require('../../assets/images/back-white.png')}

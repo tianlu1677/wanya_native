@@ -1,14 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
-import {SAFE_TOP} from '@/utils/navbar';
-import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
-import {Search, BadgeMessage} from '@/components/NodeComponents';
-import FastImg from '@/components/FastImg';
+import {RecommendSearch} from '@/components/NodeComponents';
 import MediasPicker from '@/components/MediasPicker';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
@@ -34,10 +31,9 @@ import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
-  const [inputRef, setinputRef] = useState(null);
   const [currentKey, setCurrentKey] = useState('recommend');
 
-  const {currentBaseInfo, currentAccount} = useSelector(state => state.account);
+  const {currentBaseInfo} = useSelector(state => state.account);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
 
@@ -145,35 +141,13 @@ const Recommend = props => {
   return (
     <>
       <View style={{flex: 1, position: 'relative'}}>
-        <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
+        <RecommendSearch />
         {uploadStatus ? (
           <View style={[styles.uploadWrap]}>
             <UploadTopic />
             <CallBackVideo />
           </View>
         ) : null}
-        <FocusAwareStatusBar barStyle="light-content" translucent={false} />
-        <Search
-          getRef={refs => setinputRef(refs)}
-          style={{backgroundColor: '#000', paddingRight: RFValue(14)}}
-          inputStyle={{borderRadius: RFValue(18), backgroundColor: '#fff'}}
-          height={RFValue(38)}
-          placeholderTextColor="#000"
-          placeholder="搜索帖子、文章、圈子等内容"
-          cancel={false}
-          onFocus={() => {
-            inputRef.blur();
-            props.navigation.push('SearchIndex');
-          }}
-          prefix={
-            <Pressable
-              style={{marginRight: RFValue(14)}}
-              onPress={() => props.navigation.openDrawer()}>
-              <FastImg style={styles.avator} source={{uri: currentAccount.avatar_url}} />
-            </Pressable>
-          }
-        />
-
         {channels.length > 0 && (
           <View style={styles.wrapper}>
             <TabViewList
