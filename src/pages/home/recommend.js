@@ -10,7 +10,6 @@ import MediasPicker from '@/components/MediasPicker';
 import TabViewList from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-import {RFValue} from '@/utils/response-fontsize';
 import {getChannelPosts} from '@/api/home_api';
 import {recordDeviceInfo} from '@/api/settings_api';
 import {syncDeviceToken} from '@/api/app_device_api';
@@ -31,11 +30,9 @@ import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
-  const [currentKey, setCurrentKey] = useState('recommend');
-
-  const {currentBaseInfo} = useSelector(state => state.account);
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
+  const [currentKey, setCurrentKey] = useState('recommend');
 
   const MemoVideo = React.memo(() => {
     const {content} = uploadStatus;
@@ -95,13 +92,6 @@ const Recommend = props => {
     };
   });
 
-  const UnreadMessageCount = () => {
-    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
-      return 0;
-    }
-    return currentBaseInfo.new_message_count;
-  };
-
   const onChange = async key => {
     const {location} = home;
     if (key === 'nearby' && (!location.latitude || !location.longitude)) {
@@ -157,6 +147,7 @@ const Recommend = props => {
               currentKey={currentKey}
               onChange={onChange}
               size="small"
+              lineColor="#FF2242"
               tabData={[
                 {
                   key: 'follow',
@@ -189,62 +180,10 @@ const Recommend = props => {
 };
 
 const styles = StyleSheet.create({
-  badgeContainer: {
-    position: 'absolute',
-    top: -5,
-  },
   wrapper: {
     flex: 1,
     position: 'relative',
     backgroundColor: 'white',
-  },
-  message: {
-    width: 50,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  nodeView: {
-    backgroundColor: '#fff',
-    paddingLeft: 14,
-    paddingTop: 12,
-    paddingBottom: 7,
-    marginBottom: 9,
-  },
-  nodeWrap: {
-    width: 56,
-    marginRight: 15,
-  },
-  nodeImg: {
-    width: 56,
-    height: 56,
-  },
-  nodeName: {
-    fontSize: 11,
-    marginTop: 5,
-    width: 60,
-    maxHeight: 18,
-    minHeight: 16,
-    height: 18,
-    lineHeight: 18,
-    textAlign: 'center',
-    fontWeight: '300',
-  },
-  nodeSelf: {
-    width: 34,
-    height: 18,
-    lineHeight: 18,
-    textAlign: 'center',
-    borderRadius: 9,
-    overflow: 'hidden',
-    backgroundColor: '#000',
-    opacity: 0.7,
-    color: '#FFFF00',
-    fontSize: 10,
-    position: 'absolute',
-    bottom: 0,
-    left: '50%',
-    marginLeft: -17,
   },
   uploadWrap: {
     width: 72,
@@ -313,11 +252,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 10,
     marginTop: 8,
-  },
-  avator: {
-    width: RFValue(30),
-    height: RFValue(30),
-    borderRadius: RFValue(15),
   },
 });
 

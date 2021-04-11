@@ -113,6 +113,7 @@ const DiscoveryIndex = () => {
           request={currentKey}
           onChange={key => setCurrentKey(key)}
           size="small"
+          lineColor="#FF2242"
           tabData={listData.map(category => {
             return {
               key: category.category_name,

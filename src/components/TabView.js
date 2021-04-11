@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Dimensions, View, Text} from 'react-native';
-import {useSelector} from 'react-redux';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import PropTypes from 'prop-types';
 import TabList from './TabList';
@@ -58,6 +57,7 @@ const TabViewIndex = props => {
             bottomLine={props.bottomLine}
             center={props.center}
             separator={props.separator}
+            lineColor={props.lineColor}
           />
         )}
         navigationState={{index, routes}}

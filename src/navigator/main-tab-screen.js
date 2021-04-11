@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Platform, Dimensions} from 'react-native';
+import {View, Pressable, StyleSheet, Platform, Dimensions} from 'react-native';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -7,7 +7,7 @@ import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
-import {BottomModal, BlurView} from '@/components/NodeComponents';
+import {BottomModal, BlurView, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
 import NotifyIndex from '@/pages/notify/notify-index';
 import Recommend from '@/pages/home/recommend';
@@ -63,6 +63,7 @@ const PublishModal = props => {
 
 const MainTabScreen = props => {
   const dispatch = useDispatch();
+  const {currentBaseInfo} = useSelector(state => state.account);
   const [visible, setVisible] = useState(false);
 
   const RenderImage = (name, focused) => {
@@ -74,6 +75,13 @@ const MainTabScreen = props => {
       case 'Discovery':
         return focused ? discoveryActive : discovery;
     }
+  };
+
+  const UnreadMessageCount = () => {
+    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
+      return 0;
+    }
+    return currentBaseInfo.new_message_count;
   };
 
   return (
@@ -90,35 +98,51 @@ const MainTabScreen = props => {
             <BottomTabBar {...barprops} />
           </BlurView>
         )}
-        screenOptions={({route}) => ({
+        screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
-            const style = {width: 35, height: 16};
-            return <FastImg source={RenderImage(route.name, focused)} style={style} />;
+            const style =
+              route.name === 'Recommend' && focused
+                ? {width: 37, height: 26}
+                : {width: 34, height: 16};
+
+            return route.name === 'NotifyIndex' ? (
+              <View style={{position: 'relative'}}>
+                <BadgeMessage
+                  size={'small'}
+                  value={UnreadMessageCount()}
+                  containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -22 : -12}]}
+                />
+                <FastImg source={RenderImage(route.name, focused)} style={style} />
+              </View>
+            ) : (
+              <FastImg source={RenderImage(route.name, focused)} style={style} />
+            );
           },
         })}
         tabBarOptions={{
           showLabel: false,
           tabStyle: {height: RFValue(50)},
           style: {
-            backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'green',
+            backgroundColor: Platform.OS === 'ios' ? 'transparent' : '#eee',
             borderTopWidth: 0,
             height: RFValue(50),
           },
         }}>
-        <Tab.Screen name="NotifyIndex" component={NotifyIndex} options={{}} />
+        <Tab.Screen name="NotifyIndex" component={NotifyIndex} />
         <Tab.Screen
           name="Recommend"
           component={Recommend}
           options={{gestureEnabled: false}}
-          // listeners={a => ({
-          //   tabPress: async e => {
-          //     e.preventDefault();
-          //     console.log(1, a);
-          //     setVisible(true);
-          //     const res = await draftTheory();
-          //     dispatch({type: action.UPDATE_THEORY, value: res.theory ? res.theory : {}});
-          //   },
-          // })}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              if (navigation.isFocused()) {
+                e.preventDefault();
+                setVisible(true);
+                const res = await draftTheory();
+                dispatch({type: action.UPDATE_THEORY, value: res.theory ? res.theory : {}});
+              }
+            },
+          })}
         />
         <Tab.Screen name="Discovery" component={Discovery} options={{}} />
       </Tab.Navigator>
@@ -142,6 +166,10 @@ const styles = StyleSheet.create({
   closeModal: {
     marginTop: RFValue(25),
     paddingBottom: RFValue(30),
+  },
+  badge: {
+    position: 'absolute',
+    top: -5,
   },
 });
 
