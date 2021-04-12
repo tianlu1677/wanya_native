@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
@@ -9,8 +9,9 @@ import {getAppCardList} from '@/api/discovery_api';
 
 const CategoryComponent = props => {
   const {
-    category: {movement, space, activity, shop_store, shop_brand},
+    navigation,
     currentKey,
+    category: {movement, space, activity, shop_store, shop_brand},
   } = props;
 
   return (
@@ -44,7 +45,7 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/*  activity*/}
-      <View style={styles.slideItem}>
+      <Pressable style={styles.slideItem} onPress={() => navigation.navigate('Activity')}>
         <FastImg source={require('@/assets/discovery/activity.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/activity_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -54,7 +55,7 @@ const CategoryComponent = props => {
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
-      </View>
+      </Pressable>
       <View style={styles.separator} />
 
       {/*  shop_store*/}
@@ -88,7 +89,7 @@ const CategoryComponent = props => {
   );
 };
 
-const DiscoveryIndex = () => {
+const DiscoveryIndex = props => {
   const [currentKey, setCurrentKey] = useState(null);
   const [listData, setListData] = useState([]);
 
@@ -118,7 +119,9 @@ const DiscoveryIndex = () => {
             return {
               key: category.category_name,
               title: category.category_name,
-              component: () => <CategoryComponent category={category} currentKey={currentKey} />,
+              component: () => (
+                <CategoryComponent {...props} category={category} currentKey={currentKey} />
+              ),
             };
           })}
         />

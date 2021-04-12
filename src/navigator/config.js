@@ -41,6 +41,10 @@ import HashtagDetail from '@/pages/hashtags/hashtag-detail';
 // Location
 import LocationDetail from '@/pages/location/location-detail';
 
+// activity
+import Activity from '@/pages/activities/activity';
+import ActivityDetail from '@/pages/activities/activity-detail';
+
 // 我的页面
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
@@ -237,6 +241,23 @@ const spaceRouter = [
       title: '场地详情',
       headerShown: false,
     },
+  },
+];
+
+const activityRouter = [
+  {
+    name: 'Activity',
+    component: Activity,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '活动'},
+  },
+  {
+    name: 'ActivityDetail',
+    component: ActivityDetail,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: '活动详情'},
   },
 ];
 
@@ -485,6 +506,7 @@ export const routers = [
   ...theoryRouter,
   ...articleRouter,
   ...spaceRouter,
+  ...activityRouter,
   ...nodeRouter,
   ...locationRouter,
   ...accountRouter,

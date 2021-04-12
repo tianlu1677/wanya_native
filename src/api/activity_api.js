@@ -1,68 +1,67 @@
-import request from './request'
+import request from './request';
 
 // 活动列表
-export async function getActivityList(data) {
+export const getActivityList = async params => {
   const res = await request({
-    url: `/api/v1/activities`,
+    url: '/api/v1/activities',
     method: 'GET',
-    params: data
-  })
-  return res.data
-}
+    params,
+  });
+  return res;
+};
+
+// 活动详情
+export const getActivityDetail = async id => {
+  const res = await request({
+    url: `/api/v1/activities/${id}`,
+    method: 'GET',
+  });
+  return res;
+};
+
+// 参与活动
+export const joinActivity = async id => {
+  const res = await request({
+    url: `/api/v1/activities/${id}/joined`,
+    method: 'POST',
+  });
+  return res;
+};
+
+// 退出活动
+export const exitActivity = async id => {
+  const res = await request({
+    url: `/api/v1/activities/${id}/exit`,
+    method: 'POST',
+  });
+  return res;
+};
+
+// 参与活动列表
+export const joinAccountsActivity = async id => {
+  const res = await request({
+    url: `/api/v1/activities/${id}/join_accounts`,
+    method: 'GET',
+  });
+  return res;
+};
 
 // 创建活动
 export async function createActivity(data = {}) {
   const res = await request({
     url: '/api/v1/activities',
     method: 'POST',
-    data
-  })
-  return res.data
+    data,
+  });
+  return res.data;
 }
+
 // 修改活动
 export async function editActivity(id, data) {
   const res = await request({
     url: `/api/v1/activities/${id}`,
     method: 'PUT',
-    data
-  })
-  return res.data
-}
-
-// 活动详情
-export async function getActivity(id) {
-  const res = await request({
-    url: `/api/v1/activities/${id}`,
-    method: 'GET'
-  })
-  return res.data
-}
-
-// 参与活动
-export async function joinActivity(id, data) {
-  const res = await request({
-    url: `/api/v1/activities/${id}/joined`,
-    method: 'POST',
-    data: data
-  })
-  return res.data
-}
-
-// 退出活动
-export async function exitActivity(id, data) {
-  const res = await request({
-    url: `/api/v1/activities/${id}/exit`,
-    method: 'POST',
-    data: data
-  })
-  return res.data
-}
-
-// 参与活动列表
-export async function joinAccountsActivity(id) {
-  const res = await request({
-    url: `/api/v1/activities/${id}/join_accounts`,
-    method: 'GET'
-  })
-  return res.data
+    data,
+  });
+  return res.data;
 }
