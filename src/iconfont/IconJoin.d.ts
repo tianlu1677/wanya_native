@@ -10,6 +10,6 @@ interface Props extends GProps, ViewProps {
   color?: string | string[];
 }
 
-declare const IconBaomingcanjia: FunctionComponent<Props>;
+declare const IconJoin: FunctionComponent<Props>;
 
-export default IconBaomingcanjia;
+export default IconJoin;

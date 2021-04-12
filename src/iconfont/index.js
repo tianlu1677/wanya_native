@@ -35,7 +35,7 @@ import IconUpper from './IconUpper';
 import IconDown from './IconDown';
 import IconCalendar from './IconCalendar';
 import IconPeople from './IconPeople';
-import IconBaomingcanjia from './IconBaomingcanjia';
+import IconJoin from './IconJoin';
 import IconDoubleCircle from './IconDoubleCircle';
 import IconWhiteCircle from './IconWhiteCircle';
 import IconBackdown from './IconBackdown';
@@ -156,8 +156,8 @@ let IconFont = ({ name, ...rest }) => {
       return <IconCalendar key="32" {...rest} />;
     case 'people':
       return <IconPeople key="33" {...rest} />;
-    case 'baomingcanjia':
-      return <IconBaomingcanjia key="34" {...rest} />;
+    case 'join':
+      return <IconJoin key="34" {...rest} />;
     case 'double-circle':
       return <IconDoubleCircle key="35" {...rest} />;
     case 'white-circle':

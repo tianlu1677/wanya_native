@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
@@ -8,15 +9,12 @@ import IconFont from '@/iconfont';
 import {Avator, JoinAccounts} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {getActivityDetail, joinAccountsActivity, exitActivity} from '@/api/activity_api';
-
 import wxIcon from '@/assets/images/wx-icon.png';
 
 const ActivityDetail = props => {
+  const dispatch = useDispatch();
   const {route, navigation} = props;
   const activityId = route.params.activityId;
-  const account = useSelector(state => state.account);
-
-  console.log('account', account);
   const {currentAccount} = useSelector(state => state.account);
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
@@ -53,6 +51,16 @@ const ActivityDetail = props => {
     navigation.navigate('WebView', {sourceUrl: detail.out_link_url});
   };
 
+  const onReviewImage = () => {
+    const data = {index: 0, visible: true, images: [{url: detail.cover_url}]};
+    dispatch(dispatchPreviewImage(data));
+  };
+
+  const onIntroImagePreview = index => {
+    const data = {index, visible: true, images: detail.medias};
+    dispatch(dispatchPreviewImage(data));
+  };
+
   const overTime = () => {
     const finish = new Date(detail.finish_at).getTime();
     const date = new Date().getTime();
@@ -66,11 +74,14 @@ const ActivityDetail = props => {
     loadData();
   }, []);
 
-  console.log('detail', detail, joinAccounts);
+  console.log('detail', detail);
+
   return detail ? (
-    <View style={styles.wrapper}>
+    <ScrollView style={styles.wrapper}>
       <View style={styles.header}>
-        <FastImg source={{uri: detail.cover_url}} styles={styles.cover_url} />
+        <Pressable onPress={onReviewImage}>
+          <FastImg source={{uri: detail.cover_url}} styles={styles.cover_url} />
+        </Pressable>
         <View style={styles.infoWrapper}>
           <Text style={styles.name} numberOfLines={2}>
             {detail.name}
@@ -108,31 +119,35 @@ const ActivityDetail = props => {
         </View>
       </View>
       <View style={styles.slideWrapper}>
+        {/* 活动场地 */}
         {detail.activity_way === 'on_space' && (
           <View style={styles.slide}>
-            <IconFont name="space-point" size={16} color="#000" />
+            <IconFont name="space-point" size={RFValue(15)} color="#000" />
             <Text style={styles.slideTitle}>活动场地</Text>
             <Text style={styles.slideValue}>{detail.space.name}</Text>
             <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
           </View>
         )}
+        {/* 活动时间 */}
         <View style={styles.slide}>
-          <IconFont name="space-point" size={16} color="#000" />
+          <IconFont name="calendar" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动时间</Text>
           <Text style={styles.slideValue}>
             {detail.start_at_text} - {detail.finish_at_text}
           </Text>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
+        {/* 活动人数 */}
         {detail.max_limit_people > 0 && (
           <View style={styles.slide}>
-            <IconFont name="space-point" size={16} color="#000" />
+            <IconFont name="people" size={RFValue(16)} color="#000" />
             <Text style={styles.slideTitle}>活动人数</Text>
             <Text style={styles.slideValue}>{detail.max_limit_people}</Text>
           </View>
         )}
+        {/* 报名参加 */}
         <View style={styles.slide}>
-          <IconFont name="space-point" size={16} color="#000" />
+          <IconFont name="join" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>报名参加</Text>
           <View style={[styles.slideValue, {flexDirection: 'row', alignItems: 'center'}]}>
             <JoinAccounts accounts={joinAccounts} size={25} />
@@ -140,8 +155,36 @@ const ActivityDetail = props => {
           </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
+        {/* 活动标签 */}
+        <View style={styles.slide}>
+          <IconFont name="biaoqian" size={RFValue(16)} color="#000" />
+          <Text style={styles.slideTitle}>活动标签</Text>
+          <View style={[styles.slideValue, styles.tagWrapper]}>
+            {[...detail.tag_list, '你好吗', '奖品丰厚', '你好吗'].map((tag, index) => {
+              return (
+                <Text style={styles.tag} key={index}>
+                  {tag}
+                </Text>
+              );
+            })}
+          </View>
+          <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
+        </View>
       </View>
-    </View>
+      <Text style={styles.intro}>活动简介</Text>
+      <View style={styles.speator} />
+      <Text style={styles.introContent}>{detail.intro}</Text>
+      <View style={styles.imageWrapper}>
+        {detail.medias.map((media, index) => (
+          <Pressable
+            onPress={() => onIntroImagePreview(index)}
+            style={{marginTop: 10}}
+            key={media.id}>
+            <FastImg source={{uri: media.url}} style={styles.introImage} />
+          </Pressable>
+        ))}
+      </View>
+    </ScrollView>
   ) : (
     <Loading />
   );
@@ -151,7 +194,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 14,
     paddingTop: 14,
   },
   cover_url: {
@@ -160,6 +202,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    paddingHorizontal: 14,
   },
   infoWrapper: {
     flex: 1,
@@ -212,6 +255,7 @@ const styles = StyleSheet.create({
   },
   slideWrapper: {
     paddingTop: RFValue(13),
+    paddingHorizontal: 14,
   },
   slide: {
     height: RFValue(50),
@@ -233,6 +277,47 @@ const styles = StyleSheet.create({
   slideRight: {
     position: 'absolute',
     right: 0,
+  },
+  tagWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    marginLeft: 15,
+    overflow: 'hidden',
+  },
+  tag: {
+    height: RFValue(20),
+    lineHeight: RFValue(20),
+    paddingHorizontal: 8,
+    fontSize: 10,
+    color: '#FF8D00',
+    borderWidth: 1,
+    borderColor: '#FF8D00',
+    borderRadius: 2,
+    marginRight: 7,
+  },
+  intro: {
+    height: RFValue(45),
+    lineHeight: RFValue(45),
+    fontWeight: '500',
+    paddingLeft: 14,
+  },
+  speator: {
+    height: 9,
+    backgroundColor: '#fafafa',
+  },
+  introContent: {
+    paddingHorizontal: 14,
+    paddingTop: 12,
+    lineHeight: RFValue(22),
+  },
+  imageWrapper: {
+    paddingHorizontal: 14,
+    flexDirection: 'column',
+  },
+  introImage: {
+    width: '100%',
+    height: 200,
   },
 });
 
