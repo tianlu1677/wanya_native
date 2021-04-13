@@ -10,7 +10,7 @@ import {
   JoinActivity,
   BottomModal,
   CustomizeHeader,
-  GoBack
+  GoBack,
 } from '@/components/NodeComponents';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';

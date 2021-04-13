@@ -19,17 +19,8 @@ export const getShopStoreDetail = async id => {
   return res;
 };
 
-// store 取消收藏
-export const shopStoreExit = async id => {
-  const res = await request({
-    url: `/api/v1/shop_stores/${id}/exit`,
-    method: 'POST',
-  });
-  return res;
-};
-
-// store 收藏
-export const shopStoreJoined = async id => {
+// store收藏
+export const getShopStoreJoined = async id => {
   const res = await request({
     url: `/api/v1/shop_stores/${id}/joined`,
     method: 'POST',
@@ -37,17 +28,25 @@ export const shopStoreJoined = async id => {
   return res;
 };
 
-// store 收藏人员
-export const getShopStoreJoinAccounts = async (id, params) => {
+// store取消收藏
+export const getShopStoreExit = async id => {
   const res = await request({
-    url: `/api/v1/shop_stores/${id}/joined_accounts`,
-    method: 'GET',
-    params,
+    url: `/api/v1/shop_stores/${id}/exit`,
+    method: 'POST',
   });
   return res;
 };
 
-// 动态
+// store收藏用户
+export const getShopStoreJoinAccounts = async (id, params) => {
+  const res = await request({
+    url: `/api/v1/shop_stores/${id}/joined_accounts`,
+    method: 'GET',
+  });
+  return res;
+};
+
+// store详情动态
 export const getShopStorePosts = async params => {
   const res = await request({
     url: `/api/v1/shop_stores/${params.id}/posts`,
@@ -57,7 +56,7 @@ export const getShopStorePosts = async params => {
   return res;
 };
 
-//帖子
+// store详情帖子
 export const getShopStoreTopics = async params => {
   const res = await request({
     url: `/api/v1/shop_stores/${params.id}/topics`,
@@ -67,7 +66,7 @@ export const getShopStoreTopics = async params => {
   return res;
 };
 
-//文章
+// store详情文章
 export const getShopStoreArticles = async params => {
   const res = await request({
     url: `/api/v1/shop_stores/${params.id}/articles`,

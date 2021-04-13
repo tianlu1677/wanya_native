@@ -33,7 +33,8 @@ import CreateNodeType from '@/pages/nodes/create-node-type';
 import CreateNodeResult from '@/pages/nodes/create-node-result';
 
 // 场地
-import SpaceDetail from '@/pages/space/space-detail';
+import Space from '@/pages/spaces/space';
+import SpaceDetail from '@/pages/spaces/space-detail';
 
 // 话题
 import HashtagDetail from '@/pages/hashtags/hashtag-detail';
@@ -45,9 +46,17 @@ import LocationDetail from '@/pages/location/location-detail';
 import Activity from '@/pages/activities/activity';
 import ActivityDetail from '@/pages/activities/activity-detail';
 
+// movement
+import Movement from '@/pages/movements/movement';
+import MovementDetail from '@/pages/movements/movement-detail';
+
 // van store
 import ShopStore from '@/pages/shopStores/shop-store';
 import ShopStoreDetail from '@/pages/shopStores/shop-store-detail';
+
+// shopbarnd
+import ShopBrand from '@/pages/shopBrands/shop-brand';
+import ShopBrandDetail from '@/pages/shopBrands/shop-brand-detail';
 
 // 我的页面
 import Settings from '@/pages/mine/settings';
@@ -238,6 +247,12 @@ const articleRouter = [
 
 const spaceRouter = [
   {
+    name: 'Space',
+    component: Space,
+    safeArea: false,
+    options: {title: '场地列表'},
+  },
+  {
     name: 'SpaceDetail',
     component: SpaceDetail,
     safeArea: false,
@@ -265,6 +280,23 @@ const activityRouter = [
   },
 ];
 
+const movementRouter = [
+  {
+    name: 'Movement',
+    component: Movement,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: 'Movement'},
+  },
+  {
+    name: 'MovementDetail',
+    component: MovementDetail,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: 'MovementDetail'},
+  },
+];
+
 const shopStoreRouter = [
   {
     name: 'ShopStore',
@@ -279,6 +311,23 @@ const shopStoreRouter = [
     safeArea: false,
     barColor: 'dark',
     options: {title: 'Van Store详情'},
+  },
+];
+
+const shopBrandRouter = [
+  {
+    name: 'ShopBrand',
+    component: ShopBrand,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: 'ShopBrand'},
+  },
+  {
+    name: 'ShopBrandDetail',
+    component: ShopBrandDetail,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: 'ShopBrand详情'},
   },
 ];
 
@@ -528,7 +577,9 @@ export const routers = [
   ...articleRouter,
   ...spaceRouter,
   ...activityRouter,
+  ...movementRouter,
   ...shopStoreRouter,
+  ...shopBrandRouter,
   ...nodeRouter,
   ...locationRouter,
   ...accountRouter,

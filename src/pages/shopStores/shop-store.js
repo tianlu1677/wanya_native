@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import ShopstoreList from '@/components/List/shop-store-list';
+import ShopStoreList from '@/components/List/shop-store-list';
 import {getShopStores} from '@/api/shop_store_api';
 
-const Shopstore = props => {
+const ShopStore = props => {
   const [request] = useState({api: getShopStores});
 
   return (
     <View>
-      <ShopstoreList request={request} />
+      <ShopStoreList request={request} />
     </View>
   );
 };
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Shopstore;
+export default ShopStore;

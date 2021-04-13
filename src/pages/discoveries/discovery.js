@@ -17,7 +17,9 @@ const CategoryComponent = props => {
   return (
     <View style={styles.content}>
       {/* movement */}
-      <View style={styles.slideItem}>
+      <Pressable
+        style={styles.slideItem}
+        onPress={() => navigation.navigate('Movement', {category: currentKey})}>
         <FastImg source={require('@/assets/discovery/movement.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/movement_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -27,11 +29,13 @@ const CategoryComponent = props => {
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
-      </View>
+      </Pressable>
       <View style={styles.separator} />
 
       {/* space */}
-      <View style={styles.slideItem}>
+      <Pressable
+        style={styles.slideItem}
+        onPress={() => navigation.navigate('Space', {category: currentKey})}>
         <FastImg source={require('@/assets/discovery/space.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/space_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -41,7 +45,7 @@ const CategoryComponent = props => {
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
-      </View>
+      </Pressable>
       <View style={styles.separator} />
 
       {/*  activity*/}
