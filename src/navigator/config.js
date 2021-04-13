@@ -45,6 +45,10 @@ import LocationDetail from '@/pages/location/location-detail';
 import Activity from '@/pages/activities/activity';
 import ActivityDetail from '@/pages/activities/activity-detail';
 
+// van store
+import ShopStore from '@/pages/shopStores/shop-store';
+import ShopStoreDetail from '@/pages/shopStores/shop-store-detail';
+
 // 我的页面
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
@@ -258,6 +262,23 @@ const activityRouter = [
     safeArea: false,
     barColor: 'dark',
     options: {title: '活动详情'},
+  },
+];
+
+const shopStoreRouter = [
+  {
+    name: 'ShopStore',
+    component: ShopStore,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: 'Van Store'},
+  },
+  {
+    name: 'ShopStoreDetail',
+    component: ShopStoreDetail,
+    safeArea: false,
+    barColor: 'dark',
+    options: {title: 'Van Store详情'},
   },
 ];
 
@@ -507,6 +528,7 @@ export const routers = [
   ...articleRouter,
   ...spaceRouter,
   ...activityRouter,
+  ...shopStoreRouter,
   ...nodeRouter,
   ...locationRouter,
   ...accountRouter,

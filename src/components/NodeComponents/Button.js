@@ -27,7 +27,10 @@ const JoinStyles = StyleSheet.create({
 export const JoinBtn = props => {
   return (
     <Text
-      style={[JoinStyles.btn, props.join ? JoinStyles.joined : JoinStyles.join]}
+      style={[
+        JoinStyles.btn,
+        props.join ? props.joinedStyle || JoinStyles.joined : props.joineStyle || JoinStyles.join,
+      ]}
       onPress={props.onPress}>
       {props.text}
     </Text>

@@ -59,7 +59,7 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/*  shop_store*/}
-      <View style={styles.slideItem}>
+      <Pressable style={styles.slideItem} onPress={() => navigation.navigate('ShopStore')}>
         <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/shop_store_text.png')} style={styles.store} />
         <View style={styles.itemRight}>
@@ -69,7 +69,7 @@ const CategoryComponent = props => {
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
-      </View>
+      </Pressable>
       <View style={styles.separator} />
 
       {/* shop_brand */}

@@ -4,29 +4,16 @@ import {useNavigation} from '@react-navigation/native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
-import {Avator} from '@/components/NodeComponents';
-import PersonImg from '@/assets/images/personal.png';
-import BrandImg from '@/assets/images/brand.png';
 
-const BaseActivity = props => {
+const BaseShopstore = props => {
   const navigation = useNavigation();
 
   const {
-    data: {
-      id,
-      cover_url,
-      name,
-      account: {nickname, settled_type},
-      activity_way,
-      space,
-      start_at,
-      finish_at,
-      tags,
-    },
+    data: {id, cover_url, name, address, store_type, distance, tags},
   } = props;
 
   const goDetail = () => {
-    navigation.navigate('ActivityDetail', {activityId: id});
+    navigation.navigate('ShopStoreDetail', {shopStoreId: id});
   };
 
   return (
@@ -34,21 +21,22 @@ const BaseActivity = props => {
       <FastImg source={{uri: cover_url}} style={styles.image} />
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{name}</Text>
-        <View style={styles.accountWrapper}>
-          <Avator account={props.data.account} size={RFValue(20)} isShowSettledIcon={false} />
-          <Text style={styles.nickname}>{nickname}</Text>
-          {settled_type === 'personal' && <FastImg style={styles.settledIcon} source={PersonImg} />}
-          {settled_type === 'brand' && <FastImg style={styles.settledIcon} source={BrandImg} />}
-        </View>
         <View style={styles.addressWrapper}>
-          <IconFont name="space-point" size={12} color={'#9C9C9C'} />
-          {['on_space', 'on_website'].includes(activity_way) && (
-            <Text style={styles.addressName}>
-              {activity_way === 'on_space' && space ? space.name : '线上活动'}
-            </Text>
+          {store_type === 'entity' && (
+            <IconFont name="space-point" size={12} color={'#9C9C9C'} style={styles.spaceIcon} />
           )}
+          <Text style={styles.addressName} numberOfLines={2}>
+            {store_type === 'entity' && address}
+            {store_type === 'website' && '网店'}
+          </Text>
+          <Text style={styles.distance}>
+            {store_type === 'entity' && distance > 0
+              ? distance > 1000
+                ? `${(distance / 1000).toFixed(1)}km`
+                : `${distance}m`
+              : ''}
+          </Text>
         </View>
-        <Text style={styles.time}>{`${start_at} - ${finish_at}`}</Text>
         <View style={styles.tagWrapper}>
           {tags.map(tag => (
             <Text style={styles.tag} key={tag.id}>
@@ -76,40 +64,34 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   name: {
-    fontSize: 16,
+    fontSize: 18,
+    lineHeight: 23,
     fontWeight: '500',
-  },
-  accountWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: RFValue(10),
-  },
-  nickname: {
-    marginHorizontal: 5,
-  },
-  settledIcon: {
-    width: RFValue(10),
-    height: RFValue(10),
   },
   addressWrapper: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: RFValue(7),
+    marginTop: RFValue(10),
+  },
+  spaceIcon: {
+    marginTop: 3,
+    marginRight: 5,
   },
   addressName: {
+    flex: 1,
+    lineHeight: 20,
     color: '#9C9C9C',
-    marginLeft: 5,
     fontSize: 12,
   },
-  time: {
-    color: '#9C9C9C',
+  distance: {
+    width: 70,
     fontSize: 12,
-    marginTop: RFValue(7),
+    lineHeight: 20,
+    textAlign: 'right',
   },
   tagWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: RFValue(7),
+    marginTop: RFValue(10),
   },
   tag: {
     height: RFValue(20),
@@ -129,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BaseActivity;
+export default BaseShopstore;
