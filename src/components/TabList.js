@@ -100,7 +100,7 @@ const TabList = props => {
                     style={[
                       tabBarStyle.tabLine,
                       currentIndex === index && tabBarStyle[`lineActive${size}`],
-                      {backgroundColor: props.lineColor || null},
+                      {backgroundColor: props.lineColor || '#000'},
                     ]}
                   />
                 )}

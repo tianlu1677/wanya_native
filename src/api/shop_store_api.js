@@ -47,99 +47,32 @@ export const getShopStoreJoinAccounts = async (id, params) => {
   return res;
 };
 
-// export async function getShopStoreJoinAccounts(id) {
-//   const res = await request({
-//     url: `/api/v1/shop_stores/${id}/joined_accounts`,
-//     method: 'GET',
-//   });
-//   return res;
-// }
-
-// export async function getShopStoreDetail(id) {
-//   const res = await request({
-//     url: `/api/v1/shop_stores/${id}`,
-//     method: 'GET',
-//   });
-//   return res.data;
-// }
-
-// export async function getShopStores(params, paginate, query) {
-//   const res = await request({
-//     url: `/api/v1/shop_stores?${query}`,
-//     method: 'GET',
-//     params: {
-//       ...params,
-//       ...paginate
-//     }
-//   })
-//   return res
-// }
-
-// store详情
-// export async function getShopStoreDetail(id) {
-//   const res = await request({
-//     url: `/api/v1/shop_stores/${id}`,
-//     method: 'GET',
-//   });
-//   return res.data;
-// }
-
-// store参与人员
-// export async function getShopStoreJoinAccounts(id, params) {
-//   const res = await request({
-//     url: `/api/v1/shop_stores/${id}/joined_accounts`,
-//     method: 'GET',
-//     params,
-//   });
-//   return res;
-// }
-
-// store参与
-// export async function getShopStoreJoined(id, params) {
-//   const res = await request({
-//     url: `/api/v1/shop_stores/${id}/joined`,
-//     method: 'POST',
-//     params,
-//   });
-//   return res;
-// }
-
-// store参与
-// export async function getShopStoreExit(id, params) {
-//   const res = await request({
-//     url: `/api/v1/shop_stores/${id}/exit`,
-//     method: 'POST',
-//     params,
-//   });
-//   return res;
-// }
-
 // 动态
-export async function getShopStorePosts(id, params = {}) {
+export const getShopStorePosts = async params => {
   const res = await request({
-    url: `/api/v1/shop_stores/${id}/posts`,
+    url: `/api/v1/shop_stores/${params.id}/posts`,
     method: 'GET',
     params,
   });
   return res;
-}
+};
 
 //帖子
-export async function getShopStoreTopics(id, params = {}) {
+export const getShopStoreTopics = async params => {
   const res = await request({
-    url: `/api/v1/shop_stores/${id}/topics`,
+    url: `/api/v1/shop_stores/${params.id}/topics`,
     method: 'GET',
     params,
   });
   return res;
-}
+};
 
 //文章
-export async function getShopStoreArticles(id, params = {}) {
+export const getShopStoreArticles = async params => {
   const res = await request({
-    url: `/api/v1/shop_stores/${id}/articles`,
+    url: `/api/v1/shop_stores/${params.id}/articles`,
     method: 'GET',
     params,
   });
   return res;
-}
+};

@@ -160,13 +160,11 @@ const ActivityDetail = props => {
           <IconFont name="biaoqian" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动标签</Text>
           <View style={[styles.slideValue, styles.tagWrapper]}>
-            {[...detail.tag_list, '你好吗', '奖品丰厚', '你好吗'].map((tag, index) => {
-              return (
-                <Text style={styles.tag} key={index}>
-                  {tag}
-                </Text>
-              );
-            })}
+            {[...detail.tag_list, '你好吗', '奖品丰厚', '你好吗'].map((tag, index) => (
+              <Text style={styles.tag} key={index}>
+                {tag}
+              </Text>
+            ))}
           </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>

@@ -1,59 +1,38 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import CollapsibleHeader from '@/components/CollapsibleHeaders';
+import StickTopHeader from '@/components/StickTopHeader';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
-import {Avator, JoinAccounts, JoinButton} from '@/components/NodeComponents';
+import SingleList from '@/components/List/single-list';
+import TopicList from '@/components/List/topic-list';
+import ArticleList from '@/components/List/article-list';
+import {JoinAccounts, JoinButton} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
-// import {getActivityDetail, joinAccountsActivity, exitActivity} from '@/api/activity_api';
 import {
   getShopStoreDetail,
   getShopStoreJoinAccounts,
   shopStoreJoined,
   shopStoreExit,
+  getShopStorePosts,
+  getShopStoreTopics,
+  getShopStoreArticles,
 } from '@/api/shop_store_api';
 
-import wxIcon from '@/assets/images/wx-icon.png';
 const {width} = Dimensions.get('window');
+const ImageHeight = parseInt((width * 230) / 750);
+const HEADER_HEIGHTs = ImageHeight + parseInt(ImageHeight / 2) + 3 + RFValue(50) * 3;
+const HEADER_HEIGHT = HEADER_HEIGHTs;
 
-console.log(width);
-const ShopStoreDetail = props => {
-  const {route, navigation} = props;
-  const {shopStoreId} = route.params;
-  const account = useSelector(state => state.account);
+console.log('HEADER_HEIGHTs', HEADER_HEIGHTs);
 
-  const [detail, setDetail] = useState(null);
-  const [joined, setJoined] = useState(false);
-
+const RenderHeader = props => {
+  const {detail} = props;
+  const shopStoreId = detail.id;
+  const [joined, setJoined] = useState(detail.joined);
   const [joinAccounts, setJoinAccounts] = useState([]);
-
-  const handleJoin = async () => {
-    console.log(joined);
-    if (joined) {
-      await shopStoreExit(shopStoreId);
-      Toast.showError('已取消收藏');
-    } else {
-      await shopStoreJoined(shopStoreId);
-      Toast.showError('已收藏');
-    }
-    setJoined(!joined);
-  };
-
-  const loadData = async () => {
-    const res = await getShopStoreDetail(shopStoreId);
-    // setDetail({
-    //   ...res.data.activity,
-    //   // account_id: 310,
-    //   joined: false,
-    //   finish_at: '2021-10-31T20:34:00.000+08:00',
-    //   max_limit_people: 10,
-    //   // source_type: 'outside',
-    // });
-    setJoined(res.data.shop_store.joined);
-    setDetail(res.data.shop_store);
-  };
 
   const loadJoinAccounts = async () => {
     const res = await getShopStoreJoinAccounts(shopStoreId, {sort: 'publish_order'});
@@ -61,17 +40,27 @@ const ShopStoreDetail = props => {
     setJoinAccounts(accounts);
   };
 
-  useEffect(() => {
+  const handleJoin = async () => {
+    if (joined) {
+      await shopStoreExit(shopStoreId);
+      Toast.showError('已取消收藏');
+    } else {
+      await shopStoreJoined(shopStoreId);
+      Toast.showError('已收藏');
+    }
     loadJoinAccounts();
-    loadData();
-  }, []);
+    setJoined(!joined);
+  };
 
-  console.log('detail', detail);
-
-  return detail ? (
-    <View style={styles.wrapper}>
-      <View style={styles.coverOpacity} />
-      <FastImg source={{uri: detail.medias[0].url}} style={styles.bgCoverImage} />
+  return (
+    <View style={styles.headerWrapper}>
+      <View>
+        <FastImg
+          source={{uri: detail.medias.length > 0 ? detail.medias[0].url : ''}}
+          style={styles.bgCoverImage}
+        />
+        <View style={styles.coverOpacity} />
+      </View>
       <View style={styles.header}>
         <FastImg source={{uri: detail.cover_url}} style={styles.cover_url} />
         <View style={styles.nameContent}>
@@ -120,11 +109,100 @@ const ShopStoreDetail = props => {
         <View style={styles.slide}>
           <IconFont name="biaoqian" size={16} color="#000" />
           <Text style={styles.slideTitle}>店铺标签</Text>
-          <Text style={styles.slideValue} numberOfLines={1}>
-            {detail.open_time}
-          </Text>
+          <View style={[styles.slideValue, styles.tagWrapper]}>
+            {detail.tags.map(tag => (
+              <Text style={styles.tag} key={tag.id}>
+                {tag.name}
+              </Text>
+            ))}
+          </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
+      </View>
+    </View>
+  );
+};
+
+const ShopStoreDetail = props => {
+  const {shopStoreId} = props.route.params;
+  const [currentKey, setCurrentKey] = useState('post');
+  const [detail, setDetail] = useState(null);
+  const [joined, setJoined] = useState(false);
+  // const [joinAccounts, setJoinAccounts] = useState([]);
+
+  const loadData = async () => {
+    const res = await getShopStoreDetail(shopStoreId);
+    setJoined(res.data.shop_store.joined);
+    setDetail(res.data.shop_store);
+  };
+
+  // const loadJoinAccounts = async () => {
+  //   const res = await getShopStoreJoinAccounts(shopStoreId, {sort: 'publish_order'});
+  //   const accounts = res.data.accounts.slice(0, 4);
+  //   setJoinAccounts(accounts);
+  // };
+
+  // const handleJoin = async () => {
+  //   if (joined) {
+  //     await shopStoreExit(shopStoreId);
+  //     Toast.showError('已取消收藏');
+  //   } else {
+  //     await shopStoreJoined(shopStoreId);
+  //     Toast.showError('已收藏');
+  //   }
+  //   // loadJoinAccounts();
+  //   setJoined(!joined);
+  // };
+
+  useEffect(() => {
+    // loadJoinAccounts();
+    loadData();
+  }, []);
+
+  console.log('detail', detail);
+
+  const PostListPage = () => {
+    const params = {api: getShopStorePosts, params: {id: shopStoreId}};
+    return <SingleList request={params} enableRefresh={false} />;
+  };
+
+  const TopicListPage = () => {
+    const params = {api: getShopStoreTopics, params: {id: shopStoreId}};
+    return <TopicList request={params} enableRefresh={false} />;
+  };
+
+  const ArticleListPage = () => {
+    const params = {api: getShopStoreArticles, params: {id: shopStoreId}};
+    return <ArticleList request={params} enableRefresh={false} />;
+  };
+
+  return detail ? (
+    <View style={styles.wrapper}>
+      <View style={{flex: 1, backgroundColor: 'pink'}}>
+        <CollapsibleHeader
+          headerHeight={HEADER_HEIGHT}
+          currentKey={currentKey}
+          onKeyChange={key => setCurrentKey(key)}
+          tabData={[
+            {
+              key: 'post',
+              title: '动态',
+              component: PostListPage,
+            },
+            {
+              key: 'topic',
+              title: '帖子',
+              component: TopicListPage,
+            },
+            {
+              key: 'article',
+              title: '文章',
+              component: ArticleListPage,
+            },
+          ]}
+          // renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={true} />}
+          renderHeader={<RenderHeader detail={detail} />}
+        />
       </View>
     </View>
   ) : (
@@ -132,28 +210,32 @@ const ShopStoreDetail = props => {
   );
 };
 
+console.log(ImageHeight);
 const positionCenter = {position: 'absolute', top: 0, left: 0, right: 0};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
   },
+  headerWrapper: {
+    position: 'relative',
+  },
   bgCoverImage: {
     width: width,
-    height: 230,
+    height: ImageHeight,
   },
   coverOpacity: {
-    ...positionCenter,
-    height: 230,
-    backgroundColor: '#000',
-    opacity: 0.4,
-    zIndex: 1,
+    // ...positionCenter,
+    // height: ImageHeight,
+    // backgroundColor: '#000',
+    // opacity: 0.4,
+    // zIndex: 1,
   },
   header: {
     flexDirection: 'row',
     marginLeft: 19,
     marginRight: 17,
-    marginTop: -RFValue(75),
+    marginTop: -RFValue(75 / 2),
     zIndex: 3,
   },
   cover_url: {
@@ -182,12 +264,9 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   slideWrapper: {
-    marginTop: -RFValue(37),
-    paddingTop: RFValue(37) + RFValue(3),
+    marginTop: 3,
     paddingHorizontal: 14,
     zIndex: 2,
-    backgroundColor: '#fff',
-    // backgroundColor: 'pink',
   },
   slide: {
     height: RFValue(50),
@@ -211,6 +290,21 @@ const styles = StyleSheet.create({
   slideRight: {
     position: 'absolute',
     right: 0,
+  },
+  tagWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  tag: {
+    height: RFValue(20),
+    lineHeight: RFValue(20),
+    paddingHorizontal: 8,
+    fontSize: 10,
+    color: '#FF8D00',
+    borderWidth: 1,
+    borderColor: '#FF8D00',
+    borderRadius: 2,
+    marginLeft: 7,
   },
 });
 
