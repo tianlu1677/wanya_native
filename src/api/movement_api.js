@@ -38,19 +38,21 @@ export const getMovementExit = async id => {
 };
 
 // 顽招收藏用户
-export const getMovementJoinAccounts = async id => {
+export const getMovementJoinAccounts = async (id, params) => {
   const res = await request({
     url: `/api/v1/movements/${id}/joined_accounts`,
     method: 'GET',
+    params,
   });
   return res;
 };
 
 // 顽招帖子
-export const getMovementsPosts = async id => {
+export const getMovementsPosts = async params => {
   const res = await request({
-    url: `/api/v1/movements/${id}/posts`,
+    url: `/api/v1/movements/${params.id}/posts`,
     method: 'GET',
+    params,
   });
   return res;
 };

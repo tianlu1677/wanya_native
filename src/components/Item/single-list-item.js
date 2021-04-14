@@ -148,6 +148,8 @@ export const Header = props => {
     setShowActionSheet(true);
   };
 
+  console.log('item data', data);
+
   return (
     <View style={hstyles.headerView}>
       <Avator account={data.account} size={40} />

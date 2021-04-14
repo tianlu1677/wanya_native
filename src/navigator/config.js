@@ -571,6 +571,7 @@ const authRouter = [
     safeArea: false,
   },
 ];
+
 export const routers = [
   ...topicRouter,
   ...theoryRouter,

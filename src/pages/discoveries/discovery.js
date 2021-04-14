@@ -48,7 +48,7 @@ const CategoryComponent = props => {
       </Pressable>
       <View style={styles.separator} />
 
-      {/*  activity*/}
+      {/*  activity */}
       <Pressable style={styles.slideItem} onPress={() => navigation.navigate('Activity')}>
         <FastImg source={require('@/assets/discovery/activity.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/activity_text.png')} style={styles.text} />
@@ -62,7 +62,7 @@ const CategoryComponent = props => {
       </Pressable>
       <View style={styles.separator} />
 
-      {/*  shop_store*/}
+      {/*  shop_store */}
       <Pressable style={styles.slideItem} onPress={() => navigation.navigate('ShopStore')}>
         <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/shop_store_text.png')} style={styles.store} />
@@ -77,7 +77,7 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/* shop_brand */}
-      <View style={styles.slideItem}>
+      <Pressable style={styles.slideItem} onPress={() => navigation.navigate('ShopBrand')}>
         <FastImg source={require('@/assets/discovery/shop_brand.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/shop_brand_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -87,7 +87,7 @@ const CategoryComponent = props => {
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
-      </View>
+      </Pressable>
       <View style={styles.separator} />
     </View>
   );
