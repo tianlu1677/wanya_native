@@ -1,39 +1,44 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {Text, StyleSheet, Pressable, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
-import IconFont from '@/iconfont';
+
+const {width} = Dimensions.get('window');
+const imagewidth = parseInt((width - 28 - 18) / 3);
 
 const BaseShopBrand = props => {
   const navigation = useNavigation();
 
   const {
-    data: {id, cover_url, name, address, store_type, distance, tags},
+    data: {id, cover_url, name},
   } = props;
 
-  console.log(props.data);
   const goDetail = () => {
-    navigation.navigate('ShopStoreDetail', {shopStoreId: id});
+    navigation.navigate('ShopBrandDetail', {shopBrandId: id});
   };
 
   return (
     <Pressable style={styles.wrapper} onPress={goDetail}>
-      {/* <FastImg source={{uri: cover_url}} style={styles.image} /> */}
+      <FastImg source={{uri: cover_url}} style={styles.image} />
+      <Text style={styles.name}>{name}</Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    padding: 14,
-    flexDirection: 'row',
-    backgroundColor: 'pink',
-    height: 200,
+  image: {
+    width: imagewidth,
+    height: imagewidth,
+    backgroundColor: '#000',
   },
-  separator: {
-    height: 9,
-    backgroundColor: '#FAFAFA',
+  name: {
+    fontSize: 13,
+    fontWeight: '500',
+    textAlign: 'center',
+    lineHeight: RFValue(20),
+    paddingTop: RFValue(6),
+    paddingBottom: RFValue(12),
   },
 });
 

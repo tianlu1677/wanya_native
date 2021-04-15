@@ -37,6 +37,7 @@ const Avator = props => {
       // }
     }
   }
+  console.log(props);
 
   return (
     <Pressable

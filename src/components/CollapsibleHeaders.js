@@ -27,7 +27,7 @@ const CollapsibleHeader = props => {
   useEffect(() => {
     scrollY.addListener(({value}) => {
       listOffset.current[currentKey] = value;
-      if(value > 80) {
+      if (value > 80) {
         // StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
       } else {
         // StatusBar.setBackgroundColor('black');
@@ -242,7 +242,7 @@ const localStyles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 0,
-    backgroundColor: '#000'
+    backgroundColor: '#000',
   },
 });
 

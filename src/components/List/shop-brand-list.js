@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {View} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseShopBrand from '@/components/Item/base-shop-brand';
@@ -8,7 +9,7 @@ const ShopBrandList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}) => {
     return <BaseShopBrand data={item} key={item.id} />;
   };
 
@@ -33,7 +34,13 @@ const ShopBrandList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
+      renderSeparator={() => <View />}
       enableRefresh={false}
+      numColumns={3}
+      columnWrapperStyle={{
+        paddingHorizontal: 14,
+        justifyContent: 'space-between',
+      }}
     />
   );
 };
