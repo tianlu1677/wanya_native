@@ -59,7 +59,7 @@ class App extends Component {
     if (scale > 1) {
       scale = 1.08;
     }
-    console.log('scale', scale);
+    // console.log('scale', scale);
 
     this.loadSplashImg();
     this.loadSettings();
@@ -113,32 +113,7 @@ class App extends Component {
     });
   };
 
-  // 极光推送
-  jpush_notice = async () => {
-    JPush.setBadge({"badge": 0, "appBadge": 0});
-    JPush.setLoggerEnable(true);
-    JPush.getRegistrationID(this.onRegister);
-    JPush.addNotificationListener(this.notificationListener);
-    await JPush.init();
 
-    // JPush.init();
-    //本地通知回调
-    // JPush.addLocalNotificationListener(this.localNotificationListener);
-    //自定义消息回调
-    // JPush.addCustomMessagegListener(this.customMessageListener);
-    //tag alias事件回调
-    // this.tagAliasListener = result => {
-    //   console.log("tagAliasListener:" + JSON.stringify(result))
-    // };
-    // JPush.addTagAliasListener(result => {
-    //   console.log('result', result);
-    // });
-    //手机号码事件回调
-    // this.mobileNumberListener = result => {
-    //   console.log("mobileNumberListener:" + JSON.stringify(result))
-    // };
-    // JPush.addMobileNumberListener(this.mobileNumberListener);
-  };
 
   notificationListener = async notification => {
     //notificationListener result {"badge": "1", "content": "顽鸦", "messageID": "58546911656695959", "notificationEventType": "notificationArrived", "ring": "default", "title": "顽鸦"}
@@ -146,6 +121,7 @@ class App extends Component {
     // {"badge": "1", "content": "顽鸦", "extras": {"params": "topicId=1", "screen": "TopicDetail"}, "messageID": "20266319981952208", "notificationEventType": "notificationOpened", "ring": "default", "title": "顽鸦"}
     try {
       console.log('onNotification:', notification);
+      // Alert.alert(JSON.stringify(notification))
       if (notification.notificationEventType === 'notificationOpened') {
         const auth_token = await Helper.getData('auth_token');
         if (!auth_token || !notification.extras) {
@@ -175,6 +151,23 @@ class App extends Component {
     console.log('localNotificationListener result', result);
   };
 
+  // 极光推送
+  jpush_notice = async () => {
+    console.log('jpush....');
+    JPush.init();
+    JPush.setBadge({badge: 0, appBadge: 0});
+    JPush.setLoggerEnable(true);
+    // JPush.initCrashHandler();
+    // JPush.addConnectEventListener((result) => {
+    //   console.log('addCollection')
+    //   console.log('addCollection', JSON.stringify(result))
+    // })
+    //
+    JPush.getRegistrationID(this.onRegister);
+    JPush.addNotificationListener(this.notificationListener);
+    // JPush.addCustomMessagegListener(this.customMessageListener);
+    await JPush.init()
+  };
   // 通知相关内容
   onRegister = async (response) => {
     console.log('onRegister', response);
