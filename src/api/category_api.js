@@ -10,6 +10,15 @@ export const getCategoryList = async (params = {}) => {
   return res.data.categories;
 };
 
+// 多级筛选数据
+export const getCategoryProfile = async id => {
+  const res = await request({
+    url: `/api/v1/categories/${id}/profile`,
+    method: 'GET',
+  });
+  return res.data;
+};
+
 // 兴趣广场页
 // export async function getCategories() {
 //   const res = await request({
@@ -77,14 +86,6 @@ export async function getCategoryMovements(id, params = {}) {
     url: `/api/v1/categories/${id}/movements`,
     method: 'GET',
     params: params,
-  });
-  return res.data;
-}
-
-export async function getCategoryProfile(id) {
-  const res = await request({
-    url: `/api/v1/categories/${id}/profile`,
-    method: 'GET',
   });
   return res.data;
 }

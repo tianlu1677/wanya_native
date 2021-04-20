@@ -8,6 +8,7 @@ import ArticleList from '@/components/List/article-list';
 import NodeList from '@/components/List/node-list';
 import DoubleList from '@/components/List/double-list';
 import LongVideoList from '@/components/List/long-video-list';
+import MovementList from '@/components/List/movement-list';
 import SpaceList from '@/components/List/space-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import AccountsList from '@/components/List/accounts-list';
@@ -80,6 +81,13 @@ const SearchIndex = ({navigation, route}) => {
   const LongVideoPage = () =>
     type === 'long_video' ? (
       <LongVideoList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const MovementPage = () =>
+    type === 'movement' ? (
+      <MovementList request={request} enableRefresh={false} dataKey="items" type="list" />
     ) : (
       <View />
     );
@@ -173,6 +181,11 @@ const SearchIndex = ({navigation, route}) => {
             key: 'long_video',
             title: '长视频',
             component: LongVideoPage,
+          },
+          {
+            key: 'movement',
+            title: '顽招',
+            component: MovementPage,
           },
           {
             key: 'space',

@@ -77,7 +77,9 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/* shop_brand */}
-      <Pressable style={styles.slideItem} onPress={() => navigation.navigate('ShopBrand')}>
+      <Pressable
+        style={styles.slideItem}
+        onPress={() => navigation.navigate('ShopBrand', {category: currentKey})}>
         <FastImg source={require('@/assets/discovery/shop_brand.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/shop_brand_text.png')} style={styles.text} />
         <View style={styles.itemRight}>

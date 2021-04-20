@@ -10,6 +10,7 @@ const BaseMovement = props => {
   const navigation = useNavigation();
   const [joined, setJoined] = useState(props.data.joined);
   const {
+    type,
     data: {
       id,
       name,
@@ -20,6 +21,8 @@ const BaseMovement = props => {
       join_accounts_count,
     },
   } = props;
+
+  console.log('type', type);
 
   const handleJoin = async () => {
     if (joined) {

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseShopBrand from '@/components/Item/base-shop-brand';
@@ -41,6 +41,7 @@ const ShopBrandList = props => {
         paddingHorizontal: 14,
         justifyContent: 'space-between',
       }}
+      style={styles.wrapper}
     />
   );
 };
@@ -48,5 +49,12 @@ const ShopBrandList = props => {
 ShopBrandList.propTypes = {
   request: PropTypes.object.isRequired,
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: '#fff',
+    paddingTop: 9,
+  },
+});
 
 export default ShopBrandList;

@@ -8,16 +8,19 @@ const MovementList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
+  const {type} = props;
 
+  console.log('list type', type);
   const renderItem = ({item}) => {
-    return <BaseMovement data={item} key={item.id} />;
+    return <BaseMovement data={item} key={item.id} type={type} />;
   };
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    const {api, params} = props.request;
-    const res = await api({...params, page});
+    const {api, params, apiPath} = props.request;
+    const res = await api(apiPath, {...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.movements;
+    console.log(res);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -25,7 +28,7 @@ const MovementList = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [props.request]);
 
   return (
     <ScrollList
