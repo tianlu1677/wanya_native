@@ -48,7 +48,7 @@ export const getLocationInfo = async (open, handleClick) => {
     }
 
     GeolocationAndroid1.getCurrentPosition(position => {
-      console.log('position => ', position);
+      // console.log('position => ', position);
       handleClick({position: position});
     });
   }
