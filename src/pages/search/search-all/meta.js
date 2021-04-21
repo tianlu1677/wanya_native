@@ -1,0 +1,15 @@
+export const Type = {
+  all: 'all',
+  node: 'node_content',
+  movement: 'movement_content',
+  space: 'space_content',
+  activity: 'activity_content',
+  shopStore: 'shop_store_content',
+  shopBrand: 'shop_brand_content',
+  hashtag: 'hashtag_content',
+  account: 'account_content',
+  theory: 'theory_content',
+  longTopic: 'long_topic_content',
+  article: 'article_content',
+  topic: 'topic_content',
+};

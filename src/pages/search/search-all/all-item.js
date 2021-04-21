@@ -1,7 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import BaseNode from '@/components/Item/base-node';
+import BaseMovement from '@/components/Item/base-movement';
 import BaseSpace from '@/components/Item/base-space';
+import BaseActivity from '@/components/Item/base-activity';
+import BaseShopStore from '@/components/Item/base-shop-store';
+import BaseShopBrand from '@/components/Item/base-shop-brand';
 import BaseHashtag from '@/components/Item/base-hashtag';
 import BaseAccount from '@/components/Item/base-account';
 import BaseTheory from '@/components/Item/base-theory';
@@ -10,18 +14,7 @@ import BaseArticle from '@/components/Item/base-article';
 import BaseTopic from '@/components/Item/base-topic';
 import {RFValue} from '@/utils/response-fontsize';
 import IconFont from '@/iconfont';
-
-export const Type = {
-  all: 'all',
-  node: 'node_content',
-  space: 'space_content',
-  hashtag: 'hashtag_content',
-  account: 'account_content',
-  theory: 'theory_content',
-  longTopic: 'long_topic_content',
-  article: 'article_content',
-  topic: 'topic_content',
-};
+import {Type} from './meta';
 
 const Node = props => (
   <View key={props.item.id}>
@@ -30,10 +23,38 @@ const Node = props => (
   </View>
 );
 
+const Movement = props => (
+  <View key={props.item.id}>
+    <BaseMovement data={props.item} type="list" />
+    {props.meta.total_count >= 3 && <Text style={styles.separator} />}
+  </View>
+);
+
 const Space = props => (
   <View key={props.item.id}>
     <BaseSpace data={props.item} />
     {props.meta.total_count >= 3 && <Text style={styles.separator} />}
+  </View>
+);
+
+const Activity = props => (
+  <View key={props.item.id}>
+    <BaseActivity data={props.item} />
+    {props.meta.total_count >= 3 && <Text style={styles.separator} />}
+  </View>
+);
+
+const ShopStore = props => (
+  <View key={props.item.id}>
+    <BaseShopStore data={props.item} />
+    {props.meta.total_count >= 3 && <Text style={styles.separator} />}
+  </View>
+);
+
+const ShopBrand = props => (
+  <View key={props.item.id}>
+    <BaseShopBrand data={props.item} />
+    {props.meta.total_count >= 3 && <Text style={styles.shopBrandseparator} />}
   </View>
 );
 
@@ -85,28 +106,38 @@ const AllItem = props => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.title}>{title}</Text>
-      {data.items.map((item, index) => {
-        switch (type) {
-          case Type.node:
-            return <Node item={item} key={index} meta={data.meta} />;
-          case Type.space:
-            return <Space item={item} key={index} meta={data.meta} />;
-          case Type.hashtag:
-            return <Hashtag item={item} key={index} meta={data.meta} />;
-          case Type.account:
-            return <Account item={item} key={index} meta={data.meta} />;
-          case Type.theory:
-            return <Theory item={item} key={index} meta={data.meta} />;
-          case Type.longTopic:
-            return <LongVideoTopic item={item} key={index} meta={data.meta} />;
-          case Type.article:
-            return <Article item={item} key={index} meta={data.meta} />;
-          case Type.topic:
-            return <Topic item={item} key={index} meta={data.meta} />;
-          default:
-            return <View key={index} />;
-        }
-      })}
+      <View style={type === Type.shopBrand ? styles.contentShopBrand : styles.content}>
+        {data.items.map((item, index) => {
+          switch (type) {
+            case Type.node:
+              return <Node item={item} key={index} meta={data.meta} />;
+            case Type.movement:
+              return <Movement item={item} key={index} meta={data.meta} />;
+            case Type.space:
+              return <Space item={item} key={index} meta={data.meta} />;
+            case Type.activity:
+              return <Activity item={item} key={index} meta={data.meta} />;
+            case Type.shopStore:
+              return <ShopStore item={item} key={index} meta={data.meta} />;
+            case Type.shopBrand:
+              return <ShopBrand item={item} key={index} meta={data.meta} />;
+            case Type.hashtag:
+              return <Hashtag item={item} key={index} meta={data.meta} />;
+            case Type.account:
+              return <Account item={item} key={index} meta={data.meta} />;
+            case Type.theory:
+              return <Theory item={item} key={index} meta={data.meta} />;
+            case Type.longTopic:
+              return <LongVideoTopic item={item} key={index} meta={data.meta} />;
+            case Type.article:
+              return <Article item={item} key={index} meta={data.meta} />;
+            case Type.topic:
+              return <Topic item={item} key={index} meta={data.meta} />;
+            default:
+              return <View key={index} />;
+          }
+        })}
+      </View>
       {data.meta.total_count > 3 ? (
         <Pressable style={styles.search} onPress={props.onPress}>
           <IconFont name="sousuo" size={13} color="#bdbdbd" />
@@ -120,9 +151,6 @@ const AllItem = props => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // paddingHorizontal: 14,
-  },
   title: {
     height: RFValue(38),
     lineHeight: RFValue(38),
@@ -130,6 +158,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
     fontSize: 12,
     paddingLeft: 14,
+  },
+  content: {
+    flexDirection: 'column',
+  },
+  contentShopBrand: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
   },
   search: {
     height: RFValue(45),
@@ -146,6 +182,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
     marginLeft: 14 + 49 + 10,
+  },
+  shopBrandseparator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
   },
   separator: {
     backgroundColor: '#ebebeb',

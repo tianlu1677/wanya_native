@@ -10,6 +10,9 @@ import DoubleList from '@/components/List/double-list';
 import LongVideoList from '@/components/List/long-video-list';
 import MovementList from '@/components/List/movement-list';
 import SpaceList from '@/components/List/space-list';
+import ActivityList from '@/components/List/activity-list';
+import ShopStoreList from '@/components/List/shop-store-list';
+import ShopBrandList from '@/components/List/shop-brand-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
@@ -17,18 +20,6 @@ import TabViewList from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
-
-export const Type = {
-  all: 'all',
-  node: 'node_content',
-  space: 'space_content',
-  hashtag: 'hashtag_content',
-  account: 'account_content',
-  theory: 'theory_content',
-  longTopic: 'long_topic_content',
-  article: 'article_content',
-  topic: 'topic_content',
-};
 
 const SearchIndex = ({navigation, route}) => {
   const [currentKey, setCurrentKey] = useState('all');
@@ -95,6 +86,27 @@ const SearchIndex = ({navigation, route}) => {
   const SpaceListPage = () =>
     type === 'space' ? (
       <SpaceList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ActivityListPage = () =>
+    type === 'activity' ? (
+      <ActivityList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ShopStoreListPage = () =>
+    type === 'shop_store' ? (
+      <ShopStoreList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ShopBrandListPage = () =>
+    type === 'shop_store' ? (
+      <ShopBrandList request={request} enableRefresh={false} dataKey="items" type="list" />
     ) : (
       <View />
     );
@@ -191,6 +203,21 @@ const SearchIndex = ({navigation, route}) => {
             key: 'space',
             title: '场地',
             component: SpaceListPage,
+          },
+          {
+            key: 'activity',
+            title: '活动',
+            component: ActivityListPage,
+          },
+          {
+            key: 'shop_store',
+            title: 'Van Store',
+            component: ShopStoreListPage,
+          },
+          {
+            key: 'shop_brand',
+            title: '品牌',
+            component: ShopBrandListPage,
           },
           {
             key: 'hashtag',

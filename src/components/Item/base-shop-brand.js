@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {Text, View, StyleSheet, Pressable, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
@@ -27,6 +27,9 @@ const BaseShopBrand = props => {
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    width: imagewidth,
+  },
   image: {
     width: imagewidth,
     height: imagewidth,
