@@ -51,12 +51,7 @@ const ShopStore = props => (
   </View>
 );
 
-const ShopBrand = props => (
-  <View key={props.item.id}>
-    <BaseShopBrand data={props.item} />
-    {props.meta.total_count >= 3 && <Text style={styles.shopBrandseparator} />}
-  </View>
-);
+const ShopBrand = props => <BaseShopBrand data={props.item} key={props.item.id} />;
 
 const Hashtag = props => (
   <View key={props.item.name}>
@@ -138,6 +133,10 @@ const AllItem = props => {
           }
         })}
       </View>
+      {type === Type.shopBrand && data.meta.total_count >= 3 && (
+        <Text style={styles.shopBrandseparator} />
+      )}
+
       {data.meta.total_count > 3 ? (
         <Pressable style={styles.search} onPress={props.onPress}>
           <IconFont name="sousuo" size={13} color="#bdbdbd" />
@@ -186,6 +185,7 @@ const styles = StyleSheet.create({
   shopBrandseparator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
+    marginHorizontal: 14,
   },
   separator: {
     backgroundColor: '#ebebeb',
