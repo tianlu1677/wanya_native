@@ -30,13 +30,13 @@ export const MainStackScreen = () => (
     <MainStack.Screen name="Recommend" component={MainTabScreen} options={{headerShown: false}} />
     {routers.map(route => {
       const render = props => {
-        const {barColor, component: Components, options} = route;
+        const {barColor, component: Components} = route;
         return (
           <>
             <StatusBar backgroundColor="transparent" barStyle={`${barColor || 'dark'}-content`} />
-            {options && options.headerShown === false && (
+            {/* {options && options.headerShown === false && (
               <View style={{height: BarHeight, backgroundColor: options.herderColor}} />
-            )}
+            )} */}
             <Components {...props} />
           </>
         );

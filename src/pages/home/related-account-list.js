@@ -8,7 +8,6 @@ const RelatedAccounts = () => {
     <AccountsList
       request={{api: recommendAccounts, params: {per_page: 50}}}
       type="related"
-      enableRefresh={false}
       renderMoreAccounts={<Text style={styles.footer}>只显示前50位好友</Text>}
     />
   );

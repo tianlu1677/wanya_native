@@ -36,7 +36,7 @@ export const GoBack = props => {
       {report && (
         <Pressable
           onPress={props.onReportClick}
-          style={{...styles.report, top: SAFE_TOP}}
+          style={{...styles.report, top: props.top || SAFE_TOP}}
           hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <IconFont name="gengduo" color="#fff" size={20} />
         </Pressable>
@@ -44,7 +44,7 @@ export const GoBack = props => {
       {props.rightBtn && (
         <Pressable
           onPress={props.onHandleRight}
-          style={{...styles.report, top: SAFE_TOP}}
+          style={{...styles.report, top: props.top || SAFE_TOP}}
           hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           {props.rightBtn}
         </Pressable>

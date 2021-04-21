@@ -52,7 +52,6 @@ const TheoryStepContent = props => {
     const {title, plain_content, tip} = theory;
     const data = {theory: {title, plain_content, tip}};
     await refreshTheory(theory.id, data);
-    // loadData();
   };
 
   const updateTheory = async (value, key) => {
@@ -112,7 +111,6 @@ const TheoryStepContent = props => {
       } catch (e) {
         Toast.hide();
         Toast.showError('发布失败');
-        alert(e);
       }
     };
 

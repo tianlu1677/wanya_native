@@ -6,11 +6,7 @@ const FollowerAccounts = ({navigation, route}) => {
   const [accountId] = useState(route.params.accountId);
 
   return (
-    <AccountsList
-      request={{api: getAccountFollowers, params: {id: accountId}}}
-      type="normal"
-      enableRefresh={false}
-    />
+    <AccountsList request={{api: getAccountFollowers, params: {id: accountId}}} type="normal" />
   );
 };
 

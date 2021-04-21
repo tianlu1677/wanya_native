@@ -12,7 +12,7 @@ import Toast from '@/components/Toast';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import StickTopHeader from '@/components/StickTopHeader';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {BASIC_HEIGHT, IsIos, SAFE_TOP} from '@/utils/navbar';
+import {BarHeight} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import {reportContent} from '@/api/secure_check';
 import ActionSheet from '@/components/ActionSheet';
@@ -24,7 +24,7 @@ import {
   getAccountArticles,
 } from '@/api/account_api';
 
-const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
+const HEADER_HEIGHT = 270 + BarHeight;
 
 const AccountDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -136,19 +136,9 @@ const AccountDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{flex: 1}}>
-        <GoBack top={IsIos ? null : 20} />
-        {account.id !== currentAccount.id && (
-          <Pressable
-            onPress={onReportClick}
-            style={styles.report}
-            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-            <IconFont name="gengduo" color="#fff" size={20} />
-          </Pressable>
-        )}
+        <GoBack top={BarHeight} report={true} onReportClick={onReportClick} />
         <FastImg
-          source={{
-            uri: account.background_img_url ? account.background_img_url : AccountDetailBgImg,
-          }}
+          source={{uri: account.background_img_url || AccountDetailBgImg}}
           resizeMode={'cover'}
           style={styles.imageCover}
         />
@@ -295,20 +285,10 @@ const styles = StyleSheet.create({
     position: 'relative',
     flex: 1,
   },
-  report: {
-    position: 'absolute',
-    right: 16,
-    height: 34,
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    top: IsIos ? SAFE_TOP : 20,
-    zIndex: 2,
-  },
   header: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingTop: 40 + BASIC_HEIGHT,
+    paddingTop: BarHeight + 45,
     height: HEADER_HEIGHT,
   },
   imageCover: {

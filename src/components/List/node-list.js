@@ -5,12 +5,13 @@ import ScrollList from '@/components/ScrollList';
 import BaseNode from '@/components/Item/base-node';
 
 const NodeList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return <BaseNode data={item} type="list" />;
+    return <BaseNode data={item} type={type} />;
   };
 
   const renderSeparator = () => {
@@ -39,18 +40,12 @@ const NodeList = props => {
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
-      style={styles.wrapper}
       enableRefresh={false}
-      {...props}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   separator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
@@ -60,8 +55,7 @@ const styles = StyleSheet.create({
 
 NodeList.propTypes = {
   request: PropTypes.object.isRequired,
-  onPress: PropTypes.func,
-  ref: PropTypes.any,
+  type: PropTypes.string.isRequired,
 };
 
 export default NodeList;

@@ -4,8 +4,14 @@ import * as RootNavigation from '@/navigator/root-navigation';
 import {CardStyleInterpolators} from '@react-navigation/stack';
 
 // 默认
-// safeArea?: false
-// barStyle?: 'dark-content'
+// safeArea: false
+// barStyle: 'dark-content'
+
+const forVerticalIOS = {
+  animationEnabled: true,
+  gestureEnabled: false,
+  cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+};
 
 // 首页
 import RelatedAccounts from '@/pages/home/related-account-list';
@@ -132,24 +138,12 @@ const topicRouter = [
   {
     name: 'NewTopic',
     component: NewTopic,
-    options: {
-      animationEnabled: true,
-      gestureEnabled: false,
-      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-    },
+    options: {...forVerticalIOS},
   },
 ];
 
 const theoryRouter = [
-  {
-    name: 'NewTheory',
-    component: NewTheory,
-    options: {
-      animationEnabled: true,
-      gestureEnabled: false,
-      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-    },
-  },
+  {name: 'NewTheory', component: NewTheory, options: {...forVerticalIOS}},
   {name: 'NewTheoryContent', component: NewTheoryContent},
   {
     name: 'TheoryPreview',
@@ -160,9 +154,8 @@ const theoryRouter = [
   {
     name: 'TheoryDetail',
     component: TheoryDetail,
-    options: {
-      headerShown: false,
-    },
+    barColor: 'light',
+    options: {headerShown: false, herderColor: '#000'},
   },
 ];
 
@@ -188,82 +181,32 @@ const articleRouter = [
 ];
 
 const spaceRouter = [
-  {
-    name: 'Space',
-    component: Space,
-    options: {title: '场地列表'},
-  },
-  {
-    name: 'SpaceDetail',
-    component: SpaceDetail,
-    options: {
-      title: '场地详情',
-      headerShown: false,
-    },
-  },
+  {name: 'Space', component: Space, options: {title: '场地列表'}},
+  {name: 'SpaceDetail', component: SpaceDetail, options: {title: '场地详情', headerShown: false}},
 ];
 
 const activityRouter = [
-  {
-    name: 'Activity',
-    component: Activity,
-    options: {title: '活动'},
-  },
-  {
-    name: 'ActivityDetail',
-    component: ActivityDetail,
-    options: {title: '活动详情'},
-  },
+  {name: 'Activity', component: Activity, options: {title: '活动'}},
+  {name: 'ActivityDetail', component: ActivityDetail, options: {title: '活动详情'}},
 ];
 
 const movementRouter = [
-  {
-    name: 'Movement',
-    component: Movement,
-    options: {title: 'Movement'},
-  },
-  {
-    name: 'MovementDetail',
-    component: MovementDetail,
-    // barColor: 'dark',
-    options: {title: 'MovementDetail'},
-  },
+  {name: 'Movement', component: Movement, options: {title: 'Movement'}},
+  {name: 'MovementDetail', component: MovementDetail, options: {title: 'MovementDetail'}},
 ];
 
 const shopStoreRouter = [
-  {
-    name: 'ShopStore',
-    component: ShopStore,
-    options: {title: 'Van Store'},
-  },
-  {
-    name: 'ShopStoreDetail',
-    component: ShopStoreDetail,
-    options: {title: 'Van Store详情'},
-  },
+  {name: 'ShopStore', component: ShopStore, options: {title: 'Van Store'}},
+  {name: 'ShopStoreDetail', component: ShopStoreDetail, options: {title: 'Van Store详情'}},
 ];
 
 const shopBrandRouter = [
-  {
-    name: 'ShopBrand',
-    component: ShopBrand,
-    options: {title: 'ShopBrand'},
-  },
-  {
-    name: 'ShopBrandDetail',
-    component: ShopBrandDetail,
-    options: {title: 'ShopBrand详情'},
-  },
+  {name: 'ShopBrand', component: ShopBrand, options: {title: 'ShopBrand'}},
+  {name: 'ShopBrandDetail', component: ShopBrandDetail, options: {title: 'ShopBrand详情'}},
 ];
 
 const clubRouter = [
-  {
-    name: 'ClubhouseIndex',
-    component: ClubhouseIndex,
-    options: {
-      title: 'clubhouse',
-    },
-  },
+  {name: 'ClubhouseIndex', component: ClubhouseIndex, options: {title: 'clubhouse'}},
 ];
 
 const nodeRouter = [
@@ -277,155 +220,46 @@ const nodeRouter = [
           onPress={() => {
             RootNavigation.navigate('CreateNodeIntro');
           }}>
-          <Text
-            style={{
-              fontSize: 15,
-              color: '#bdbdbd',
-            }}>
-            创建圈子{' '}
-          </Text>
+          <Text style={{fontSize: 15, color: '#bdbdbd'}}>创建圈子</Text>
         </Pressable>
       ),
     },
   },
-  {
-    name: 'NodeDetail',
-    component: NodeDetail,
-    options: {
-      title: '圈子详情',
-      headerShown: false,
-    },
-  },
-  {
-    name: 'CreateNodeIntro',
-    component: CreateNodeIntro,
-    options: {
-      title: '创建圈子',
-    },
-  },
-  {
-    name: 'CreateNodeInfo',
-    component: CreateNodeInfo,
-    options: {
-      title: '填写圈子资料',
-    },
-  },
-  {
-    name: 'CreateNodeType',
-    component: CreateNodeType,
-    options: {
-      title: '选择圈子分类或位置',
-    },
-  },
-  {
-    name: 'CreateNodeResult',
-    component: CreateNodeResult,
-  },
+  {name: 'NodeDetail', component: NodeDetail, options: {title: '圈子详情', headerShown: false}},
+  {name: 'CreateNodeIntro', component: CreateNodeIntro, options: {title: '创建圈子'}},
+  {name: 'CreateNodeInfo', component: CreateNodeInfo, options: {title: '填写圈子资料'}},
+  {name: 'CreateNodeType', component: CreateNodeType, options: {title: '选择圈子分类或位置'}},
+  {name: 'CreateNodeResult', component: CreateNodeResult},
 ];
 
 const locationRouter = [
-  {
-    name: 'LocationDetail',
-    component: LocationDetail,
-    options: {
-      title: '位置',
-    },
-  },
+  {name: 'LocationDetail', component: LocationDetail, options: {title: '位置'}},
 ];
 
 const accountRouter = [
   {
     name: 'AccountDetail',
     component: AccountDetail,
-    options: {
-      title: '用户详情',
-      headerShown: false,
-    },
+    barColor: 'light',
+    options: {title: '用户详情', headerShown: false},
   },
-  {
-    name: 'FollowNodes',
-    component: FollowNodes,
-    options: {
-      title: '圈子列表',
-    },
-  },
-  {
-    name: 'FollowAccounts',
-    component: FollowAccounts,
-    options: {
-      title: '关注列表',
-    },
-  },
-  {
-    name: 'FollowerAccounts',
-    component: FollowerAccounts,
-    options: {
-      title: '粉丝列表',
-    },
-  },
-  {
-    name: 'Settings',
-    component: Settings,
-    options: {
-      title: '设置',
-    },
-  },
-  {
-    name: 'About',
-    component: About,
-    options: {
-      title: '关于顽鸦',
-    },
-  },
-  {
-    name: 'Feedback',
-    component: Feedback,
-    options: {
-      title: '反馈',
-    },
-  },
+  {name: 'FollowNodes', component: FollowNodes, barColor: 'dark', options: {title: '圈子列表'}},
+  {name: 'FollowAccounts', component: FollowAccounts, options: {title: '关注列表'}},
+  {name: 'FollowerAccounts', component: FollowerAccounts, options: {title: '粉丝列表'}},
+  {name: 'Settings', component: Settings, options: {title: '设置'}},
+  {name: 'About', component: About, options: {title: '关于顽鸦'}},
+  {name: 'Feedback', component: Feedback, options: {title: '反馈'}},
 ];
 
 const commonRouter = [
-  {
-    name: 'ChooseCity',
-    component: ChooseCity,
-    options: {
-      title: '选择城市',
-    },
-  },
-  {
-    name: 'JoinAccountsList',
-    component: JoinAccountsList,
-    options: {
-      title: '最近加入列表',
-    },
-  },
-  {
-    name: 'SharePage',
-    component: SharePage,
-    options: {
-      title: '分享',
-    },
-  },
-  {
-    name: 'Report',
-    component: Report,
-    options: {
-      title: '投诉',
-    },
-  },
+  {name: 'ChooseCity', component: ChooseCity, options: {title: '选择城市'}},
+  {name: 'JoinAccountsList', component: JoinAccountsList, options: {title: '最近加入列表'}},
+  {name: 'SharePage', component: SharePage, options: {title: '分享'}},
+  {name: 'Report', component: Report, options: {title: '投诉'}},
 ];
 
 const searchRouter = [
-  {
-    name: 'SearchIndex',
-    component: SearchIndex,
-    options: {
-      title: '搜索',
-      headerShown: false,
-    },
-  },
+  {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
 ];
 
 // const authRouter = [
@@ -491,111 +325,19 @@ export const routers = [
   ...commonRouter,
   ...searchRouter,
   ...clubRouter,
-  {
-    name: 'RelatedAccounts',
-    component: RelatedAccounts,
-    options: {
-      title: '相关推荐',
-    },
-  },
-
-  {
-    name: 'LabIndex',
-    component: LabIndex,
-    options: {
-      title: '实验室主页',
-    },
-  },
-  {
-    name: 'LabGalley',
-    component: LabGalley,
-    options: {
-      title: '最新',
-    },
-  },
-  {
-    name: 'LabTabIndex',
-    component: LabTabIndex,
-    options: {
-      title: '实验室标签页',
-    },
-  },
-  {
-    name: 'LabStorageIndex',
-    component: LabStorageIndex,
-    options: {
-      title: 'LabStorageIndex',
-    },
-  },
-
-  {
-    name: 'NotifyIndex',
-    component: NotifyIndex,
-    options: {
-      title: '消息',
-    },
-  },
-  {
-    name: 'CommentNotify',
-    component: CommentNotify,
-    options: {
-      title: '评论及回复',
-    },
-  },
-  {
-    name: 'PraiseNotify',
-    component: PraiseNotify,
-    options: {
-      title: '赞和收藏',
-    },
-  },
-  {
-    name: 'SystemNotify',
-    component: SystemNotify,
-    options: {
-      title: '顽鸦小助手',
-    },
-  },
-  {
-    name: 'FollowNotify',
-    component: FollowNotify,
-    options: {
-      title: '新增粉丝',
-    },
-  },
-  {
-    name: 'MentionNotify',
-    component: MentionNotify,
-    options: {
-      title: '@我的',
-    },
-  },
-  {
-    name: 'WebView',
-    component: WebView,
-    options: {
-      title: 'WebView',
-    },
-  },
-  {
-    name: 'AccountContent',
-    component: AccountContent,
-    options: {
-      title: '编辑信息',
-    },
-  },
-  {
-    name: 'EditAccountContent',
-    component: EditAccountContent,
-    options: {
-      title: '编辑信息',
-    },
-  },
-  {
-    name: 'list',
-    component: List,
-    options: {
-      title: '列表',
-    },
-  },
+  {name: 'RelatedAccounts', component: RelatedAccounts, options: {title: '相关推荐'}},
+  {name: 'LabIndex', component: LabIndex, options: {title: '实验室主页'}},
+  {name: 'LabGalley', component: LabGalley, options: {title: '最新'}},
+  {name: 'LabTabIndex', component: LabTabIndex, options: {title: '实验室标签页'}},
+  {name: 'LabStorageIndex', component: LabStorageIndex, options: {title: 'LabStorageIndex'}},
+  {name: 'NotifyIndex', component: NotifyIndex, options: {title: '消息'}},
+  {name: 'CommentNotify', component: CommentNotify, options: {title: '评论及回复'}},
+  {name: 'PraiseNotify', component: PraiseNotify, options: {title: '赞和收藏'}},
+  {name: 'SystemNotify', component: SystemNotify, options: {title: '顽鸦小助手'}},
+  {name: 'FollowNotify', component: FollowNotify, options: {title: '新增粉丝'}},
+  {name: 'MentionNotify', component: MentionNotify, options: {title: '@我的'}},
+  {name: 'WebView', component: WebView, options: {title: 'WebView'}},
+  {name: 'AccountContent', component: AccountContent, options: {title: '编辑信息'}},
+  {name: 'EditAccountContent', component: EditAccountContent, options: {title: '编辑信息'}},
+  {name: 'list', component: List, options: {title: '列表'}},
 ];

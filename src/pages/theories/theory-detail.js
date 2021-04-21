@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StatusBar, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
-import {SAFE_TOP, STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
+import {IsIos, BarHeight} from '@/utils/navbar';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
 import ActionSheet from '@/components/ActionSheet';
@@ -101,10 +101,9 @@ const TheoryDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
+      keyboardVerticalOffset={IsIos ? 0 : BarHeight}
       style={ptyles.wrapper}>
-      <GoBack color={'white'} report={true} onReportClick={onReportClick} />
-      <StatusBar barStyle={'light-content'} backgroundColor={'black'} />
+      <GoBack color={'white'} top={10} report={true} onReportClick={onReportClick} />
       <CommentList
         type="Theory"
         detail={detail}
@@ -114,7 +113,6 @@ const TheoryDetail = ({navigation, route}) => {
         request={{api: getCommentList, params: {item_id: theoryId, item_type: 'Theory'}}}
         ListHeaderComponent={
           <>
-            <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
             {detail.media && (
               <TheoryMedia
                 media={detail.media}
@@ -128,7 +126,6 @@ const TheoryDetail = ({navigation, route}) => {
             <View style={styles.content}>
               <Text style={styles.intro}>{detail.plain_content}</Text>
               <Text style={styles.introTitle}>顽法步骤</Text>
-
               {filter_theory_bodies.map((item, index) => (
                 <View key={index}>
                   {!!item.title && (

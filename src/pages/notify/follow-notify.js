@@ -14,7 +14,6 @@ const FollowAccounts = () => {
         right_text: '关注了你',
       }}
       type="newfans"
-      enableRefresh={false}
     />
   );
 };

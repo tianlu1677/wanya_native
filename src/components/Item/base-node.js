@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   dataItem: {
     flexDirection: 'row',
     padding: 14,
+    backgroundColor: '#fff',
   },
   dataImg: {
     width: 49,

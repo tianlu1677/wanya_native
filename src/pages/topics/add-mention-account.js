@@ -63,7 +63,7 @@ const MentionAccounts = ({navigation, route}) => {
           <Text style={pstyles.proTitle}>{searchKey ? '搜索到的顽友' : '关注的顽友'}</Text>
         </View>
 
-        {request && <AccountsList request={request} enableRefresh={false} type={type} />}
+        {request && <AccountsList request={request} type={type} />}
       </View>
     </TouchableWithoutFeedback>
   );

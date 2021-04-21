@@ -56,11 +56,7 @@ const SearchIndex = ({navigation, route}) => {
     );
 
   const NodeListPage = () =>
-    type === 'node' ? (
-      <NodeList request={request} enableRefresh={false} dataKey="items" />
-    ) : (
-      <View />
-    );
+    type === 'node' ? <NodeList request={request} dataKey="items" /> : <View />;
 
   const ShortVideoPage = () =>
     type === 'duanshipin' ? (
@@ -120,7 +116,7 @@ const SearchIndex = ({navigation, route}) => {
 
   const AccountListPage = () =>
     type === 'account' ? (
-      <AccountsList request={request} dataKey="items" type="search" enableRefresh={false} />
+      <AccountsList request={request} dataKey="items" type="search" />
     ) : (
       <View />
     );
