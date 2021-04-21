@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import SpaceListDetail from '@/components/List/space-list-detail';
@@ -12,7 +12,6 @@ const Space = props => {
   const {location} = useSelector(state => state.home);
   const {latitude, longitude, positionCity, chooseCity} = location;
   const params = {category, latitude, longitude, currentcity: positionCity, city: chooseCity};
-  console.log(params);
   const [request] = useState({api: getSpaces, params});
 
   const goChooseCity = () => {
@@ -29,7 +28,7 @@ const Space = props => {
           <IconFont name="backdown" size={8} color={'#000'} />
         </Pressable>
       </View>
-      <SpaceListDetail request={request} />
+      <SpaceListDetail request={request} type="list" />
     </View>
   );
 };

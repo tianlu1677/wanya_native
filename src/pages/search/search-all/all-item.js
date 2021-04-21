@@ -39,19 +39,19 @@ const Space = props => (
 
 const Activity = props => (
   <View key={props.item.id}>
-    <BaseActivity data={props.item} />
+    <BaseActivity data={props.item} type="list" />
     {props.meta.total_count >= 3 && <Text style={styles.separator} />}
   </View>
 );
 
 const ShopStore = props => (
   <View key={props.item.id}>
-    <BaseShopStore data={props.item} />
+    <BaseShopStore data={props.item} type="list" />
     {props.meta.total_count >= 3 && <Text style={styles.separator} />}
   </View>
 );
 
-const ShopBrand = props => <BaseShopBrand data={props.item} key={props.item.id} />;
+const ShopBrand = props => <BaseShopBrand data={props.item} key={props.item.id} type="list" />;
 
 const Hashtag = props => (
   <View key={props.item.name}>
@@ -133,6 +133,7 @@ const AllItem = props => {
           }
         })}
       </View>
+
       {type === Type.shopBrand && data.meta.total_count >= 3 && (
         <Text style={styles.shopBrandseparator} />
       )}

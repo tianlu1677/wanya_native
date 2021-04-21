@@ -8,7 +8,9 @@ const NodeIndex = ({navigation}) => {
       headerTitle: '选择圈子',
       headerLeft: () => null,
       headerRight: () => (
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <Text style={styles.cancel}>取消</Text>
         </Pressable>
       ),

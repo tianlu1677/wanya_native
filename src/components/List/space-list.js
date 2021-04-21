@@ -7,11 +7,10 @@ import BaseSpace from '@/components/Item/base-space';
 const noSpace = {id: 0, name: '不选择场地'};
 
 const SpaceList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-
-  const {type} = props;
 
   const renderItem = ({item}) => <BaseSpace data={item} type={type} />;
 
@@ -22,7 +21,7 @@ const SpaceList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     let data = props.dataKey ? res.data[props.dataKey] : res.data.spaces;
-    data = props.type === 'add-space' && data.length > 0 ? [noSpace, ...data] : [...data];
+    data = type === 'add-space' && data.length > 0 ? [noSpace, ...data] : [...data];
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -47,8 +46,7 @@ const SpaceList = props => {
 
 SpaceList.propTypes = {
   request: PropTypes.object.isRequired,
-  onPress: PropTypes.func,
-  ref: PropTypes.any,
+  type: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

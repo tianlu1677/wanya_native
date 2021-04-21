@@ -4,12 +4,13 @@ import ScrollList from '@/components/ScrollList';
 import BaseShopStore from '@/components/Item/base-shop-store';
 
 const ShopStoreList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return <BaseShopStore data={item} key={item.id} />;
+    return <BaseShopStore data={item} key={item.id} type={type} />;
   };
 
   const loadData = async (page = 1) => {
@@ -40,6 +41,7 @@ const ShopStoreList = props => {
 
 ShopStoreList.propTypes = {
   request: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default ShopStoreList;

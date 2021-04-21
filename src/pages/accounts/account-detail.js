@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, ActionSheetIOS} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
@@ -11,6 +11,11 @@ import ArticleList from '@/components/List/article-list';
 import Toast from '@/components/Toast';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import StickTopHeader from '@/components/StickTopHeader';
+import CollapsibleHeader from '@/components/CollapsibleHeaders';
+import {BASIC_HEIGHT, IsIos, SAFE_TOP} from '@/utils/navbar';
+import FastImg from '@/components/FastImg';
+import {reportContent} from '@/api/secure_check';
+import ActionSheet from '@/components/ActionSheet';
 import {
   getAccount,
   getAccountPosts,
@@ -18,12 +23,6 @@ import {
   unfollowAccount,
   getAccountArticles,
 } from '@/api/account_api';
-import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {BASIC_HEIGHT, IsIos, SAFE_TOP} from '@/utils/navbar';
-import FastImg from '@/components/FastImg';
-import {getStatusBarHeight} from 'react-native-iphone-x-helper';
-import {reportContent} from '@/api/secure_check';
-import ActionSheet from '@/components/ActionSheet';
 
 const HEADER_HEIGHT = 270 + BASIC_HEIGHT;
 
@@ -35,7 +34,6 @@ const AccountDetail = ({navigation, route}) => {
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
-  // const [actionItems, setActionItems] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({});
@@ -138,7 +136,7 @@ const AccountDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={{flex: 1}}>
-        <GoBack top={IsIos ? null : 20 }/>
+        <GoBack top={IsIos ? null : 20} />
         {account.id !== currentAccount.id && (
           <Pressable
             onPress={onReportClick}
@@ -221,7 +219,9 @@ const AccountDetail = ({navigation, route}) => {
           </View>
           <View style={styles.numberWrap}>
             <Pressable style={styles.numberItem} onPress={() => setCurrentKey('publish')}>
-              <Text style={styles.numberCount}>{account.publish_topics_count + account.publish_articles_count}</Text>
+              <Text style={styles.numberCount}>
+                {account.publish_topics_count + account.publish_articles_count}
+              </Text>
               <Text style={styles.numberTitle}>动态</Text>
             </Pressable>
             <Pressable style={styles.numberItem} onPress={goFollowList}>
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     top: IsIos ? SAFE_TOP : 20,
-    zIndex: 2
+    zIndex: 2,
   },
   header: {
     paddingLeft: 19,

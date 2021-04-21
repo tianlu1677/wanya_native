@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, Keyboard, TouchableWithoutFeedback, View} from 'react-native';
-import {getHashtagList} from '@/api/hashtag_api';
+import {RFValue} from '@/utils/response-fontsize';
 import HashtagList from '@/components/List/hash-tag-list';
 import {Search} from '@/components/NodeComponents';
-import {ProWrapper as pstyles} from '@/styles/baseCommon';
 import {searchApi} from '@/api/search_api';
-import {RFValue} from '@/utils/response-fontsize';
+import {getHashtagList} from '@/api/hashtag_api';
+
+import {ProWrapper as pstyles} from '@/styles/baseCommon';
 
 const AddHashTag = ({navigation}) => {
   const [searchKey, setSearchKey] = useState(null);
@@ -41,7 +42,6 @@ const AddHashTag = ({navigation}) => {
           cancel={true}
           onCancel={() => navigation.goBack()}
         />
-
         {request && (
           <HashtagList
             request={request}

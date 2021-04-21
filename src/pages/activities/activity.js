@@ -8,7 +8,7 @@ const Activity = props => {
 
   return (
     <View>
-      <ActivityList request={request} />
+      <ActivityList request={request} type="list" />
     </View>
   );
 };

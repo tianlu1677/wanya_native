@@ -26,8 +26,6 @@ const ImageHeight = parseInt((width * 230) / 750);
 const HEADER_HEIGHTs = ImageHeight + parseInt(ImageHeight / 2) + 3 + RFValue(50) * 3;
 const HEADER_HEIGHT = HEADER_HEIGHTs;
 
-console.log('HEADER_HEIGHTs', HEADER_HEIGHTs);
-
 const RenderHeader = props => {
   const {detail} = props;
   const shopStoreId = detail.id;
@@ -210,7 +208,6 @@ const ShopStoreDetail = props => {
   );
 };
 
-console.log(ImageHeight);
 const positionCenter = {position: 'absolute', top: 0, left: 0, right: 0};
 const styles = StyleSheet.create({
   wrapper: {

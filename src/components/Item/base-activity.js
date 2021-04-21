@@ -12,6 +12,7 @@ const BaseActivity = props => {
   const navigation = useNavigation();
 
   const {
+    type,
     data: {
       id,
       cover_url,
@@ -26,7 +27,9 @@ const BaseActivity = props => {
   } = props;
 
   const goDetail = () => {
-    navigation.navigate('ActivityDetail', {activityId: id});
+    if (type === 'list') {
+      navigation.navigate('ActivityDetail', {activityId: id});
+    }
   };
 
   return (

@@ -5,12 +5,13 @@ import ScrollList from '@/components/ScrollList';
 import BaseShopBrand from '@/components/Item/base-shop-brand';
 
 const ShopBrandList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item, index}) => {
-    return <BaseShopBrand data={item} key={item.id} />;
+    return <BaseShopBrand data={item} key={item.id} type={type} />;
   };
 
   const loadData = async (page = 1) => {
@@ -48,6 +49,7 @@ const ShopBrandList = props => {
 
 ShopBrandList.propTypes = {
   request: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

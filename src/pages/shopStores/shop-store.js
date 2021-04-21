@@ -8,7 +8,7 @@ const ShopStore = props => {
 
   return (
     <View>
-      <ShopStoreList request={request} />
+      <ShopStoreList request={request} type="list" />
     </View>
   );
 };

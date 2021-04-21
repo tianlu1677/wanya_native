@@ -79,7 +79,7 @@ const Recommend = props => {
       component: () => {
         let component = null;
         if (item.display_style === 'single') {
-          component = <SingleList request={{api: getChannelPosts, params}} />;
+          component = <SingleList request={{api: getChannelPosts, params}} type="list" />;
         }
         if (item.display_style === 'double') {
           component = <DoubleList request={{api: getChannelPosts, params}} />;

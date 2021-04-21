@@ -21,7 +21,6 @@ const Movement = props => {
 
   const getParams = value => {
     const query = `q[category_id_eq]=${categoryId}&${value}`;
-    console.log('query', query);
     setRequest({api: getMovements, apiPath: query});
   };
 
@@ -33,7 +32,7 @@ const Movement = props => {
     <View style={styles.wrapper}>
       <SelectListHeader data={detail} getParams={getParams} />
       <View style={styles.speator} />
-      {request && <MovementList request={request} />}
+      {request && <MovementList request={request} type="list" />}
     </View>
   ) : (
     <Loading />

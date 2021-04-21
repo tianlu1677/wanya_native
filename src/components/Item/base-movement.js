@@ -22,8 +22,6 @@ const BaseMovement = props => {
     },
   } = props;
 
-  console.log('type', type);
-
   const handleJoin = async () => {
     if (joined) {
       await getMovementExit(id);
@@ -36,7 +34,9 @@ const BaseMovement = props => {
   };
 
   const goDetail = () => {
-    navigation.push('MovementDetail', {movementId: id});
+    if (type === 'list') {
+      navigation.push('MovementDetail', {movementId: id});
+    }
   };
 
   return (

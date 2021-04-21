@@ -17,8 +17,8 @@ const TheoryPreview = () => {
   return (
     <ScrollView style={styles.wrapper}>
       <GoBack color={'white'} />
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
-      <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
+      {/* <StatusBar barStyle={'dark-content'} backgroundColor={'white'} /> */}
+      {/* <View style={{height: SAFE_TOP, backgroundColor: 'black'}} /> */}
       {theory.media && <TheoryMedia media={theory.media} type="theory_media" showDelete={false} />}
       <Text style={styles.title}>{theory.title}</Text>
       <PublishAccount

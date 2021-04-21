@@ -26,7 +26,6 @@ import BrandImg from '@/assets/images/brand.png';
 const {width} = Dimensions.get('window');
 const HEADER_HEIGHT = Math.ceil((width * 485) / 750);
 
-console.log(HEADER_HEIGHT);
 const ShopBrandDetail = props => {
   const {shopBrandId} = props.route.params;
   const [currentKey, setCurrentKey] = useState('post');

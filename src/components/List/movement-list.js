@@ -5,12 +5,11 @@ import ScrollList from '@/components/ScrollList';
 import BaseMovement from '@/components/Item/base-movement';
 
 const MovementList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const {type} = props;
 
-  console.log('list type', type);
   const renderItem = ({item}) => {
     return <BaseMovement data={item} key={item.id} type={type} />;
   };
@@ -20,7 +19,6 @@ const MovementList = props => {
     const {api, params, apiPath} = props.request;
     const res = await api(apiPath, {...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.movements;
-    console.log(res);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -45,6 +43,7 @@ const MovementList = props => {
 
 MovementList.propTypes = {
   request: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -1,19 +1,12 @@
 import React from 'react';
-import {View, SafeAreaView, Platform, StatusBar} from 'react-native';
+import {View, Platform, StatusBar} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {STATUS_BAR_HEIGHT, BarHeight} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import MainTabScreen from './main-tab-screen';
 
 // MainStackScreen
 import {routers} from './config';
-
-// AuthStackScreen
-import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
-import SocialLogin from '@/pages/sessions/social-login';
-import PhoneLogin from '@/pages/sessions/phone-login';
-import InviteLogin from '@/pages/sessions/invite-login';
-import PasswordLogin from '@/pages/sessions/password-login';
-import WebView from '@/pages/webview/webview';
 
 const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -23,54 +16,52 @@ export const MainStackScreen = () => (
     initialRouteName="Recommend"
     headerMode="screen"
     screenOptions={() => ({
-      headerStyle: {
-        backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-        borderTopWidth: 0,
-      },
+      headerStyle: {backgroundColor: Platform.OS === 'ios' ? 'white' : 'white', shadowOpacity: 0},
       headerBackTitleVisible: false,
-      headerTintColor: 'black',
-      leftButtonStyle: {},
-      headerLeftContainerStyle: {paddingLeft: 15},
-      headerRightContainerStyle: {paddingRight: 15},
-      headerTitleStyle: {fontWeight: 'bold', fontSize: 16},
-      headerBackImage: () => (
-        <View style={{flex: 1, paddingRight: 20}}>
-          <FastImg
-            source={require('@/assets/images/back.png')}
-            style={{width: 9, height: 15, paddingLeft: 0}}
-          />
-        </View>
+      headerLeftContainerStyle: {paddingLeft: 14},
+      headerRightContainerStyle: {paddingRight: 14},
+      headerTitleStyle: {fontWeight: '500', fontSize: 16},
+      headerLeft: () => (
+        <Pressable hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+          <FastImg source={require('@/assets/images/back.png')} style={{width: 9, height: 15}} />
+        </Pressable>
       ),
     })}>
     <MainStack.Screen name="Recommend" component={MainTabScreen} options={{headerShown: false}} />
     {routers.map(route => {
       const render = props => {
-        const Components = route.component;
-        return route.safeArea === false ? (
+        const {barColor, component: Components, options} = route;
+        return (
           <>
-            {route.bar !== false && (
-              <StatusBar
-                barStyle={`${route.barColor || 'light'}-content`}
-                backgroundColor="transparent"
-              />
+            <StatusBar backgroundColor="transparent" barStyle={`${barColor || 'dark'}-content`} />
+            {options && options.headerShown === false && (
+              <View style={{height: BarHeight, backgroundColor: options.herderColor}} />
             )}
             <Components {...props} />
           </>
-        ) : (
-          <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-            {route.bar !== false && (
-              <StatusBar
-                barStyle={`${route.barColor || 'light'}-content`}
-                translucent={!!route.translucent}
-                backgroundColor={route.backgroundColor || 'transparent'}
-              />
-            )}
-            <Components {...props} />
-          </SafeAreaView>
         );
+        // return route.safeArea === false ? (
+        //   <>
+        //     {route.bar !== false && (
+        //       <StatusBar
+        //         barStyle={`${route.barColor || 'light'}-content`}
+        //         backgroundColor="transparent"
+        //       />
+        //     )}
+        //     <Components {...props} />
+        //   </>
+        // ) : (
+        //   <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+        //     {route.bar !== false && (
+        //       <StatusBar
+        //         barStyle={`${route.barColor || 'light'}-content`}
+        //         translucent={!!route.translucent}
+        //         backgroundColor={route.backgroundColor || 'transparent'}
+        //       />
+        //     )}
+        //     <Components {...props} />
+        //   </SafeAreaView>
+        // );
       };
 
       return (
@@ -84,6 +75,15 @@ export const MainStackScreen = () => (
     })}
   </MainStack.Navigator>
 );
+
+// AuthStackScreen
+import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+import SocialLogin from '@/pages/sessions/social-login';
+import PhoneLogin from '@/pages/sessions/phone-login';
+import InviteLogin from '@/pages/sessions/invite-login';
+import PasswordLogin from '@/pages/sessions/password-login';
+import WebView from '@/pages/webview/webview';
+import {Pressable} from 'react-native';
 
 export const AuthStackScreen = () => {
   return (
