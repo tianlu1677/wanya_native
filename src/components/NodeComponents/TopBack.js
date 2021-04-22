@@ -6,7 +6,7 @@ import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 
 const TopBack = props => {
-  const {top, color, handleShare} = props;
+  const {top, color, handleShare, onReportClick} = props;
   const navigation = useNavigation();
 
   const handleClick = () => {
@@ -25,6 +25,13 @@ const TopBack = props => {
       {handleShare && (
         <Pressable onPress={handleShare} style={[styles.shareWrap, {top: top}]} hitSlop={hitSlop}>
           <IconFont name={'zhuanfa'} color={color || '#fff'} size={17} />
+        </Pressable>
+      )}
+
+      {/* 举报 */}
+      {onReportClick && (
+        <Pressable onPress={onReportClick} style={[styles.shareWrap, {top: top}]} hitSlop={hitSlop}>
+          <IconFont name={'gengduo'} color={color || '#fff'} size={20} />
         </Pressable>
       )}
     </>

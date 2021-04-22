@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     paddingRight: 24,
     position: 'relative',
-    backgroundColor: 'pink',
   },
   imageCover: {
     zIndex: -1,

@@ -2,17 +2,18 @@ import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
-import {Avator, PlayScore, GoBack, BottomModal} from '@/components/NodeComponents';
+import {Avator, PlayScore, BottomModal, TopBack} from '@/components/NodeComponents';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
 import Toast from '@/components/Toast';
+import {RFValue} from '@/utils/response-fontsize';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import StickTopHeader from '@/components/StickTopHeader';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {BarHeight} from '@/utils/navbar';
+import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import FastImg from '@/components/FastImg';
 import {reportContent} from '@/api/secure_check';
 import ActionSheet from '@/components/ActionSheet';
@@ -24,7 +25,7 @@ import {
   getAccountArticles,
 } from '@/api/account_api';
 
-const HEADER_HEIGHT = 270 + BarHeight;
+const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 540) / 750);
 
 const AccountDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -74,11 +75,7 @@ const AccountDetail = ({navigation, route}) => {
       id: 1,
       label: '拉黑',
       onPress: () => {
-        const data = {
-          reason: '拉黑',
-          report_type: 'Account',
-          report_type_id: accountId,
-        };
+        const data = {reason: '拉黑', report_type: 'Account', report_type_id: accountId};
         reportContent(data).then(res => {
           Toast.showError('已拉黑', {duration: 500});
         });
@@ -98,11 +95,7 @@ const AccountDetail = ({navigation, route}) => {
   };
 
   const onPreview = () => {
-    const data = {
-      images: [{url: account.avatar_url}],
-      visible: true,
-      index: 0,
-    };
+    const data = {index: 0, visible: true, images: [{url: account.avatar_url}]};
     dispatch(dispatchPreviewImage(data));
   };
 
@@ -135,15 +128,16 @@ const AccountDetail = ({navigation, route}) => {
 
   const Header = () => {
     return (
-      <View style={{flex: 1}}>
-        <GoBack top={BarHeight} report={true} onReportClick={onReportClick} />
-        <FastImg
-          source={{uri: account.background_img_url || AccountDetailBgImg}}
-          resizeMode={'cover'}
-          style={styles.imageCover}
-        />
-        <View style={[styles.imageCover, styles.imageCoverOpacity]} />
-        <View style={styles.header}>
+      <>
+        <View style={{height: BarHeight, backgroundColor: 'black'}} />
+        <TopBack top={BarHeight + RFValue(12)} onReportClick={onReportClick} />
+        <Pressable style={styles.header}>
+          <View style={styles.coverOpacity} />
+          <FastImg
+            source={{uri: account.background_img_url || AccountDetailBgImg}}
+            resizeMode={'cover'}
+            style={styles.imageCover}
+          />
           <View
             style={[styles.userWrap, {marginBottom: account.settled_type === 'single' ? 30 : 20}]}>
             <Avator account={account} size={50} isShowSettledIcon={false} handleClick={onPreview} />
@@ -227,16 +221,20 @@ const AccountDetail = ({navigation, route}) => {
               <Text style={styles.numberTitle}>粉丝</Text>
             </Pressable>
           </View>
-        </View>
-      </View>
+        </Pressable>
+      </>
     );
   };
 
   return account.id ? (
     <View style={styles.wrapper}>
       <CollapsibleHeader
-        headerHeight={HEADER_HEIGHT}
+        tabBarHeight={BarHeight}
+        headerHeight={HEADER_HEIGHT + BarHeight}
         currentKey={currentKey}
+        onKeyChange={key => setCurrentKey(key)}
+        renderTopHeader={<StickTopHeader title={account.nickname} />}
+        renderHeader={<Header />}
         tabData={[
           {
             key: 'publish',
@@ -259,9 +257,6 @@ const AccountDetail = ({navigation, route}) => {
             component: ArticleListPage,
           },
         ]}
-        onKeyChange={key => setCurrentKey(key)}
-        renderTopHeader={<StickTopHeader title={account.nickname} />}
-        renderHeader={<Header />}
       />
       <BottomModal
         visible={showModal}
@@ -280,40 +275,37 @@ const AccountDetail = ({navigation, route}) => {
   );
 };
 
+const position = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
 const styles = StyleSheet.create({
   wrapper: {
     position: 'relative',
     flex: 1,
   },
   header: {
-    paddingLeft: 19,
-    paddingRight: 16,
-    paddingTop: BarHeight + 45,
+    paddingTop: RFValue(45),
     height: HEADER_HEIGHT,
+    paddingHorizontal: 14,
+    position: 'relative',
   },
   imageCover: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    width: '100%',
-    flex: 1,
-    height: HEADER_HEIGHT,
+    zIndex: -1,
+    ...position,
   },
-  imageCoverOpacity: {
+  coverOpacity: {
+    ...position,
     backgroundColor: '#000',
-    opacity: 0.5,
+    opacity: 0.4,
   },
   userWrap: {
     flexDirection: 'row',
-    marginBottom: 20,
+    marginBottom: RFValue(20),
   },
   nickname: {
     fontSize: 16,
     lineHeight: 27,
     color: '#fff',
     fontWeight: '500',
-    marginTop: 3,
+    marginTop: RFValue(3),
   },
   uid: {
     height: 20,
@@ -335,7 +327,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   settledWrap: {
-    // marginBottom: 21,
     marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -374,7 +365,7 @@ const styles = StyleSheet.create({
   numberWrap: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 15,
+    bottom: RFValue(15),
     left: 20,
   },
   numberItem: {

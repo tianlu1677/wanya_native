@@ -50,7 +50,6 @@ const SearchAllList = props => {
 
   const loadData = async () => {
     const res = await api({...params, page: 1});
-    console.log('res', res);
     if (!res.data.items) {
       const filterData = Object.entries(res.data).filter(data => data[1].items.length > 0);
       const newData = filterData.map((item, index) => {
@@ -61,8 +60,6 @@ const SearchAllList = props => {
     setHeaders(res.headers);
     setLoading(false);
   };
-
-  console.log('listData', listData);
 
   useEffect(() => {
     loadData();

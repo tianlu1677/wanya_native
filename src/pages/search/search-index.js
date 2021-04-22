@@ -22,7 +22,7 @@ import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 
 const SearchIndex = ({navigation, route}) => {
-  const [currentKey, setCurrentKey] = useState(route.params.key || 'all');
+  const [currentKey, setCurrentKey] = useState(route.params?.key || 'all');
   const [searchKey, setSearchKey] = useState(null);
   const [request, setRequest] = useState({
     api: searchApi,

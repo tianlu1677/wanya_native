@@ -212,7 +212,7 @@ const accountRouter = [
     name: 'AccountDetail',
     component: AccountDetail,
     barColor: 'light',
-    options: {title: '用户详情', headerShown: false},
+    options: {headerShown: false},
   },
   {name: 'FollowNodes', component: FollowNodes, barColor: 'dark', options: {title: '圈子列表'}},
   {name: 'FollowAccounts', component: FollowAccounts, options: {title: '关注列表'}},
