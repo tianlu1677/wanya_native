@@ -189,6 +189,7 @@ export const UPDATE_CATEGORY_LIST = 'UPDATE_CATEGORY_LIST';
 export const SAVE_CHANNELS = 'SAVE_CHANNELS'; //首页channels
 export const CHANGE_SHARE_STATUS = 'CHANGE_SHARE_STATUS'; //首页关注分享状态
 export const CHANGE_SHARE_NEARBY_STATUS = 'CHANGE_SHARE_NEARBY_STATUS'; //首页附近关注分享状态
+export const CHANGE_DISCOVERY_DATA = 'CHANGE_DISCOVERY_DATA'; //发现页面数据更新
 
 // node
 export const CREATE_NODE = 'CREATE_NODE'; //创建node对象

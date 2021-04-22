@@ -5,17 +5,20 @@ import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 
 const {width} = Dimensions.get('window');
-const imagewidth = parseInt((width - 28 - 18) / 3);
+const imagewidth = Math.ceil((width - 28 - 18) / 3);
 
 const BaseShopBrand = props => {
   const navigation = useNavigation();
 
   const {
+    type,
     data: {id, cover_url, name},
   } = props;
 
   const goDetail = () => {
-    navigation.navigate('ShopBrandDetail', {shopBrandId: id});
+    if (type === 'list') {
+      navigation.navigate('ShopBrandDetail', {shopBrandId: id});
+    }
   };
 
   return (
@@ -27,6 +30,9 @@ const BaseShopBrand = props => {
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    width: imagewidth,
+  },
   image: {
     width: imagewidth,
     height: imagewidth,

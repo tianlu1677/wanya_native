@@ -18,6 +18,7 @@ const defaultState = {
   categoryList: [],
   shareStatus: true,
   shareNearbyStatus: true,
+  discoveryData: [],
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -67,6 +68,11 @@ export const homeReducer = (state = defaultState, action) => {
       return {
         ...state,
         shareNearbyStatus: action.value,
+      };
+    case constants.CHANGE_DISCOVERY_DATA:
+      return {
+        ...state,
+        discoveryData: action.value,
       };
     default:
       return state;

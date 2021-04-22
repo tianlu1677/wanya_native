@@ -4,12 +4,13 @@ import ScrollList from '@/components/ScrollList';
 import BaseActivity from '@/components/Item/base-activity';
 
 const ActivityList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return <BaseActivity data={item} key={item.id} />;
+    return <BaseActivity data={item} key={item.id} type={type} />;
   };
 
   const loadData = async (page = 1) => {
@@ -40,6 +41,7 @@ const ActivityList = props => {
 
 ActivityList.propTypes = {
   request: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default ActivityList;

@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseShopBrand from '@/components/Item/base-shop-brand';
 
 const ShopBrandList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item, index}) => {
-    return <BaseShopBrand data={item} key={item.id} />;
+    return <BaseShopBrand data={item} key={item.id} type={type} />;
   };
 
   const loadData = async (page = 1) => {
@@ -41,12 +42,21 @@ const ShopBrandList = props => {
         paddingHorizontal: 14,
         justifyContent: 'space-between',
       }}
+      style={styles.wrapper}
     />
   );
 };
 
 ShopBrandList.propTypes = {
   request: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: '#fff',
+    paddingTop: 9,
+  },
+});
 
 export default ShopBrandList;

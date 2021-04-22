@@ -1,22 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Pressable, Dimensions} from 'react-native';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
 import Loading from '@/components/Loading';
-import {JoinButton, JoinAccounts, BlurView} from '@/components/NodeComponents';
-import SingleList from '@/components/List/single-list';
-import TopicList from '@/components/List/topic-list';
+import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import Toast from '@/components/Toast';
 import {RFValue} from '@/utils/response-fontsize';
+import {
+  JoinButton,
+  JoinAccounts,
+  BlurView,
+  TopBack,
+  BottomModal,
+} from '@/components/NodeComponents';
 import {
   getMovementDetail,
   getMovementJoinAccounts,
   getMovementJoined,
   getMovementExit,
-  getMovementsPosts,
 } from '@/api/movement_api';
 
-const {width} = Dimensions.get('window');
-const Height = parseInt((width * 420) / 750);
+const Height = Math.ceil((SCREEN_WIDTH * 420) / 750);
+const HEADER_HEIGHT = Height + BarHeight;
 
 const MovementDetail = ({navigation, route}) => {
   const {movementId} = route.params;
@@ -24,6 +28,7 @@ const MovementDetail = ({navigation, route}) => {
   const [joined, setJoined] = useState(false);
   const [joinAccounts, setJoinAccounts] = useState([]);
   const [currentKey, setCurrentKey] = useState('topic');
+  const [showModal, setShowModal] = useState(false);
 
   const goJoinAccounts = () => {
     navigation.navigate('JoinAccountsList');
@@ -31,14 +36,9 @@ const MovementDetail = ({navigation, route}) => {
 
   const handleJoined = async () => {
     joined ? await getMovementExit(movementId) : await getMovementJoined(movementId);
-    Toast.showError(joined ? '已取消收藏' : '已收藏');
+    Toast.showError(joined ? '已取消Get' : '已Get');
     setJoined(!joined);
     loadJoinAccounts();
-  };
-
-  const PublishListPage = () => {
-    const params = {id: movementId, type: 'published_order'};
-    return <SingleList request={{api: getMovementsPosts, params}} />;
   };
 
   const loadJoinAccounts = async () => {
@@ -62,11 +62,13 @@ const MovementDetail = ({navigation, route}) => {
   const Header = () => {
     return (
       <View style={styles.header}>
+        <View style={{backgroundColor: '#61D3F0'}} />
+        <TopBack top={332} />
         <Text style={styles.title}>
           {detail.category_subset_name} / {detail.level_text}
         </Text>
         <Text style={styles.name}>{detail.name}</Text>
-        <Text style={styles.intro}>
+        <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
           {`${detail.nickname || detail.name}。`}
           {detail.intro ? `简介：${detail.intro}` : ''}
         </Text>
@@ -92,23 +94,18 @@ const MovementDetail = ({navigation, route}) => {
   return detail ? (
     <View style={styles.wrapper}>
       <CollapsibleHeader
-        headerHeight={Height}
+        headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         renderHeader={<Header />}
         separator={true}
-        tabData={[
-          {
-            key: 'topic',
-            title: '帖子',
-            component: PublishListPage,
-          },
-          {
-            key: 'lessons',
-            title: '教程',
-            component: PublishListPage,
-          },
-        ]}
+        tabData={[]}
+      />
+      <BottomModal
+        visible={showModal}
+        cancleClick={() => setShowModal(false)}
+        title={detail.name}
+        content={`简介：${detail.intro || ''}`}
       />
     </View>
   ) : (
@@ -119,13 +116,14 @@ const MovementDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    position: 'relative',
+    backgroundColor: 'pink',
   },
   header: {
-    height: Height,
+    height: HEADER_HEIGHT,
     paddingHorizontal: 14,
-    paddingTop: RFValue(20),
+    paddingTop: RFValue(23),
     backgroundColor: '#61D3F0',
+    position: 'relative',
   },
   title: {
     fontSize: 11,
@@ -138,6 +136,7 @@ const styles = StyleSheet.create({
   },
   intro: {
     fontSize: 13,
+    lineHeight: 20,
     color: '#fff',
     marginTop: RFValue(10),
   },

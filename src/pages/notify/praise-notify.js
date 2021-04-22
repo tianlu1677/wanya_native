@@ -1,26 +1,13 @@
-import React, {Component, useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Pressable} from 'react-native';
-import {connect, useSelector} from 'react-redux';
-import styled from 'styled-components/native';
-import goPage from '../../utils/page_path';
+import React, {useState, useEffect} from 'react';
+import {View} from 'react-native';
 import {getPraiseNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
-import SafeAreaPlus from '../../components/SafeAreaPlus';
-import {
-  dispatchCurrentAccount,
-  dispatchBaseCurrentAccount,
-  dispatchEmptyAccountDetail,
-} from '@/redux/actions';
 
 const PraiseNotify = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState({});
-
-  useEffect(() => {
-    loadInfo();
-  }, []);
 
   const loadInfo = async (page = 1) => {
     let params = {page: page, per_page: 20};
@@ -39,7 +26,6 @@ const PraiseNotify = ({navigation}) => {
   };
 
   const formatNotify = notify => {
-    // console.log('notify', notify)
     let image_url = '';
     let has_video = false;
     let content = '';
@@ -56,7 +42,7 @@ const PraiseNotify = ({navigation}) => {
     } else if (notify.target_type === 'Theory' && notify.theory) {
       image_url = notify.theory.single_cover && notify.theory.single_cover.cover_url;
       content = notify.theory.title;
-      has_video = notify.theory.single_cover.category === 'video'
+      has_video = notify.theory.single_cover.category === 'video';
     } else {
       content = '已删除';
     }
@@ -78,20 +64,20 @@ const PraiseNotify = ({navigation}) => {
         navigation.push('TheoryDetail', {theoryId: comment.commentable_id});
       }
     } else if (notify.topic) {
-      console.log('topic, topic');
       navigation.push('TopicDetail', {topicId: notify.topic.id});
     } else if (notify.article) {
-      console.log('article, article');
       navigation.push('ArticleDetail', {articleId: notify.article.id});
     } else if (notify.theory) {
-      // console.log('article, article');
       navigation.push('TheoryDetail', {theoryId: notify.theory.id});
     }
   };
 
+  useEffect(() => {
+    loadInfo();
+  }, []);
+
   const renderItem = ({item}) => {
     let notify = item;
-    // console.log('notify', notify)
     return (
       <NotifyContent
         account={notify.actor}
@@ -106,7 +92,7 @@ const PraiseNotify = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <ScrollList
         onRefresh={loadInfo}
         headers={headers}
@@ -114,10 +100,9 @@ const PraiseNotify = ({navigation}) => {
         loading={loading}
         renderItem={renderItem}
         enableRefresh={false}
-        // height={1200}
         renderSeparator={() => <View />}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

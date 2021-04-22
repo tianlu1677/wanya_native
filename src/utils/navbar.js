@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect, useReducer} from 'react';
-import {Platform, Dimensions} from 'react-native';
+import {Platform, Dimensions, StatusBar} from 'react-native';
 import {isIphoneX, getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 
 export const IsIos = Platform.OS === 'ios';
@@ -9,6 +8,7 @@ export const NAV_BAR_HEIGHT = IsIos ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROI
 
 export const STATUS_BAR_HEIGHT =
   !IsIos || !isIphoneX ? getStatusBarHeight(false) : getStatusBarHeight(false);
+
 export const BOTTOM_HEIGHT = IsIos ? getBottomSpace() : 0;
 
 export const BASIC_HEIGHT = BOTTOM_HEIGHT > 0 ? BOTTOM_HEIGHT : STATUS_BAR_HEIGHT;
@@ -31,3 +31,11 @@ export const SCREEN_HEIGHT = Dimensions.get('window').height;
 // console.log('STATUS_BAR_HEIGHT();', STATUS_BAR_HEIGHT)
 // console.log('Platform.OS();', Platform.OS)
 // console.log('UNSAFE_TOP', <UNSAFE_TOP></UNSAFE_TOP>)
+
+export const BarHeight = IsIos
+  ? isIphoneX
+    ? getStatusBarHeight(true)
+    : getStatusBarHeight(false)
+  : StatusBar.currentHeight;
+
+console.log('BarHeight', BarHeight);

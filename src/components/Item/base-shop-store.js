@@ -9,11 +9,14 @@ const BaseShopstore = props => {
   const navigation = useNavigation();
 
   const {
+    type,
     data: {id, cover_url, name, address, store_type, distance, tags},
   } = props;
 
   const goDetail = () => {
-    navigation.navigate('ShopStoreDetail', {shopStoreId: id});
+    if (type === 'list') {
+      navigation.navigate('ShopStoreDetail', {shopStoreId: id});
+    }
   };
 
   return (

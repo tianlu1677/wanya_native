@@ -1,9 +1,9 @@
 import request from './request';
 
 // 顽招列表
-export const getMovements = async params => {
+export const getMovements = async (apiPath, params) => {
   const res = await request({
-    url: '/api/v1/movements',
+    url: `/api/v1/movements?${apiPath}`,
     method: 'GET',
     params,
   });

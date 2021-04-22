@@ -51,7 +51,7 @@ const AccountsList = props => {
         headers={headers}
         renderItem={renderItem}
         renderSeparator={renderSeparator}
-        {...props}
+        enableRefresh={false}
       />
       {type === 'related' && listData.length >= 5 && props.renderMoreAccounts}
     </View>
@@ -61,7 +61,6 @@ const AccountsList = props => {
 AccountsList.propTypes = {
   request: PropTypes.object.isRequired,
   onPress: PropTypes.func,
-  ref: PropTypes.any,
 };
 
 const styles = StyleSheet.create({

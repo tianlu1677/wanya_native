@@ -8,7 +8,11 @@ import ArticleList from '@/components/List/article-list';
 import NodeList from '@/components/List/node-list';
 import DoubleList from '@/components/List/double-list';
 import LongVideoList from '@/components/List/long-video-list';
+import MovementList from '@/components/List/movement-list';
 import SpaceList from '@/components/List/space-list';
+import ActivityList from '@/components/List/activity-list';
+import ShopStoreList from '@/components/List/shop-store-list';
+import ShopBrandList from '@/components/List/shop-brand-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
@@ -17,20 +21,8 @@ import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 
-export const Type = {
-  all: 'all',
-  node: 'node_content',
-  space: 'space_content',
-  hashtag: 'hashtag_content',
-  account: 'account_content',
-  theory: 'theory_content',
-  longTopic: 'long_topic_content',
-  article: 'article_content',
-  topic: 'topic_content',
-};
-
 const SearchIndex = ({navigation, route}) => {
-  const [currentKey, setCurrentKey] = useState('all');
+  const [currentKey, setCurrentKey] = useState(route.params?.key || 'all');
   const [searchKey, setSearchKey] = useState(null);
   const [request, setRequest] = useState({
     api: searchApi,
@@ -64,11 +56,7 @@ const SearchIndex = ({navigation, route}) => {
     );
 
   const NodeListPage = () =>
-    type === 'node' ? (
-      <NodeList request={request} enableRefresh={false} dataKey="items" />
-    ) : (
-      <View />
-    );
+    type === 'node' ? <NodeList request={request} dataKey="items" /> : <View />;
 
   const ShortVideoPage = () =>
     type === 'duanshipin' ? (
@@ -84,9 +72,37 @@ const SearchIndex = ({navigation, route}) => {
       <View />
     );
 
+  const MovementPage = () =>
+    type === 'movement' ? (
+      <MovementList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
   const SpaceListPage = () =>
     type === 'space' ? (
       <SpaceList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ActivityListPage = () =>
+    type === 'activity' ? (
+      <ActivityList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ShopStoreListPage = () =>
+    type === 'shop_store' ? (
+      <ShopStoreList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ShopBrandListPage = () =>
+    type === 'shop_store' ? (
+      <ShopBrandList request={request} enableRefresh={false} dataKey="items" type="list" />
     ) : (
       <View />
     );
@@ -100,7 +116,7 @@ const SearchIndex = ({navigation, route}) => {
 
   const AccountListPage = () =>
     type === 'account' ? (
-      <AccountsList request={request} dataKey="items" type="search" enableRefresh={false} />
+      <AccountsList request={request} dataKey="items" type="search" />
     ) : (
       <View />
     );
@@ -121,13 +137,13 @@ const SearchIndex = ({navigation, route}) => {
       <Search
         inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
         height={RFValue(38)}
-        cancelWidth={RFValue(50)}
         textColor="#000"
         placeholderTextColor="#000"
         placeholder="搜索帖子、文章、圈子等内容"
         autoFocus={true}
         onChangeText={debounce(onChangeText, 500)}
         cancel={true}
+        cancelWidth={RFValue(50)}
         onCancel={() => navigation.goBack()}
       />
 
@@ -175,9 +191,29 @@ const SearchIndex = ({navigation, route}) => {
             component: LongVideoPage,
           },
           {
+            key: 'movement',
+            title: '顽招',
+            component: MovementPage,
+          },
+          {
             key: 'space',
             title: '场地',
             component: SpaceListPage,
+          },
+          {
+            key: 'activity',
+            title: '活动',
+            component: ActivityListPage,
+          },
+          {
+            key: 'shop_store',
+            title: 'Van Store',
+            component: ShopStoreListPage,
+          },
+          {
+            key: 'shop_brand',
+            title: '品牌',
+            component: ShopBrandListPage,
           },
           {
             key: 'hashtag',

@@ -1,36 +1,16 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  Linking,
-  StyleSheet,
-  View,
-  TextInput,
-  Pressable,
-  Text,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react';
+import {SafeAreaView, StatusBar, Linking, StyleSheet, View, Pressable, Text} from 'react-native';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
-import {contentBlank} from '../../styles/commonStyles';
-import {Button, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Toast from '@/components/Toast';
 import CodePush from 'react-native-code-push';
 import checkHotUpdate from '@/utils/codepush';
 import {BaseApiUrl} from '@/utils/config';
 import {IsIos} from '@/utils/navbar';
-// import ListItem from '@/components/ListItem';
 
 const Settings = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
-
-  // const [phone, setPhone] = useState('');
-  const dispatch = useDispatch();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({});
-  }, [navigation]);
 
   const goPages = type => {
     switch (type) {
@@ -75,7 +55,6 @@ const Settings = ({navigation, route}) => {
         Linking.openURL(url);
         break;
       case 'logout':
-        // console.log('logout');
         Helper.clearAllData();
         navigation.reset({
           index: 0,
@@ -83,9 +62,8 @@ const Settings = ({navigation, route}) => {
         });
         break;
       default:
-        console.log('others');
+        break;
     }
-    console.log('type', type);
   };
 
   const ForwardRight = () => {
@@ -94,16 +72,7 @@ const Settings = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fafafa'}}>
-      <StatusBar barStyle="dark-content" />
-      {/* <Text style={contentBlank} />
-      <ItemView
-        onPress={() => {
-          goPages('edit');
-        }}>
-        <ItemTitle>编辑个人资料</ItemTitle>
-        <ForwardRight />
-      </ItemView> */}
-      {/* <Text style={contentBlank} /> */}
+      {/* <StatusBar barStyle="dark-content" /> */}
       <View style={{backgroundColor: 'white'}}>
         <ItemView
           style={[styles.topBorder1px]}

@@ -17,21 +17,15 @@ const TabList = props => {
 
   const setIndex = (item, index) => {
     props.tabChange(item, index);
-
     setCurrentIndex(index);
     setContentWidth(0);
     if (!scrollEnabled) {
       return;
     }
-    let layout = layoutList[index];
-    let rx = deviceWidth / 2;
-    let sx = layout.x - rx + layout.width / 2;
+    const layout = layoutList[index];
+    const rx = deviceWidth / 2;
+    const sx = layout.x - rx + layout.width / 2;
     scrollRef.current.scrollTo({x: sx, animated: true});
-    // if (sx < 0) {
-    //   sx = 0;
-    // }
-    // sx < contentWidth - deviceWidth && scrollRef.current.scrollTo({x: sx, animated: true});
-    // sx >= contentWidth - deviceWidth && scrollRef.current.scrollToEnd({animated: true});
   };
 
   const setLayout = (layout, index) => {
@@ -43,18 +37,13 @@ const TabList = props => {
   };
 
   useEffect(() => {
-    if (props.current) {
+    const isAllLayout = layoutList.length > 0 && layoutList.every(item => item && item.width);
+    if (isAllLayout) {
       const index = props.data.findIndex(v => v.key === props.current);
-      setCurrentIndex(index);
+      const current = props.data.find(v => v.key === props.current);
+      setIndex(current, index);
     }
-  }, []);
-
-  useEffect(() => {
-    const index = props.data.findIndex(v => v.key === props.current);
-    const current = props.data.find(v => v.key === props.current);
-    setCurrentIndex(index);
-    setIndex(current, index);
-  }, [props.current]);
+  }, [props.current, layoutList]);
 
   useEffect(() => {
     if (contentWidth > deviceWidth) {

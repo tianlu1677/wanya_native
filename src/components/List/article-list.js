@@ -5,6 +5,7 @@ import ScrollList from '@/components/ScrollList';
 import BaseArticle from '@/components/Item/base-article';
 
 const ArticleList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -15,7 +16,7 @@ const ArticleList = props => {
   };
 
   const renderItem = ({item, index}) => {
-    return <BaseArticle data={item} key={item.id} onRemove={() => onRemove(index)} />;
+    return <BaseArticle data={item} key={item.id} onRemove={() => onRemove(index)} type={type} />;
   };
 
   const loadData = async (page = 1) => {

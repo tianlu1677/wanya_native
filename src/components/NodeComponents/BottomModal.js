@@ -22,7 +22,7 @@ const BottomModalView = props => {
       onSwipeOut={() => cancel()}
       modalTitle={props.title ? <ModalTitle title={props.title} /> : false}>
       <ModalContent style={{...styles.content, ...props.contentWrapStyle}}>
-        {props.content ? <View style={styles.body}>{props.content}</View> : props.children}
+        {props.content ? <Text style={styles.body}>{props.content}</Text> : props.children}
       </ModalContent>
     </BottomModal>
   );

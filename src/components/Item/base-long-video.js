@@ -36,7 +36,7 @@ const BaseLongVideo = props => {
   );
 };
 
-const ImageHeight = parseInt((width * 420) / 750);
+const ImageHeight = Math.ceil((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,

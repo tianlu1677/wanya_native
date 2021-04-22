@@ -1,16 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
+import StickTopHeader from '@/components/StickTopHeader';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
-import {NAV_BAR_HEIGHT} from '@/utils/navbar';
-import {BlurView, JoinAccounts, JoinButton, Avator} from '@/components/NodeComponents';
+import {SCREEN_WIDTH, BarHeight} from '@/utils/navbar';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
+import {
+  BlurView,
+  JoinAccounts,
+  JoinButton,
+  Avator,
+  BottomModal,
+  TopBack,
+} from '@/components/NodeComponents';
 import {
   getShopBrandDetail,
   getShopBrandJoinAccounts,
@@ -23,10 +33,8 @@ import {
 import PersonImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
 
-const {width} = Dimensions.get('window');
-const HEADER_HEIGHT = Math.ceil((width * 485) / 750);
+const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 485) / 750);
 
-console.log(HEADER_HEIGHT);
 const ShopBrandDetail = props => {
   const {shopBrandId} = props.route.params;
   const [currentKey, setCurrentKey] = useState('post');
@@ -62,11 +70,12 @@ const ShopBrandDetail = props => {
   return detail ? (
     <View style={styles.wrapper}>
       <CollapsibleHeader
-        tabBarHeitabBarHeightght={NAV_BAR_HEIGHT}
-        headerHeight={HEADER_HEIGHT}
+        tabBarHeitabBarHeightght={BarHeight}
+        headerHeight={HEADER_HEIGHT + BarHeight}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         separator={true}
+        renderTopHeader={<StickTopHeader title={detail.name} />}
         renderHeader={
           <RenderHeader detail={detail} joinAccounts={joinAccounts} loadData={loadData} />
         }
@@ -95,8 +104,10 @@ const ShopBrandDetail = props => {
 };
 
 const RenderHeader = props => {
+  const dispatch = useDispatch();
   const {detail, joinAccounts, loadData} = props;
   const [joined, setJoined] = useState(detail.joined);
+  const [showModal, setShowModal] = useState(false);
 
   const handleJoin = async () => {
     joined ? await getShopBrandExit(detail.id) : await getShopBrandJoined(detail.id);
@@ -105,63 +116,88 @@ const RenderHeader = props => {
     loadData();
   };
 
+  const onPreview = type => {
+    console.log(type);
+    if (type === 'cover_url') {
+      const data = {index: 0, visible: true, images: [{url: detail.cover_url}]};
+      dispatch(dispatchPreviewImage(data));
+    }
+
+    if (type === 'bg_cover') {
+      const data = {index: 0, visible: true, images: detail.medias};
+      dispatch(dispatchPreviewImage(data));
+    }
+  };
+
   return (
-    <View style={styles.header}>
-      <View style={styles.headerOpacity} />
-      {detail.medias.length > 0 && (
-        <FastImg source={{uri: detail.medias[0].url}} style={styles.headerCover} />
-      )}
-      <View style={styles.headerInfo}>
-        <FastImg source={{uri: detail.cover_url}} style={styles.coverImage} />
-        <View style={styles.content}>
-          <Text style={styles.name}>{detail.name}</Text>
-          <Text style={styles.count}>
-            {detail.publish_topics_count + detail.publish_articles_count}
-            篇动态
-          </Text>
-        </View>
-        {detail.account ? (
-          <View style={styles.headerAccount}>
-            <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
-            <View style={styles.accountContent}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.accountName}>{detail.account.nickname}</Text>
-                {detail.account.settled_type === 'personal' && (
-                  <FastImg style={styles.settledIcon} source={PersonImg} />
-                )}
-                {detail.account.settled_type === 'brand' && (
-                  <FastImg style={styles.settledIcon} source={BrandImg} />
-                )}
-              </View>
-              <Text style={styles.accountText}>已认领</Text>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.headerAccount}>
-            <IconFont name="question" size={16} color={'#fff'} />
-            <Text style={styles.noAccount}>未认领</Text>
-          </View>
+    <>
+      <View style={{height: BarHeight, backgroundColor: 'black'}} />
+      <TopBack top={BarHeight + RFValue(10)} />
+      <Pressable style={styles.header} onPreview={() => onPreview('bg_cover')}>
+        <View style={styles.headerOpacity} />
+        {detail.medias.length > 0 && (
+          <FastImg source={{uri: detail.medias[0].url}} style={styles.headerCover} />
         )}
-      </View>
-      <Text style={styles.intro}>
-        简介：{detail.intro.length > 35 ? detail.intro.substr(0, 35) : detail.intro}
-      </Text>
-      <Pressable style={styles.accountsWrapper}>
-        <BlurView style={styles.accountsMain} blurAmount={5}>
-          <JoinAccounts accounts={joinAccounts} size={25} />
-          <Text style={styles.accountsCount}>
-            {detail.join_accounts_count
-              ? `${detail.join_accounts_count}位板友已收藏`
-              : '还没有板友收藏'}
-          </Text>
-          <JoinButton join={joined} text={joined ? '已收藏' : '收藏'} onPress={handleJoin} />
-        </BlurView>
+        <View style={styles.headerInfo}>
+          <Pressable onPreview={() => onPreview('cover_url')}>
+            <FastImg source={{uri: detail.cover_url}} style={styles.coverImage} />
+          </Pressable>
+          <View style={styles.content}>
+            <Text style={styles.name}>{detail.name}</Text>
+            <Text style={styles.count}>
+              {detail.publish_topics_count + detail.publish_articles_count}
+              篇动态
+            </Text>
+          </View>
+          {detail.account ? (
+            <View style={styles.headerAccount}>
+              <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
+              <View style={styles.accountContent}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={styles.accountName}>{detail.account.nickname}</Text>
+                  {detail.account.settled_type === 'personal' && (
+                    <FastImg style={styles.settledIcon} source={PersonImg} />
+                  )}
+                  {detail.account.settled_type === 'brand' && (
+                    <FastImg style={styles.settledIcon} source={BrandImg} />
+                  )}
+                </View>
+                <Text style={styles.accountText}>已认领</Text>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.headerAccount}>
+              <IconFont name="question" size={16} color={'#fff'} />
+              <Text style={styles.noAccount}>未认领</Text>
+            </View>
+          )}
+        </View>
+        <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
+          简介：{detail.intro}
+        </Text>
+        <Pressable style={styles.accountsWrapper}>
+          <BlurView style={styles.accountsMain} blurAmount={5}>
+            <JoinAccounts accounts={joinAccounts} size={25} />
+            <Text style={styles.accountsCount}>
+              {detail.join_accounts_count
+                ? `${detail.join_accounts_count}位板友已收藏`
+                : '还没有板友收藏'}
+            </Text>
+            <JoinButton join={joined} text={joined ? '已收藏' : '收藏'} onPress={handleJoin} />
+          </BlurView>
+        </Pressable>
       </Pressable>
-    </View>
+      <BottomModal
+        visible={showModal}
+        cancleClick={() => setShowModal(false)}
+        title={'简介'}
+        content={`简介${detail.intro}`}
+      />
+    </>
   );
 };
 
-const positon = {width: width, height: HEADER_HEIGHT, position: 'absolute'};
+const positon = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
@@ -171,7 +207,7 @@ const styles = StyleSheet.create({
     height: HEADER_HEIGHT,
     position: 'relative',
     paddingHorizontal: 14,
-    paddingTop: RFValue(25),
+    paddingTop: RFValue(28),
   },
   headerOpacity: {
     ...positon,
@@ -238,7 +274,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 11,
     lineHeight: 18,
-    marginTop: RFValue(21),
+    marginTop: RFValue(16),
+    width: '80%',
   },
   accountsWrapper: {
     position: 'absolute',

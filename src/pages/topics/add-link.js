@@ -26,9 +26,7 @@ const AddLink = ({navigation}) => {
   const onAnalysis = async () => {
     Toast.showLoading('正在解析中...');
     try {
-      // console.log('parseUrl', parseUrl)
       let res = await addTopicLink({raw_link: parseUrl});
-      // console.log('res', res);
       Toast.hide();
       if (res.error_info || res.error) {
         Toast.showError(res.error_info || '解析不到该网址，请重新输入');
@@ -54,7 +52,7 @@ const AddLink = ({navigation}) => {
     navigation.setOptions({
       headerTitle: '添加链接',
       headerRight: () => (
-        <Pressable onPress={onAnalysis}>
+        <Pressable onPress={onAnalysis} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <Text style={[styles.cancel, {color: textValue ? '#000' : '#bdbdbd'}]}>确定</Text>
         </Pressable>
       ),

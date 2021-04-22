@@ -9,11 +9,14 @@ const BaseSpceDetail = props => {
   const navigation = useNavigation();
 
   const {
+    type,
     data: {id, cover_url, name, address, distance, tag_list},
   } = props;
 
   const goDetail = () => {
-    navigation.navigate('SpaceDetail', {spaceId: id});
+    if (type === 'list') {
+      navigation.navigate('SpaceDetail', {spaceId: id});
+    }
   };
 
   return (

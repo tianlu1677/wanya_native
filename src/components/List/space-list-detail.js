@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseSpceDetail from '@/components/Item/base-space-detail';
 
-const SpaceListList = props => {
+const SpaceListDetail = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return <BaseSpceDetail data={item} key={item.id} />;
+    return <BaseSpceDetail data={item} key={item.id} type={type} />;
   };
 
   const loadData = async (page = 1) => {
@@ -38,8 +39,9 @@ const SpaceListList = props => {
   );
 };
 
-SpaceListList.propTypes = {
+SpaceListDetail.propTypes = {
   request: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
-export default SpaceListList;
+export default SpaceListDetail;

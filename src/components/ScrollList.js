@@ -201,7 +201,7 @@ const ScrollList = props => {
     };
   }, [scrollY]);
 
-  const keyExtractor = useCallback(item => String(item[props.itemKey || 'id']), []);
+  const keyExtractor = useCallback(item => item[props.itemKey || 'id'].toString(), []);
 
   return (
     <Animated.FlatList

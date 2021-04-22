@@ -1,6 +1,7 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {View, Text, StatusBar, TextInput, Pressable, StyleSheet, Platform, Keyboard} from 'react-native';
+import {View, Text, StatusBar, TextInput, Pressable, StyleSheet, Keyboard} from 'react-native';
 import {TouchableWithoutFeedback, KeyboardAvoidingView} from 'react-native';
+import {IsIos} from '@/utils/navbar';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
@@ -44,9 +45,7 @@ const NewTheory = props => {
   }, [navigation, textValue]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.wrapper}>
+    <KeyboardAvoidingView behavior={IsIos ? 'padding' : 'height'} style={styles.wrapper}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
@@ -81,6 +80,7 @@ const NewTheory = props => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   container: {
     paddingTop: RFValue(90),

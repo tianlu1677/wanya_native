@@ -10,6 +10,7 @@ const BaseMovement = props => {
   const navigation = useNavigation();
   const [joined, setJoined] = useState(props.data.joined);
   const {
+    type,
     data: {
       id,
       name,
@@ -33,7 +34,9 @@ const BaseMovement = props => {
   };
 
   const goDetail = () => {
-    navigation.push('MovementDetail', {movementId: id});
+    if (type === 'list') {
+      navigation.push('MovementDetail', {movementId: id});
+    }
   };
 
   return (

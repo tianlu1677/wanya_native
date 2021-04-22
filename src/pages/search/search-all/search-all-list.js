@@ -2,18 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import AllItem from '@/pages/search/search-all/all-item';
-
-export const Type = {
-  all: 'all',
-  node: 'node_content',
-  space: 'space_content',
-  hashtag: 'hashtag_content',
-  account: 'account_content',
-  theory: 'theory_content',
-  longTopic: 'long_topic_content',
-  article: 'article_content',
-  topic: 'topic_content',
-};
+import {Type} from './meta';
 
 const SearchAllList = props => {
   const [loading, setLoading] = useState(true);
@@ -32,8 +21,16 @@ const SearchAllList = props => {
     switch (item.type) {
       case Type.node:
         return <AllItem {...Props} title="圈子" onPress={() => onPress('node')} />;
+      case Type.movement:
+        return <AllItem {...Props} title="顽招" onPress={() => onPress('movement')} />;
       case Type.space:
         return <AllItem {...Props} title="场地" onPress={() => onPress('space')} />;
+      case Type.activity:
+        return <AllItem {...Props} title="活动" onPress={() => onPress('activity')} />;
+      case Type.shopStore:
+        return <AllItem {...Props} title="Van Store" onPress={() => onPress('shopStore')} />;
+      case Type.shopBrand:
+        return <AllItem {...Props} title="店铺" onPress={() => onPress('shopBrand')} />;
       case Type.hashtag:
         return <AllItem {...Props} title="话题" onPress={() => onPress('hashtag')} />;
       case Type.account:

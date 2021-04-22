@@ -10,6 +10,7 @@ import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createAction, cancelAction} from '@/api/action_api';
 import * as action from '@/redux/constants';
 import LocationBar from '@/components/LocationBar';
+
 export const PublishAccount = props => {
   const {data} = props;
   const navigation = useNavigation();
@@ -19,16 +20,8 @@ export const PublishAccount = props => {
     navigation.push('AccountDetail', {accountId: data.account.id});
   };
 
-  const goSpaceDetail = () => {
-    navigation.push('SpaceDetail', {spaceId: data.space.id});
-  };
-
   const onFollow = async () => {
-    if (followed) {
-      await unfollowAccount(data.account_id);
-    } else {
-      await followAccount(data.account_id);
-    }
+    followed ? await unfollowAccount(data.account_id) : await followAccount(data.account_id);
     setFollowed(!followed);
   };
 

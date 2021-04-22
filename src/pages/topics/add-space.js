@@ -84,14 +84,6 @@ const AddSpace = props => {
     />
   );
 
-  // const SpaceListPage = () => {
-  //   return request.type === 'space' ? (
-  //     <SpaceList request={request} onPress={onPress} enableRefresh={false} type="add-space" />
-  //   ) : (
-  //     <View />
-  //   );
-  // };
-
   const LocationListPage = () => (
     <LocationList
       request={request}
@@ -99,14 +91,6 @@ const AddSpace = props => {
       type={props.route.params.type === 'topic' ? 'add-location' : 'add-node'}
     />
   );
-
-  // const LocationListPage = () => {
-  //   return request.type === 'location' ? (
-  //     <LocationList request={request} onPress={onPress} enableRefresh={false} type="add-location" />
-  //   ) : (
-  //     <View />
-  //   );
-  // };
 
   const onChangeText = text => {
     setRequest(returnParams(currentKey, text));
