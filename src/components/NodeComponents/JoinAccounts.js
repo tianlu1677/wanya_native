@@ -7,7 +7,7 @@ const JoinAccounts = props => {
   const {size} = props;
   const sizeStyle = {width: size, height: size, borderRadius: Number(size / 2)};
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, props.style]}>
       {props.accounts.map((item, index) => (
         <View style={styles.content} key={index}>
           <Avator account={item} size={props.size} />

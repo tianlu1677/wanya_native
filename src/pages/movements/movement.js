@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
+import {View, StyleSheet, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import Loading from '@/components/Loading';
+import IconFont from '@/iconfont';
 import {SelectListHeader} from '@/components/NodeComponents';
 import MovementList from '@/components/List/movement-list';
 import {getMovements} from '@/api/movement_api';
 import {getCategoryProfile} from '@/api/category_api';
 
 const Movement = props => {
+  const {navigation} = props;
   const {category} = props.route.params;
   const {categoryList} = useSelector(state => state.home);
   const categoryId = categoryList.find(item => item.name === category).id;
@@ -27,6 +29,19 @@ const Movement = props => {
   useEffect(() => {
     loadData();
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: `${category}顽招`,
+      headerRight: () => (
+        <Pressable
+          onPress={() => navigation.push('SearchIndex', {key: 'movement'})}
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+          <IconFont name="search" size={16} />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
 
   return detail ? (
     <View style={styles.wrapper}>

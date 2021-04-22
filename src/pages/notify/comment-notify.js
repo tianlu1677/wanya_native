@@ -1,6 +1,5 @@
-import React, {Component, useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Pressable} from 'react-native';
-import {connect, useSelector} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {View} from 'react-native';
 import {getReplyComments} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
@@ -26,13 +25,7 @@ const CommentNotify = ({navigation}) => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    loadInfo();
-  }, []);
-
   const formatComment = comment => {
-    // console.log(comment)
-
     let commentable = comment.commentable;
     let type = comment.commentable_type;
     let image_url = '';
@@ -90,9 +83,12 @@ const CommentNotify = ({navigation}) => {
     }
   };
 
+  useEffect(() => {
+    loadInfo();
+  }, []);
+
   const renderItem = ({item}) => {
     let comment = item;
-    // console.log('comment', comment);
     return (
       <NotifyContent
         account={comment.account}
@@ -108,16 +104,18 @@ const CommentNotify = ({navigation}) => {
   };
 
   return (
-    <ScrollList
-      onRefresh={loadInfo}
-      headers={headers}
-      data={data}
-      loading={loading}
-      renderItem={renderItem}
-      enableRefresh={false}
-      renderSeparator={() => <View />}
-      initialNumToRender={10}
-    />
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <ScrollList
+        onRefresh={loadInfo}
+        headers={headers}
+        data={data}
+        loading={loading}
+        renderItem={renderItem}
+        enableRefresh={false}
+        renderSeparator={() => <View />}
+        initialNumToRender={10}
+      />
+    </View>
   );
 };
 

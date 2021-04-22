@@ -1,66 +1,72 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import StickTopHeader from '@/components/StickTopHeader';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
-import {JoinAccounts, JoinButton} from '@/components/NodeComponents';
+import {JoinAccounts, JoinButton, TopBack, BottomModal} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {
   getShopStoreDetail,
   getShopStoreJoinAccounts,
-  shopStoreJoined,
-  shopStoreExit,
+  getShopStoreJoined,
+  getShopStoreExit,
   getShopStorePosts,
   getShopStoreTopics,
   getShopStoreArticles,
 } from '@/api/shop_store_api';
+import {Pressable} from 'react-native';
 
-const {width} = Dimensions.get('window');
-const ImageHeight = parseInt((width * 230) / 750);
-const HEADER_HEIGHTs = ImageHeight + parseInt(ImageHeight / 2) + 3 + RFValue(50) * 3;
-const HEADER_HEIGHT = HEADER_HEIGHTs;
+const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 230) / 750);
+const TOP_HEADER_HEIGHT =
+  BarHeight + HEADER_HEIGHT + RFValue(75 / 2) + RFValue(3) + RFValue(50) * 3;
 
 const RenderHeader = props => {
-  const {detail} = props;
-  const shopStoreId = detail.id;
+  const dispatch = useDispatch();
+  const {detail, joinAccounts, loadData} = props;
   const [joined, setJoined] = useState(detail.joined);
-  const [joinAccounts, setJoinAccounts] = useState([]);
-
-  const loadJoinAccounts = async () => {
-    const res = await getShopStoreJoinAccounts(shopStoreId, {sort: 'publish_order'});
-    const accounts = res.data.accounts.slice(0, 4);
-    setJoinAccounts(accounts);
-  };
+  const [showModal, setShowModal] = useState(false);
 
   const handleJoin = async () => {
-    if (joined) {
-      await shopStoreExit(shopStoreId);
-      Toast.showError('已取消收藏');
-    } else {
-      await shopStoreJoined(shopStoreId);
-      Toast.showError('已收藏');
-    }
-    loadJoinAccounts();
+    joined ? await getShopStoreExit(detail.id) : await getShopStoreJoined(detail.id);
+    Toast.showError(joined ? '已取消收藏' : '已收藏');
     setJoined(!joined);
+    loadData();
+  };
+
+  const onPreview = type => {
+    if (type === 'cover_url') {
+      const data = {index: 0, visible: true, images: [{url: detail.cover_url}]};
+      dispatch(dispatchPreviewImage(data));
+    }
+
+    if (type === 'bg_cover') {
+      const data = {index: 0, visible: true, images: detail.medias};
+      dispatch(dispatchPreviewImage(data));
+    }
   };
 
   return (
-    <View style={styles.headerWrapper}>
-      <View>
+    <>
+      <View style={{height: BarHeight, backgroundColor: 'black'}} />
+      <TopBack top={BarHeight + RFValue(12)} />
+      <Pressable style={styles.header} onPress={() => onPreview('bg_cover')}>
         <FastImg
           source={{uri: detail.medias.length > 0 ? detail.medias[0].url : ''}}
-          style={styles.bgCoverImage}
+          style={styles.imageCover}
         />
         <View style={styles.coverOpacity} />
-      </View>
-      <View style={styles.header}>
-        <FastImg source={{uri: detail.cover_url}} style={styles.cover_url} />
+        <Pressable onPress={() => onPreview('cover_url')}>
+          <FastImg source={{uri: detail.cover_url}} style={styles.cover_url} />
+        </Pressable>
         <View style={styles.nameContent}>
           <Text style={styles.name}>{detail.name}</Text>
           <Text style={styles.count}>
@@ -78,11 +84,13 @@ const RenderHeader = props => {
               joineStyle={{color: '#000000', backgroundColor: '#fff'}}
             />
           </View>
-          <View style={{marginBottom: RFValue(12)}}>
-            <JoinAccounts accounts={joinAccounts} size={18} />
-          </View>
+          <JoinAccounts
+            accounts={joinAccounts}
+            size={18}
+            style={{marginBottom: RFValue(12), justifyContent: 'flex-end'}}
+          />
         </View>
-      </View>
+      </Pressable>
       <View style={styles.slideWrapper}>
         {/* 所在位置 */}
         <View style={styles.slide}>
@@ -104,7 +112,7 @@ const RenderHeader = props => {
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
         {/* 店铺标签 */}
-        <View style={styles.slide}>
+        <Pressable style={styles.slide} onPress={() => setShowModal(true)}>
           <IconFont name="biaoqian" size={16} color="#000" />
           <Text style={styles.slideTitle}>店铺标签</Text>
           <View style={[styles.slideValue, styles.tagWrapper]}>
@@ -115,9 +123,27 @@ const RenderHeader = props => {
             ))}
           </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-        </View>
+        </Pressable>
       </View>
-    </View>
+
+      {/* 店铺标签 */}
+      {detail.tags.length > 0 && (
+        <BottomModal
+          visible={showModal}
+          cancleClick={() => setShowModal(false)}
+          title={'店铺标签'}
+          content={
+            <View style={styles.tagWrapper}>
+              {detail.tags.map(tag => (
+                <Text style={styles.tag} key={tag.id}>
+                  {tag.name}
+                </Text>
+              ))}
+            </View>
+          }
+        />
+      )}
+    </>
   );
 };
 
@@ -125,39 +151,18 @@ const ShopStoreDetail = props => {
   const {shopStoreId} = props.route.params;
   const [currentKey, setCurrentKey] = useState('post');
   const [detail, setDetail] = useState(null);
-  const [joined, setJoined] = useState(false);
-  // const [joinAccounts, setJoinAccounts] = useState([]);
+  const [joinAccounts, setJoinAccounts] = useState([]);
 
   const loadData = async () => {
     const res = await getShopStoreDetail(shopStoreId);
-    setJoined(res.data.shop_store.joined);
+    const ret = await getShopStoreJoinAccounts(shopStoreId, {sort: 'publish_order'});
+    setJoinAccounts(ret.data.accounts.slice(0, 4));
     setDetail(res.data.shop_store);
   };
 
-  // const loadJoinAccounts = async () => {
-  //   const res = await getShopStoreJoinAccounts(shopStoreId, {sort: 'publish_order'});
-  //   const accounts = res.data.accounts.slice(0, 4);
-  //   setJoinAccounts(accounts);
-  // };
-
-  // const handleJoin = async () => {
-  //   if (joined) {
-  //     await shopStoreExit(shopStoreId);
-  //     Toast.showError('已取消收藏');
-  //   } else {
-  //     await shopStoreJoined(shopStoreId);
-  //     Toast.showError('已收藏');
-  //   }
-  //   // loadJoinAccounts();
-  //   setJoined(!joined);
-  // };
-
   useEffect(() => {
-    // loadJoinAccounts();
     loadData();
   }, []);
-
-  console.log('detail', detail);
 
   const PostListPage = () => {
     const params = {api: getShopStorePosts, params: {id: shopStoreId}};
@@ -178,7 +183,7 @@ const ShopStoreDetail = props => {
     <View style={styles.wrapper}>
       <View style={{flex: 1, backgroundColor: 'pink'}}>
         <CollapsibleHeader
-          headerHeight={HEADER_HEIGHT}
+          headerHeight={TOP_HEADER_HEIGHT}
           currentKey={currentKey}
           onKeyChange={key => setCurrentKey(key)}
           tabData={[
@@ -198,8 +203,10 @@ const ShopStoreDetail = props => {
               component: ArticleListPage,
             },
           ]}
-          // renderTopHeader={<StickTopHeader title={currentAccount.nickname} showLeftButton={true} />}
-          renderHeader={<RenderHeader detail={detail} />}
+          renderTopHeader={<StickTopHeader title={detail.name} />}
+          renderHeader={
+            <RenderHeader detail={detail} joinAccounts={joinAccounts} loadData={loadData} />
+          }
         />
       </View>
     </View>
@@ -208,32 +215,25 @@ const ShopStoreDetail = props => {
   );
 };
 
-const positionCenter = {position: 'absolute', top: 0, left: 0, right: 0};
+const position = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  headerWrapper: {
-    position: 'relative',
-  },
-  bgCoverImage: {
-    width: width,
-    height: ImageHeight,
+  imageCover: {
+    zIndex: -1,
+    ...position,
   },
   coverOpacity: {
-    // ...positionCenter,
-    // height: ImageHeight,
-    // backgroundColor: '#000',
-    // opacity: 0.4,
-    // zIndex: 1,
+    ...position,
+    backgroundColor: '#000',
+    opacity: 0.4,
   },
   header: {
     flexDirection: 'row',
-    marginLeft: 19,
-    marginRight: 17,
-    marginTop: -RFValue(75 / 2),
-    zIndex: 3,
+    paddingHorizontal: 14,
+    paddingTop: HEADER_HEIGHT - RFValue(75 / 2),
   },
   cover_url: {
     width: RFValue(75),
@@ -261,9 +261,8 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   slideWrapper: {
-    marginTop: 3,
     paddingHorizontal: 14,
-    zIndex: 2,
+    marginTop: RFValue(3),
   },
   slide: {
     height: RFValue(50),

@@ -108,7 +108,8 @@ const SelectListHeader = props => {
   };
 
   useEffect(() => {
-    loadParams(saveData);
+    const copyData = JSON.parse(JSON.stringify(saveData));
+    loadParams(copyData);
   }, []);
 
   return (
@@ -186,10 +187,10 @@ const SelectListHeader = props => {
   );
 };
 
-const position = {position: 'absolute', left: 0, right: 0, top: RFValue(50), bottom: 0};
+const position = {position: 'absolute', left: 0, right: 0, top: RFValue(40), bottom: 0};
 const styles = StyleSheet.create({
   wrapper: {
-    height: RFValue(50),
+    height: RFValue(40),
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',

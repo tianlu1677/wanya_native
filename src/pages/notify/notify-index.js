@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {syncAccountInfo} from '@/api/mine_api';
@@ -79,7 +79,7 @@ const NotifyIndex = ({navigation}) => {
     <View>
       <RecommendSearch />
       <View style={styles.wrapView}>
-        <View style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_praise')}>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_praise')}>
           <View style={styles.coverWrapView}>
             <Image source={{uri: PraiseNoticeImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
@@ -96,10 +96,10 @@ const NotifyIndex = ({navigation}) => {
                 : '查看赞和收藏'}
             </Text>
           </View>
-        </View>
+        </Pressable>
         <View style={styles.speator} />
 
-        <View style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_comment')}>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_comment')}>
           <View style={styles.coverWrapView}>
             <Image source={{uri: CommentNoticeImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
@@ -116,10 +116,12 @@ const NotifyIndex = ({navigation}) => {
                 : '查看评论及回复'}{' '}
             </Text>
           </View>
-        </View>
+        </Pressable>
         <View style={styles.speator} />
 
-        <View style={styles.itemView} onPress={goPageMethod.bind(this, 'mention_account_notice')}>
+        <Pressable
+          style={styles.itemView}
+          onPress={goPageMethod.bind(this, 'mention_account_notice')}>
           <View style={styles.coverWrapView}>
             <Image source={{uri: MineMentionNoticeUserImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
@@ -136,10 +138,10 @@ const NotifyIndex = ({navigation}) => {
                 : '查看@我的消息'}{' '}
             </Text>
           </View>
-        </View>
+        </Pressable>
         <View style={styles.speator} />
 
-        <View style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_follow')}>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_follow')}>
           <View style={styles.coverWrapView}>
             <Image source={{uri: FollowNoticeImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
@@ -156,10 +158,10 @@ const NotifyIndex = ({navigation}) => {
                 : '查看新增粉丝'}{' '}
             </Text>
           </View>
-        </View>
+        </Pressable>
         <View style={styles.speator} />
 
-        <View style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_system')}>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_system')}>
           <View style={styles.coverWrapView}>
             <View>
               <Avator
@@ -175,14 +177,14 @@ const NotifyIndex = ({navigation}) => {
           </View>
           <View style={styles.notifyContent}>
             <Text style={styles.notifyContentTitle}>顽鸦小助手</Text>
-            <Text style={{marginLeft: -3}}>
+            <Text style={styles.notifyContentDesc}>
               ⚡️
               {unread_system_messages_count > 0
                 ? `有${unread_system_messages_count}条新的消息`
                 : '查看消息通知'}{' '}
             </Text>
           </View>
-        </View>
+        </Pressable>
       </View>
     </View>
   );
@@ -217,9 +219,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   notifyContentDesc: {
-    marginTop: 3,
-    height: 20,
-    lineHeight: 20,
+    marginTop: 4,
     color: '#BDBDBD',
     letterSpacing: 1,
     fontSize: 13,

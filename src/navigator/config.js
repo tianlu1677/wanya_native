@@ -3,18 +3,12 @@ import {Text, Pressable} from 'react-native';
 import * as RootNavigation from '@/navigator/root-navigation';
 import {CardStyleInterpolators} from '@react-navigation/stack';
 
-// 默认
-// safeArea: false
-// barStyle: 'dark-content'
-
+// 默认: safeArea: false  barStyle: 'dark-content' headerShown:true
 const forVerticalIOS = {
   animationEnabled: true,
   gestureEnabled: false,
   cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
 };
-
-// 首页
-import RelatedAccounts from '@/pages/home/related-account-list';
 
 // 搜索
 import SearchIndex from '@/pages/search/search-index';
@@ -29,14 +23,14 @@ import AddLink from '@/pages/topics/add-link';
 import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
+// 文章
+import ArticleDetail from '@/pages/articles/article-detail';
+
 // theory
 import NewTheory from '@/pages/theories/new-theory';
 import NewTheoryContent from '@/pages/theories/new-theory-content';
 import TheoryPreview from '@/pages/theories/theory-preview';
 import TheoryDetail from '@/pages/theories/theory-detail';
-
-// 文章
-import ArticleDetail from '@/pages/articles/article-detail';
 
 // 圈子
 import NodeIndex from '@/pages/nodes/node-index';
@@ -72,14 +66,14 @@ import ShopStoreDetail from '@/pages/shopStores/shop-store-detail';
 import ShopBrand from '@/pages/shopBrands/shop-brand';
 import ShopBrandDetail from '@/pages/shopBrands/shop-brand-detail';
 
-// 我的页面
+// Mine
 import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
 import EditAccountContent from '@/pages/mine/settings/edit-account-content';
 import Feedback from '@/pages/mine/settings/feedback';
 
-// accounts
+// 用户
 import AccountDetail from '@/pages/accounts/account-detail';
 import FollowNodes from '@/pages/accounts/follow-nodes';
 import FollowAccounts from '@/pages/accounts/follow-accounts';
@@ -93,35 +87,23 @@ import SystemNotify from '@/pages/notify/system-notify';
 import FollowNotify from '@/pages/notify/follow-notify';
 import MentionNotify from '@/pages/notify/mention-notify';
 
+// 公用页面
+import RelatedAccounts from '@/pages/home/related-account-list'; //关注页面相关推荐
+import ChooseCity from '@/components/List/choose-city'; //选择城市
+import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
+import WebView from '@/pages/webview/webview'; //webview
+import SharePage from '@/pages/shares/share_page'; //分享
+import Report from '@/pages/reports/report'; //投诉
+
 // 实验室页面
 import LabIndex from '@/pages/labs/index';
 import LabGalley from '@/pages/labs/galley';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabStorageIndex from '@/pages/labs/storageindex';
 
-//登录页面
-// import SocialLogin from '@/pages/sessions/social-login';
-// import PhoneLogin from '@/pages/sessions/phone-login';
-// import InviteLogin from '@/pages/sessions/invite-login';
-// import PasswordLogin from '@/pages/sessions/password-login';
-// import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
-// import InviteDetail from '@/pages/mine/invite-detail';
-
-// 网页显示
-import WebView from '@/pages/webview/webview';
-import SharePage from '@/pages/shares/share_page'; //分享
-
-// 投诉
-import Report from '@/pages/reports/report';
-
-// clubhouse
-import ClubhouseIndex from '@/pages/clubhouse/club';
-
-// 公用页面
-import ChooseCity from '@/components/List/choose-city'; //选择城市
-import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
-
-import List from '@/pages/lottileList/list';
+const searchRouter = [
+  {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
+];
 
 const topicRouter = [
   {name: 'TopicDetail', component: TopicDetail, options: {headerShown: false}},
@@ -142,72 +124,7 @@ const topicRouter = [
   },
 ];
 
-const theoryRouter = [
-  {name: 'NewTheory', component: NewTheory, options: {...forVerticalIOS}},
-  {name: 'NewTheoryContent', component: NewTheoryContent},
-  {
-    name: 'TheoryPreview',
-    component: TheoryPreview,
-    barColor: 'light',
-    options: {headerShown: false, herderColor: '#000'},
-  },
-  {
-    name: 'TheoryDetail',
-    component: TheoryDetail,
-    barColor: 'light',
-    options: {headerShown: false, herderColor: '#000'},
-  },
-];
-
-const articleRouter = [
-  {
-    name: 'ArticleDetail',
-    component: ArticleDetail,
-    options: {
-      title: '',
-      // animationEnabled: true,
-      // gestureEnabled: true,
-      // cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-    },
-  },
-  {
-    name: 'HashtagDetail',
-    component: HashtagDetail,
-    options: {
-      title: '话题',
-      headerShown: false,
-    },
-  },
-];
-
-const spaceRouter = [
-  {name: 'Space', component: Space, options: {title: '场地列表'}},
-  {name: 'SpaceDetail', component: SpaceDetail, options: {title: '场地详情', headerShown: false}},
-];
-
-const activityRouter = [
-  {name: 'Activity', component: Activity, options: {title: '活动'}},
-  {name: 'ActivityDetail', component: ActivityDetail, options: {title: '活动详情'}},
-];
-
-const movementRouter = [
-  {name: 'Movement', component: Movement, options: {title: 'Movement'}},
-  {name: 'MovementDetail', component: MovementDetail, options: {title: 'MovementDetail'}},
-];
-
-const shopStoreRouter = [
-  {name: 'ShopStore', component: ShopStore, options: {title: 'Van Store'}},
-  {name: 'ShopStoreDetail', component: ShopStoreDetail, options: {title: 'Van Store详情'}},
-];
-
-const shopBrandRouter = [
-  {name: 'ShopBrand', component: ShopBrand, options: {title: 'ShopBrand'}},
-  {name: 'ShopBrandDetail', component: ShopBrandDetail, options: {title: 'ShopBrand详情'}},
-];
-
-const clubRouter = [
-  {name: 'ClubhouseIndex', component: ClubhouseIndex, options: {title: 'clubhouse'}},
-];
+const articleRouter = [{name: 'ArticleDetail', component: ArticleDetail}];
 
 const nodeRouter = [
   {
@@ -232,8 +149,62 @@ const nodeRouter = [
   {name: 'CreateNodeResult', component: CreateNodeResult},
 ];
 
+const spaceRouter = [
+  {name: 'Space', component: Space},
+  {name: 'SpaceDetail', component: SpaceDetail, options: {headerShown: false}},
+];
+
+const theoryRouter = [
+  {name: 'NewTheory', component: NewTheory, options: {...forVerticalIOS}},
+  {name: 'NewTheoryContent', component: NewTheoryContent},
+  {
+    name: 'TheoryPreview',
+    component: TheoryPreview,
+    barColor: 'light',
+    options: {headerShown: false, herderColor: '#000'},
+  },
+  {
+    name: 'TheoryDetail',
+    component: TheoryDetail,
+    barColor: 'light',
+    options: {headerShown: false, herderColor: '#000'},
+  },
+];
+
 const locationRouter = [
   {name: 'LocationDetail', component: LocationDetail, options: {title: '位置'}},
+];
+
+const hashtagRouter = [
+  {name: 'HashtagDetail', component: HashtagDetail, options: {title: '话题', headerShown: false}},
+];
+
+const activityRouter = [
+  {name: 'Activity', component: Activity},
+  {name: 'ActivityDetail', component: ActivityDetail, options: {title: '活动详情'}},
+];
+
+const movementRouter = [
+  {name: 'Movement', component: Movement},
+  {name: 'MovementDetail', component: MovementDetail, options: {headerShown: false}},
+];
+
+const shopStoreRouter = [
+  {name: 'ShopStore', component: ShopStore},
+  {name: 'ShopStoreDetail', component: ShopStoreDetail, options: {headerShown: false}},
+];
+
+const shopBrandRouter = [
+  {name: 'ShopBrand', component: ShopBrand},
+  {name: 'ShopBrandDetail', component: ShopBrandDetail, options: {headerShown: false}},
+];
+
+const mineRouter = [
+  {name: 'Settings', component: Settings, options: {title: '设置'}},
+  {name: 'AccountContent', component: AccountContent, options: {title: '编辑信息'}},
+  {name: 'EditAccountContent', component: EditAccountContent, options: {title: '编辑信息'}},
+  {name: 'Feedback', component: Feedback, options: {title: '反馈'}},
+  {name: 'About', component: About, options: {title: '关于顽鸦'}},
 ];
 
 const accountRouter = [
@@ -246,98 +217,49 @@ const accountRouter = [
   {name: 'FollowNodes', component: FollowNodes, barColor: 'dark', options: {title: '圈子列表'}},
   {name: 'FollowAccounts', component: FollowAccounts, options: {title: '关注列表'}},
   {name: 'FollowerAccounts', component: FollowerAccounts, options: {title: '粉丝列表'}},
-  {name: 'Settings', component: Settings, options: {title: '设置'}},
-  {name: 'About', component: About, options: {title: '关于顽鸦'}},
-  {name: 'Feedback', component: Feedback, options: {title: '反馈'}},
 ];
 
 const commonRouter = [
+  {name: 'RelatedAccounts', component: RelatedAccounts, options: {title: '相关推荐'}},
   {name: 'ChooseCity', component: ChooseCity, options: {title: '选择城市'}},
   {name: 'JoinAccountsList', component: JoinAccountsList, options: {title: '最近加入列表'}},
+  {name: 'WebView', component: WebView, options: {title: 'WebView'}},
   {name: 'SharePage', component: SharePage, options: {title: '分享'}},
   {name: 'Report', component: Report, options: {title: '投诉'}},
 ];
 
-const searchRouter = [
-  {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
-];
-
-// const authRouter = [
-// {
-//   name: 'PhoneLogin',
-//   component: PhoneLogin,
-//   safeArea: false,
-// },
-// {
-//   name: 'SocialLogin',
-//   component: SocialLogin,
-//   options: {
-//     title: '微信登录',
-//     headerShown: false,
-//   },
-//   safeArea: false,
-// },
-// {
-//   name: 'AdminPhoneLogin',
-//   component: AdminPhoneLogin,
-//   options: {
-//     title: 'AdminPhoneLogin',
-//   },
-// },
-// {
-//   name: 'InviteLogin',
-//   component: InviteLogin,
-//   options: {
-//     title: '输入邀请码',
-//   },
-//   safeArea: false,
-// },
-// {
-//   name: 'InviteDetail',
-//   component: InviteDetail,
-//   options: {
-//     title: '邀请码',
-//   },
-// },
-// {
-//   name: 'PasswordLogin',
-//   component: PasswordLogin,
-//   options: {
-//     title: '输入邀请码',
-//     headerShown: true,
-//   },
-//   safeArea: false,
-// },
-// ];
-
-export const routers = [
-  ...topicRouter,
-  ...theoryRouter,
-  ...articleRouter,
-  ...spaceRouter,
-  ...activityRouter,
-  ...movementRouter,
-  ...shopStoreRouter,
-  ...shopBrandRouter,
-  ...nodeRouter,
-  ...locationRouter,
-  ...accountRouter,
-  ...commonRouter,
-  ...searchRouter,
-  ...clubRouter,
-  {name: 'RelatedAccounts', component: RelatedAccounts, options: {title: '相关推荐'}},
+const LabRouter = [
   {name: 'LabIndex', component: LabIndex, options: {title: '实验室主页'}},
   {name: 'LabGalley', component: LabGalley, options: {title: '最新'}},
   {name: 'LabTabIndex', component: LabTabIndex, options: {title: '实验室标签页'}},
   {name: 'LabStorageIndex', component: LabStorageIndex, options: {title: 'LabStorageIndex'}},
+];
+
+const notifyRouter = [
   {name: 'NotifyIndex', component: NotifyIndex, options: {title: '消息'}},
   {name: 'CommentNotify', component: CommentNotify, options: {title: '评论及回复'}},
   {name: 'PraiseNotify', component: PraiseNotify, options: {title: '赞和收藏'}},
-  {name: 'SystemNotify', component: SystemNotify, options: {title: '顽鸦小助手'}},
   {name: 'FollowNotify', component: FollowNotify, options: {title: '新增粉丝'}},
   {name: 'MentionNotify', component: MentionNotify, options: {title: '@我的'}},
-  {name: 'WebView', component: WebView, options: {title: 'WebView'}},
-  {name: 'AccountContent', component: AccountContent, options: {title: '编辑信息'}},
-  {name: 'EditAccountContent', component: EditAccountContent, options: {title: '编辑信息'}},
-  {name: 'list', component: List, options: {title: '列表'}},
+  {name: 'SystemNotify', component: SystemNotify, options: {title: '顽鸦小助手'}},
+];
+
+export const routers = [
+  ...searchRouter,
+  ...topicRouter,
+  ...articleRouter,
+  ...theoryRouter,
+  ...nodeRouter,
+  ...spaceRouter,
+  ...locationRouter,
+  ...hashtagRouter,
+  ...activityRouter,
+  ...movementRouter,
+  ...shopStoreRouter,
+  ...shopBrandRouter,
+  ...mineRouter,
+  ...accountRouter,
+  ...notifyRouter,
+  ...commonRouter,
+  ...LabRouter,
 ];

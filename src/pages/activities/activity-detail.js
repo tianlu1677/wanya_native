@@ -6,7 +6,7 @@ import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
-import {Avator, JoinAccounts} from '@/components/NodeComponents';
+import {Avator, JoinAccounts, BottomModal} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {getActivityDetail, joinAccountsActivity, exitActivity} from '@/api/activity_api';
 import wxIcon from '@/assets/images/wx-icon.png';
@@ -18,6 +18,7 @@ const ActivityDetail = props => {
   const {currentAccount} = useSelector(state => state.account);
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   const loadData = async () => {
     const res = await getActivityDetail(activityId);
@@ -73,8 +74,6 @@ const ActivityDetail = props => {
     loadJoinAccounts();
     loadData();
   }, []);
-
-  console.log('detail', detail);
 
   return detail ? (
     <ScrollView style={styles.wrapper}>
@@ -142,21 +141,21 @@ const ActivityDetail = props => {
           <View style={styles.slide}>
             <IconFont name="people" size={RFValue(16)} color="#000" />
             <Text style={styles.slideTitle}>活动人数</Text>
-            <Text style={styles.slideValue}>{detail.max_limit_people}</Text>
+            <Text style={styles.slideValue}>{detail.max_limit_people}人</Text>
           </View>
         )}
         {/* 报名参加 */}
         <View style={styles.slide}>
           <IconFont name="join" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>报名参加</Text>
-          <View style={[styles.slideValue, {flexDirection: 'row', alignItems: 'center'}]}>
+          <View style={[styles.slideValue, styles.accountsWrapper]}>
             <JoinAccounts accounts={joinAccounts} size={25} />
             <Text style={{marginLeft: 5}}>{`共${detail.join_accounts_count}人`}</Text>
           </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
         {/* 活动标签 */}
-        <View style={styles.slide}>
+        <Pressable style={styles.slide} onPress={() => setShowModal(true)}>
           <IconFont name="biaoqian" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动标签</Text>
           <View style={[styles.slideValue, styles.tagWrapper]}>
@@ -167,7 +166,7 @@ const ActivityDetail = props => {
             ))}
           </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-        </View>
+        </Pressable>
       </View>
       <Text style={styles.intro}>活动简介</Text>
       <View style={styles.speator} />
@@ -182,6 +181,24 @@ const ActivityDetail = props => {
           </Pressable>
         ))}
       </View>
+
+      {/* 活动标签 */}
+      {detail.tag_list.length > 0 && (
+        <BottomModal
+          visible={showModal}
+          cancleClick={() => setShowModal(false)}
+          title={'活动标签'}
+          content={
+            <View style={styles.tagWrapper}>
+              {detail.tag_list.map((tag, index) => (
+                <Text style={styles.tag} key={index}>
+                  {tag}
+                </Text>
+              ))}
+            </View>
+          }
+        />
+      )}
     </ScrollView>
   ) : (
     <Loading />
@@ -266,22 +283,26 @@ const styles = StyleSheet.create({
   slideTitle: {
     marginLeft: 12,
     fontWeight: '400',
+    marginRight: 15,
   },
   slideValue: {
-    marginLeft: 'auto',
+    flex: 1,
     marginRight: 14,
     fontWeight: '400',
+    textAlign: 'right',
   },
   slideRight: {
     position: 'absolute',
     right: 0,
   },
-  tagWrapper: {
-    flex: 1,
+  accountsWrapper: {
     flexDirection: 'row',
-    flexWrap: 'nowrap',
-    marginLeft: 15,
-    overflow: 'hidden',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  tagWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   tag: {
     height: RFValue(20),

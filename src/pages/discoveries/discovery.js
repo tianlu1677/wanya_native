@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
@@ -14,12 +16,14 @@ const CategoryComponent = props => {
     category: {movement, space, activity, shop_store, shop_brand},
   } = props;
 
+  const goPageMethod = name => {
+    navigation.navigate(name, {category: currentKey});
+  };
+
   return (
     <View style={styles.content}>
       {/* movement */}
-      <Pressable
-        style={styles.slideItem}
-        onPress={() => navigation.navigate('Movement', {category: currentKey})}>
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Movement')}>
         <FastImg source={require('@/assets/discovery/movement.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/movement_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -33,9 +37,7 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/* space */}
-      <Pressable
-        style={styles.slideItem}
-        onPress={() => navigation.navigate('Space', {category: currentKey})}>
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Space')}>
         <FastImg source={require('@/assets/discovery/space.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/space_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -49,7 +51,7 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/*  activity */}
-      <Pressable style={styles.slideItem} onPress={() => navigation.navigate('Activity')}>
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Activity')}>
         <FastImg source={require('@/assets/discovery/activity.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/activity_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -63,7 +65,7 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/*  shop_store */}
-      <Pressable style={styles.slideItem} onPress={() => navigation.navigate('ShopStore')}>
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopStore')}>
         <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/shop_store_text.png')} style={styles.store} />
         <View style={styles.itemRight}>
@@ -77,9 +79,7 @@ const CategoryComponent = props => {
       <View style={styles.separator} />
 
       {/* shop_brand */}
-      <Pressable
-        style={styles.slideItem}
-        onPress={() => navigation.navigate('ShopBrand', {category: currentKey})}>
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopBrand')}>
         <FastImg source={require('@/assets/discovery/shop_brand.png')} style={styles.slideImage} />
         <FastImg source={require('@/assets/discovery/shop_brand_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
@@ -96,13 +96,23 @@ const CategoryComponent = props => {
 };
 
 const DiscoveryIndex = props => {
-  const [currentKey, setCurrentKey] = useState(null);
-  const [listData, setListData] = useState([]);
+  const dispatch = useDispatch();
+  const {categoryList, discoveryData} = useSelector(state => state.home);
+  const [currentKey, setCurrentKey] = useState(categoryList[0].name);
 
   const loadData = async () => {
     const res = await getAppCardList();
-    setCurrentKey(res.data.list[0].category_name);
-    setListData(res.data.list);
+    dispatch({type: action.CHANGE_DISCOVERY_DATA, value: res.data.list});
+  };
+
+  const onChange = key => {
+    loadData();
+    setCurrentKey(key);
+  };
+
+  const RenderCaCategory = () => {
+    const current = discoveryData.find(item => item.category_name === currentKey);
+    return <CategoryComponent {...props} category={current} currentKey={currentKey} />;
   };
 
   useEffect(() => {
@@ -112,22 +122,20 @@ const DiscoveryIndex = props => {
   return (
     <View style={styles.wrapper}>
       <RecommendSearch />
-      {listData.length > 0 ? (
+      {discoveryData.length > 0 ? (
         <TabViewList
           bottomLine={true}
           center={false}
           currentKey={currentKey}
           request={currentKey}
-          onChange={key => setCurrentKey(key)}
+          onChange={onChange}
           size="small"
           lineColor="#FF2242"
-          tabData={listData.map(category => {
+          tabData={categoryList.map(category => {
             return {
-              key: category.category_name,
-              title: category.category_name,
-              component: () => (
-                <CategoryComponent {...props} category={category} currentKey={currentKey} />
-              ),
+              key: category.name,
+              title: category.name,
+              component: RenderCaCategory,
             };
           })}
         />

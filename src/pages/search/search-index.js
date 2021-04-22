@@ -22,7 +22,7 @@ import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 
 const SearchIndex = ({navigation, route}) => {
-  const [currentKey, setCurrentKey] = useState('all');
+  const [currentKey, setCurrentKey] = useState(route.params.key || 'all');
   const [searchKey, setSearchKey] = useState(null);
   const [request, setRequest] = useState({
     api: searchApi,
@@ -137,13 +137,13 @@ const SearchIndex = ({navigation, route}) => {
       <Search
         inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
         height={RFValue(38)}
-        cancelWidth={RFValue(50)}
         textColor="#000"
         placeholderTextColor="#000"
         placeholder="搜索帖子、文章、圈子等内容"
         autoFocus={true}
         onChangeText={debounce(onChangeText, 500)}
         cancel={true}
+        cancelWidth={RFValue(50)}
         onCancel={() => navigation.goBack()}
       />
 

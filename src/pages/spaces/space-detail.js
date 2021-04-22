@@ -1,21 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {isIphoneX} from 'react-native-iphone-x-helper';
 import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
-import {
-  PlayScore,
-  Avator,
-  JoinActivity,
-  BottomModal,
-  CustomizeHeader,
-  GoBack,
-} from '@/components/NodeComponents';
+import {PlayScore, Avator, JoinActivity, BottomModal, TopBack} from '@/components/NodeComponents';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
 import {dispatchPreviewImage} from '@/redux/actions';
-import {NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -24,7 +17,7 @@ import DoubleList from '@/components/List/double-list';
 import StickTopHeader from '@/components/StickTopHeader';
 import {dispatchShareItem} from '@/redux/actions';
 
-const Top = isIphoneX ? SAFE_TOP - 8 : SAFE_TOP;
+const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 550) / 750);
 
 const SpaceDetail = ({navigation, route}) => {
   const home = useSelector(state => state.home);
@@ -66,11 +59,11 @@ const SpaceDetail = ({navigation, route}) => {
 
   const onPreview = () => {
     const data = {
+      index: 0,
+      visible: true,
       images: detail.medias.map(v => {
         return {url: v};
       }),
-      visible: true,
-      index: 0,
     };
     dispatch(dispatchPreviewImage(data));
   };
@@ -97,31 +90,26 @@ const SpaceDetail = ({navigation, route}) => {
     };
   }, []);
 
-  const Header = () => {
+  const RenderHeader = () => {
     return (
-      <View style={{position: 'relative', flex: 1}}>
-        <GoBack
-          rightBtn={<IconFont name="zhuanfa" color="white" size={17} />}
-          onHandleRight={handleOnShare}
-        />
-        {/*<View style={{height: Top, backgroundColor: 'black'}} />*/}
-        <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
-        <View style={styles.imageCoverOpacity} />
-        <Pressable onPress={onPreview} style={styles.header}>
+      <>
+        <View style={{height: BarHeight, backgroundColor: 'black'}} />
+        <TopBack top={BarHeight + RFValue(12)} handleShare={handleOnShare} />
+        <Pressable style={styles.header} onPress={onPreview}>
+          <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
+          <View style={styles.coverOpacity} />
           <View style={styles.info}>
             <View>
               <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
                 {detail.name}
               </Text>
               <Text style={styles.intro} onPress={() => setShowModal(true)}>
-                <Text>
-                  {detail.intro
-                    ? detail.intro.length > 20
-                      ? `${detail.intro.substring(0, 20)}...`
-                      : detail.intro
-                    : '暂无简介'}
-                </Text>{' '}
-                | <Text>{detail.medias.length}张图片</Text>
+                {detail.intro
+                  ? detail.intro.length > 20
+                    ? `${detail.intro.substring(0, 20)}...`
+                    : detail.intro
+                  : '暂无简介'}{' '}
+                | {detail.medias.length}张图片
               </Text>
             </View>
             <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
@@ -145,19 +133,19 @@ const SpaceDetail = ({navigation, route}) => {
             </View>
           </View>
         </Pressable>
-      </View>
+      </>
     );
   };
 
   return detail ? (
     <View style={styles.wrapper}>
       <CollapsibleHeader
-        tabBarHeight={NAV_BAR_HEIGHT}
-        headerHeight={275}
+        tabBarHeight={BarHeight}
+        headerHeight={HEADER_HEIGHT + BarHeight}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         renderTopHeader={<StickTopHeader title={detail.name} />}
-        renderHeader={<Header />}
+        renderHeader={<RenderHeader />}
         tabData={[
           {
             key: 'lasted',
@@ -185,35 +173,28 @@ const SpaceDetail = ({navigation, route}) => {
   );
 };
 
+const position = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
   },
   header: {
+    height: HEADER_HEIGHT,
+    paddingTop: RFValue(40),
     paddingLeft: 14,
     paddingRight: 24,
-    paddingTop: NAV_BAR_HEIGHT + SAFE_TOP,
-    height: 275,
     position: 'relative',
+    backgroundColor: 'pink',
   },
   imageCover: {
-    position: 'absolute',
-    height: 275,
-    width: '100%',
-    top: 0,
-    left: 0,
-    right: 0,
     zIndex: -1,
+    ...position,
   },
-  imageCoverOpacity: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  coverOpacity: {
+    ...position,
     backgroundColor: '#000',
-    opacity: 0.5,
+    opacity: 0.4,
   },
   info: {
     flexDirection: 'row',
@@ -227,9 +208,8 @@ const styles = StyleSheet.create({
   },
   intro: {
     fontSize: 11,
-    lineHeight: 19,
     color: '#fff',
-    marginTop: 6,
+    marginTop: RFValue(8),
   },
   creatorWrap: {
     flexDirection: 'row',
@@ -250,7 +230,7 @@ const styles = StyleSheet.create({
   address: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 25,
+    marginTop: RFValue(25),
   },
   addressText: {
     color: '#fff',
@@ -260,7 +240,7 @@ const styles = StyleSheet.create({
   descWrap: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 30,
+    marginTop: RFValue(30),
   },
   tagsWrap: {
     flexDirection: 'row',

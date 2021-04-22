@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
+import {View, StyleSheet, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import Loading from '@/components/Loading';
+import IconFont from '@/iconfont';
 import {SelectListHeader} from '@/components/NodeComponents';
 import ShopBrandList from '@/components/List/shop-brand-list';
 
@@ -10,6 +11,7 @@ import {getShopBrands} from '@/api/shop_brand_api';
 import {getCategoryProfile} from '@/api/category_api';
 
 const ShopBrand = props => {
+  const {navigation} = props;
   const {category} = props.route.params;
   const {categoryList} = useSelector(state => state.home);
   const categoryId = categoryList.find(item => item.name === category).id;
@@ -23,7 +25,6 @@ const ShopBrand = props => {
 
   const getParams = value => {
     const query = `q[category_id_eq]=${categoryId}&${value}`;
-    console.log('query', query);
     setRequest({api: getShopBrands, apiPath: query});
   };
 
@@ -31,11 +32,24 @@ const ShopBrand = props => {
     loadData();
   }, []);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: `${category}品牌`,
+      headerRight: () => (
+        <Pressable
+          onPress={() => navigation.push('SearchIndex', {key: 'shop_brand'})}
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
+          <IconFont name="search" size={16} />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
+
   return detail ? (
     <View style={styles.wrapper}>
       <SelectListHeader data={detail} getParams={getParams} />
       <View style={styles.speator} />
-      {request && <ShopBrandList request={request} />}
+      {request && <ShopBrandList request={request} type="list" />}
     </View>
   ) : (
     <Loading />
