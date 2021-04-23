@@ -7,7 +7,7 @@ import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {RecommendSearch} from '@/components/NodeComponents';
 import MediasPicker from '@/components/MediasPicker';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {getChannelPosts} from '@/api/home_api';
@@ -140,14 +140,14 @@ const Recommend = props => {
         ) : null}
         {channels.length > 0 && (
           <View style={styles.wrapper}>
-            <TabViewList
-              center={false}
-              bottomLine={true}
-              lazy={true}
+            <TabView
               currentKey={currentKey}
               onChange={onChange}
-              size="small"
-              lineColor="#FF2242"
+              type="index"
+              align="left"
+              textStyle={{color: '#AAAA'}}
+              activeLineColor="#FF2242"
+              bottomLine={true}
               tabData={[
                 {
                   key: 'follow',

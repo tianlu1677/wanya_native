@@ -16,7 +16,7 @@ import ShopBrandList from '@/components/List/shop-brand-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
@@ -147,13 +147,15 @@ const SearchIndex = ({navigation, route}) => {
         onCancel={() => navigation.goBack()}
       />
 
-      <TabViewList
-        bottomLine={true}
-        center={false}
+      <TabView
         currentKey={currentKey}
+        request={currentKey}
         onChange={onChangeKey}
-        request={request}
-        size="small"
+        type="index"
+        align="left"
+        textStyle={{color: '#000'}}
+        activeLineColor="#000"
+        bottomLine={true}
         tabData={[
           {
             key: 'all',

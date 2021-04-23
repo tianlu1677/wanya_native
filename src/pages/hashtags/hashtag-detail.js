@@ -52,6 +52,15 @@ const HashtagDetail = ({navigation, route}) => {
         headerHeight={HEADER_HEIGHT}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
+        renderTopHeader={<StickTopHeader title={'#' + hashtag} />}
+        renderHeader={
+          <View style={styles.header}>
+            <GoBack />
+            <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
+            <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
+            <Text style={styles.hashtagText}>#{hashtag}</Text>
+          </View>
+        }
         tabData={[
           {
             key: 'published_order',
@@ -64,15 +73,6 @@ const HashtagDetail = ({navigation, route}) => {
             component: HotList,
           },
         ]}
-        renderTopHeader={<StickTopHeader title={'#' + hashtag} />}
-        renderHeader={
-          <View style={styles.header}>
-            <GoBack />
-            <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
-            <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
-            <Text style={styles.hashtagText}>#{hashtag}</Text>
-          </View>
-        }
       />
       <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
     </View>

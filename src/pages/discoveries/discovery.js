@@ -6,7 +6,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 import {RecommendSearch} from '@/components/NodeComponents';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import {getAppCardList} from '@/api/discovery_api';
 
 const CategoryComponent = props => {
@@ -123,14 +123,15 @@ const DiscoveryIndex = props => {
     <View style={styles.wrapper}>
       <RecommendSearch />
       {discoveryData.length > 0 ? (
-        <TabViewList
-          bottomLine={true}
-          center={false}
+        <TabView
           currentKey={currentKey}
           request={currentKey}
           onChange={onChange}
-          size="small"
-          lineColor="#FF2242"
+          type="index"
+          align="left"
+          textStyle={{color: '#AAAA'}}
+          activeLineColor="#FF2242"
+          bottomLine={true}
           tabData={categoryList.map(category => {
             return {
               key: category.name,

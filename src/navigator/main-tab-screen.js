@@ -102,15 +102,15 @@ const MainTabScreen = props => {
           tabBarIcon: ({focused}) => {
             const style =
               route.name === 'Recommend' && focused
-                ? {width: 37, height: 26}
-                : {width: 34, height: 16};
+                ? {width: (500 * RFValue(27)) / 351, height: RFValue(27)}
+                : {width: (134 * RFValue(16)) / 64, height: RFValue(16)};
 
             return route.name === 'NotifyIndex' ? (
               <View style={{position: 'relative'}}>
                 <BadgeMessage
-                  size={'small'}
+                  size={'middle'}
                   value={UnreadMessageCount()}
-                  containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -22 : -12}]}
+                  containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -28 : -17}]}
                 />
                 <FastImg source={RenderImage(route.name, focused)} style={style} />
               </View>
