@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
+import {BarHeight} from '@/utils/navbar';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
@@ -27,6 +28,7 @@ const DrawerContent = ({navigation}) => {
   return (
     <View style={styles.wrapper}>
       <Pressable
+        style={styles.close}
         onPress={() => navigation.closeDrawer()}
         hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}>
         <IconFont name={'close'} size={18} />
@@ -60,12 +62,16 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 15,
-    paddingTop: RFValue(60),
+    paddingTop: BarHeight,
+  },
+  close: {
+    height: RFValue(36),
+    justifyContent: 'center',
   },
   account: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: RFValue(22),
+    marginTop: RFValue(6),
     marginBottom: RFValue(17),
   },
   info: {

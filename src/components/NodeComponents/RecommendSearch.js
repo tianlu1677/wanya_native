@@ -21,7 +21,7 @@ const RecommendSearch = () => {
         style={{backgroundColor: '#000', paddingRight: 14}}
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#fff'}}
         height={RFValue(38)}
-        placeholderTextColor="#AAAAAA"
+        placeholderTextColor="#aaa"
         placeholder="搜索顽法、帖子、文章、圈子等内容"
         cancel={false}
         onFocus={() => {

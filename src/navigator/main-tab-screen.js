@@ -110,7 +110,7 @@ const MainTabScreen = props => {
                 <BadgeMessage
                   size={'middle'}
                   value={UnreadMessageCount()}
-                  containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -28 : -17}]}
+                  containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -29 : -1}]}
                 />
                 <FastImg source={RenderImage(route.name, focused)} style={style} />
               </View>
