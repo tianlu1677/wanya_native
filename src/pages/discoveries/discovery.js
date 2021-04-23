@@ -157,8 +157,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 15,
-    paddingTop: RFValue(12),
-    paddingBottom: RFValue(17),
+    paddingVertical: RFValue(17),
     backgroundColor: '#fff',
   },
   itemRight: {
@@ -167,13 +166,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slideImage: {
-    width: 45,
-    height: 45,
+    width: RFValue(45),
+    height: RFValue(45),
     marginRight: 12,
   },
   text: {
-    width: 33,
-    height: 16,
+    width: (132 * RFValue(16)) / 62,
+    height: RFValue(16),
   },
   store: {
     width: 80,
@@ -181,8 +180,8 @@ const styles = StyleSheet.create({
   },
   itemText: {
     color: '#bdbdbd',
-    fontSize: 13,
     marginRight: 5,
+    fontSize: RFValue(13),
   },
   separator: {
     marginLeft: 45 + 12 + 15,
