@@ -19,8 +19,7 @@ import {
   getMovementExit,
 } from '@/api/movement_api';
 
-const Height = Math.ceil((SCREEN_WIDTH * 420) / 750);
-const HEADER_HEIGHT = Height + BarHeight;
+const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 440) / 750);
 
 const MovementDetail = ({navigation, route}) => {
   const {movementId} = route.params;
@@ -61,51 +60,54 @@ const MovementDetail = ({navigation, route}) => {
 
   const Header = () => {
     return (
-      <View style={styles.header}>
-        <View style={{backgroundColor: '#61D3F0'}} />
-        <TopBack top={332} />
-        <Text style={styles.title}>
-          {detail.category_subset_name} / {detail.level_text}
-        </Text>
-        <Text style={styles.name}>{detail.name}</Text>
-        <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
-          {`${detail.nickname || detail.name}。`}
-          {detail.intro ? `简介：${detail.intro}` : ''}
-        </Text>
-        <Pressable onPress={goJoinAccounts} style={styles.accountInfoWrap}>
-          <BlurView
-            style={styles.accountInfo}
-            blurType="light"
-            blurAmount={10}
-            reducedTransparencyFallbackColor="white">
-            <JoinAccounts accounts={joinAccounts} size={25} />
-            <Text style={styles.count}>
-              {detail.join_accounts_count
-                ? `${detail.join_accounts_count}个板友已get`
-                : '还没有板友get'}
-            </Text>
-            <JoinButton join={joined} text={joined ? '已Get' : 'Get'} onPress={handleJoined} />
-          </BlurView>
-        </Pressable>
-      </View>
+      <>
+        <View style={{height: BarHeight, backgroundColor: '#000'}} />
+        <TopBack top={BarHeight + RFValue(10)} />
+        <View style={styles.header}>
+          <Text style={styles.title}>
+            {detail.category_subset_name} / {detail.level_text}
+          </Text>
+          <Text style={styles.name}>{detail.name}</Text>
+          <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
+            {`${detail.nickname || detail.name}。`}
+            {detail.intro ? `简介：${detail.intro}` : ''}
+          </Text>
+          <Pressable onPress={goJoinAccounts} style={styles.accountInfoWrap}>
+            <BlurView
+              style={styles.accountInfo}
+              blurType="light"
+              blurAmount={10}
+              reducedTransparencyFallbackColor="white">
+              <JoinAccounts accounts={joinAccounts} size={25} />
+              <Text style={styles.count}>
+                {detail.join_accounts_count
+                  ? `${detail.join_accounts_count}个板友已get`
+                  : '还没有板友get'}
+              </Text>
+              <JoinButton join={joined} text={joined ? '已Get' : 'Get'} onPress={handleJoined} />
+            </BlurView>
+          </Pressable>
+        </View>
+        <BottomModal
+          visible={showModal}
+          cancleClick={() => setShowModal(false)}
+          title={'简介'}
+          content={`简介：${detail.intro}`}
+        />
+      </>
     );
   };
 
   return detail ? (
     <View style={styles.wrapper}>
       <CollapsibleHeader
-        headerHeight={HEADER_HEIGHT}
+        tabBarHeitabBarHeightght={BarHeight}
+        headerHeight={HEADER_HEIGHT + BarHeight}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
         renderHeader={<Header />}
         separator={true}
         tabData={[]}
-      />
-      <BottomModal
-        visible={showModal}
-        cancleClick={() => setShowModal(false)}
-        title={detail.name}
-        content={`简介：${detail.intro || ''}`}
       />
     </View>
   ) : (
@@ -120,10 +122,10 @@ const styles = StyleSheet.create({
   },
   header: {
     height: HEADER_HEIGHT,
-    paddingHorizontal: 14,
-    paddingTop: RFValue(23),
-    backgroundColor: '#61D3F0',
     position: 'relative',
+    paddingHorizontal: 14,
+    paddingTop: RFValue(33),
+    backgroundColor: '#61D3F0',
   },
   title: {
     fontSize: 11,

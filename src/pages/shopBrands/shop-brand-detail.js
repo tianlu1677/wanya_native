@@ -191,7 +191,7 @@ const RenderHeader = props => {
         visible={showModal}
         cancleClick={() => setShowModal(false)}
         title={'简介'}
-        content={`简介${detail.intro}`}
+        content={`简介：${detail.intro}`}
       />
     </>
   );

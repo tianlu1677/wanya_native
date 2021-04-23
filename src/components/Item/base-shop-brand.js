@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
   image: {
     width: imagewidth,
     height: imagewidth,
-    backgroundColor: '#000',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#F1F1F1',
   },
   name: {
     fontSize: 13,

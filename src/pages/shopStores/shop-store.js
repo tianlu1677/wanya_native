@@ -57,12 +57,14 @@ const ShopStore = props => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#FAFAFA',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     height: RFValue(35),
     paddingHorizontal: 14,
+    backgroundColor: '#FAFAFA',
   },
   title: {
     fontSize: 12,
