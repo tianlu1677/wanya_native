@@ -16,7 +16,7 @@ import ShopBrandList from '@/components/List/shop-brand-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import {SAFE_TOP} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
@@ -135,25 +135,26 @@ const SearchIndex = ({navigation, route}) => {
     <View style={styles.wrapper}>
       <View style={{height: SAFE_TOP, backgroundColor: '#fff'}} />
       <Search
-        inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
+        inputStyle={{borderRadius: RFValue(18), backgroundColor: '#F2F3F5'}}
         height={RFValue(38)}
         textColor="#000"
-        placeholderTextColor="#000"
-        placeholder="搜索帖子、文章、圈子等内容"
+        placeholderTextColor="#aaa"
+        placeholder="搜索顽法、帖子、文章、圈子等内容"
         autoFocus={true}
         onChangeText={debounce(onChangeText, 500)}
         cancel={true}
         cancelWidth={RFValue(50)}
         onCancel={() => navigation.goBack()}
       />
-
-      <TabViewList
-        bottomLine={true}
-        center={false}
+      <TabView
         currentKey={currentKey}
+        request={currentKey}
         onChange={onChangeKey}
-        request={request}
-        size="small"
+        type="index"
+        align="left"
+        textStyle={{color: '#000'}}
+        activeLineColor="#000"
+        bottomLine={true}
         tabData={[
           {
             key: 'all',

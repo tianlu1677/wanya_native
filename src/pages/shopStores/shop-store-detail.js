@@ -109,7 +109,6 @@ const RenderHeader = props => {
           <Text style={styles.slideValue} numberOfLines={1}>
             {detail.open_time}
           </Text>
-          <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
         {/* 店铺标签 */}
         <Pressable style={styles.slide} onPress={() => setShowModal(true)}>

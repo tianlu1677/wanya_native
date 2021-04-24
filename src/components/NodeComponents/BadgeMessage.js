@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
-import {Badge, withBadge} from 'react-native-elements';
-import {View, Pressable, StyleSheet, Text} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, Text} from 'react-native';
 
 const BadgeMessage = props => {
   const {size, value, containerStyle} = props;
@@ -20,14 +19,6 @@ const BadgeMessage = props => {
     </View>
   );
 };
-
-BadgeMessage.defaultProps = {
-  size: 'middle',
-  color: 'red',
-  number: 0,
-};
-
-export default BadgeMessage;
 
 const styles = StyleSheet.create({
   smallWrap: {
@@ -63,3 +54,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
 });
+
+BadgeMessage.defaultProps = {
+  size: 'middle',
+  color: 'red',
+  number: 0,
+};
+
+export default BadgeMessage;

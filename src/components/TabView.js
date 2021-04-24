@@ -53,11 +53,13 @@ const TabViewIndex = props => {
             data={routes}
             current={props.currentKey}
             tabChange={tabChange}
-            size={props.size}
-            bottomLine={props.bottomLine}
             center={props.center}
+            type={props.type}
+            align={props.align}
+            textStyle={props.textStyle}
+            bottomLine={props.bottomLine}
+            activeLineColor={props.activeLineColor}
             separator={props.separator}
-            lineColor={props.lineColor}
           />
         )}
         navigationState={{index, routes}}

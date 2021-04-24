@@ -6,7 +6,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 import {RecommendSearch} from '@/components/NodeComponents';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import {getAppCardList} from '@/api/discovery_api';
 
 const CategoryComponent = props => {
@@ -123,14 +123,15 @@ const DiscoveryIndex = props => {
     <View style={styles.wrapper}>
       <RecommendSearch />
       {discoveryData.length > 0 ? (
-        <TabViewList
-          bottomLine={true}
-          center={false}
+        <TabView
           currentKey={currentKey}
           request={currentKey}
           onChange={onChange}
-          size="small"
-          lineColor="#FF2242"
+          type="index"
+          align="left"
+          textStyle={{color: '#AAAA'}}
+          activeLineColor="#FF2242"
+          bottomLine={true}
           tabData={categoryList.map(category => {
             return {
               key: category.name,
@@ -157,8 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 15,
-    paddingTop: RFValue(12),
-    paddingBottom: RFValue(17),
+    paddingVertical: RFValue(17),
     backgroundColor: '#fff',
   },
   itemRight: {
@@ -167,13 +167,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slideImage: {
-    width: 45,
-    height: 45,
+    width: RFValue(45),
+    height: RFValue(45),
     marginRight: 12,
   },
   text: {
-    width: 33,
-    height: 16,
+    width: (132 * RFValue(16)) / 62,
+    height: RFValue(16),
   },
   store: {
     width: 80,
@@ -181,8 +181,8 @@ const styles = StyleSheet.create({
   },
   itemText: {
     color: '#bdbdbd',
-    fontSize: 13,
     marginRight: 5,
+    fontSize: RFValue(13),
   },
   separator: {
     marginLeft: 45 + 12 + 15,

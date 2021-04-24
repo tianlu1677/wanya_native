@@ -5,15 +5,12 @@ import {RFValue} from '@/utils/response-fontsize';
 const deviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
+  const scrollRef = useRef(null);
+  const {type, align, bottomLine, activeLineColor, textStyle, separator} = props;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [center] = useState(props.center === false ? false : true);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
   const [layoutList, setLayoutList] = useState([]);
-  const [size] = useState(props.size || 'middle');
-  const [bottomLine] = useState(props.bottomLine ? true : false);
-
-  const scrollRef = useRef(null);
 
   const setIndex = (item, index) => {
     props.tabChange(item, index);
@@ -52,149 +49,111 @@ const TabList = props => {
   }, [contentWidth]);
 
   return (
-    <View
-      style={[
-        tabBarStyle.tabWrap,
-        tabBarStyle[`tab${size}`],
-        bottomLine ? tabBarStyle.bottomLine : null,
-        {
-          alignItems: center ? 'center' : 'flex-start',
-        },
-      ]}>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        ref={scrollRef}
-        centerContent={center}
-        style={tabBarStyle[`tabScroll${size}`]}
-        scrollEnabled={scrollEnabled}>
-        {props.data.length > 0 &&
-          props.data.map((item, index) => {
-            return (
-              <Pressable
-                onPress={() => setIndex(item, index)}
-                onLayout={e => setLayout(e.nativeEvent.layout, index)}
-                key={item.key}
-                style={[tabBarStyle.tabItem]}>
-                <Text
-                  style={[
-                    tabBarStyle.textActive,
-                    tabBarStyle[`tabItemText${size}`],
-                    currentIndex === index && tabBarStyle[`textActive${size}`],
-                  ]}>
-                  {item.title}
-                </Text>
-                {currentIndex === index && (
-                  <View
+    <>
+      <View
+        style={[
+          styles.tabWrap,
+          styles[`tab${type}`],
+          styles[`tab${align}`],
+          bottomLine && styles.bottomLine,
+        ]}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          ref={scrollRef}
+          centerContent={false}
+          style={styles[`tabScroll${type}`]}
+          scrollEnabled={scrollEnabled}>
+          {props.data.length > 0 &&
+            props.data.map((item, index) => {
+              return (
+                <Pressable
+                  key={item.key}
+                  onPress={() => setIndex(item, index)}
+                  onLayout={e => setLayout(e.nativeEvent.layout, index)}
+                  style={styles[`tabItem${type}`]}>
+                  <Text
                     style={[
-                      tabBarStyle.tabLine,
-                      currentIndex === index && tabBarStyle[`lineActive${size}`],
-                      {backgroundColor: props.lineColor || '#000'},
-                    ]}
-                  />
-                )}
-              </Pressable>
-            );
-          })}
-      </ScrollView>
-    </View>
+                      textStyle,
+                      styles[`tabItemText${type}`],
+                      currentIndex === index && styles[`tabItemTextActive${type}`],
+                    ]}>
+                    {item.title}
+                  </Text>
+                  {currentIndex === index && (
+                    <View
+                      style={[
+                        currentIndex === index && styles[`tabLineActive${type}`],
+                        {backgroundColor: activeLineColor},
+                      ]}
+                    />
+                  )}
+                </Pressable>
+              );
+            })}
+        </ScrollView>
+      </View>
+      {separator && <View style={styles.separator} />}
+    </>
   );
 };
 
-// middle 45
-const tabBarStyle = StyleSheet.create({
-  tabWrap: {
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+const styles = StyleSheet.create({
+  tableft: {
+    alignItems: 'flex-start',
   },
-  tabbig: {
-    height: 50,
+  tabcenter: {
     alignItems: 'center',
-    backgroundColor: '#000',
-  },
-  tabmiddle: {
-    height: 50,
-  },
-  tabsmall: {
-    height: RFValue(36),
-  },
-  tabScrollsmall: {
-    paddingLeft: RFValue(8),
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  tabItem: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  tabItemTextbig: {
-    fontSize: 15,
-    color: '#7f7f81',
-  },
-  tabItemTextmiddle: {
-    fontSize: 14,
-    color: '#7f7f81',
-  },
-  tabItemTextsmall: {
-    fontSize: 15,
-    color: '#000',
-    fontWeight: '300',
-  },
-  textActive: {
-    fontWeight: '500',
-    color: '#000',
-  },
-  textActivebig: {
-    fontSize: 18,
-    color: '#fff',
-  },
-  textActivemiddle: {
-    fontSize: 16,
-    color: '#000',
-  },
-  textActivesmall: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  tabLine: {
-    position: 'absolute',
-    bottom: 8,
-    borderRadius: 4,
-    overflow: 'hidden',
-    backgroundColor: '#000',
-    height: 3,
-  },
-  lineActivebig: {
-    width: 22,
-    marginTop: 6,
-    backgroundColor: '#fff',
-  },
-  lineActivemiddle: {
-    width: 14,
-    marginTop: 5,
-  },
-  lineActivesmall: {
-    width: 18,
-    position: 'absolute',
-    bottom: 0,
-  },
   separator: {
     borderBottomColor: '#FAFAFA',
     borderBottomWidth: 9,
+  },
+  // type === index
+  tabindex: {
+    height: RFValue(33),
+    backgroundColor: '#fff',
+  },
+  tabScrollindex: {
+    paddingLeft: RFValue(2),
+    textAlign: 'left',
+  },
+  tabItemindex: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: RFValue(8),
+    position: 'relative',
+  },
+  tabItemTextindex: {
+    fontSize: 15,
+  },
+  tabItemTextActiveindex: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  tabLineActiveindex: {
+    position: 'absolute',
+    bottom: 0,
+    width: RFValue(18),
+    height: RFValue(3),
+    borderRadius: 4,
   },
 });
 
 TabList.propTypes = {
   data: PropTypes.array.isRequired, //tabList接收的数据
   tabChange: PropTypes.func.isRequired, //onChange 返回item
-  current: PropTypes.string, // 默认高亮第几项key
-  center: PropTypes.bool, // 是否居中显示
-  bottomLine: PropTypes.bool, //是否显示底部线
+  current: PropTypes.string.isRequired, // 默认高亮第几项key
+  type: PropTypes.string.isRequired, // 类型
+  align: PropTypes.string.isRequired, //对齐方式
+  bottomLine: PropTypes.bool.isRequired, //是否显示底部分界线
+  activeLineColor: PropTypes.string.isRequired, //active 线颜色
+  textStyle: PropTypes.string.isRequired, //active 线颜色
   separator: PropTypes.bool, //是否显示底部分界线
 };
 

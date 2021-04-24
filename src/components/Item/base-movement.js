@@ -46,7 +46,7 @@ const BaseMovement = props => {
         <Text style={styles.intro}>
           {nickname ? nickname.substring(0, 12) : name.substring(0, 12)}{' '}
           {category_subset_name ? `· ${category_subset_name}` : ''}{' '}
-          {publish_lessons_count ? `· ${publish_lessons_count}个教程` : ''}{' '}
+          {/* {publish_lessons_count ? `· ${publish_lessons_count}个教程` : ''}{' '} */}
           {publish_topics_count ? `· ${publish_topics_count}个帖子` : ''}{' '}
           {join_accounts_count ? `${join_accounts_count}个顽友已get` : '还没有顽友get这个招'}
         </Text>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     height: RFValue(66),
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 14,
+    paddingHorizontal: 14,
     backgroundColor: '#fff',
   },
   info: {

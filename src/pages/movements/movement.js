@@ -46,8 +46,7 @@ const Movement = props => {
   return detail ? (
     <View style={styles.wrapper}>
       <SelectListHeader data={detail} getParams={getParams} />
-      <View style={styles.speator} />
-      {request && <MovementList request={request} type="list" />}
+      {request && <MovementList request={request} type="list" style={{marginTop: 9}} />}
     </View>
   ) : (
     <Loading />

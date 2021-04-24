@@ -22,15 +22,15 @@ const ActivityDetail = props => {
 
   const loadData = async () => {
     const res = await getActivityDetail(activityId);
-    setDetail({
-      ...res.data.activity,
-      // account_id: 310,
-      joined: false,
-      finish_at: '2021-10-31T20:34:00.000+08:00',
-      max_limit_people: 10,
-      // source_type: 'outside',
-    });
-    // setDetail(res.data.activity);
+    // setDetail({
+    //   ...res.data.activity,
+    //   // account_id: 310,
+    //   joined: false,
+    //   finish_at: '2021-10-31T20:34:00.000+08:00',
+    //   max_limit_people: 10,
+    //   // source_type: 'outside',
+    // });
+    setDetail(res.data.activity);
   };
 
   const loadJoinAccounts = async () => {
@@ -134,7 +134,6 @@ const ActivityDetail = props => {
           <Text style={styles.slideValue}>
             {detail.start_at_text} - {detail.finish_at_text}
           </Text>
-          <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
         {/* 活动人数 */}
         {detail.max_limit_people > 0 && (
@@ -159,7 +158,7 @@ const ActivityDetail = props => {
           <IconFont name="biaoqian" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动标签</Text>
           <View style={[styles.slideValue, styles.tagWrapper]}>
-            {[...detail.tag_list, '你好吗', '奖品丰厚', '你好吗'].map((tag, index) => (
+            {detail.tag_list.map((tag, index) => (
               <Text style={styles.tag} key={index}>
                 {tag}
               </Text>

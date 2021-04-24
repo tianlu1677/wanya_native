@@ -157,9 +157,12 @@ const CollapsibleHeader = props => {
           data={navigationState.routes}
           current={props.currentKey}
           tabChange={tab => props.onKeyChange(tab.key)}
-          size={props.size}
-          lazy={true}
+          type="index"
+          align="center"
+          textStyle={{color: '#000', fontWeight: '300'}}
+          activeLineColor="#000"
           bottomLine={props.bottomLine}
+          lazy={true}
           {...innerProps}
         />
       </Animated.View>

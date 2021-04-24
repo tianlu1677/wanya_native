@@ -34,7 +34,6 @@ export const MainStackScreen = props => {
       {routers.map(route => {
         const render = props => {
           const {barColor, component: Components} = route;
-          // console.log(`${barColor || 'dark'}-content`);
           return (
             <>
               <StatusBar backgroundColor="transparent" barStyle={`${barColor || 'dark'}-content`} />

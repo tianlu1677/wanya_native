@@ -4,12 +4,13 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {debounce} from 'lodash';
 import * as action from '@/redux/constants';
+import {BarHeight} from '@/utils/navbar';
 import IconFont from '@/iconfont';
 import SpaceList from '@/components/List/space-list';
 import LocationList from '@/components/List/location-list';
 import {Search} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import {getSpacesList} from '@/api/space_api';
 import {createLocations, getLocationsList} from '@/api/location_api';
 
@@ -113,6 +114,7 @@ const AddSpace = props => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wrapper}>
+        <View style={{height: BarHeight}} />
         <Search
           inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
           height={RFValue(36)}
@@ -130,14 +132,15 @@ const AddSpace = props => {
           }
         />
         {request ? (
-          <TabViewList
-            center={false}
-            bottomLine={true}
-            lazy={true}
+          <TabView
             currentKey={currentKey}
+            request={currentKey}
             onChange={onChangeKey}
-            request={request}
-            size="small"
+            type="index"
+            align="left"
+            textStyle={{color: '#000', fontWeight: '300'}}
+            activeLineColor="#000"
+            separator={true}
             tabData={[
               {
                 key: 'space',

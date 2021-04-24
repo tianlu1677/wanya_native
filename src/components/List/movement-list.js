@@ -37,6 +37,7 @@ const MovementList = props => {
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={() => <View style={styles.separator} />}
+      style={{backgroundColor: '#fff', ...props.style}}
     />
   );
 };

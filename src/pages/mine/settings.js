@@ -75,7 +75,7 @@ const Settings = ({navigation, route}) => {
       {/* <StatusBar barStyle="dark-content" /> */}
       <View style={{backgroundColor: 'white'}}>
         <ItemView
-          style={[styles.topBorder1px]}
+          style={[styles.bottomBorder1px]}
           onPress={() => {
             goPages('about');
           }}>

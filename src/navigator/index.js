@@ -70,7 +70,9 @@ const Navigation = () => {
       // initialState={initialState}
       onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}>
       {/* <>{!login.auth_token ? AuthStackList() : MainStackList()}</> */}
-      <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+      <Drawer.Navigator
+        overlayColor="rgba(0,0,0,0.3)"
+        drawerContent={props => <DrawerContent {...props} />}>
         <Drawer.Screen
           name="Recommend"
           component={login.auth_token ? MainStackScreen : AuthStackScreen}
