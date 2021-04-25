@@ -101,7 +101,7 @@ const SearchIndex = ({navigation, route}) => {
     );
 
   const ShopBrandListPage = () =>
-    type === 'shop_store' ? (
+    type === 'shop_brand' ? (
       <ShopBrandList request={request} enableRefresh={false} dataKey="items" type="list" />
     ) : (
       <View />

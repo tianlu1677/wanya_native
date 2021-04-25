@@ -14,6 +14,8 @@ import {
   RESULTS,
   openSettings,
 } from 'react-native-permissions';
+import ChatWootWidget from '@chatwoot/react-native-widget';
+
 
 const LabIndex = props => {
   const navigation = props.navigation;
@@ -24,6 +26,20 @@ const LabIndex = props => {
     const device_token = await Helper.getData('device_token');
     setDeviceToken(device_token);
   };
+
+
+  const [showWidget, toggleWidget] = useState(false);
+  const user = {
+    identifier: 'john@gmail.com',
+    name: 'John Samuel',
+    avatar_url: '',
+    email: 'john@gmail.com',
+    identifier_hash: '',
+  };
+  const customAttributes = { accountId: 1, pricingPlan: 'paid', status: 'active' };
+  const websiteToken = 'zQHVf7Tri5YCiooBRyTEfE6z';
+  const baseUrl = 'https://staging.chatwoot.com';
+  const locale = 'zh_CN';
 
   const getLocation = data => {
     console.log('data', data);
@@ -166,6 +182,24 @@ const LabIndex = props => {
           <Pressable onPress={() => clickAna()}>
             <Text style={styles.text}>点击统计</Text>
           </Pressable>
+
+          <View>
+            <Pressable style={styles.button} onPress={() => toggleWidget(true)}>
+              <Text style={styles.buttonText}>Open widget</Text>
+            </Pressable>
+          </View>
+          {
+            showWidget&&
+            <ChatWootWidget
+              websiteToken={websiteToken}
+              locale={locale}
+              baseUrl={baseUrl}
+              closeModal={() => toggleWidget(false)}
+              isModalVisible={showWidget}
+              user={user}
+              customAttributes={customAttributes}
+            />
+          }
         </View>
       </ScrollView>
     </View>
@@ -188,6 +222,32 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 10,
     backgroundColor: 'yellow',
+  },
+
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  button: {
+    height: 48,
+    marginTop: 32,
+    paddingTop: 8,
+    paddingBottom: 8,
+    backgroundColor: '#1F93FF',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#fff',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    paddingLeft: 10,
+    fontWeight: '600',
+    fontSize: 16,
+    paddingRight: 10,
   },
 });
 
