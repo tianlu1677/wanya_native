@@ -56,7 +56,7 @@ const SearchIndex = ({navigation, route}) => {
     );
 
   const NodeListPage = () =>
-    type === 'node' ? <NodeList request={request} dataKey="items" /> : <View />;
+    type === 'node' ? <NodeList request={request} dataKey="items" type={'list'} /> : <View />;
 
   const ShortVideoPage = () =>
     type === 'duanshipin' ? (
