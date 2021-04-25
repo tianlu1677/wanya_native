@@ -5,7 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
-import {RFValue} from '@/utils/response-fontsize';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BottomModal, BlurView, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
@@ -92,8 +92,8 @@ const MainTabScreen = props => {
         tabBar={barprops => (
           <BlurView
             style={styles.blurView}
-            blurType="light"
-            blurAmount={80}
+            blurType="chromeMaterial"
+            blurAmount={20}
             reducedTransparencyFallbackColor="#white">
             <BottomTabBar {...barprops} />
           </BlurView>
@@ -113,19 +113,25 @@ const MainTabScreen = props => {
                   containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -29 : -1}]}
                 />
                 <FastImg source={RenderImage(route.name, focused)} style={style} />
+                {/* <View style={styles.activeLine} /> */}
               </View>
             ) : (
-              <FastImg source={RenderImage(route.name, focused)} style={style} />
+              <View style={{position: 'relative'}}>
+                <FastImg source={RenderImage(route.name, focused)} style={style} />
+              </View>
             );
           },
         })}
         tabBarOptions={{
+          safeAreaInsets: {bottom: 0},
           showLabel: false,
           tabStyle: {height: RFValue(50)},
           style: {
             backgroundColor: Platform.OS === 'ios' ? 'transparent' : '#eee',
             borderTopWidth: 0,
             height: RFValue(50),
+            paddingLeft: VWValue(34),
+            paddingRight: VWValue(34),
           },
         }}>
         <Tab.Screen name="NotifyIndex" component={NotifyIndex} />
@@ -153,6 +159,10 @@ const MainTabScreen = props => {
 const styles = StyleSheet.create({
   blurView: {
     height: RFValue(50),
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    right: 0,
     zIndex: 1000,
   },
   contentModal: {
@@ -170,6 +180,15 @@ const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
     top: -5,
+    right: 0,
+  },
+  activeLine: {
+    width: VWValue(24),
+    height: 3,
+    backgroundColor: '#FF2242',
+    position: 'absolute',
+    bottom: -RFValue(8),
+    left: (500 * RFValue(27)) / 351 / 2 - VWValue(12),
   },
 });
 

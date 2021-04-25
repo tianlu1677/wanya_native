@@ -8,8 +8,23 @@ import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {Avator, JoinAccounts, BottomModal} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
-import {getActivityDetail, joinAccountsActivity, exitActivity} from '@/api/activity_api';
+import {
+  getActivityDetail,
+  joinAccountsActivity,
+  joinActivity,
+  exitActivity,
+} from '@/api/activity_api';
 import wxIcon from '@/assets/images/wx-icon.png';
+
+const formatTime = time => {
+  const date = new Date(time);
+  const year = date.getFullYear().toString().substr(-2);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minute = date.getMinutes();
+  return `${year}/${month}/${day} ${hours}:${minute}`;
+};
 
 const ActivityDetail = props => {
   const dispatch = useDispatch();
@@ -22,14 +37,6 @@ const ActivityDetail = props => {
 
   const loadData = async () => {
     const res = await getActivityDetail(activityId);
-    // setDetail({
-    //   ...res.data.activity,
-    //   // account_id: 310,
-    //   joined: false,
-    //   finish_at: '2021-10-31T20:34:00.000+08:00',
-    //   max_limit_people: 10,
-    //   // source_type: 'outside',
-    // });
     setDetail(res.data.activity);
   };
 
@@ -39,10 +46,15 @@ const ActivityDetail = props => {
     setJoinAccounts(accounts);
   };
 
-  const getPhoneNumber = async e => {};
+  const handelJoin = async e => {
+    await joinActivity(activityId);
+    Toast.showError('报名成功');
+    loadJoinAccounts();
+    loadData();
+  };
 
   const handelExit = async () => {
-    await exitActivity(this.state.detail.id);
+    await exitActivity(activityId);
     Toast.showError('已取消报名');
     loadJoinAccounts();
     loadData();
@@ -68,12 +80,12 @@ const ActivityDetail = props => {
     return date > finish ? true : false;
   };
 
-  const isSelf = detail?.account_id === currentAccount.id;
-
   useEffect(() => {
     loadJoinAccounts();
     loadData();
   }, []);
+
+  const isSelf = detail?.account_id === currentAccount.id;
 
   return detail ? (
     <ScrollView style={styles.wrapper}>
@@ -101,7 +113,7 @@ const ActivityDetail = props => {
                   <Text style={styles.joinedBtn}>已报名参加</Text>
                 </Pressable>
               ) : (
-                <Pressable style={[styles.commenBtn, styles.detailBtn]} onPress={getPhoneNumber}>
+                <Pressable style={[styles.commenBtn, styles.detailBtn]} onPress={handelJoin}>
                   <Text style={styles.detailBtn}>报名参加</Text>
                 </Pressable>
               )
@@ -132,7 +144,7 @@ const ActivityDetail = props => {
           <IconFont name="calendar" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动时间</Text>
           <Text style={styles.slideValue}>
-            {detail.start_at_text} - {detail.finish_at_text}
+            {formatTime(detail.start_at)} - {formatTime(detail.finish_at)}
           </Text>
         </View>
         {/* 活动人数 */}
@@ -158,11 +170,12 @@ const ActivityDetail = props => {
           <IconFont name="biaoqian" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动标签</Text>
           <View style={[styles.slideValue, styles.tagWrapper]}>
-            {detail.tag_list.map((tag, index) => (
-              <Text style={styles.tag} key={index}>
-                {tag}
-              </Text>
-            ))}
+            {detail.tag_list.length > 0 &&
+              detail.tag_list.splice(0, 4).map((tag, index) => (
+                <Text style={styles.tag} key={index}>
+                  {tag}
+                </Text>
+              ))}
           </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </Pressable>
