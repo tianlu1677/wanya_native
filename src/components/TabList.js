@@ -152,8 +152,8 @@ TabList.propTypes = {
   type: PropTypes.string.isRequired, // 类型
   align: PropTypes.string.isRequired, //对齐方式
   bottomLine: PropTypes.bool.isRequired, //是否显示底部分界线
-  activeLineColor: PropTypes.string.isRequired, //active 线颜色
-  textStyle: PropTypes.string.isRequired, //active 线颜色
+  activeLineColor: PropTypes.string, //active 线颜色
+  textStyle: PropTypes.string, //active 线颜色
   separator: PropTypes.bool, //是否显示底部分界线
 };
 
