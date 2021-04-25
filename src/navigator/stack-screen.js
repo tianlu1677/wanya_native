@@ -65,7 +65,27 @@ import WebView from '@/pages/webview/webview';
 
 export const AuthStackScreen = () => {
   return (
-    <AuthStack.Navigator initialRouteName="SocialLogin">
+    <AuthStack.Navigator
+      initialRouteName="SocialLogin"
+      screenOptions={({route}) => ({
+        headerBackTitleVisible: false,
+        title: false,
+        headerStyle: {
+          backgroundColor: 'black',
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerLeftContainerStyle: {
+          paddingLeft: 15,
+        },
+        headerBackImage: () => (
+          <FastImg
+            source={require('../assets/images/back-white.png')}
+            style={{width: 9, height: 15}}
+          />
+        ),
+      })}>
       <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
       <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
       <AuthStack.Screen name="InviteLogin" component={InviteLogin} />
