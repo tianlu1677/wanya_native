@@ -1,5 +1,6 @@
 import {isIphoneX} from 'react-native-iphone-x-helper';
 import {Platform, StatusBar, Dimensions} from 'react-native';
+import {SCREEN_WIDTH, SCREEN_HEIGHT} from '@/utils/navbar';
 
 const {height, width} = Dimensions.get('window');
 const standardLength = width > height ? width : height;
@@ -18,3 +19,12 @@ export function RFValue(fontSize, standardScreenHeight = 667) {
   const heightPercent = (fontSize * deviceHeight) / standardScreenHeight;
   return Math.round(heightPercent);
 }
+
+// 设计稿 750 1334
+export const VWValue = fontSize => {
+  return Math.round((fontSize * SCREEN_WIDTH) / (750 / 2));
+};
+
+export const VHValue = fontSize => {
+  return Math.round((fontSize * SCREEN_HEIGHT) / (1334 / 2));
+};

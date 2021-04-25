@@ -70,6 +70,7 @@ const ActivityDetail = props => {
 
   const isSelf = detail?.account_id === currentAccount.id;
 
+  console.log('detail', detail);
   useEffect(() => {
     loadJoinAccounts();
     loadData();
