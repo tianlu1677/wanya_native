@@ -132,10 +132,10 @@ const DiscoveryIndex = props => {
           textStyle={{color: '#AAAA'}}
           activeLineColor="#FF2242"
           bottomLine={true}
-          tabData={categoryList.map(category => {
+          tabData={discoveryData.map(category => {
             return {
-              key: category.name,
-              title: category.name,
+              key: category.category_name,
+              title: category.category_name,
               component: RenderCaCategory,
             };
           })}
