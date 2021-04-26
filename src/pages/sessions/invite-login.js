@@ -1,58 +1,24 @@
-import React, {Component, useState, useLayoutEffect, useReducer} from 'react';
-import {
-  SafeAreaView,
-  Pressable,
-  StyleSheet,
-  StatusBar,
-  View,
-  TextInput,
-  Image,
-  Text,
-  Button,
-} from 'react-native';
+import React, {useState, useLayoutEffect} from 'react';
+import {SafeAreaView, StyleSheet, StatusBar, View, TextInput, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
-
+import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
 import {verifyInviteCode} from '@/api/phone_sign_api';
 import Toast from '@/components/Toast';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
-import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
-import FinishBtn from './components/finishbtn';
 
 const InviteLogin = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
   const [isValidCode, setIsValidCode] = useState(false);
   const dispatch = useDispatch();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerBackTitleVisible: false,
-      title: false,
-      headerStyle: {
-        backgroundColor: 'black',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-      },
-      headerBackImage: () => (
-        <Image
-          source={require('../../assets/images/back-white.png')}
-          style={{width: 9, height: 15}}
-        />
-      ),
-      headerRight: () => <FinishBtn onPress={onVerifyInviteCode} text={'完成'} canClick={isValidCode} />,
-    });
-  }, [navigation, isValidCode]);
-
   const onVerifyInviteCode = async () => {
-    console.log('x onVerifyInviteCode');
     if (!isValidCode) {
       return;
     }
     const token = await Helper.getData('socialToken');
     let data = {invite_code: inviteCode, token: token};
     verifyInviteCode(data).then(async res => {
-      console.log('res', res);
       if (res.error) {
         Toast.showError(res.error);
       } else {
@@ -63,7 +29,6 @@ const InviteLogin = ({navigation, route}) => {
           index: 0,
           routes: [{name: 'Recommend'}],
         });
-        // Toast.showError('已注册成功')
       }
     });
   };
@@ -71,8 +36,19 @@ const InviteLogin = ({navigation, route}) => {
   const onChangeText = text => {
     setInviteCode(text.toUpperCase());
     setIsValidCode(text.length >= 6);
-    console.log(inviteCode, isValidCode);
   };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Text
+          style={{fontSize: 14, fontWeight: '600', color: isValidCode ? '#fff' : '#353535'}}
+          onPress={onVerifyInviteCode}>
+          完成
+        </Text>
+      ),
+    });
+  }, [navigation, isValidCode]);
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
@@ -112,7 +88,6 @@ const styles = StyleSheet.create({
   },
   inviteCode: {
     color: 'white',
-    // paddingBottom: 6,
     padding: 0,
     marginBottom: 6,
     letterSpacing: 1,

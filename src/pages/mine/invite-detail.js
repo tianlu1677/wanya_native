@@ -1,15 +1,5 @@
-import React, {Component, useState, useLayoutEffect, useEffect, useRef} from 'react';
-import {
-  Modal,
-  StyleSheet,
-  StatusBar,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Text,
-  Pressable,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StatusBar, View, ScrollView, TouchableOpacity, Text, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
