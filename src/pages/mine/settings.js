@@ -1,6 +1,6 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, Linking, StyleSheet, View, Pressable, Text} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -8,11 +8,13 @@ import CodePush from 'react-native-code-push';
 import checkHotUpdate from '@/utils/codepush';
 import {BaseApiUrl} from '@/utils/config';
 import {IsIos} from '@/utils/navbar';
+import {logoutCurrentAccount} from '@/redux/actions';
 
 const Settings = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const dispatch = useDispatch();
 
-  const goPages = type => {
+  const goPages = async type => {
     switch (type) {
       case 'edit':
         navigation.navigate('AccountContent');
@@ -55,11 +57,12 @@ const Settings = ({navigation, route}) => {
         Linking.openURL(url);
         break;
       case 'logout':
-        Helper.clearAllData();
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'SocialLogin'}],
-        });
+        await Helper.clearAllData();
+        await dispatch(logoutCurrentAccount());
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'SocialLogin'}],
+        // });
         break;
       default:
         break;

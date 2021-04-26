@@ -67,7 +67,7 @@ const TabViewIndex = props => {
         onIndexChange={onIndexChange}
         initialLayout={initialLayout}
         tabBarPosition={props.tabBarPosition || 'top'}
-        lazy={props.lazy}
+        lazy={true}
         swipeVelocityImpact={0.1}
         swipeEnabled={props.swipeEnabled || true}
         renderLazyPlaceholder={() => (

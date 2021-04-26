@@ -14,6 +14,7 @@ import {
   CHANGE_UPLOAD_STATUS,
   THEORY_VIDEO_STATE,
   THEORY_DETAIL,
+  LOGOUT_SUCCESS
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -27,6 +28,11 @@ export const nodeAction = node;
 export const dispatchCurrentAccount = () => async dispatch => {
   const res = await getCurrentAccount();
   dispatch({type: CURRENT_ACCOUNT_SUCCESS, account: res.account});
+};
+
+// 退出登录
+export const logoutCurrentAccount = () => async dispatch => {
+  dispatch({type: LOGOUT_SUCCESS, token: ''});
 };
 
 export const dispatchBaseCurrentAccount = () => async dispatch => {

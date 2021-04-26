@@ -64,7 +64,7 @@ axios.interceptors.response.use(
         return;
       case 401:
         Toast.showError('请重新登录');
-        Helper.clearAllData();
+        await Helper.clearAllData();
         RootNavigation.reset({
           index: 0,
           routes: [{name: 'SocialLogin'}],
