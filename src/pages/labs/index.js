@@ -15,7 +15,7 @@ import {
   openSettings,
 } from 'react-native-permissions';
 import ChatWootWidget from '@chatwoot/react-native-widget';
-
+import {useDispatch, useSelector} from 'react-redux';
 
 const LabIndex = props => {
   const navigation = props.navigation;
@@ -37,8 +37,8 @@ const LabIndex = props => {
     identifier_hash: '',
   };
   const customAttributes = { accountId: 1, pricingPlan: 'paid', status: 'active' };
-  const websiteToken = 'zQHVf7Tri5YCiooBRyTEfE6z';
-  const baseUrl = 'https://staging.chatwoot.com';
+  const websiteToken = 'hpXWDG6EvLXDjQeEArdcgVVh';
+  const baseUrl = 'https://chatwood.vanyah.cn';
   const locale = 'zh_CN';
 
   const getLocation = data => {
