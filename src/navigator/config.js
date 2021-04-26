@@ -3,7 +3,8 @@ import {Text, Pressable} from 'react-native';
 import * as RootNavigation from '@/navigator/root-navigation';
 import {CardStyleInterpolators} from '@react-navigation/stack';
 
-// 默认: safeArea: false  barStyle: 'dark-content' headerShown:true
+// 默认: safeArea: false  barStyle: 'dark-content' ｜｜ 'light-content'  headerShown:true
+
 const forVerticalIOS = {
   animationEnabled: true,
   gestureEnabled: false,
@@ -100,6 +101,14 @@ import LabIndex from '@/pages/labs/index';
 import LabGalley from '@/pages/labs/galley';
 import LabTabIndex from '@/pages/labs/tabindex';
 import LabStorageIndex from '@/pages/labs/storageindex';
+
+//登录页面
+import SocialLogin from '@/pages/sessions/social-login';
+import PhoneLogin from '@/pages/sessions/phone-login';
+import InviteLogin from '@/pages/sessions/invite-login';
+import PasswordLogin from '@/pages/sessions/password-login';
+import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
+import InviteDetail from '@/pages/mine/invite-detail';
 
 const searchRouter = [
   {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
@@ -244,7 +253,16 @@ const notifyRouter = [
   {name: 'SystemNotify', component: SystemNotify, options: {title: '顽鸦小助手'}},
 ];
 
-export const routers = [
+const authRouter = [
+  {name: 'SocialLogin', component: SocialLogin, options: {headerShown: false}},
+  {name: 'PhoneLogin', component: PhoneLogin},
+  {name: 'PasswordLogin', component: PasswordLogin},
+  {name: 'InviteLogin', component: InviteLogin, options: {title: '输入邀请码'}},
+  {name: 'InviteDetail', component: InviteDetail, options: {title: '邀请码'}},
+  {name: 'AdminPhoneLogin', component: AdminPhoneLogin},
+];
+
+export const MainRouters = [
   ...searchRouter,
   ...topicRouter,
   ...articleRouter,
@@ -262,4 +280,7 @@ export const routers = [
   ...notifyRouter,
   ...commonRouter,
   ...LabRouter,
+  ...authRouter,
 ];
+
+export const AuthRouters = authRouter;

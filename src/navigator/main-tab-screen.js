@@ -113,11 +113,12 @@ const MainTabScreen = props => {
                   containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -29 : -1}]}
                 />
                 <FastImg source={RenderImage(route.name, focused)} style={style} />
-                {/* <View style={styles.activeLine} /> */}
+                {focused && <View style={styles.activeLine} />}
               </View>
             ) : (
               <View style={{position: 'relative'}}>
                 <FastImg source={RenderImage(route.name, focused)} style={style} />
+                {focused && route.name === 'Discovery' && <View style={styles.activeLine} />}
               </View>
             );
           },

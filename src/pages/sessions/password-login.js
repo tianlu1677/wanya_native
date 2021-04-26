@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {StyleSheet, StatusBar, View, TextInput, Pressable, Text, Image} from 'react-native';
+import {StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {sendPhoneCode, phonePasswordLogin} from '@/api/phone_sign_api';
 import {phoneSignIn} from '@/api/sign_api';
@@ -7,19 +7,12 @@ import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import Helper from '@/utils/helper';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import FinishBtn from '@/pages/sessions/components/finishbtn';
 
-var md5 = require('md5');
-
-const LoginTypes = {
-  CODE: 'code',
-  PASSWORD: 'password', //8-16位
-};
+const md5 = require('md5');
+const LoginTypes = {CODE: 'code', PASSWORD: 'password'}; //8-16位
 
 const PasswordLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
-
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [phoneCode, setPhoneCode] = useState('');
@@ -29,7 +22,20 @@ const PasswordLogin = ({navigation, route}) => {
   const [loginType, setLoginType] = useState(LoginTypes.CODE);
   const [passwordHidden, setPasswordHidden] = useState(true);
 
+  const isCanClick = () => {
+    if (loginType === LoginTypes.CODE) {
+      return phone.length === 11 && phoneCode.length === 6;
+    }
+
+    if (loginType === LoginTypes.PASSWORD) {
+      return phone.length === 11 && password.length >= 8 && password.length <= 16;
+    }
+  };
+
   const phoneLogin = async () => {
+    if (!isCanClick()) {
+      return false;
+    }
     if (!/^1[3456789]\d{9}$/.test(phone)) {
       Toast.showError('请输入正确的手机号');
       return;
@@ -121,147 +127,127 @@ const PasswordLogin = ({navigation, route}) => {
   };
 
   useLayoutEffect(() => {
-    const isCanClick = () => {
-      if (loginType === LoginTypes.CODE) {
-        return phone.length === 11 && phoneCode.length === 6;
-      }
-
-      if (loginType === LoginTypes.PASSWORD) {
-        return phone.length === 11 && password.length >= 8 && password.length <= 16;
-      }
-    };
-
     navigation.setOptions({
-      headerBackTitleVisible: false,
-      title: false,
-      headerStyle: {
-        backgroundColor: 'black',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-      },
-      headerLeftContainerStyle: {paddingLeft: 15},
-      headerBackImage: () => (
-        <Image
-          source={require('../../assets/images/back-white.png')}
-          style={{width: 9, height: 15}}
-        />
+      headerRight: () => (
+        <Text
+          style={{fontSize: 14, fontWeight: '600', color: isCanClick() ? '#fff' : '#353535'}}
+          onPress={phoneLogin}>
+          确定
+        </Text>
       ),
-      headerRight: () => <FinishBtn onPress={phoneLogin} canClick={isCanClick()} />,
     });
   }, [navigation, phone, password, phoneCode]);
 
   return (
-    <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
-      <StatusBar barStyle="light-content" />
-      <View style={styles.phoneContainer}>
-        <Text style={styles.titleText}>手机号登录</Text>
-        <View style={styles.inputWrap}>
-          <View style={[styles.inputView]}>
-            <Text minimumFontScale={1} style={styles.inputNumber}>
-              + 86
-            </Text>
+    <View style={styles.phoneContainer}>
+      <Text style={styles.titleText}>手机号登录</Text>
+      <View style={styles.inputWrap}>
+        <View style={[styles.inputView]}>
+          <Text minimumFontScale={1} style={styles.inputNumber}>
+            + 86
+          </Text>
+          <TextInput
+            autoFocus
+            textAlign={'left'}
+            autoComplete={'tel'}
+            caretHidden={false}
+            selectionColor={'#ff193a'}
+            keyboardType={'numeric'}
+            maxLength={11}
+            onChangeText={text => setPhone(text)}
+            placeholder={'输入手机号'}
+            placeholderTextColor={'#353535'}
+            style={{...styles.inputContent, width: '100%'}}
+          />
+        </View>
+
+        {loginType === LoginTypes.CODE && (
+          <View style={[styles.inputView, {justifyContent: 'space-between'}]}>
             <TextInput
-              autoFocus
-              textAlign={'left'}
-              autoComplete={'tel'}
+              autoComplete="tel"
               caretHidden={false}
               selectionColor={'#ff193a'}
-              keyboardType={'numeric'}
-              maxLength={11}
-              onChangeText={text => setPhone(text)}
-              placeholder={'输入手机号'}
+              keyboardType="numeric"
+              maxLength={6}
+              textAlign={'left'}
+              onChangeText={text => setPhoneCode(text)}
+              placeholder={'输入验证码'}
               placeholderTextColor={'#353535'}
-              style={{...styles.inputContent, width: '100%'}}
+              style={{...styles.inputContent, width: '70%'}}
             />
-          </View>
-
-          {loginType === LoginTypes.CODE && (
-            <View style={[styles.inputView, {justifyContent: 'space-between'}]}>
-              <TextInput
-                autoComplete="tel"
-                caretHidden={false}
-                selectionColor={'#ff193a'}
-                keyboardType="numeric"
-                maxLength={6}
-                textAlign={'left'}
-                onChangeText={text => setPhoneCode(text)}
-                placeholder={'输入验证码'}
-                placeholderTextColor={'#353535'}
-                style={{...styles.inputContent, width: '70%'}}
-              />
-              {firstVerify ? (
-                <Pressable
-                  hitSlop={{top: 30, left: 20, right: 10, bottom: 15}}
-                  onPress={() => onSendPhoneCode()}>
-                  <Text style={styles.verifyCodeText} includeFontPadding={false}>
-                    {verifyText}
-                  </Text>
-                </Pressable>
-              ) : (
-                <Pressable
-                  hitSlop={{top: 20, left: 10, right: 10, bottom: 20}}
-                  onPress={
-                    downTime > 0
-                      ? () => {}
-                      : () => {
-                          onSendPhoneCode();
-                        }
-                  }>
-                  <Text style={[styles.verifyCodeText, {color: downTime ? '#353535' : 'white'}]}>
-                    {verifyText}
-                  </Text>
-                </Pressable>
-              )}
-            </View>
-          )}
-
-          {loginType === LoginTypes.PASSWORD && (
-            <View style={styles.inputView}>
-              <TextInput
-                autoComplete="tel"
-                textContentType="password"
-                caretHidden={false}
-                selectionColor={'#ff193a'}
-                maxLength={16}
-                secureTextEntry={passwordHidden}
-                onChangeText={text => setPassword(text)}
-                placeholder={'输入登录密码'}
-                placeholderTextColor={'#353535'}
-                style={{...styles.inputContent, width: '70%'}}
-              />
+            {firstVerify ? (
               <Pressable
-                onPress={() => setPasswordHidden(!passwordHidden)}
-                hitSlop={{top: 20, left: 20, right: 20, bottom: 20}}>
-                {passwordHidden ? (
-                  <IconFont name={'yincang'} size={14} color={'white'} />
-                ) : (
-                  <IconFont name={'kejian'} size={14} color={'white'} />
-                )}
+                hitSlop={{top: 30, left: 20, right: 10, bottom: 15}}
+                onPress={() => onSendPhoneCode()}>
+                <Text style={styles.verifyCodeText} includeFontPadding={false}>
+                  {verifyText}
+                </Text>
               </Pressable>
-            </View>
-          )}
-          <View style={styles.loginTypeWrap}>
-            <Text style={styles.loginType} onPress={onLoginTypeClick}>
-              {loginType === LoginTypes.CODE ? '密码登录' : '验证码登录'}
-            </Text>
-            <Text
-              style={[styles.loginType, {marginLeft: 'auto'}]}
-              onPress={() => navigation.navigate('PhoneLogin', {type: 'register'})}>
-              手机号注册
-            </Text>
+            ) : (
+              <Pressable
+                hitSlop={{top: 20, left: 10, right: 10, bottom: 20}}
+                onPress={
+                  downTime > 0
+                    ? () => {}
+                    : () => {
+                        onSendPhoneCode();
+                      }
+                }>
+                <Text style={[styles.verifyCodeText, {color: downTime ? '#353535' : 'white'}]}>
+                  {verifyText}
+                </Text>
+              </Pressable>
+            )}
           </View>
+        )}
+
+        {loginType === LoginTypes.PASSWORD && (
+          <View style={styles.inputView}>
+            <TextInput
+              autoComplete="tel"
+              textContentType="password"
+              caretHidden={false}
+              selectionColor={'#ff193a'}
+              maxLength={16}
+              secureTextEntry={passwordHidden}
+              onChangeText={text => setPassword(text)}
+              placeholder={'输入登录密码'}
+              placeholderTextColor={'#353535'}
+              style={{...styles.inputContent, width: '70%'}}
+            />
+            <Pressable
+              onPress={() => setPasswordHidden(!passwordHidden)}
+              hitSlop={{top: 20, left: 20, right: 20, bottom: 20}}>
+              {passwordHidden ? (
+                <IconFont name={'yincang'} size={14} color={'white'} />
+              ) : (
+                <IconFont name={'kejian'} size={14} color={'white'} />
+              )}
+            </Pressable>
+          </View>
+        )}
+        <View style={styles.loginTypeWrap}>
+          <Text style={styles.loginType} onPress={onLoginTypeClick}>
+            {loginType === LoginTypes.CODE ? '密码登录' : '验证码登录'}
+          </Text>
+          <Text
+            style={[styles.loginType, {marginLeft: 'auto'}]}
+            onPress={() => navigation.navigate('PhoneLogin', {type: 'register'})}>
+            手机号注册
+          </Text>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   //底部默认样式
   phoneContainer: {
-    marginLeft: 25,
-    marginRight: 25,
+    flex: 1,
+    backgroundColor: 'black',
+    paddingLeft: 25,
+    paddingRight: 25,
     paddingTop: 30,
     letterSpacing: 1,
   },
@@ -298,7 +284,6 @@ const styles = StyleSheet.create({
   },
   verifyCodeText: {
     fontSize: 12,
-    // height: 22,
     letterSpacing: 1,
     fontWeight: '600',
     color: '#fff',
@@ -308,8 +293,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginRight: 20,
     color: 'white',
-    // lineHeight: 27,
-    // height: 27,
     alignItems: 'center',
     letterSpacing: 1,
     padding: 0,

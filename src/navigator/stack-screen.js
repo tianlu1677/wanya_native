@@ -1,17 +1,28 @@
 import React from 'react';
-import {Platform, StatusBar, Pressable} from 'react-native';
+import {Platform, Pressable} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import FastImg from '@/components/FastImg';
 import MainTabScreen from './main-tab-screen';
-
-// MainStackScreen
-import {routers} from './config';
+import {MainRouters, AuthRouters} from './config';
+const BackBlack = require('@/assets/images/back.png');
+const BackWhite = require('@/assets/images/back-white.png');
 
 const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
+const HeaderLeft = props => {
+  const {navigation, image} = props;
+  return (
+    <Pressable
+      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+      onPress={() => navigation.goBack()}>
+      <FastImg source={image} style={{width: 9, height: 15}} />
+    </Pressable>
+  );
+};
+
+// MainStackScreen
 export const MainStackScreen = props => {
-  const {navigation} = props;
   return (
     <MainStack.Navigator
       initialRouteName="Recommend"
@@ -22,53 +33,23 @@ export const MainStackScreen = props => {
         headerLeftContainerStyle: {paddingLeft: 14},
         headerRightContainerStyle: {paddingRight: 14},
         headerTitleStyle: {fontWeight: '500', fontSize: 16},
-        headerLeft: () => (
-          <Pressable
-            hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-            onPress={() => navigation.goBack()}>
-            <FastImg source={require('@/assets/images/back.png')} style={{width: 9, height: 15}} />
-          </Pressable>
-        ),
+        headerLeft: () => HeaderLeft({...props, image: BackBlack}),
       })}>
       <MainStack.Screen name="Recommend" component={MainTabScreen} options={{headerShown: false}} />
-      {routers.map(route => {
-        const render = props => {
-          const {barColor, component: Components} = route;
-          return (
-            <>
-              <StatusBar backgroundColor="transparent" barStyle={`${barColor || 'dark'}-content`} />
-              <Components {...props} />
-            </>
-          );
-        };
-
-        return (
-          <MainStack.Screen
-            key={route.name}
-            name={route.name}
-            component={render}
-            options={route.options}
-          />
-        );
+      {MainRouters.map(route => {
+        const {name, options, component: Component} = route;
+        return <MainStack.Screen key={name} name={name} options={options} component={Component} />;
       })}
     </MainStack.Navigator>
   );
 };
 
 // AuthStackScreen
-import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
-import SocialLogin from '@/pages/sessions/social-login';
-import PhoneLogin from '@/pages/sessions/phone-login';
-import InviteLogin from '@/pages/sessions/invite-login';
-import PasswordLogin from '@/pages/sessions/password-login';
-import WebView from '@/pages/webview/webview';
-
-export const AuthStackScreen = () => {
+export const AuthStackScreen = props => {
   return (
     <AuthStack.Navigator
       initialRouteName="SocialLogin"
-      screenOptions={({route}) => ({
-        headerBackTitleVisible: false,
+      screenOptions={() => ({
         title: false,
         headerStyle: {
           backgroundColor: 'black',
@@ -76,22 +57,14 @@ export const AuthStackScreen = () => {
           shadowOpacity: 0,
           borderBottomWidth: 0,
         },
-        headerLeftContainerStyle: {
-          paddingLeft: 15,
-        },
-        headerBackImage: () => (
-          <FastImg
-            source={require('../assets/images/back-white.png')}
-            style={{width: 9, height: 15}}
-          />
-        ),
+        headerLeftContainerStyle: {paddingLeft: 15},
+        headerRightContainerStyle: {paddingRight: 15},
+        headerLeft: () => HeaderLeft({...props, image: BackWhite}),
       })}>
-      <AuthStack.Screen name="SocialLogin" component={SocialLogin} />
-      <AuthStack.Screen name="PhoneLogin" component={PhoneLogin} />
-      <AuthStack.Screen name="InviteLogin" component={InviteLogin} />
-      <AuthStack.Screen name="PasswordLogin" component={PasswordLogin} />
-      <AuthStack.Screen name="AdminPhoneLogin" component={AdminPhoneLogin} />
-      <AuthStack.Screen name="WebView" component={WebView} />
+      {AuthRouters.map(route => {
+        const {name, options, component: Component} = route;
+        return <AuthStack.Screen key={name} name={name} options={options} component={Component} />;
+      })}
     </AuthStack.Navigator>
   );
 };

@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {StyleSheet, StatusBar, View, TextInput, Pressable, Text, Image} from 'react-native';
+import {StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
@@ -8,9 +8,8 @@ import {getCurrentAccount} from '@/api/mine_api';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import Helper from '@/utils/helper';
-import FinishBtn from '@/pages/sessions/components/finishbtn';
 
-var md5 = require('md5');
+const md5 = require('md5');
 
 const PhoneLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ const PhoneLogin = ({navigation, route}) => {
 
   const downTimeRunner = () => {
     var timeo = 59;
-    var timeStop = setInterval(function() {
+    var timeStop = setInterval(function () {
       timeo--;
       if (timeo >= 1) {
         let text = `重新获取(${timeo}s)`;
@@ -121,28 +120,18 @@ const PhoneLogin = ({navigation, route}) => {
     };
 
     navigation.setOptions({
-      headerBackTitleVisible: false,
-      title: false,
-      headerStyle: {
-        backgroundColor: 'black',
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-      },
-      headerLeftContainerStyle: {paddingLeft: 15},
-      headerBackImage: () => (
-        <Image
-          source={require('../../assets/images/back-white.png')}
-          style={{width: 9, height: 15}}
-        />
+      headerRight: () => (
+        <Text
+          style={{fontSize: 14, fontWeight: '600', color: isCanClick() ? '#fff' : '#353535'}}
+          onPress={onVerifyPhoneCode}>
+          确定
+        </Text>
       ),
-      headerRight: () => <FinishBtn onPress={onVerifyPhoneCode} canClick={isCanClick()} />,
     });
   }, [navigation, phone, phoneCode, password]);
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       <View style={styles.phoneContainer}>
         <Text style={styles.titleText}>{isRegister ? '手机号注册' : '绑定手机号'}</Text>
         <View style={styles.inputWrap}>
@@ -153,7 +142,6 @@ const PhoneLogin = ({navigation, route}) => {
                 fontSize: 15,
                 fontWeight: '600',
                 marginRight: 27,
-                // lineHeight: 27,
                 color: 'white',
                 letterSpacing: 1,
               }}>
