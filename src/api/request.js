@@ -6,6 +6,8 @@ import Toast from '@/components/Toast';
 import * as RootNavigation from '@/navigator/root-navigation';
 import {BaseApiUrl, WANYA_VERSION} from '@/utils/config';
 import DeviceInfo from 'react-native-device-info';
+import {logoutCurrentAccount} from '@/redux/actions';
+import {store} from '@/redux/stores/store';
 
 const deviceId = DeviceInfo.getSystemVersion();
 const systemName = DeviceInfo.getSystemName();
@@ -65,10 +67,7 @@ axios.interceptors.response.use(
       case 401:
         Toast.showError('请重新登录');
         await Helper.clearAllData();
-        RootNavigation.reset({
-          index: 0,
-          routes: [{name: 'SocialLogin'}],
-        });
+        store.dispath(logoutCurrentAccount());
         break;
       // return Promise.reject(error);
       // console.log('401, 未登录')

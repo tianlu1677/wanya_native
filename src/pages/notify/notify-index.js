@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {syncAccountInfo} from '@/api/mine_api';
 import {BadgeMessage, Avator, RecommendSearch} from '@/components/NodeComponents';
-import {dispatchCurrentAccount} from '@/redux/actions';
+import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
 import {
   CommentNoticeImg,
   FollowNoticeImg,
@@ -72,6 +72,7 @@ const NotifyIndex = ({navigation}) => {
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
+      dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
 
