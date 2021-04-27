@@ -148,8 +148,9 @@ const ActivityDetail = props => {
           <IconFont name="calendar" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动时间</Text>
           <Text style={styles.slideValue}>
-            {formatTime(detail.start_at)} - {formatTime(detail.finish_at)}
+            {(detail.start_at_text)} - {(detail.finish_at_text)}
           </Text>
+          <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
         {/* 活动人数 */}
         {detail.max_limit_people > 0 && (

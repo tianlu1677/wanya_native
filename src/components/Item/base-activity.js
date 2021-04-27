@@ -35,7 +35,6 @@ const BaseActivity = props => {
 
   return (
     <Pressable style={styles.wrapper} onPress={goDetail}>
-      <Text>{cover}</Text>
       { cover && <FastImg source={{uri: cover.url}} style={scaleFixedWidth(cover)} /> }
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{name}</Text>
