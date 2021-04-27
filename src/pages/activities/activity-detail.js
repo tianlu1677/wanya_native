@@ -6,6 +6,7 @@ import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import * as WeChat from 'react-native-wechat-lib';
 import {Avator, JoinAccounts, BottomModal} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {
@@ -80,6 +81,17 @@ const ActivityDetail = props => {
     return date > finish ? true : false;
   };
 
+  // 分享微信
+  const onShareActivity = () => {
+    WeChat.shareMiniProgram({
+      title: detail.name,
+      userName: 'gh_c2b50fe8e928',
+      thumbImageUrl: detail.cover_url,
+      path: '/packageactivity/pages/activity-detail?activity_id=' + activityId,
+      scene: 0,
+    });
+  }
+
   useEffect(() => {
     loadJoinAccounts();
     loadData();
@@ -122,10 +134,10 @@ const ActivityDetail = props => {
                 <Text style={styles.detailBtn}>查看详情</Text>
               </Pressable>
             )}
-            <View style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]}>
+            <Pressable style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]} onPress={onShareActivity}>
               <FastImg source={wxIcon} style={{width: RFValue(25), height: RFValue(25)}} />
               <Text style={{color: '#fff', fontWeight: '500'}}>分享好友</Text>
-            </View>
+            </Pressable>
           </View>
         </View>
       </View>
