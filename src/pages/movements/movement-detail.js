@@ -49,7 +49,7 @@ const MovementDetail = ({navigation, route}) => {
 
   const loadData = async () => {
     const res = await getMovementDetail(movementId);
-    setJoined(res.data.joined);
+    setJoined(res.data.movement.joined);
     setDetail(res.data.movement);
   };
 
