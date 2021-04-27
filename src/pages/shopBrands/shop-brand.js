@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -47,6 +47,7 @@ const ShopBrand = props => {
 
   return detail ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" />
       <SelectListHeader data={detail} getParams={getParams} />
       <View style={styles.speator} />
       {request && <ShopBrandList request={request} type="list" />}

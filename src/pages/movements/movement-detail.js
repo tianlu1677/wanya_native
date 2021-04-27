@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Pressable} from 'react-native';
+import {StyleSheet, View, Text, Pressable, StatusBar} from 'react-native';
 import Loading from '@/components/Loading';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -30,7 +30,7 @@ const MovementDetail = ({navigation, route}) => {
   const [showModal, setShowModal] = useState(false);
 
   const goJoinAccounts = () => {
-    navigation.navigate('JoinAccountsList');
+    // navigation.navigate('JoinAccountsList');
   };
 
   const handleJoined = async () => {
@@ -100,6 +100,7 @@ const MovementDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="light-content" />
       <CollapsibleHeader
         tabBarHeitabBarHeightght={BarHeight}
         headerHeight={HEADER_HEIGHT + BarHeight}

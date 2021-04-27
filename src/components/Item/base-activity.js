@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
+import {scaleFixedWidth} from '@/utils/scale';
 import {Avator} from '@/components/NodeComponents';
 import PersonImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
@@ -15,7 +16,7 @@ const BaseActivity = props => {
     type,
     data: {
       id,
-      cover_url,
+      cover,
       name,
       account: {nickname, settled_type},
       activity_way,
@@ -34,7 +35,7 @@ const BaseActivity = props => {
 
   return (
     <Pressable style={styles.wrapper} onPress={goDetail}>
-      <FastImg source={{uri: cover_url}} style={styles.image} />
+      <FastImg source={{uri: cover.url}} style={scaleFixedWidth(cover)} />
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{name}</Text>
         <View style={styles.accountWrapper}>
@@ -69,10 +70,6 @@ const styles = StyleSheet.create({
     padding: 14,
     flexDirection: 'row',
     backgroundColor: '#fff',
-  },
-  image: {
-    width: 104,
-    height: 75,
   },
   infoWrapper: {
     flex: 1,

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -180,6 +180,7 @@ const ShopStoreDetail = props => {
 
   return detail ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="light-content" />
       <View style={{flex: 1, backgroundColor: 'pink'}}>
         <CollapsibleHeader
           headerHeight={TOP_HEADER_HEIGHT}

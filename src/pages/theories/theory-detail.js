@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform, StyleSheet, StatusBar} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import {IsIos, BarHeight} from '@/utils/navbar';
 import Loading from '@/components/Loading';
 import Toast from '@/components/Toast';
 import ActionSheet from '@/components/ActionSheet';
-import {GoBack} from '@/components/NodeComponents';
+import {TopBack} from '@/components/NodeComponents';
+import {RFValue} from '@/utils/response-fontsize';
 import CommentList from '@/components/List/comment-list';
 import {ActionComment} from '@/components/Item/single-detail-item';
 import {PublishAccount} from '@/components/Item/single-detail-item';
@@ -103,7 +104,8 @@ const TheoryDetail = ({navigation, route}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={IsIos ? 0 : BarHeight}
       style={ptyles.wrapper}>
-      <GoBack color={'white'} top={10} report={true} onReportClick={onReportClick} />
+      <StatusBar barStyle="light-content" />
+      <TopBack top={BarHeight + RFValue(12)} onReportClick={onReportClick} />
       <CommentList
         type="Theory"
         detail={detail}
@@ -113,6 +115,7 @@ const TheoryDetail = ({navigation, route}) => {
         request={{api: getCommentList, params: {item_id: theoryId, item_type: 'Theory'}}}
         ListHeaderComponent={
           <>
+            <View style={{height: BarHeight, backgroundColor: 'black'}} />
             {detail.media && (
               <TheoryMedia
                 media={detail.media}

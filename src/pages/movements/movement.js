@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -23,7 +23,7 @@ const Movement = props => {
 
   const getParams = value => {
     const query = `q[category_id_eq]=${categoryId}&${value}`;
-    setRequest({api: getMovements, apiPath: query});
+    setRequest({api: getMovements, params: {}, apiPath: query});
   };
 
   useEffect(() => {
@@ -45,6 +45,7 @@ const Movement = props => {
 
   return detail ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" />
       <SelectListHeader data={detail} getParams={getParams} />
       {request && <MovementList request={request} type="list" style={{marginTop: 9}} />}
     </View>

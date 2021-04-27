@@ -1,15 +1,18 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, StatusBar} from 'react-native';
 import AccountsList from '@/components/List/accounts-list';
 import {recommendAccounts} from '@/api/mine_api';
 
 const RelatedAccounts = () => {
   return (
-    <AccountsList
-      request={{api: recommendAccounts, params: {per_page: 50}}}
-      type="related"
-      renderMoreAccounts={<Text style={styles.footer}>只显示前50位好友</Text>}
-    />
+    <>
+      <StatusBar barStyle="dark-content" />
+      <AccountsList
+        request={{api: recommendAccounts, params: {per_page: 50}}}
+        type="related"
+        renderMoreAccounts={<Text style={styles.footer}>只显示前50位好友</Text>}
+      />
+    </>
   );
 };
 

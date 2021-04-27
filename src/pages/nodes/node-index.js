@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import {View, Text, ScrollView, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
@@ -56,49 +56,52 @@ const NodeIndex = () => {
   }, [nodes, followNodes, checkNodes]);
 
   return allNodes.length > 0 ? (
-    <View style={styles.wrapper}>
-      <View style={styles.cateWrap}>
-        {categories.map((categorie, index) => (
-          <Pressable
-            key={index}
-            onPress={() => onChange(index)}
-            style={[styles.cateNameWrap, active === index && styles.cateNameActive]}>
-            <Text style={styles.cateName}>{categorie.name}</Text>
-            {active === index && <Text style={styles.active} />}
-          </Pressable>
-        ))}
-      </View>
-      <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
-        {categories.map((category, index) => (
-          <View
-            style={styles.nodeContent}
-            key={category.id}
-            onLayout={e => setLayout(e.nativeEvent.layout, index)}>
-            <Text style={styles.cateTitle}>{category.name}</Text>
-            <View style={styles.typeNodeWrap}>
-              {category.id === 0 &&
-                allNodes.filter(v => v.category_id === category.id).length === 0 && (
-                  <Text style={nstyles.noNodes}>还没有创建或加入任何圈子哦</Text>
-                )}
-              {allNodes
-                .filter(v => v.category_id === category.id)
-                .map((node, i) => {
-                  return (
-                    <View key={i}>
-                      <BaseNode
-                        data={node}
-                        type={node.audit_status ? 'mine-node' : 'list'}
-                        style={{paddingLeft: 0, paddingRight: 16}}
-                      />
-                      <Text style={styles.separator} />
-                    </View>
-                  );
-                })}
+    <>
+      <StatusBar barStyle="dark-content" />
+      <View style={styles.wrapper}>
+        <View style={styles.cateWrap}>
+          {categories.map((categorie, index) => (
+            <Pressable
+              key={index}
+              onPress={() => onChange(index)}
+              style={[styles.cateNameWrap, active === index && styles.cateNameActive]}>
+              <Text style={styles.cateName}>{categorie.name}</Text>
+              {active === index && <Text style={styles.active} />}
+            </Pressable>
+          ))}
+        </View>
+        <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
+          {categories.map((category, index) => (
+            <View
+              style={styles.nodeContent}
+              key={category.id}
+              onLayout={e => setLayout(e.nativeEvent.layout, index)}>
+              <Text style={styles.cateTitle}>{category.name}</Text>
+              <View style={styles.typeNodeWrap}>
+                {category.id === 0 &&
+                  allNodes.filter(v => v.category_id === category.id).length === 0 && (
+                    <Text style={nstyles.noNodes}>还没有创建或加入任何圈子哦</Text>
+                  )}
+                {allNodes
+                  .filter(v => v.category_id === category.id)
+                  .map((node, i) => {
+                    return (
+                      <View key={i}>
+                        <BaseNode
+                          data={node}
+                          type={node.audit_status ? 'mine-node' : 'list'}
+                          style={{paddingLeft: 0, paddingRight: 16}}
+                        />
+                        <Text style={styles.separator} />
+                      </View>
+                    );
+                  })}
+              </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+          ))}
+        </ScrollView>
+      </View>
+    </>
   ) : (
     <Loading />
   );

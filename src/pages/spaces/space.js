@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
@@ -40,6 +40,7 @@ const Space = props => {
 
   return (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={styles.title}>{chooseCity === positionCity ? '附近场地' : '热门场地'}</Text>
         <Pressable style={styles.address} onPress={goChooseCity}>

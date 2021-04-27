@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RFValue} from '@/utils/response-fontsize';
 import IconFont from '@/iconfont';
@@ -39,6 +39,7 @@ const ShopStore = props => {
 
   return (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Text style={styles.title}>
           {chooseCity === positionCity ? '附近Van Store' : '热门Van Store'}

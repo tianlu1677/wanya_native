@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import {debounce} from 'lodash';
 import SearchAllList from '@/pages/search/search-all/search-all-list';
 import TheoryList from '@/components/List/theory-list';
@@ -32,7 +32,7 @@ const SearchIndex = ({navigation, route}) => {
   const {type} = request.params;
 
   const AllListPage = () =>
-    type === 'all' ? <SearchAllList request={request} onChangeKey={onChangeKey} /> : <View />;
+    currentKey === 'all' ? <SearchAllList request={request} onChangeKey={onChangeKey} /> : <View />;
 
   const TopicListPage = () =>
     type === 'topic' ? (
@@ -122,17 +122,18 @@ const SearchIndex = ({navigation, route}) => {
     );
 
   const onChangeText = text => {
-    setSearchKey(text);
     setRequest({api: searchApi, params: {name: text, type: currentKey}});
+    setSearchKey(text);
   };
 
   const onChangeKey = key => {
-    setCurrentKey(key);
     setRequest({api: searchApi, params: {name: searchKey, type: key}});
+    setCurrentKey(key);
   };
 
   return (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" />
       <View style={{height: SAFE_TOP, backgroundColor: '#fff'}} />
       <Search
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#F2F3F5'}}
@@ -148,7 +149,7 @@ const SearchIndex = ({navigation, route}) => {
       />
       <TabView
         currentKey={currentKey}
-        request={currentKey}
+        request={request}
         onChange={onChangeKey}
         type="index"
         align="left"

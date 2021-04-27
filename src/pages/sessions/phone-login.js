@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
+import {StyleSheet, View, TextInput, Pressable, Text, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {dispatchCurrentAccount, dispatchSetAuthToken} from '@/redux/actions';
@@ -132,6 +132,7 @@ const PhoneLogin = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
+      <StatusBar barStyle="light-content" />
       <View style={styles.phoneContainer}>
         <Text style={styles.titleText}>{isRegister ? '手机号注册' : '绑定手机号'}</Text>
         <View style={styles.inputWrap}>

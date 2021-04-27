@@ -58,7 +58,7 @@ const ShopBrandDetail = props => {
 
   const loadData = async () => {
     const res = await getShopBrandDetail(shopBrandId);
-    const ret = await getShopBrandJoinAccounts(shopBrandId, {sort: 'publish_order'});
+    const ret = await getShopBrandJoinAccounts({id: shopBrandId, sort: 'publish_order'});
     setJoinAccounts(ret.data.accounts.slice(0, 4));
     setDetail(res.data.shop_brand);
   };
@@ -77,7 +77,12 @@ const ShopBrandDetail = props => {
         separator={true}
         renderTopHeader={<StickTopHeader title={detail.name} />}
         renderHeader={
-          <RenderHeader detail={detail} joinAccounts={joinAccounts} loadData={loadData} />
+          <RenderHeader
+            detail={detail}
+            joinAccounts={joinAccounts}
+            loadData={loadData}
+            {...props}
+          />
         }
         tabData={[
           {
@@ -117,7 +122,6 @@ const RenderHeader = props => {
   };
 
   const onPreview = type => {
-    console.log(type);
     if (type === 'cover_url') {
       const data = {index: 0, visible: true, images: [{url: detail.cover_url}]};
       dispatch(dispatchPreviewImage(data));
@@ -127,6 +131,13 @@ const RenderHeader = props => {
       const data = {index: 0, visible: true, images: detail.medias};
       dispatch(dispatchPreviewImage(data));
     }
+  };
+
+  const goJoinAccounts = () => {
+    props.navigation.navigate('JoinAccountsList', {
+      title: detail.name,
+      request: {api: getShopBrandJoinAccounts, params: {id: detail.id}},
+    });
   };
 
   return (
@@ -175,7 +186,7 @@ const RenderHeader = props => {
         <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
           简介：{detail.intro}
         </Text>
-        <Pressable style={styles.accountsWrapper}>
+        <Pressable style={styles.accountsWrapper} onPress={goJoinAccounts}>
           <BlurView style={styles.accountsMain} blurAmount={5}>
             <JoinAccounts accounts={joinAccounts} size={25} />
             <Text style={styles.accountsCount}>

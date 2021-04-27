@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Keyboard,
+  TouchableWithoutFeedback,
+  StatusBar,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {debounce} from 'lodash';
@@ -115,6 +123,7 @@ const AddSpace = props => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wrapper}>
         <View style={{height: BarHeight}} />
+        <StatusBar barStyle="dark-content" />
         <Search
           inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
           height={RFValue(36)}

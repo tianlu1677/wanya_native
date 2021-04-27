@@ -21,15 +21,12 @@ const ReturnSaveData = data =>
 
 const returnParams = data => {
   let query = '';
-  data.map((item, index) => {
-    if (index === 0) {
+  data.map(item => {
+    if (item.type === 'single') {
       query += item.value;
     }
-    if (index === 1) {
-      query += `&category_subset_ids=${item.value}`;
-    }
-    if (index === 2) {
-      query += `&category_brand_types=${item.value}`;
+    if (item.type === 'multi') {
+      query += `&${item.key_in}=${item.value}`;
     }
   });
   return query;

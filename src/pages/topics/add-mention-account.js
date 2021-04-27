@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, TouchableWithoutFeedback, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {getAccountFollowings} from '@/api/account_api';
-import {searchApi} from '@/api/search_api';
+import * as action from '@/redux/constants';
+import {BarHeight} from '@/utils/navbar';
 import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import {ProWrapper as pstyles} from '@/styles/baseCommon';
 import {RFValue} from '@/utils/response-fontsize';
-import * as action from '@/redux/constants';
+import {getAccountFollowings} from '@/api/account_api';
+import {searchApi} from '@/api/search_api';
 
 const MentionAccounts = ({navigation, route}) => {
   const {type} = route.params;
@@ -44,6 +45,8 @@ const MentionAccounts = ({navigation, route}) => {
         Keyboard.dismiss();
       }}>
       <View style={styles.wrapper}>
+        <View style={{height: BarHeight}} />
+        <StatusBar barStyle="dark-content" />
         <Search
           inputStyle={{
             borderRadius: RFValue(19),

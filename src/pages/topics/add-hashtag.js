@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, Keyboard, TouchableWithoutFeedback, View} from 'react-native';
+import {StyleSheet, Text, Keyboard, TouchableWithoutFeedback, View, StatusBar} from 'react-native';
 import {RFValue} from '@/utils/response-fontsize';
+import {BarHeight} from '@/utils/navbar';
 import HashtagList from '@/components/List/hash-tag-list';
 import {Search} from '@/components/NodeComponents';
 import {searchApi} from '@/api/search_api';
@@ -32,6 +33,8 @@ const AddHashTag = ({navigation}) => {
         Keyboard.dismiss();
       }}>
       <View style={styles.wrapper}>
+        <View style={{height: BarHeight}} />
+        <StatusBar barStyle="dark-content" />
         <Search
           inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
           height={RFValue(36)}

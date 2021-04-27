@@ -11,15 +11,7 @@ const BaseMovement = props => {
   const [joined, setJoined] = useState(props.data.joined);
   const {
     type,
-    data: {
-      id,
-      name,
-      nickname,
-      category_subset_name,
-      publish_lessons_count,
-      publish_topics_count,
-      join_accounts_count,
-    },
+    data: {id, name, nickname, category_subset_name, publish_topics_count, join_accounts_count},
   } = props;
 
   const handleJoin = async () => {
@@ -46,7 +38,6 @@ const BaseMovement = props => {
         <Text style={styles.intro}>
           {nickname ? nickname.substring(0, 12) : name.substring(0, 12)}{' '}
           {category_subset_name ? `· ${category_subset_name}` : ''}{' '}
-          {/* {publish_lessons_count ? `· ${publish_lessons_count}个教程` : ''}{' '} */}
           {publish_topics_count ? `· ${publish_topics_count}个帖子` : ''}{' '}
           {join_accounts_count ? `${join_accounts_count}个顽友已get` : '还没有顽友get这个招'}
         </Text>

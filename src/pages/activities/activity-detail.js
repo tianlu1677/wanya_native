@@ -6,6 +6,8 @@ import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import {SCREEN_WIDTH} from '@/utils/navbar';
+import {scaleFixedWidth} from '@/utils/scale';
 import {Avator, JoinAccounts, BottomModal} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {
@@ -91,7 +93,7 @@ const ActivityDetail = props => {
     <ScrollView style={styles.wrapper}>
       <View style={styles.header}>
         <Pressable onPress={onReviewImage}>
-          <FastImg source={{uri: detail.cover_url}} styles={styles.cover_url} />
+          <FastImg source={{uri: detail.cover.url}} style={scaleFixedWidth(detail.cover)} />
         </Pressable>
         <View style={styles.infoWrapper}>
           <Text style={styles.name} numberOfLines={2}>
@@ -189,7 +191,7 @@ const ActivityDetail = props => {
             onPress={() => onIntroImagePreview(index)}
             style={{marginTop: 10}}
             key={media.id}>
-            <FastImg source={{uri: media.url}} style={styles.introImage} />
+            <FastImg source={{uri: media.url}} style={scaleFixedWidth(media, SCREEN_WIDTH)} />
           </Pressable>
         ))}
       </View>
@@ -222,10 +224,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 14,
-  },
-  cover_url: {
-    width: 104,
-    height: 75,
   },
   header: {
     flexDirection: 'row',
@@ -345,10 +343,6 @@ const styles = StyleSheet.create({
   imageWrapper: {
     paddingHorizontal: 14,
     flexDirection: 'column',
-  },
-  introImage: {
-    width: '100%',
-    height: 200,
   },
 });
 

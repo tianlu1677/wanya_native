@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, StatusBar} from 'react-native';
 import {getSystemNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
@@ -96,6 +96,7 @@ const SystemNotify = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
+      <StatusBar barStyle="dark-content" />
       <ScrollList
         onRefresh={loadInfo}
         headers={headers}

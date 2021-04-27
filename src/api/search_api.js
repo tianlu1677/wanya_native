@@ -16,6 +16,7 @@ import request from './request';
 
 // 搜索
 export const searchApi = async params => {
+  console.log('params', params);
   const res = await request({
     url: '/api/v1/search',
     method: 'GET',
