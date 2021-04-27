@@ -7,6 +7,7 @@ import FastImg from '@/components/FastImg';
 import MapLinking from '@/components/MapLink';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import * as WeChat from 'react-native-wechat-lib';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import {scaleFixedWidth} from '@/utils/scale';
 import ActionSheet from '@/components/ActionSheet.android';
@@ -61,6 +62,17 @@ const ActivityDetail = props => {
     loadJoinAccounts();
     loadData();
   };
+
+  // 分享微信
+  const onShareActivity = () => {
+    WeChat.shareMiniProgram({
+      title: detail.name,
+      userName: 'gh_c2b50fe8e928',
+      thumbImageUrl: detail.cover_url,
+      path: '/packageactivity/pages/activity-detail?activity_id=' + activityId,
+      scene: 0,
+    });
+  }
 
   const handelExit = async () => {
     await exitActivity(activityId);
@@ -156,10 +168,10 @@ const ActivityDetail = props => {
                 <Text style={styles.detailBtn}>查看详情</Text>
               </Pressable>
             )}
-            <View style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]}>
+            <Pressable style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]} onPress={onShareActivity}>
               <FastImg source={wxIcon} style={{width: RFValue(25), height: RFValue(25)}} />
               <Text style={{color: '#fff', fontWeight: '500'}}>分享好友</Text>
-            </View>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -180,7 +192,6 @@ const ActivityDetail = props => {
           <Text style={styles.slideValue}>
             {(detail.start_at_text)} - {(detail.finish_at_text)}
           </Text>
-          <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
         </View>
         {/* 活动人数 */}
         {detail.max_limit_people > 0 && (

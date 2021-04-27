@@ -14,6 +14,7 @@ import {createFeedback} from '@/api/feedback_api';
 import {Button} from 'react-native-elements';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import Toast from '@/components/Toast';
+import ChatWood from "@/components/ChatWood"
 
 const Feedback = ({navigation, route}) => {
   const [content, setContent] = useState('');
@@ -46,6 +47,7 @@ const Feedback = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <StatusBar barStyle="dark-content" />
+      <ChatWood />
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
