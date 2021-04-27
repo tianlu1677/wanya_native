@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Pressable, ScrollView, Platform, Linking} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
+import MapLinking from '@/components/MapLink';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import {scaleFixedWidth} from '@/utils/scale';
+import ActionSheet from '@/components/ActionSheet.android';
 import {Avator, JoinAccounts, BottomModal} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {
@@ -32,10 +34,15 @@ const ActivityDetail = props => {
   const dispatch = useDispatch();
   const {route, navigation} = props;
   const activityId = route.params.activityId;
-  const {currentAccount} = useSelector(state => state.account);
+  const {
+    account: {currentAccount},
+    home: {location},
+  } = useSelector(state => state);
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [itemList, setItemList] = useState([]);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const loadData = async () => {
     const res = await getActivityDetail(activityId);
@@ -82,7 +89,30 @@ const ActivityDetail = props => {
     return date > finish ? true : false;
   };
 
-  const goSpaceDetail = () => {};
+  const goAddress = () => {
+    // 起点坐标信息
+    const startLocation = {lat: location.latitude, lng: location.longitude, title: '我的位置'};
+    const destLocation = {
+      lat: detail.space.latitude,
+      lng: detail.space.longitude,
+      title: detail.space.name,
+    };
+    if (Platform.OS === 'ios') {
+      MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
+    } else {
+      setShowActionSheet(true);
+      const config = {mode: 'drive', type: 'gcj02', appName: 'MapLinking'};
+      const maps = MapLinking.openUrl({...config, startLocation, destLocation});
+      const list = maps.map((map, index) => ({
+        id: index,
+        label: map[0],
+        onPress: () => {
+          Linking.openURL(map[1]);
+        },
+      }));
+      setItemList(list);
+    }
+  };
 
   useEffect(() => {
     loadJoinAccounts();
@@ -136,7 +166,7 @@ const ActivityDetail = props => {
       <View style={styles.slideWrapper}>
         {/* 活动场地 */}
         {detail.activity_way === 'on_space' && (
-          <Pressable style={styles.slide} onPress={goSpaceDetail}>
+          <Pressable style={styles.slide} onPress={goAddress}>
             <IconFont name="space-point" size={RFValue(15)} color="#000" />
             <Text style={styles.slideTitle}>活动场地</Text>
             <Text style={styles.slideValue}>{detail.space.name}</Text>
@@ -176,7 +206,7 @@ const ActivityDetail = props => {
           <Text style={styles.slideTitle}>活动标签</Text>
           <View style={[styles.slideValue, styles.tagWrapper]}>
             {detail.tag_list.length > 0 &&
-              detail.tag_list.splice(0, 4).map((tag, index) => (
+              detail.tag_list.slice(0, 4).map((tag, index) => (
                 <Text style={styles.tag} key={index}>
                   {tag}
                 </Text>
@@ -194,7 +224,7 @@ const ActivityDetail = props => {
             onPress={() => onIntroImagePreview(index)}
             style={{marginTop: 10}}
             key={media.id}>
-            <FastImg source={{uri: media.url}} style={scaleFixedWidth(media, SCREEN_WIDTH)} />
+            <FastImg source={{uri: media.url}} style={scaleFixedWidth(media, SCREEN_WIDTH - 28)} />
           </Pressable>
         ))}
       </View>
@@ -216,6 +246,15 @@ const ActivityDetail = props => {
           }
         />
       )}
+
+      {/* 地图 */}
+      <ActionSheet
+        actionItems={itemList}
+        showActionSheet={showActionSheet}
+        changeModal={() => {
+          setShowActionSheet(false);
+        }}
+      />
     </ScrollView>
   ) : (
     <Loading />

@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, StatusBar} from 'react-native';
+import {View, Text, StyleSheet, StatusBar, Platform, Linking} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import StickTopHeader from '@/components/StickTopHeader';
+import MapLinking from '@/components/MapLink';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import ActionSheet from '@/components/ActionSheet.android';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
@@ -31,9 +33,12 @@ const TOP_HEADER_HEIGHT =
 
 const RenderHeader = props => {
   const dispatch = useDispatch();
+
   const {detail, joinAccounts, loadData} = props;
   const [joined, setJoined] = useState(detail.joined);
   const [showModal, setShowModal] = useState(false);
+  const [itemList, setItemList] = useState([]);
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const handleJoin = async () => {
     joined ? await getShopStoreExit(detail.id) : await getShopStoreJoined(detail.id);
@@ -54,6 +59,28 @@ const RenderHeader = props => {
     }
   };
 
+  const goAddress = () => {
+    // 起点坐标信息
+    const startLocation = {lng: 106.534892, lat: 29.551891, title: '我的位置'};
+    const destLocation = {lng: 116.407526, lat: 39.90403, title: '北京'};
+    if (Platform.OS === 'ios') {
+      MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
+    } else {
+      setShowActionSheet(true);
+      const config = {mode: 'drive', type: 'gcj02', appName: 'MapLinking'};
+      const maps = MapLinking.openUrl({...config, startLocation, destLocation});
+      const list = maps.map((map, index) => ({
+        id: index,
+        label: map[0],
+        onPress: () => {
+          Linking.openURL(map[1]);
+        },
+      }));
+      setItemList(list);
+    }
+  };
+
+  console.log(detail);
   return (
     <>
       <View style={{height: BarHeight, backgroundColor: 'black'}} />
@@ -93,7 +120,7 @@ const RenderHeader = props => {
       </Pressable>
       <View style={styles.slideWrapper}>
         {/* 所在位置 */}
-        <View style={styles.slide}>
+        <Pressable style={styles.slide} onPress={goAddress}>
           <IconFont name="space-point" size={16} color="#000" />
           <Text style={styles.slideTitle}>所在位置</Text>
           <Text style={styles.slideValue} numberOfLines={1}>
@@ -101,7 +128,7 @@ const RenderHeader = props => {
             {detail.store_type === 'website' && '网店'}
           </Text>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-        </View>
+        </Pressable>
         {/* 营业时间 */}
         <View style={styles.slide}>
           <IconFont name="calendar" size={16} color="#000" />
@@ -116,7 +143,7 @@ const RenderHeader = props => {
           <IconFont name="biaoqian" size={16} color="#000" />
           <Text style={styles.slideTitle}>店铺标签</Text>
           <View style={[styles.slideValue, styles.tagWrapper]}>
-            {detail.tags.map(tag => (
+            {detail.tags.slice(0, 3).map(tag => (
               <Text style={styles.tag} key={tag.id}>
                 {tag.name}
               </Text>
@@ -143,6 +170,14 @@ const RenderHeader = props => {
           }
         />
       )}
+
+      <ActionSheet
+        actionItems={itemList}
+        showActionSheet={showActionSheet}
+        changeModal={() => {
+          setShowActionSheet(false);
+        }}
+      />
     </>
   );
 };

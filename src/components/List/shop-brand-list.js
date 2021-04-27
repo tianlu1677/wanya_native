@@ -16,8 +16,8 @@ const ShopBrandList = props => {
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    const {api, params} = props.request;
-    const res = await api({...params, page});
+    const {api, params, apiPath} = props.request;
+    const res = await api({...params, page}, apiPath);
     const data = props.dataKey ? res.data[props.dataKey] : res.data.shop_brands;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
@@ -26,7 +26,7 @@ const ShopBrandList = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [props.request]);
 
   return (
     <ScrollList

@@ -41,6 +41,7 @@ const LocationDetail = ({route, navigation}) => {
       lat: detail.latitude,
       title: detail.name,
     };
+    console.log(destLocation);
     if (Platform.OS === 'ios') {
       MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
     } else {
@@ -64,6 +65,18 @@ const LocationDetail = ({route, navigation}) => {
     }
   };
 
+  const Header = () => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.name}>{detail.name}</Text>
+        <Text style={styles.address}>{detail.address}</Text>
+        <Pressable onPress={handleChange}>
+          <FastImg style={styles.image} source={{uri: detail.address_cover_url}} />
+        </Pressable>
+      </View>
+    );
+  };
+
   return detail ? (
     <View style={{flex: 1}}>
       <StatusBar barStyle="dark-content" />
@@ -71,19 +84,7 @@ const LocationDetail = ({route, navigation}) => {
         <SingleList
           request={{api: getLocationsPosts, params: {id: locationId}}}
           enableRefresh={false}
-          ListHeaderComponent={
-            <View style={styles.header}>
-              <Text style={styles.name}>{detail.name}</Text>
-              <Text style={styles.address}>{detail.address}</Text>
-              <Pressable onPress={handleChange}>
-                <FastImg
-                  style={styles.image}
-                  source={{uri: detail.address_cover_url}}
-                  // mode={'center'}
-                />
-              </Pressable>
-            </View>
-          }
+          ListHeaderComponent={<Header />}
         />
       </View>
       <ActionSheet

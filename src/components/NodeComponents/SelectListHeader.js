@@ -22,11 +22,11 @@ const ReturnSaveData = data =>
 const returnParams = data => {
   let query = '';
   data.map(item => {
-    if (item.type === 'single') {
+    if (item.type === 'single' && item.value) {
       query += item.value;
     }
-    if (item.type === 'multi') {
-      query += `&${item.key_in}=${item.value}`;
+    if (item.type === 'multi' && item.value.length > 0) {
+      query += `&${item.keyin}=${item.value}`;
     }
   });
   return query;

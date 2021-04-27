@@ -25,7 +25,7 @@ const ShopBrand = props => {
 
   const getParams = value => {
     const query = `q[category_id_eq]=${categoryId}&${value}`;
-    setRequest({api: getShopBrands, apiPath: query});
+    setRequest({api: getShopBrands, params: {}, apiPath: query});
   };
 
   useEffect(() => {
