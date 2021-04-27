@@ -60,9 +60,12 @@ const RenderHeader = props => {
   };
 
   const goAddress = () => {
+    if (detail.store_type === 'website') {
+      return;
+    }
     // 起点坐标信息
     const startLocation = {lng: 106.534892, lat: 29.551891, title: '我的位置'};
-    const destLocation = {lng: 116.407526, lat: 39.90403, title: '北京'};
+    const destLocation = {lng: detail.latitude, lat: detail.latitude, title: '北京'};
     if (Platform.OS === 'ios') {
       MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
     } else {
@@ -80,7 +83,6 @@ const RenderHeader = props => {
     }
   };
 
-  console.log(detail);
   return (
     <>
       <View style={{height: BarHeight, backgroundColor: 'black'}} />

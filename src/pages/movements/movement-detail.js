@@ -30,31 +30,30 @@ const MovementDetail = ({navigation, route}) => {
   const [showModal, setShowModal] = useState(false);
 
   const goJoinAccounts = () => {
-    // navigation.navigate('JoinAccountsList');
+    const params = {from: 'detail', sort: 'publish_order'};
+    navigation.navigate('JoinAccountsList', {
+      title: detail.name,
+      request: {api: getMovementJoinAccounts, params: {id: movementId, params}},
+    });
   };
 
   const handleJoined = async () => {
     joined ? await getMovementExit(movementId) : await getMovementJoined(movementId);
     Toast.showError(joined ? '已取消Get' : '已Get');
     setJoined(!joined);
-    loadJoinAccounts();
-  };
-
-  const loadJoinAccounts = async () => {
-    const params = {from: 'detail', sort: 'publish_order'};
-    const res = await getMovementJoinAccounts(1, params);
-    const accounts = res.data.accounts.slice(0, 4);
-    setJoinAccounts(accounts);
+    loadData();
   };
 
   const loadData = async () => {
     const res = await getMovementDetail(movementId);
+    const params = {from: 'detail', sort: 'publish_order'};
+    const ret = await getMovementJoinAccounts({id: movementId, ...params});
+    setJoinAccounts(ret.data.accounts.slice(0, 4));
     setJoined(res.data.movement.joined);
     setDetail(res.data.movement);
   };
 
   useEffect(() => {
-    loadJoinAccounts();
     loadData();
   }, []);
 

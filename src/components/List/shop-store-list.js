@@ -27,7 +27,6 @@ const ShopStoreList = props => {
     loadData();
   }, [props.request]);
 
-  console.log(listData);
   return (
     <ScrollList
       data={listData}

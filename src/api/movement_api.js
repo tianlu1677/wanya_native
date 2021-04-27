@@ -38,9 +38,9 @@ export const getMovementExit = async id => {
 };
 
 // 顽招收藏用户
-export const getMovementJoinAccounts = async (id, params) => {
+export const getMovementJoinAccounts = async params => {
   const res = await request({
-    url: `/api/v1/movements/${id}/joined_accounts`,
+    url: `/api/v1/movements/${params.id}/joined_accounts`,
     method: 'GET',
     params,
   });

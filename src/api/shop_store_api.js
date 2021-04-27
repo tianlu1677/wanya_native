@@ -1,9 +1,9 @@
 import request from './request';
 
 // store列表
-export const getShopStores = async (query, params) => {
+export const getShopStores = async params => {
   const res = await request({
-    url: `/api/v1/shop_stores?${query}`,
+    url: '/api/v1/shop_stores',
     method: 'GET',
     params,
   });

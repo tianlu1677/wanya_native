@@ -43,6 +43,7 @@ const CitySelect = ({navigation}) => {
 
   const scrollToKey = (index, title) => {
     Toast.show(title);
+    console.log(index);
     scrollRef.scrollToIndex({index: index});
   };
 

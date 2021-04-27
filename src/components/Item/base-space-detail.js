@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: RFValue(10),
   },
   spaceIcon: {
-    marginTop: 3,
+    marginTop: 5,
     marginRight: 5,
   },
   addressName: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   distance: {
     width: 70,
     fontSize: 12,
-    lineHeight: 20,
+    lineHeight: 21,
     textAlign: 'right',
   },
   tagWrapper: {

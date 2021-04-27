@@ -21,24 +21,11 @@ import {
 } from '@/api/activity_api';
 import wxIcon from '@/assets/images/wx-icon.png';
 
-const formatTime = time => {
-  const date = new Date(time);
-  const year = date.getFullYear().toString().substr(-2);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minute = date.getMinutes();
-  return `${year}/${month}/${day} ${hours}:${minute}`;
-};
-
 const ActivityDetail = props => {
   const dispatch = useDispatch();
   const {route, navigation} = props;
   const activityId = route.params.activityId;
-  const {
-    account: {currentAccount},
-    home: {location},
-  } = useSelector(state => state);
+  const {currentAccount} = useSelector(state => state.account);
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -103,7 +90,7 @@ const ActivityDetail = props => {
 
   const goAddress = () => {
     // 起点坐标信息
-    const startLocation = {lat: location.latitude, lng: location.longitude, title: '我的位置'};
+    const startLocation = {lng: 106.534892, lat: 29.551891, title: '我的位置'};
     const destLocation = {
       lat: detail.space.latitude,
       lng: detail.space.longitude,
@@ -190,7 +177,7 @@ const ActivityDetail = props => {
           <IconFont name="calendar" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>活动时间</Text>
           <Text style={styles.slideValue}>
-            {(detail.start_at_text)} - {(detail.finish_at_text)}
+            {detail.start_at_text} - {detail.finish_at_text}
           </Text>
         </View>
         {/* 活动人数 */}
@@ -369,7 +356,7 @@ const styles = StyleSheet.create({
   },
   tag: {
     height: RFValue(20),
-    lineHeight: RFValue(20),
+    lineHeight: RFValue(20) - 2,
     paddingHorizontal: 8,
     fontSize: 10,
     color: '#FF8D00',
