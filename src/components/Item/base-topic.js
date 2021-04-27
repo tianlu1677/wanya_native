@@ -68,7 +68,7 @@ export const TopicImageContent = props => {
         onPreview();
       }}>
       <FastImg
-        source={{uri: single_cover.cover_url}}
+        source={{uri: single_cover.link_url}}
         style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
       />
     </Pressable>
@@ -94,7 +94,7 @@ export const TopicVideoContent = props => {
     <View style={{flex: 1, width: videoAttr.width / 2, height: videoAttr.height / 2}}>
       <FastImageGif
         gif_url={single_cover.link_url}
-        source={{uri: single_cover.cover_url}}
+        source={{uri: single_cover.link_url}}
         style={{
           ...styles.imageCover,
           ...{width: videoAttr.width / 2, height: videoAttr.height / 2},

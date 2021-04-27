@@ -23,7 +23,7 @@ const BaseLongVideo = props => {
           {data.title}
         </Text>
         <FastImg
-          source={{uri: data.single_cover.cover_url}}
+          source={{uri: data.single_cover.link_url}}
           style={styles.imageCover}
           mode={'cover'}
         />
