@@ -62,10 +62,10 @@ const PasswordLogin = ({navigation, route}) => {
         await Helper.setData('auth_token', res.account.token);
         dispatch(dispatchSetAuthToken(res.account.token));
         dispatch(dispatchCurrentAccount());
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Recommend'}],
-        });
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'Recommend'}],
+        // });
       }
     } else {
       if (loginType === LoginTypes.CODE) {

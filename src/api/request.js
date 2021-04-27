@@ -67,7 +67,7 @@ axios.interceptors.response.use(
       case 401:
         Toast.showError('请重新登录');
         await Helper.clearAllData();
-        store.dispath(logoutCurrentAccount());
+        store.dispatch(logoutCurrentAccount());
         break;
       // return Promise.reject(error);
       // console.log('401, 未登录')

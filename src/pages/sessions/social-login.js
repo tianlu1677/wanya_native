@@ -45,13 +45,13 @@ const SocialLogin = ({navigation, route}) => {
     // 有手机且已验证码，跳转到首页
     if (accountInfo.had_phone && accountInfo.had_invited) {
       await Helper.setData('auth_token', accountInfo.token);
-      dispatch(dispatchSetAuthToken(accountInfo.token));
-      dispatch(dispatchCurrentAccount());
+      await dispatch(dispatchSetAuthToken(accountInfo.token));
+      await dispatch(dispatchCurrentAccount());
 
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Recommend'}],
-      });
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{name: 'Recommend'}],
+      // });
     }
     // 没有手机跳转到手机
     if (!accountInfo.had_phone) {

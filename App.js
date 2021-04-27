@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider, connect} from 'react-redux';
-import {store, persistor} from './src/redux/stores/store';
+import {store, persistor} from '@/redux/stores/store';
 import {Text, TextInput, Platform, Dimensions, Alert} from 'react-native';
 import CodePush from 'react-native-code-push';
 import {
@@ -59,6 +59,7 @@ class App extends Component {
     if (scale > 1) {
       scale = 1.08;
     }
+    this.getIndexTabData(); //获取首页频道信息
     // console.log('scale', scale);
 
     this.loadSplashImg();
@@ -82,7 +83,7 @@ class App extends Component {
       textBreakStrategy: 'simple'
     });
 
-    this.getIndexTabData(); //获取首页频道信息
+
   }
 
   loadSplashImg = () => {

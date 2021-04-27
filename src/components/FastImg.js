@@ -4,6 +4,7 @@ import {View, Text} from 'react-native';
 // https://github.com/DylanVann/react-native-fast-image
 
 import FastImage from 'react-native-fast-image';
+import IconArrowLeft from "@/iconfont/IconArrowLeft"
 
 const FastImg = props => {
   const modeList = {
@@ -30,4 +31,7 @@ const FastImg = props => {
   );
 };
 
+FastImg.defaultProps = {
+  source: {uri: 'https://baidu.com'},
+};
 export default FastImg;
