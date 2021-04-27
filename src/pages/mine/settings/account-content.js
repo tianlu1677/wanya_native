@@ -73,9 +73,9 @@ const AccountContent = props => {
   };
 
   const setGenderValue = async value => {
-    console.log('xxxx', value)
-    if(value.toString().length <= 0) {
-      return
+    console.log('xxxx', value);
+    if (value.toString().length <= 0) {
+      return;
     }
     setGender(value);
     await syncAccountInfo({id: currentAccount.id, gender: value});
@@ -142,7 +142,7 @@ const AccountContent = props => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white'}}>
+    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
       <StatusBar barStyle="dark-content" />
       <Text style={commonStyles.contentBlank} />
       <ItemView

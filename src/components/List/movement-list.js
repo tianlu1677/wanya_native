@@ -17,7 +17,7 @@ const MovementList = props => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params, apiPath} = props.request;
-    const res = await api(apiPath, {...params, page});
+    const res = await api({...params, page}, apiPath);
     const data = props.dataKey ? res.data[props.dataKey] : res.data.movements;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
@@ -37,7 +37,7 @@ const MovementList = props => {
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={() => <View style={styles.separator} />}
-      style={{backgroundColor: '#fff', ...props.style}}
+      style={{backgroundColor: '#fff', flex: 1, ...props.style}}
     />
   );
 };

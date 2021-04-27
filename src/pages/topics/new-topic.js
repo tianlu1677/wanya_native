@@ -1,5 +1,14 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {View, Image, Text, TextInput, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  StatusBar,
+} from 'react-native';
 import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -322,7 +331,8 @@ const NewTopic = props => {
   }, [navigation, imageSource, videoSource, savetopic, linkSource]);
 
   return (
-    <ScrollView>
+    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+      <StatusBar barStyle="dark-content" />
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();

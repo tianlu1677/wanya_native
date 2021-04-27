@@ -1,6 +1,6 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {
-  SafeAreaView,
+  StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
@@ -19,7 +19,6 @@ const Feedback = ({navigation, route}) => {
   const [content, setContent] = useState('');
   const [contact, setContact] = useState('');
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
-
 
   const dispatch = useDispatch();
 
@@ -46,11 +45,12 @@ const Feedback = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
+      <StatusBar barStyle="dark-content" />
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
         }}>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: '#fff'}}>
           <TitleView>
             <Text style={{fontSize: 14}}>意见与反馈</Text>
           </TitleView>
@@ -157,7 +157,7 @@ const ContentInput = styled(TextInput)`
   font-size: 15px;
   height: 174px;
   line-height: 16px;
-  paddingTop: 10px;
+  padding-top: 10px;
   text-align-vertical: top;
 `;
 

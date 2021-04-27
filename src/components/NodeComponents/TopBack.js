@@ -10,7 +10,11 @@ const TopBack = props => {
   const navigation = useNavigation();
 
   const handleClick = () => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+    }
   };
 
   const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
@@ -18,7 +22,11 @@ const TopBack = props => {
   return (
     <>
       <Pressable onPress={handleClick} style={[styles.backWrap, {top: top}]} hitSlop={hitSlop}>
-        <IconFont name={'arrow-left'} color={color || '#fff'} size={15} />
+        <IconFont
+          name={navigation.canGoBack() ? 'arrow-left' : 'home-recommend'}
+          color={color || '#fff'}
+          size={15}
+        />
       </Pressable>
 
       {/* 分享 */}

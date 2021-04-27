@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useCallback} from 'react';
+import React, {useRef, useCallback} from 'react';
 import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -70,7 +70,7 @@ const RenderVideo = props => {
             pauseOnPress
             hideControlsOnStart
             muted={false}
-            paused={(refId && videoList && videoList[refId]) ? true : false}
+            paused={refId && videoList && videoList[refId] ? true : false}
             onStart={onStart}
             onPlayPress={onPlayPress}
             resizeMode={'cover'}

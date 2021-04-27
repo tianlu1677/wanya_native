@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
+import {StyleSheet, View, TextInput, Pressable, Text, StatusBar} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {sendPhoneCode, phonePasswordLogin} from '@/api/phone_sign_api';
 import {phoneSignIn} from '@/api/sign_api';
@@ -140,6 +140,7 @@ const PasswordLogin = ({navigation, route}) => {
 
   return (
     <View style={styles.phoneContainer}>
+      <StatusBar barStyle="light-content" />
       <Text style={styles.titleText}>手机号登录</Text>
       <View style={styles.inputWrap}>
         <View style={[styles.inputView]}>

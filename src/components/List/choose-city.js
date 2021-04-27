@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getCities} from '@/api/space_api';
-import {Text, View, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {Text, View, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
 import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import Toast from '@/components/Toast';
@@ -68,6 +68,7 @@ const CitySelect = ({navigation}) => {
 
   return cities ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" />
       <ScrollList
         getRref={refs => setScrollRef(refs)}
         enableLoadMore={false}

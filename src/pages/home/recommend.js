@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -130,6 +130,7 @@ const Recommend = props => {
 
   return (
     <>
+      <StatusBar barStyle="light-content" />
       <View style={{flex: 1, position: 'relative'}}>
         <RecommendSearch />
         {uploadStatus ? (

@@ -10,7 +10,7 @@ const BaseShopstore = props => {
 
   const {
     type,
-    data: {id, cover_url, name, address, store_type, distance, tags},
+    data: {id, cover_url, name, address, store_type, distance = 10, tags},
   } = props;
 
   const goDetail = () => {

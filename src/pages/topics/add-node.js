@@ -1,5 +1,5 @@
 import React, {useLayoutEffect} from 'react';
-import {Text, StyleSheet, Pressable} from 'react-native';
+import {Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import NodeIndexComponent from '@/components/NodeIndex';
 
 const NodeIndex = ({navigation}) => {
@@ -17,7 +17,12 @@ const NodeIndex = ({navigation}) => {
     });
   }, [navigation]);
 
-  return <NodeIndexComponent type="add-node" />;
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <NodeIndexComponent type="add-node" />
+    </>
+  );
 };
 
 const styles = StyleSheet.create({

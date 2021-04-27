@@ -38,10 +38,11 @@ export const getShopBrandExit = async id => {
 };
 
 // 品牌收藏用户
-export const getShopBrandJoinAccounts = async id => {
+export const getShopBrandJoinAccounts = async params => {
   const res = await request({
-    url: `/api/v1/shop_brands/${id}/joined_accounts`,
+    url: `/api/v1/shop_brands/${params.id}/joined_accounts`,
     method: 'GET',
+    params,
   });
   return res;
 };

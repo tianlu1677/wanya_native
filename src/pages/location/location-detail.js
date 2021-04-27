@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Platform, Linking} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Platform, Linking, StatusBar} from 'react-native';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import SingleList from '@/components/List/single-list';
@@ -66,6 +66,7 @@ const LocationDetail = ({route, navigation}) => {
 
   return detail ? (
     <View style={{flex: 1}}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.wrapper}>
         <SingleList
           request={{api: getLocationsPosts, params: {id: locationId}}}

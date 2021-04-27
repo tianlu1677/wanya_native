@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, StatusBar, StyleSheet, ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import {SAFE_TOP} from '@/utils/navbar';
-import {GoBack} from '@/components/NodeComponents';
+import {BarHeight} from '@/utils/navbar';
+import {TopBack} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {PublishAccount} from '@/components/Item/single-detail-item';
 import TheoryMedia from './component/theory-media.js';
@@ -16,9 +16,9 @@ const TheoryPreview = () => {
 
   return (
     <ScrollView style={styles.wrapper}>
-      <GoBack color={'white'} />
-      {/* <StatusBar barStyle={'dark-content'} backgroundColor={'white'} /> */}
-      {/* <View style={{height: SAFE_TOP, backgroundColor: 'black'}} /> */}
+      <TopBack top={BarHeight + RFValue(12)} />
+      <StatusBar barStyle={'light-content'} />
+      <View style={{height: BarHeight, backgroundColor: 'black'}} />
       {theory.media && <TheoryMedia media={theory.media} type="theory_media" showDelete={false} />}
       <Text style={styles.title}>{theory.title}</Text>
       <PublishAccount

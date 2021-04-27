@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import {Avator, PlayScore} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
@@ -9,7 +9,7 @@ const JoinAccountsList = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const adminAccount = account.account;
+  const adminAccount = account?.account;
 
   const renderItem = ({item}) => {
     return (
@@ -34,7 +34,6 @@ const JoinAccountsList = ({navigation, route}) => {
     const {api, params} = route.params.request;
     const res = await api({...params, page});
     const data = res.data.accounts;
-
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -46,30 +45,33 @@ const JoinAccountsList = ({navigation, route}) => {
   }, []);
 
   return (
-    <ScrollList
-      data={listData}
-      loading={loading}
-      onRefresh={loadData}
-      headers={headers}
-      renderItem={renderItem}
-      renderSeparator={renderSeparator}
-      enableRefresh={false}
-      ListHeaderComponent={
-        adminAccount && (
-          <>
-            <Text style={styles.title}>{account.title}</Text>
-            <Pressable onPress={() => goAccountDetail(adminAccount)}>
-              <View style={styles.follow}>
-                <Avator account={adminAccount} size={RFValue(40)} />
-                <Text style={styles.nickname}>{adminAccount.nickname}</Text>
-                <PlayScore score={adminAccount.play_score} textStyle={styles.textScore} />
-              </View>
-            </Pressable>
-            <Text style={styles.title}>已加入顽友</Text>
-          </>
-        )
-      }
-    />
+    <>
+      <StatusBar barStyle="dark-content" />
+      <ScrollList
+        data={listData}
+        loading={loading}
+        onRefresh={loadData}
+        headers={headers}
+        renderItem={renderItem}
+        renderSeparator={renderSeparator}
+        enableRefresh={false}
+        ListHeaderComponent={
+          adminAccount && (
+            <>
+              <Text style={styles.title}>{account.title}</Text>
+              <Pressable onPress={() => goAccountDetail(adminAccount)}>
+                <View style={styles.follow}>
+                  <Avator account={adminAccount} size={RFValue(40)} />
+                  <Text style={styles.nickname}>{adminAccount.nickname}</Text>
+                  <PlayScore score={adminAccount.play_score} textStyle={styles.textScore} />
+                </View>
+              </Pressable>
+              <Text style={styles.title}>已加入顽友</Text>
+            </>
+          )
+        }
+      />
+    </>
   );
 };
 

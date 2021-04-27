@@ -6,7 +6,8 @@ import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
-import * as WeChat from 'react-native-wechat-lib';
+import {SCREEN_WIDTH} from '@/utils/navbar';
+import {scaleFixedWidth} from '@/utils/scale';
 import {Avator, JoinAccounts, BottomModal} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {
@@ -62,7 +63,7 @@ const ActivityDetail = props => {
   };
 
   const goOutsideDetail = () => {
-    navigation.navigate('WebView', {sourceUrl: detail.out_link_url});
+    navigation.navigate('WebView', {sourceUrl: detail.out_link_url, title: '活动详情'});
   };
 
   const onReviewImage = () => {
@@ -81,16 +82,7 @@ const ActivityDetail = props => {
     return date > finish ? true : false;
   };
 
-  // 分享微信
-  const onShareActivity = () => {
-    WeChat.shareMiniProgram({
-      title: detail.name,
-      userName: 'gh_c2b50fe8e928',
-      thumbImageUrl: detail.cover_url,
-      path: '/packageactivity/pages/activity-detail?activity_id=' + activityId,
-      scene: 0,
-    });
-  }
+  const goSpaceDetail = () => {};
 
   useEffect(() => {
     loadJoinAccounts();
@@ -103,7 +95,7 @@ const ActivityDetail = props => {
     <ScrollView style={styles.wrapper}>
       <View style={styles.header}>
         <Pressable onPress={onReviewImage}>
-          <FastImg source={{uri: detail.cover_url}} styles={styles.cover_url} />
+          <FastImg source={{uri: detail.cover.url}} style={scaleFixedWidth(detail.cover)} />
         </Pressable>
         <View style={styles.infoWrapper}>
           <Text style={styles.name} numberOfLines={2}>
@@ -134,22 +126,22 @@ const ActivityDetail = props => {
                 <Text style={styles.detailBtn}>查看详情</Text>
               </Pressable>
             )}
-            <Pressable style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]} onPress={onShareActivity}>
+            <View style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]}>
               <FastImg source={wxIcon} style={{width: RFValue(25), height: RFValue(25)}} />
               <Text style={{color: '#fff', fontWeight: '500'}}>分享好友</Text>
-            </Pressable>
+            </View>
           </View>
         </View>
       </View>
       <View style={styles.slideWrapper}>
         {/* 活动场地 */}
         {detail.activity_way === 'on_space' && (
-          <View style={styles.slide}>
+          <Pressable style={styles.slide} onPress={goSpaceDetail}>
             <IconFont name="space-point" size={RFValue(15)} color="#000" />
             <Text style={styles.slideTitle}>活动场地</Text>
             <Text style={styles.slideValue}>{detail.space.name}</Text>
             <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-          </View>
+          </Pressable>
         )}
         {/* 活动时间 */}
         <View style={styles.slide}>
@@ -201,7 +193,7 @@ const ActivityDetail = props => {
             onPress={() => onIntroImagePreview(index)}
             style={{marginTop: 10}}
             key={media.id}>
-            <FastImg source={{uri: media.url}} style={styles.introImage} />
+            <FastImg source={{uri: media.url}} style={scaleFixedWidth(media, SCREEN_WIDTH)} />
           </Pressable>
         ))}
       </View>
@@ -234,10 +226,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 14,
-  },
-  cover_url: {
-    width: 104,
-    height: 75,
   },
   header: {
     flexDirection: 'row',
@@ -357,10 +345,6 @@ const styles = StyleSheet.create({
   imageWrapper: {
     paddingHorizontal: 14,
     flexDirection: 'column',
-  },
-  introImage: {
-    width: '100%',
-    height: 200,
   },
 });
 

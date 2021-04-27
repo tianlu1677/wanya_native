@@ -32,6 +32,7 @@ export const dispatchCurrentAccount = () => async dispatch => {
 
 // 退出登录
 export const logoutCurrentAccount = () => async dispatch => {
+  console.log('xxxx', 'logoutCurrentAccount')
   dispatch({type: LOGOUT_SUCCESS, token: ''});
 };
 

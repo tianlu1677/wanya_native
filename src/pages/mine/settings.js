@@ -74,8 +74,8 @@ const Settings = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fafafa'}}>
-      {/* <StatusBar barStyle="dark-content" /> */}
+    <View style={{flex: 1, backgroundColor: '#fafafa'}}>
+      <StatusBar barStyle="dark-content" />
       <View style={{backgroundColor: 'white'}}>
         <ItemView
           style={[styles.bottomBorder1px]}
@@ -159,7 +159,7 @@ const Settings = ({navigation, route}) => {
           <ForwardRight />
         </ItemView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
