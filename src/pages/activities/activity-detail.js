@@ -63,7 +63,7 @@ const ActivityDetail = props => {
   };
 
   const goOutsideDetail = () => {
-    navigation.navigate('WebView', {sourceUrl: detail.out_link_url});
+    navigation.navigate('WebView', {sourceUrl: detail.out_link_url, title: '活动详情'});
   };
 
   const onReviewImage = () => {
@@ -81,6 +81,8 @@ const ActivityDetail = props => {
     const date = new Date().getTime();
     return date > finish ? true : false;
   };
+
+  const goSpaceDetail = () => {};
 
   useEffect(() => {
     loadJoinAccounts();
@@ -134,12 +136,12 @@ const ActivityDetail = props => {
       <View style={styles.slideWrapper}>
         {/* 活动场地 */}
         {detail.activity_way === 'on_space' && (
-          <View style={styles.slide}>
+          <Pressable style={styles.slide} onPress={goSpaceDetail}>
             <IconFont name="space-point" size={RFValue(15)} color="#000" />
             <Text style={styles.slideTitle}>活动场地</Text>
             <Text style={styles.slideValue}>{detail.space.name}</Text>
             <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-          </View>
+          </Pressable>
         )}
         {/* 活动时间 */}
         <View style={styles.slide}>
