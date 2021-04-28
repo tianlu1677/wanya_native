@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RFValue} from '@/utils/response-fontsize';
@@ -18,7 +18,7 @@ const ShopStore = props => {
     currentcity: positionCity,
     city: chooseCity === '全国' ? 'china' : chooseCity,
   };
-  const [request] = useState({api: getShopStores, params});
+  const [request, setRequest] = useState({api: getShopStores, params});
 
   const goChooseCity = () => {
     props.navigation.navigate('ChooseCity');
@@ -36,6 +36,10 @@ const ShopStore = props => {
       ),
     });
   }, [navigation]);
+
+  useEffect(() => {
+    setRequest({api: getShopStores, params});
+  }, [chooseCity]);
 
   return (
     <View style={styles.wrapper}>
