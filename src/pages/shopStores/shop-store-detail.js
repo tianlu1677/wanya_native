@@ -65,7 +65,7 @@ const RenderHeader = props => {
     }
     // 起点坐标信息
     const startLocation = {lng: 106.534892, lat: 29.551891, title: '我的位置'};
-    const destLocation = {lng: detail.latitude, lat: detail.latitude, title: '北京'};
+    const destLocation = {lng: detail.longitude, lat: detail.latitude, title: detail.address};
     if (Platform.OS === 'ios') {
       MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
     } else {

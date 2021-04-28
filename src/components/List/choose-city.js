@@ -44,7 +44,7 @@ const CitySelect = ({navigation}) => {
   const scrollToKey = (index, title) => {
     Toast.show(title);
     console.log(index);
-    scrollRef.scrollToIndex({index: index});
+    scrollRef.scrollToIndex({index: parseInt(index)});
   };
 
   const chooseCity = city => {
@@ -75,6 +75,7 @@ const CitySelect = ({navigation}) => {
         enableLoadMore={false}
         enableRefresh={false}
         data={cities}
+        settings={{initialNumToRender: 30}}
         itemKey={'title'}
         renderItem={({item}) => {
           return (

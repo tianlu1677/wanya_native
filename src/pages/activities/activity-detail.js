@@ -56,6 +56,7 @@ const ActivityDetail = props => {
       title: detail.name,
       userName: 'gh_c2b50fe8e928',
       thumbImageUrl: detail.cover_url,
+      webpageUrl: 'https://vanyah.cn',
       path: '/packageactivity/pages/activity-detail?activity_id=' + activityId,
       scene: 0,
     });
