@@ -38,10 +38,7 @@ const ShopBrandList = props => {
       renderSeparator={() => <View />}
       enableRefresh={false}
       numColumns={3}
-      columnWrapperStyle={{
-        paddingHorizontal: 14,
-        justifyContent: 'space-between',
-      }}
+      columnWrapperStyle={{paddingHorizontal: 14}}
       style={styles.wrapper}
     />
   );

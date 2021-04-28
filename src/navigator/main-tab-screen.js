@@ -108,17 +108,31 @@ const MainTabScreen = props => {
             return route.name === 'NotifyIndex' ? (
               <View style={{position: 'relative'}}>
                 <BadgeMessage
-                  size={'middle'}
+                  size={'tab'}
                   value={UnreadMessageCount()}
-                  containerStyle={[styles.badge, {right: UnreadMessageCount() > 9 ? -29 : -1}]}
+                  containerStyle={[
+                    styles.badge,
+                    {
+                      right:
+                        UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
+                          ? -VWValue(15)
+                          : UnreadMessageCount() > 99
+                          ? -VWValue(15) * 1.75
+                          : -VWValue(15) * 1.45,
+                    },
+                  ]}
                 />
                 <FastImg source={RenderImage(route.name, focused)} style={style} />
-                {focused && <View style={styles.activeLine} />}
+                {focused && (
+                  <View style={[styles.activeLine, {left: style.width / 2 - VWValue(12)}]} />
+                )}
               </View>
             ) : (
               <View style={{position: 'relative'}}>
                 <FastImg source={RenderImage(route.name, focused)} style={style} />
-                {focused && route.name === 'Discovery' && <View style={styles.activeLine} />}
+                {focused && route.name === 'Discovery' && (
+                  <View style={[styles.activeLine, {left: style.width / 2 - VWValue(12)}]} />
+                )}
               </View>
             );
           },
@@ -180,8 +194,8 @@ const styles = StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    top: -5,
-    right: 0,
+    top: -7,
+    zIndex: 1,
   },
   activeLine: {
     width: VWValue(24),
@@ -189,7 +203,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF2242',
     position: 'absolute',
     bottom: -RFValue(8),
-    left: (500 * RFValue(27)) / 351 / 2 - VWValue(12),
+    borderRadius: 3,
   },
 });
 

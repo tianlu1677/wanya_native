@@ -32,6 +32,7 @@ const BaseShopBrand = props => {
 const styles = StyleSheet.create({
   wrapper: {
     width: imagewidth,
+    marginRight: 9,
   },
   image: {
     width: imagewidth,

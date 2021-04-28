@@ -31,9 +31,12 @@ const JoinAccountsList = ({navigation, route}) => {
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    const {api, params} = route.params.request;
+    const {api, params, type} = route.params.request;
     const res = await api({...params, page});
-    const data = res.data.accounts;
+    let data = res.data.accounts;
+    if (type === 'activity') {
+      data = res.data.activity_enrollments.map(v => v.account);
+    }
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);

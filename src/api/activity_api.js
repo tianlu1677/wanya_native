@@ -38,10 +38,11 @@ export const exitActivity = async id => {
 };
 
 // 参与活动列表
-export const joinAccountsActivity = async id => {
+export const joinAccountsActivity = async params => {
   const res = await request({
-    url: `/api/v1/activities/${id}/join_accounts`,
+    url: `/api/v1/activities/${params.id}/join_accounts`,
     method: 'GET',
+    params,
   });
   return res;
 };
