@@ -9,10 +9,12 @@ import {getShopStores} from '@/api/shop_store_api';
 const ShopStore = props => {
   const {navigation} = props;
   const {category} = props.route.params;
+  const {categoryList} = useSelector(state => state.home);
+  const categoryId = categoryList.find(item => item.name === category).id;
   const {location} = useSelector(state => state.home);
   const {latitude, longitude, positionCity, chooseCity} = location;
   const params = {
-    category,
+    'q[category_id_eq]': categoryId,
     latitude,
     longitude,
     currentcity: positionCity,
