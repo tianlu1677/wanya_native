@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import * as action from '@/redux/constants';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
@@ -96,22 +94,17 @@ const CategoryComponent = props => {
 };
 
 const DiscoveryIndex = props => {
-  const dispatch = useDispatch();
-  const {categoryList, discoveryData} = useSelector(state => state.home);
-  const [currentKey, setCurrentKey] = useState(categoryList[0].name);
+  const [currentKey, setCurrentKey] = useState(null);
+  const [coveryData, setCoveryData] = useState([]);
 
   const loadData = async () => {
     const res = await getAppCardList();
-    dispatch({type: action.CHANGE_DISCOVERY_DATA, value: res.data.list});
-  };
-
-  const onChange = key => {
-    loadData();
-    setCurrentKey(key);
+    setCurrentKey(res.data.list[0].category_name);
+    setCoveryData(res.data.list);
   };
 
   const RenderCaCategory = () => {
-    const current = discoveryData.find(item => item.category_name === currentKey);
+    const current = coveryData.find(item => item.category_name === currentKey);
     return <CategoryComponent {...props} category={current} currentKey={currentKey} />;
   };
 
@@ -122,17 +115,17 @@ const DiscoveryIndex = props => {
   return (
     <View style={styles.wrapper}>
       <RecommendSearch />
-      {discoveryData.length > 0 ? (
+      {coveryData.length > 0 ? (
         <TabView
           currentKey={currentKey}
           request={currentKey}
-          onChange={onChange}
+          onChange={key => setCurrentKey(key)}
           type="index"
           align="left"
           textStyle={{color: '#AAAA'}}
           activeLineColor="#FF2242"
           bottomLine={true}
-          tabData={discoveryData.map(category => {
+          tabData={coveryData.map(category => {
             return {
               key: category.category_name,
               title: category.category_name,

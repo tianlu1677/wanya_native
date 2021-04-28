@@ -32,21 +32,9 @@ const ActivityDetail = props => {
   const [itemList, setItemList] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
 
-  const loadData = async () => {
-    const res = await getActivityDetail(activityId);
-    setDetail(res.data.activity);
-  };
-
-  const loadJoinAccounts = async () => {
-    const res = await joinAccountsActivity(activityId);
-    const accounts = res.data.activity_enrollments.slice(0, 4).map(v => v.account);
-    setJoinAccounts(accounts);
-  };
-
-  const handelJoin = async e => {
-    await joinActivity(activityId);
-    Toast.showError('报名成功');
-    loadJoinAccounts();
+  const handelJoin = async () => {
+    detail.joined ? await exitActivity(activityId) : await joinActivity(activityId);
+    Toast.showError(detail.joined ? '已取消报名' : '报名成功');
     loadData();
   };
 
@@ -60,13 +48,6 @@ const ActivityDetail = props => {
       path: '/packageactivity/pages/activity-detail?activity_id=' + activityId,
       scene: 0,
     });
-  }
-
-  const handelExit = async () => {
-    await exitActivity(activityId);
-    Toast.showError('已取消报名');
-    loadJoinAccounts();
-    loadData();
   };
 
   const goOutsideDetail = () => {
@@ -114,8 +95,24 @@ const ActivityDetail = props => {
     }
   };
 
+  const goJoinAccounts = () => {
+    if (joinAccounts.length > 0) {
+      props.navigation.navigate('JoinAccountsList', {
+        title: detail.name,
+        request: {api: joinAccountsActivity, params: {id: detail.id}, type: 'activity'},
+      });
+    }
+  };
+
+  const loadData = async () => {
+    const res = await getActivityDetail(activityId);
+    const ret = await joinAccountsActivity({id: activityId});
+    const accounts = ret.data.activity_enrollments.slice(0, 4).map(v => v.account);
+    setJoinAccounts(accounts);
+    setDetail(res.data.activity);
+  };
+
   useEffect(() => {
-    loadJoinAccounts();
     loadData();
   }, []);
 
@@ -143,7 +140,7 @@ const ActivityDetail = props => {
               <Text style={[styles.commenBtn, styles.overBtn]}>活动已结束</Text>
             ) : detail.source_type === 'inside' ? (
               detail.joined ? (
-                <Pressable style={[styles.commenBtn, styles.joinedBtn]} onPress={handelExit}>
+                <Pressable style={[styles.commenBtn, styles.joinedBtn]} onPress={handelJoin}>
                   <Text style={styles.joinedBtn}>已报名参加</Text>
                 </Pressable>
               ) : (
@@ -156,7 +153,9 @@ const ActivityDetail = props => {
                 <Text style={styles.detailBtn}>查看详情</Text>
               </Pressable>
             )}
-            <Pressable style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]} onPress={onShareActivity}>
+            <Pressable
+              style={[styles.commenBtn, styles.wxShareBtn, {marginLeft: 5}]}
+              onPress={onShareActivity}>
               <FastImg source={wxIcon} style={{width: RFValue(25), height: RFValue(25)}} />
               <Text style={{color: '#fff', fontWeight: '500'}}>分享好友</Text>
             </Pressable>
@@ -190,7 +189,7 @@ const ActivityDetail = props => {
           </View>
         )}
         {/* 报名参加 */}
-        <View style={styles.slide}>
+        <Pressable style={styles.slide} onPress={goJoinAccounts}>
           <IconFont name="join" size={RFValue(16)} color="#000" />
           <Text style={styles.slideTitle}>报名参加</Text>
           <View style={[styles.slideValue, styles.accountsWrapper]}>
@@ -198,7 +197,7 @@ const ActivityDetail = props => {
             <Text style={{marginLeft: 5}}>{`共${detail.join_accounts_count}人`}</Text>
           </View>
           <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-        </View>
+        </Pressable>
         {/* 活动标签 */}
         <Pressable style={styles.slide} onPress={() => setShowModal(true)}>
           <IconFont name="biaoqian" size={RFValue(16)} color="#000" />

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import {VWValue} from '@/utils/response-fontsize';
 
 const BadgeMessage = props => {
   const {size, value, containerStyle} = props;
@@ -52,6 +53,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 11,
     color: '#ffffff',
+  },
+
+  // tab
+  tabWrap: {
+    width: VWValue(17),
+    height: VWValue(17),
+    borderRadius: 9,
+    backgroundColor: '#FF2242',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tabContent: {
+    fontSize: 11,
+    color: '#ffffff',
+    fontWeight: '500',
   },
 });
 
