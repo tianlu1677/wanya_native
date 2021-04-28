@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
@@ -19,7 +19,7 @@ const Space = props => {
     currentcity: positionCity,
     city: chooseCity === '全国' ? 'china' : chooseCity,
   };
-  const [request] = useState({api: getSpaces, params});
+  const [request, setRequest] = useState({api: getSpaces, params});
 
   const goChooseCity = () => {
     navigation.navigate('ChooseCity');
@@ -37,6 +37,10 @@ const Space = props => {
       ),
     });
   }, [navigation]);
+
+  useEffect(() => {
+    setRequest({api: getSpaces, params});
+  }, [chooseCity]);
 
   return (
     <View style={styles.wrapper}>

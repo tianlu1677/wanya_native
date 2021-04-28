@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
+import Loading from '@/components/Loading';
 import {RecommendSearch} from '@/components/NodeComponents';
 import TabView from '@/components/TabView';
 import {getAppCardList} from '@/api/discovery_api';
@@ -134,7 +135,7 @@ const DiscoveryIndex = props => {
           })}
         />
       ) : (
-        <View />
+        <Loading />
       )}
     </View>
   );
