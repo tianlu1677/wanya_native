@@ -6,6 +6,8 @@ import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
+import {VWValue} from '@/utils/response-fontsize';
+
 import VideoPlayImg from '@/assets/images/video-play.png';
 import FastImageGif from '@/components/FastImageGif';
 import ExcellentImage from '@/assets/images/excellent.png';
@@ -61,16 +63,14 @@ export const TopicImageContent = props => {
     return <View />;
   }
 
+  const singleStyle = {
+    width: Math.ceil(VWValue(imgAttr.width) / 2),
+    height: Math.ceil((VWValue(imgAttr.width) * imgAttr.height) / imgAttr.width / 2),
+  };
+
   return imgStyle === 'single' ? (
-    <Pressable
-      style={{width: imgAttr.width / 2.0}}
-      onPress={() => {
-        onPreview();
-      }}>
-      <FastImg
-        source={{uri: single_cover.link_url}}
-        style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
-      />
+    <Pressable onPress={onPreview}>
+      <FastImg source={{uri: single_cover.link_url}} style={singleStyle} />
     </Pressable>
   ) : (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -90,6 +90,11 @@ export const TopicVideoContent = props => {
     single_cover.height ? single_cover.height : 100
   );
 
+  const videoAttrStyle = {
+    width: Math.ceil(VWValue(videoAttr.width) / 2),
+    height: Math.ceil((VWValue(videoAttr.width) * videoAttr.height) / videoAttr.width / 2),
+  };
+
   return (
     <View style={{flex: 1, width: videoAttr.width / 2, height: videoAttr.height / 2}}>
       <FastImageGif
@@ -97,7 +102,7 @@ export const TopicVideoContent = props => {
         source={{uri: single_cover.link_url}}
         style={{
           ...styles.imageCover,
-          ...{width: videoAttr.width / 2, height: videoAttr.height / 2},
+          ...videoAttrStyle,
         }}
       />
       <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
@@ -122,7 +127,7 @@ export const TopicLinkContent = props => {
           <FastImg
             source={{uri: data.topic_link.cover_url}}
             mode={'cover'}
-            style={{width: 45, height: 45}}
+            style={{width: VWValue(45), height: VWValue(45)}}
           />
           {data.topic_link.outlink_type === 'music' && (
             <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
@@ -189,8 +194,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   imageMulti: {
-    width: 167,
-    height: 167,
+    width: VWValue(167),
+    height: VWValue(167),
     marginRight: 5,
     borderRadius: 2,
   },
@@ -199,8 +204,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   playImage: {
-    width: 30,
-    height: 30,
+    width: VWValue(30),
+    height: VWValue(30),
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -208,8 +213,8 @@ const styles = StyleSheet.create({
     marginLeft: -15,
   },
   excellentImage: {
-    width: 30,
-    height: 17,
+    width: VWValue(30),
+    height: VWValue(17),
     position: 'absolute',
     top: 8,
     left: 8,
