@@ -10,7 +10,7 @@ const ChatWoot = props => {
     identifier: `uid${currentAccount.uid}-uid`,
     name: currentAccount.nickname,
     avatar_url: currentAccount.avatar_url,
-    email: `${currentAccount.phone}@tryvanyah.com`,
+    email: `${currentAccount.uid}@tryvanyah.com`,
     identifier_hash: '',
   };
   const customAttributes = {
