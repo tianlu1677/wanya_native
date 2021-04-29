@@ -14,11 +14,13 @@ import {
   CHANGE_UPLOAD_STATUS,
   THEORY_VIDEO_STATE,
   THEORY_DETAIL,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
+  LOAD_ALL_CITY_SUCCESS
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {createTopic} from '@/api/topic_api';
+import {getCities} from '@/api/space_api';
 import Helper from '@/utils/helper';
 import * as node from './node_action';
 
@@ -161,5 +163,16 @@ export const updateTheoryVideo = (videoId, pause) => async dispatch => {
     type: THEORY_VIDEO_STATE,
     videoId: videoId,
     pause: pause,
+  });
+};
+
+
+// 提前加载city
+export const loadAllCityList = () => async dispatch => {
+  const res = await getCities();
+  console.log('res', res.data)
+  await dispatch({
+    type: LOAD_ALL_CITY_SUCCESS,
+    value: res.data
   });
 };

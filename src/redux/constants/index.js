@@ -204,3 +204,5 @@ export const UPDATE_THEORY = 'UPDATE_THEORY'; //更新theory
 
 //视频播放
 export const THEORY_VIDEO_STATE = 'THEORY_VIDEO_STATE';
+
+export const LOAD_ALL_CITY_SUCCESS = 'LOAD_ALL_CITY_SUCCESS';

@@ -18,6 +18,7 @@ const defaultState = {
   categoryList: [],
   shareStatus: true,
   shareNearbyStatus: true,
+  cityList: [], // 城市数据
 };
 
 export const homeReducer = (state = defaultState, action) => {
@@ -67,6 +68,11 @@ export const homeReducer = (state = defaultState, action) => {
       return {
         ...state,
         shareNearbyStatus: action.value,
+      };
+    case constants.LOAD_ALL_CITY_SUCCESS:
+      return {
+        ...state,
+        cityList: action.value
       };
     default:
       return state;

@@ -203,6 +203,7 @@ class App extends Component {
     this.networdunsubscribe && this.networdunsubscribe();
   }
 
+  // 提前获取基本数据
   getIndexTabData = async () => {
     const res = await getChannels();
     store.dispatch({type: action.SAVE_CHANNELS, value: res.data.channels});
