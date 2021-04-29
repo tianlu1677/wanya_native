@@ -14,7 +14,6 @@ import {
   RESULTS,
   openSettings,
 } from 'react-native-permissions';
-import ChatWootWidget from '@chatwoot/react-native-widget';
 import {useDispatch, useSelector} from 'react-redux';
 
 const LabIndex = props => {
@@ -182,24 +181,6 @@ const LabIndex = props => {
           <Pressable onPress={() => clickAna()}>
             <Text style={styles.text}>点击统计</Text>
           </Pressable>
-
-          <View>
-            <Pressable style={styles.button} onPress={() => toggleWidget(true)}>
-              <Text style={styles.buttonText}>Open widget</Text>
-            </Pressable>
-          </View>
-          {
-            showWidget&&
-            <ChatWootWidget
-              websiteToken={websiteToken}
-              locale={locale}
-              baseUrl={baseUrl}
-              closeModal={() => toggleWidget(false)}
-              isModalVisible={showWidget}
-              user={user}
-              customAttributes={customAttributes}
-            />
-          }
         </View>
       </ScrollView>
     </View>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text} from 'react-native';
-import ChatWootWidget from '@chatwoot/react-native-widget';
+import ChatWootWidget from '@/components/ChatwootWidget/App';
 import {useDispatch, useSelector} from 'react-redux';
 
 const ChatWoot = props => {
@@ -10,7 +10,7 @@ const ChatWoot = props => {
     identifier: `uid${currentAccount.uid}-uid`,
     name: currentAccount.nickname,
     avatar_url: currentAccount.avatar_url,
-    email: currentAccount.phone,
+    email: `${currentAccount.phone}@tryvanyah.com`,
     identifier_hash: '',
   };
   const customAttributes = {
