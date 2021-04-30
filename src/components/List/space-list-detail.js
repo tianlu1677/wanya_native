@@ -4,7 +4,7 @@ import ScrollList from '@/components/ScrollList';
 import BaseSpceDetail from '@/components/Item/base-space-detail';
 
 const SpaceListDetail = props => {
-  const {type} = props;
+  const {type, ListHeaderComponent, ListTopHeader} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -18,6 +18,7 @@ const SpaceListDetail = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.spaces;
+    console.log('list data', data);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -25,7 +26,7 @@ const SpaceListDetail = props => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [props.request]);
 
   return (
     <ScrollList
@@ -35,6 +36,12 @@ const SpaceListDetail = props => {
       headers={headers}
       renderItem={renderItem}
       enableRefresh={false}
+      ListHeaderComponent={
+        <>
+          {ListHeaderComponent}
+          {listData.length > 0 && ListTopHeader}
+        </>
+      }
     />
   );
 };
