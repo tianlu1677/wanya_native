@@ -34,7 +34,7 @@ const Activity = props => {
       setListData(res.data.activities);
       console.log('top data', res.data.activities);
       const id_not_in = res.data.activities.map(item => item.id).join();
-      const listQuery = {category, id_not_in};
+      const listQuery = {category, 'q[id_not_in]': id_not_in};
       console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getActivityList, params: listQuery});
     } else {
@@ -84,10 +84,10 @@ const Activity = props => {
                   {CityComponent}
                 </View>
                 {listdata.map((item, index) => (
-                  <>
+                  <View key={item.id}>
                     <BaseActivity data={item} key={item.id} type="list" />
                     {index + 1 !== listdata.length && <View style={styles.separator} />}
-                  </>
+                  </View>
                 ))}
               </ScrollView>
             ) : (
