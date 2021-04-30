@@ -96,7 +96,7 @@ export const TopicVideoContent = props => {
   };
 
   return (
-    <View style={{flex: 1, width: videoAttr.width / 2, height: videoAttr.height / 2}}>
+    <View style={{flex: 1, ...videoAttrStyle}}>
       <FastImageGif
         gif_url={single_cover.link_url}
         source={{uri: single_cover.link_url}}
