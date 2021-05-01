@@ -2,6 +2,7 @@ import request from './request';
 
 // 品牌列表
 export const getShopBrands = async (params, apiPath) => {
+  console.log('path', apiPath);
   const res = await request({
     url: `/api/v1/shop_brands?${apiPath}`,
     method: 'GET',

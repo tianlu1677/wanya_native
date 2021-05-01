@@ -154,7 +154,7 @@ const SearchIndex = ({navigation, route}) => {
         type="index"
         align="left"
         textStyle={{color: '#000'}}
-        activeLineColor="#000"
+        activeLineColor="#FF2242"
         bottomLine={true}
         tabData={[
           {

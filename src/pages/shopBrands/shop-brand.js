@@ -5,9 +5,7 @@ import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import {SelectListHeader} from '@/components/NodeComponents';
 import ShopBrandList from '@/components/List/shop-brand-list';
-
 import {getShopBrands} from '@/api/shop_brand_api';
-
 import {getCategoryProfile} from '@/api/category_api';
 
 const ShopBrand = props => {
@@ -24,7 +22,7 @@ const ShopBrand = props => {
   };
 
   const getParams = value => {
-    const query = `q[category_id_eq]=${categoryId}&${value}`;
+    const query = `category_ids=${categoryId}&${value}`;
     setRequest({api: getShopBrands, params: {}, apiPath: query});
   };
 
