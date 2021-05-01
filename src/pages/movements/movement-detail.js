@@ -99,7 +99,7 @@ const MovementDetail = ({navigation, route}) => {
 
   return detail ? (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <CollapsibleHeader
         tabBarHeitabBarHeightght={BarHeight}
         headerHeight={HEADER_HEIGHT + BarHeight}

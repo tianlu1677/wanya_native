@@ -143,7 +143,7 @@ const AccountContent = props => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <Text style={commonStyles.contentBlank} />
       <ItemView
         onPress={() => {

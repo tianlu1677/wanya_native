@@ -49,7 +49,7 @@ const JoinAccountsList = ({navigation, route}) => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <ScrollList
         data={listData}
         loading={loading}

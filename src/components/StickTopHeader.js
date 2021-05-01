@@ -22,7 +22,7 @@ const StickTopHeader = props => {
       )}
       {Platform.OS !== 'ios' && (
         <TopHeader
-          statusBar={{barStyle: 'light-content', translucent: false, backgroundColor: '#000'}}
+          statusBar={{barStyle: 'light-content', translucent: true, backgroundColor: '#000'}}
           headerStyles={{backgroundColor: 'rgba(1,1,1,0.8)'}}
           LeftButton={props.showLeftButton ? () => <View /> : null}
           Title={() => (

@@ -132,7 +132,7 @@ const PhoneLogin = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', color: 'white', flex: 1}} edges={['bottom']}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.phoneContainer}>
         <Text style={styles.titleText}>{isRegister ? '手机号注册' : '绑定手机号'}</Text>
         <View style={styles.inputWrap}>

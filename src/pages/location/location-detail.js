@@ -79,7 +79,7 @@ const LocationDetail = ({route, navigation}) => {
 
   return detail ? (
     <View style={{flex: 1}}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.wrapper}>
         <SingleList
           request={{api: getLocationsPosts, params: {id: locationId}}}

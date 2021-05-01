@@ -8,7 +8,7 @@ const FollowNodes = ({route}) => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <NodeList request={{api: getFollowNodeIndex, params: {account_id: accountId}}} type="list" />
     </>
   );

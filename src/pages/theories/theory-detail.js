@@ -104,7 +104,7 @@ const TheoryDetail = ({navigation, route}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={IsIos ? 0 : BarHeight}
       style={ptyles.wrapper}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <TopBack top={BarHeight + RFValue(12)} onReportClick={onReportClick} />
       <CommentList
         type="Theory"

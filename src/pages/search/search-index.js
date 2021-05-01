@@ -133,7 +133,7 @@ const SearchIndex = ({navigation, route}) => {
 
   return (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={{height: BarHeight, backgroundColor: '#fff'}} />
       <Search
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#F2F3F5'}}

@@ -57,7 +57,7 @@ const NodeIndex = () => {
 
   return allNodes.length > 0 ? (
     <>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.wrapper}>
         <View style={styles.cateWrap}>
           {categories.map((categorie, index) => (

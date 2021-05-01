@@ -16,7 +16,7 @@ const About = ({navigation, route}) => {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View>
         <LogoWrapView>
           <FastImg source={{uri: logo_url}} style={{height: 65, width: 65, borderRadius: 10}} />

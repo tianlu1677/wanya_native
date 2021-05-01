@@ -47,7 +47,7 @@ const ShopBrand = props => {
 
   return detail ? (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <SelectListHeader data={detail} getParams={getParams} />
       <View style={styles.speator} />
       {request && <ShopBrandList request={request} type="list" />}

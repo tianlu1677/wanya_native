@@ -52,7 +52,7 @@ const InviteLogin = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.phoneContainer}>
         <TitleText>邀请码邀请</TitleText>
         <InputWrapView>

@@ -89,7 +89,7 @@ const MentionNotify = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      {/*<StatusBar barStyle="light-content" />*/}
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <ScrollList
         onRefresh={loadInfo}
         headers={headers}

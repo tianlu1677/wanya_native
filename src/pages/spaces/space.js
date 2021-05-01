@@ -71,7 +71,7 @@ const Space = props => {
 
   return (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       {request && (
         <SpaceListDetail
           request={request}

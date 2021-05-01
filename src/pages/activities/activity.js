@@ -71,7 +71,7 @@ const Activity = props => {
 
   return (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       {request && (
         <ActivityList
           request={request}
