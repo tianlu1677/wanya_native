@@ -16,6 +16,7 @@ const TabList = props => {
     props.tabChange(item, index);
     setCurrentIndex(index);
     setContentWidth(0);
+    console.log('xxxxxx', scrollEnabled)
     if (!scrollEnabled) {
       return;
     }

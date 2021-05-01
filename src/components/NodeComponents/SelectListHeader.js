@@ -129,7 +129,8 @@ const SelectListHeader = props => {
         })}
       </View>
 
-      <View style={[styles.modalWrapper, {display: visible ? 'flex' : 'none'}]}>
+      <View style={[styles.modalWrapper]}>
+        <View style={[{display: visible ? 'flex' : 'none'}]}>
         <Pressable style={styles.opacity} onPress={() => handleCloseModal()} />
         <View style={styles.modalContent}>
           {/* 单选 */}
@@ -178,6 +179,7 @@ const SelectListHeader = props => {
               </View>
             </View>
           )}
+        </View>
         </View>
       </View>
     </>
