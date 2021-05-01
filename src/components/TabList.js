@@ -44,10 +44,12 @@ const TabList = props => {
   }, [props.current, layoutList]);
 
   useEffect(() => {
-    if (contentWidth > deviceWidth) {
-      setScrollEnabled(true);
-    }
-  }, [contentWidth]);
+    // console.log('contentWidth', contentWidth, deviceWidth)
+    setScrollEnabled(true);
+    // if (contentWidth > deviceWidth) {
+    //   setScrollEnabled(true);
+    // }
+  }, []);
 
   return (
     <>
@@ -62,6 +64,7 @@ const TabList = props => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           ref={scrollRef}
+          overScrollMode={'always'}
           centerContent={false}
           style={styles[`tabScroll${type}`]}
           scrollEnabled={scrollEnabled}>

@@ -70,7 +70,7 @@ export const TopicImageContent = props => {
 
   return imgStyle === 'single' ? (
     <Pressable onPress={onPreview}>
-      <FastImg source={{uri: single_cover.link_url}} style={singleStyle} />
+      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
     </Pressable>
   ) : (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -99,7 +99,7 @@ export const TopicVideoContent = props => {
     <View style={{flex: 1, ...videoAttrStyle}}>
       <FastImageGif
         gif_url={single_cover.link_url}
-        source={{uri: single_cover.link_url}}
+        source={{uri: `${single_cover.video_m3u8_url}?vframe/jpg/offset/0/rotate/auto`}}
         style={{
           ...styles.imageCover,
           ...videoAttrStyle,

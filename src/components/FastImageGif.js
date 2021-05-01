@@ -19,25 +19,21 @@ const FastImgGif = props => {
     if (props.gif_url && props.source.uri) {
       // Image.prefetch(props.gif_url);
       setTimeout(() => {
-        console.log('gif_url', props.gif_url, props.source.uri);
+        // console.log('gif_url', props.gif_url, props.source.uri);
         setSource({uri: props.gif_url});
-      }, 800);
+      }, 300);
     }
   };
 
   return (
     <FastImage
       style={{width: 10, height: 10, borderRadius: 2, ...props.style}}
-      source={{
-        ...props.source,
-        // priority: FastImage.priority.low,
-        // cache: FastImage.cacheControl.immutable,
-      }}
+      source={source}
       resizeMode={resizeMode}
       // tintColor={'gray'}
-      // onLoad={e => {
-      //   onLoad(e);
-      // }}
+      onLoad={e => {
+        onGif(e);
+      }}
       // onLoadEnd={e => {
       //   onGif(e);
       // }}
