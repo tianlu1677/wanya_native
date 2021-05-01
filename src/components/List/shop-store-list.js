@@ -4,7 +4,7 @@ import ScrollList from '@/components/ScrollList';
 import BaseShopStore from '@/components/Item/base-shop-store';
 
 const ShopStoreList = props => {
-  const {type} = props;
+  const {type, ListHeaderComponent, ListTopHeader} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -18,6 +18,7 @@ const ShopStoreList = props => {
     const {api, params} = props.request;
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.shop_stores;
+    console.log('list data', data);
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -35,6 +36,12 @@ const ShopStoreList = props => {
       headers={headers}
       renderItem={renderItem}
       enableRefresh={false}
+      ListHeaderComponent={
+        <>
+          {ListHeaderComponent}
+          {listData.length > 0 && ListTopHeader}
+        </>
+      }
     />
   );
 };
