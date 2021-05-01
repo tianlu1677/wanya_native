@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {ScrollView, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
+import {ScrollView, FlatList, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {RFValue} from '@/utils/response-fontsize';
 const deviceWidth = Dimensions.get('window').width;
@@ -44,12 +44,12 @@ const TabList = props => {
   }, [props.current, layoutList]);
 
   useEffect(() => {
-    // console.log('contentWidth', contentWidth, deviceWidth)
-    setScrollEnabled(true);
-    // if (contentWidth > deviceWidth) {
-    //   setScrollEnabled(true);
-    // }
-  }, []);
+    console.log('contentWidth', contentWidth, deviceWidth)
+    // setScrollEnabled(true);
+    if (contentWidth > deviceWidth) {
+      setScrollEnabled(true);
+    }
+  }, [contentWidth]);
 
   return (
     <>

@@ -186,7 +186,7 @@ const SelectListHeader = props => {
   );
 };
 
-const position = {position: 'absolute', left: 0, right: 0, top: RFValue(40), bottom: 0};
+const position = { position: 'absolute', left: 0, right: 0, top: RFValue(40)}
 const styles = StyleSheet.create({
   wrapper: {
     height: RFValue(40),
@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
   },
   opacity: {
     ...position,
+    bottom: 0,
     backgroundColor: '#000',
     opacity: 0.5,
   },
