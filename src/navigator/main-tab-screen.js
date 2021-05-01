@@ -142,7 +142,7 @@ const MainTabScreen = props => {
           showLabel: false,
           tabStyle: {height: RFValue(50)},
           style: {
-            backgroundColor: Platform.OS === 'ios' ? 'transparent' : '#eee',
+            backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
             borderTopWidth: 0,
             height: RFValue(50),
             paddingLeft: VWValue(34),

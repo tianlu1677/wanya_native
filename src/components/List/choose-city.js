@@ -75,7 +75,7 @@ const CitySelect = ({navigation}) => {
 
   return cities ? (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <ScrollList
         getRref={refs => setScrollRef(refs)}
         enableLoadMore={false}

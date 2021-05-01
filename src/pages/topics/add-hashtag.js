@@ -34,7 +34,7 @@ const AddHashTag = ({navigation}) => {
       }}>
       <View style={styles.wrapper}>
         <View style={{height: BarHeight}} />
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" />
         <Search
           inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
           height={RFValue(36)}

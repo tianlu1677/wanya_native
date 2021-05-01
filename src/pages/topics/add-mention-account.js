@@ -46,7 +46,7 @@ const MentionAccounts = ({navigation, route}) => {
       }}>
       <View style={styles.wrapper}>
         <View style={{height: BarHeight}} />
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="whitr-content" />
         <Search
           inputStyle={{
             borderRadius: RFValue(19),

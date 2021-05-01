@@ -8,7 +8,7 @@ const FollowAccounts = ({route}) => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <AccountsList request={{api: getAccountFollowings, params: {id: accountId}}} type="list" />
     </>
   );

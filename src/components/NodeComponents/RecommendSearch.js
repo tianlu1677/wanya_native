@@ -15,7 +15,7 @@ const RecommendSearch = () => {
   return (
     <>
       <View style={{height: BarHeight, backgroundColor: 'black'}} />
-      <StatusBar barStyle="light-content" translucent={false} />
+      <StatusBar barStyle="light-content" translucent={true} />
       <Search
         getRef={refs => setinputRef(refs)}
         style={{backgroundColor: '#000', paddingRight: 14}}

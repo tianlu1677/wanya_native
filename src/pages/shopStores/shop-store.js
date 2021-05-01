@@ -71,7 +71,7 @@ const ShopStore = props => {
 
   return (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       {request && (
         <ShopStoreList
           request={request}

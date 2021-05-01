@@ -19,7 +19,7 @@ const NodeIndex = ({navigation}) => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <NodeIndexComponent type="add-node" />
     </>
   );

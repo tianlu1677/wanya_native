@@ -6,7 +6,7 @@ import {recommendAccounts} from '@/api/mine_api';
 const RelatedAccounts = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <AccountsList
         request={{api: recommendAccounts, params: {per_page: 50}}}
         type="related"

@@ -130,7 +130,7 @@ const SelectListHeader = props => {
       </View>
 
       <View style={[styles.modalWrapper, {display: visible ? 'flex' : 'none'}]}>
-        <Pressable style={styles.opacity} onPress={handleCloseModal} />
+        <Pressable style={styles.opacity} onPress={() => handleCloseModal()} />
         <View style={styles.modalContent}>
           {/* 单选 */}
           {current.type === 'single' && (

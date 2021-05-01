@@ -8,7 +8,7 @@ const FollowerAccounts = ({navigation, route}) => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <AccountsList request={{api: getAccountFollowers, params: {id: accountId}}} type="normal" />
     </>
   );

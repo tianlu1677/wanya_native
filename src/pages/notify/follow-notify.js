@@ -9,7 +9,7 @@ const FollowAccounts = () => {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <StatusBar barStyle="dark-content" />
+      {/*<StatusBar barStyle="light-content" />*/}
       <AccountsList
         request={{
           api: getAccountRecentFollowers,

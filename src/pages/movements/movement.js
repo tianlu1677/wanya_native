@@ -45,7 +45,7 @@ const Movement = props => {
 
   return detail ? (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <SelectListHeader data={detail} getParams={getParams} />
       {request && <MovementList request={request} type="list" style={{marginTop: 9}} />}
     </View>

@@ -75,7 +75,7 @@ const Settings = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
-      <StatusBar barStyle="dark-content" />
+      {/*<StatusBar barStyle="light-content" />*/}
       <View style={{backgroundColor: 'white'}}>
         <ItemView
           style={[styles.bottomBorder1px]}

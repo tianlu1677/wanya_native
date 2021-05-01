@@ -75,7 +75,7 @@ const EditAccountContent = ({navigation, route}) => {
         Keyboard.dismiss();
       }}>
       <View style={{flex: 1, backgroundColor: '#fafafa'}}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" />
         {editKey === 'nickname' && (
           <TextInput
             caretHidden={false}

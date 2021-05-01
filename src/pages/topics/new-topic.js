@@ -332,7 +332,7 @@ const NewTopic = props => {
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();

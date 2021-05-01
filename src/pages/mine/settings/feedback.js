@@ -48,7 +48,7 @@ const Feedback = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
-      <StatusBar barStyle="dark-content" />
+      {/*<StatusBar barStyle="light-content" />*/}
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();

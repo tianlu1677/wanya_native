@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     borderRadius: 2,
     overflow: 'hidden',
+    backgroundColor: 'white',
   },
   count: {
     color: '#000',

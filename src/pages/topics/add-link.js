@@ -65,7 +65,7 @@ const AddLink = ({navigation}) => {
 
   return (
     <View style={styles.wrapper}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <Text style={styles.tips}>请复制链接后回到这里，添加链接后发布可直接查看详情</Text>
       <TextInput
         style={styles.inputContent}

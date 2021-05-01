@@ -55,7 +55,7 @@ const Report = ({navigation, route}) => {
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" />
         <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps="never">
           {messages.map((message, index) => {
             return (

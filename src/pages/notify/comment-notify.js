@@ -105,7 +105,7 @@ const CommentNotify = ({navigation}) => {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <ScrollList
         onRefresh={loadInfo}
         headers={headers}
