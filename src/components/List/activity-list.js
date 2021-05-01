@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {View} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import BaseActivity from '@/components/Item/base-activity';
 
@@ -38,8 +39,8 @@ const ActivityList = props => {
       enableRefresh={false}
       ListHeaderComponent={
         <>
-          {ListHeaderComponent}
-          {listData.length > 0 && ListTopHeader}
+          {listData.length > 0 ? ListHeaderComponent : <View />}
+          {ListTopHeader}
         </>
       }
     />

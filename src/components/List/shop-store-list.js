@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {View} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import BaseShopStore from '@/components/Item/base-shop-store';
 
@@ -38,7 +39,7 @@ const ShopStoreList = props => {
       enableRefresh={false}
       ListHeaderComponent={
         <>
-          {ListHeaderComponent}
+          {listData.length > 0 ? ListHeaderComponent : <View />}
           {ListTopHeader}
         </>
       }
