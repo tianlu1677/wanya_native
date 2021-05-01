@@ -100,6 +100,7 @@ export const TopicVideoContent = props => {
       <FastImageGif
         gif_url={single_cover.link_url}
         source={{uri: `${single_cover.video_m3u8_url}?vframe/jpg/offset/0/rotate/auto`}}
+        // source={{uri: single_cover.link_url}}
         style={{
           ...styles.imageCover,
           ...videoAttrStyle,

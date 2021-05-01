@@ -16,12 +16,13 @@ const FastImgGif = props => {
   const resizeMode = modeList[props.mode || 'cover'];
 
   const onGif = event => {
-    if (props.gif_url && props.source.uri) {
+    if (props.gif_url) {
+      console.log('props.', props.source)
       // Image.prefetch(props.gif_url);
-      setTimeout(() => {
-        // console.log('gif_url', props.gif_url, props.source.uri);
+      // setSource({uri: props.gif_url});
+      if(source.uri !== props.gif_url) {
         setSource({uri: props.gif_url});
-      }, 300);
+      }
     }
   };
 
@@ -35,7 +36,7 @@ const FastImgGif = props => {
         onGif(e);
       }}
       onLoadEnd={e => {
-        setSource(props.source);
+        // setSource(props.source);
       }}
     />
     // <Image
