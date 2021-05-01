@@ -12,7 +12,7 @@ const Activity = props => {
   const {navigation} = props;
   const {category} = props.route.params;
   const {location} = useSelector(state => state.home);
-  const {latitude, longitude, positionCity, chooseCity = '全国'} = location;
+  const {latitude, longitude, positionCity, chooseCity} = location;
   const [listdata, setListData] = useState([]);
   const [request, setRequest] = useState(null);
 
@@ -77,7 +77,7 @@ const Activity = props => {
           request={request}
           type="list"
           ListHeaderComponent={
-            isPosition && isCurrentCity ? (
+            isPosition && isCurrentCity && listdata.length > 0 ? (
               <ScrollView>
                 <View style={styles.header}>
                   <Text style={styles.title}>附近活动</Text>
@@ -102,7 +102,7 @@ const Activity = props => {
                 {!isPosition && chooseCity === '全国' && '全部活动'}
                 {!isPosition && chooseCity !== '全国' && '其他城市热门活动'}
               </Text>
-              {!(isPosition && isCurrentCity) ? CityComponent : <View />}
+              {!(isPosition && isCurrentCity && listdata.length > 0) ? CityComponent : <View />}
             </View>
           }
         />

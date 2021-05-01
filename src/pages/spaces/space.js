@@ -31,9 +31,9 @@ const Space = props => {
       const query = {...commonParams, ...params, per_page: 100};
       console.log('top params', JSON.stringify(query));
       const res = await getSpaces(query);
-      setListData(res.data.activities);
-      console.log('top data', res.data.activities);
-      const id_not_in = res.data.activities.map(item => item.id).join();
+      setListData(res.data.spaces);
+      console.log('top data', res.data.spaces);
+      const id_not_in = res.data.spaces.map(item => item.id).join();
       const listQuery = {category, 'q[id_not_in]': id_not_in};
       console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getSpaces, params: listQuery});
@@ -61,10 +61,6 @@ const Space = props => {
     });
   }, [navigation]);
 
-  // useEffect(() => {
-  //   setRequest({api: getSpaces, params});
-  // }, [chooseCity]);
-
   const CityComponent = (
     <Pressable style={styles.address} onPress={goChooseCity}>
       <IconFont name="space-point" size={12} color={'#000'} />
@@ -81,7 +77,7 @@ const Space = props => {
           request={request}
           type="list"
           ListHeaderComponent={
-            isPosition && isCurrentCity ? (
+            isPosition && isCurrentCity && listdata.length > 0 ? (
               <ScrollView>
                 <View style={styles.header}>
                   <Text style={styles.title}>附近场地</Text>
@@ -106,7 +102,7 @@ const Space = props => {
                 {!isPosition && chooseCity === '全国' && '全部场地'}
                 {!isPosition && chooseCity !== '全国' && '其他城市热门场地'}
               </Text>
-              {!(isPosition && isCurrentCity) ? CityComponent : <View />}
+              {!(isPosition && isCurrentCity && listdata.length > 0) ? CityComponent : <View />}
             </View>
           }
         />

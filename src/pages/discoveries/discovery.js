@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import {RFValue} from '@/utils/response-fontsize';
+import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
@@ -9,13 +11,22 @@ import TabView from '@/components/TabView';
 import {getAppCardList} from '@/api/discovery_api';
 
 const CategoryComponent = props => {
+  const dispatch = useDispatch();
+  const {location} = useSelector(state => state.home);
+
   const {
     navigation,
     currentKey,
     category: {movement, space, activity, shop_store, shop_brand},
   } = props;
 
+  console.log(location);
+
   const goPageMethod = name => {
+    dispatch({
+      type: action.GET_LOCATION,
+      value: {...location, chooseCity: location.positionCity || '全国'},
+    });
     navigation.navigate(name, {category: currentKey});
   };
 

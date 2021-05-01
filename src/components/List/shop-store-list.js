@@ -39,7 +39,7 @@ const ShopStoreList = props => {
       ListHeaderComponent={
         <>
           {ListHeaderComponent}
-          {listData.length > 0 && ListTopHeader}
+          {ListTopHeader}
         </>
       }
     />

@@ -17,7 +17,7 @@ const ShopStore = props => {
   const [request, setRequest] = useState(null);
 
   const isCurrentCity = positionCity === chooseCity;
-  const isPosition = latitude && longitude && positionCity;
+  const isPosition = latitude && longitude && positionCity ? true : false;
   const city = chooseCity === '全国' ? 'china' : chooseCity;
   const commonParams = {latitude, longitude, currentcity: positionCity, city};
   const params = {'q[category_id_eq]': categoryId};
@@ -31,9 +31,9 @@ const ShopStore = props => {
       const query = {...commonParams, ...params, per_page: 100};
       console.log('top params', JSON.stringify(query));
       const res = await getShopStores(query);
-      setListData(res.data.activities);
-      console.log('top data', res.data.activities);
-      const id_not_in = res.data.activities.map(item => item.id).join();
+      setListData(res.data.shop_stores);
+      console.log('top data', res.data.shop_stores);
+      const id_not_in = res.data.shop_stores.map(item => item.id).join();
       const listQuery = {category, 'q[id_not_in]': id_not_in};
       console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getShopStores, params: listQuery});
@@ -77,7 +77,7 @@ const ShopStore = props => {
           request={request}
           type="list"
           ListHeaderComponent={
-            isPosition && isCurrentCity ? (
+            isPosition && isCurrentCity && listdata.length > 0 ? (
               <ScrollView>
                 <View style={styles.header}>
                   <Text style={styles.title}>附近Van Store</Text>
@@ -102,7 +102,7 @@ const ShopStore = props => {
                 {!isPosition && chooseCity === '全国' && '全部Van Store'}
                 {!isPosition && chooseCity !== '全国' && '其他城市热门Van Store'}
               </Text>
-              {!(isPosition && isCurrentCity) ? CityComponent : <View />}
+              {!(isPosition && isCurrentCity && listdata.length > 0) ? CityComponent : <View />}
             </View>
           }
         />
