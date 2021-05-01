@@ -34,9 +34,9 @@ const FastImgGif = props => {
       onLoad={e => {
         onGif(e);
       }}
-      // onLoadEnd={e => {
-      //   onGif(e);
-      // }}
+      onLoadEnd={e => {
+        setSource(props.source);
+      }}
     />
     // <Image
     //   style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
