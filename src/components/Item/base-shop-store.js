@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     marginTop: RFValue(10),
   },
   spaceIcon: {
-    marginTop: 3,
+    marginTop: 4,
     marginRight: 5,
   },
   addressName: {
