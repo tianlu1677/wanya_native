@@ -109,28 +109,9 @@ const SelectListHeader = props => {
     loadParams(copyData);
   }, []);
 
-  return (
-    <>
-      <View style={styles.wrapper}>
-        {saveData.map((item, index) => {
-          const isCurrent = current.name === item.name;
-          const colorStyle = isCurrent
-            ? {color: '#000', fontWeight: '500'}
-            : {color: '#7F7F81', fontWeight: '400'};
-          return (
-            <Pressable
-              key={index}
-              style={styles.itemWrapper}
-              onPress={() => handleOpenModal(item, index)}>
-              <Text style={[styles.name, colorStyle]}>{item.name}</Text>
-              <IconFont size={RFValue(7)} name={isCurrent ? 'upper' : 'down'} color={colorStyle} />
-            </Pressable>
-          );
-        })}
-      </View>
-
-      <View style={[styles.modalWrapper]}>
-        <View style={[{display: visible ? 'flex' : 'none'}]}>
+  const ModalComponent = () => {
+    return (
+      <View style={styles.modalWrapper}>
         <Pressable style={styles.opacity} onPress={() => handleCloseModal()} />
         <View style={styles.modalContent}>
           {/* 单选 */}
@@ -180,13 +161,35 @@ const SelectListHeader = props => {
             </View>
           )}
         </View>
-        </View>
       </View>
+    );
+  };
+
+  return (
+    <>
+      <View style={styles.wrapper}>
+        {saveData.map((item, index) => {
+          const isCurrent = current.name === item.name;
+          const colorStyle = isCurrent
+            ? {color: '#000', fontWeight: '500'}
+            : {color: '#7F7F81', fontWeight: '400'};
+          return (
+            <Pressable
+              key={index}
+              style={styles.itemWrapper}
+              onPress={() => handleOpenModal(item, index)}>
+              <Text style={[styles.name, colorStyle]}>{item.name}</Text>
+              <IconFont size={RFValue(7)} name={isCurrent ? 'upper' : 'down'} color={colorStyle} />
+            </Pressable>
+          );
+        })}
+      </View>
+      {visible ? <ModalComponent /> : <View />}
     </>
   );
 };
 
-const position = { position: 'absolute', left: 0, right: 0, top: RFValue(40)}
+const position = {position: 'absolute', left: 0, right: 0, bottom: 0, top: RFValue(40)};
 const styles = StyleSheet.create({
   wrapper: {
     height: RFValue(40),
@@ -209,7 +212,6 @@ const styles = StyleSheet.create({
   },
   opacity: {
     ...position,
-    bottom: 0,
     backgroundColor: '#000',
     opacity: 0.5,
   },
