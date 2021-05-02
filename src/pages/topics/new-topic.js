@@ -145,7 +145,6 @@ const NewTopic = props => {
           if (err) {
             return;
           }
-          console.log(res);
           setVideoSource(res);
         }
       );

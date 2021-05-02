@@ -107,8 +107,8 @@ const AddSpace = props => {
   };
 
   const onChangeKey = key => {
-    setCurrentKey(key);
     setRequest(returnParams(key, searchKey));
+    setCurrentKey(key);
   };
 
   const goChooseCity = () => {

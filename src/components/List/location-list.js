@@ -28,6 +28,7 @@ const LocationList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
+
     let data = res.data.answer.tips;
 
     if (type === 'add-location' && data.length > 0) {
