@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {PlainContent} from '@/components/Item/single-list-item';
 import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
@@ -10,6 +10,7 @@ const RenderText = props => {
 
   return (
     <>
+      <StatusBar barStyle={'light-content'} backgroundColor={'black'} translucent={false} />
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
       {detail.plain_content ? (
         <View style={styles.content}>

@@ -17,7 +17,7 @@ const FastImgGif = props => {
 
   const onGif = event => {
     if (props.gif_url) {
-      console.log('props.', props.source)
+      // console.log('props.', props.source)
       // Image.prefetch(props.gif_url);
       // setSource({uri: props.gif_url});
       if(source.uri !== props.gif_url) {

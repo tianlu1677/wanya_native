@@ -15,12 +15,15 @@ const TabList = props => {
   const setIndex = (item, index) => {
     props.tabChange(item, index);
     setCurrentIndex(index);
-    setContentWidth(0);
-    console.log('xxxxxx', scrollEnabled)
+    // setContentWidth(0);
     if (!scrollEnabled) {
       return;
     }
     const layout = layoutList[index];
+    if(!layout) {
+      return
+    }
+
     const rx = deviceWidth / 2;
     const sx = layout.x - rx + layout.width / 2;
     scrollRef.current.scrollTo({x: sx, animated: true});
@@ -44,7 +47,7 @@ const TabList = props => {
   }, [props.current, layoutList]);
 
   useEffect(() => {
-    console.log('contentWidth', contentWidth, deviceWidth)
+    // console.log('contentWidth', contentWidth, deviceWidth)
     // setScrollEnabled(true);
     if (contentWidth > deviceWidth) {
       setScrollEnabled(true);
