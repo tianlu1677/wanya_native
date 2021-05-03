@@ -71,7 +71,7 @@ const LocationDetail = ({route, navigation}) => {
         <Text style={styles.name}>{detail.name}</Text>
         <Text style={styles.address}>{detail.address}</Text>
         <Pressable onPress={handleChange}>
-          <FastImg style={styles.image} source={{uri: detail.address_cover_url}} />
+          <FastImg style={styles.image} mode={'cover'} source={{uri: detail.address_cover_url}} />
         </Pressable>
       </View>
     );

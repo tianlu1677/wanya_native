@@ -109,6 +109,6 @@ export default async function requestHttp(options, url = null) {
   if (options.method !== 'GET') {
     request_options = {...request_options, data: data};
   }
-  // console.log('requestHttp token', request_options)
+  // console.log('requestHttp token', url, request_options)
   return axios(request_options);
 }
