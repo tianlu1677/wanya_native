@@ -5,7 +5,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 
 const {width} = Dimensions.get('window');
-const imagewidth = Math.ceil((width - 28 - 18) / 3);
+const imagewidth = Math.floor((width - 28 - 18) / 3);
 
 const BaseShopBrand = props => {
   const navigation = useNavigation();

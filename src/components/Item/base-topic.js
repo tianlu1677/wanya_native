@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
@@ -7,7 +7,7 @@ import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import {VWValue} from '@/utils/response-fontsize';
-
+import {SCREEN_WIDTH} from '@/utils/navbar';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import FastImageGif from '@/components/FastImageGif';
 import ExcellentImage from '@/assets/images/excellent.png';
@@ -48,17 +48,6 @@ export const TopicImageContent = props => {
   const imgStyle = medias.length === 1 ? 'single' : 'multi';
   const imgAttr = calculateImg(single_cover.width, single_cover.height);
 
-  const onPreview = (index = 0) => {
-    const data = {
-      images: medias.map(v => {
-        return {url: v.split('?')[0]};
-      }),
-      visible: true,
-      index,
-    };
-    dispatch(dispatchPreviewImage(data));
-  };
-
   if (!single_cover.cover_url) {
     return <View />;
   }
@@ -68,18 +57,33 @@ export const TopicImageContent = props => {
     height: Math.ceil((VWValue(imgAttr.width) * imgAttr.height) / imgAttr.width / 2),
   };
 
+  const onPreview = index => {
+    const data = {
+      index,
+      visible: true,
+      images: medias.map(v => {
+        return {url: v.split('?')[0]};
+      }),
+    };
+    dispatch(dispatchPreviewImage(data));
+  };
+
   return imgStyle === 'single' ? (
-    <Pressable onPress={onPreview}>
+    <Pressable onPress={() => onPreview(0)}>
       <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
     </Pressable>
   ) : (
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    <View style={styles.imageMultiWrapper}>
       {medias.map((media, index) => (
-        <Pressable onPress={() => onPreview(index)} key={media}>
-          <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
+        <Pressable key={media} onPress={() => onPreview(index)}>
+          <FastImg
+            key={media}
+            source={{uri: media}}
+            style={{...styles.imageMulti, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
+          />
         </Pressable>
       ))}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -188,16 +192,22 @@ const BaseTopic = props => {
     </Pressable>
   );
 };
+
+const imageMultiWidth = Math.floor((SCREEN_WIDTH - 28 - 6) / 3);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
     paddingBottom: 0,
     backgroundColor: '#fff',
   },
+  imageMultiWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   imageMulti: {
-    width: VWValue(167),
-    height: VWValue(167),
-    marginRight: 5,
+    width: imageMultiWidth,
+    height: imageMultiWidth,
+    marginBottom: 3,
     borderRadius: 2,
   },
   imageCover: {
