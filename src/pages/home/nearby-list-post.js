@@ -97,6 +97,7 @@ const NearByListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
+      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
       renderEmpty={
         <Pressable style={lstyles.emptyWrap} onPress={() => navigation.navigate('InviteDetail')}>
           <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(165)}]}>

@@ -115,6 +115,7 @@ const NodeListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
+      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
       ListHeaderComponent={
         <>
           <NodeScrollView />

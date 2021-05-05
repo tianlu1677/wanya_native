@@ -121,6 +121,7 @@ const SingleList = props => {
       onRefresh={throttle(onRefresh, 300)}
       headers={headers}
       renderItem={renderItemMemo}
+      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
       style={{
         backgroundColor: '#FAFAFA',
         flex: listData.length === 0 && props.renderEmpty ? 1 : 0,

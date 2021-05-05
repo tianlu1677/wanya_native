@@ -7,40 +7,12 @@ import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import {VWValue} from '@/utils/response-fontsize';
+import {calculateImg} from '@/utils/scale';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import FastImageGif from '@/components/FastImageGif';
 import ExcellentImage from '@/assets/images/excellent.png';
 import BaseLongVideo from '@/components/Item/base-long-video';
-
-const calculateImg = (width, height) => {
-  let newWidth = 500;
-  let newHeight = 500;
-  let x = (width / height).toFixed(2);
-  let attr = {};
-  if (x > 0 && x <= 0.33) {
-    newHeight = 420;
-    newWidth = newHeight / 3;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 0.33 && x <= 1) {
-    newHeight = 420;
-    newWidth = newHeight * x;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 1 && x <= 2) {
-    newWidth = 480;
-    newHeight = (height * newWidth) / width;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 2 && x <= 2.89) {
-    newHeight = 240;
-    newWidth = newHeight * x;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 2.89) {
-    newHeight = 240;
-    newWidth = newHeight * 2.89;
-    attr = {width: newWidth, height: newHeight};
-  }
-  return {...attr, x: x};
-};
 
 export const TopicImageContent = props => {
   const dispatch = useDispatch();
@@ -67,6 +39,8 @@ export const TopicImageContent = props => {
     };
     dispatch(dispatchPreviewImage(data));
   };
+
+  console.log(medias);
 
   return imgStyle === 'single' ? (
     <Pressable onPress={() => onPreview(0)}>
@@ -162,7 +136,12 @@ const BaseTopic = props => {
   ) : (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
-      <View style={{marginTop: 13}}>
+      {data.plain_content ? (
+        <PlainContent data={data} numberOfLines={5} style={{marginTop: 13}} />
+      ) : (
+        <View />
+      )}
+      <View style={{marginTop: data.content_style === 'text' ? 0 : 13}}>
         {data.content_style === 'img' && <TopicImageContent data={data} />}
         {data.content_style === 'video' && <TopicVideoContent data={data} />}
         {data.content_style === 'link' && <TopicLinkContent data={data} />}
@@ -175,13 +154,6 @@ const BaseTopic = props => {
           />
         )}
       </View>
-      {data.plain_content ? (
-        <PlainContent
-          data={data}
-          numberOfLines={5}
-          style={{paddingTop: data.content_style === 'text' ? 0 : 13}}
-        />
-      ) : null}
       <View style={[styles.infoViewWrap, {marginTop: data.plain_content ? 10 : 16}]}>
         <Pressable style={styles.infoView} onPress={goNodeDetail}>
           <IconFont name="node-solid" size={12} color={'#000'} />

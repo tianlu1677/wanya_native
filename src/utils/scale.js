@@ -26,3 +26,32 @@ export const scaleFixedWidth = (media, innerWidth) => {
 
   return {width: Math.ceil(width), height: Math.ceil(height)};
 };
+
+export const calculateImg = (width, height) => {
+  let newWidth = 500;
+  let newHeight = 500;
+  let x = (width / height).toFixed(2);
+  let attr = {};
+  if (x > 0 && x <= 0.33) {
+    newHeight = 420;
+    newWidth = newHeight / 3;
+    attr = {width: newWidth, height: newHeight};
+  } else if (x > 0.33 && x <= 1) {
+    newHeight = 420;
+    newWidth = newHeight * x;
+    attr = {width: newWidth, height: newHeight};
+  } else if (x > 1 && x <= 2) {
+    newWidth = 480;
+    newHeight = (height * newWidth) / width;
+    attr = {width: newWidth, height: newHeight};
+  } else if (x > 2 && x <= 2.89) {
+    newHeight = 240;
+    newWidth = newHeight * x;
+    attr = {width: newWidth, height: newHeight};
+  } else if (x > 2.89) {
+    newHeight = 240;
+    newWidth = newHeight * 2.89;
+    attr = {width: newWidth, height: newHeight};
+  }
+  return {...attr, x: x};
+};

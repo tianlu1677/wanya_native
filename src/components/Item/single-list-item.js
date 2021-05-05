@@ -358,7 +358,7 @@ const cstyles = StyleSheet.create({
 export const NoActionBottom = props => {
   const {node_name, praises_count, comments_count} = props.data;
   return (
-    <Text style={nbstyles.infotext}>
+    <Text style={[nbstyles.infotext, props.style]}>
       {node_name ? `${node_name}` : ''}
       {node_name && praises_count ? ' · ' : ''}
       {praises_count ? `赞${praises_count}` : ''}

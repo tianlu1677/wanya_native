@@ -187,6 +187,7 @@ const FollowListPost = () => {
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 10 : 20}
       ListHeaderComponent={FollowShareComponent()}
+      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
       renderEmpty={
         <View>
           {FollowShareComponent()}
