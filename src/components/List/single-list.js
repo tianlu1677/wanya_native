@@ -125,6 +125,7 @@ const SingleList = props => {
       style={{
         backgroundColor: '#FAFAFA',
         flex: listData.length === 0 && props.renderEmpty ? 1 : 0,
+        ...props.style,
       }}
       settings={{
         initialNumToRender: 6,

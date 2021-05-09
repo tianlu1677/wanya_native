@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, StatusBar} from 'react-native';
+import {View, Text, StyleSheet, StatusBar, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -81,23 +81,28 @@ const Recommend = props => {
         let component = null;
         if (item.display_style === 'single') {
           component = (
-            <View style={{marginBottom: RFValue(50)}}>
-              <SingleList request={{api: getChannelPosts, params}} type="list" />
-            </View>
+            <SingleList
+              request={{api: getChannelPosts, params}}
+              type="list"
+              style={{paddingBottom: RFValue(50)}}
+            />
           );
         }
         if (item.display_style === 'double') {
           component = (
-            <View style={{marginBottom: RFValue(50)}}>
-              <DoubleList request={{api: getChannelPosts, params}} />;
-            </View>
+            <DoubleList
+              request={{api: getChannelPosts, params}}
+              style={{paddingBottom: RFValue(50)}}
+            />
           );
         }
         if (item.display_style === 'long_video') {
           component = (
-            <View style={{marginBottom: RFValue(50)}}>
-              <LongVideoList request={{api: getChannelPosts, params}} type="wanpian" />;
-            </View>
+            <LongVideoList
+              request={{api: getChannelPosts, params}}
+              type="wanpian"
+              style={{paddingBottom: RFValue(50)}}
+            />
           );
         }
         return component;
