@@ -35,7 +35,7 @@ const BaseTheory = props => {
   );
 };
 
-const ImageHeight = parseInt((width * 420) / 750);
+const ImageHeight = Math.floor((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
@@ -48,6 +48,8 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 14,
     lineHeight: RFValue(21),
+    color: '#3c3c3c',
+    letterSpacing: 1,
     textAlign: 'justify',
   },
   imageCover: {

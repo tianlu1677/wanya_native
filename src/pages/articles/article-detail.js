@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {KeyboardAvoidingView} from 'react-native';
-import {View, Text, StyleSheet, Platform, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Platform, Pressable, StatusBar} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -120,6 +120,7 @@ const ArticleDetail = ({navigation, route}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
       keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
+      <StatusBar barStyle={'dark-content'} />
       <CommentList
         detail={detail}
         request={{api: getCommentList, params: {item_id: articleId, item_type: 'Article'}}}

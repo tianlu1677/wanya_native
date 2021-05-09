@@ -34,9 +34,7 @@ const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const currentTopic = useSelector(state => state.topic.topicDetail);
-
   const [topicId] = useState(route.params.topicId);
-
   const [detail, setDetail] = useState();
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);

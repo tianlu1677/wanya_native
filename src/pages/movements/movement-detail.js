@@ -118,7 +118,7 @@ const MovementDetail = ({navigation, route}) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: '#fff',
   },
   header: {
     height: HEADER_HEIGHT,

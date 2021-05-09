@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import {Avator} from '@/components/NodeComponents';
+import {RFValue} from '@/utils/response-fontsize';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import LocationBar from '@/components/LocationBar';
@@ -345,8 +346,9 @@ const bstyles = StyleSheet.create({
 const cstyles = StyleSheet.create({
   plainWrap: {
     fontSize: 14,
-    lineHeight: 23,
-    color: '#1f1f1f',
+    lineHeight: RFValue(21),
+    color: '#3c3c3c',
+    letterSpacing: 1,
     textAlign: 'justify',
   },
   hashtagText: {
@@ -356,9 +358,15 @@ const cstyles = StyleSheet.create({
 });
 
 export const NoActionBottom = props => {
-  const {node_name, praises_count, comments_count} = props.data;
+  const {
+    avator,
+    style,
+    data: {node_name, praises_count, comments_count},
+  } = props;
+
   return (
-    <Text style={[nbstyles.infotext, props.style]}>
+    <Text style={[nbstyles.infotext, style]}>
+      {avator}
       {node_name ? `${node_name}` : ''}
       {node_name && praises_count ? ' · ' : ''}
       {praises_count ? `赞${praises_count}` : ''}

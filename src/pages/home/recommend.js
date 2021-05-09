@@ -5,6 +5,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
 import {RecommendSearch} from '@/components/NodeComponents';
 import MediasPicker from '@/components/MediasPicker';
 import TabView from '@/components/TabView';
@@ -79,13 +80,25 @@ const Recommend = props => {
       component: () => {
         let component = null;
         if (item.display_style === 'single') {
-          component = <SingleList request={{api: getChannelPosts, params}} type="list" />;
+          component = (
+            <View style={{marginBottom: RFValue(50)}}>
+              <SingleList request={{api: getChannelPosts, params}} type="list" />
+            </View>
+          );
         }
         if (item.display_style === 'double') {
-          component = <DoubleList request={{api: getChannelPosts, params}} />;
+          component = (
+            <View style={{marginBottom: RFValue(50)}}>
+              <DoubleList request={{api: getChannelPosts, params}} />;
+            </View>
+          );
         }
         if (item.display_style === 'long_video') {
-          component = <LongVideoList request={{api: getChannelPosts, params}} type="wanpian" />;
+          component = (
+            <View style={{marginBottom: RFValue(50)}}>
+              <LongVideoList request={{api: getChannelPosts, params}} type="wanpian" />;
+            </View>
+          );
         }
         return component;
       },

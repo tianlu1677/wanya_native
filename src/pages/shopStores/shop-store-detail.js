@@ -218,7 +218,7 @@ const ShopStoreDetail = props => {
   return detail ? (
     <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
-      <View style={{flex: 1, backgroundColor: 'pink'}}>
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
         <CollapsibleHeader
           headerHeight={TOP_HEADER_HEIGHT}
           currentKey={currentKey}

@@ -10,6 +10,8 @@ const BaseArticle = props => {
   const {data} = props;
   const navigation = useNavigation();
 
+  console.log(data);
+
   const goArticleDetail = () => {
     navigation.push('ArticleDetail', {articleId: data.id});
   };
@@ -43,11 +45,15 @@ const BaseArticle = props => {
         <Text style={styles.titleText} numberOfLines={2}>
           {data.title}
         </Text>
-        <View style={[styles.imageCover, {marginTop: 13}]}>
+        <View style={[styles.imageCover, {marginTop: RFValue(5)}]}>
           {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
           <FastImg source={{uri: data.cover_url}} style={imageStyle} mode={'cover'} />
         </View>
-        <NoActionBottom data={data} style={{height: RFValue(35), lineHeight: RFValue(35)}} />
+        <NoActionBottom
+          data={data}
+          avator={`${data.account.nickname} · `}
+          style={{height: RFValue(35), lineHeight: RFValue(35)}}
+        />
       </>
     );
   };
@@ -61,7 +67,7 @@ const BaseArticle = props => {
             <Text style={styles.titleText} numberOfLines={2}>
               {data.title}
             </Text>
-            <NoActionBottom data={data} />
+            <NoActionBottom data={data} avator={`${data.account.nickname} · `} />
           </View>
           <View style={[styles.imageCover, {marginLeft: 22}]}>
             {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
@@ -81,17 +87,22 @@ const BaseArticle = props => {
         <Text style={styles.titleText} numberOfLines={2}>
           {data.title}
         </Text>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 13}}>
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: RFValue(5)}}>
           {data.images_info.map((media, index) => (
             <Pressable key={media.url}>
               <FastImg
                 source={{uri: media.url}}
                 style={{...imageStyle, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
+                mode="cover"
               />
             </Pressable>
           ))}
         </View>
-        <NoActionBottom data={data} style={{height: RFValue(35), lineHeight: RFValue(35)}} />
+        <NoActionBottom
+          data={data}
+          avator={`${data.account.nickname} · `}
+          style={{height: RFValue(35), lineHeight: RFValue(35)}}
+        />
       </>
     );
   };
@@ -124,7 +135,9 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 14,
-    lineHeight: 22,
+    lineHeight: RFValue(21),
+    color: '#3c3c3c',
+    letterSpacing: 1,
     textAlign: 'justify',
   },
   imageCover: {

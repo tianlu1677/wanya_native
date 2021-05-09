@@ -133,7 +133,7 @@ const topicRouter = [
   },
 ];
 
-const articleRouter = [{name: 'ArticleDetail', component: ArticleDetail}];
+const articleRouter = [{name: 'ArticleDetail', component: ArticleDetail, options: {title: ''}}];
 
 const nodeRouter = [
   {
@@ -160,7 +160,7 @@ const nodeRouter = [
 
 const spaceRouter = [
   {name: 'Space', component: Space},
-  {name: 'SpaceDetail', component: SpaceDetail, options: {headerShown: false}},
+  {name: 'SpaceDetail', component: SpaceDetail, options: {title: '', headerShown: false}},
 ];
 
 const theoryRouter = [
@@ -176,7 +176,7 @@ const theoryRouter = [
     name: 'TheoryDetail',
     component: TheoryDetail,
     barColor: 'light',
-    options: {headerShown: false, herderColor: '#000'},
+    options: {title: '', headerShown: false, herderColor: '#000'},
   },
 ];
 

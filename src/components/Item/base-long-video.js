@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 14,
     lineHeight: RFValue(21),
+    color: '#3c3c3c',
+    letterSpacing: 1,
     textAlign: 'justify',
   },
   playImage: {

@@ -6,7 +6,7 @@ import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
-import {VWValue} from '@/utils/response-fontsize';
+import {VWValue, RFValue} from '@/utils/response-fontsize';
 import {calculateImg} from '@/utils/scale';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import VideoPlayImg from '@/assets/images/video-play.png';
@@ -43,13 +43,13 @@ export const TopicImageContent = props => {
   console.log(medias);
 
   return imgStyle === 'single' ? (
-    <Pressable onPress={() => onPreview(0)}>
+    <Pressable onPress={() => onPreview(0)} style={singleStyle}>
       <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
     </Pressable>
   ) : (
     <View style={styles.imageMultiWrapper}>
       {medias.map((media, index) => (
-        <Pressable key={media} onPress={() => onPreview(index)}>
+        <Pressable key={media} onPress={() => onPreview(index)} style={{backgroundColor: 'pink'}}>
           <FastImg
             key={media}
             source={{uri: media}}
@@ -122,6 +122,7 @@ export const TopicLinkContent = props => {
 
 const BaseTopic = props => {
   const {data} = props;
+  const {content_style} = data;
   const navigation = useNavigation();
   const goNodeDetail = () => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
@@ -131,21 +132,21 @@ const BaseTopic = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
-  return data.content_style === 'video' && data.is_long_video ? (
+  return content_style === 'video' && data.is_long_video ? (
     <BaseLongVideo data={props.data} />
   ) : (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
       <Header data={data} type="topic" onRemove={props.onRemove} />
       {data.plain_content ? (
-        <PlainContent data={data} numberOfLines={5} style={{marginTop: 13}} />
+        <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(13)}} />
       ) : (
         <View />
       )}
-      <View style={{marginTop: data.content_style === 'text' ? 0 : 13}}>
-        {data.content_style === 'img' && <TopicImageContent data={data} />}
-        {data.content_style === 'video' && <TopicVideoContent data={data} />}
-        {data.content_style === 'link' && <TopicLinkContent data={data} />}
-        {data.content_style !== 'text' && data.excellent && (
+      <View style={{marginTop: content_style === 'text' ? 0 : RFValue(13)}}>
+        {content_style === 'img' && <TopicImageContent data={data} />}
+        {content_style === 'video' && <TopicVideoContent data={data} />}
+        {content_style === 'link' && <TopicLinkContent data={data} />}
+        {['img', 'video', 'link'].includes(content_style) && data.excellent && (
           <FastImg
             style={styles.excellentImage}
             source={ExcellentImage}
@@ -154,7 +155,7 @@ const BaseTopic = props => {
           />
         )}
       </View>
-      <View style={[styles.infoViewWrap, {marginTop: data.plain_content ? 10 : 16}]}>
+      <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
         <Pressable style={styles.infoView} onPress={goNodeDetail}>
           <IconFont name="node-solid" size={12} color={'#000'} />
           <Text style={styles.nodeName}>{data.node_name}</Text>
