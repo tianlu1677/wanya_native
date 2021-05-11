@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: RFValue(21),
     color: '#3c3c3c',
-    letterSpacing: 1,
+    letterSpacing: 0.5,
     textAlign: 'justify',
   },
   imageCover: {

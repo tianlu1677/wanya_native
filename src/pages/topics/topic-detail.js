@@ -1,13 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import {KeyboardAvoidingView} from 'react-native';
+import {View, Text, Platform, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchTopicDetail} from '@/redux/actions';
@@ -112,13 +105,16 @@ const TopicDetail = ({navigation, route}) => {
       {['video', 'img'].includes(detail.content_style) ? (
         <GoBack color={'white'} report={true} onReportClick={onReportClick} />
       ) : null}
-
       {['link', 'text'].includes(detail.content_style) ? (
         <>
           <TopHeaderView
             Title={'帖子详情'}
             leftButtonColor={'black'}
             excellent={detail.excellent}
+            statusBar={{
+              barStyle: 'dark-content',
+              hidden: false,
+            }}
             RightButton={() => (
               <Pressable
                 onPress={onReportClick}
@@ -128,7 +124,6 @@ const TopicDetail = ({navigation, route}) => {
               </Pressable>
             )}
           />
-          <StatusBar barStyle={'dark-content'} />
         </>
       ) : null}
 
@@ -139,7 +134,6 @@ const TopicDetail = ({navigation, route}) => {
         changeVisible={value => setVisible(value)}
         deleteComment={deleteTopicComment}
         request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Topic'}}}
-        // request={{api: getTopicCommentList, params: {id: detail.id}}}
         ListHeaderComponent={
           <>
             <View style={{paddingBottom: RFValue(20)}}>

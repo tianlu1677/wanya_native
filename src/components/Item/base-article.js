@@ -10,8 +10,6 @@ const BaseArticle = props => {
   const {data} = props;
   const navigation = useNavigation();
 
-  console.log(data);
-
   const goArticleDetail = () => {
     navigation.push('ArticleDetail', {articleId: data.id});
   };
@@ -137,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: RFValue(21),
     color: '#3c3c3c',
-    letterSpacing: 1,
+    letterSpacing: 0.5,
     textAlign: 'justify',
   },
   imageCover: {
