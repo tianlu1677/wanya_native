@@ -72,7 +72,7 @@ export const TopicVideoContent = props => {
   };
 
   return (
-    <Pressable style={{flex: 1}}>
+    <Pressable style={{flex: 1, ...videoAttrStyle}}>
       <FastImageGif
         gif_url={single_cover.link_url}
         source={{uri: `${single_cover.video_m3u8_url}?vframe/jpg/offset/0/rotate/auto`}}
