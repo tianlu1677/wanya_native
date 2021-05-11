@@ -10,7 +10,7 @@ const RenderText = props => {
 
   return (
     <>
-      <StatusBar barStyle={'light-content'} backgroundColor={'black'} translucent={false} />
+      <StatusBar barStyle={'dark-content'} backgroundColor={'black'} translucent={false} />
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
       {detail.plain_content ? (
         <View style={styles.content}>

@@ -140,7 +140,7 @@ const PasswordLogin = ({navigation, route}) => {
 
   return (
     <View style={styles.phoneContainer}>
-      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <StatusBar barStyle="light-content" translucent={true} backgroundColor={'black'} />
       <Text style={styles.titleText}>手机号登录</Text>
       <View style={styles.inputWrap}>
         <View style={[styles.inputView]}>
