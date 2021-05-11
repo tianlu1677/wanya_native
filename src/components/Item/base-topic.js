@@ -41,13 +41,11 @@ export const TopicImageContent = props => {
   };
 
   return imgStyle === 'single' ? (
-    <Pressable onPress={() => {}}>
-      <Pressable onPress={() => onPreview(0)} style={singleStyle}>
-        <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
-      </Pressable>
+    <Pressable onPress={() => onPreview(0)} style={singleStyle}>
+      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
     </Pressable>
   ) : (
-    <Pressable style={styles.imageMultiWrapper} onPress={() => {}}>
+    <Pressable style={styles.imageMultiWrapper}>
       {medias.map((media, index) => (
         <Pressable key={media} onPress={() => onPreview(index)}>
           <FastImg
@@ -74,15 +72,11 @@ export const TopicVideoContent = props => {
   };
 
   return (
-    <Pressable style={{flex: 1}} onPress={() => {}}>
+    <Pressable style={{flex: 1}}>
       <FastImageGif
         gif_url={single_cover.link_url}
         source={{uri: `${single_cover.video_m3u8_url}?vframe/jpg/offset/0/rotate/auto`}}
-        // source={{uri: single_cover.link_url}}
-        style={{
-          ...styles.imageCover,
-          ...videoAttrStyle,
-        }}
+        style={{...styles.imageCover, ...videoAttrStyle}}
       />
       <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
     </Pressable>
@@ -180,6 +174,7 @@ const styles = StyleSheet.create({
   imageMultiWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    backgroundColor: 'pink',
   },
   imageMulti: {
     width: imageMultiWidth,
