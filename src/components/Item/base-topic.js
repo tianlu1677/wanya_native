@@ -45,7 +45,7 @@ export const TopicImageContent = props => {
       <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
     </Pressable>
   ) : (
-    <Pressable style={styles.imageMultiWrapper}>
+    <View style={styles.imageMultiWrapper}>
       {medias.map((media, index) => (
         <Pressable key={media} onPress={() => onPreview(index)}>
           <FastImg
@@ -55,7 +55,7 @@ export const TopicImageContent = props => {
           />
         </Pressable>
       ))}
-    </Pressable>
+    </View>
   );
 };
 

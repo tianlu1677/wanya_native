@@ -366,11 +366,12 @@ export const NoActionBottom = props => {
 
   return (
     <Text style={[nbstyles.infotext, style]}>
-      {avator}
+      {avator ? avator : ''}
+      {avator && node_name ? ' · ' : ''}
       {node_name ? `${node_name}` : ''}
-      {node_name && praises_count ? ' · ' : ''}
+      {(avator || node_name) && praises_count ? ' · ' : ''}
       {praises_count ? `赞${praises_count}` : ''}
-      {(node_name || praises_count) && comments_count ? ' · ' : ''}
+      {(avator || node_name || praises_count) && comments_count ? ' · ' : ''}
       {comments_count ? `评论${comments_count}` : ''}
     </Text>
   );

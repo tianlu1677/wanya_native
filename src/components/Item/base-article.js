@@ -49,7 +49,7 @@ const BaseArticle = props => {
         </View>
         <NoActionBottom
           data={data}
-          avator={`${data.account.nickname} · `}
+          avator={data.account.nickname}
           style={{height: RFValue(35), lineHeight: RFValue(35)}}
         />
       </>
@@ -65,7 +65,7 @@ const BaseArticle = props => {
             <Text style={styles.titleText} numberOfLines={2}>
               {data.title}
             </Text>
-            <NoActionBottom data={data} avator={`${data.account.nickname} · `} />
+            <NoActionBottom data={data} avator={data.account.nickname} />
           </View>
           <View style={[styles.imageCover, {marginLeft: 22}]}>
             {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
@@ -98,7 +98,7 @@ const BaseArticle = props => {
         </View>
         <NoActionBottom
           data={data}
-          avator={`${data.account.nickname} · `}
+          avator={data.account.nickname}
           style={{height: RFValue(35), lineHeight: RFValue(35)}}
         />
       </>
