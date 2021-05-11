@@ -65,7 +65,7 @@ const RichContent = props => {
               height: (imageWidth * findImg.height) / findImg.width,
               marginBottom: 12,
             }}
-            resizeMode={'cover'}
+            resizeMode={htmlAttribs.src.includes('meirixinxue') ? 'cover' : 'contain'}
             tintColor={'gray'}
           />
         </View>

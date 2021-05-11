@@ -40,16 +40,16 @@ export const TopicImageContent = props => {
     dispatch(dispatchPreviewImage(data));
   };
 
-  console.log(medias);
-
   return imgStyle === 'single' ? (
-    <Pressable onPress={() => onPreview(0)} style={singleStyle}>
-      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
+    <Pressable onPress={() => {}}>
+      <Pressable onPress={() => onPreview(0)} style={singleStyle}>
+        <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
+      </Pressable>
     </Pressable>
   ) : (
-    <View style={styles.imageMultiWrapper}>
+    <Pressable style={styles.imageMultiWrapper} onPress={() => {}}>
       {medias.map((media, index) => (
-        <Pressable key={media} onPress={() => onPreview(index)} style={{backgroundColor: 'pink'}}>
+        <Pressable key={media} onPress={() => onPreview(index)}>
           <FastImg
             key={media}
             source={{uri: media}}
@@ -57,7 +57,7 @@ export const TopicImageContent = props => {
           />
         </Pressable>
       ))}
-    </View>
+    </Pressable>
   );
 };
 
@@ -74,7 +74,7 @@ export const TopicVideoContent = props => {
   };
 
   return (
-    <View style={{flex: 1, ...videoAttrStyle}}>
+    <Pressable style={{flex: 1}} onPress={() => {}}>
       <FastImageGif
         gif_url={single_cover.link_url}
         source={{uri: `${single_cover.video_m3u8_url}?vframe/jpg/offset/0/rotate/auto`}}
@@ -85,7 +85,7 @@ export const TopicVideoContent = props => {
         }}
       />
       <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
-    </View>
+    </Pressable>
   );
 };
 
@@ -142,19 +142,23 @@ const BaseTopic = props => {
       ) : (
         <View />
       )}
-      <View style={{marginTop: content_style === 'text' ? 0 : RFValue(13)}}>
-        {content_style === 'img' && <TopicImageContent data={data} />}
-        {content_style === 'video' && <TopicVideoContent data={data} />}
-        {content_style === 'link' && <TopicLinkContent data={data} />}
-        {['img', 'video', 'link'].includes(content_style) && data.excellent && (
-          <FastImg
-            style={styles.excellentImage}
-            source={ExcellentImage}
-            resizeMode={'contain'}
-            resizeMethod={'resize'}
-          />
-        )}
-      </View>
+      {['img', 'video', 'link'].includes(content_style) ? (
+        <View style={{marginTop: data.plain_content ? RFValue(5) : RFValue(13)}}>
+          {content_style === 'img' && <TopicImageContent data={data} />}
+          {content_style === 'video' && <TopicVideoContent data={data} />}
+          {content_style === 'link' && <TopicLinkContent data={data} />}
+          {data.excellent && (
+            <FastImg
+              style={styles.excellentImage}
+              source={ExcellentImage}
+              resizeMode={'contain'}
+              resizeMethod={'resize'}
+            />
+          )}
+        </View>
+      ) : (
+        <View />
+      )}
       <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
         <Pressable style={styles.infoView} onPress={goNodeDetail}>
           <IconFont name="node-solid" size={12} color={'#000'} />
