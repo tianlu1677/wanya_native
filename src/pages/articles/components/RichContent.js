@@ -56,6 +56,7 @@ const RichContent = props => {
       return <View />;
     } else {
       const findImg = images_info.find(x => x.url === htmlAttribs.src);
+
       return (
         <View style={{flex: 1}} key={htmlAttribs.src}>
           <FastImg
@@ -65,7 +66,7 @@ const RichContent = props => {
               height: (imageWidth * findImg.height) / findImg.width,
               marginBottom: 12,
             }}
-            mode={htmlAttribs.src.includes('meirixinxue') ? 'center' : 'cover'}
+            mode={htmlAttribs.src.includes('meirixinxue') ? 'cover' : 'center'}
             tintColor={'gray'}
           />
         </View>
