@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
   imageMultiWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: 'pink',
   },
   imageMulti: {
     width: imageMultiWidth,
