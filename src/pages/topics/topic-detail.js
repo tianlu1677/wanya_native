@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {KeyboardAvoidingView} from 'react-native';
-import {View, Text, Platform, StatusBar, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Platform, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchTopicDetail} from '@/redux/actions';
@@ -102,19 +102,19 @@ const TopicDetail = ({navigation, route}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
       keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
-      <StatusBar barStyle="dark-content" />
       {['video', 'img'].includes(detail.content_style) ? (
         <GoBack color={'white'} report={true} onReportClick={onReportClick} />
       ) : null}
-      {/* <StatusBar barStyle={'dark-content'} /> */}
       {['link', 'text'].includes(detail.content_style) ? (
         <>
           <TopHeaderView
             Title={'帖子详情'}
             leftButtonColor={'black'}
             excellent={detail.excellent}
-            // statusBar={{barStyle: 'dark-content'}}
-            // statusBar={<StatusBar barStyle={'dark-content'} />}
+            statusBar={{
+              barStyle: 'dark-content',
+              hidden: false,
+            }}
             RightButton={() => (
               <Pressable
                 onPress={onReportClick}
@@ -124,7 +124,6 @@ const TopicDetail = ({navigation, route}) => {
               </Pressable>
             )}
           />
-          <StatusBar barStyle={'dark-content'} />
         </>
       ) : null}
 

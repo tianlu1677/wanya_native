@@ -1,11 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  KeyboardAvoidingView,
-  ActivityIndicator,
-  ScrollView,
-  Dimensions,
-  Platform,
-} from 'react-native';
+import {KeyboardAvoidingView, ActivityIndicator, Dimensions, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
