@@ -58,7 +58,7 @@ const SingleItem = props => {
   return (
     <Pressable key={data.id} onPress={() => onGoDetail(data)} style={{backgroundColor: '#fff'}}>
       {data.single_cover.cover_url && (
-        <FastImageGif
+        <FastImg
           source={{uri: data.single_cover.cover_url}}
           gif_url={data.single_cover.link_url}
           style={{

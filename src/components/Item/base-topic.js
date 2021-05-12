@@ -122,6 +122,8 @@ const BaseTopic = props => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
   };
 
+  // console.log('BaseTopic', props.data.id)
+
   const goTopicDetail = () => {
     navigation.push('TopicDetail', {topicId: data.id});
   };

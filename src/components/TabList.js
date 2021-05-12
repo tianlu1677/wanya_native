@@ -84,7 +84,10 @@ const TabList = props => {
                       textStyle,
                       styles[`tabItemText${type}`],
                       currentIndex === index && styles[`tabItemTextActive${type}`],
-                    ]}>
+                    ]}
+                    visit_key={`click_${item.title}`}
+                    visit_value={{name: item.title}}
+                  >
                     {item.title}
                   </Text>
                   {currentIndex === index && (

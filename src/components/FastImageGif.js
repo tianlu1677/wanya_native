@@ -21,7 +21,7 @@ const FastImgGif = props => {
       // Image.prefetch(props.gif_url);
       // setSource({uri: props.gif_url});
       if (source.uri !== props.gif_url) {
-        // setSource({uri: props.gif_url});
+        setSource({uri: props.gif_url});
       }
     }
   };

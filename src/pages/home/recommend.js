@@ -12,7 +12,7 @@ import TabView from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {getChannelPosts} from '@/api/home_api';
-import {recordDeviceInfo} from '@/api/settings_api';
+import {recordDeviceInfo, ahoyTrackEvents} from '@/api/settings_api';
 import {syncDeviceToken} from '@/api/app_device_api';
 import {getLocationInfo, loadLocation} from './getLocation';
 import deviceInfo from '@/utils/device_info';
@@ -47,6 +47,19 @@ const Recommend = props => {
     );
   });
 
+  const onTouchStart = event => {
+    // console.log('event', event['_targetInst'])
+    const memprops = event?._targetInst?.memoizedProps;
+    if (memprops && memprops?.visit_key) {
+      const visit_key = memprops?.visit_key;
+      const visit_value = memprops?.visit_value;
+      ahoyTrackEvents({
+        name: visit_key,
+        properties: {...visit_value, page: 'recommend'},
+        page: 'recommend',
+      });
+    }
+  };
   const CallBackVideo = useCallback(() => <MemoVideo />, []);
 
   const UploadTopic = () => {
@@ -158,7 +171,7 @@ const Recommend = props => {
           </View>
         ) : null}
         {channels.length > 0 && (
-          <View style={styles.wrapper}>
+          <View style={styles.wrapper} onTouchStart={onTouchStart}>
             <TabView
               currentKey={currentKey}
               onChange={onChange}

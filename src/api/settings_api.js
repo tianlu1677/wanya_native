@@ -60,3 +60,21 @@ export async function recordDeviceInfo(params) {
   });
   return res.data;
 }
+
+// 记录用户行为信息
+export async function ahoyTrackVisit(params) {
+  const res = await request({
+    url: '/api/v1/ahoy/visits',
+    method: 'POST',
+    data: params
+  });
+  return res.data;
+}
+export async function ahoyTrackEvents(params) {
+  const res = await request({
+    url: '/api/v1/records/track_events',
+    method: 'POST',
+    data: params
+  });
+  return res.data;
+}
