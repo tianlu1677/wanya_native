@@ -49,16 +49,16 @@ const Recommend = props => {
 
   const onTouchStart = event => {
     // console.log('event', event['_targetInst'])
-    const memprops = event?._targetInst?.memoizedProps;
-    if (memprops && memprops?.visit_key) {
-      const visit_key = memprops?.visit_key;
-      const visit_value = memprops?.visit_value;
-      ahoyTrackEvents({
-        name: visit_key,
-        properties: {...visit_value, page: 'recommend'},
-        page: 'recommend',
-      });
-    }
+    // const memprops = event?._targetInst?.memoizedProps;
+    // if (memprops && memprops?.visit_key) {
+    //   const visit_key = memprops?.visit_key;
+    //   const visit_value = memprops?.visit_value;
+    //   ahoyTrackEvents({
+    //     name: visit_key,
+    //     properties: {...visit_value, page: 'recommend'},
+    //     page: 'recommend',
+    //   });
+    // }
   };
   const CallBackVideo = useCallback(() => <MemoVideo />, []);
 
@@ -123,7 +123,14 @@ const Recommend = props => {
     };
   });
 
-  const onChange = async key => {
+  const onChange = async (key, title) => {
+    console.log('key', key)
+    ahoyTrackEvents({
+      name: `click_${key}`,
+      properties: { title: title, page: 'recommend'},
+      page: 'recommend',
+    });
+
     const {location} = home;
     if (key === 'nearby' && (!location.latitude || !location.longitude)) {
       getLocationInfo(false, result => {

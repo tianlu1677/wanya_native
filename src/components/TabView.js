@@ -16,11 +16,12 @@ const TabViewIndex = props => {
 
   const onIndexChange = i => {
     const key = routes[i].key;
-    props.onChange(key);
+    const title = routes[i].title
+    props.onChange(key, title);
   };
 
   const tabChange = item => {
-    props.onChange(item.key);
+    props.onChange(item.key, item.title);
   };
 
   const initScene = () => {
