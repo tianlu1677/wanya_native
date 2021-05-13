@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {View, Platform} from 'react-native';
 import {throttle} from 'lodash';
 import {TransFormType} from '@/utils';
@@ -21,16 +21,18 @@ const RecommendListPost = () => {
 
   const RenderItem = React.memo(({item, index}) => {
     const data = {...item.item, published_at_text: `发布了${TransFormType(item.item)}`};
-    switch (item.item_type) {
-      case 'Topic':
-        return <BaseTopic data={data} onRemove={() => onRemove(index)} />;
-      case 'Article':
-        return <BaseArticle data={data} />;
-      case 'Theory':
-        return <BaseTheory data={data} onRemove={() => onRemove(index)} />;
-      default:
-        return <View />;
-    }
+    return useMemo(() => {
+      switch (item.item_type) {
+        case 'Topic':
+          return <BaseTopic data={data} onRemove={() => onRemove(index)} />;
+        case 'Article':
+          return <BaseArticle data={data} />;
+        case 'Theory':
+          return <BaseTheory data={data} onRemove={() => onRemove(index)} />;
+        default:
+          return <View />;
+      }
+    }, [item.id]);
   });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
@@ -74,6 +76,7 @@ const RecommendListPost = () => {
 
   return (
     <ScrollList
+      keyExtractor={useCallback(item => `${item.id}${item.item_type}`, [])}
       data={listData}
       loading={loading}
       onRefresh={throttle(onRefresh, 300)}

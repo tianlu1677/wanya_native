@@ -213,7 +213,7 @@ const ScrollList = props => {
         {flex: props.data.length === 0 && props.from !== 'comment' ? 1 : 0},
       ]}
       columnWrapperStyle={props.columnWrapperStyle || null}
-      keyExtractor={keyExtractor}
+      keyExtractor={props.keyExtractor ? props.keyExtractor : keyExtractor}
       renderItem={props.renderItem}
       ItemSeparatorComponent={props.renderSeparator || renderSeparator}
       data={props.data}

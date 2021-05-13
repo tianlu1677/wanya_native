@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {Platform, View, Text, Pressable, ScrollView, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -134,16 +134,18 @@ const FollowListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    switch (item.item_type) {
-      case 'Topic':
-        return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
-      case 'Article':
-        return <BaseArticle data={item.item} />;
-      case 'Theory':
-        return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
-      default:
-        return <View />;
-    }
+    return useMemo(() => {
+      switch (item.item_type) {
+        case 'Topic':
+          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+        case 'Article':
+          return <BaseArticle data={item.item} />;
+        case 'Theory':
+          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+        default:
+          return <View />;
+      }
+    }, [item.id]);
   });
 
   const renderItemMemo = useCallback(
