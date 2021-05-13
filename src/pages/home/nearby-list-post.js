@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {View, Text, Pressable, Platform} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -33,18 +33,20 @@ const NearByListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    return (
-      <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
-        {index === 0 && NearbyShareComponent()}
-        {item.item_type === 'Topic' && (
-          <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-        )}
-        {item.item_type === 'Article' && <BaseArticle data={item.item} />}
-        {item.item_type === 'Theory' && (
-          <BaseTheory data={item.item} onRemove={() => onRemove(index)} />
-        )}
-      </View>
-    );
+    return useMemo(() => {
+      return (
+        <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
+          {index === 0 && NearbyShareComponent()}
+          {item.item_type === 'Topic' && (
+            <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+          )}
+          {item.item_type === 'Article' && <BaseArticle data={item.item} />}
+          {item.item_type === 'Theory' && (
+            <BaseTheory data={item.item} onRemove={() => onRemove(index)} />
+          )}
+        </View>
+      );
+    }, [item.id]);
   });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
