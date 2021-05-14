@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useMemo, useEffect, useCallback} from 'react';
 import {View, Pressable, Text, StyleSheet, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -65,14 +65,16 @@ const LongVideoList = props => {
   const {type} = props;
 
   const RenderItem = React.memo(({item}) => {
-    switch (type) {
-      case 'wanpian':
-        return <LongVideoItem data={item.item} />;
-      case 'list':
-        return <BaseLongVideo data={item.item} />;
-      default:
-        return <View />;
-    }
+    return useMemo(() => {
+      switch (type) {
+        case 'wanpian':
+          return <LongVideoItem data={item.item} />;
+        case 'list':
+          return <BaseLongVideo data={item.item} />;
+        default:
+          return <View />;
+      }
+    }, [item.id]);
   });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
