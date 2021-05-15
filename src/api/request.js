@@ -6,7 +6,6 @@ import Toast from '@/components/Toast';
 import * as RootNavigation from '@/navigator/root-navigation';
 import {BaseApiUrl, WANYA_VERSION} from '@/utils/config';
 import DeviceInfo from 'react-native-device-info';
-import {logoutCurrentAccount} from '@/redux/actions';
 import {store} from '@/redux/stores/store';
 
 const deviceId = DeviceInfo.getSystemVersion();
@@ -49,9 +48,9 @@ axios.interceptors.response.use(
   async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    console.log('response error', error);
+    // console.log('response error', error);
 
-    switch (error.response.status) {
+    switch (error.response && error.response.status) {
       case 200:
         break;
       case 422:
@@ -67,7 +66,7 @@ axios.interceptors.response.use(
       case 401:
         Toast.showError('请重新登录');
         await Helper.clearAllData();
-        store.dispatch(logoutCurrentAccount());
+        store.dispatch({type: 'LOGOUT_SUCCESS', token: ''});
         break;
       // return Promise.reject(error);
       // console.log('401, 未登录')

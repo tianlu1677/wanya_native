@@ -60,7 +60,7 @@ const Navigation = () => {
     routeNameRef.current = currentRouteName;
   };
 
-  console.log('rendere');
+  // console.log('rendere');
 
   console.log('login.auth_token', login.auth_token);
   return (

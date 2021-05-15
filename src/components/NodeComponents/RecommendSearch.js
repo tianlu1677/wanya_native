@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {BarHeight} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
-import {Search} from '@/components/NodeComponents';
+import Search from '@/components/NodeComponents/Search';
 
 const RecommendSearch = () => {
   const navigation = useNavigation();
