@@ -48,11 +48,11 @@ const PublishModal = props => {
       cancleClick={onCancel}
       modalStyle={{height: 270 + BOTTOM_HEIGHT}}
       contentWrapStyle={styles.contentModal}>
-      <Pressable style={imgStyle} onPress={onTheory}>
-        <FastImg source={require('@/assets/images/add-theory.png')} style={imgStyle} />
-      </Pressable>
-      <Pressable style={{...imgStyle, marginTop: RFValue(15)}} onPress={onTopic}>
+      <Pressable style={imgStyle} onPress={onTopic}>
         <FastImg source={require('@/assets/images/add-topic.png')} style={imgStyle} />
+      </Pressable>
+      <Pressable style={{...imgStyle, marginTop: RFValue(15)}} onPress={onTheory}>
+        <FastImg source={require('@/assets/images/add-theory.png')} style={imgStyle} />
       </Pressable>
       <Pressable onPress={onCancel} hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
         <IconFont name="close" size={18} color="#fff" style={styles.closeModal} />

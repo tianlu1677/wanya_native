@@ -20,6 +20,7 @@ import PermissionModal from './PhotoPermission';
 import * as action from '@/redux/constants';
 import {dispatchPreviewImage, changeUploadStatus} from '@/redux/actions';
 import IconFont from '@/iconfont';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 import Toast from '@/components/Toast';
@@ -28,7 +29,7 @@ import FastImg from '@/components/FastImg';
 import {getLocation} from '@/api/space_api';
 import {loadLocation} from '@/pages/home/getLocation';
 
-const windowWidth = Dimensions.get('window').width;
+const {width: windowWidth} = Dimensions.get('window');
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
 
 const NewTopic = props => {
@@ -42,6 +43,7 @@ const NewTopic = props => {
   const [linkSource, setLinkSource] = useState(null);
   const [permissionModal, setPermissionModal] = useState(false); // 显示权限页面
   const [content, setContent] = useState(savetopic.plan_content);
+  const [tagWidth, setTagWidth] = useState(1);
 
   const onChangeContent = text => {
     setContent(text);
@@ -473,42 +475,57 @@ const NewTopic = props => {
           <View style={{flexDirection: 'row'}}>
             <Pressable
               style={styles.addTextNameWrap}
-              onPress={() => navigation.navigate('AddHashTag')}>
-              <IconFont name={'hashtag'} size={13} color="#000" />
+              onPress={() => navigation.navigate('AddHashTag')}
+              onLayout={e => setTagWidth(e.nativeEvent.layout.width)}>
+              <IconFont name={'hashtag'} size={14} color="#000" />
               <Text style={styles.addTextName}>话题</Text>
             </Pressable>
             <Pressable
               style={styles.addTextNameWrap}
               onPress={() => navigation.navigate('AddMentionAccount', {type: 'add-node'})}>
-              <IconFont name={'at'} size={13} color="#000" />
+              <IconFont name={'at'} size={16} color="#000" />
               <Text style={styles.addTextName}>顽友</Text>
             </Pressable>
+            <GetLocation
+              handleClick={getCurrentLocation}
+              style={{maxWidth: windowWidth - 60 - tagWidth * 2 - 12 * 2}}>
+              <View style={[styles.addTextNameWrap, {marginRight: 0}]}>
+                <IconFont name={'space-point'} size={15} color="#000" />
+                <Text style={styles.addTextName} numberOfLines={1}>
+                  {savetopic.space?.name || savetopic.location?.name || '场地位置'}
+                </Text>
+              </View>
+            </GetLocation>
           </View>
           <View style={styles.addWrapper}>
             <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddNode')}>
-              <IconFont name="blank-node" color={savetopic.node ? '#000' : '#c2c2c2'} size={16} />
-              <Text style={[styles.addText, savetopic.node && styles.selectText]}>
-                {savetopic.node ? savetopic.node.name : '选择圈子（必选）'}
-              </Text>
-              <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
+              <Text style={styles.addText}>关联圈子</Text>
+              {savetopic.node && savetopic.node.name ? (
+                <View style={styles.checkTextWrap}>
+                  <IconFont name="node-solid" color="#000" />
+                  <Text style={styles.checkText}>{savetopic.node?.name}</Text>
+                </View>
+              ) : null}
+              <IconFont name="arrow-right" size={10} color="#c2c2c2" />
             </Pressable>
-            <GetLocation handleClick={getCurrentLocation} style={styles.addSlide}>
-              <IconFont
-                name="space-point"
-                color={savetopic.space || savetopic.location ? '#000' : '#c2c2c2'}
-                size={16}
-              />
-              <Text
-                style={[
-                  styles.addText,
-                  (savetopic.space || savetopic.location) && styles.selectText,
-                ]}>
-                {savetopic.space || savetopic.location
-                  ? savetopic.space?.name || savetopic.location?.name
-                  : '场地位置'}
+            <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddRelated')}>
+              <Text style={styles.addText}>
+                {savetopic.node ? savetopic.node.name : '关联顽招/Van Store/品牌等'}
               </Text>
-              <IconFont name="arrow-right" size={10} style={styles.backarrow} color="#c2c2c2" />
-            </GetLocation>
+              <IconFont name="arrow-right" size={10} color="#c2c2c2" />
+            </Pressable>
+          </View>
+          <View style={styles.relatedWrapper}>
+            <View style={styles.related}>
+              <FastImg
+                style={styles.relatedImage}
+                source={require('@/assets/images/topic-related.png')}
+              />
+              <View style={{justifyContent: 'center'}}>
+                <Text style={styles.relatedName}>北京Tour滑板店</Text>
+                <Text style={styles.relatedText}>滑板 · 装备/服饰/滑板/双翘</Text>
+              </View>
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -518,8 +535,7 @@ const NewTopic = props => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingHorizontal: 30,
     backgroundColor: '#fff',
     flex: 1,
     paddingTop: 20,
@@ -527,7 +543,6 @@ const styles = StyleSheet.create({
   mediaCon: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingBottom: 7,
   },
   mediaWrap: {
     position: 'relative',
@@ -571,56 +586,61 @@ const styles = StyleSheet.create({
   },
   content: {
     minHeight: 90,
-    fontSize: 14,
-    lineHeight: 20,
-    marginBottom: 20,
-    padding: 0,
+    fontSize: RFValue(14),
+    lineHeight: RFValue(20),
+    marginBottom: RFValue(50),
+    marginTop: RFValue(6),
+    textAlign: 'justify',
   },
   addTextNameWrap: {
-    width: 63,
-    height: 30,
-    borderColor: '#cfd1dd',
-    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: VWValue(10),
+    height: RFValue(30),
+    backgroundColor: '#F6F6F6',
     marginRight: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 1,
-    overflow: 'hidden',
+    borderRadius: 15,
   },
   addTextName: {
-    fontSize: 13,
+    fontSize: 12,
     marginLeft: 3,
+    fontWeight: '300',
+    color: '#3c3c3c',
   },
   addWrapper: {
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#ebebeb',
-    marginTop: 24,
+    marginTop: RFValue(14),
   },
   addSlide: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 50,
+    height: RFValue(50),
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#ebebeb',
-    paddingLeft: 6,
+    paddingRight: 7,
   },
   addText: {
-    fontSize: 13,
-    marginLeft: 7,
-    color: '#c2c2c2',
-  },
-  selectText: {
+    fontSize: 14,
     color: '#000000',
+    marginRight: 'auto',
   },
-  backarrow: {
-    marginLeft: 'auto',
+  checkTextWrap: {
+    height: RFValue(25),
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F6F6F6',
+    borderRadius: 15,
+    paddingHorizontal: RFValue(10),
     marginRight: 7,
   },
-  submitBtn: {
-    fontWeight: '500',
+  checkText: {
+    fontSize: 11,
+    marginLeft: 5,
+    color: '#3c3c3c',
+    fontWeight: '300',
   },
-
   finishBtn: {
     marginRight: 5,
     fontSize: 15,
@@ -657,6 +677,33 @@ const styles = StyleSheet.create({
   linkIcon: {
     marginRight: 4,
     marginLeft: 44,
+  },
+  relatedWrapper: {
+    height: RFValue(55),
+    backgroundColor: '#000',
+    borderRadius: 9,
+    justifyContent: 'center',
+    paddingLeft: RFValue(10),
+    marginTop: RFValue(13),
+  },
+  related: {
+    flexDirection: 'row',
+  },
+  relatedImage: {
+    width: RFValue(33),
+    height: RFValue(33),
+    marginRight: 8,
+  },
+  relatedName: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  relatedText: {
+    color: '#bdbdbd',
+    fontSize: 10,
+    fontWeight: '300',
+    marginTop: 2,
   },
 });
 
