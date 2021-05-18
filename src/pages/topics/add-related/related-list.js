@@ -1,29 +1,63 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import PropTypes from 'prop-types';
+import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import {RFValue} from '@/utils/response-fontsize';
 
+const levelData = [
+  {key: 'small', title: '初级'},
+  {key: 'middle', title: '中极'},
+  {key: 'high', title: '高级'},
+];
+
 const BaseMovement = props => {
-  const goDetail = () => {};
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const {savetopic} = useSelector(state => state.home);
+
+  const {
+    data: {id, name, category_subset_name, level},
+  } = props;
+
+  const handleClick = () => {
+    const params = {shop_store_ids: '', shop_brand_ids: '', movement_ids: id};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
+    navigation.goBack();
+  };
 
   return (
-    <Pressable style={styles.wrapper} onPress={goDetail}>
+    <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
-        <Text style={styles.name}>323232</Text>
-        <Text style={styles.intro}>滑板 · 初级技能</Text>
+        <Text style={styles.name}>{name.trim()}</Text>
+        <Text style={styles.intro}>
+          {category_subset_name} · {levelData.find(v => v.key === level)?.title}技能
+        </Text>
       </View>
     </Pressable>
   );
 };
 
 const BaseShopStore = props => {
-  const goDetail = () => {};
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const {savetopic} = useSelector(state => state.home);
+  const {
+    data: {id, name},
+  } = props;
+
+  const handleClick = () => {
+    const params = {movement_ids: '', shop_brand_ids: '', shop_store_ids: id};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
+    navigation.goBack();
+  };
 
   return (
-    <Pressable style={styles.wrapper} onPress={goDetail}>
+    <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
-        <Text style={styles.name}>323232</Text>
+        <Text style={styles.name}>{name}</Text>
         <Text style={styles.intro}>滑板 · 初级技能</Text>
       </View>
     </Pressable>
@@ -31,12 +65,23 @@ const BaseShopStore = props => {
 };
 
 const BaseShopBrand = props => {
-  const goDetail = () => {};
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const {savetopic} = useSelector(state => state.home);
+  const {
+    data: {id, name},
+  } = props;
+
+  const handleClick = () => {
+    const params = {movement_ids: '', shop_store_ids: '', shop_brand_ids: id};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
+    navigation.goBack();
+  };
 
   return (
-    <Pressable style={styles.wrapper} onPress={goDetail}>
+    <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
-        <Text style={styles.name}>323232</Text>
+        <Text style={styles.name}>{name}</Text>
         <Text style={styles.intro}>滑板 · 初级技能</Text>
       </View>
     </Pressable>
@@ -49,15 +94,14 @@ const RelatedList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  console.log('props', props);
   const renderItem = ({item}) => {
     switch (type) {
       case 'movement':
-        return <BaseMovement data={item.item} />;
+        return <BaseMovement data={item} />;
       case 'shop_store':
-        return <BaseShopStore data={item.item} />;
+        return <BaseShopStore data={item} />;
       case 'shop_brand':
-        return <BaseShopBrand data={item.item} />;
+        return <BaseShopBrand data={item} />;
       default:
         return <View />;
     }
@@ -67,10 +111,8 @@ const RelatedList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page, per_page: 50});
-    const data = props.dataKey ? res.data[props.dataKey] : res.data.spaces;
     setHeaders(res.headers);
-    setListData([1, 2]);
-    // setListData(page === 1 ? data : [...listData, ...data]);
+    setListData(page === 1 ? res.data.items : [...listData, ...res.data.items]);
     setLoading(false);
   };
 
