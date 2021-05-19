@@ -15,11 +15,11 @@ const AddSpace = props => {
   const {savetopic} = useSelector(state => state.home);
   const [searchKey, setSearchKey] = useState('');
   const defaultKey = () => {
-    return savetopic.movement_ids
+    return (savetopic.movement_ids || []).length > 0
       ? 'movement'
-      : savetopic.shop_store_ids
+      : (savetopic.shop_store_ids || []).length > 0
       ? 'shop_store'
-      : savetopic.shop_brand_ids
+      : (savetopic.shop_brand_ids || []).length > 0
       ? 'shop_brand'
       : 'movement';
   };

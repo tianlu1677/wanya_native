@@ -285,15 +285,28 @@ export const ActionComment = props => {
 };
 
 export const RelatedComponent = props => {
+  const navigation = useNavigation();
   const {
     data: {shop_brands, shop_stores, movements},
   } = props;
+
+  const handleMovementDetail = () => {
+    navigation.navigate('MovementDetail', {movementId: movements[0].id});
+  };
+
+  const handleStoreDetail = () => {
+    navigation.navigate('ShopStoreDetail', {shopStoreId: shop_stores[0].id});
+  };
+
+  const handleBrandDetail = () => {
+    navigation.navigate('ShopBrandDetail', {shopBrandId: shop_brands[0].id});
+  };
 
   return (
     <>
       {/* movements */}
       {movements?.length > 0 ? (
-        <View style={rstyles.relatedWrapper}>
+        <Pressable style={rstyles.relatedWrapper} onPress={handleMovementDetail}>
           <View style={rstyles.related}>
             <FastImg
               style={rstyles.relatedImage}
@@ -306,12 +319,12 @@ export const RelatedComponent = props => {
               </Text>
             </View>
           </View>
-        </View>
+        </Pressable>
       ) : null}
 
       {/* shop_stores */}
       {shop_stores?.length > 0 ? (
-        <View style={rstyles.relatedWrapper}>
+        <Pressable style={rstyles.relatedWrapper} onPress={handleStoreDetail}>
           <View style={rstyles.related}>
             <FastImg style={rstyles.relatedImage} source={{uri: shop_stores[0].cover_url}} />
             <View style={{justifyContent: 'center'}}>
@@ -321,12 +334,12 @@ export const RelatedComponent = props => {
               </Text>
             </View>
           </View>
-        </View>
+        </Pressable>
       ) : null}
 
       {/* shop_brands */}
       {shop_brands?.length > 0 ? (
-        <View style={rstyles.relatedWrapper}>
+        <Pressable style={rstyles.relatedWrapper} onPress={handleBrandDetail}>
           <View style={rstyles.related}>
             <FastImg style={rstyles.relatedImage} source={{uri: shop_brands[0].cover_url}} />
             <View style={{justifyContent: 'center'}}>
@@ -336,7 +349,7 @@ export const RelatedComponent = props => {
               </Text>
             </View>
           </View>
-        </View>
+        </Pressable>
       ) : null}
     </>
   );

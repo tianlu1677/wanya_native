@@ -133,6 +133,7 @@ const RelatedList = props => {
       headers={headers}
       renderItem={renderItem}
       enableRefresh={false}
+      enableLoadMore={false}
       renderSeparator={() => <View style={styles.separator} />}
     />
   );
