@@ -7,7 +7,7 @@ import {Avator} from '@/components/NodeComponents';
 import ShareLogoImg from '@/assets/images/sharelogo.png';
 import {prosettings} from '@/api/settings_api';
 import RichContent from '@/pages/articles/components/RichContent';
-import {RFValue} from "@/utils/response-fontsize"
+import {RFValue} from '@/utils/response-fontsize';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
@@ -20,7 +20,7 @@ const ShareArticleContent = props => {
     title,
     content,
     cover_url,
-    intro
+    intro,
   } = props.articleDetail;
 
   // console.log('articleDetail', props.articleDetail);
@@ -66,7 +66,6 @@ const ShareArticleContent = props => {
     });
   }, []);
 
-
   return (
     <View style={{flex: 1, backgroundColor: 'red'}}>
       <ViewShot ref={props.viewShotRef} options={{format: 'jpg', quality: 1}} style={{flex: 1}}>
@@ -94,7 +93,11 @@ const ShareArticleContent = props => {
               )}
             </View>
 
-            <FastImg source={{uri: bg_img_url}} style={{width: '100%', height: 300}} mode={'cover'} />
+            <FastImg
+              source={{uri: bg_img_url}}
+              style={{width: '100%', height: 300}}
+              mode={'cover'}
+            />
 
             <Text style={styles.title}>{title}</Text>
 

@@ -5,8 +5,12 @@ import {useSelector} from 'react-redux';
 import {SAFE_TOP} from '@/utils/navbar';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
-import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
 import VideoPlayerContent from '@/components/react-native-video-player';
+import {
+  PublishAccount,
+  PublishRelated,
+  RelatedComponent,
+} from '@/components/Item/single-detail-item';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -58,6 +62,7 @@ const RenderLongVideo = props => {
         />
       </View>
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+      <RelatedComponent data={detail} />
       <View style={styles.introWrap}>
         <View style={styles.titleInfo}>
           <Text style={styles.title}>{detail.title}</Text>

@@ -5,8 +5,12 @@ import Swiper from 'react-native-swiper';
 import {dispatchPreviewImage} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
 import {SAFE_TOP} from '@/utils/navbar';
-import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
 import {PlainContent} from '@/components/Item/single-list-item';
+import {
+  PublishAccount,
+  PublishRelated,
+  RelatedComponent,
+} from '@/components/Item/single-detail-item';
 
 const {width: screenWidth} = Dimensions.get('window');
 let maxHeight = 100;
@@ -79,6 +83,7 @@ const RenderImage = props => {
         space={props.detail.space}
         location={props.detail.location}
       />
+      <RelatedComponent data={detail} />
       {detail.plain_content ? (
         <View style={styles.content}>
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />

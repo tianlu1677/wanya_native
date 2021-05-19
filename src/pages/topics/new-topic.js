@@ -38,6 +38,7 @@ const NewTopic = props => {
   const videoRef = useRef('');
   const {currentAccount} = useSelector(state => state.account);
   const {savetopic, location} = useSelector(state => state.home);
+  const {movement_ids, shop_store_ids, shop_brand_ids} = savetopic;
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
   const [linkSource, setLinkSource] = useState(null);
@@ -213,6 +214,9 @@ const NewTopic = props => {
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
       location_id: savetopic.location ? savetopic.location.id : '',
+      movement_ids: (movement_ids || []).map(v => v.id).join(),
+      shop_store_ids: (shop_store_ids || []).map(v => v.id).join(),
+      shop_brand_ids: (shop_brand_ids || []).map(v => v.id).join(),
     };
     return data;
   };
@@ -502,7 +506,7 @@ const NewTopic = props => {
               <Text style={styles.addText}>关联圈子</Text>
               {savetopic.node && savetopic.node.name ? (
                 <View style={styles.checkTextWrap}>
-                  <IconFont name="node-solid" color="#000" />
+                  <IconFont name="node-solid" size={15} color="#FFE30A" />
                   <Text style={styles.checkText}>{savetopic.node?.name}</Text>
                 </View>
               ) : null}
@@ -515,18 +519,54 @@ const NewTopic = props => {
               <IconFont name="arrow-right" size={10} color="#c2c2c2" />
             </Pressable>
           </View>
-          <View style={styles.relatedWrapper}>
-            <View style={styles.related}>
-              <FastImg
-                style={styles.relatedImage}
-                source={require('@/assets/images/topic-related.png')}
-              />
-              <View style={{justifyContent: 'center'}}>
-                <Text style={styles.relatedName}>北京Tour滑板店</Text>
-                <Text style={styles.relatedText}>滑板 · 装备/服饰/滑板/双翘</Text>
+
+          {/* movement_ids */}
+          {movement_ids?.length > 0 ? (
+            <View style={styles.relatedWrapper}>
+              <View style={styles.related}>
+                <FastImg
+                  style={styles.relatedImage}
+                  source={require('@/assets/images/topic-related.png')}
+                />
+                <View style={{justifyContent: 'center'}}>
+                  <Text style={styles.relatedName}>{movement_ids[0].name.trim()}</Text>
+                  <Text style={styles.relatedText}>
+                    {movement_ids[0].category_subset_name} · {movement_ids[0].levelText}技能
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
+          ) : null}
+
+          {/* shop_store_ids */}
+          {shop_store_ids?.length > 0 ? (
+            <View style={styles.relatedWrapper}>
+              <View style={styles.related}>
+                <FastImg style={styles.relatedImage} source={{uri: shop_store_ids[0].cover_url}} />
+                <View style={{justifyContent: 'center'}}>
+                  <Text style={styles.relatedName}>{shop_store_ids[0].name.trim()}</Text>
+                  <Text style={styles.relatedText}>
+                    {shop_store_ids[0].category_subset_name} · {shop_store_ids[0].levelText}技能
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ) : null}
+
+          {/* shop_brand_ids */}
+          {shop_brand_ids?.length > 0 ? (
+            <View style={styles.relatedWrapper}>
+              <View style={styles.related}>
+                <FastImg style={styles.relatedImage} source={{uri: shop_brand_ids[0].cover_url}} />
+                <View style={{justifyContent: 'center'}}>
+                  <Text style={styles.relatedName}>{shop_brand_ids[0].name.trim()}</Text>
+                  <Text style={styles.relatedText}>
+                    {shop_brand_ids[0].category_subset_name} · {shop_brand_ids[0].levelText}技能
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ) : null}
         </View>
       </TouchableWithoutFeedback>
     </ScrollView>
@@ -693,6 +733,7 @@ const styles = StyleSheet.create({
     width: RFValue(33),
     height: RFValue(33),
     marginRight: 8,
+    borderRadius: 6,
   },
   relatedName: {
     color: '#fff',
@@ -703,7 +744,7 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     fontSize: 10,
     fontWeight: '300',
-    marginTop: 2,
+    marginTop: 3,
   },
 });
 

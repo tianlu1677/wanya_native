@@ -17,13 +17,18 @@ const BaseMovement = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {savetopic} = useSelector(state => state.home);
-
   const {
-    data: {id, name, category_subset_name, level},
+    data: {name, category_subset_name, level},
   } = props;
 
+  const levelText = levelData.find(v => v.key === level)?.title;
+
   const handleClick = () => {
-    const params = {shop_store_ids: '', shop_brand_ids: '', movement_ids: id};
+    const params = {
+      shop_store_ids: [],
+      shop_brand_ids: [],
+      movement_ids: [{...props.data, levelText}],
+    };
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     navigation.goBack();
   };
@@ -33,7 +38,7 @@ const BaseMovement = props => {
       <View style={styles.info}>
         <Text style={styles.name}>{name.trim()}</Text>
         <Text style={styles.intro}>
-          {category_subset_name} · {levelData.find(v => v.key === level)?.title}技能
+          {category_subset_name} · {levelText}技能
         </Text>
       </View>
     </Pressable>
@@ -45,11 +50,11 @@ const BaseShopStore = props => {
   const navigation = useNavigation();
   const {savetopic} = useSelector(state => state.home);
   const {
-    data: {id, name},
+    data: {name},
   } = props;
 
   const handleClick = () => {
-    const params = {movement_ids: '', shop_brand_ids: '', shop_store_ids: id};
+    const params = {movement_ids: [], shop_brand_ids: [], shop_store_ids: [props.data]};
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     navigation.goBack();
   };
@@ -69,11 +74,11 @@ const BaseShopBrand = props => {
   const navigation = useNavigation();
   const {savetopic} = useSelector(state => state.home);
   const {
-    data: {id, name},
+    data: {name},
   } = props;
 
   const handleClick = () => {
-    const params = {movement_ids: '', shop_store_ids: '', shop_brand_ids: id};
+    const params = {movement_ids: [], shop_store_ids: [], shop_brand_ids: [props.data]};
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     navigation.goBack();
   };

@@ -3,6 +3,7 @@ import {View, Text, Image, StyleSheet, Pressable, TextInput} from 'react-native'
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
+import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
 import {Avator} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchArticleDetail, dispatchShareItem} from '@/redux/actions';
@@ -68,7 +69,7 @@ export const PublishRelated = props => {
           <View>
             <View style={pstyles.formTitleWrap}>
               <Text style={pstyles.formTitle}>来自</Text>
-              <IconFont name="node-solid" size={16} color={'#000'} style={pstyles.formIcon} />
+              <IconFont name="node-solid" size={16} color={'#FFE30A'} style={pstyles.formIcon} />
               <Text style={pstyles.formTitle}>{data.node.name}</Text>
             </View>
             <Text style={pstyles.formInfo}>
@@ -283,6 +284,64 @@ export const ActionComment = props => {
   );
 };
 
+export const RelatedComponent = props => {
+  const {
+    data: {shop_brands, shop_stores, movements},
+  } = props;
+
+  return (
+    <>
+      {/* movements */}
+      {movements?.length > 0 ? (
+        <View style={rstyles.relatedWrapper}>
+          <View style={rstyles.related}>
+            <FastImg
+              style={rstyles.relatedImage}
+              source={require('@/assets/images/topic-related.png')}
+            />
+            <View style={{justifyContent: 'center'}}>
+              <Text style={rstyles.relatedName}>{movements[0].name.trim()}</Text>
+              <Text style={rstyles.relatedText}>
+                {movements[0].category_subset_name} · {movements[0].levelText}技能
+              </Text>
+            </View>
+          </View>
+        </View>
+      ) : null}
+
+      {/* shop_stores */}
+      {shop_stores?.length > 0 ? (
+        <View style={rstyles.relatedWrapper}>
+          <View style={rstyles.related}>
+            <FastImg style={rstyles.relatedImage} source={{uri: shop_stores[0].cover_url}} />
+            <View style={{justifyContent: 'center'}}>
+              <Text style={rstyles.relatedName}>{shop_stores[0].name.trim()}</Text>
+              <Text style={rstyles.relatedText}>
+                {shop_stores[0].category_subset_name} · {shop_stores[0].levelText}技能
+              </Text>
+            </View>
+          </View>
+        </View>
+      ) : null}
+
+      {/* shop_brands */}
+      {shop_brands?.length > 0 ? (
+        <View style={rstyles.relatedWrapper}>
+          <View style={rstyles.related}>
+            <FastImg style={rstyles.relatedImage} source={{uri: shop_brands[0].cover_url}} />
+            <View style={{justifyContent: 'center'}}>
+              <Text style={rstyles.relatedName}>{shop_brands[0].name.trim()}</Text>
+              <Text style={rstyles.relatedText}>
+                {shop_brands[0].category_subset_name} · {shop_brands[0].levelText}技能
+              </Text>
+            </View>
+          </View>
+        </View>
+      ) : null}
+    </>
+  );
+};
+
 const hstyles = StyleSheet.create({
   headerView: {
     flexDirection: 'row',
@@ -446,5 +505,38 @@ const astyles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 13,
     marginLeft: 10,
+  },
+});
+
+const rstyles = StyleSheet.create({
+  relatedWrapper: {
+    marginLeft: 14,
+    marginRight: 90,
+    height: RFValue(55),
+    backgroundColor: '#000',
+    borderRadius: 9,
+    justifyContent: 'center',
+    paddingLeft: RFValue(10),
+    marginTop: RFValue(14),
+  },
+  related: {
+    flexDirection: 'row',
+  },
+  relatedImage: {
+    width: RFValue(33),
+    height: RFValue(33),
+    marginRight: 8,
+    borderRadius: 6,
+  },
+  relatedName: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  relatedText: {
+    color: '#bdbdbd',
+    fontSize: 10,
+    fontWeight: '300',
+    marginTop: 3,
   },
 });
