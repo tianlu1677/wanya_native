@@ -507,9 +507,7 @@ const NewTopic = props => {
               <IconFont name="arrow-right" size={10} color="#c2c2c2" />
             </Pressable>
             <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddRelated')}>
-              <Text style={styles.addText}>
-                {savetopic.node ? savetopic.node.name : '关联顽招/Van Store/品牌等'}
-              </Text>
+              <Text style={styles.addText}>关联顽招/Van Store/品牌等</Text>
               <IconFont name="arrow-right" size={10} color="#c2c2c2" />
             </Pressable>
           </View>
@@ -615,12 +613,12 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   content: {
-    minHeight: 90,
     fontSize: RFValue(14),
     lineHeight: RFValue(20),
-    marginBottom: RFValue(50),
+    marginBottom: RFValue(20),
     marginTop: RFValue(6),
     textAlign: 'justify',
+    minHeight: RFValue(180),
   },
   addTextNameWrap: {
     paddingHorizontal: VWValue(10),
@@ -727,12 +725,12 @@ const styles = StyleSheet.create({
   },
   relatedName: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: RFValue(14),
     fontWeight: '500',
   },
   relatedText: {
     color: '#bdbdbd',
-    fontSize: 10,
+    fontSize: RFValue(10),
     fontWeight: '300',
     marginTop: 4,
   },
