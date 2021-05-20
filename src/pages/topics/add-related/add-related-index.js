@@ -71,7 +71,7 @@ const AddRelatedIndex = props => {
         {request ? (
           <TabView
             currentKey={currentKey}
-            request={currentKey}
+            request={request}
             onChange={onChangeKey}
             type="index"
             align="left"

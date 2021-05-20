@@ -30,6 +30,7 @@ import RecommendListPage from './recommend-list-post';
 import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
+  console.log('props', props);
   const dispatch = useDispatch();
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
@@ -124,10 +125,10 @@ const Recommend = props => {
   });
 
   const onChange = async (key, title) => {
-    console.log('key', key)
+    console.log('key', key);
     ahoyTrackEvents({
       name: `click_${key}`,
-      properties: { title: title, page: 'recommend'},
+      properties: {title: title, page: 'recommend'},
       page: 'recommend',
     });
 

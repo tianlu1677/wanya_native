@@ -72,7 +72,7 @@ const RelatedComponent = props => {
 const styles = StyleSheet.create({
   relatedWrapper: {
     marginLeft: 14,
-    marginRight: 90,
+    marginRight: 45,
     height: RFValue(55),
     backgroundColor: '#000',
     borderRadius: 9,

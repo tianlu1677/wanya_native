@@ -34,7 +34,7 @@ const TopHeaderView = props => {
                 if (!navigation.canGoBack() || isAtRoot) {
                   navigation.reset({
                     index: 0,
-                    routes: [{name: 'Recommend'}],
+                    routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
                   });
                 } else {
                   navigation.goBack();

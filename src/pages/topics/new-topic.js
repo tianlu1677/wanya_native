@@ -1,14 +1,5 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  Dimensions,
-  StatusBar,
-} from 'react-native';
+import {View, Text, TextInput, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
 import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -358,17 +349,17 @@ const NewTopic = props => {
                 {v.id ? (
                   <>
                     <Pressable onPress={() => onPreview(index)}>
-                      <Image key={index} style={styles.media} source={{uri: v.url}} />
+                      <FastImg key={index} style={styles.media} source={{uri: v.url}} />
                     </Pressable>
                     <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                      <Image
+                      <FastImg
                         style={styles.mediaClose}
                         source={require('@/assets/images/close.png')}
                       />
                     </Pressable>
                   </>
                 ) : (
-                  <Image
+                  <FastImg
                     key={index}
                     style={styles.media}
                     source={require('@/assets/images/loading.gif')}
@@ -413,7 +404,10 @@ const NewTopic = props => {
                   />
                 </Pressable>
                 <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                  <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+                  <FastImg
+                    style={styles.mediaClose}
+                    source={require('@/assets/images/close.png')}
+                  />
                 </Pressable>
               </Pressable>
             ))}
@@ -584,6 +578,8 @@ const styles = StyleSheet.create({
     height: mediaSize,
     marginRight: 10,
     marginBottom: 10,
+    borderRadius: 2,
+    overflow: 'hidden',
   },
   media: {
     width: mediaSize,
