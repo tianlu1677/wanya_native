@@ -7,28 +7,16 @@ import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import {RFValue} from '@/utils/response-fontsize';
 
-const levelData = [
-  {key: 'small', title: '初级'},
-  {key: 'middle', title: '中极'},
-  {key: 'high', title: '高级'},
-];
-
 const BaseMovement = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {savetopic} = useSelector(state => state.home);
   const {
-    data: {name, category_subset_name, level},
+    data: {name, desc_tip},
   } = props;
 
-  const levelText = levelData.find(v => v.key === level)?.title;
-
   const handleClick = () => {
-    const params = {
-      shop_store_ids: [],
-      shop_brand_ids: [],
-      movement_ids: [{...props.data, levelText}],
-    };
+    const params = {shop_store_ids: [], shop_brand_ids: [], movement_ids: [props.data]};
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     navigation.goBack();
   };
@@ -37,9 +25,7 @@ const BaseMovement = props => {
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
         <Text style={styles.name}>{name.trim()}</Text>
-        <Text style={styles.intro}>
-          {category_subset_name} · {levelText}技能
-        </Text>
+        <Text style={styles.intro}>{desc_tip}</Text>
       </View>
     </Pressable>
   );
@@ -50,7 +36,7 @@ const BaseShopStore = props => {
   const navigation = useNavigation();
   const {savetopic} = useSelector(state => state.home);
   const {
-    data: {name},
+    data: {name, desc_tip},
   } = props;
 
   const handleClick = () => {
@@ -63,7 +49,7 @@ const BaseShopStore = props => {
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.intro}>滑板 · 初级技能</Text>
+        <Text style={styles.intro}>{desc_tip}</Text>
       </View>
     </Pressable>
   );
@@ -74,7 +60,7 @@ const BaseShopBrand = props => {
   const navigation = useNavigation();
   const {savetopic} = useSelector(state => state.home);
   const {
-    data: {name},
+    data: {name, desc_tip},
   } = props;
 
   const handleClick = () => {
@@ -87,7 +73,7 @@ const BaseShopBrand = props => {
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.intro}>滑板 · 初级技能</Text>
+        <Text style={styles.intro}>{desc_tip}</Text>
       </View>
     </Pressable>
   );

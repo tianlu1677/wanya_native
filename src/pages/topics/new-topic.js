@@ -530,9 +530,7 @@ const NewTopic = props => {
                 />
                 <View style={{justifyContent: 'center'}}>
                   <Text style={styles.relatedName}>{movement_ids[0].name.trim()}</Text>
-                  <Text style={styles.relatedText}>
-                    {movement_ids[0].category_subset_name} · {movement_ids[0].levelText}技能
-                  </Text>
+                  <Text style={styles.relatedText}>{movement_ids[0].desc_tip}</Text>
                 </View>
               </View>
             </View>
@@ -545,9 +543,7 @@ const NewTopic = props => {
                 <FastImg style={styles.relatedImage} source={{uri: shop_store_ids[0].cover_url}} />
                 <View style={{justifyContent: 'center'}}>
                   <Text style={styles.relatedName}>{shop_store_ids[0].name.trim()}</Text>
-                  <Text style={styles.relatedText}>
-                    {shop_store_ids[0].category_subset_name} · {shop_store_ids[0].levelText}技能
-                  </Text>
+                  <Text style={styles.relatedText}>{shop_store_ids[0].desc_tip}</Text>
                 </View>
               </View>
             </View>
@@ -560,9 +556,7 @@ const NewTopic = props => {
                 <FastImg style={styles.relatedImage} source={{uri: shop_brand_ids[0].cover_url}} />
                 <View style={{justifyContent: 'center'}}>
                   <Text style={styles.relatedName}>{shop_brand_ids[0].name.trim()}</Text>
-                  <Text style={styles.relatedText}>
-                    {shop_brand_ids[0].category_subset_name} · {shop_brand_ids[0].levelText}技能
-                  </Text>
+                  <Text style={styles.relatedText}>{shop_brand_ids[0].desc_tip}</Text>
                 </View>
               </View>
             </View>
@@ -744,7 +738,7 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     fontSize: 10,
     fontWeight: '300',
-    marginTop: 3,
+    marginTop: 4,
   },
 });
 

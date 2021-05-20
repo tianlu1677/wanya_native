@@ -30,17 +30,13 @@ const Activity = props => {
   const loadNearBy = async () => {
     if (isPosition && isCurrentCity) {
       const query = {...commonParams, ...params, per_page: 100};
-      console.log('top params', JSON.stringify(query));
       const res = await getActivityList(query);
       setListData(res.data.activities);
-      console.log('top data', res.data.activities);
       const id_not_in = res.data.activities.map(item => item.id).join();
       const listQuery = {category, 'q[id_not_in]': id_not_in, city: 'china'};
-      console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getActivityList, params: listQuery});
     } else {
       const listQuery = {...commonParams, ...params};
-      console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getActivityList, params: listQuery});
     }
   };

@@ -34,9 +34,7 @@ const RelatedComponent = props => {
             />
             <View style={{justifyContent: 'center'}}>
               <Text style={styles.relatedName}>{movements[0].name.trim()}</Text>
-              <Text style={styles.relatedText}>
-                {movements[0].category_subset_name} · {movements[0].levelText}技能
-              </Text>
+              <Text style={styles.relatedText}>{movements[0].desc_tip}</Text>
             </View>
           </View>
         </Pressable>
@@ -48,10 +46,8 @@ const RelatedComponent = props => {
           <View style={styles.related}>
             <FastImg style={styles.relatedImage} source={{uri: shop_stores[0].cover_url}} />
             <View style={{justifyContent: 'center'}}>
-              <Text style={styles.relatedName}>{shop_stores[0].name.trim()}</Text>
-              <Text style={styles.relatedText}>
-                {shop_stores[0].category_subset_name} · {shop_stores[0].levelText}技能
-              </Text>
+              <Text style={styles.relatedName}>{shop_stores[0].name}</Text>
+              <Text style={styles.relatedText}>{shop_stores[0].desc_tip}</Text>
             </View>
           </View>
         </Pressable>
@@ -63,10 +59,8 @@ const RelatedComponent = props => {
           <View style={styles.related}>
             <FastImg style={styles.relatedImage} source={{uri: shop_brands[0].cover_url}} />
             <View style={{justifyContent: 'center'}}>
-              <Text style={styles.relatedName}>{shop_brands[0].name.trim()}</Text>
-              <Text style={styles.relatedText}>
-                {shop_brands[0].category_subset_name} · {shop_brands[0].levelText}技能
-              </Text>
+              <Text style={styles.relatedName}>{shop_brands[0].name}</Text>
+              <Text style={styles.relatedText}>{shop_brands[0].desc_tip}</Text>
             </View>
           </View>
         </Pressable>

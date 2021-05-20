@@ -10,7 +10,7 @@ import TabView from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import RelatedList from '@/pages/topics/add-related/related-list';
 
-const AddSpace = props => {
+const AddRelatedIndex = props => {
   const navigation = useNavigation();
   const {savetopic} = useSelector(state => state.home);
   const [searchKey, setSearchKey] = useState('');
@@ -26,7 +26,6 @@ const AddSpace = props => {
 
   const [currentKey, setCurrentKey] = useState(defaultKey);
 
-  console.log('savetopic', savetopic);
   const [request, setRequest] = useState({
     api: searchApi,
     params: {name: searchKey, type: currentKey, random: 1},
@@ -119,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddSpace;
+export default AddRelatedIndex;
