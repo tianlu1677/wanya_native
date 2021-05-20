@@ -620,6 +620,7 @@ const styles = StyleSheet.create({
     marginTop: RFValue(6),
     textAlign: 'justify',
     minHeight: RFValue(180),
+    letterSpacing: 1,
   },
   addTextNameWrap: {
     paddingHorizontal: VWValue(10),
