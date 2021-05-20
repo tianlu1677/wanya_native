@@ -23,8 +23,6 @@ const ShopStore = props => {
   const commonParams = {latitude, longitude, currentcity: positionCity, city};
   const params = {'q[category_id_eq]': categoryId};
 
-  console.log('isCurrentCity', isCurrentCity, isPosition);
-
   const goChooseCity = () => {
     props.navigation.navigate('ChooseCity');
   };
@@ -32,17 +30,13 @@ const ShopStore = props => {
   const loadNearBy = async () => {
     if (isPosition && isCurrentCity) {
       const query = {...commonParams, ...params, per_page: 100};
-      // console.log('top params', JSON.stringify(query));
       const res = await getShopStores(query);
       setListData(res.data.shop_stores);
-      // console.log('top data', res.data.shop_stores);
       const id_not_in = res.data.shop_stores.map(item => item.id).join();
       const listQuery = {'q[category_id_eq]': categoryId, 'q[id_not_in]': id_not_in, city: 'china'};
-      console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getShopStores, params: listQuery});
     } else {
       const listQuery = {...commonParams, ...params};
-      console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getShopStores, params: listQuery});
     }
   };

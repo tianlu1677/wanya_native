@@ -20,6 +20,7 @@ import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
 import AddNode from '@/pages/topics/add-node';
+import AddRelated from '@/pages/topics/add-related/add-related-index';
 import AddLink from '@/pages/topics/add-link';
 import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
@@ -118,6 +119,7 @@ const topicRouter = [
   {name: 'TopicDetail', component: TopicDetail, options: {headerShown: false}},
   {name: 'TopicLinkDetail', component: TopicLinkDetail, options: {headerShown: false}},
   {name: 'AddNode', component: AddNode},
+  {name: 'AddRelated', component: AddRelated, options: {headerShown: false, herderColor: '#fff'}},
   {name: 'AddLink', component: AddLink},
   {name: 'AddHashTag', component: AddHashTag, options: {headerShown: false, herderColor: '#fff'}},
   {name: 'AddSpace', component: AddSpace, options: {headerShown: false, herderColor: '#fff'}},

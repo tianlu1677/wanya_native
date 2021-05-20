@@ -1,92 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, StyleSheet, Pressable, TextInput} from 'react-native';
+import {View, Text, StyleSheet, Pressable, TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
-import {RFValue} from '@/utils/response-fontsize';
-import {Avator} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchArticleDetail, dispatchShareItem} from '@/redux/actions';
-import {followAccount, unfollowAccount} from '@/api/account_api';
 import {createAction, cancelAction} from '@/api/action_api';
 import * as action from '@/redux/constants';
-import LocationBar from '@/components/LocationBar';
 
-export const PublishAccount = props => {
-  const {data} = props;
-  const navigation = useNavigation();
-  const [followed, setFollowed] = useState(props.data.account.followed);
-
-  const goAccountDetail = () => {
-    navigation.push('AccountDetail', {accountId: data.account.id});
-  };
-
-  const onFollow = async () => {
-    followed ? await unfollowAccount(data.account_id) : await followAccount(data.account_id);
-    setFollowed(!followed);
-  };
-
-  return (
-    <View style={hstyles.headerView}>
-      <Avator account={data.account} size={40} />
-      <Pressable style={hstyles.content} onPress={goAccountDetail}>
-        <Text style={hstyles.nameText}>{data.account.nickname}</Text>
-        <View style={hstyles.info}>
-          <Text style={hstyles.timeText}>{data.published_at_text}</Text>
-          <LocationBar space={data.space} location={data.location} />
-        </View>
-      </Pressable>
-      {props.showFollow && (
-        <Text style={[hstyles.joinBtn, {color: followed ? '#bdbdbd' : '#000'}]} onPress={onFollow}>
-          {followed ? '已关注' : '关注'}
-        </Text>
-      )}
-    </View>
-  );
-};
-
-export const PublishRelated = props => {
-  const {data} = props;
-  const navigation = useNavigation();
-
-  const goNodeDetail = () => {
-    navigation.push('NodeDetail', {nodeId: data.node.id});
-  };
-
-  return (
-    <>
-      {data.tag_list.length > 0 && (
-        <View style={pstyles.tagsWrapper}>
-          {data.tag_list.map((v, index) => (
-            <Text style={pstyles.tagsText} key={index}>
-              {v}
-            </Text>
-          ))}
-        </View>
-      )}
-      {data.node && (
-        <Pressable style={pstyles.fromWrapper} onPress={goNodeDetail}>
-          <View>
-            <View style={pstyles.formTitleWrap}>
-              <Text style={pstyles.formTitle}>来自</Text>
-              <IconFont name="node-solid" size={16} color={'#000'} style={pstyles.formIcon} />
-              <Text style={pstyles.formTitle}>{data.node.name}</Text>
-            </View>
-            <Text style={pstyles.formInfo}>
-              {props.type === 'topic' &&
-                data.node &&
-                data.node.topics_count > 0 &&
-                `${data.node.topics_count}篇帖子 · `}
-              {data.node.accounts_count}位{data.node.nickname || '圈友'}
-            </Text>
-          </View>
-          <Image style={pstyles.formImage} source={{uri: data.node.cover_url}} />
-        </Pressable>
-      )}
-    </>
-  );
-};
-
-export const ActionComment = props => {
+const ActionComment = props => {
   const navigation = useNavigation();
   const comment = useSelector(state => state.home.commentContent);
   const dispatch = useDispatch();
@@ -227,32 +148,32 @@ export const ActionComment = props => {
   }, [comment]);
 
   return (
-    <View style={astyles.actionWrapper}>
+    <View style={styles.actionWrapper}>
       {!props.visible && (
         <>
-          <Text style={astyles.text} onPress={onCreateComment}>
+          <Text style={styles.text} onPress={onCreateComment}>
             快来评论吧
           </Text>
-          <View style={astyles.wrapBottomBtns}>
-            <Pressable style={astyles.btnWrap} onPress={() => onCreate('praise')}>
+          <View style={styles.wrapBottomBtns}>
+            <Pressable style={styles.btnWrap} onPress={() => onCreate('praise')}>
               <IconFont name="like" size={19} color={praise ? '#000' : '#bdbdbd'} />
-              <Text style={[astyles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
+              <Text style={[styles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
                 {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
               </Text>
             </Pressable>
-            <Pressable style={astyles.btnWrap} onPress={() => onCreate('star')}>
+            <Pressable style={styles.btnWrap} onPress={() => onCreate('star')}>
               <IconFont
                 name={star ? 'star-solid' : 'star'}
                 size={22}
                 color={star ? '#f4ea2a' : '#bdbdbd'}
               />
-              <Text style={[astyles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
+              <Text style={[styles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
                 {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
               </Text>
             </Pressable>
             <Pressable
               hitSlop={{right: 20, left: 5}}
-              style={[astyles.btnWrap, {minWidth: 25}]}
+              style={[styles.btnWrap, {minWidth: 25}]}
               onPress={() => {
                 onShare();
               }}>
@@ -265,7 +186,7 @@ export const ActionComment = props => {
       {props.visible && (
         <>
           <TextInput
-            style={astyles.input}
+            style={styles.input}
             placeholder={comment.placeholder}
             onChangeText={onChangeValue}
             value={value}
@@ -273,7 +194,7 @@ export const ActionComment = props => {
             onBlur={() => props.changeVisible(false)}
           />
           <Text
-            style={[astyles.sendBtn, {color: value ? '#000' : '#bdbdbd'}]}
+            style={[styles.sendBtn, {color: value ? '#000' : '#bdbdbd'}]}
             onPress={publishComment}>
             发送
           </Text>
@@ -283,108 +204,7 @@ export const ActionComment = props => {
   );
 };
 
-const hstyles = StyleSheet.create({
-  headerView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 40,
-    paddingHorizontal: 15,
-    marginTop: 15,
-  },
-  content: {
-    marginLeft: 12,
-  },
-  nameText: {
-    fontSize: 12,
-    lineHeight: 20,
-  },
-  info: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  spaceWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 6,
-  },
-  spaceText: {
-    color: '#9C9C9C',
-    marginLeft: 4,
-    fontSize: 11,
-    fontWeight: '400',
-  },
-  timeText: {
-    color: '#bdbdbd',
-    fontSize: 11,
-  },
-  joinBtn: {
-    paddingLeft: 12,
-    paddingRight: 12,
-    height: 34,
-    lineHeight: 34,
-    marginLeft: 'auto',
-    textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-});
-
-const pstyles = StyleSheet.create({
-  tagsWrapper: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingLeft: 15,
-    paddingRight: 53,
-    marginTop: 16,
-  },
-  tagsText: {
-    paddingLeft: 9,
-    paddingRight: 9,
-    lineHeight: 24,
-    backgroundColor: '#f2f3f5',
-    marginRight: 8,
-    marginBottom: 8,
-    fontSize: 11,
-    fontWeight: '300',
-  },
-  fromWrapper: {
-    flexDirection: 'row',
-    paddingLeft: 15,
-    paddingRight: 19,
-    alignItems: 'center',
-    marginTop: RFValue(16),
-  },
-  formTitleWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 20,
-    marginBottom: 7,
-  },
-  formTitle: {
-    fontSize: 15,
-    fontWeight: '500',
-  },
-  formIcon: {
-    marginLeft: 10,
-    marginRight: 3,
-  },
-  formInfo: {
-    fontSize: 12,
-    lineHeight: 20,
-  },
-  formImage: {
-    width: 55,
-    height: 55,
-    borderWidth: 3,
-    borderColor: '#ffff00',
-    marginLeft: 'auto',
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-});
-
-const astyles = StyleSheet.create({
+const styles = StyleSheet.create({
   actionWrapper: {
     height: 57,
     flexDirection: 'row',
@@ -448,3 +268,5 @@ const astyles = StyleSheet.create({
     marginLeft: 10,
   },
 });
+
+export default ActionComment;

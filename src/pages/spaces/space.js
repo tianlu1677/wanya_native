@@ -30,17 +30,13 @@ const Space = props => {
   const loadNearBy = async () => {
     if (isPosition && isCurrentCity) {
       const query = {...commonParams, ...params, per_page: 100};
-      console.log('top params', JSON.stringify(query));
       const res = await getSpaces(query);
       setListData(res.data.spaces);
-      console.log('top data', res.data.spaces);
       const id_not_in = res.data.spaces.map(item => item.id).join();
       const listQuery = {category, 'q[id_not_in]': id_not_in, city: 'china'};
-      console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getSpaces, params: listQuery});
     } else {
       const listQuery = {...commonParams, ...params};
-      console.log('list params', JSON.stringify(listQuery));
       setRequest({api: getSpaces, params: listQuery});
     }
   };

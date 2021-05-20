@@ -97,6 +97,8 @@ const TopicDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
+  console.log('detail', detail);
+
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

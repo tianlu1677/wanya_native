@@ -3,9 +3,13 @@ import {View, Text, StatusBar, StyleSheet, Dimensions} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {SAFE_TOP, SCREEN_HEIGHT} from '@/utils/navbar';
-import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
-import {PlainContent} from '@/components/Item/single-list-item';
 import VideoPlayerContent from '@/components/react-native-video-player';
+import {PlainContent} from '@/components/Item/single-list-item';
+import {
+  PublishAccount,
+  PublishRelated,
+  RelatedComponent,
+} from '@/components/Item/single-detail-item';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -56,6 +60,7 @@ const RenderVideo = props => {
         />
       </View>
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+      <RelatedComponent data={detail} />
       {detail.plain_content ? (
         <View style={styles.content}>
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
