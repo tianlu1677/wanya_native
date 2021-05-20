@@ -19,13 +19,13 @@ const LocationBar = ({space, location}) => {
     <>
       {space && (
         <Pressable style={styles.wrapper} onPress={goSpaceDetail} hitSlop={hitSlop}>
-          <IconFont name="space-point" size={11} color={'#9C9C9C'} />
+          <IconFont name="space-point" size={11} color={'#1B5C79'} />
           <Text style={styles.text}>{space.name}</Text>
         </Pressable>
       )}
       {location && (
         <Pressable style={styles.wrapper} onPress={goLocationDetail} hitSlop={hitSlop}>
-          <IconFont name="space-point" size={11} color={'#9C9C9C'} />
+          <IconFont name="space-point" size={11} color={'#1B5C79'} />
           <Text style={styles.text}>{location.name.toString().substr(0, 13)}</Text>
         </Pressable>
       )}
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   text: {
-    color: '#9C9C9C',
+    color: '#1B5C79',
     marginLeft: 4,
     fontSize: 11,
     fontWeight: '400',

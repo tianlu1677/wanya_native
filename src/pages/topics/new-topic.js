@@ -576,12 +576,13 @@ const styles = StyleSheet.create({
     height: mediaSize,
     marginRight: 10,
     marginBottom: 10,
-    borderRadius: 2,
+    borderRadius: 6,
     overflow: 'hidden',
   },
   media: {
     width: mediaSize,
     height: mediaSize,
+    borderRadius: 6,
   },
   mediaCloseWrap: {
     position: 'absolute',

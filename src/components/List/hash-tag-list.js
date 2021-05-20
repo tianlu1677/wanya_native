@@ -7,7 +7,6 @@ const HashtagList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-
   const {type} = props;
 
   const renderItem = ({item}) => <BaseHashtag data={item} type={type} />;
