@@ -1,32 +1,29 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {ScrollView, FlatList, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
+import {ScrollView, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {RFValue} from '@/utils/response-fontsize';
-const deviceWidth = Dimensions.get('window').width;
+const DeviceWidth = Dimensions.get('window');
 
 const TabList = props => {
   const scrollRef = useRef(null);
+  const defaultIndex = props.data.findIndex(v => v.key === props.current);
   const {type, align, bottomLine, activeLineColor, textStyle, separator} = props;
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
   const [layoutList, setLayoutList] = useState([]);
 
+  const onScroll = index => {
+    const {x, width} = layoutList[index];
+    const sx = x - DeviceWidth / 2 + width / 2;
+    scrollRef.current.scrollTo({x: sx, animated: true});
+  };
+
   const setIndex = (item, index) => {
     props.tabChange(item, index);
-    setCurrentIndex(index);
-    // setContentWidth(0);
-    if (!scrollEnabled) {
-      return;
+    if (scrollEnabled) {
+      onScroll(index);
     }
-    const layout = layoutList[index];
-    if(!layout) {
-      return
-    }
-
-    const rx = deviceWidth / 2;
-    const sx = layout.x - rx + layout.width / 2;
-    scrollRef.current.scrollTo({x: sx, animated: true});
   };
 
   const setLayout = (layout, index) => {
@@ -38,18 +35,17 @@ const TabList = props => {
   };
 
   useEffect(() => {
-    const isAllLayout = layoutList.length > 0 && layoutList.every(item => item && item.width);
+    const isAllLayout =
+      layoutList.length === props.data.length && layoutList.every(item => item && item.width);
     if (isAllLayout) {
       const index = props.data.findIndex(v => v.key === props.current);
-      const current = props.data.find(v => v.key === props.current);
-      setIndex(current, index);
+      setCurrentIndex(index);
+      onScroll(index);
     }
   }, [props.current, layoutList]);
 
   useEffect(() => {
-    // console.log('contentWidth', contentWidth, deviceWidth)
-    // setScrollEnabled(true);
-    if (contentWidth > deviceWidth) {
+    if (contentWidth > DeviceWidth) {
       setScrollEnabled(true);
     }
   }, [contentWidth]);
@@ -86,8 +82,7 @@ const TabList = props => {
                       currentIndex === index && styles[`tabItemTextActive${type}`],
                     ]}
                     visit_key={`click_${item.title}`}
-                    visit_value={{name: item.title}}
-                  >
+                    visit_value={{name: item.title}}>
                     {item.title}
                   </Text>
                   {currentIndex === index && (

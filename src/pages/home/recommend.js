@@ -124,10 +124,10 @@ const Recommend = props => {
   });
 
   const onChange = async (key, title) => {
-    console.log('key', key)
+    console.log('key', key);
     ahoyTrackEvents({
       name: `click_${key}`,
-      properties: { title: title, page: 'recommend'},
+      properties: {title: title, page: 'recommend'},
       page: 'recommend',
     });
 

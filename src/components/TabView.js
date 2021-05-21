@@ -16,7 +16,7 @@ const TabViewIndex = props => {
 
   const onIndexChange = i => {
     const key = routes[i].key;
-    const title = routes[i].title
+    const title = routes[i].title;
     props.onChange(key, title);
   };
 

@@ -1,14 +1,5 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  Dimensions,
-  StatusBar,
-} from 'react-native';
+import {View, Text, TextInput, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
 import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
@@ -358,17 +349,17 @@ const NewTopic = props => {
                 {v.id ? (
                   <>
                     <Pressable onPress={() => onPreview(index)}>
-                      <Image key={index} style={styles.media} source={{uri: v.url}} />
+                      <FastImg key={index} style={styles.media} source={{uri: v.url}} />
                     </Pressable>
                     <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                      <Image
+                      <FastImg
                         style={styles.mediaClose}
                         source={require('@/assets/images/close.png')}
                       />
                     </Pressable>
                   </>
                 ) : (
-                  <Image
+                  <FastImg
                     key={index}
                     style={styles.media}
                     source={require('@/assets/images/loading.gif')}
@@ -413,7 +404,10 @@ const NewTopic = props => {
                   />
                 </Pressable>
                 <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                  <Image style={styles.mediaClose} source={require('@/assets/images/close.png')} />
+                  <FastImg
+                    style={styles.mediaClose}
+                    source={require('@/assets/images/close.png')}
+                  />
                 </Pressable>
               </Pressable>
             ))}
@@ -513,9 +507,7 @@ const NewTopic = props => {
               <IconFont name="arrow-right" size={10} color="#c2c2c2" />
             </Pressable>
             <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddRelated')}>
-              <Text style={styles.addText}>
-                {savetopic.node ? savetopic.node.name : '关联顽招/Van Store/品牌等'}
-              </Text>
+              <Text style={styles.addText}>关联顽招/Van Store/品牌等</Text>
               <IconFont name="arrow-right" size={10} color="#c2c2c2" />
             </Pressable>
           </View>
@@ -584,10 +576,13 @@ const styles = StyleSheet.create({
     height: mediaSize,
     marginRight: 10,
     marginBottom: 10,
+    borderRadius: 6,
+    overflow: 'hidden',
   },
   media: {
     width: mediaSize,
     height: mediaSize,
+    borderRadius: 6,
   },
   mediaCloseWrap: {
     position: 'absolute',
@@ -619,12 +614,13 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   content: {
-    minHeight: 90,
     fontSize: RFValue(14),
     lineHeight: RFValue(20),
-    marginBottom: RFValue(50),
+    marginBottom: RFValue(20),
     marginTop: RFValue(6),
     textAlign: 'justify',
+    minHeight: RFValue(180),
+    letterSpacing: 1,
   },
   addTextNameWrap: {
     paddingHorizontal: VWValue(10),
@@ -731,12 +727,12 @@ const styles = StyleSheet.create({
   },
   relatedName: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: RFValue(14),
     fontWeight: '500',
   },
   relatedText: {
     color: '#bdbdbd',
-    fontSize: 10,
+    fontSize: RFValue(10),
     fontWeight: '300',
     marginTop: 4,
   },

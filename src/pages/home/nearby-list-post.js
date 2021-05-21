@@ -21,6 +21,7 @@ const NearByListPost = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {location} = useSelector(state => state.home);
+  const {shareNearbyStatus} = useSelector(state => state.home);
 
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
@@ -36,7 +37,13 @@ const NearByListPost = () => {
     return useMemo(() => {
       return (
         <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
-          {index === 0 && NearbyShareComponent()}
+          {index === 0 && (
+            <NearbyShareComponent
+              shareNearbyStatus={shareNearbyStatus}
+              dispatch={dispatch}
+              navigation={navigation}
+            />
+          )}
           {item.item_type === 'Topic' && (
             <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
           )}
@@ -123,10 +130,8 @@ const NearByListPost = () => {
   );
 };
 
-const NearbyShareComponent = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const {shareNearbyStatus} = useSelector(state => state.home);
+const NearbyShareComponent = props => {
+  const {shareNearbyStatus, dispatch, navigation} = props;
 
   const onShareClose = () => {
     dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: false});

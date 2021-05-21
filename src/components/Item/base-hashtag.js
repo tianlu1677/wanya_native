@@ -11,6 +11,8 @@ const BaseHashtag = props => {
   const {savetopic} = useSelector(state => state.home);
   const {type, data} = props;
 
+  const color = ['add-hashtag'].includes(type) ? '#1B5C79' : '#FF8D00';
+
   const goDetail = () => {
     if (type === 'add-hashtag') {
       const topics = {
@@ -30,8 +32,10 @@ const BaseHashtag = props => {
 
   return (
     <Pressable style={styles.hashtagWrap} onPress={goDetail}>
-      <Text style={styles.hashtagName}>#{data.name}</Text>
-      {type === 'add-hashtag' && data.id === 0 && <Text style={styles.newHashTag}>新话题</Text>}
+      <Text style={[styles.hashtagName, {color: color}]}>#{data.name}</Text>
+      {type === 'add-hashtag' && data.id === 0 && (
+        <Text style={[styles.newHashTag, {color: color}]}>新话题</Text>
+      )}
     </Pressable>
   );
 };
@@ -46,7 +50,6 @@ const styles = StyleSheet.create({
   hashtagName: {
     height: RFValue(45),
     lineHeight: RFValue(45),
-    color: '#FF8D00',
     fontSize: 14,
     fontWeight: '400',
     letterSpacing: 1,

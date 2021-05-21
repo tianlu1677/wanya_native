@@ -352,7 +352,7 @@ const cstyles = StyleSheet.create({
     textAlign: 'justify',
   },
   hashtagText: {
-    color: '#ff8d00',
+    color: '#1B5C79',
     marginRight: 3,
   },
 });
