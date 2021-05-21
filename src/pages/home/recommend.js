@@ -30,7 +30,6 @@ import RecommendListPage from './recommend-list-post';
 import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
-  console.log('props', props);
   const dispatch = useDispatch();
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
