@@ -154,7 +154,7 @@ const MainTabScreen = props => {
           name="Recommend"
           component={Recommend}
           options={{gestureEnabled: false}}
-          initialParams={ props.route.params }
+          initialParams={props.route.params}
           listeners={({navigation}) => ({
             tabPress: async e => {
               if (navigation.isFocused()) {

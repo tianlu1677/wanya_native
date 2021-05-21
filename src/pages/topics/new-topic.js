@@ -234,7 +234,10 @@ const NewTopic = props => {
     const data = getValidateForm();
     if (videoSource.length > 0) {
       // 视频上传
-      navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
+      });
       const params = {
         content: {
           video: {...videoSource[0]},
