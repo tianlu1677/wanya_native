@@ -33,8 +33,7 @@ const Recommend = props => {
   const dispatch = useDispatch();
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
-  const [currentKey, setCurrentKey] = useState('recommend');
-
+  const [currentKey, setCurrentKey] = useState(props.route.params.currentKey || 'recommend');
   const MemoVideo = React.memo(() => {
     const {content} = uploadStatus;
     return (

@@ -97,7 +97,7 @@ const TopicDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
-  console.log('detail', detail);
+  // console.log('detail', detail);
 
   return detail ? (
     <KeyboardAvoidingView
