@@ -15,7 +15,7 @@ export const GoBack = props => {
     } else {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Recommend'}],
+        routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
       });
     }
   };

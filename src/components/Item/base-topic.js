@@ -220,6 +220,8 @@ const styles = StyleSheet.create({
   nodeName: {
     fontSize: 11,
     marginLeft: 4,
+    color: '#3c3c3c',
+    fontWeight: '300',
   },
   linkWrapper: {
     flex: 1,

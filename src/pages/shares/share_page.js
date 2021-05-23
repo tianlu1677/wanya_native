@@ -8,6 +8,7 @@ import {
   Image,
   Text,
   Alert,
+  StatusBar,
   Pressable,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -258,6 +259,7 @@ const SharePageModal = props => {
         <ScrollView
           style={{flex: 1, marginBottom: 100, display: loadingView ? 'none' : 'flex'}}
           showsVerticalScrollIndicator={false}>
+          <StatusBar barStyle={'dark-content'} />
           {item_type === 'Topic' && (
             <ShareTopicContent topicDetail={topic} viewShotRef={viewShotRef} />
           )}

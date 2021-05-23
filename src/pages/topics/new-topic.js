@@ -352,7 +352,7 @@ const NewTopic = props => {
                 {v.id ? (
                   <>
                     <Pressable onPress={() => onPreview(index)}>
-                      <FastImg key={index} style={styles.media} source={{uri: v.url}} />
+                      <FastImg mode={'cover'} key={index} style={styles.media} source={{uri: v.url}} />
                     </Pressable>
                     <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
                       <FastImg

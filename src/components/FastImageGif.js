@@ -31,12 +31,11 @@ const FastImgGif = props => {
       style={{width: 10, height: 10, borderRadius: 2, ...props.style}}
       source={source}
       resizeMode={resizeMode}
-      // tintColor={'gray'}
+      tintColor={'FAFAFA'}
       onLoad={e => {
-        onGif(e);
       }}
       onLoadEnd={e => {
-        // setSource(props.source);
+        onGif(e);
       }}
     />
     // <Image
