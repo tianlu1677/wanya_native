@@ -24,9 +24,10 @@ const StickTopHeader = props => {
         <TopHeader
           statusBar={{barStyle: 'light-content', translucent: true, backgroundColor: '#000'}}
           headerStyles={{backgroundColor: 'rgba(1,1,1,0.8)'}}
+          leftButtonStyles={{marginTop: 20}}
           LeftButton={props.showLeftButton ? () => <View /> : null}
           Title={() => (
-            <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>{props.title}</Text>
+            <Text style={{color: 'white', fontSize: 16, fontWeight: '600', marginTop: 20}}>{props.title}</Text>
           )}
         />
       )}

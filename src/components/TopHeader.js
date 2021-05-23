@@ -28,7 +28,7 @@ const TopHeader = props => {
         </View>
       )}
       <View style={[styles.header, props.headerStyles]}>
-        <View style={styles.leftButton}>
+        <View style={[styles.leftButton, props.leftButtonStyles]}>
           {LeftButton ? (
             <LeftButton />
           ) : (
