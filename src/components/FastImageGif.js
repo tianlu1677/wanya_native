@@ -16,10 +16,8 @@ const FastImgGif = props => {
   const resizeMode = modeList[props.mode || 'cover'];
 
   const onGif = event => {
+    // console.log('xxx', props.gif_url)
     if (props.gif_url) {
-      // console.log('props.', props.source)
-      // Image.prefetch(props.gif_url);
-      // setSource({uri: props.gif_url});
       if (source.uri !== props.gif_url) {
         setSource({uri: props.gif_url});
       }
@@ -28,23 +26,17 @@ const FastImgGif = props => {
 
   return (
     <FastImage
-      style={{width: 10, height: 10, borderRadius: 2, ...props.style}}
+      style={{width: 10, height: 10, borderRadius: 2, backgroundColor: '#F3F3F3', ...props.style}}
       source={source}
       resizeMode={resizeMode}
-      tintColor={'FAFAFA'}
+      // tintColor={sourceColor}
       onLoad={e => {
       }}
       onLoadEnd={e => {
         onGif(e);
+
       }}
     />
-    // <Image
-    //   style={{width: 100, height: 100, borderRadius: 2, ...props.style}}
-    //   loadingIndicatorSource={require('../assets/images/red-logo.png')}
-    //   resizeMode={resizeMode}
-    //   source={source}
-    //   onLoad={onGif}
-    // />
   );
 };
 

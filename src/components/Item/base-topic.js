@@ -75,7 +75,7 @@ export const TopicVideoContent = props => {
     <Pressable style={{flex: 1, ...videoAttrStyle}}>
       <FastImageGif
         gif_url={single_cover.link_url}
-        source={{uri: `${single_cover.video_m3u8_url}?vframe/jpg/offset/0/rotate/auto`}}
+        source={{uri: `${single_cover.link_url}?imageView2/2/w/720/interlace/1/format/jpg/q/80`}}
         style={{...styles.imageCover, ...videoAttrStyle}}
       />
       <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
