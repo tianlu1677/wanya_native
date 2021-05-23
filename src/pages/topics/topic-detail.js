@@ -128,7 +128,6 @@ const TopicDetail = ({navigation, route}) => {
           />
         </>
       ) : null}
-
       <CommentList
         type="Topic"
         detail={detail}

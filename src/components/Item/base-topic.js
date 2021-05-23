@@ -60,6 +60,13 @@ export const TopicImageContent = props => {
 };
 
 export const TopicVideoContent = props => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {data} = props;
+  const onGoDetail = () => {
+    // dispatch(dispatchTopicDetail(null));
+    navigation.push('TopicDetail', {topicId: data.id});
+  };
   const {single_cover} = props.data;
   const videoAttr = calculateImg(
     single_cover.width ? single_cover.width : 100,
@@ -72,7 +79,7 @@ export const TopicVideoContent = props => {
   };
 
   return (
-    <Pressable style={{flex: 1, ...videoAttrStyle}}>
+    <Pressable style={{flex: 1, ...videoAttrStyle}} onPress={onGoDetail}>
       <FastImageGif
         gif_url={single_cover.link_url}
         source={{uri: `${single_cover.link_url}?imageView2/2/w/720/interlace/1/format/jpg/q/80`}}

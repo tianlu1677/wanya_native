@@ -10,7 +10,7 @@ import Modal, {
 } from 'react-native-modals';
 import ShareUtil from '@/utils/umeng_share_util';
 import * as WeChat from 'react-native-wechat-lib';
-import {SCREEN_WIDTH} from '@/utils/navbar';
+import {IsIos, SCREEN_WIDTH} from '@/utils/navbar';
 import {dispatchShareItem} from '@/redux/actions';
 import {getShareContent} from '@/api/asset_api';
 import FastImg from '@/components/FastImg';
@@ -140,7 +140,7 @@ const ShareMultiModal = () => {
 
   return (
     <BottomModal
-      height={0.37}
+      height={IsIos ? 0.37 : 0.45}
       width={1}
       rounded
       useNativeDriver={true}
