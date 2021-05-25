@@ -16,17 +16,8 @@ import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import {RFValue} from '@/utils/response-fontsize';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
-import FastImg from '@/components/FastImg';
-import {reportContent} from '@/api/secure_check';
-import ActionSheet from '@/components/ActionSheet';
-import consumer from './consumer'
-import {
-  getAccount,
-  getAccountPosts,
-  followAccount,
-  unfollowAccount,
-  getAccountArticles,
-} from '@/api/account_api';
+
+import consumer from './consumer';
 
 const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 540) / 750);
 
@@ -37,8 +28,6 @@ const ChatDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
 
-  const [accountId] = useState(route.params.accountId);
-  const [account, setAccount] = useState({});
   const [currentWsState, setCurrentWsState] = useState('');
 
   const [value, setValue] = useState('');
@@ -54,49 +43,40 @@ const ChatDetail = ({navigation, route}) => {
         },
         initialized() {
           console.log('initialized');
-
         },
         connected() {
           console.log('connected');
-          setCurrentWsState('connected')
+          setCurrentWsState('connected');
         },
         disconnected() {
           console.log('disconnected');
-          setCurrentWsState('disconnected')
+          setCurrentWsState('disconnected');
         },
         rejected() {
           console.log('rejected');
-          setCurrentWsState('rejected')
+          setCurrentWsState('rejected');
         },
         unsubscribe() {
           console.log('unsubscribe');
-          setCurrentWsState('unsubscribe')
-        }
+          setCurrentWsState('unsubscribe');
+        },
       }
     );
   }, []);
 
   const renderedItem = ({item}) => <Message message={item.message} key={item.key} />;
   const inputSubmitted = event => {
-
     const newMessage = event.nativeEvent.text;
-    console.log('inputSubmitted', newMessage)
+    console.log('inputSubmitted', newMessage);
     chatChannel.send({message: newMessage}); // 向服务器推送消息
     setValue('');
   };
 
   const disconnect = () => {
-    consumer.disconnect()
-  }
-
-  const loadData = async () => {
-    const res = await getAccount(accountId);
-    setAccount(res.data.account);
+    consumer.disconnect();
   };
 
-  useEffect(() => {
-    () => {};
-  }, []);
+  useEffect(() => {}, []);
 
   const Message = ({message}) => (
     <View style={styles.message}>
@@ -126,8 +106,6 @@ const ChatDetail = ({navigation, route}) => {
           <Text>断开连接</Text>
           <Text>当前状态 {currentWsState}</Text>
         </Pressable>
-
-
       </View>
     </KeyboardAvoidingView>
   );
