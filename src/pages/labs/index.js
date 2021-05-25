@@ -181,6 +181,10 @@ const LabIndex = props => {
           <Pressable onPress={() => clickAna()}>
             <Text style={styles.text}>点击统计</Text>
           </Pressable>
+
+          <Pressable onPress={() => navigation.navigate('ChatDetail', {a: 1})}>
+            <Text style={styles.text}>去聊天</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </View>
