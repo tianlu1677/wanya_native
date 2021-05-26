@@ -89,6 +89,9 @@ import SystemNotify from '@/pages/notify/system-notify';
 import FollowNotify from '@/pages/notify/follow-notify';
 import MentionNotify from '@/pages/notify/mention-notify';
 
+// 聊天
+import ChatDetail from '@/pages/chats/chat-detail'; //关注页面相关推荐
+
 // 公用页面
 import RelatedAccounts from '@/pages/home/related-account-list'; //关注页面相关推荐
 import ChooseCity from '@/components/List/choose-city'; //选择城市
@@ -255,6 +258,12 @@ const notifyRouter = [
   {name: 'SystemNotify', component: SystemNotify, options: {title: '顽鸦小助手'}},
 ];
 
+const chatRouter = [
+  {
+    name: 'ChatDetail', component: ChatDetail, options: { title: '聊天' }
+  }
+]
+
 const authRouter = [
   {name: 'SocialLogin', component: SocialLogin, options: {headerShown: false}},
   {name: 'PhoneLogin', component: PhoneLogin},
@@ -283,6 +292,7 @@ export const MainRouters = [
   ...commonRouter,
   ...LabRouter,
   ...authRouter,
+  ...chatRouter
 ];
 
 export const AuthRouters = authRouter;
