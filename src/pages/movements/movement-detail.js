@@ -100,7 +100,8 @@ const MovementDetail = ({navigation, route}) => {
   return detail ? (
     <View style={styles.wrapper}>
       <StatusBar barStyle="light-content" backgroundColor={'black'} />
-      <CollapsibleHeader
+      <Header />
+      {/* <CollapsibleHeader
         tabBarHeitabBarHeightght={BarHeight}
         headerHeight={HEADER_HEIGHT + BarHeight}
         currentKey={currentKey}
@@ -108,7 +109,7 @@ const MovementDetail = ({navigation, route}) => {
         renderHeader={<Header />}
         separator={true}
         tabData={[]}
-      />
+      /> */}
     </View>
   ) : (
     <Loading />
