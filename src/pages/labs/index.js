@@ -26,7 +26,6 @@ const LabIndex = props => {
     setDeviceToken(device_token);
   };
 
-
   const [showWidget, toggleWidget] = useState(false);
   const user = {
     identifier: 'john@gmail.com',
@@ -35,7 +34,7 @@ const LabIndex = props => {
     email: 'john@gmail.com',
     identifier_hash: '',
   };
-  const customAttributes = { accountId: 1, pricingPlan: 'paid', status: 'active' };
+  const customAttributes = {accountId: 1, pricingPlan: 'paid', status: 'active'};
   const websiteToken = 'hpXWDG6EvLXDjQeEArdcgVVh';
   const baseUrl = 'https://chatwood.vanyah.cn';
   const locale = 'zh_CN';
@@ -54,7 +53,7 @@ const LabIndex = props => {
 
   const shareQQ = () => {
     console.log('shareQQ,');
-    try{
+    try {
       ShareUtil.share(
         'sssss',
         'http://dev.umeng.com/images/tab2_1.png',
@@ -66,15 +65,14 @@ const LabIndex = props => {
           // this.setState({result:message});
         }
       );
-    } catch (e){
-      console.log('qq', e)
+    } catch (e) {
+      console.log('qq', e);
     }
-
   };
 
   const shareQQZone = () => {
     console.log('shareQQZone,');
-    try{
+    try {
       ShareUtil.share(
         'sssss',
         'http://dev.umeng.com/images/tab2_1.png',
@@ -87,45 +85,41 @@ const LabIndex = props => {
         }
       );
     } catch (e) {
-      console.log('eerr', e)
+      console.log('eerr', e);
     }
-
-
   };
 
   const shareWeibo = () => {
     console.log('shareWeibo');
-    try{
-    ShareUtil.share(
-      'sssss',
-      'http://xinxuefile.meirixinxue.com/assets/2021/b94d2a89-54c5-47a7-8cfe-b70850ab538c.jpg',
-      'http://www.umeng.com/',
-      'title',
-      1,
-      (code, message) => {
-        console.log('code,', code, message);
-        // this.setState({result: message});
-      }
-    );
-    }catch (e) {
-      console.log('error shareWeibo', e)
+    try {
+      ShareUtil.share(
+        'sssss',
+        'http://xinxuefile.meirixinxue.com/assets/2021/b94d2a89-54c5-47a7-8cfe-b70850ab538c.jpg',
+        'http://www.umeng.com/',
+        'title',
+        1,
+        (code, message) => {
+          console.log('code,', code, message);
+          // this.setState({result: message});
+        }
+      );
+    } catch (e) {
+      console.log('error shareWeibo', e);
     }
-
   };
 
   const loginQQ = () => {
     console.log('shareWeibo');
     ShareUtil.auth(0, res => {
-      console.log('res', res)
+      console.log('res', res);
     });
   };
 
   const clickAna = () => {
-    console.log('clickAna')
+    console.log('clickAna');
     AnalyticsUtil.onEvent('test');
     // AnalyticsUtil.onEventObject('test', {a: 1});
-  }
-
+  };
 
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -184,6 +178,10 @@ const LabIndex = props => {
 
           <Pressable onPress={() => navigation.navigate('ChatDetail', {a: 1})}>
             <Text style={styles.text}>去聊天</Text>
+          </Pressable>
+
+          <Pressable onPress={() => navigation.navigate('ChatDetailCommon', {a: 1})}>
+            <Text style={styles.text}>再去聊天</Text>
           </Pressable>
         </View>
       </ScrollView>

@@ -90,7 +90,8 @@ import FollowNotify from '@/pages/notify/follow-notify';
 import MentionNotify from '@/pages/notify/mention-notify';
 
 // 聊天
-import ChatDetail from '@/pages/chats/chat-detail'; //关注页面相关推荐
+import ChatDetail from '@/pages/chats/chat-detail';
+import ChatDetailCommon from '@/pages/chats/chat-detail-common';
 
 // 公用页面
 import RelatedAccounts from '@/pages/home/related-account-list'; //关注页面相关推荐
@@ -260,9 +261,16 @@ const notifyRouter = [
 
 const chatRouter = [
   {
-    name: 'ChatDetail', component: ChatDetail, options: { title: '聊天' }
-  }
-]
+    name: 'ChatDetail',
+    component: ChatDetail,
+    options: {title: '聊天'},
+  },
+  {
+    name: 'ChatDetailCommon',
+    component: ChatDetailCommon,
+    options: {title: '聊天'},
+  },
+];
 
 const authRouter = [
   {name: 'SocialLogin', component: SocialLogin, options: {headerShown: false}},
@@ -292,7 +300,7 @@ export const MainRouters = [
   ...commonRouter,
   ...LabRouter,
   ...authRouter,
-  ...chatRouter
+  ...chatRouter,
 ];
 
 export const AuthRouters = authRouter;
