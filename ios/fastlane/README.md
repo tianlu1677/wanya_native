@@ -21,6 +21,11 @@ or alternatively using `brew install fastlane`
 fastlane ios beta
 ```
 Description of what the lane does
+### ios deploy
+```
+fastlane ios deploy
+```
+
 
 ----
 
