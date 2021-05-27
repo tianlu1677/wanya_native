@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {ScrollView, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import {RFValue} from '@/utils/response-fontsize';
-const DeviceWidth = Dimensions.get('window');
+const DeviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
   const scrollRef = useRef(null);
