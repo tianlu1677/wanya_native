@@ -180,8 +180,8 @@ const LabIndex = props => {
             <Text style={styles.text}>去聊天</Text>
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('ChatDetailCommon', {a: 1})}>
-            <Text style={styles.text}>再去聊天</Text>
+          <Pressable onPress={() => navigation.navigate('ChatList', {a: 1})}>
+            <Text style={styles.text}>私信列表</Text>
           </Pressable>
         </View>
       </ScrollView>

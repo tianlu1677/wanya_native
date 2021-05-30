@@ -15,6 +15,7 @@ const getWebSocketURL = async () => {
 const consumer = createConsumer(
   'wss://xinxue.meirixinxue.com//cable?auth_token=eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Mzc4MDc3NjQsImlzcyI6Im1laXJpeGludWUiLCJhdWQiOiJjbGllbnQiLCJhY2NvdW50X2lkIjozMTB9.VZ1DPwh1FUytUgQ9qUzemictbkdYF85d-fGbYuANu7I'
 );
+
 console.log('consumer', consumer);
 
 export default consumer;

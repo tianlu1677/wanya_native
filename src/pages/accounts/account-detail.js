@@ -126,6 +126,8 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
+  console.log(account);
+
   const Header = () => {
     return (
       <>
