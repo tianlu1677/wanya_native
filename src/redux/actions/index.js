@@ -15,7 +15,8 @@ import {
   THEORY_VIDEO_STATE,
   THEORY_DETAIL,
   LOGOUT_SUCCESS,
-  LOAD_ALL_CITY_SUCCESS
+  LOAD_ALL_CITY_SUCCESS,
+  ACCOUNT_SAVE_TOKEN
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -85,6 +86,7 @@ export const dispatchSetAuthToken = (token = '') => async dispatch => {
   dispatchCurrentAccount();
   Helper.setData('auth_token', token);
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
+  dispatch({type: ACCOUNT_SAVE_TOKEN, userToken: token});
 };
 
 // 预览图片

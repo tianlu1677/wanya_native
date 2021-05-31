@@ -31,16 +31,18 @@ const ChartDetailCommon = props => {
   const {uuid} = props.route.params;
   const state1 = useSelector(state => state);
 
-  console.log(state1);
+  // console.log(state1);
   const {currentAccount, userToken} = useSelector(state => state.account);
+  const {auth_token} = useSelector(state => state.login);
   const [detail, setDetail] = useState(null);
   const [messages, setMessages] = useState([]);
 
   const chatChannel = useMemo(() => {
+    console.log('auth_token', auth_token)
     return createConsumer(
-      `wss://xinxue.meirixinxue.com//cable?auth_token=${userToken}`
+      `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`
     ).subscriptions.create(
-      {channel: 'ChatChannel', room: `chat_${uuid}`},
+      {channel: 'ChatChannel', room: `${uuid}`},
       {
         received(data) {
           console.log('received', data);
@@ -93,7 +95,7 @@ const ChartDetailCommon = props => {
     console.log(type, content, isInverted);
     const params = {uuid, conversation: {category: type, content}};
     const res = await getChatGroupsSendMessage(params);
-    console.log('res send', res);
+    // console.log('res send', res);
 
     // chatChannel.send({message: newMessage}); // 向服务器推送消息
   };
@@ -101,8 +103,8 @@ const ChartDetailCommon = props => {
   const loadData = async () => {
     const params = {uuid: uuid};
     const res = await getChatGroupsConversations(params);
-    console.log('res.data.conversations', res.data.conversations);
-    console.log('TransLateData', TransLateData(res.data.conversations));
+    // console.log('res.data.conversations', res.data.conversations);
+    // console.log('TransLateData', TransLateData(res.data.conversations));
     setMessages(TransLateData(res.data.conversations));
   };
 
