@@ -59,6 +59,8 @@ class App extends Component {
     if (scale > 1) {
       scale = 1.08;
     }
+
+    this.saveToken(); //保存token
     this.getIndexTabData(); //获取首页频道信息
     // console.log('scale', scale);
 
@@ -80,10 +82,8 @@ class App extends Component {
     TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
       defaultProps: false,
       allowFontScaling: false,
-      textBreakStrategy: 'simple'
+      textBreakStrategy: 'simple',
     });
-
-
   }
 
   loadSplashImg = () => {
@@ -113,8 +113,6 @@ class App extends Component {
       );
     });
   };
-
-
 
   notificationListener = async notification => {
     //notificationListener result {"badge": "1", "content": "顽鸦", "messageID": "58546911656695959", "notificationEventType": "notificationArrived", "ring": "default", "title": "顽鸦"}
@@ -167,10 +165,10 @@ class App extends Component {
     JPush.getRegistrationID(this.onRegister);
     JPush.addNotificationListener(this.notificationListener);
     // JPush.addCustomMessagegListener(this.customMessageListener);
-    await JPush.init()
+    await JPush.init();
   };
   // 通知相关内容
-  onRegister = async (response) => {
+  onRegister = async response => {
     console.log('onRegister', response);
     // const data = {register_token: response.registerID, platform: Platform.OS};
     await Helper.setData('registerId', response.registerID);
@@ -202,6 +200,11 @@ class App extends Component {
   componentWillUnmount() {
     this.networdunsubscribe && this.networdunsubscribe();
   }
+
+  saveToken = async () => {
+    const auth_token = await Helper.getData('auth_token');
+    store.dispatch({type: action.ACCOUNT_SAVE_TOKEN, value: auth_token});
+  };
 
   // 提前获取基本数据
   getIndexTabData = async () => {
