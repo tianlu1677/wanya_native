@@ -48,7 +48,7 @@ const ChartDetailCommon = props => {
   const [messages, setMessages] = useState([]);
 
   const chatChannel = useMemo(() => {
-    console.log('auth_token', auth_token)
+    console.log('auth_token', auth_token);
     return createConsumer(
       `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`
     ).subscriptions.create(
@@ -97,8 +97,8 @@ const ChartDetailCommon = props => {
           console.log('unsubscribe');
           // setCurrentWsState('unsubscribe');
         },
-        unsubscribed() {          
-          this.perform('unsubscribed')
+        unsubscribed() {
+          this.perform('unsubscribed');
           // setCurrentWsState('unsubscribe');
         },
       }
@@ -110,7 +110,7 @@ const ChartDetailCommon = props => {
     const params = {uuid, conversation: {category: type, content}};
     const res = await getChatGroupsSendMessage(params);
     // console.log('res send', res);
-    // console.log(chatChannel.unsubscribe())    
+    // console.log(chatChannel.unsubscribe())
     // chatChannel.send({message: newMessage}); // 向服务器推送消息
   };
 
@@ -132,19 +132,18 @@ const ChartDetailCommon = props => {
 
   return (
     <View>
-    
-    <ChatScreen
-      ref={ref}
-      messageList={messages}
-      sendMessage={sendMessage}
-      isIPhoneX={isIphoneX}
-      userProfile={{
-        id: currentAccount.id,
-        avatar: currentAccount.avatar_url,
-        nickName: currentAccount.nickname,
-      }}
-    />
-    <Button title="unsubscribed" onPress={unsubscribed}></Button>
+      <ChatScreen
+        ref={ref}
+        messageList={messages}
+        sendMessage={sendMessage}
+        isIPhoneX={isIphoneX}
+        userProfile={{
+          id: currentAccount.id,
+          avatar: currentAccount.avatar_url,
+          nickName: currentAccount.nickname,
+        }}
+      />
+      <Button title="unsubscribed" onPress={unsubscribed} />
     </View>
   );
 };
