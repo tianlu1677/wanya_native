@@ -6,6 +6,7 @@ import {
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_UN_FOLLOW_SUCCESS,
   ACCOUNT_EMPTY_SUCCESS,
+  ACCOUNT_SAVE_TOKEN,
 } from '../constants/';
 
 const defaultState = {
@@ -57,6 +58,11 @@ function accountReducer(state = defaultState, action) {
           currentBaseInfo: {},
         });
       }
+    case ACCOUNT_SAVE_TOKEN:
+      return (state = {
+        ...state,
+        userToken: action.value,
+      });
     default:
       return state;
   }
