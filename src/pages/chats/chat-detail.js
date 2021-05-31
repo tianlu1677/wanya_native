@@ -38,7 +38,7 @@ const ChatDetail = ({navigation, route}) => {
       {channel: 'ChatChannel', room: 'main_room'},
       {
         received(data) {
-          console.log('received', data);
+          // console.log('received', data);
           setMessages(messages => messages.concat(data));
         },
         initialized() {

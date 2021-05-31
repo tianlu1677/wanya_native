@@ -3,6 +3,16 @@ import {isIphoneX} from 'react-native-iphone-x-helper';
 import {createConsumer} from '@rails/actioncable';
 import {useDispatch, useSelector} from 'react-redux';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  KeyboardAvoidingView,
+  FlatList,
+  Pressable,
+  Button,
+} from 'react-native';
 import consumer from './consumer';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 
@@ -45,7 +55,7 @@ const ChartDetailCommon = props => {
       {channel: 'ChatChannel', room: `${uuid}`},
       {
         received(data) {
-          console.log('received', data);
+          console.log('received', '1111');
           // const newMsg = [...messages];
           // newMsg.push({
           //   id: `${new Date().getTime()}`,
@@ -87,6 +97,10 @@ const ChartDetailCommon = props => {
           console.log('unsubscribe');
           // setCurrentWsState('unsubscribe');
         },
+        unsubscribed() {          
+          this.perform('unsubscribed')
+          // setCurrentWsState('unsubscribe');
+        },
       }
     );
   }, []);
@@ -96,8 +110,12 @@ const ChartDetailCommon = props => {
     const params = {uuid, conversation: {category: type, content}};
     const res = await getChatGroupsSendMessage(params);
     // console.log('res send', res);
-
+    // console.log(chatChannel.unsubscribe())    
     // chatChannel.send({message: newMessage}); // 向服务器推送消息
+  };
+
+  const unsubscribed = () => {
+    chatChannel.unsubscribed();
   };
 
   const loadData = async () => {
@@ -113,6 +131,8 @@ const ChartDetailCommon = props => {
   }, []);
 
   return (
+    <View>
+    
     <ChatScreen
       ref={ref}
       messageList={messages}
@@ -124,6 +144,8 @@ const ChartDetailCommon = props => {
         nickName: currentAccount.nickname,
       }}
     />
+    <Button title="unsubscribed" onPress={unsubscribed}></Button>
+    </View>
   );
 };
 
