@@ -12,6 +12,7 @@ import {draftTheory} from '@/api/theory_api';
 import NotifyIndex from '@/pages/notify/notify-index';
 import Recommend from '@/pages/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
+import WebView from '@/pages/webview/webview'; //webview
 
 const {width} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
@@ -166,7 +167,7 @@ const MainTabScreen = props => {
             },
           })}
         />
-        <Tab.Screen name="Discovery" component={Discovery} options={{}} />
+        <Tab.Screen name="Discovery" component={Discovery} options={{}} />        
       </Tab.Navigator>
     </>
   );
