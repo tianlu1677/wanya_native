@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Pressable} from 'react-native';
+import {useSelector} from 'react-redux';
 import {getChatGroups, getChatGroupsDetail} from '@/api/chat_api';
 
 const ChatList = props => {
   const {navigation} = props;
+  const {currentAccount} = useSelector(state => state.account);
   const [listData, setListData] = useState([]);
 
   // const createChat = async () => {
@@ -32,7 +34,9 @@ const ChatList = props => {
               navigation.push('ChatDetailCommon', {uuid: item.uuid});
             }}>
             <Text style={{height: 50, lineHeight: 50, backgroundColor: 'pink', marginBottom: 10}}>
-              {item.receiver.nickname}
+              {currentAccount.id === item.creator.id
+                ? item.receiver.nickname
+                : item.creator.nickname}
             </Text>
           </Pressable>
         );

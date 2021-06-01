@@ -19,6 +19,8 @@ const ChartDetailCommon = props => {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
 
+  console.log(messages);
+
   const Consumer = useMemo(() => {
     const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
     return createConsumer(url).subscriptions.create(
@@ -54,6 +56,7 @@ const ChartDetailCommon = props => {
   const loadData = async () => {
     const params = {uuid: uuid};
     const res = await getChatGroupsConversations(params);
+    console.log('res', res);
     setMessages(TransLateData(res.data.conversations));
     setLoading(false);
   };
