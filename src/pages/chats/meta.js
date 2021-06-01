@@ -5,9 +5,9 @@ export const translate = item => {
     content: item.content,
     targetId: item.creator.id.toString(),
     chatInfo: {
-      avatar: item.target_account.avatar_url,
-      id: item.target_account.id.toString(),
-      nickName: item.target_account.nickname,
+      avatar: item.creator.avatar_url,
+      id: item.creator.id.toString(),
+      nickName: item.creator.nickname,
     },
     renderTime: true,
     sendStatus: 1,

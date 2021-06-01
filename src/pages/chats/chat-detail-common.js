@@ -55,6 +55,8 @@ const ChartDetailCommon = props => {
 
   const loadData = async () => {
     const params = {uuid: uuid};
+    console.log('params', params);
+
     const res = await getChatGroupsConversations(params);
     console.log('res', res);
     setMessages(TransLateData(res.data.conversations));
