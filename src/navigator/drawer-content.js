@@ -49,6 +49,11 @@ const DrawerContent = ({navigation}) => {
         <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>反馈</Text>
       </Pressable>
+      <Pressable style={styles.drawerItem} onPress={() => navigation.navigate('ChatList')}>
+        <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
+        <Text style={styles.drawerText}>私信列表</Text>
+      </Pressable>
+
       <Pressable style={[styles.drawerItem, styles.drawerSetting]} onPress={onSettings}>
         <IconFont name="shezhi" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>设置</Text>

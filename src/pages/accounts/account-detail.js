@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Button} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import {Avator, PlayScore, BottomModal, TopBack} from '@/components/NodeComponents';
@@ -24,6 +24,7 @@ import {
   unfollowAccount,
   getAccountArticles,
 } from '@/api/account_api';
+import {getChatGroupsDetail} from '@/api/chat_api';
 
 const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 540) / 750);
 
@@ -55,6 +56,14 @@ const AccountDetail = ({navigation, route}) => {
 
   const goFollowerAccounts = () => {
     navigation.push('FollowerAccounts', {accountId: account.id});
+  };
+
+  const createChat = async () => {
+    const params = {receiver_id: account.id};
+    const res = await getChatGroupsDetail(params);
+    const {uuid} = res.data.chat_group;
+    console.log(res.data.chat_group, uuid);
+    navigation.push('ChatDetailCommon', {uuid});
   };
 
   const onFollow = async () => {
@@ -221,6 +230,9 @@ const AccountDetail = ({navigation, route}) => {
             <Pressable style={styles.numberItem} onPress={goFollowerAccounts}>
               <Text style={styles.numberCount}>{account.followers_count}</Text>
               <Text style={styles.numberTitle}>粉丝</Text>
+            </Pressable>
+            <Pressable onPress={createChat}>
+              <Text style={{color: '#fff', marginTop: 10}}>私聊</Text>
             </Pressable>
           </View>
         </Pressable>

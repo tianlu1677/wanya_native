@@ -16,129 +16,68 @@ const ChartDetailCommon = props => {
     account: {currentAccount},
     login: {auth_token},
   } = useSelector(state => state);
-  const [messages, setMessages] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [messages, setMessages] = useState([]);
 
-  const consumer = createConsumer(`wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`);
-  consumer.subscriptions.create(
-    {channel: 'ChatChannel', room: `${uuid}`},
-    {
-      received(data) {
-        console.log('received', data);
-        const {conversation} = data;
-        const current = messages.find(item => item.id === conversation.id);
-        if (current) {
-          return;
-        }
-        const newMessage = translate(conversation);
-        setMessages([newMessage, ...messages]);
-      },
-      initialized() {
-        console.log('initialized');
-      },
-      connected() {
-        console.log('connected');
-        // setCurrentWsState('connected');
-      },
-      disconnected() {
-        console.log('disconnected');
-        // setCurrentWsState('disconnected');
-      },
-      rejected() {
-        console.log('rejected');
-        // setCurrentWsState('rejected');
-      },
-      unsubscribe() {
-        console.log('unsubscribe');
-        // setCurrentWsState('unsubscribe');
-      },
-      unsubscribed() {
-        this.perform('unsubscribed');
-        // setCurrentWsState('unsubscribe');
-      },
-    }
-  );
-
-  // const chatChannel = useMemo(() => {
-  //   const consumer = createConsumer(`wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`);
-  //   consumer.subscriptions.create(
-  //     {channel: 'ChatChannel', room: `${uuid}`},
-  //     {
-  //       received(data) {
-  //         console.log('received', data);
-  //         const {conversation} = data;
-  //         const newMessage = translate(conversation);
-  //         setMessages([newMessage, ...messages]);
-  //       },
-  //       initialized() {
-  //         console.log('initialized');
-  //       },
-  //       connected() {
-  //         console.log('connected');
-  //         // setCurrentWsState('connected');
-  //       },
-  //       disconnected() {
-  //         console.log('disconnected');
-  //         // setCurrentWsState('disconnected');
-  //       },
-  //       rejected() {
-  //         console.log('rejected');
-  //         // setCurrentWsState('rejected');
-  //       },
-  //       unsubscribe() {
-  //         console.log('unsubscribe');
-  //         // setCurrentWsState('unsubscribe');
-  //       },
-  //       unsubscribed() {
-  //         this.perform('unsubscribed');
-  //         // setCurrentWsState('unsubscribe');
-  //       },
-  //     }
-  //   );
-  //   return consumer;
-  // }, []);
+  const Consumer = useMemo(() => {
+    const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
+    return createConsumer(url).subscriptions.create(
+      {channel: 'ChatChannel', room: `${uuid}`},
+      {
+        received(data) {
+          setMessages(m => m.concat(translate(data.conversation)));
+        },
+        initialized() {
+          console.log('initialized');
+        },
+        connected() {
+          console.log('connected');
+        },
+        disconnected() {
+          console.log('disconnected');
+        },
+        rejected() {
+          console.log('rejected');
+        },
+        unsubscribe() {
+          console.log('unsubscribe');
+        },
+      }
+    );
+  }, []);
 
   const sendMessage = async (type, content, isInverted) => {
-    console.log(type, content, isInverted);
-    // chatChannel.unsubscribe();
     const params = {uuid, conversation: {category: type, content}};
     const res = await getChatGroupsSendMessage(params);
-    // console.log('res send', res);
-    // console.log(chatChannel.unsubscribe())
-    // chatChannel.send({message: newMessage}); // 向服务器推送消息
-  };
-
-  const unsubscribed = () => {
-    consumer.unsubscribed();
   };
 
   const loadData = async () => {
     const params = {uuid: uuid};
     const res = await getChatGroupsConversations(params);
     setMessages(TransLateData(res.data.conversations));
+    setLoading(false);
   };
 
   useEffect(() => {
     loadData();
+    return () => {
+      Consumer.unsubscribe();
+    };
   }, []);
 
-  console.log('messages', messages);
-
-  return messages ? (
-    <View>
-      <ChatScreen
-        messageList={messages}
-        sendMessage={sendMessage}
-        isIPhoneX={isIphoneX}
-        userProfile={{
-          id: currentAccount.id,
-          avatar: currentAccount.avatar_url,
-          nickName: currentAccount.nickname,
-        }}
-      />
-      <Button title="unsubscribed" onPress={unsubscribed} />
-    </View>
-  ) : (
+  return loading ? (
     <Loading />
+  ) : (
+    <ChatScreen
+      messageList={messages}
+      sendMessage={sendMessage}
+      isIPhoneX={isIphoneX()}
+      userProfile={{
+        id: currentAccount.id.toString(),
+        avatar: currentAccount.avatar_url,
+        nickName: currentAccount.nickname,
+      }}
+    />
   );
 };
 

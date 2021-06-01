@@ -6,17 +6,16 @@ const ChatList = props => {
   const {navigation} = props;
   const [listData, setListData] = useState([]);
 
-  const createChat = async () => {
-    const params = {receiver_id: 1106};
-    const res = await getChatGroupsDetail(params);
-    console.log(res);
-  };
+  // const createChat = async () => {
+  //   const params = {receiver_id: 1106};
+  //   const res = await getChatGroupsDetail(params);
+  //   console.log(res);
+  // };
 
   const loadData = async () => {
     const res = await getChatGroups();
     console.log(res.data.chat_groups);
     setListData(res.data.chat_groups);
-    createChat();
   };
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const ChatList = props => {
             onPress={() => {
               navigation.push('ChatDetailCommon', {uuid: item.uuid});
             }}>
-            <Text style={{height: 50, lineHeight: 50, backgroundColor: 'pink'}}>
+            <Text style={{height: 50, lineHeight: 50, backgroundColor: 'pink', marginBottom: 10}}>
               {item.receiver.nickname}
             </Text>
           </Pressable>
