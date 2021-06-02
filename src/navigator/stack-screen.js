@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import FastImg from '@/components/FastImg';
 import MainTabScreen from './main-tab-screen';
 import {MainRouters, AuthRouters} from './config';
+import {useNavigation, useRoute} from '@react-navigation/native';
 const BackBlack = require('@/assets/images/back.png');
 const BackWhite = require('@/assets/images/back-white.png');
 
@@ -11,7 +12,8 @@ const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 const HeaderLeft = props => {
-  const {navigation, image} = props;
+  const {image} = props;
+  const navigation = useNavigation();
   return (
     <Pressable
       hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}

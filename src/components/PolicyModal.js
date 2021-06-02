@@ -7,13 +7,12 @@ import * as RootNavigation from '@/navigator/root-navigation';
 import {BaseApiUrl} from '@/utils/config';
 import {useFocusEffect} from '@react-navigation/native';
 
-const PolicyModal = ({navigation, route}) => {
-  const [showModal, setShowModal] = useState(false);
+const PolicyModal = ({navigation, route, canShowAgree, canShowAgreeFunc}) => {  
   const [cancelText, setCancelText] = useState('拒绝');
   const agreePolicy = async () => {
     console.log('cancel');
-    Helper.setData('agree_policy', 'ok');
-    setShowModal(false);
+    Helper.setData('agree_policy', 'ok');    
+    canShowAgreeFunc(false)
     console.log('showModal', showModal);
   };
 
@@ -21,7 +20,8 @@ const PolicyModal = ({navigation, route}) => {
     const agree_policy_status = await Helper.getData('agree_policy');
     // console.log('agree_policy_status', agree_policy_status)
     if (agree_policy_status !== 'ok') {
-      setShowModal(true);
+      
+      canShowAgreeFunc(true)
     }
   };
 
@@ -31,8 +31,7 @@ const PolicyModal = ({navigation, route}) => {
         sourceUrl: `${BaseApiUrl}/home/private_policy`,
         title: '顽鸦隐私政策',
         bgColor: 'black',
-      });
-      setShowModal(false);
+      });    
     }
     if (type === 'user') {
       RootNavigation.navigate('WebView', {
@@ -40,8 +39,9 @@ const PolicyModal = ({navigation, route}) => {
         title: '顽鸦用户协议',
         bgColor: 'black',
       });
-      setShowModal(false);
+      
     }
+    canShowAgreeFunc(false)
   }
 
   const rejectPolicy = () => {
@@ -61,11 +61,11 @@ const PolicyModal = ({navigation, route}) => {
 
   return (
     <>
-      {showModal && (
+      {canShowAgree && (
         <Modal
           animationType="fade"
           transparent={true}
-          visible={showModal}
+          visible={canShowAgree}
           statusBarTranslucent={true}
           // presentationStyle={'fillScreen'}
           onRequestClose={() => {

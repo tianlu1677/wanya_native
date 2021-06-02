@@ -20,8 +20,6 @@ const CategoryComponent = props => {
     category: {movement, space, activity, shop_store, shop_brand},
   } = props;
 
-  console.log(location);
-
   const goPageMethod = name => {
     dispatch({
       type: action.GET_LOCATION,

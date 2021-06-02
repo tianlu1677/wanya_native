@@ -25,7 +25,7 @@ import {RFValue} from '@/utils/response-fontsize';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
-  // const [isValidCode, setIsValidCode] = useState(false);
+  const [canShowAgree, setCanShowAgree] = useState(false);
   const dispatch = useDispatch();
 
   const phoneLogin = () => {
@@ -224,9 +224,11 @@ const SocialLogin = ({navigation, route}) => {
           <Pressable
             style={styles.ruleWrapper}
             hitSlop={{left: 10, right: 10, top: 30}}
-            onPress={() => {}}>
+            onPress={() => {if(!IsIos) { setCanShowAgree(!canShowAgree) } }}>
             <View style={styles.checkbox}>
-              <IconFont name="yixuan" size={16} color="red" />
+            {
+              !canShowAgree && <IconFont name="yixuan" size={16} color="red" />
+            }
             </View>
           </Pressable>
 
@@ -249,7 +251,7 @@ const SocialLogin = ({navigation, route}) => {
         </View>
       </ImageBackground>
 
-      {!IsIos && <PolicyModal />}
+      {!IsIos && <PolicyModal canShowAgree={canShowAgree} canShowAgreeFunc={(status) => {setCanShowAgree(status) }} />}
     </View>
   );
 };
