@@ -1,10 +1,16 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, Pressable, Button} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import StickTopHeader from '@/components/StickTopHeader';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
+import Loading from '@/components/Loading';
+import FastImg from '@/components/FastImg';
+import IconFont from '@/iconfont';
+
 import {Avator, PlayScore, BottomModal, TopBack} from '@/components/NodeComponents';
 import {
   getAccount,
@@ -14,15 +20,37 @@ import {
   getAccountArticles,
 } from '@/api/account_api';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
-import {RFValue} from '@/utils/response-fontsize';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
+import {AccountDetailBgImg} from '@/utils/default-image';
+import PersonalImg from '@/assets/images/personal.png';
+import BrandImg from '@/assets/images/brand.png';
+
+const TOP_HEADER = RFValue(110);
+const BOTTOM_HEADER = RFValue(230);
 
 const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 540) / 750);
 
+const filterScore = value => {
+  if (value >= 10000) {
+    const num = Math.round((value / 10000) * 10) / 10;
+    return `${num}w`;
+  } else {
+    return value;
+  }
+};
+
 const AccountDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const accountId = route.params.accountId;
   const [currentKey, setCurrentKey] = useState('publish');
-  const [account, setAccount] = useState({});
+  const [account, setAccount] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
+
+  const onPreview = () => {
+    const data = {index: 0, visible: true, images: [{url: account.avatar_url}]};
+    dispatch(dispatchPreviewImage(data));
+  };
 
   const PublishList = () => {
     return (
@@ -47,16 +75,85 @@ const AccountDetail = ({navigation, route}) => {
     return <ArticleList request={{api: getAccountArticles, params}} />;
   };
 
+  const loadData = async () => {
+    const res = await getAccount(accountId);
+    setAccount(res.data.account);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  console.log(account);
+
   const Header = () => {
+    const defaultImage = account.background_img_url || AccountDetailBgImg;
     return (
       <>
-        <View style={{height: BarHeight, backgroundColor: 'black'}} />
         <TopBack top={BarHeight + RFValue(12)} onReportClick={() => setShowActionSheet(true)} />
+        <View style={{height: BarHeight, backgroundColor: 'black'}} />
+        <View style={styles.header}>
+          <View style={styles.topHeader}>
+            <View style={styles.coverOpacity} />
+            <FastImg source={{uri: defaultImage}} mode={'cover'} style={styles.imageCover} />
+            <View style={styles.topHeaderContent}>
+              <Avator
+                size={RFValue(50)}
+                account={account}
+                isShowSettledIcon={false}
+                handleClick={onPreview}
+              />
+              <View style={styles.countWrap}>
+                <View style={styles.countContent}>
+                  <Text style={styles.countNum}>{account.get_praises_count}</Text>
+                  <Text style={styles.countText}>获赞</Text>
+                </View>
+                <View style={styles.countContent}>
+                  <Text style={styles.countNum}>{filterScore(account.play_score)}</Text>
+                  <Text style={styles.countText}>顽力值</Text>
+                </View>
+                <View style={styles.countContent}>
+                  <Text style={styles.countNum}>{account.following_count}</Text>
+                  <Text style={styles.countText}>关注</Text>
+                </View>
+                <View style={styles.countContent}>
+                  <Text style={styles.countNum}>{account.followers_count}</Text>
+                  <Text style={styles.countText}>粉丝</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={styles.bottomHeader}>
+            <Text style={styles.nickname}>{account.nickname}</Text>
+            <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
+            {['personal', 'brand'].includes(account.settled_type) && (
+              <View style={styles.settledWrap}>
+                <FastImg
+                  style={styles.settledIcon}
+                  source={account.settled_type === 'personal' ? PersonalImg : BrandImg}
+                />
+                <Text style={styles.settledText}>顽鸦认证：{account.settled_name}</Text>
+              </View>
+            )}
+            <View style={styles.infoWrap}>
+              <IconFont name={account.gender} size={13} style={styles.maleIcon} />
+              <Text style={styles.introtag}>{account.age || '18'}岁</Text>
+              <Text style={styles.introtag}>{account.province || '未知街区'}</Text>
+            </View>
+            <Text style={styles.introWrap} numberOfLines={3} onPress={() => setShowModal(true)}>
+              {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'}
+            </Text>
+            <View style={styles.headerBtnWrap}>
+              <Text style={[styles.headerBtn, styles.followBtn]}>关注</Text>
+              <Text style={[styles.headerBtn, styles.chatBtn]}>私聊</Text>
+            </View>
+          </View>
+        </View>
       </>
     );
   };
 
-  return (
+  return account ? (
     <CollapsibleHeader
       tabBarHeight={BarHeight}
       headerHeight={HEADER_HEIGHT + BarHeight}
@@ -87,7 +184,140 @@ const AccountDetail = ({navigation, route}) => {
         },
       ]}
     />
+  ) : (
+    <Loading />
   );
 };
+
+const position = {width: SCREEN_WIDTH, position: 'absolute'};
+const styles = StyleSheet.create({
+  header: {
+    // backgroundColor: 'pink',
+  },
+  topHeader: {
+    height: TOP_HEADER,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingHorizontal: 18,
+  },
+  imageCover: {
+    height: TOP_HEADER,
+    zIndex: -1,
+    ...position,
+  },
+  coverOpacity: {
+    height: TOP_HEADER,
+    ...position,
+    backgroundColor: '#000',
+    opacity: 0.4,
+  },
+  topHeaderContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: RFValue(20),
+  },
+  countWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: VWValue(55),
+  },
+  countNum: {
+    fontSize: RFValue(16),
+    fontWeight: '600',
+    color: '#fff',
+  },
+  countText: {
+    fontSize: RFValue(10),
+    fontWeight: '400',
+    color: '#fff',
+    marginTop: RFValue(5),
+  },
+  bottomHeader: {
+    height: BOTTOM_HEADER,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: RFValue(10),
+    borderTopRightRadius: RFValue(10),
+    marginTop: -RFValue(10),
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+  },
+  nickname: {
+    fontSize: RFValue(16),
+  },
+  uid: {
+    fontSize: 10,
+    color: '#3d3d3d',
+    fontWeight: '300',
+    marginTop: RFValue(5),
+  },
+  settledWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: RFValue(14),
+  },
+  settledIcon: {
+    width: RFValue(14),
+    height: RFValue(14),
+    marginRight: 5,
+  },
+  settledText: {
+    color: '#1b5c79',
+    fontSize: 12,
+  },
+  infoWrap: {
+    marginTop: RFValue(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  introtag: {
+    height: RFValue(18),
+    lineHeight: RFValue(18),
+    paddingHorizontal: 12,
+    textAlign: 'center',
+    fontSize: 10,
+    color: '#3d3d3d',
+    backgroundColor: '#EEF0F0',
+    marginLeft: 9,
+  },
+  introWrap: {
+    lineHeight: 20,
+    fontSize: 12,
+    color: '#3d3d3d',
+    letterSpacing: 1,
+    marginTop: RFValue(10),
+  },
+  headerBtnWrap: {
+    flexDirection: 'row',
+    marginTop: RFValue(12),
+  },
+  headerBtn: {
+    height: RFValue(35),
+    lineHeight: RFValue(35),
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#fff',
+    fontWeight: '500',
+    backgroundColor: '#000',
+    borderRadius: 2,
+    overflow: 'hidden',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderStyle: 'solid',
+  },
+  followBtn: {
+    flex: 1,
+    color: '#fff',
+    backgroundColor: '#000',
+    borderColor: '#000',
+  },
+  chatBtn: {
+    width: VWValue(110),
+    color: '#3d3d3d',
+    backgroundColor: '#fff',
+    marginLeft: 6,
+    borderColor: '#bdbdbd',
+  },
+});
 
 export default AccountDetail;
