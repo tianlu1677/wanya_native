@@ -1,10 +1,12 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, Button} from 'react-native';
+import {View, Button, Text} from 'react-native';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 import {createConsumer} from '@rails/actioncable';
 import {useSelector} from 'react-redux';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
 import Loading from '@/components/Loading';
+import Clipboard from "@react-native-community/clipboard";
+
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate} from './meta';
 
@@ -19,7 +21,7 @@ const ChartDetailCommon = props => {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
 
-  console.log(messages);
+  // console.log(messages);
 
   const Consumer = useMemo(() => {
     const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
@@ -58,9 +60,28 @@ const ChartDetailCommon = props => {
     console.log('params', params);
 
     const res = await getChatGroupsConversations(params);
-    console.log('res', res);
+    // console.log('res', res);
     setMessages(TransLateData(res.data.conversations));
     setLoading(false);
+  };
+  // 删除或者复制数据
+  const popItems = (type, index, text, message) => {
+    // console.log('message', message)
+    let items = [
+      {
+        title: '删除',
+        onPress: () => {
+          console.log('del');
+        },
+      },
+      {
+        title: '复制',
+        onPress: () => {
+          Clipboard.setString(text)
+        },
+      },
+    ];
+    return items;
   };
 
   useEffect(() => {
@@ -73,16 +94,26 @@ const ChartDetailCommon = props => {
   return loading ? (
     <Loading />
   ) : (
-    <ChatScreen
-      messageList={messages}
-      sendMessage={sendMessage}
-      isIPhoneX={isIphoneX()}
-      userProfile={{
-        id: currentAccount.id.toString(),
-        avatar: currentAccount.avatar_url,
-        nickName: currentAccount.nickname,
-      }}
-    />
+    <View>
+      <ChatScreen
+        // chatWindowStyle={{marginBottom: 20}}
+        messageList={messages}
+        sendMessage={sendMessage}
+        isIPhoneX={true}
+        chatType={'friend'}
+        usePopView={true}
+        setPopItems={(type, index, text, message) => {
+          return popItems(type, index, text, message);
+        }}
+        // showIsRead={true}
+        // iphoneXBottomPadding={200}
+        userProfile={{
+          id: currentAccount.id.toString(),
+          avatar: currentAccount.avatar_url,
+          nickName: currentAccount.nickname,
+        }}
+      />
+    </View>
   );
 };
 

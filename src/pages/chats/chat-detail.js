@@ -18,6 +18,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 
 import consumer from './consumer';
+import consumerFunc from "./consumer"
 
 const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 540) / 750);
 
@@ -26,8 +27,11 @@ global.removeEventListener = () => {};
 
 const ChatDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const {
+    login: {auth_token},
+  } = useSelector(state => state);
   const currentAccount = useSelector(state => state.account.currentAccount);
-
+  const consumer = consumerFunc(auth_token)
   const [currentWsState, setCurrentWsState] = useState('');
 
   const [value, setValue] = useState('');
@@ -102,7 +106,7 @@ const ChatDetail = ({navigation, route}) => {
           onSubmitEditing={inputSubmitted}
         />
 
-        <Pressable onPress={disconnect}>
+        <Pressable>
           <Text>断开连接</Text>
           <Text>当前状态 {currentWsState}</Text>
         </Pressable>
