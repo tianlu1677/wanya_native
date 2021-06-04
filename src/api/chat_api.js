@@ -35,3 +35,13 @@ export const getChatGroupsSendMessage = async data => {
   });
   return res;
 };
+
+// 消息已读
+export const readSingleChatGroupMessage = async data => {
+  const res = await request({
+    url: '/api/v1/chat_groups/read',
+    method: 'POST',
+    data,
+  });
+  return res;
+};

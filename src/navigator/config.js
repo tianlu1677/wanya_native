@@ -93,6 +93,7 @@ import MentionNotify from '@/pages/notify/mention-notify';
 import ChatDetail from '@/pages/chats/chat-detail';
 import ChatDetailCommon from '@/pages/chats/chat-detail-common';
 import ChatList from '@/pages/chats/chat-list';
+import ChatGroups from '@/pages/chats/chat_groups';
 
 // 公用页面
 import RelatedAccounts from '@/pages/home/related-account-list'; //关注页面相关推荐
@@ -264,6 +265,7 @@ const chatRouter = [
   {name: 'ChatDetail', component: ChatDetail, options: {title: '聊天'}},
   {name: 'ChatDetailCommon', component: ChatDetailCommon, options: {title: '聊天'}},
   {name: 'ChatList', component: ChatList, options: {title: '私信列表'}},
+  {name: 'ChatGroups', component: ChatGroups, options: {title: '聊天列表'}},
 ];
 
 const authRouter = [

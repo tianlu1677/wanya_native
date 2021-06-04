@@ -2,6 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import {getChatGroups, getChatGroupsDetail} from '@/api/chat_api';
+import {
+  CommentNoticeImg,
+  FollowNoticeImg,
+  PraiseNoticeImg,
+  SystemNoticeImg,
+  MineMentionNoticeUserImg,
+} from '@/utils/default-image';
 
 const ChatList = props => {
   const {navigation} = props;
