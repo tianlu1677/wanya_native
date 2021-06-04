@@ -8,12 +8,14 @@ import Loading from '@/components/Loading';
 import Clipboard from '@react-native-community/clipboard';
 
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
-import {translate} from './meta';
+import {translate, checkShowRule} from './meta';
 
 const TransLateData = data => data.map(item => translate(item));
 
-const ChartDetailCommon = props => {
-  const {uuid} = props.route.params;
+
+
+const ChartDetailCommon = ({navigation, route}) => {
+  const {uuid, target_account_nickname} = route.params;
   const {
     account: {currentAccount},
     login: {auth_token},
@@ -21,7 +23,7 @@ const ChartDetailCommon = props => {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
 
-  // console.log(messages);
+  // console.log(route);
 
   const chatChannel = useMemo(() => {
     const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
@@ -65,7 +67,9 @@ const ChartDetailCommon = props => {
 
     const res = await getChatGroupsConversations(params);
     // console.log('res', res);
-    setMessages(TransLateData(res.data.conversations));
+    const conversations = res.data.conversations;
+    const messages = checkShowRule(conversations.reverse(),'send_at')
+    setMessages(TransLateData(messages));
     setLoading(false);
   };
   // 删除或者复制数据
@@ -102,6 +106,9 @@ const ChartDetailCommon = props => {
 
   useEffect(() => {
     loadData();
+    navigation.setOptions({
+      title: target_account_nickname
+    });
     return () => {
       chatChannel.unsubscribe();
     };
@@ -112,6 +119,7 @@ const ChartDetailCommon = props => {
   ) : (
     <View>
       <ChatScreen
+        inverted={true}
         // chatWindowStyle={{marginBottom: 20}}
         messageList={messages}
         sendMessage={sendMessage}
@@ -122,7 +130,7 @@ const ChartDetailCommon = props => {
           return popItems(type, index, text, message);
         }}
         // showIsRead={true}
-        // iphoneXBottomPadding={200}
+        // iphoneXBottomPadding={0}
         userProfile={{
           id: currentAccount.id.toString(),
           avatar: currentAccount.avatar_url,

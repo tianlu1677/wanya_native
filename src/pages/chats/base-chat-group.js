@@ -17,7 +17,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
   let { unread_message } = chat_group
   const goChatDetail = () => {
     console.log('navigation', uuid);
-    navigation.navigate('ChatDetailCommon', {uuid: uuid});
+    navigation.navigate('ChatDetailCommon', { uuid: uuid,  target_account_nickname: send_message_account.nickname});
     readSingleChatGroupMessage({uuid: uuid});
     unread_message[currentAccount.id] = 0;
   };
