@@ -5,7 +5,7 @@ import {createConsumer} from '@rails/actioncable';
 import {useSelector} from 'react-redux';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
 import Loading from '@/components/Loading';
-import Clipboard from "@react-native-community/clipboard";
+import Clipboard from '@react-native-community/clipboard';
 
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate} from './meta';
@@ -23,7 +23,7 @@ const ChartDetailCommon = props => {
 
   // console.log(messages);
 
-  const Consumer = useMemo(() => {
+  const chatChannel = useMemo(() => {
     const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
     return createConsumer(url).subscriptions.create(
       {channel: 'ChatChannel', room: `${uuid}`},
@@ -46,6 +46,10 @@ const ChartDetailCommon = props => {
         unsubscribe() {
           console.log('unsubscribe');
         },
+        deleteMessage(id) {
+          console.log('delete id ', id);
+          this.perform('delete', {conversation_id: id});
+        },
       }
     );
   }, []);
@@ -66,28 +70,40 @@ const ChartDetailCommon = props => {
   };
   // 删除或者复制数据
   const popItems = (type, index, text, message) => {
-    // console.log('message', message)
-    let items = [
+    console.log('message', message.type);
+    let items = [];
+    const delItem = [
       {
         title: '删除',
         onPress: () => {
           console.log('del');
-        },
-      },
-      {
-        title: '复制',
-        onPress: () => {
-          Clipboard.setString(text)
+          chatChannel.deleteMessage(message.id);
+          // messages.slice(index, 1); // 重新setmessage list
+          // setMessages(messages);
         },
       },
     ];
+    const copyItem = [
+      {
+        title: '复制',
+        onPress: () => {
+          Clipboard.setString(text);
+        },
+      },
+    ];
+    if (type === 'text') {
+      items = items.concat(copyItem);
+    }
+    if (message.targetId === currentAccount.id.toString()) {
+      items = items.concat(delItem);
+    }
     return items;
   };
 
   useEffect(() => {
     loadData();
     return () => {
-      Consumer.unsubscribe();
+      chatChannel.unsubscribe();
     };
   }, []);
 
