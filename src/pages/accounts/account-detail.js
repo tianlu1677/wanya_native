@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Button} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -7,11 +7,12 @@ import StickTopHeader from '@/components/StickTopHeader';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import ArticleList from '@/components/List/article-list';
+import ActionSheet from '@/components/ActionSheet';
+import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
-
-import {Avator, PlayScore, BottomModal, TopBack} from '@/components/NodeComponents';
+import {Avator, BottomModal, TopBack} from '@/components/NodeComponents';
 import {
   getAccount,
   getAccountPosts,
@@ -19,16 +20,15 @@ import {
   unfollowAccount,
   getAccountArticles,
 } from '@/api/account_api';
+import {getChatGroupsDetail} from '@/api/chat_api';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
+import {reportContent} from '@/api/secure_check';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {AccountDetailBgImg} from '@/utils/default-image';
 import PersonalImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
 
 const TOP_HEADER = RFValue(110);
-const BOTTOM_HEADER = RFValue(230);
-
-const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 540) / 750);
 
 const filterScore = value => {
   if (value >= 10000) {
@@ -42,32 +42,77 @@ const filterScore = value => {
 const AccountDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const accountId = route.params.accountId;
+  const {currentAccount} = useSelector(state => state.account);
+  const [headerHeight, setHeaderHeight] = useState(250);
   const [currentKey, setCurrentKey] = useState('publish');
   const [account, setAccount] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
+
+  const isSelf = account && account.id === currentAccount.id;
+
+  const onPlay = () => {
+    Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
+  };
+
+  const goFollowAccounts = () => {
+    navigation.push('FollowAccounts', {accountId: account.id});
+  };
+
+  const goFollowerAccounts = () => {
+    navigation.push('FollowerAccounts', {accountId: account.id});
+  };
 
   const onPreview = () => {
     const data = {index: 0, visible: true, images: [{url: account.avatar_url}]};
     dispatch(dispatchPreviewImage(data));
   };
 
+  const onFollow = async () => {
+    account.followed ? await unfollowAccount(accountId) : await followAccount(accountId);
+    loadData();
+  };
+
+  const createChat = async () => {
+    const params = {receiver_id: account.id};
+    const res = await getChatGroupsDetail(params);
+    const {uuid} = res.data.chat_group;
+    navigation.push('ChatDetailCommon', {uuid});
+  };
+
+  const actionItems = [
+    {
+      id: 1,
+      label: '拉黑',
+      onPress: () => {
+        const data = {reason: '拉黑', report_type: 'Account', report_type_id: accountId};
+        reportContent(data).then(() => {
+          Toast.showError('已拉黑', {duration: 500});
+        });
+      },
+    },
+    {
+      id: 2,
+      label: '投诉',
+      onPress: async () => {
+        navigation.push('Report', {report_type: 'Account', report_type_id: accountId});
+      },
+    },
+  ];
+
   const PublishList = () => {
-    return (
-      <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'publish'}}} />
-    );
+    const params = {id: accountId, type: 'publish'};
+    return <SingleList request={{api: getAccountPosts, params}} />;
   };
 
   const VideoList = () => {
-    return (
-      <DoubleList
-        request={{api: getAccountPosts, params: {id: accountId, type: 'publish_video'}}}
-      />
-    );
+    const params = {id: accountId, type: 'publish_video'};
+    return <DoubleList request={{api: getAccountPosts, params}} />;
   };
 
   const PraiseList = () => {
-    return <SingleList request={{api: getAccountPosts, params: {id: accountId, type: 'praise'}}} />;
+    const params = {id: accountId, type: 'praise'};
+    return <SingleList request={{api: getAccountPosts, params}} />;
   };
 
   const ArticleListPage = () => {
@@ -84,12 +129,10 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  console.log(account);
-
   const Header = () => {
     const defaultImage = account.background_img_url || AccountDetailBgImg;
     return (
-      <>
+      <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
         <TopBack top={BarHeight + RFValue(12)} onReportClick={() => setShowActionSheet(true)} />
         <View style={{height: BarHeight, backgroundColor: 'black'}} />
         <View style={styles.header}>
@@ -108,18 +151,18 @@ const AccountDetail = ({navigation, route}) => {
                   <Text style={styles.countNum}>{account.get_praises_count}</Text>
                   <Text style={styles.countText}>获赞</Text>
                 </View>
-                <View style={styles.countContent}>
+                <Pressable style={styles.countContent} onPress={onPlay}>
                   <Text style={styles.countNum}>{filterScore(account.play_score)}</Text>
                   <Text style={styles.countText}>顽力值</Text>
-                </View>
-                <View style={styles.countContent}>
+                </Pressable>
+                <Pressable style={styles.countContent} onPress={goFollowAccounts}>
                   <Text style={styles.countNum}>{account.following_count}</Text>
                   <Text style={styles.countText}>关注</Text>
-                </View>
-                <View style={styles.countContent}>
+                </Pressable>
+                <Pressable style={styles.countContent} onPress={goFollowerAccounts}>
                   <Text style={styles.countNum}>{account.followers_count}</Text>
                   <Text style={styles.countText}>粉丝</Text>
-                </View>
+                </Pressable>
               </View>
             </View>
           </View>
@@ -136,54 +179,80 @@ const AccountDetail = ({navigation, route}) => {
               </View>
             )}
             <View style={styles.infoWrap}>
-              <IconFont name={account.gender} size={13} style={styles.maleIcon} />
+              {account.gender && (
+                <IconFont name={account.gender} size={13} style={styles.maleIcon} />
+              )}
               <Text style={styles.introtag}>{account.age || '18'}岁</Text>
               <Text style={styles.introtag}>{account.province || '未知街区'}</Text>
             </View>
             <Text style={styles.introWrap} numberOfLines={3} onPress={() => setShowModal(true)}>
               {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'}
             </Text>
-            <View style={styles.headerBtnWrap}>
-              <Text style={[styles.headerBtn, styles.followBtn]}>关注</Text>
-              <Text style={[styles.headerBtn, styles.chatBtn]}>私聊</Text>
-            </View>
+            {!isSelf ? (
+              <View style={styles.headerBtnWrap}>
+                <Text style={[styles.headerBtn, styles.followBtn]} onPress={onFollow}>
+                  {account.followed && account.following
+                    ? '互相关注'
+                    : account.followed
+                    ? '已关注'
+                    : '关注'}
+                </Text>
+                <Text style={[styles.headerBtn, styles.chatBtn]} onPress={createChat}>
+                  私聊
+                </Text>
+              </View>
+            ) : null}
           </View>
         </View>
-      </>
+      </View>
     );
   };
 
   return account ? (
-    <CollapsibleHeader
-      tabBarHeight={BarHeight}
-      headerHeight={HEADER_HEIGHT + BarHeight}
-      currentKey={currentKey}
-      onKeyChange={key => setCurrentKey(key)}
-      renderTopHeader={<StickTopHeader title={account.nickname} />}
-      renderHeader={<Header />}
-      tabData={[
-        {
-          key: 'publish',
-          title: '动态',
-          component: PublishList,
-        },
-        {
-          key: 'video',
-          title: '视频',
-          component: VideoList,
-        },
-        {
-          key: 'praise',
-          title: '喜欢',
-          component: PraiseList,
-        },
-        {
-          key: 'article',
-          title: '文章',
-          component: ArticleListPage,
-        },
-      ]}
-    />
+    <View style={styles.wrapper}>
+      <CollapsibleHeader
+        tabBarHeight={BarHeight}
+        // headerHeight={HEADER_HEIGHT + BarHeight}
+        headerHeight={headerHeight}
+        currentKey={currentKey}
+        onKeyChange={key => setCurrentKey(key)}
+        renderTopHeader={<StickTopHeader title={account.nickname} />}
+        renderHeader={<Header />}
+        tabData={[
+          {
+            key: 'publish',
+            title: '动态',
+            component: PublishList,
+          },
+          {
+            key: 'video',
+            title: '视频',
+            component: VideoList,
+          },
+          {
+            key: 'praise',
+            title: '喜欢',
+            component: PraiseList,
+          },
+          {
+            key: 'article',
+            title: '文章',
+            component: ArticleListPage,
+          },
+        ]}
+      />
+      <BottomModal
+        visible={showModal}
+        cancleClick={() => setShowModal(false)}
+        title="简介"
+        content={account.intro}
+      />
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
+    </View>
   ) : (
     <Loading />
   );
@@ -191,8 +260,9 @@ const AccountDetail = ({navigation, route}) => {
 
 const position = {width: SCREEN_WIDTH, position: 'absolute'};
 const styles = StyleSheet.create({
-  header: {
-    // backgroundColor: 'pink',
+  wrapper: {
+    flex: 1,
+    position: 'relative',
   },
   topHeader: {
     height: TOP_HEADER,
@@ -235,7 +305,6 @@ const styles = StyleSheet.create({
     marginTop: RFValue(5),
   },
   bottomHeader: {
-    height: BOTTOM_HEADER,
     backgroundColor: '#fff',
     borderTopLeftRadius: RFValue(10),
     borderTopRightRadius: RFValue(10),
@@ -271,6 +340,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  maleIcon: {
+    marginRight: 9,
+  },
   introtag: {
     height: RFValue(18),
     lineHeight: RFValue(18),
@@ -279,7 +351,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#3d3d3d',
     backgroundColor: '#EEF0F0',
-    marginLeft: 9,
+    marginRight: 9,
   },
   introWrap: {
     lineHeight: 20,
