@@ -138,7 +138,7 @@ const ChartDetailCommon = props => {
         renderPanelRow={data => {
           console.log(data);
           return (
-            <Pressable style={styles.mediaWrapper} onPress={data.onPress}>
+            <Pressable style={styles.mediaWrapper} onPress={data.onPress} key={data.title}>
               {data.icon}
               <Text style={styles.mediaText}>{data.title}</Text>
             </Pressable>

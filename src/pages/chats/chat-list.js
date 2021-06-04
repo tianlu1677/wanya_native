@@ -34,11 +34,11 @@ const ChatList = props => {
       return (
         <Pressable onPress={() => handleDetail(item)} style={styles.slideWrap}>
           <View style={{position: 'relative'}}>
-            <Avator size={RFValue(50)} account={item.receiver} />
+            <Avator size={RFValue(50)} account={item.send_message_account} />
             <BadgeMessage size={'tab'} value={10} containerStyle={[styles.badge, {right: -10}]} />
           </View>
           <View style={styles.slideInfo}>
-            <Text style={styles.nickname}>{item.receiver.nickname}</Text>
+            <Text style={styles.nickname}>{item.send_message_account.nickname}</Text>
             <Text style={styles.message}>{item.last_conversation?.content || ''}</Text>
           </View>
         </Pressable>
