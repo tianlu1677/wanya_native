@@ -103,6 +103,15 @@ const ChartDetail = props => {
     setLoading(false);
   };
 
+  // 点击头像
+  const pressAvatar = (isSelf, targetId) => {
+    console.log('is self,', isSelf, targetId)
+    if(isSelf) {
+      return;
+    }
+    navigation.navigate('AccountDetail', {accountId: targetId})
+  };
+
   // 删除或者复制数据
   const popItems = (type, index, text, message) => {
     console.log('message', message.type);
@@ -225,6 +234,7 @@ const ChartDetail = props => {
   ) : (
     <View>
       <ChatScreen
+        chatWindowStyle={{backgroundColor: 'white'}}
         messageList={messages}
         sendMessage={sendMessage}
         panelSource={[
@@ -238,8 +248,13 @@ const ChartDetail = props => {
         inverted={false}
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={20}
+        pressAvatar={(isSelf, targetId) => pressAvatar(isSelf, targetId) }
         // headerHeight={BarHeight + getBottomSpace()}
         // iphoneXBottomPadding={getBottomSpace()}
+        leftMessageTextStyle={styles.leftMessageText}
+        rightMessageTextStyle={styles.rightMessageText}
+        rightMessageBackground={'black'}
+        leftMessageBackground={'#F3F3F3'}
         usePopView={true}
         setPopItems={(type, index, text, message) => popItems(type, index, text, message)}
         showIsRead={true}
@@ -289,6 +304,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     borderRadius: 2,
     overflow: 'hidden',
+  },
+  leftMessageText: {
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 19,
+    borderBottomRightRadius: 19,
+    borderBottomLeftRadius: 19,
+    fontSize: 14,
+    color: 'black',
+    lineHeight: 22,
+    letterSpacing: 1,
+    fontWeight: '300',
+  },
+  rightMessageText: {
+    borderTopLeftRadius: 19,
+    borderTopRightRadius: 2,
+    borderBottomRightRadius: 19,
+    borderBottomLeftRadius: 19,
+    fontSize: 14,
+    color: 'white',
+    lineHeight: 22,
+    letterSpacing: 1,
+    fontWeight: '300',
+    marginLeft: 2
   },
 });
 
