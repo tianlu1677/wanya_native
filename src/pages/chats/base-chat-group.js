@@ -1,18 +1,22 @@
-import React, {useCallback, useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {BadgeMessage, Avator, RecommendSearch} from '@/components/NodeComponents';
+import React from 'react';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
+import {useSelector} from 'react-redux';
+import {BadgeMessage, Avator} from '@/components/NodeComponents';
 import {readSingleChatGroupMessage} from '@/api/chat_api';
-import { changeEmojiText } from '@/plugins/react-native-easy-chat-ui/app/chat/utils'
+import {RFValue} from '@/utils/response-fontsize';
 
 const BaseChatGroup = ({navigation, chat_group}) => {
-  const dispatch = useDispatch();
   const {currentAccount} = useSelector(state => state.account);
-  const {uuid, send_message_account, last_conversation, last_message_at_text} = chat_group;
-  let {unread_message} = chat_group;
+  const {
+    uuid,
+    send_message_account,
+    last_conversation,
+    last_message_at_text,
+    unread_message,
+  } = chat_group;
+
   const goChatDetail = () => {
-    console.log('navigation', uuid);
-    navigation.navigate('ChatDetailCommon', {
+    navigation.navigate('ChatDetail', {
       uuid: uuid,
       target_account_nickname: send_message_account.nickname,
     });
@@ -21,29 +25,24 @@ const BaseChatGroup = ({navigation, chat_group}) => {
   };
 
   return (
-    <View key={`chatgroup_${chat_group.uuid}`}>
-      <Pressable style={styles.itemView} onPress={goChatDetail}>
-        <View style={styles.coverWrapView}>
-          <View>
-            <Avator size={45} account={send_message_account} handleClick={() => {}} />
-            <BadgeMessage
-              value={unread_message[currentAccount.id]}
-              containerStyle={styles.badgeContainer}
-            />
-          </View>
-        </View>
-        <View style={styles.notifyContent}>
-          <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
-          {last_conversation && (
-            <Text numberOfLines={3}
-              style={styles.notifyContentDesc}>{changeEmojiText(last_conversation.content)}</Text>
-          )}
-        </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginRight: 10}}>
-          <Text style={styles.timeText}>{last_message_at_text}</Text>
-        </View>
-      </Pressable>
-    </View>
+    <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
+      <View style={styles.coverWrapView}>
+        <Avator size={45} account={send_message_account} handleClick={() => {}} />
+        <BadgeMessage
+          value={unread_message[currentAccount.id]}
+          containerStyle={styles.badgeContainer}
+        />
+      </View>
+      <View style={styles.notifyContent}>
+        <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
+        {last_conversation && (
+          <Text style={styles.notifyContentDesc}>{last_conversation.content}</Text>
+        )}
+      </View>
+      <View style={styles.messageContent}>
+        <Text style={styles.timeText}>{last_message_at_text}</Text>
+      </View>
+    </Pressable>
   );
 };
 
@@ -53,13 +52,11 @@ const styles = StyleSheet.create({
     right: -7,
     top: -3,
   },
-  wrapper: {
-    backgroundColor: '#fff',
-    paddingLeft: 14,
-  },
   itemView: {
     flexDirection: 'row',
-    paddingVertical: 17,
+    paddingHorizontal: 14,
+    paddingVertical: RFValue(12),
+    backgroundColor: '#fff',
   },
   coverWrapView: {
     marginRight: 12,
@@ -87,10 +84,8 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     color: '#bdbdbd',
   },
-  speator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#ebebeb',
-    marginLeft: 45 + 12,
+  messageContent: {
+    flexDirection: 'row',
   },
 });
 

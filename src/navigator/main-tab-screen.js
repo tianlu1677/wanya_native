@@ -9,8 +9,7 @@ import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BottomModal, BlurView, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
-import NotifyIndex from '@/pages/notify/notify-index';
-import ChatGroups from "@/pages/chats/chat_groups"
+import ChatGroups from '@/pages/chats/chat_groups';
 import Recommend from '@/pages/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
 // import WebView from '@/pages/webview/webview'; //webview
@@ -168,7 +167,7 @@ const MainTabScreen = props => {
             },
           })}
         />
-        <Tab.Screen name="Discovery" component={Discovery} options={{}} />        
+        <Tab.Screen name="Discovery" component={Discovery} options={{}} />
       </Tab.Navigator>
     </>
   );

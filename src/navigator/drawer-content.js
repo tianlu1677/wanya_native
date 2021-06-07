@@ -62,8 +62,7 @@ const DrawerContent = ({navigation}) => {
         </View>
       </Pressable>
       <Pressable style={styles.drawerItem} onPress={onNotifyIndex}>
-        <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
-
+        <IconFont name="notice" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>互动通知</Text>
         <View style={{marginLeft: 'auto', flexDirection: 'row'}}>
           <BadgeMessage
@@ -85,11 +84,11 @@ const DrawerContent = ({navigation}) => {
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
-      {/*<Pressable style={styles.drawerItem} onPress={() => navigation.navigate('ChatGroups')}>*/}
-      {/*  <IconFont name="fankui" size={RFValue(18)} color={'#000'} />*/}
-      {/*  <Text style={styles.drawerText}>私信列表</Text>*/}
-      {/*  <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />*/}
-      {/*</Pressable>*/}
+      {/* <Pressable style={styles.drawerItem} onPress={() => navigation.navigate('ChatGroups')}>
+        <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
+        <Text style={styles.drawerText}>私信列表</Text>
+        <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
+      </Pressable> */}
 
       <Pressable style={[styles.drawerItem, styles.drawerSetting]} onPress={onSettings}>
         <IconFont name="shezhi" size={RFValue(18)} color={'#000'} />

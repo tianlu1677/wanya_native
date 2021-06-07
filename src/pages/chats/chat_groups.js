@@ -1,6 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {StyleSheet, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {RecommendSearch} from '@/components/NodeComponents';
 import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
@@ -10,21 +10,18 @@ import BaseChatGroup from './base-chat-group';
 
 const ChatGroups = ({navigation}) => {
   const dispatch = useDispatch();
-  const {currentAccount} = useSelector(state => state.account);
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item, index}) => {
-    return <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />
+    return <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />;
   };
 
   const loadData = async () => {
     const res = await getChatGroups();
-    console.log(res.data.chat_groups);
     setListData(res.data.chat_groups);
     setHeaders(res.headers);
-    // console.log('listData', listData)
     setLoading(false);
   };
 
@@ -41,60 +38,25 @@ const ChatGroups = ({navigation}) => {
   );
 
   return (
-    <View>
+    <View style={styles.wrapper}>
       <RecommendSearch />
       <ScrollList
+        keyExtractor={useCallback(item => `${item.uuid}`, [])}
         data={listData}
         loading={loading}
         onRefresh={loadData}
         headers={headers}
         renderItem={renderItem}
         renderSeparator={() => <View style={styles.speator} />}
-        style={styles.wrapper}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  badgeContainer: {
-    position: 'absolute',
-    right: -7,
-    top: -3,
-  },
   wrapper: {
-    backgroundColor: '#fff',
-    paddingLeft: 14,
-  },
-  itemView: {
-    flexDirection: 'row',
-    paddingVertical: 17,
-  },
-  coverWrapView: {
-    marginRight: 12,
-  },
-  notifyContent: {
     flex: 1,
-    justifyContent: 'center',
-  },
-  notifyContentTitle: {
-    height: 20,
-    lineHeight: 20,
-    fontSize: 15,
-    letterSpacing: 1,
-    fontWeight: '400',
-  },
-  notifyContentDesc: {
-    marginTop: 6,
-    color: '#BDBDBD',
-    letterSpacing: 1,
-    fontWeight: '400',
-    fontSize: 13,
-  },
-  timeText: {
-    fontSize: 11,
-    fontWeight: '300',
-    color: '#bdbdbd'
+    backgroundColor: '#fff',
   },
   speator: {
     height: StyleSheet.hairlineWidth,

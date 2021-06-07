@@ -13,12 +13,12 @@ import dayjs from 'dayjs';
 export function checkShowRule(arr, key) {
   var newArr = arr.map((item, index, array) => {
     var obj = toggleTime(item[key]);
-    item['show_time_type'] = obj.type;
-    item['show_time'] = obj.time;
+    item.show_time_type = obj.type;
+    item.show_time = obj.time;
     if (index > 0) {
-      item['is_show_time'] = compareTimeInterval(array[index - 1][key], array[index][key]);
+      item.is_show_time = compareTimeInterval(array[index - 1][key], array[index][key]);
     } else {
-      item['is_show_time'] = true;
+      item.is_show_time = true;
     }
     return item;
   });
@@ -75,11 +75,35 @@ function compareTimeInterval(t1, t2) {
 // 原文链接：https://blog.csdn.net/qq_42740797/article/details/114930843
 
 export const translate = item => {
-  console.log('ite', item)
+  let content = {};
+
+  const {category} = item;
+  if (category === 'text') {
+    content = item.content;
+  }
+
+  if (category === 'image') {
+    content = {
+      width: 100,
+      height: 80,
+      uri: item.payload.url,
+    };
+  }
+
+  if (category === 'video') {
+    content = {
+      width: 100,
+      height: 80,
+      uri: 'http://xinxuefile.meirixinxue.com/assets/8f394dc3b003f9ce449cd53041bdba4f.mp4',
+      poster:
+        'http://xinxuefile.meirixinxue.com/assets/8f394dc3b003f9ce449cd53041bdba4f.mp4?vframe/jpg/offset/0/rotate/auto',
+    };
+  }
+
   const newItem = {
     id: item.id.toString(),
-    type: item.category,
-    content: item.content,
+    type: category,
+    content,
     targetId: item.creator.id.toString(),
     chatInfo: {
       avatar: item.creator.avatar_url,
@@ -90,5 +114,6 @@ export const translate = item => {
     sendStatus: 1,
     time: new Date(item.send_at).getTime(),
   };
+
   return newItem;
 };
