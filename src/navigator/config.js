@@ -91,8 +91,8 @@ import MentionNotify from '@/pages/notify/mention-notify';
 
 // 聊天
 import ChatDetail from '@/pages/chats/chat-detail';
-import ChatDetailCommon from '@/pages/chats/chat-detail-common';
-import ChatList from '@/pages/chats/chat-list';
+// import ChatDetailCommon from '@/pages/chats/chat-detail-common';
+// import ChatList from '@/pages/chats/chat-list';
 import ChatGroups from '@/pages/chats/chat_groups';
 
 // 公用页面
