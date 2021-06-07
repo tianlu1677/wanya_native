@@ -25,11 +25,10 @@ import {BarHeight} from '@/utils/navbar';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate, checkShowRule} from './meta';
 
-import { EventRegister } from "react-native-event-listeners";
+import {EventRegister} from 'react-native-event-listeners';
 
 global.addEventListener = EventRegister.addEventListener;
 global.removeEventListener = EventRegister.removeEventListener;
-
 
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
@@ -106,11 +105,11 @@ const ChartDetail = props => {
 
   // 点击头像
   const pressAvatar = (isSelf, targetId) => {
-    console.log('is self,', isSelf, targetId)
-    if(isSelf) {
+    console.log('is self,', isSelf, targetId);
+    if (isSelf) {
       return;
     }
-    navigation.navigate('AccountDetail', {accountId: targetId})
+    navigation.navigate('AccountDetail', {accountId: targetId});
   };
 
   // 删除或者复制数据
@@ -123,8 +122,8 @@ const ChartDetail = props => {
         onPress: () => {
           console.log('del');
           chatChannel.deleteMessage(message.id);
-          messages.slice(index, 1); // 重新setmessage list
-          setMessages(messages);
+          messages.splice(index, 1); // 重新setmessage list
+          setMessages([...messages]);
         },
       },
     ];
@@ -250,7 +249,7 @@ const ChartDetail = props => {
         inverted={false}
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={20}
-        pressAvatar={(isSelf, targetId) => pressAvatar(isSelf, targetId) }
+        pressAvatar={(isSelf, targetId) => pressAvatar(isSelf, targetId)}
         // headerHeight={BarHeight + getBottomSpace()}
         // iphoneXBottomPadding={getBottomSpace()}
         leftMessageTextStyle={styles.leftMessageText}
@@ -328,7 +327,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     letterSpacing: 1,
     fontWeight: '300',
-    marginLeft: 2
+    marginLeft: 2,
   },
 });
 

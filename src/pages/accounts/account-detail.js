@@ -10,6 +10,7 @@ import ArticleList from '@/components/List/article-list';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
+import {getChatGroupsDetail} from '@/api/chat_api';
 
 import {Avator, PlayScore, BottomModal, TopBack} from '@/components/NodeComponents';
 import {
@@ -50,6 +51,17 @@ const AccountDetail = ({navigation, route}) => {
   const onPreview = () => {
     const data = {index: 0, visible: true, images: [{url: account.avatar_url}]};
     dispatch(dispatchPreviewImage(data));
+  };
+
+  const createChat = async () => {
+    const params = {receiver_id: account.id};
+    const res = await getChatGroupsDetail(params);
+    const {uuid} = res.data.chat_group;
+    console.log(res.data.chat_group, uuid);
+    navigation.navigate('ChatDetail', {
+      uuid: uuid,
+      target_account_nickname: account.nickname,
+    });
   };
 
   const PublishList = () => {
@@ -145,7 +157,9 @@ const AccountDetail = ({navigation, route}) => {
             </Text>
             <View style={styles.headerBtnWrap}>
               <Text style={[styles.headerBtn, styles.followBtn]}>关注</Text>
-              <Text style={[styles.headerBtn, styles.chatBtn]}>私聊</Text>
+              <Text style={[styles.headerBtn, styles.chatBtn]} onPress={createChat}>
+                私聊
+              </Text>
             </View>
           </View>
         </View>
