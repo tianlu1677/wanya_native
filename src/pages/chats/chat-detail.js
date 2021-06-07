@@ -258,7 +258,7 @@ const ChartDetail = props => {
         leftMessageBackground={'#F3F3F3'}
         usePopView={true}
         setPopItems={(type, index, text, message) => popItems(type, index, text, message)}
-        showIsRead={true}
+        showIsRead={false}
         userProfile={{
           id: currentAccount.id.toString(),
           avatar: currentAccount.avatar_url,
