@@ -96,7 +96,7 @@ const MediasPicker = WrapperComponent => {
     };
 
     const videoPick = (option = {}, callback) => {
-      const options = {...option};
+      const options = {videoCount: 1, MaxSecond: 300, MinSecond: 1, ...option};
       SyanImagePicker.openVideoPicker(options, callback);
     };
 

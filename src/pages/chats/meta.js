@@ -37,9 +37,15 @@ function toggleTime(date) {
   } else if (type == 3) {
     time = dayjs(date).format('昨天 H:mm'); //昨天消息，显示：昨天 20:41
   } else if (type == 4) {
-    time = dayjs(date).format('M月D日 AH:mm').replace('AM', '上午').replace('PM', '下午'); //今年消息，上午下午，显示：3月17日 下午16:45
+    time = dayjs(date)
+      .format('M月D日 AH:mm')
+      .replace('AM', '上午')
+      .replace('PM', '下午'); //今年消息，上午下午，显示：3月17日 下午16:45
   } else if (type == 5) {
-    time = dayjs(date).format('YYYY年M月D日 AH:mm').replace('AM', '上午').replace('PM', '下午'); //其他消息，上午下午，显示：2020年11月2日 下午15:17
+    time = dayjs(date)
+      .format('YYYY年M月D日 AH:mm')
+      .replace('AM', '上午')
+      .replace('PM', '下午'); //其他消息，上午下午，显示：2020年11月2日 下午15:17
   }
   return {
     time: time,
@@ -85,7 +91,7 @@ export const translate = item => {
   if (category === 'image') {
     content = {
       width: 100,
-      height: 80,
+      height: 100,
       uri: item.payload.url,
     };
   }
@@ -93,10 +99,9 @@ export const translate = item => {
   if (category === 'video') {
     content = {
       width: 100,
-      height: 80,
-      uri: 'http://xinxuefile.meirixinxue.com/assets/8f394dc3b003f9ce449cd53041bdba4f.mp4',
-      poster:
-        'http://xinxuefile.meirixinxue.com/assets/8f394dc3b003f9ce449cd53041bdba4f.mp4?vframe/jpg/offset/0/rotate/auto',
+      height: 100,
+      uri: item.payload.url,
+      poster: `${item.payload.url}?vframe/jpg/offset/0/rotate/auto`,
     };
   }
 

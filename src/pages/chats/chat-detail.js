@@ -1,9 +1,7 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, Button, Text, TouchableOpacity, Dimensions, StyleSheet, Platform} from 'react-native';
-import {isIphoneX} from 'react-native-iphone-x-helper';
+import {View, Text, TouchableOpacity, Dimensions, StyleSheet, Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
-
 import {createConsumer} from '@rails/actioncable';
 import {useSelector} from 'react-redux';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
@@ -12,16 +10,20 @@ import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import Clipboard from '@react-native-community/clipboard';
 import MediasPicker from '@/components/MediasPicker';
-
+import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate, checkShowRule} from './meta';
-
-const {width, height} = Dimensions.get('window');
-
-const TransLateData = data => data.map(item => translate(item));
-
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
+
+console.log(BarHeight);
+
+const TransLateData = data => data.map(item => translate(item));
+const isIos = Platform.OS === 'ios';
+// const isIphoneX = isIphoneX()
+const systemVersion = Math.ceil(DeviceInfo.getSystemVersion());
+const videoSelectType = isIos && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
+const {width, height} = Dimensions.get('window');
 
 const ChartDetail = props => {
   const {navigation, route, imagePick, videoPick, uploadVideo} = props;
@@ -30,6 +32,7 @@ const ChartDetail = props => {
     account: {currentAccount},
     login: {auth_token},
   } = useSelector(state => state);
+
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
 
@@ -77,13 +80,10 @@ const ChartDetail = props => {
   };
 
   const loadData = async () => {
-    const params = {uuid: uuid};
-    const res = await getChatGroupsConversations(params);
+    const res = await getChatGroupsConversations({uuid});
     const conversations = res.data.conversations;
-    const messages = checkShowRule(conversations.reverse(), 'send_at');
-    console.log('mess', messages);
-
-    setMessages(TransLateData(messages));
+    const newMessages = checkShowRule(conversations.reverse(), 'send_at');
+    setMessages(TransLateData(newMessages));
     setLoading(false);
   };
 
@@ -97,8 +97,8 @@ const ChartDetail = props => {
         onPress: () => {
           console.log('del');
           chatChannel.deleteMessage(message.id);
-          // messages.slice(index, 1); // 重新setmessage list
-          // setMessages(messages);
+          messages.slice(index, 1); // 重新setmessage list
+          setMessages(messages);
         },
       },
     ];
@@ -119,87 +119,69 @@ const ChartDetail = props => {
     return items;
   };
 
-  const onImagePicker = index => {
+  const onMediaPicker = index => {
+    props.removeAllPhoto();
+
     if (index === 0) {
-      props.removeAllPhoto();
       const options = {imageCount: 9, isCamera: false};
       imagePick(options, async (err, res) => {
         if (err) {
           return;
         }
-        console.log(res);
         Toast.showLoading('上传中...');
         for (const file of res) {
           const result = await props.uploadImage({uploadType: 'multipart', ...file});
-          console.log('resultimage', result);
           const {url} = result.asset;
-          const params = {uuid, conversation: {category: 'image', metadata: {url: url}}};
-          console.log('params', params);
+          const params = {uuid, conversation: {category: 'image', metadata: {url}}};
+          console.log('image params', params);
           chatGroupSendMessage(params);
         }
-
         Toast.hide();
       });
     }
-    if (index === 1) {
-      const systemVersion = parseInt(DeviceInfo.getSystemVersion());
-      const videoSelectType =
-        Platform.OS === 'ios' && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
 
+    if (index === 1) {
       if (videoSelectType === 'syanPicker') {
-        videoPick(
-          {
-            MaxSecond: 300,
-            MinSecond: 1,
-            recordVideoSecond: 60,
-            videoCount: 1,
-            allowTakeVideo: false,
-          },
-          async (err, res) => {
-            if (err) {
-              return;
-            }
-            Toast.showLoading('上传中...');
-            console.log('res', res);
-            const ret = await uploadVideo(res[0], () => {});
-            const {url} = ret.asset;
-            const params = {uuid, conversation: {category: 'video', metadata: {url: url}}};
-            console.log('params', params);
-            chatGroupSendMessage(params);
+        const options = {recordVideoSecond: 60, allowTakeVideo: false};
+        videoPick(options, async (err, res) => {
+          if (err) {
+            return;
           }
-        );
+          Toast.showLoading('上传中...');
+          const ret = await uploadVideo(res[0], () => {
+            Toast.showLoading('上传中...');
+          });
+          const {url} = ret.asset;
+          const params = {uuid, conversation: {category: 'video', metadata: {url}}};
+          console.log('syanPicker video params', params);
+          chatGroupSendMessage(params);
+          Toast.hide();
+        });
       }
 
-      console.log(videoSelectType);
-
-      // react-native-image-picker
       if (videoSelectType === 'imagePicker') {
-        ImagePicker.launchImageLibrary(
-          {mediaType: 'video', videoQuality: 'low'},
-          async response => {
-            if (response.didCancel) {
-              return;
-            }
-            console.log({uri: response.origURL});
-            const {origURL} = response;
-            const params = {uuid, conversation: {category: 'video', metadata: {url: origURL}}};
-            console.log('params', params);
-            chatGroupSendMessage(params);
-            // setVideoSource([{uri: response.origURL}]);
+        const options = {mediaType: 'video', videoQuality: 'low'};
+        ImagePicker.launchImageLibrary(options, async response => {
+          if (response.didCancel) {
+            return;
           }
-        );
+          Toast.showLoading('上传中...');
+          const {origURL} = response;
+          const params = {uuid, conversation: {category: 'video', metadata: {url: origURL}}};
+          console.log('imagePicker video params', params);
+          chatGroupSendMessage(params);
+          Toast.hide();
+        });
       }
     }
   };
-
-  const onVideoPicker = () => {};
 
   const RenderPanelRow = (data, index) => (
     <TouchableOpacity
       key={index}
       style={styles.panelImageWrap}
       activeOpacity={0.7}
-      onPress={() => onImagePicker(index)}>
+      onPress={() => onMediaPicker(index)}>
       <View>{data.icon}</View>
       <Text style={styles.panelText}>{data.title}</Text>
     </TouchableOpacity>
@@ -207,9 +189,8 @@ const ChartDetail = props => {
 
   useEffect(() => {
     loadData();
-    navigation.setOptions({
-      title: target_account_nickname,
-    });
+    navigation.setOptions({title: target_account_nickname});
+
     return () => {
       chatChannel.unsubscribe();
     };
@@ -220,37 +201,33 @@ const ChartDetail = props => {
   ) : (
     <View>
       <ChatScreen
-        inverted={true}
-        // chatWindowStyle={{marginBottom: 20}}
         messageList={messages}
         sendMessage={sendMessage}
-        isIPhoneX={true}
-        chatType={'friend'}
-        usePopView={true}
-        // setPopItems={(type, index, text, message) => {
-        //   return popItems(type, index, text, message);
-        // }}
-        // showIsRead={true}
-        // iphoneXBottomPadding={0}
-        userProfile={{
-          id: currentAccount.id.toString(),
-          avatar: currentAccount.avatar_url,
-          nickName: currentAccount.nickname,
-        }}
         panelSource={[
           {title: '照片', icon: <FastImg source={AddPhoto} style={styles.panelImage} />},
           {title: '视频', icon: <FastImg source={AddVideo} style={styles.panelImage} />},
         ]}
         renderPanelRow={RenderPanelRow}
         panelContainerStyle={styles.panelContainerStyle}
+        useEmoji={true}
+        isIPhoneX
+        inverted={false}
+        headerHeight={BarHeight + 50}
+        iphoneXBottomPadding={20}
+        usePopView={true}
+        setPopItems={(type, index, text, message) => popItems(type, index, text, message)}
+        showIsRead={true}
+        userProfile={{
+          id: currentAccount.id.toString(),
+          avatar: currentAccount.avatar_url,
+          nickName: currentAccount.nickname,
+        }}
       />
     </View>
   );
 };
 
 const panalWidth = (width - 30 - 15 * 3) / 4;
-console.log(panalWidth);
-
 const styles = StyleSheet.create({
   panelContainerStyle: {
     paddingTop: 15,
