@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {BadgeMessage, Avator, RecommendSearch} from '@/components/NodeComponents';
 import {readSingleChatGroupMessage} from '@/api/chat_api';
+import { changeEmojiText } from '@/plugins/react-native-easy-chat-ui/app/chat/utils'
 
 const BaseChatGroup = ({navigation, chat_group}) => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
           <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
           {last_conversation && (
             <Text numberOfLines={3}
-              style={styles.notifyContentDesc}>{last_conversation.content}</Text>
+              style={styles.notifyContentDesc}>{changeEmojiText(last_conversation.content)}</Text>
           )}
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', marginRight: 10}}>

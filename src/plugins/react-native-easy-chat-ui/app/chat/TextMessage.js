@@ -86,9 +86,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+    borderRadius: 19,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     maxWidth: width - 160,
     minHeight: 20,
   },
@@ -98,24 +98,24 @@ const styles = StyleSheet.create({
     height: 25
   },
   triangle: {
-    width: 0,
-    height: 0,
-    zIndex: 999,
-    borderWidth: 6,
-    borderTopColor: 'transparent',
-    borderBottomColor: 'transparent',
-    borderColor: '#fff',
-    marginTop: 16
+    // width: 0,
+    // height: 0,
+    // zIndex: 999,
+    // borderWidth: 6,
+    // borderTopColor: 'transparent',
+    // borderBottomColor: 'transparent',
+    // borderColor: '#fff',
+    // marginTop: 16
   },
   left_triangle: {
-    borderLeftWidth: 0,
-    borderRightWidth: Platform.OS === 'android' ? 6 : 10,
-    marginLeft: 5
+    // borderLeftWidth: 0,
+    // borderRightWidth: Platform.OS === 'android' ? 6 : 10,
+    marginLeft: 15
   },
   right_triangle: {
-    borderRightWidth: 0,
-    borderLeftWidth: Platform.OS === 'android' ? 6 : 10,
-    borderColor: '#a0e75a',
+    // borderRightWidth: 0,
+    // borderLeftWidth: Platform.OS === 'android' ? 6 : 10,
+    // borderColor: '#a0e75a',
     marginRight: 5
   },
   right: {

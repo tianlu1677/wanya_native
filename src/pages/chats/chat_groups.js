@@ -2,11 +2,9 @@ import React, {useCallback, useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import {syncAccountInfo} from '@/api/mine_api';
-import {BadgeMessage, Avator, RecommendSearch} from '@/components/NodeComponents';
+import {RecommendSearch} from '@/components/NodeComponents';
 import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
 import {getChatGroups} from '@/api/chat_api';
-// import BaseTopic from "@/components/Item/base-topic"
 import ScrollList from '@/components/ScrollList';
 import BaseChatGroup from './base-chat-group';
 
@@ -38,6 +36,7 @@ const ChatGroups = ({navigation}) => {
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
+      loadData();
     }, [])
   );
 
