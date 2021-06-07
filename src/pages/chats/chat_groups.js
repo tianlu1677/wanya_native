@@ -23,7 +23,7 @@ const ChatGroups = ({navigation}) => {
 
   const loadData = async () => {
     const res = await getChatGroups();
-    // console.log(res.data.chat_groups);
+    console.log(res.data.chat_groups);
     setListData(res.data.chat_groups);
     setHeaders(res.headers);
     // console.log('listData', listData)

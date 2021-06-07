@@ -4,10 +4,12 @@ import {useSelector} from 'react-redux';
 import {BarHeight} from '@/utils/navbar';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
-import {RFValue} from '@/utils/response-fontsize';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
+import {BadgeMessage} from '@/components/NodeComponents';
 
 const DrawerContent = ({navigation}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
+  const {currentBaseInfo} = useSelector(state => state.account);
 
   const onEdit = () => {
     navigation.navigate('AccountContent');
@@ -23,10 +25,16 @@ const DrawerContent = ({navigation}) => {
 
   const onNotifyIndex = () => {
     navigation.navigate('NotifyIndex');
-  }
+  };
 
   const onSettings = () => {
     navigation.navigate('Settings');
+  };
+  const UnreadMessageCount = () => {
+    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
+      return 0;
+    }
+    return currentBaseInfo.new_message_count;
   };
 
   return (
@@ -55,8 +63,18 @@ const DrawerContent = ({navigation}) => {
       </Pressable>
       <Pressable style={styles.drawerItem} onPress={onNotifyIndex}>
         <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
+
         <Text style={styles.drawerText}>互动通知</Text>
-        <View style={{marginLeft: 'auto'}}>
+        <View style={{marginLeft: 'auto', flexDirection: 'row'}}>
+          <BadgeMessage
+            size={'middle'}
+            value={UnreadMessageCount()}
+            containerStyle={[
+              {
+                right: 5,
+              },
+            ]}
+          />
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
@@ -67,11 +85,11 @@ const DrawerContent = ({navigation}) => {
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
-      <Pressable style={styles.drawerItem} onPress={() => navigation.navigate('ChatGroups')}>
-        <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
-        <Text style={styles.drawerText}>私信列表</Text>
-        <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
-      </Pressable>
+      {/*<Pressable style={styles.drawerItem} onPress={() => navigation.navigate('ChatGroups')}>*/}
+      {/*  <IconFont name="fankui" size={RFValue(18)} color={'#000'} />*/}
+      {/*  <Text style={styles.drawerText}>私信列表</Text>*/}
+      {/*  <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />*/}
+      {/*</Pressable>*/}
 
       <Pressable style={[styles.drawerItem, styles.drawerSetting]} onPress={onSettings}>
         <IconFont name="shezhi" size={RFValue(18)} color={'#000'} />
