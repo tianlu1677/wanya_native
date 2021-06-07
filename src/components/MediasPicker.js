@@ -47,10 +47,10 @@ const MediasPicker = WrapperComponent => {
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
-            Upload.addEventListener('error', uploadId, data => {
+            Upload.addListener('error', uploadId, data => {
               reject(data.error);
             });
-            Upload.addEventListener('completed', uploadId, data => {
+            Upload.addListener('completed', uploadId, data => {
               resolve(JSON.parse(data.responseBody));
             });
           })
@@ -82,10 +82,10 @@ const MediasPicker = WrapperComponent => {
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
-            Upload.addEventListener('error', uploadId, data => {
+            Upload.addListener('error', uploadId, data => {
               reject(data.error);
             });
-            Upload.addEventListener('completed', uploadId, data => {
+            Upload.addListener('completed', uploadId, data => {
               resolve(JSON.parse(data.responseBody));
             });
           })
@@ -128,13 +128,13 @@ const MediasPicker = WrapperComponent => {
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
-            Upload.addEventListener('progress', uploadId, data => {
+            Upload.addListener('progress', uploadId, data => {
               cb(parseInt(data.progress));
             });
             Upload.addListener('error', uploadId, data => {
               reject(data.error);
             });
-            Upload.addEventListener('completed', uploadId, data => {
+            Upload.addListener('completed', uploadId, data => {
               uploadSystemInfo(JSON.stringify(data));
               let upload_res = JSON.parse(data.responseBody);
               if (upload_res.key && data.responseCode === 200) {
