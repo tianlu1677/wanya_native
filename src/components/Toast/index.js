@@ -42,7 +42,7 @@ class Toast extends Component {
         letterSpacing: 1,
       },
       mask: true,
-      duration: 20,
+      duration: 0,
       loading: true,
       position: this.position.CENTER,
       ...options,
@@ -74,7 +74,7 @@ class Toast extends Component {
   static show(message, options = {}) {
     let onHidden = options.onHidden;
     let toast;
-    options.onHidden = function () {
+    options.onHidden = function() {
       toast && toast.destroy();
       onHidden && onHidden();
     };

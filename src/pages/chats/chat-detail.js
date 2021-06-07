@@ -1,5 +1,14 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, StyleSheet, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  StyleSheet,
+  Pressable,
+  Platform,
+} from 'react-native';
+import {isIphoneX, getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
 import {createConsumer} from '@rails/actioncable';
@@ -7,20 +16,20 @@ import {useSelector} from 'react-redux';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
 import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
+import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import Clipboard from '@react-native-community/clipboard';
 import MediasPicker from '@/components/MediasPicker';
-import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
+import {BarHeight} from '@/utils/navbar';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate, checkShowRule} from './meta';
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
 
-console.log(BarHeight);
+console.log(getBottomSpace());
 
 const TransLateData = data => data.map(item => translate(item));
 const isIos = Platform.OS === 'ios';
-// const isIphoneX = isIphoneX()
 const systemVersion = Math.ceil(DeviceInfo.getSystemVersion());
 const videoSelectType = isIos && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
 const {width, height} = Dimensions.get('window');
@@ -128,7 +137,7 @@ const ChartDetail = props => {
         if (err) {
           return;
         }
-        Toast.showLoading('上传中...');
+        Toast.showLoading('发送中...');
         for (const file of res) {
           const result = await props.uploadImage({uploadType: 'multipart', ...file});
           const {url} = result.asset;
@@ -147,10 +156,8 @@ const ChartDetail = props => {
           if (err) {
             return;
           }
-          Toast.showLoading('上传中...');
-          const ret = await uploadVideo(res[0], () => {
-            Toast.showLoading('上传中...');
-          });
+          Toast.showLoading('发送中...');
+          const ret = await uploadVideo(res[0], () => {});
           const {url} = ret.asset;
           const params = {uuid, conversation: {category: 'video', metadata: {url}}};
           console.log('syanPicker video params', params);
@@ -165,7 +172,7 @@ const ChartDetail = props => {
           if (response.didCancel) {
             return;
           }
-          Toast.showLoading('上传中...');
+          Toast.showLoading('发送中...');
           const {origURL} = response;
           const params = {uuid, conversation: {category: 'video', metadata: {url: origURL}}};
           console.log('imagePicker video params', params);
@@ -189,7 +196,17 @@ const ChartDetail = props => {
 
   useEffect(() => {
     loadData();
-    navigation.setOptions({title: target_account_nickname});
+    navigation.setOptions({
+      title: target_account_nickname,
+      headerRight: () => (
+        <View style={styles.headerRight}>
+          <Text style={styles.attation}>关注</Text>
+          <Pressable style={[styles.shareWrap]}>
+            <IconFont name={'ziyuan'} color={'#ccc'} size={26} />
+          </Pressable>
+        </View>
+      ),
+    });
 
     return () => {
       chatChannel.unsubscribe();
@@ -214,6 +231,8 @@ const ChartDetail = props => {
         inverted={false}
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={20}
+        // headerHeight={BarHeight + getBottomSpace()}
+        // iphoneXBottomPadding={getBottomSpace()}
         usePopView={true}
         setPopItems={(type, index, text, message) => popItems(type, index, text, message)}
         showIsRead={true}
@@ -247,6 +266,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
     marginRight: 1,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  attation: {
+    width: 45,
+    height: 22,
+    lineHeight: 22,
+    fontSize: 13,
+    color: '#fff',
+    fontWeight: '500',
+    textAlign: 'center',
+    backgroundColor: '#000',
+    borderRadius: 2,
+    overflow: 'hidden',
   },
 });
 
