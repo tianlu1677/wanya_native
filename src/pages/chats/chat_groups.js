@@ -43,6 +43,7 @@ const ChatGroups = ({navigation}) => {
 
   return (
     <View>
+      <RecommendSearch />
       <ScrollList
         data={listData}
         loading={loading}

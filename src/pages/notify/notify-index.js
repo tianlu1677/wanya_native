@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
+import {StyleSheet, StatusBar, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {syncAccountInfo} from '@/api/mine_api';
@@ -78,7 +78,7 @@ const NotifyIndex = ({navigation}) => {
 
   return (
     <View>
-      <RecommendSearch />
+      <StatusBar barStyle="dark-content" backgroundColor={'black'} />
       <View style={styles.wrapView}>
         <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_praise')}>
           <View style={styles.coverWrapView}>

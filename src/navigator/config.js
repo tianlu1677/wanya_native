@@ -253,7 +253,7 @@ const LabRouter = [
 ];
 
 const notifyRouter = [
-  {name: 'NotifyIndex', component: NotifyIndex, options: {title: '消息'}},
+  {name: 'NotifyIndex', component: NotifyIndex, options: {title: '互动通知'}},
   {name: 'CommentNotify', component: CommentNotify, options: {title: '评论及回复'}},
   {name: 'PraiseNotify', component: PraiseNotify, options: {title: '赞和收藏'}},
   {name: 'FollowNotify', component: FollowNotify, options: {title: '新增粉丝'}},

@@ -10,6 +10,7 @@ import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BottomModal, BlurView, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
 import NotifyIndex from '@/pages/notify/notify-index';
+import ChatGroups from "@/pages/chats/chat_groups"
 import Recommend from '@/pages/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
 // import WebView from '@/pages/webview/webview'; //webview
@@ -69,7 +70,7 @@ const MainTabScreen = props => {
 
   const RenderImage = (name, focused) => {
     switch (name) {
-      case 'NotifyIndex':
+      case 'ChatGroups':
         return focused ? messageActive : message;
       case 'Recommend':
         return focused ? indexActive : index;
@@ -106,7 +107,7 @@ const MainTabScreen = props => {
                 ? {width: (500 * RFValue(27)) / 351, height: RFValue(27)}
                 : {width: (134 * RFValue(16)) / 64, height: RFValue(16)};
 
-            return route.name === 'NotifyIndex' ? (
+            return route.name === 'ChatGroups' ? (
               <View style={{position: 'relative'}}>
                 <BadgeMessage
                   size={'tab'}
@@ -150,7 +151,7 @@ const MainTabScreen = props => {
             paddingRight: VWValue(34),
           },
         }}>
-        <Tab.Screen name="NotifyIndex" component={NotifyIndex} />
+        <Tab.Screen name="ChatGroups" component={ChatGroups} />
         <Tab.Screen
           name="Recommend"
           component={Recommend}
