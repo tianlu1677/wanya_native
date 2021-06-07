@@ -23,6 +23,13 @@ import MediasPicker from '@/components/MediasPicker';
 import {BarHeight} from '@/utils/navbar';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate, checkShowRule} from './meta';
+
+import { EventRegister } from "react-native-event-listeners";
+
+global.addEventListener = EventRegister.addEventListener;
+global.removeEventListener = EventRegister.removeEventListener;
+
+
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
 
