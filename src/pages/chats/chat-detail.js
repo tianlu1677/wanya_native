@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Pressable,
   Platform,
+  StatusBar,
 } from 'react-native';
 import {isIphoneX, getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 import DeviceInfo from 'react-native-device-info';
@@ -233,6 +234,7 @@ const ChartDetail = props => {
     <Loading />
   ) : (
     <View>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <ChatScreen
         chatWindowStyle={{backgroundColor: 'white'}}
         messageList={messages}

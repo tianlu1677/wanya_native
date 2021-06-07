@@ -36,7 +36,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
       <View style={styles.notifyContent}>
         <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
         {last_conversation && (
-          <Text style={styles.notifyContentDesc}>{last_conversation.content}</Text>
+          <Text style={styles.notifyContentDesc}>{last_conversation.content || last_conversation.payload.text}</Text>
         )}
       </View>
       <View style={styles.messageContent}>
