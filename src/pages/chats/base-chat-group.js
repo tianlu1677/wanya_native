@@ -94,7 +94,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
               ? _getActualText(last_conversation.content)
               : last_conversation.payload.text}
           </Text>
-        ) : null}
+        ) : <Text style={styles.notifyContentDesc} />}
       </View>
       <View style={styles.messageContent}>
         <Text style={styles.timeText}>{last_message_at_text}</Text>

@@ -252,7 +252,7 @@ const ChartDetail = props => {
         title: targetAccountDetail.nickname,
         headerRight: () => (
           <View style={styles.headerRight}>
-            <Text style={styles.attation} onPress={onFollow}>
+            <Text style={followed ? styles.attation : styles.noattion} onPress={onFollow}>
               {followed && following ? '互相关注' : followed ? '已关注' : '关注'}
             </Text>
             <Pressable style={styles.shareWrap} onPress={() => setShowActionSheet(true)}>
@@ -281,7 +281,7 @@ const ChartDetail = props => {
         panelContainerStyle={styles.panelContainerStyle}
         useEmoji={true}
         isIPhoneX
-        inverted={true}
+        inverted={false}
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={20}
         // headerHeight={BarHeight + getBottomSpace()}
