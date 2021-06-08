@@ -62,7 +62,7 @@ const ChartDetail = props => {
   const [messages, setMessages] = useState([]);
   const [audioPath, setAudioPath] = useState('');
   const [currentTime, setCurrentTime] = useState(0);
-  const [hasPermission, setHasPermission] = useState(false);
+  const [hasPermission, setHasPermission] = useState(true);
   const [voiceHandle, setVoiceHandle] = useState(true);
   const [voiceVolume, setVoiceVolume] = useState(0);
   const [finished, setFinished] = useState(false);
@@ -139,24 +139,6 @@ const ChartDetail = props => {
     return items;
   };
 
-  const checkDir = async () => {
-    if (!(await RNFS.exists(`${AudioUtils.DocumentDirectoryPath}/voice/`))) {
-      RNFS.mkdir(`${AudioUtils.DocumentDirectoryPath}/voice/`);
-    }
-  };
-
-  const prepareRecordingPath = path => {
-    AudioRecorder.prepareRecordingAtPath(path, {
-      SampleRate: 22050,
-      Channels: 1,
-      AudioQuality: 'High',
-      AudioEncoding: 'aac',
-      OutputFormat: 'aac_adts',
-      AudioEncodingBitRate: 32000,
-      MeteringEnabled: true,
-    });
-  };
-
   const _requestAndroidPermission = async () => {
     try {
       const rationale = {title: '麦克风权限', message: '需要权限录制语音.', buttonPositive: '确定'};
@@ -171,32 +153,39 @@ const ChartDetail = props => {
   };
 
   const random = () => {
-    if (timer) {
-      return;
+    if (!timer) {
+      timer = setInterval(() => {
+        const num = Math.floor(Math.random() * 10);
+        setVoiceVolume(num);
+      }, 500);
     }
-    console.log('start');
-    timer = setInterval(() => {
-      const num = Math.floor(Math.random() * 10);
-      setVoiceVolume(num);
-    }, 500);
   };
 
   const audioProgress = () => {
-    console.log('audioProgress', audioProgress);
-    // AudioRecorder.onProgress = data => {
-    //   if (data.currentTime === 0) {
-    //     setCurrentTime(Math.floor(currentTime + 0.25));
-    //   } else {
-    //     setCurrentTime(Math.floor(data.currentTime));
-    //   }
-    //   setVoiceHandle(false);
-    //   setVoiceVolume(Math.floor(data.currentMetering));
-    //   random();
-    // };
+    AudioRecorder.onProgress = data => {
+      setCurrentTime(Math.floor(data.currentTime === 0 ? currentTime + 0.25 : data.currentTime));
+      setVoiceHandle(false);
+      setVoiceVolume(Math.floor(data.currentMetering));
+      random();
+    };
+  };
+
+  const prepareRecordingPath = path => {
+    AudioRecorder.prepareRecordingAtPath(path, {
+      SampleRate: 22050,
+      Channels: 1,
+      AudioQuality: 'High',
+      AudioEncoding: 'aac',
+      OutputFormat: 'aac_adts',
+      AudioEncodingBitRate: 32000,
+      MeteringEnabled: true,
+    });
   };
 
   const initPath = async () => {
-    await checkDir();
+    if (!(await RNFS.exists(`${AudioUtils.DocumentDirectoryPath}/voice/`))) {
+      RNFS.mkdir(`${AudioUtils.DocumentDirectoryPath}/voice/`);
+    }
     const nowPath = `${AudioUtils.DocumentDirectoryPath}/voice/voice${Date.now()}.aac`;
     setAudioPath(nowPath);
     setCurrentTime(0);
@@ -483,21 +472,21 @@ const ChartDetail = props => {
         onMessagePress={onPress}
         audioPath={audioPath}
         audioHasPermission={hasPermission}
-        // checkPermission={AudioRecorder.requestAuthorization}
+        checkPermission={AudioRecorder.requestAuthorization}
         // requestAndroidPermission={_requestAndroidPermission}
         audioOnProgress={audioProgress}
-        // audioOnFinish={audioFinish}
-        // audioInitPath={initPath}
-        // audioRecord={_record}
-        // audioStopRecord={_stop}
-        // audioPauseRecord={_pause}
-        // audioResumeRecord={_resume}
-        // audioCurrentTime={currentTime}
-        // audioHandle={voiceHandle}
-        // setAudioHandle={satus => setVoiceHandle(satus)}
-        // voiceLoading={voiceLoading}
-        // voicePlaying={voicePlaying}
-        // voiceVolume={voiceVolume}
+        audioOnFinish={audioFinish}
+        audioInitPath={initPath}
+        audioRecord={_record}
+        audioStopRecord={_stop}
+        audioPauseRecord={_pause}
+        audioResumeRecord={_resume}
+        audioCurrentTime={currentTime}
+        audioHandle={voiceHandle}
+        setAudioHandle={satus => setVoiceHandle(satus)}
+        voiceLoading={voiceLoading}
+        voicePlaying={voicePlaying}
+        voiceVolume={voiceVolume}
         userProfile={{
           id: currentAccount.id.toString(),
           avatar: currentAccount.avatar_url,

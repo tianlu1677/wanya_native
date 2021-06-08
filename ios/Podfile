@@ -101,6 +101,8 @@ target 'wanya_native' do
 
   # pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNAudio', :path => '../node_modules/react-native-audio'
+
   target 'wanya_nativeTests' do
     inherit! :complete
     # Pods for testing
