@@ -9,10 +9,9 @@ import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BottomModal, BlurView, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
-import NotifyIndex from '@/pages/notify/notify-index';
+import ChatList from '@/pages/chats/chat-list';
 import Recommend from '@/pages/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
-// import WebView from '@/pages/webview/webview'; //webview
 
 const {width} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
@@ -69,7 +68,7 @@ const MainTabScreen = props => {
 
   const RenderImage = (name, focused) => {
     switch (name) {
-      case 'NotifyIndex':
+      case 'ChatList':
         return focused ? messageActive : message;
       case 'Recommend':
         return focused ? indexActive : index;
@@ -106,7 +105,7 @@ const MainTabScreen = props => {
                 ? {width: (500 * RFValue(27)) / 351, height: RFValue(27)}
                 : {width: (134 * RFValue(16)) / 64, height: RFValue(16)};
 
-            return route.name === 'NotifyIndex' ? (
+            return route.name === 'ChatList' ? (
               <View style={{position: 'relative'}}>
                 <BadgeMessage
                   size={'tab'}
@@ -150,7 +149,7 @@ const MainTabScreen = props => {
             paddingRight: VWValue(34),
           },
         }}>
-        <Tab.Screen name="NotifyIndex" component={NotifyIndex} />
+        <Tab.Screen name="ChatList" component={ChatList} />
         <Tab.Screen
           name="Recommend"
           component={Recommend}
@@ -167,7 +166,7 @@ const MainTabScreen = props => {
             },
           })}
         />
-        <Tab.Screen name="Discovery" component={Discovery} options={{}} />        
+        <Tab.Screen name="Discovery" component={Discovery} options={{}} />
       </Tab.Navigator>
     </>
   );

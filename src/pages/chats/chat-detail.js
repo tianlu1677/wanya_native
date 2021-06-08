@@ -1,147 +1,172 @@
-import React, {useState, useEffect, useMemo, useLayoutEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-  FlatList,
-  Pressable,
-} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {dispatchPreviewImage} from '@/redux/actions';
-import {Avator, PlayScore, BottomModal, TopBack} from '@/components/NodeComponents';
+import React, {useEffect, useState, useMemo} from 'react';
+import {View, Text, Pressable, Dimensions, StyleSheet} from 'react-native';
+import {createConsumer} from '@rails/actioncable';
+import {useSelector} from 'react-redux';
+import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
 import Loading from '@/components/Loading';
-import IconFont from '@/iconfont';
-import Toast from '@/components/Toast';
-import {RFValue} from '@/utils/response-fontsize';
-import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
+import FastImg from '@/components/FastImg';
 
-import consumer from './consumer';
-import consumerFunc from "./consumer"
+import Clipboard from '@react-native-community/clipboard';
 
-const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 540) / 750);
+import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
+import {translate} from './meta';
 
-global.addEventListener = () => {};
-global.removeEventListener = () => {};
+const AddPhoto = require('@/assets/images/add-photo.png');
+const AddVideo = require('@/assets/images/add-video.png');
 
-const ChatDetail = ({navigation, route}) => {
-  const dispatch = useDispatch();
+const {height, width} = Dimensions.get('window');
+const MediaWidth = (width - 2 * 15 - 3 * 15) / 4;
+
+const TransLateData = data => data.map(item => translate(item));
+
+const ChartDetailCommon = props => {
+  const {uuid} = props.route.params;
   const {
+    account: {currentAccount},
     login: {auth_token},
   } = useSelector(state => state);
-  const currentAccount = useSelector(state => state.account.currentAccount);
-  const consumer = consumerFunc(auth_token)
-  const [currentWsState, setCurrentWsState] = useState('');
-
-  const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
 
-  const chatChannel = useMemo(() => {
-    return consumer.subscriptions.create(
-      {channel: 'ChatChannel', room: 'main_room'},
+  const Consumer = useMemo(() => {
+    const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
+    return createConsumer(url).subscriptions.create(
+      {channel: 'ChatChannel', room: `${uuid}`},
       {
         received(data) {
-          // console.log('received', data);
-          setMessages(messages => messages.concat(data));
+          setMessages(m => m.concat(translate(data.conversation)));
         },
         initialized() {
           console.log('initialized');
         },
         connected() {
           console.log('connected');
-          setCurrentWsState('connected');
         },
         disconnected() {
           console.log('disconnected');
-          setCurrentWsState('disconnected');
         },
         rejected() {
           console.log('rejected');
-          setCurrentWsState('rejected');
         },
         unsubscribe() {
           console.log('unsubscribe');
-          setCurrentWsState('unsubscribe');
         },
       }
     );
   }, []);
 
-  const renderedItem = ({item}) => <Message message={item.message} key={item.key} />;
-  const inputSubmitted = event => {
-    const newMessage = event.nativeEvent.text;
-    console.log('inputSubmitted', newMessage);
-    chatChannel.send({message: newMessage}); // 向服务器推送消息
-    setValue('');
+  const sendMessage = async (type, content, isInverted) => {
+    const params = {uuid, conversation: {category: type, content}};
+    const res = await getChatGroupsSendMessage(params);
   };
 
-  const disconnect = () => {
-    consumer.disconnect();
+  const loadData = async () => {
+    const params = {uuid: uuid};
+    console.log('params', params);
+
+    const res = await getChatGroupsConversations(params);
+    // console.log('res', res);
+    setMessages(TransLateData(res.data.conversations));
+    setLoading(false);
+  };
+  // 删除或者复制数据
+  const popItems = (type, index, text, message) => {
+    // console.log('message', message)
+    let items = [
+      {
+        title: '删除',
+        onPress: () => {
+          console.log('del');
+        },
+      },
+      {
+        title: '复制',
+        onPress: () => {
+          Clipboard.setString(text);
+        },
+      },
+    ];
+    return items;
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    loadData();
+    return () => {
+      Consumer.unsubscribe();
+    };
+  }, []);
 
-  const Message = ({message}) => (
-    <View style={styles.message}>
-      <Text style={styles.message}>{message}</Text>
-    </View>
-  );
-
-  return (
-    <KeyboardAvoidingView style={styles.container} behavior="height">
-      <FlatList
-        styles={styles.messages}
-        data={messages}
-        renderItem={renderedItem}
-        keyExtractor={item => item.key}
+  return loading ? (
+    <Loading />
+  ) : (
+    <View>
+      <ChatScreen
+        // chatWindowStyle={{marginBottom: 20}}
+        messageList={messages}
+        sendMessage={sendMessage}
+        isIPhoneX={true}
+        chatType={'friend'}
+        usePopView={true}
+        setPopItems={(type, index, text, message) => {
+          return popItems(type, index, text, message);
+        }}
+        // showIsRead={true}
+        // iphoneXBottomPadding={200}
+        userProfile={{
+          id: currentAccount.id.toString(),
+          avatar: currentAccount.avatar_url,
+          nickName: currentAccount.nickname,
+        }}
+        // usePlus={true}
+        panelContainerStyle={styles.panelContainerStyle}
+        panelSource={[
+          {
+            icon: <FastImg source={AddPhoto} style={styles.media} />,
+            title: '照片',
+            onPress: () => {
+              console.log('takePhoto');
+            },
+          },
+          {
+            icon: <FastImg source={AddVideo} style={styles.media} />,
+            title: '视频',
+            onPress: () => {
+              console.log('takePhoto');
+            },
+          },
+        ]}
+        renderPanelRow={data => {
+          console.log(data);
+          return (
+            <Pressable style={styles.mediaWrapper} onPress={data.onPress}>
+              {data.icon}
+              <Text style={styles.mediaText}>{data.title}</Text>
+            </Pressable>
+          );
+        }}
       />
-
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setValue(text)}
-          value={value}
-          placeholder="Type a Message"
-          onSubmitEditing={inputSubmitted}
-        />
-
-        <Pressable>
-          <Text>断开连接</Text>
-          <Text>当前状态 {currentWsState}</Text>
-        </Pressable>
-      </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
-const position = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
 const styles = StyleSheet.create({
-  wrapper: {
-    position: 'relative',
-    flex: 1,
+  panelContainerStyle: {},
+  mediaWrapper: {
+    width: MediaWidth,
+    height: MediaWidth + 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 15,
   },
-  messages: {
-    flex: 1,
+  media: {
+    width: MediaWidth,
+    height: MediaWidth,
   },
-  message: {
-    borderColor: 'gray',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    padding: 8,
-  },
-  form: {
-    backgroundColor: '#eee',
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    paddingBottom: 75,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    backgroundColor: 'white',
+  mediaText: {
+    height: 20,
+    lineHeight: 20,
+    color: '#7a7a7a',
   },
 });
 
-export default ChatDetail;
+export default ChartDetailCommon;

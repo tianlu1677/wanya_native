@@ -63,7 +63,7 @@ const AccountDetail = ({navigation, route}) => {
     const res = await getChatGroupsDetail(params);
     const {uuid} = res.data.chat_group;
     console.log(res.data.chat_group, uuid);
-    navigation.push('ChatDetailCommon', {uuid});
+    navigation.push('ChatDetail', {uuid});
   };
 
   const onFollow = async () => {

@@ -91,9 +91,13 @@ import MentionNotify from '@/pages/notify/mention-notify';
 
 // 聊天
 import ChatDetail from '@/pages/chats/chat-detail';
+<<<<<<< HEAD
 import ChatDetailCommon from '@/pages/chats/chat-detail-common';
 import ChatList from '@/pages/chats/chat-list';
 import ChatGroups from '@/pages/chats/chat_groups';
+=======
+import ChatDetail1 from '@/pages/chats/chat-detail1';
+>>>>>>> 7bada54... add-photo
 
 // 公用页面
 import RelatedAccounts from '@/pages/home/related-account-list'; //关注页面相关推荐
@@ -253,7 +257,7 @@ const LabRouter = [
 ];
 
 const notifyRouter = [
-  {name: 'NotifyIndex', component: NotifyIndex, options: {title: '消息'}},
+  {name: 'NotifyIndex', component: NotifyIndex, options: {title: '互动通知'}},
   {name: 'CommentNotify', component: CommentNotify, options: {title: '评论及回复'}},
   {name: 'PraiseNotify', component: PraiseNotify, options: {title: '赞和收藏'}},
   {name: 'FollowNotify', component: FollowNotify, options: {title: '新增粉丝'}},
@@ -263,9 +267,13 @@ const notifyRouter = [
 
 const chatRouter = [
   {name: 'ChatDetail', component: ChatDetail, options: {title: '聊天'}},
+<<<<<<< HEAD
   {name: 'ChatDetailCommon', component: ChatDetailCommon, options: {title: '聊天'}},
   {name: 'ChatList', component: ChatList, options: {title: '私信列表'}},
   {name: 'ChatGroups', component: ChatGroups, options: {title: '聊天列表'}},
+=======
+  {name: 'ChatDetail1', component: ChatDetail1, options: {title: '聊天'}},
+>>>>>>> 7bada54... add-photo
 ];
 
 const authRouter = [

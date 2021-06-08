@@ -21,9 +21,15 @@ const DrawerContent = ({navigation}) => {
     navigation.navigate('Feedback');
   };
 
+<<<<<<< HEAD
   const onNotifyIndex = () => {
     navigation.navigate('NotifyIndex');
   }
+=======
+  const onNotice = () => {
+    navigation.navigate('NotifyIndex');
+  };
+>>>>>>> 7bada54... add-photo
 
   const onSettings = () => {
     navigation.navigate('Settings');
@@ -60,6 +66,10 @@ const DrawerContent = ({navigation}) => {
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
+      <Pressable style={styles.drawerItem} onPress={onNotice}>
+        <IconFont name="notice" size={RFValue(18)} color={'#000'} />
+        <Text style={styles.drawerText}>互动通知</Text>
+      </Pressable>
       <Pressable style={styles.drawerItem} onPress={onFeedback}>
         <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>反馈</Text>
@@ -67,12 +77,15 @@ const DrawerContent = ({navigation}) => {
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
+<<<<<<< HEAD
       <Pressable style={styles.drawerItem} onPress={() => navigation.navigate('ChatGroups')}>
         <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>私信列表</Text>
         <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
       </Pressable>
 
+=======
+>>>>>>> 7bada54... add-photo
       <Pressable style={[styles.drawerItem, styles.drawerSetting]} onPress={onSettings}>
         <IconFont name="shezhi" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>设置</Text>
