@@ -1,8 +1,11 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, Text, Pressable, Platform, StatusBar} from 'react-native';
+import {View, Text, Pressable, Platform, StatusBar, PermissionsAndroid} from 'react-native';
 import {isIphoneX, getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
+import RNFS from 'react-native-fs';
+import Sound from 'react-native-sound';
 import {EventRegister} from 'react-native-event-listeners';
 import {createConsumer} from '@rails/actioncable';
 import {useSelector} from 'react-redux';
@@ -25,6 +28,7 @@ const AddVideo = require('@/assets/images/add-video.png');
 
 import styles from './style';
 
+console.log(AudioRecorder, AudioUtils);
 const isIos = Platform.OS === 'ios';
 const systemVersion = Math.ceil(DeviceInfo.getSystemVersion());
 const videoSelectType = isIos && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
@@ -45,17 +49,26 @@ export const pagination = (headers = {}) => {
 const ChartDetail = props => {
   const {navigation, route, imagePick, videoPick, uploadVideo} = props;
   const {uuid, targetAccount} = route.params;
-
   const {
     account: {currentAccount},
     login: {auth_token},
   } = useSelector(state => state);
-
+  let timer = null;
+  let sound = null;
   const [loading, setLoading] = useState(true);
   const [pagin, setPagin] = useState(null);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [targetAccountDetail, setTargetAccountDetail] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [audioPath, setAudioPath] = useState('');
+  const [currentTime, setCurrentTime] = useState(0);
+  const [hasPermission, setHasPermission] = useState(false);
+  const [voiceHandle, setVoiceHandle] = useState(true);
+  const [voiceVolume, setVoiceVolume] = useState(0);
+  const [finished, setFinished] = useState(false);
+  const [voiceLoading, setVoiceLoading] = useState(false);
+  const [voicePlaying, setVoicePlaying] = useState(false);
+  const [activeVoiceId, setActiveVoiceId] = useState(-1);
 
   console.log(messages);
 
@@ -124,6 +137,178 @@ const ChartDetail = props => {
     }
 
     return items;
+  };
+
+  const checkDir = async () => {
+    if (!(await RNFS.exists(`${AudioUtils.DocumentDirectoryPath}/voice/`))) {
+      RNFS.mkdir(`${AudioUtils.DocumentDirectoryPath}/voice/`);
+    }
+  };
+
+  const prepareRecordingPath = path => {
+    AudioRecorder.prepareRecordingAtPath(path, {
+      SampleRate: 22050,
+      Channels: 1,
+      AudioQuality: 'High',
+      AudioEncoding: 'aac',
+      OutputFormat: 'aac_adts',
+      AudioEncodingBitRate: 32000,
+      MeteringEnabled: true,
+    });
+  };
+
+  const _requestAndroidPermission = async () => {
+    try {
+      const rationale = {title: '麦克风权限', message: '需要权限录制语音.', buttonPositive: '确定'};
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        rationale
+      );
+      setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const random = () => {
+    if (timer) {
+      return;
+    }
+    console.log('start');
+    timer = setInterval(() => {
+      const num = Math.floor(Math.random() * 10);
+      setVoiceVolume(num);
+    }, 500);
+  };
+
+  const audioProgress = () => {
+    console.log('audioProgress', audioProgress);
+    // AudioRecorder.onProgress = data => {
+    //   if (data.currentTime === 0) {
+    //     setCurrentTime(Math.floor(currentTime + 0.25));
+    //   } else {
+    //     setCurrentTime(Math.floor(data.currentTime));
+    //   }
+    //   setVoiceHandle(false);
+    //   setVoiceVolume(Math.floor(data.currentMetering));
+    //   random();
+    // };
+  };
+
+  const initPath = async () => {
+    await checkDir();
+    const nowPath = `${AudioUtils.DocumentDirectoryPath}/voice/voice${Date.now()}.aac`;
+    setAudioPath(nowPath);
+    setCurrentTime(0);
+    prepareRecordingPath(nowPath);
+  };
+
+  const _finishRecording = (didSucceed, filePath) => {
+    console.log(filePath);
+    setFinished(didSucceed);
+  };
+
+  const audioFinish = () => {
+    AudioRecorder.onFinished = data => _finishRecording(data.status === 'OK', data.audioFileURL);
+  };
+
+  const _pause = async () => {
+    try {
+      await AudioRecorder.pauseRecording(); // Android 由于API问题无法使用此方法
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const _resume = async () => {
+    try {
+      await AudioRecorder.resumeRecording(); // Android 由于API问题无法使用此方法
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const _record = async () => {
+    try {
+      await AudioRecorder.startRecording();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const _stop = async () => {
+    try {
+      await AudioRecorder.stopRecording();
+      timer && clearInterval(timer);
+      if (Platform.OS === 'android') {
+        _finishRecording(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const playSound = (url, index) => {
+    setActiveVoiceId(index);
+    if (sound === null) {
+      setVoiceLoading(true);
+      sound = new Sound(url, '', error => {
+        if (error) {
+          console.log('failed to load the sound', error);
+          setVoiceLoading(false);
+          sound = null;
+          return;
+        }
+        setVoiceLoading(false);
+        setVoicePlaying(true);
+        sound.play(success => {
+          if (success) {
+            setVoicePlaying(false);
+            console.log('successfully finished playing');
+          } else {
+            setVoicePlaying(false);
+            console.log('playback failed due to audio decoding errors');
+          }
+        });
+      });
+    } else {
+      setVoicePlaying(true);
+      sound.play(success => {
+        if (success) {
+          setVoicePlaying(false);
+          console.log('successfully finished playing');
+        } else {
+          setVoicePlaying(false);
+          console.log('playback failed due to audio decoding errors');
+        }
+      });
+    }
+  };
+
+  const stopSound = (remove = false) => {
+    sound && sound.stop();
+    setVoicePlaying(false);
+    if (remove) {
+      sound = null;
+    }
+  };
+
+  const onPress = (type, index, content) => {
+    if (type === 'voice') {
+      if (voicePlaying) {
+        if (index === activeVoiceId) {
+          stopSound();
+        } else {
+          stopSound(true);
+          playSound(content, index);
+        }
+      } else {
+        if (index !== activeVoiceId) {
+          stopSound(true);
+        }
+        playSound(content, index);
+      }
+    }
   };
 
   const onMediaPicker = index => {
@@ -295,6 +480,24 @@ const ChartDetail = props => {
         setPopItems={popItems}
         showIsRead={false}
         loadHistory={loadHistory}
+        onMessagePress={onPress}
+        audioPath={audioPath}
+        audioHasPermission={hasPermission}
+        // checkPermission={AudioRecorder.requestAuthorization}
+        // requestAndroidPermission={_requestAndroidPermission}
+        audioOnProgress={audioProgress}
+        // audioOnFinish={audioFinish}
+        // audioInitPath={initPath}
+        // audioRecord={_record}
+        // audioStopRecord={_stop}
+        // audioPauseRecord={_pause}
+        // audioResumeRecord={_resume}
+        // audioCurrentTime={currentTime}
+        // audioHandle={voiceHandle}
+        // setAudioHandle={satus => setVoiceHandle(satus)}
+        // voiceLoading={voiceLoading}
+        // voicePlaying={voicePlaying}
+        // voiceVolume={voiceVolume}
         userProfile={{
           id: currentAccount.id.toString(),
           avatar: currentAccount.avatar_url,
