@@ -16,10 +16,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
   } = chat_group;
 
   const goChatDetail = () => {
-    navigation.navigate('ChatDetail', {
-      uuid: uuid,
-      target_account_nickname: send_message_account.nickname,
-    });
+    navigation.navigate('ChatDetail', {uuid, targetAccount: send_message_account});
     readSingleChatGroupMessage({uuid: uuid});
     unread_message[currentAccount.id] = 0;
   };
@@ -36,7 +33,9 @@ const BaseChatGroup = ({navigation, chat_group}) => {
       <View style={styles.notifyContent}>
         <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
         {last_conversation && (
-          <Text style={styles.notifyContentDesc}>{last_conversation.content || last_conversation.payload.text}</Text>
+          <Text style={styles.notifyContentDesc}>
+            {last_conversation.content || last_conversation.payload.text}
+          </Text>
         )}
       </View>
       <View style={styles.messageContent}>

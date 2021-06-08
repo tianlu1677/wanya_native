@@ -77,7 +77,7 @@ const AccountDetail = ({navigation, route}) => {
     const params = {receiver_id: account.id};
     const res = await getChatGroupsDetail(params);
     const {uuid} = res.data.chat_group;
-    navigation.push('ChatDetail', {uuid});
+    navigation.navigate('ChatDetail', {uuid, targetAccount: account});
   };
 
   const actionItems = [

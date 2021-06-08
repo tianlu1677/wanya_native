@@ -90,9 +90,7 @@ import FollowNotify from '@/pages/notify/follow-notify';
 import MentionNotify from '@/pages/notify/mention-notify';
 
 // 聊天
-import ChatDetail from '@/pages/chats/chat-detail';
-// import ChatDetailCommon from '@/pages/chats/chat-detail-common';
-// import ChatList from '@/pages/chats/chat-list';
+import ChatDetail from '@/pages/chats/chat-detail/index';
 import ChatGroups from '@/pages/chats/chat_groups';
 
 // 公用页面
@@ -263,8 +261,6 @@ const notifyRouter = [
 
 const chatRouter = [
   {name: 'ChatDetail', component: ChatDetail, options: {title: '聊天'}},
-  // {name: 'ChatDetailCommon', component: ChatDetailCommon, options: {title: '聊天'}},
-  // {name: 'ChatList', component: ChatList, options: {title: '私信列表'}},
   {name: 'ChatGroups', component: ChatGroups, options: {title: '聊天列表'}},
 ];
 

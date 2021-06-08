@@ -1,20 +1,13 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  StyleSheet,
-  Pressable,
-  Platform,
-  StatusBar,
-} from 'react-native';
+import {View, Text, Pressable, Platform, StatusBar} from 'react-native';
 import {isIphoneX, getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
+import {EventRegister} from 'react-native-event-listeners';
 import {createConsumer} from '@rails/actioncable';
 import {useSelector} from 'react-redux';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
+import ActionSheet from '@/components/ActionSheet';
 import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
@@ -22,34 +15,46 @@ import FastImg from '@/components/FastImg';
 import Clipboard from '@react-native-community/clipboard';
 import MediasPicker from '@/components/MediasPicker';
 import {BarHeight} from '@/utils/navbar';
+import {reportContent} from '@/api/secure_check';
+import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
-import {translate, checkShowRule} from './meta';
-
-import {EventRegister} from 'react-native-event-listeners';
-
-global.addEventListener = EventRegister.addEventListener;
-global.removeEventListener = EventRegister.removeEventListener;
+import {translate, checkShowRule} from '../meta';
 
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
 
-console.log(getBottomSpace());
+import styles from './style';
 
-const TransLateData = data => data.map(item => translate(item));
 const isIos = Platform.OS === 'ios';
 const systemVersion = Math.ceil(DeviceInfo.getSystemVersion());
 const videoSelectType = isIos && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
-const {width, height} = Dimensions.get('window');
+const TransLateData = data => data.map(item => translate(item));
+
+global.addEventListener = EventRegister.addEventListener;
+global.removeEventListener = EventRegister.removeEventListener;
+
+export const pagination = (headers = {}) => {
+  const currentPage = Number(headers['x-current-page']);
+  const perPage = Number(headers['x-per-page'] || headers['X-Page-Items']);
+  const total = Number(headers['x-total']);
+  const hasMore = currentPage * perPage < total;
+  const nextPage = hasMore ? currentPage + 1 : currentPage;
+  return {hasMore: hasMore, nextPage: nextPage, page: currentPage, total: total};
+};
 
 const ChartDetail = props => {
   const {navigation, route, imagePick, videoPick, uploadVideo} = props;
-  const {uuid, target_account_nickname} = route.params;
+  const {uuid, targetAccount} = route.params;
+
   const {
     account: {currentAccount},
     login: {auth_token},
   } = useSelector(state => state);
 
   const [loading, setLoading] = useState(true);
+  const [pagin, setPagin] = useState(null);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  const [targetAccountDetail, setTargetAccountDetail] = useState(null);
   const [messages, setMessages] = useState([]);
 
   console.log(messages);
@@ -95,52 +100,29 @@ const ChartDetail = props => {
     chatGroupSendMessage(params);
   };
 
-  const loadData = async () => {
-    const res = await getChatGroupsConversations({uuid});
-    const conversations = res.data.conversations;
-    const newMessages = checkShowRule(conversations.reverse(), 'send_at');
-    setMessages(TransLateData(newMessages));
-    setLoading(false);
-  };
-
-  // 点击头像
-  const pressAvatar = (isSelf, targetId) => {
-    console.log('is self,', isSelf, targetId);
-    if (isSelf) {
-      return;
-    }
-    navigation.navigate('AccountDetail', {accountId: targetId});
-  };
-
-  // 删除或者复制数据
   const popItems = (type, index, text, message) => {
-    console.log('message', message.type);
     let items = [];
-    const delItem = [
-      {
-        title: '删除',
-        onPress: () => {
-          console.log('del');
-          chatChannel.deleteMessage(message.id);
-          messages.splice(index, 1); // 重新setmessage list
-          setMessages([...messages]);
-        },
-      },
-    ];
-    const copyItem = [
-      {
-        title: '复制',
-        onPress: () => {
-          Clipboard.setString(text);
-        },
-      },
-    ];
+
     if (type === 'text') {
+      const copyItem = [{title: '复制', onPress: () => Clipboard.setString(text)}];
       items = items.concat(copyItem);
     }
+
     if (message.targetId === currentAccount.id.toString()) {
+      const delItem = [
+        {
+          title: '删除',
+          onPress: () => {
+            chatChannel.deleteMessage(message.id);
+            messages.splice(index, 1);
+            setMessages([...messages]);
+          },
+        },
+      ];
+
       items = items.concat(delItem);
     }
+
     return items;
   };
 
@@ -158,7 +140,6 @@ const ChartDetail = props => {
           const result = await props.uploadImage({uploadType: 'multipart', ...file});
           const {url} = result.asset;
           const params = {uuid, conversation: {category: 'image', metadata: {url}}};
-          console.log('image params', params);
           chatGroupSendMessage(params);
         }
         Toast.hide();
@@ -176,7 +157,6 @@ const ChartDetail = props => {
           const ret = await uploadVideo(res[0], () => {});
           const {url} = ret.asset;
           const params = {uuid, conversation: {category: 'video', metadata: {url}}};
-          console.log('syanPicker video params', params);
           chatGroupSendMessage(params);
           Toast.hide();
         });
@@ -191,7 +171,6 @@ const ChartDetail = props => {
           Toast.showLoading('发送中...');
           const {origURL} = response;
           const params = {uuid, conversation: {category: 'video', metadata: {url: origURL}}};
-          console.log('imagePicker video params', params);
           chatGroupSendMessage(params);
           Toast.hide();
         });
@@ -199,35 +178,91 @@ const ChartDetail = props => {
     }
   };
 
+  const pressAvatar = (isSelf, targetId) => {
+    if (!isSelf) {
+      navigation.navigate('AccountDetail', {accountId: targetId});
+    }
+  };
+
+  const onFollow = async () => {
+    const {followed, id} = targetAccountDetail;
+    followed ? await unfollowAccount(id) : await followAccount(id);
+    const ret = await getAccount(id);
+    setTargetAccountDetail(ret.data.account);
+  };
+
   const RenderPanelRow = (data, index) => (
-    <TouchableOpacity
-      key={index}
-      style={styles.panelImageWrap}
-      activeOpacity={0.7}
-      onPress={() => onMediaPicker(index)}>
+    <Pressable key={index} style={styles.panelImageWrap} onPress={() => onMediaPicker(index)}>
       <View>{data.icon}</View>
       <Text style={styles.panelText}>{data.title}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 
-  useEffect(() => {
-    loadData();
-    navigation.setOptions({
-      title: target_account_nickname,
-      headerRight: () => (
-        <View style={styles.headerRight}>
-          <Text style={styles.attation}>关注</Text>
-          <Pressable style={[styles.shareWrap]}>
-            <IconFont name={'ziyuan'} color={'#ccc'} size={26} />
-          </Pressable>
-        </View>
-      ),
-    });
+  const actionItems = [
+    {
+      id: 1,
+      label: '拉黑',
+      onPress: () => {
+        const data = {reason: '拉黑', report_type: 'Account', report_type_id: targetAccount.id};
+        reportContent(data).then(res => {
+          Toast.showError('已拉黑', {duration: 500});
+        });
+      },
+    },
+    {
+      id: 2,
+      label: '投诉',
+      onPress: async () => {
+        navigation.push('Report', {report_type: 'Account', report_type_id: targetAccount.id});
+      },
+    },
+  ];
 
+  const loadHistory = () => {
+    if (pagin.hasMore) {
+      loadData(pagin.nextPage);
+    }
+  };
+
+  const loadData = async page => {
+    if (page === 1) {
+      const ret = await getAccount(targetAccount.id);
+      setTargetAccountDetail(ret.data.account);
+    }
+    setLoading(false);
+    const per_page = 10;
+    const res = await getChatGroupsConversations({uuid, page, per_page});
+    const newMessages = TransLateData(checkShowRule(res.data.conversations.reverse(), 'send_at'));
+    setPagin(pagination(res.headers));
+    setMessages(page === 1 ? newMessages : [...messages, ...newMessages]);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadData(1);
     return () => {
       chatChannel.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (targetAccountDetail) {
+      const {followed, following} = targetAccountDetail;
+      navigation.setOptions({
+        title: targetAccountDetail.nickname,
+        headerRight: () => (
+          <View style={styles.headerRight}>
+            <Text style={styles.attation} onPress={onFollow}>
+              {followed && following ? '互相关注' : followed ? '已关注' : '关注'}
+            </Text>
+            <Pressable style={styles.shareWrap} onPress={() => setShowActionSheet(true)}>
+              <IconFont name={'ziyuan'} color={'#ccc'} size={26} />
+            </Pressable>
+          </View>
+        ),
+      });
+    }
+  }, [targetAccountDetail]);
 
   return loading ? (
     <Loading />
@@ -246,89 +281,34 @@ const ChartDetail = props => {
         panelContainerStyle={styles.panelContainerStyle}
         useEmoji={true}
         isIPhoneX
-        inverted={false}
+        inverted={true}
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={20}
-        pressAvatar={(isSelf, targetId) => pressAvatar(isSelf, targetId)}
         // headerHeight={BarHeight + getBottomSpace()}
         // iphoneXBottomPadding={getBottomSpace()}
+        pressAvatar={pressAvatar}
         leftMessageTextStyle={styles.leftMessageText}
         rightMessageTextStyle={styles.rightMessageText}
         rightMessageBackground={'black'}
         leftMessageBackground={'#F3F3F3'}
         usePopView={true}
-        setPopItems={(type, index, text, message) => popItems(type, index, text, message)}
+        setPopItems={popItems}
         showIsRead={false}
+        loadHistory={loadHistory}
         userProfile={{
           id: currentAccount.id.toString(),
           avatar: currentAccount.avatar_url,
           nickName: currentAccount.nickname,
         }}
       />
+
+      <ActionSheet
+        actionItems={actionItems}
+        showActionSheet={showActionSheet}
+        changeModal={() => setShowActionSheet(false)}
+      />
     </View>
   );
 };
-
-const panalWidth = (width - 30 - 15 * 3) / 4;
-const styles = StyleSheet.create({
-  panelContainerStyle: {
-    paddingTop: 15,
-    flexDirection: 'row',
-  },
-  panelImageWrap: {
-    width: panalWidth,
-    marginRight: 15,
-  },
-  panelImage: {
-    width: panalWidth,
-    height: panalWidth,
-  },
-  panelText: {
-    width: panalWidth,
-    color: '#7a7a7a',
-    marginTop: 10,
-    textAlign: 'center',
-    marginRight: 1,
-  },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  attation: {
-    width: 45,
-    height: 22,
-    lineHeight: 22,
-    fontSize: 13,
-    color: '#fff',
-    fontWeight: '500',
-    textAlign: 'center',
-    backgroundColor: '#000',
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  leftMessageText: {
-    borderTopLeftRadius: 2,
-    borderTopRightRadius: 19,
-    borderBottomRightRadius: 19,
-    borderBottomLeftRadius: 19,
-    fontSize: 14,
-    color: 'black',
-    lineHeight: 22,
-    letterSpacing: 1,
-    fontWeight: '300',
-  },
-  rightMessageText: {
-    borderTopLeftRadius: 19,
-    borderTopRightRadius: 2,
-    borderBottomRightRadius: 19,
-    borderBottomLeftRadius: 19,
-    fontSize: 14,
-    color: 'white',
-    lineHeight: 22,
-    letterSpacing: 1,
-    fontWeight: '300',
-    marginLeft: 2,
-  },
-});
 
 export default MediasPicker(ChartDetail);

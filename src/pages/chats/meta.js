@@ -30,22 +30,16 @@ function toggleTime(date) {
   var time;
   var type = getDateDiff(date);
   //1：新消息，2：当天消息,3：昨天消息，4：今年消息，5：其他消息
-  if (type == 1) {
+  if (type === 1) {
     time = '以下为最新消息'; //新消息，不显示时间，但是要显示"以下为最新消息"
-  } else if (type == 2) {
+  } else if (type === 2) {
     time = dayjs(date).format('H:mm'); //当天消息，显示：10:22
-  } else if (type == 3) {
+  } else if (type === 3) {
     time = dayjs(date).format('昨天 H:mm'); //昨天消息，显示：昨天 20:41
-  } else if (type == 4) {
-    time = dayjs(date)
-      .format('M月D日 AH:mm')
-      .replace('AM', '上午')
-      .replace('PM', '下午'); //今年消息，上午下午，显示：3月17日 下午16:45
-  } else if (type == 5) {
-    time = dayjs(date)
-      .format('YYYY年M月D日 AH:mm')
-      .replace('AM', '上午')
-      .replace('PM', '下午'); //其他消息，上午下午，显示：2020年11月2日 下午15:17
+  } else if (type === 4) {
+    time = dayjs(date).format('M月D日 AH:mm').replace('AM', '上午').replace('PM', '下午'); //今年消息，上午下午，显示：3月17日 下午16:45
+  } else if (type === 5) {
+    time = dayjs(date).format('YYYY年M月D日 AH:mm').replace('AM', '上午').replace('PM', '下午'); //其他消息，上午下午，显示：2020年11月2日 下午15:17
   }
   return {
     time: time,
