@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useMemo} from 'react';
 import {View, Text, Pressable, Platform, StatusBar, PermissionsAndroid} from 'react-native';
-import {isIphoneX, getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
-import {AudioRecorder, AudioUtils} from 'react-native-audio';
+import Clipboard from '@react-native-community/clipboard';
 import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import {EventRegister} from 'react-native-event-listeners';
 import {createConsumer} from '@rails/actioncable';
 import {useSelector} from 'react-redux';
@@ -15,39 +15,27 @@ import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
-import Clipboard from '@react-native-community/clipboard';
 import MediasPicker from '@/components/MediasPicker';
+import {pagination} from '@/components/ScrollList';
 import {BarHeight} from '@/utils/navbar';
 import {reportContent} from '@/api/secure_check';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate, checkShowRule} from '../meta';
-
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
 
 import styles from './style';
 
-console.log(AudioRecorder, AudioUtils);
 const isIos = Platform.OS === 'ios';
 const systemVersion = Math.ceil(DeviceInfo.getSystemVersion());
 const videoSelectType = isIos && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
 const TransLateData = data => data.map(item => translate(item));
-
 global.addEventListener = EventRegister.addEventListener;
 global.removeEventListener = EventRegister.removeEventListener;
 
-export const pagination = (headers = {}) => {
-  const currentPage = Number(headers['x-current-page']);
-  const perPage = Number(headers['x-per-page'] || headers['X-Page-Items']);
-  const total = Number(headers['x-total']);
-  const hasMore = currentPage * perPage < total;
-  const nextPage = hasMore ? currentPage + 1 : currentPage;
-  return {hasMore: hasMore, nextPage: nextPage, page: currentPage, total: total};
-};
-
 const ChartDetail = props => {
-  const {navigation, route, imagePick, videoPick, uploadVideo} = props;
+  const {navigation, route, imagePick, videoPick, uploadVideo, uploadAudio} = props;
   const {uuid, targetAccount} = route.params;
   const {
     account: {currentAccount},
@@ -55,6 +43,7 @@ const ChartDetail = props => {
   } = useSelector(state => state);
   let timer = null;
   let sound = null;
+
   const [loading, setLoading] = useState(true);
   const [pagin, setPagin] = useState(null);
   const [showActionSheet, setShowActionSheet] = useState(false);
@@ -65,12 +54,9 @@ const ChartDetail = props => {
   const [hasPermission, setHasPermission] = useState(true);
   const [voiceHandle, setVoiceHandle] = useState(true);
   const [voiceVolume, setVoiceVolume] = useState(0);
-  const [finished, setFinished] = useState(false);
   const [voiceLoading, setVoiceLoading] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
   const [activeVoiceId, setActiveVoiceId] = useState(-1);
-
-  console.log(messages);
 
   const chatChannel = useMemo(() => {
     const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
@@ -104,13 +90,32 @@ const ChartDetail = props => {
   }, []);
 
   const chatGroupSendMessage = async params => {
-    const res = await getChatGroupsSendMessage(params);
-    console.log('send res', res);
+    try {
+      await getChatGroupsSendMessage(params);
+      Toast.hide();
+    } catch {
+      Toast.hide();
+    }
   };
 
   const sendMessage = async (type, content, isInverted) => {
-    const params = {uuid, conversation: {category: type, content}};
-    chatGroupSendMessage(params);
+    if (type === 'text') {
+      const params = {uuid, conversation: {category: type, content}};
+      chatGroupSendMessage(params);
+    }
+
+    if (type === 'voice') {
+      Toast.showLoading('发送中...');
+      try {
+        const result = await uploadAudio(content);
+        const {url, seconds} = result.asset;
+        const params = {uuid, conversation: {category: 'audio', metadata: {url, seconds}}};
+        chatGroupSendMessage(params);
+      } catch {
+        Toast.hide();
+      }
+      Toast.hide();
+    }
   };
 
   const popItems = (type, index, text, message) => {
@@ -192,15 +197,6 @@ const ChartDetail = props => {
     prepareRecordingPath(nowPath);
   };
 
-  const _finishRecording = (didSucceed, filePath) => {
-    console.log(filePath);
-    setFinished(didSucceed);
-  };
-
-  const audioFinish = () => {
-    AudioRecorder.onFinished = data => _finishRecording(data.status === 'OK', data.audioFileURL);
-  };
-
   const _pause = async () => {
     try {
       await AudioRecorder.pauseRecording(); // Android 由于API问题无法使用此方法
@@ -229,9 +225,6 @@ const ChartDetail = props => {
     try {
       await AudioRecorder.stopRecording();
       timer && clearInterval(timer);
-      if (Platform.OS === 'android') {
-        _finishRecording(true);
-      }
     } catch (error) {
       console.log(error);
     }
@@ -243,34 +236,17 @@ const ChartDetail = props => {
       setVoiceLoading(true);
       sound = new Sound(url, '', error => {
         if (error) {
-          console.log('failed to load the sound', error);
           setVoiceLoading(false);
           sound = null;
           return;
         }
         setVoiceLoading(false);
         setVoicePlaying(true);
-        sound.play(success => {
-          if (success) {
-            setVoicePlaying(false);
-            console.log('successfully finished playing');
-          } else {
-            setVoicePlaying(false);
-            console.log('playback failed due to audio decoding errors');
-          }
-        });
+        sound.play(success => setVoicePlaying(!success));
       });
     } else {
       setVoicePlaying(true);
-      sound.play(success => {
-        if (success) {
-          setVoicePlaying(false);
-          console.log('successfully finished playing');
-        } else {
-          setVoicePlaying(false);
-          console.log('playback failed due to audio decoding errors');
-        }
-      });
+      sound.play(success => setVoicePlaying(!success));
     }
   };
 
@@ -311,12 +287,15 @@ const ChartDetail = props => {
         }
         Toast.showLoading('发送中...');
         for (const file of res) {
-          const result = await props.uploadImage({uploadType: 'multipart', ...file});
-          const {url} = result.asset;
-          const params = {uuid, conversation: {category: 'image', metadata: {url}}};
-          chatGroupSendMessage(params);
+          try {
+            const result = await props.uploadImage({uploadType: 'multipart', ...file});
+            const {url} = result.asset;
+            const params = {uuid, conversation: {category: 'image', metadata: {url}}};
+            chatGroupSendMessage(params);
+          } catch {
+            Toast.hide();
+          }
         }
-        Toast.hide();
       });
     }
 
@@ -328,11 +307,14 @@ const ChartDetail = props => {
             return;
           }
           Toast.showLoading('发送中...');
-          const ret = await uploadVideo(res[0], () => {});
-          const {url} = ret.asset;
-          const params = {uuid, conversation: {category: 'video', metadata: {url}}};
-          chatGroupSendMessage(params);
-          Toast.hide();
+          try {
+            const ret = await uploadVideo(res[0], () => {});
+            const {url} = ret.asset;
+            const params = {uuid, conversation: {category: 'video', metadata: {url}}};
+            chatGroupSendMessage(params);
+          } catch {
+            Toast.hide();
+          }
         });
       }
 
@@ -343,10 +325,13 @@ const ChartDetail = props => {
             return;
           }
           Toast.showLoading('发送中...');
-          const {origURL} = response;
-          const params = {uuid, conversation: {category: 'video', metadata: {url: origURL}}};
-          chatGroupSendMessage(params);
-          Toast.hide();
+          try {
+            const {origURL} = response;
+            const params = {uuid, conversation: {category: 'video', metadata: {url: origURL}}};
+            chatGroupSendMessage(params);
+          } catch {
+            Toast.hide();
+          }
         });
       }
     }
@@ -473,9 +458,8 @@ const ChartDetail = props => {
         audioPath={audioPath}
         audioHasPermission={hasPermission}
         checkPermission={AudioRecorder.requestAuthorization}
-        // requestAndroidPermission={_requestAndroidPermission}
+        requestAndroidPermission={_requestAndroidPermission}
         audioOnProgress={audioProgress}
-        audioOnFinish={audioFinish}
         audioInitPath={initPath}
         audioRecord={_record}
         audioStopRecord={_stop}
@@ -487,6 +471,7 @@ const ChartDetail = props => {
         voiceLoading={voiceLoading}
         voicePlaying={voicePlaying}
         voiceVolume={voiceVolume}
+        pressOutText="松开发送"
         userProfile={{
           id: currentAccount.id.toString(),
           avatar: currentAccount.avatar_url,

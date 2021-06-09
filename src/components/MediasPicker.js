@@ -159,9 +159,8 @@ const MediasPicker = WrapperComponent => {
       });
     };
 
-
     // 上传音频
-    const uploadAudio = async (file, cb) => {
+    const uploadAudio = async file => {
       const res = await getUploadFileToken({ftype: 'aac'});
       const path = file.uri.replace('file://', '');
       let uploadOptions = {
@@ -170,18 +169,10 @@ const MediasPicker = WrapperComponent => {
         method: 'POST',
         type: 'multipart',
         field: 'file',
-        parameters: {
-          token: res.token,
-          key: res.file_key,
-          name: 'file',
-        },
+        parameters: {token: res.token, key: res.file_key, name: 'file'},
         maxRetries: 2,
-        headers: {
-          'content-type': 'application/octet-stream',
-        },
-        notification: {
-          enabled: true,
-        },
+        headers: {'content-type': 'application/octet-stream'},
+        notification: {enabled: true},
         useUtf8Charset: true,
       };
       uploadSystemInfo(JSON.stringify(uploadOptions));
@@ -189,27 +180,20 @@ const MediasPicker = WrapperComponent => {
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
-            Upload.addListener('progress', uploadId, data => {
-              cb(parseInt(data.progress));
-            });
-            Upload.addListener('error', uploadId, data => {
-              reject(data.error);
-            });
             Upload.addListener('completed', uploadId, data => {
               uploadSystemInfo(JSON.stringify(data));
               let upload_res = JSON.parse(data.responseBody);
               if (upload_res.key && data.responseCode === 200) {
                 const body = {
-                  asset: {
-                    file_key: upload_res.key,
-                    fname: upload_res.key,
-                    category: 'audio',
-                  },
+                  asset: {file_key: upload_res.key, fname: upload_res.key, category: 'audio'},
                 };
                 saveAudioToAsset(body).then(ret => {
                   resolve(ret);
                 });
               }
+            });
+            Upload.addListener('error', uploadId, data => {
+              reject(data.error);
             });
           })
           .catch(err => {

@@ -78,16 +78,13 @@ export const translate = item => {
   let content = {};
 
   const {category} = item;
+
   if (category === 'text') {
     content = item.content;
   }
 
   if (category === 'image') {
-    content = {
-      width: 100,
-      height: 100,
-      uri: item.payload.url,
-    };
+    content = {width: 100, height: 100, uri: item.payload.url};
   }
 
   if (category === 'video') {
@@ -99,9 +96,13 @@ export const translate = item => {
     };
   }
 
+  if (category === 'audio') {
+    content = {uri: item.payload.url, length: item.payload.seconds};
+  }
+
   const newItem = {
     id: item.id.toString(),
-    type: category,
+    type: category === 'audio' ? 'voice' : category,
     content,
     targetId: item.creator.id.toString(),
     chatInfo: {
