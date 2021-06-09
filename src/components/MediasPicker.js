@@ -162,7 +162,7 @@ const MediasPicker = WrapperComponent => {
 
     // 上传音频
     const uploadAudio = async (file, cb) => {
-      const res = await getUploadFileToken({ftype: 'acc'});
+      const res = await getUploadFileToken({ftype: 'aac'});
       const path = file.uri.replace('file://', '');
       let uploadOptions = {
         url: res.qiniu_region,
