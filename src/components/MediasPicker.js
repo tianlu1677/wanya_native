@@ -2,7 +2,7 @@ import React from 'react';
 import Upload from 'react-native-background-upload';
 import Helper from '@/utils/helper';
 import SyanImagePicker from 'react-native-syan-image-picker';
-import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
+import {getUploadFileToken, saveVideoToAsset, saveAudioToAsset} from '@/api/settings_api';
 import {BaseApiUrl} from '@/utils/config';
 import {uploadSystemInfo} from '@/api/settings_api';
 import DeviceInfo from 'react-native-device-info';
@@ -146,7 +146,67 @@ const MediasPicker = WrapperComponent => {
                     video_m3u8: upload_res.key.replace('mp4', 'm3u8'),
                   },
                 };
-                saveToAsset(body).then(ret => {
+                saveVideoToAsset(body).then(ret => {
+                  resolve(ret);
+                });
+              }
+            });
+          })
+          .catch(err => {
+            console.log('error', err);
+            reject(err);
+          });
+      });
+    };
+
+
+    // 上传音频
+    const uploadAudio = async (file, cb) => {
+      const res = await getUploadFileToken({ftype: 'acc'});
+      const path = file.uri.replace('file://', '');
+      let uploadOptions = {
+        url: res.qiniu_region,
+        path: path,
+        method: 'POST',
+        type: 'multipart',
+        field: 'file',
+        parameters: {
+          token: res.token,
+          key: res.file_key,
+          name: 'file',
+        },
+        maxRetries: 2,
+        headers: {
+          'content-type': 'application/octet-stream',
+        },
+        notification: {
+          enabled: true,
+        },
+        useUtf8Charset: true,
+      };
+      uploadSystemInfo(JSON.stringify(uploadOptions));
+      uploadSystemInfo(`OS: ${systemName}, systemVersion: ${deviceId} => ${JSON.stringify(file)}`);
+      return new Promise((resolve, reject) => {
+        Upload.startUpload(uploadOptions)
+          .then(uploadId => {
+            Upload.addListener('progress', uploadId, data => {
+              cb(parseInt(data.progress));
+            });
+            Upload.addListener('error', uploadId, data => {
+              reject(data.error);
+            });
+            Upload.addListener('completed', uploadId, data => {
+              uploadSystemInfo(JSON.stringify(data));
+              let upload_res = JSON.parse(data.responseBody);
+              if (upload_res.key && data.responseCode === 200) {
+                const body = {
+                  asset: {
+                    file_key: upload_res.key,
+                    fname: upload_res.key,
+                    category: 'audio',
+                  },
+                };
+                saveAudioToAsset(body).then(ret => {
                   resolve(ret);
                 });
               }
@@ -174,6 +234,7 @@ const MediasPicker = WrapperComponent => {
         uploadImage={uploadImage}
         videoPick={videoPick}
         uploadVideo={uploadVideo}
+        uploadAudio={uploadAudio}
         uploadAvatar={uploadAvatar}
         removeImage={removeImage}
         removeAllPhoto={removeAllPhoto}

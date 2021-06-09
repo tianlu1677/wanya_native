@@ -18,9 +18,19 @@ export async function getUploadFileToken(params = {}) {
   return res.data;
 }
 
-export async function saveToAsset(data = {}) {
+export async function saveVideoToAsset(data = {}) {
   const res = await request({
     url: '/api/v1/assets/direct_video_upload',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
+// 音频文件
+export async function saveAudioToAsset(data = {}) {
+  const res = await request({
+    url: '/api/v1/assets/direct_audio_upload',
     method: 'POST',
     data: data,
   });

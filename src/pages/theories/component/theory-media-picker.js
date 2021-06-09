@@ -4,7 +4,7 @@ import Upload from 'react-native-background-upload';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import {BaseApiUrl} from '@/utils/config';
 import Helper from '@/utils/helper';
-import {getUploadFileToken, saveToAsset, uploadSystemInfo} from '@/api/settings_api';
+import {getUploadFileToken, saveVideoToAsset, uploadSystemInfo} from '@/api/settings_api';
 
 const baseUrl = BaseApiUrl;
 const config = {method: 'POST', type: 'multipart', field: 'file'};
@@ -94,7 +94,7 @@ const StepMediaPicker = WrapperComponent => {
                     ...params,
                   },
                 };
-                saveToAsset(body).then(ret => {
+                saveVideoToAsset(body).then(ret => {
                   resolve(ret);
                 });
               }
