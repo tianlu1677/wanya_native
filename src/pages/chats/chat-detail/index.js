@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,13 +10,16 @@ import {
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
+import Modal from 'react-native-modal';
+import Video from 'react-native-video';
 import Clipboard from '@react-native-community/clipboard';
 import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import {EventRegister} from 'react-native-event-listeners';
 import {createConsumer} from '@rails/actioncable';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
 import ActionSheet from '@/components/ActionSheet';
 import Toast from '@/components/Toast';
@@ -42,6 +45,8 @@ global.addEventListener = EventRegister.addEventListener;
 global.removeEventListener = EventRegister.removeEventListener;
 
 const ChartDetail = props => {
+  const dispatch = useDispatch();
+  const videoRef = useRef('');
   const {navigation, route, imagePick, videoPick, uploadVideo, uploadAudio} = props;
   const {uuid, targetAccount} = route.params;
   const {
@@ -53,6 +58,9 @@ const ChartDetail = props => {
 
   const [loading, setLoading] = useState(true);
   const [pagin, setPagin] = useState(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [videoContent, setVideoContent] = useState(null);
+
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [targetAccountDetail, setTargetAccountDetail] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -265,7 +273,23 @@ const ChartDetail = props => {
     }
   };
 
-  const onPress = (type, index, content) => {
+  const onMessagePress = (type, index, content) => {
+    if (type === 'image') {
+      const data = {index: 0, visible: true, images: [{url: content}]};
+      dispatch(dispatchPreviewImage(data));
+    }
+
+    if (type === 'video') {
+      // console.log(videoRef);
+      console.log(type, content);
+      console.log('videoRef', videoRef);
+
+      setVideoContent(content);
+      setShowVideoModal(true);
+      // const data = {index: 0, visible: true, images: [{url: content}]};
+      // dispatch(dispatchPreviewImage(data));
+    }
+
     if (type === 'voice') {
       if (voicePlaying) {
         if (index === activeVoiceId) {
@@ -398,6 +422,15 @@ const ChartDetail = props => {
   }, []);
 
   useEffect(() => {
+    if (showVideoModal && videoRef && videoRef.current) {
+      console.log('222', videoRef);
+      videoRef.current.presentFullscreenPlayer();
+    }
+  }, [showVideoModal]);
+
+  console.log(videoRef);
+
+  useEffect(() => {
     if (targetAccountDetail) {
       const {followed} = targetAccountDetail;
       navigation.setOptions({
@@ -452,7 +485,7 @@ const ChartDetail = props => {
         setPopItems={popItems}
         showIsRead={false}
         loadHistory={loadHistory}
-        onMessagePress={onPress}
+        onMessagePress={onMessagePress}
         audioPath={audioPath}
         audioHasPermission={hasPermission}
         checkPermission={AudioRecorder.requestAuthorization}
@@ -482,6 +515,41 @@ const ChartDetail = props => {
         showActionSheet={showActionSheet}
         changeModal={() => setShowActionSheet(false)}
       />
+
+      {showVideoModal ? (
+        <Modal
+          isVisible={showVideoModal}
+          // style={{flex: 1, margin: 0}}
+          // deviceHeight={1000}
+          // transparent={true}
+          // onRequestClose={() => onOpen(false)}
+          // onBackdropPress={() => onOpen(false)}
+          statusBarTranslucent
+          // onSwipeComplete={() => onOpen(false)}
+          useNativeDriver
+          propagateSwipe
+          backdropColor="black"
+          backdropOpacity={1}
+          hideModalContentWhileAnimating={true}
+          animationIn="zoomIn"
+          animationOut="zoomOut"
+          animationInTiming={300}
+          animationOutTiming={500}
+          avoidKeyboard>
+          <Pressable
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+            onPress={() => setShowVideoModal(false)}>
+            <Video
+              ref={videoRef}
+              style={styles.video}
+              source={{uri: videoContent}}
+              paused={true}
+              autoPlay
+              resizeMode="cover"
+            />
+          </Pressable>
+        </Modal>
+      ) : null}
     </View>
   );
 };

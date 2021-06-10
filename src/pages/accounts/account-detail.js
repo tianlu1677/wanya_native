@@ -129,7 +129,6 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
-  console.log(account);
   const Header = () => {
     const defaultImage = account.background_img_url || AccountDetailBgImg;
     return (

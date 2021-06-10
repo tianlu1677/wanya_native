@@ -61,6 +61,10 @@ const styles = StyleSheet.create({
     lineHeight: RFValue(20),
     fontWeight: '300',
   },
+  video: {
+    width,
+    height: 200,
+  },
 });
 
 export default styles;
