@@ -260,8 +260,8 @@ const notifyRouter = [
 ];
 
 const chatRouter = [
-  {name: 'ChatDetail', component: ChatDetail, options: {title: '聊天'}},
-  {name: 'ChatGroups', component: ChatGroups, options: {title: '聊天列表'}},
+  {name: 'ChatDetail', component: ChatDetail, options: {title: ''}},
+  {name: 'ChatGroups', component: ChatGroups, options: {title: ''}},
 ];
 
 const authRouter = [

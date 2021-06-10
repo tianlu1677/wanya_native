@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 const {width} = Dimensions.get('window');
 
 const panalWidth = (width - 30 - 15 * 3) / 4;
@@ -27,21 +28,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   attation: {
-    paddingHorizontal: 5,
-    height: 22,
-    lineHeight: 22,
-    fontSize: 13,
-    color: 'black',
-    fontWeight: '500',
-    textAlign: 'center',
-    backgroundColor: 'white',
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  noattion: {
-    paddingHorizontal: 5,
-    height: 22,
-    lineHeight: 22,
+    paddingHorizontal: VWValue(9),
+    height: RFValue(22),
+    lineHeight: RFValue(22),
     fontSize: 13,
     color: '#fff',
     fontWeight: '500',
@@ -50,28 +39,27 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     overflow: 'hidden',
   },
+  avatarStyle: {
+    width: RFValue(38),
+    height: RFValue(38),
+    borderRadius: RFValue(19),
+  },
+  itemContainerStyle: {
+    paddingHorizontal: VWValue(15),
+    paddingVertical: RFValue(14),
+    alignItems: 'flex-start',
+  },
   leftMessageText: {
-    borderTopLeftRadius: 2,
-    borderTopRightRadius: 19,
-    borderBottomRightRadius: 19,
-    borderBottomLeftRadius: 19,
-    fontSize: 14,
+    fontSize: VWValue(14),
     color: 'black',
-    lineHeight: 22,
-    letterSpacing: 1,
+    lineHeight: RFValue(20),
     fontWeight: '300',
   },
   rightMessageText: {
-    borderTopLeftRadius: 19,
-    borderTopRightRadius: 2,
-    borderBottomRightRadius: 19,
-    borderBottomLeftRadius: 19,
-    fontSize: 14,
+    fontSize: VWValue(14),
     color: 'white',
-    lineHeight: 22,
-    letterSpacing: 1,
+    lineHeight: RFValue(20),
     fontWeight: '300',
-    marginLeft: 2,
   },
 });
 

@@ -1,5 +1,13 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, Text, Pressable, Platform, StatusBar, PermissionsAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Platform,
+  StatusBar,
+  PermissionsAndroid,
+  StyleSheet,
+} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
 import Clipboard from '@react-native-community/clipboard';
@@ -18,7 +26,6 @@ import FastImg from '@/components/FastImg';
 import MediasPicker from '@/components/MediasPicker';
 import {pagination} from '@/components/ScrollList';
 import {BarHeight} from '@/utils/navbar';
-import {reportContent} from '@/api/secure_check';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate, checkShowRule} from '../meta';
@@ -338,9 +345,7 @@ const ChartDetail = props => {
   };
 
   const pressAvatar = (isSelf, targetId) => {
-    if (!isSelf) {
-      navigation.navigate('AccountDetail', {accountId: targetId});
-    }
+    navigation.navigate('AccountDetail', {accountId: targetId});
   };
 
   const onFollow = async () => {
@@ -360,20 +365,8 @@ const ChartDetail = props => {
   const actionItems = [
     {
       id: 1,
-      label: '拉黑',
-      onPress: () => {
-        const data = {reason: '拉黑', report_type: 'Account', report_type_id: targetAccount.id};
-        reportContent(data).then(res => {
-          Toast.showError('已拉黑', {duration: 500});
-        });
-      },
-    },
-    {
-      id: 2,
-      label: '投诉',
-      onPress: async () => {
-        navigation.push('Report', {report_type: 'Account', report_type_id: targetAccount.id});
-      },
+      label: '个人主页',
+      onPress: () => navigation.navigate('AccountDetail', {accountId: targetAccount.id}),
     },
   ];
 
@@ -406,19 +399,22 @@ const ChartDetail = props => {
 
   useEffect(() => {
     if (targetAccountDetail) {
-      const {followed, following} = targetAccountDetail;
+      const {followed} = targetAccountDetail;
       navigation.setOptions({
         title: targetAccountDetail.nickname,
-        headerRight: () => (
-          <View style={styles.headerRight}>
-            <Text style={followed ? styles.attation : styles.noattion} onPress={onFollow}>
-              {followed && following ? '互相关注' : followed ? '已关注' : '关注'}
-            </Text>
-            <Pressable style={styles.shareWrap} onPress={() => setShowActionSheet(true)}>
-              <IconFont name={'ziyuan'} color={'#ccc'} size={26} />
-            </Pressable>
-          </View>
-        ),
+        headerStyle: {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#ebebeb'},
+        headerRightContainerStyle: {paddingRight: 10},
+        headerRight: () =>
+          !followed ? (
+            <View style={styles.headerRight}>
+              <Text style={styles.attation} onPress={onFollow}>
+                关注
+              </Text>
+              <Pressable onPress={() => setShowActionSheet(true)}>
+                <IconFont name={'ziyuan'} color={'#ccc'} size={26} />
+              </Pressable>
+            </View>
+          ) : null,
       });
     }
   }, [targetAccountDetail]);
@@ -450,6 +446,8 @@ const ChartDetail = props => {
         rightMessageTextStyle={styles.rightMessageText}
         rightMessageBackground={'black'}
         leftMessageBackground={'#F3F3F3'}
+        itemContainerStyle={styles.itemContainerStyle}
+        avatarStyle={styles.avatarStyle}
         usePopView={true}
         setPopItems={popItems}
         showIsRead={false}

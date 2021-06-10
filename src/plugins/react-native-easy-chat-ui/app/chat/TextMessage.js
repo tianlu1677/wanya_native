@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, {PureComponent} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,96 +6,137 @@ import {
   Platform,
   StyleSheet,
   Dimensions,
-  Text
-} from 'react-native'
-import { changeEmojiText } from './utils'
-const { width } = Dimensions.get('window')
+  Text,
+} from 'react-native';
+import {changeEmojiText} from './utils';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
+
+const {width} = Dimensions.get('window');
 
 const PATTERNS = {
   url: /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/i,
   phone: /[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,7}/,
-  emoji: new RegExp('\\/\\{[a-zA-Z_]{1,14}\\}')
-}
+  emoji: new RegExp('\\/\\{[a-zA-Z_]{1,14}\\}'),
+};
 export default class TextMessage extends PureComponent {
-  render () {
-    const { isSelf, message, messageErrorIcon, views, isOpen, rightMessageBackground, leftMessageBackground, reSendMessage, chatType, isReadStyle, showIsRead, ImageComponent } = this.props
+  render() {
+    const {
+      isSelf,
+      message,
+      messageErrorIcon,
+      views,
+      isOpen,
+      rightMessageBackground,
+      leftMessageBackground,
+      reSendMessage,
+      chatType,
+      isReadStyle,
+      showIsRead,
+      ImageComponent,
+    } = this.props;
     return (
       <View
         style={[isSelf ? styles.right : styles.left]}
         collapsable={false}
-        ref={(e) => (this[`item_${this.props.rowId}`] = e)}
-      >
+        ref={e => (this[`item_${this.props.rowId}`] = e)}>
         <View
-          style={
-            [
-              styles.triangle,
-              isSelf
-                ? styles.right_triangle
-                : styles.left_triangle,
-              { borderColor: isSelf ? rightMessageBackground : leftMessageBackground }
-            ]}
+          style={[
+            styles.triangle,
+            isSelf ? styles.right_triangle : styles.left_triangle,
+            {borderColor: isSelf ? rightMessageBackground : leftMessageBackground},
+            ,
+          ]}
         />
         <TouchableOpacity
           activeOpacity={1}
           disabled={isOpen}
           onLongPress={() => {
-            this.props.onMessageLongPress(this[`item_${this.props.rowId}`], 'text', parseInt(this.props.rowId), changeEmojiText(this.props.message.content, 'en').join(''), message)
+            this.props.onMessageLongPress(
+              this[`item_${this.props.rowId}`],
+              'text',
+              parseInt(this.props.rowId),
+              changeEmojiText(this.props.message.content, 'en').join(''),
+              message
+            );
           }}
           onPress={() => {
-            this.props.onMessagePress('text', parseInt(this.props.rowId), changeEmojiText(this.props.message.content, 'en').join(''), message)
-          }}
-        >
-          <View style={[styles.container, { backgroundColor: isSelf ? rightMessageBackground
-              : leftMessageBackground }]}>
+            this.props.onMessagePress(
+              'text',
+              parseInt(this.props.rowId),
+              changeEmojiText(this.props.message.content, 'en').join(''),
+              message
+            );
+          }}>
+          <View
+            style={[
+              styles.container,
+              styles.container,
+              isSelf ? styles.rightMessageContainer : styles.leftMessageContainer,
+              {backgroundColor: isSelf ? rightMessageBackground : leftMessageBackground},
+            ]}>
             {views}
           </View>
           {chatType !== 'group' && isSelf && showIsRead && (
-            <Text style={[{ textAlign: 'right', fontSize: 13 }, isReadStyle]}>
+            <Text style={[{textAlign: 'right', fontSize: 13}, isReadStyle]}>
               {this.props.lastReadAt && this.props.lastReadAt - message.time > 0 ? '已读' : '未读'}
             </Text>
           )}
         </TouchableOpacity>
-        <View style={{ alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
-          {!isSelf
-            ? null
-            : message.sendStatus === undefined
-              ? null
-              : message.sendStatus === 0
-                ? <ActivityIndicator />
-                : message.sendStatus < 0
-                  ? <TouchableOpacity
-                    disabled={false}
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      if (message.sendStatus === -2) {
-                        reSendMessage(message)
-                      }
-                    }}>
-                    {messageErrorIcon ? messageErrorIcon : <ImageComponent source={require('../source/image/waring.png')} style={{ width: 20, height: 20 }} />}
-                  </TouchableOpacity>
-                  : null
-          }
+        <View style={{alignItems: 'center', justifyContent: 'center', marginRight: 10}}>
+          {!isSelf ? null : message.sendStatus === undefined ? null : message.sendStatus === 0 ? (
+            <ActivityIndicator />
+          ) : message.sendStatus < 0 ? (
+            <TouchableOpacity
+              disabled={false}
+              activeOpacity={0.7}
+              onPress={() => {
+                if (message.sendStatus === -2) {
+                  reSendMessage(message);
+                }
+              }}>
+              {messageErrorIcon ? (
+                messageErrorIcon
+              ) : (
+                <ImageComponent
+                  source={require('../source/image/waring.png')}
+                  style={{width: 20, height: 20}}
+                />
+              )}
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
-
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
     borderRadius: 19,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    maxWidth: width - 160,
-    minHeight: 20,
+    // paddingHorizontal: 10,
+    // paddingVertical: 10,
+    // maxWidth: width - 160,
+    // minHeight: 20,
+    // wanya change
+    maxWidth: width - (RFValue(38) * 2 + VWValue(15) * 2 + 10 * 2),
+    paddingHorizontal: RFValue(12),
+    paddingVertical: RFValue(10),
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    borderBottomRightRadius: 24,
+    borderBottomLeftRadius: 24,
   },
-
+  leftMessageContainer: {
+    borderTopLeftRadius: 2,
+  },
+  rightMessageContainer: {
+    borderTopRightRadius: 2,
+  },
   subEmojiStyle: {
     width: 25,
-    height: 25
+    height: 25,
   },
   triangle: {
     // width: 0,
@@ -110,18 +151,18 @@ const styles = StyleSheet.create({
   left_triangle: {
     // borderLeftWidth: 0,
     // borderRightWidth: Platform.OS === 'android' ? 6 : 10,
-    marginLeft: 15
+    marginLeft: 15,
   },
   right_triangle: {
     // borderRightWidth: 0,
     // borderLeftWidth: Platform.OS === 'android' ? 6 : 10,
     // borderColor: '#a0e75a',
-    marginRight: 5
+    marginRight: 5,
   },
   right: {
     flexDirection: 'row-reverse',
   },
   left: {
     flexDirection: 'row',
-  }
-})
+  },
+});

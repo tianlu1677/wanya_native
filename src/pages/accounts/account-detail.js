@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -129,6 +129,7 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   }, []);
 
+  console.log(account);
   const Header = () => {
     const defaultImage = account.background_img_url || AccountDetailBgImg;
     return (
@@ -190,7 +191,12 @@ const AccountDetail = ({navigation, route}) => {
             </Text>
             {!isSelf ? (
               <View style={styles.headerBtnWrap}>
-                <Text style={[styles.headerBtn, styles.followBtn]} onPress={onFollow}>
+                <Text
+                  style={[
+                    styles.headerBtn,
+                    account.followed ? styles.unfollowed : styles.followBtn,
+                  ]}
+                  onPress={onFollow}>
                   {account.followed && account.following
                     ? '互相关注'
                     : account.followed
@@ -210,9 +216,9 @@ const AccountDetail = ({navigation, route}) => {
 
   return account ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="light" />
       <CollapsibleHeader
         tabBarHeight={BarHeight}
-        // headerHeight={HEADER_HEIGHT + BarHeight}
         headerHeight={headerHeight}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
@@ -314,6 +320,7 @@ const styles = StyleSheet.create({
   },
   nickname: {
     fontSize: RFValue(16),
+    fontWeight: '500',
   },
   uid: {
     fontSize: 10,
@@ -382,6 +389,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#000',
     borderColor: '#000',
+  },
+  unfollowed: {
+    flex: 1,
+    color: '#3d3d3d',
+    backgroundColor: '#fff',
+    borderColor: '#bdbdbd',
   },
   chatBtn: {
     width: VWValue(110),
