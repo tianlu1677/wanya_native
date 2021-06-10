@@ -271,7 +271,7 @@ const authRouter = [
   {name: 'InviteLogin', component: InviteLogin, options: {title: '输入邀请码'}},
   {name: 'InviteDetail', component: InviteDetail, options: {title: '邀请码'}},
   {name: 'AdminPhoneLogin', component: AdminPhoneLogin},
-  {name: 'WebView', component: WebView, options: {title: 'WebView'}},
+  // {name: 'WebView', component: WebView, options: {title: 'WebView'}},
 ];
 
 export const MainRouters = [
