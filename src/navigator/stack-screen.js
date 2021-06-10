@@ -12,7 +12,8 @@ const MainStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 const HeaderLeft = props => {
-  const {image, navigation} = props;
+  const {image} = props;
+  const navigation = useNavigation();
   return (
     <Pressable
       hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}

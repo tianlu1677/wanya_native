@@ -78,7 +78,7 @@ const NotifyIndex = ({navigation}) => {
 
   return (
     <View>
-      <StatusBar barStyle="dark-content" backgroundColor={'black'} />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.wrapView}>
         <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_praise')}>
           <View style={styles.coverWrapView}>

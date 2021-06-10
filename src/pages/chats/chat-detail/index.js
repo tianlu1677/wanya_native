@@ -426,7 +426,7 @@ const ChartDetail = props => {
   return loading ? (
     <Loading />
   ) : (
-    <View>
+    <View style={{display: 'flex', flex: 1}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <ChatScreen
         chatWindowStyle={{backgroundColor: 'white'}}
