@@ -479,7 +479,7 @@ const ChartDetail = props => {
         panelContainerStyle={styles.panelContainerStyle}
         useEmoji={true}
         isIPhoneX
-        inverted={messages.length > 10}
+        inverted={messages.length > 5}
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={20}
         // headerHeight={BarHeight + getBottomSpace()}

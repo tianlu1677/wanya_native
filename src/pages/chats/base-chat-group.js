@@ -14,6 +14,7 @@ const PATTERNS = {
 };
 
 const BaseChatGroup = ({navigation, chat_group}) => {
+  // console.log('BaseChatGroup', chat_group.id)
   const {currentAccount} = useSelector(state => state.account);
   const {
     uuid,

@@ -7,6 +7,9 @@ import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/action
 import {getChatGroups} from '@/api/chat_api';
 import ScrollList from '@/components/ScrollList';
 import BaseChatGroup from './base-chat-group';
+import BaseTopic from '@/components/Item/base-topic';
+import BaseArticle from "@/components/Item/base-article"
+import BaseTheory from "@/components/Item/base-theory"
 
 const ChatGroups = ({navigation}) => {
   const dispatch = useDispatch();
@@ -14,14 +17,15 @@ const ChatGroups = ({navigation}) => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderItem = ({item, index}) => {
-    return <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />;
-  };
+  const renderItemMemo = useCallback(
+    ({item, index}) => <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />, []
+  );
 
-  const loadData = async () => {
-    const res = await getChatGroups();
-    setListData(res.data.chat_groups);
+  const loadData = async (page = 1) => {
+    // setLoading(true);
+    const res = await getChatGroups({page: page});
     setHeaders(res.headers);
+    setListData(page === 1 ? res.data.chat_groups : [...listData, ...res.data.chat_groups]);
     setLoading(false);
   };
 
@@ -46,7 +50,7 @@ const ChatGroups = ({navigation}) => {
         loading={loading}
         onRefresh={loadData}
         headers={headers}
-        renderItem={renderItem}
+        renderItem={renderItemMemo}
         renderSeparator={() => <View style={styles.speator} />}
       />
     </View>
