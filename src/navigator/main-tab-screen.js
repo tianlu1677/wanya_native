@@ -12,17 +12,10 @@ import {draftTheory} from '@/api/theory_api';
 import ChatGroups from '@/pages/chats/chat_groups';
 import Recommend from '@/pages/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
-// import WebView from '@/pages/webview/webview'; //webview
+const indexImage = require('@/assets/tabimages/index-active.png');
 
 const {width} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
-
-const message = require('@/assets/tabimages/message.png');
-const messageActive = require('@/assets/tabimages/message-active.png');
-const discovery = require('@/assets/tabimages/discovery.png');
-const discoveryActive = require('@/assets/tabimages/discovery-active.png');
-const index = require('@/assets/tabimages/index.png');
-const indexActive = require('@/assets/tabimages/index-active.png');
 
 const PublishModal = props => {
   const {navigation, visible, onCancel} = props;
@@ -70,11 +63,16 @@ const MainTabScreen = props => {
   const RenderImage = (name, focused) => {
     switch (name) {
       case 'ChatGroups':
-        return focused ? messageActive : message;
+        return <Text style={focused ? styles.tabActiveText : styles.tabText}>消息</Text>;
       case 'Recommend':
-        return focused ? indexActive : index;
+        const style = {width: (500 * RFValue(27)) / 351, height: RFValue(27)};
+        return focused ? (
+          <FastImg source={indexImage} style={style} />
+        ) : (
+          <Text style={styles.tabText}>首页</Text>
+        );
       case 'Discovery':
-        return focused ? discoveryActive : discovery;
+        return <Text style={focused ? styles.tabActiveText : styles.tabText}>发现</Text>;
     }
   };
 
@@ -90,22 +88,17 @@ const MainTabScreen = props => {
       <PublishModal {...props} visible={visible} onCancel={() => setVisible(false)} />
       <Tab.Navigator
         initialRouteName="Recommend"
-        tabBar={barprops => (
-          <BlurView
-            style={styles.blurView}
-            blurType="chromeMaterial"
-            blurAmount={20}
-            reducedTransparencyFallbackColor="#white">
-            <BottomTabBar {...barprops} />
-          </BlurView>
-        )}
+        // tabBar={barprops => (
+        //   <BlurView
+        //     style={styles.blurView}
+        //     blurType="chromeMaterial"
+        //     blurAmount={20}
+        //     reducedTransparencyFallbackColor="#white">
+        //     <BottomTabBar {...barprops} />
+        //   </BlurView>
+        // )}
         screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
-            const style =
-              route.name === 'Recommend' && focused
-                ? {width: (500 * RFValue(27)) / 351, height: RFValue(27)}
-                : {width: (134 * RFValue(16)) / 64, height: RFValue(16)};
-
             return route.name === 'ChatGroups' ? (
               <View style={{position: 'relative'}}>
                 <BadgeMessage
@@ -116,34 +109,23 @@ const MainTabScreen = props => {
                     {
                       right:
                         UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
-                          ? -VWValue(15)
+                          ? -VWValue(13)
                           : UnreadMessageCount() > 99
-                          ? -VWValue(15) * 1.75
-                          : -VWValue(15) * 1.45,
+                          ? -VWValue(14) * 1.75
+                          : -VWValue(14) * 1.45,
                     },
                   ]}
                 />
-                <Text style={style.tabText}>消息</Text>
-                {/* <FastImg source={RenderImage(route.name, focused)} style={style} /> */}
+                {RenderImage(route.name, focused)}
                 {focused && (
-                  <View style={[styles.activeLine, {left: style.width / 2 - VWValue(12)}]} />
+                  <View style={[styles.activeLine, {left: RFValue(40) / 2 - VWValue(12)}]} />
                 )}
               </View>
             ) : (
               <View style={{position: 'relative'}}>
-                {route.name === 'Recommend' ? (
-                  focused ? (
-                    <FastImg source={indexActive} style={style} />
-                  ) : (
-                    <Text style={style.tabTextIndex}>首页</Text>
-                  )
-                ) : (
-                  <Text style={style.tabText}>发现</Text>
-                )}
-                {/* <FastImg source={RenderImage(route.name, focused)} style={style} /> */}
-                {/* <Text>{route.name === 'Recommend' ? '首页' : '发现'}</Text> */}
+                {RenderImage(route.name, focused)}
                 {focused && route.name === 'Discovery' && (
-                  <View style={[styles.activeLine, {left: style.width / 2 - VWValue(12)}]} />
+                  <View style={[styles.activeLine, {left: RFValue(40) / 2 - VWValue(12)}]} />
                 )}
               </View>
             );
@@ -152,11 +134,11 @@ const MainTabScreen = props => {
         tabBarOptions={{
           safeAreaInsets: {bottom: 0},
           showLabel: false,
-          tabStyle: {height: RFValue(50)},
+          tabStyle: {height: RFValue(40)},
           style: {
-            backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
+            backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
             borderTopWidth: 0,
-            height: RFValue(50),
+            height: RFValue(40),
             paddingLeft: VWValue(34),
             paddingRight: VWValue(34),
           },
@@ -186,7 +168,7 @@ const MainTabScreen = props => {
 
 const styles = StyleSheet.create({
   blurView: {
-    height: RFValue(50),
+    height: RFValue(40),
     position: 'absolute',
     left: 0,
     bottom: 0,
@@ -205,11 +187,20 @@ const styles = StyleSheet.create({
     marginTop: RFValue(25),
     paddingBottom: RFValue(30),
   },
-  tabTextIndex: {
-    fontSize: 20,
+  tabText: {
+    width: RFValue(40),
+    textAlign: 'center',
+    fontSize: RFValue(15),
     color: '#aaa',
+    fontWeight: '500',
   },
-  tabText: {},
+  tabActiveText: {
+    width: RFValue(40),
+    textAlign: 'center',
+    fontSize: RFValue(17),
+    color: '#000',
+    fontWeight: '500',
+  },
   badge: {
     position: 'absolute',
     top: -7,
@@ -220,7 +211,7 @@ const styles = StyleSheet.create({
     height: 3,
     backgroundColor: '#FF2242',
     position: 'absolute',
-    bottom: -RFValue(8),
+    bottom: -RFValue(6),
     borderRadius: 3,
   },
 });

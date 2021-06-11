@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
+import {View, Text, StyleSheet, TextInput} from 'react-native';
 import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';

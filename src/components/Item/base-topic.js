@@ -164,7 +164,7 @@ const BaseTopic = props => {
       )}
       <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
         <Pressable style={styles.infoView} onPress={goNodeDetail}>
-          <IconFont name="node-solid" size={15} color={'#FFE30A'} />
+          <IconFont name="node-solid" size={15} color={'#1B5C79'} />
           <Text style={styles.nodeName}>{data.node_name}</Text>
         </Pressable>
       </View>
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   nodeName: {
     fontSize: 11,
     marginLeft: 4,
-    color: '#3c3c3c',
+    color: '#1B5C79',
     fontWeight: '300',
   },
   linkWrapper: {

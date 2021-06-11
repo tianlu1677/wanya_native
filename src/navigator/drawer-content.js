@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {BarHeight} from '@/utils/navbar';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
+import {RFValue} from '@/utils/response-fontsize';
 import {BadgeMessage} from '@/components/NodeComponents';
 
 const DrawerContent = ({navigation}) => {
@@ -30,6 +30,7 @@ const DrawerContent = ({navigation}) => {
   const onSettings = () => {
     navigation.navigate('Settings');
   };
+
   const UnreadMessageCount = () => {
     if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
       return 0;
@@ -64,15 +65,11 @@ const DrawerContent = ({navigation}) => {
       <Pressable style={styles.drawerItem} onPress={onNotifyIndex}>
         <IconFont name="tongzhi" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>互动通知</Text>
-        <View style={{marginLeft: 'auto', flexDirection: 'row'}}>
+        <View style={{marginLeft: 'auto', flexDirection: 'row', alignItems: 'center'}}>
           <BadgeMessage
             size={'middle'}
             value={UnreadMessageCount()}
-            containerStyle={[
-              {
-                right: 5,
-              },
-            ]}
+            containerStyle={[{right: 5}]}
           />
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
@@ -84,11 +81,6 @@ const DrawerContent = ({navigation}) => {
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
-      {/* <Pressable style={styles.drawerItem} onPress={() => navigation.navigate('ChatGroups')}>
-        <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
-        <Text style={styles.drawerText}>私信列表</Text>
-        <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
-      </Pressable> */}
 
       <Pressable style={[styles.drawerItem, styles.drawerSetting]} onPress={onSettings}>
         <IconFont name="shezhi" size={RFValue(18)} color={'#000'} />
