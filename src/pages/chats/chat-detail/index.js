@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo, useRef} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {
   View,
   Text,
@@ -10,8 +10,6 @@ import {
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
-import Modal from 'react-native-modal';
-import Video from 'react-native-video';
 import Clipboard from '@react-native-community/clipboard';
 import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
@@ -41,7 +39,6 @@ import {consumerWsUrl} from '@/utils/config';
 
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
-
 import styles from './style';
 
 const isIos = Platform.OS === 'ios';
@@ -53,7 +50,6 @@ global.removeEventListener = EventRegister.removeEventListener;
 
 const ChartDetail = props => {
   const dispatch = useDispatch();
-  const videoRef = useRef('');
   const {navigation, route, imagePick, videoPick, uploadVideo, uploadAudio} = props;
   const {uuid, targetAccount} = route.params;
   const {
@@ -280,21 +276,15 @@ const ChartDetail = props => {
     }
   };
 
-  const onMessagePress = (type, index, content) => {
+  const onMessagePress = (type, index, content, message) => {
     if (type === 'image') {
       const data = {index: 0, visible: true, images: [{url: content}]};
       dispatch(dispatchPreviewImage(data));
     }
 
     if (type === 'video') {
-      // console.log(videoRef);
-      console.log(type, content);
-      console.log('videoRef', videoRef);
-
-      setVideoContent(content);
+      setVideoContent(message.content);
       setShowVideoModal(true);
-      // const data = {index: 0, visible: true, images: [{url: content}]};
-      // dispatch(dispatchPreviewImage(data));
     }
 
     if (type === 'voice') {
@@ -327,8 +317,11 @@ const ChartDetail = props => {
         for (const file of res) {
           try {
             const result = await props.uploadImage({uploadType: 'multipart', ...file});
-            const {url} = result.asset;
-            const params = {uuid, conversation: {category: 'image', metadata: {url}}};
+            const {url, width, height} = result.asset;
+            const params = {
+              uuid,
+              conversation: {category: 'image', metadata: {url, width, height}},
+            };
             chatGroupSendMessage(params);
           } catch {
             Toast.hide();
@@ -347,8 +340,11 @@ const ChartDetail = props => {
           Toast.showLoading('发送中...');
           try {
             const ret = await uploadVideo(res[0], () => {});
-            const {url} = ret.asset;
-            const params = {uuid, conversation: {category: 'video', metadata: {url}}};
+            const {url, width, height} = ret.asset;
+            const params = {
+              uuid,
+              conversation: {category: 'video', metadata: {url, width, height}},
+            };
             chatGroupSendMessage(params);
           } catch {
             Toast.hide();
@@ -364,8 +360,11 @@ const ChartDetail = props => {
           }
           Toast.showLoading('发送中...');
           try {
-            const {origURL} = response;
-            const params = {uuid, conversation: {category: 'video', metadata: {url: origURL}}};
+            const {origURL, width, height} = response;
+            const params = {
+              uuid,
+              conversation: {category: 'video', metadata: {url: origURL, width, height}},
+            };
             chatGroupSendMessage(params);
           } catch {
             Toast.hide();
@@ -400,6 +399,13 @@ const ChartDetail = props => {
       label: '个人主页',
       onPress: () => navigation.navigate('AccountDetail', {accountId: targetAccount.id}),
     },
+    {
+      id: 2,
+      label: '举报',
+      onPress: async () => {
+        navigation.navigate('Report', {report_type: 'Account', report_type_id: targetAccount.id});
+      },
+    },
   ];
 
   const loadHistory = () => {
@@ -429,15 +435,6 @@ const ChartDetail = props => {
       readSingleChatGroupMessage({uuid: uuid});
     };
   }, []);
-
-  useEffect(() => {
-    if (showVideoModal && videoRef && videoRef.current) {
-      console.log('222', videoRef);
-      videoRef.current.presentFullscreenPlayer();
-    }
-  }, [showVideoModal]);
-
-  console.log(videoRef);
 
   useEffect(() => {
     if (targetAccountDetail) {
@@ -526,39 +523,12 @@ const ChartDetail = props => {
         changeModal={() => setShowActionSheet(false)}
       />
 
-      {showVideoModal ? (
-        <Modal
-          isVisible={showVideoModal}
-          // style={{flex: 1, margin: 0}}
-          // deviceHeight={1000}
-          // transparent={true}
-          // onRequestClose={() => onOpen(false)}
-          // onBackdropPress={() => onOpen(false)}
-          statusBarTranslucent
-          // onSwipeComplete={() => onOpen(false)}
-          useNativeDriver
-          propagateSwipe
-          backdropColor="black"
-          backdropOpacity={1}
-          hideModalContentWhileAnimating={true}
-          animationIn="zoomIn"
-          animationOut="zoomOut"
-          animationInTiming={300}
-          animationOutTiming={500}
-          avoidKeyboard>
-          <Pressable
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => setShowVideoModal(false)}>
-            <Video
-              ref={videoRef}
-              style={styles.video}
-              source={{uri: videoContent}}
-              paused={true}
-              autoPlay
-              resizeMode="cover"
-            />
-          </Pressable>
-        </Modal>
+      {videoContent ? (
+        <VideoModal
+          visible={showVideoModal}
+          message={videoContent}
+          onCancel={() => setShowVideoModal(false)}
+        />
       ) : null}
     </View>
   );

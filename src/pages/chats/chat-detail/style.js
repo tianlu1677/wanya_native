@@ -65,6 +65,12 @@ const styles = StyleSheet.create({
     width,
     height: 200,
   },
+  videoIcon: {
+    position: 'absolute',
+    top: 50,
+    left: 50,
+    zIndex: 2,
+  },
 });
 
 export default styles;

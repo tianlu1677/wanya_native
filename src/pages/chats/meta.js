@@ -9,6 +9,8 @@
  * is_show_time：间隔上个时间是否大于5分钟，大于则显示当前时间，反之。
  **/
 import dayjs from 'dayjs';
+import {VWValue} from '@/utils/response-fontsize';
+import {calculateImg} from '@/utils/scale';
 
 export function checkShowRule(arr, key) {
   var newArr = arr.map((item, index, array) => {
@@ -71,10 +73,10 @@ function compareTimeInterval(t1, t2) {
   // console.log(t1,t2,dayjs(t2)-dayjs(t1));
   return dayjs(t2) - dayjs(t1) >= 300000 ? true : false;
 }
-
 // 原文链接：https://blog.csdn.net/qq_42740797/article/details/114930843
 
 export const translate = item => {
+  const defaultWidth = 100;
   let content = {};
 
   const {category} = item;
@@ -83,21 +85,32 @@ export const translate = item => {
     content = item.content;
   }
 
-  if (category === 'image') {
-    content = {width: 100, height: 100, uri: item.payload.url};
-  }
-
-  if (category === 'video') {
-    content = {
-      width: 100,
-      height: 100,
-      uri: item.payload.url,
-      poster: `${item.payload.url}?vframe/jpg/offset/0/rotate/auto`,
-    };
-  }
-
   if (category === 'audio') {
     content = {uri: item.payload.url, length: item.payload.seconds};
+  }
+
+  if (['image', 'video'].includes(category)) {
+    const {width, height} = item.payload;
+    const {width: innerWidth, height: innerHeight} = calculateImg(
+      width || defaultWidth,
+      height || defaultWidth
+    );
+
+    const mediaWidth = Math.ceil(VWValue(innerWidth) / 2);
+    const mediaHeight = Math.ceil((VWValue(innerWidth) * innerHeight) / innerWidth / 2);
+
+    if (category === 'image') {
+      content = {uri: item.payload.url, width: mediaWidth, height: mediaHeight};
+    }
+
+    if (category === 'video') {
+      content = {
+        uri: item.payload.url,
+        poster: `${item.payload.url}?vframe/jpg/offset/0/rotate/auto`,
+        width: mediaWidth,
+        height: mediaHeight,
+      };
+    }
   }
 
   const newItem = {
