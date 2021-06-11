@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useMemo, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, StatusBar, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
@@ -16,6 +16,8 @@ import {recordDeviceInfo, ahoyTrackEvents} from '@/api/settings_api';
 import {syncDeviceToken} from '@/api/app_device_api';
 import {getLocationInfo, loadLocation} from './getLocation';
 import deviceInfo from '@/utils/device_info';
+import {consumerWsUrl} from '@/utils/config';
+import {createConsumer} from '@rails/actioncable';
 import {
   dispatchFetchCategoryList,
   dispatchBaseCurrentAccount,
@@ -28,11 +30,13 @@ import FollowListPage from './follow-list-post';
 import NodeListPage from './node-list-page';
 import RecommendListPage from './recommend-list-post';
 import NearbyListPage from './nearby-list-post';
+import {translate} from '@/pages/chats/meta';
 
 const Recommend = props => {
   const dispatch = useDispatch();
   const defaultKey = props.route.params && props.route.params.activityKey;
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
+  const auth_token = useSelector(state => state.login.auth_token);
   const home = useSelector(state => state.home);
   const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
@@ -47,6 +51,43 @@ const Recommend = props => {
       />
     );
   });
+
+  const onlineChannel = useMemo(() => {
+    // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
+    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
+      {channel: 'OnlineChannel'},
+      {
+        received(data) {},
+        initialized() {
+          console.log('initialized');
+        },
+        connected() {
+          console.log('connected');
+        },
+        disconnected() {
+          console.log('disconnected');
+        },
+        rejected() {
+          console.log('rejected');
+        },
+        unsubscribe() {
+          console.log('unsubscribe');
+        },
+        appear() {
+          console.log('appear')
+          this.perform('appear', {});
+        },
+      }
+    );
+  }, []);
+
+  // 同步用户是否在线
+  const appearOnline = () => {
+    setInterval(() => {
+      console.log('appear')
+      onlineChannel.perform('appear');
+    }, 5000);
+  };
 
   const onTouchStart = event => {
     // console.log('event', event['_targetInst'])
@@ -154,6 +195,7 @@ const Recommend = props => {
   useEffect(() => {
     syncDeviceToken();
     recordDeviceInfo(deviceInfo);
+    appearOnline(); // 是否在线
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
     if (uploadStatus) {

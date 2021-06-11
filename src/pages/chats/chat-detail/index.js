@@ -30,9 +30,15 @@ import MediasPicker from '@/components/MediasPicker';
 import {pagination} from '@/components/ScrollList';
 import {BarHeight} from '@/utils/navbar';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
-import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
+import {
+  getChatGroupsConversations,
+  getChatGroupsSendMessage,
+  readSingleChatGroupMessage,
+} from '@/api/chat_api';
 import {translate, checkShowRule} from '../meta';
-import { consumerWsUrl } from '@/utils/config'
+
+import {consumerWsUrl} from '@/utils/config';
+
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
 
@@ -377,6 +383,7 @@ const ChartDetail = props => {
     const {followed, id} = targetAccountDetail;
     followed ? await unfollowAccount(id) : await followAccount(id);
     const ret = await getAccount(id);
+    Toast.show('关注成功');
     setTargetAccountDetail(ret.data.account);
   };
 
@@ -419,6 +426,7 @@ const ChartDetail = props => {
     loadData(1);
     return () => {
       chatChannel.unsubscribe();
+      readSingleChatGroupMessage({uuid: uuid});
     };
   }, []);
 
@@ -438,17 +446,18 @@ const ChartDetail = props => {
         title: targetAccountDetail.nickname,
         headerStyle: {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#ebebeb'},
         headerRightContainerStyle: {paddingRight: 10},
-        headerRight: () =>
-          !followed ? (
-            <View style={styles.headerRight}>
+        headerRight: () => (
+          <View style={styles.headerRight}>
+            {!followed && (
               <Text style={styles.attation} onPress={onFollow}>
                 关注
               </Text>
-              <Pressable onPress={() => setShowActionSheet(true)}>
-                <IconFont name={'ziyuan'} color={'#ccc'} size={26} />
-              </Pressable>
-            </View>
-          ) : null,
+            )}
+            <Pressable onPress={() => setShowActionSheet(true)}>
+              <IconFont name={'ziyuan'} color={'#ccc'} size={26} />
+            </Pressable>
+          </View>
+        ),
       });
     }
   }, [targetAccountDetail]);

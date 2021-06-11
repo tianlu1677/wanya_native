@@ -80,7 +80,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
   return (
     <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
       <View style={styles.coverWrapView}>
-        <Avator size={45} account={send_message_account} handleClick={() => {}} />
+        <Avator size={45} account={send_message_account} />
         <BadgeMessage
           value={unread_message[currentAccount.id]}
           containerStyle={styles.badgeContainer}
