@@ -32,6 +32,7 @@ import {BarHeight} from '@/utils/navbar';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {getChatGroupsConversations, getChatGroupsSendMessage} from '@/api/chat_api';
 import {translate, checkShowRule} from '../meta';
+import { consumerWsUrl } from '@/utils/config'
 const AddPhoto = require('@/assets/images/add-photo.png');
 const AddVideo = require('@/assets/images/add-video.png');
 
@@ -74,8 +75,8 @@ const ChartDetail = props => {
   const [activeVoiceId, setActiveVoiceId] = useState(-1);
 
   const chatChannel = useMemo(() => {
-    const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
-    return createConsumer(url).subscriptions.create(
+    // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
+    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
       {channel: 'ChatChannel', room: `${uuid}`},
       {
         received(data) {
