@@ -39,7 +39,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
 
     // 若匹配不到，则直接返回一个全文本
     if (emojiIndex === -1) {
-      views.push(<Text key={'emptyTextView' + Math.random() * 100}>{textContent}</Text>);
+      views.push(<Text key={'emptyTextView' + Math.random() * 100} style={{marginLeft: 10}}>{textContent}</Text>);
     } else {
       if (emojiIndex !== -1) {
         checkIndexArray.push(emojiIndex);
@@ -65,7 +65,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
     let emojiImg = EMOJIS_DATA[castStr[0]];
 
     if (emojiImg) {
-      views.push(<FastImg key={emojiStr} style={styles.subEmojiStyle} source={emojiImg} />);
+      views.push(<FastImg key={emojiStr} style={styles.subEmojiStyle} mode={'contain'} source={emojiImg} />);
     }
 
     _matchContentString(emojiStr.substring(emojiLength), views);
@@ -89,7 +89,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
       <View style={styles.notifyContent}>
         <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
         {last_conversation ? (
-          <Text style={styles.notifyContentDesc}>
+          <Text style={styles.notifyContentDesc} numberOfLines={1}>
             {last_conversation.category === 'text'
               ? _getActualText(last_conversation.content)
               : last_conversation.payload.text}
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     fontWeight: '400',
     fontSize: 13,
+    lineHeight: 20,
   },
   timeText: {
     fontSize: 11,
@@ -145,8 +146,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   subEmojiStyle: {
-    width: 20,
-    height: 20,
+    width: 18,
+    height: 18,
+    marginRight: 5,
   },
 });
 

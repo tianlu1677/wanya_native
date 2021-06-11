@@ -133,6 +133,17 @@ export default class InputBar extends PureComponent {
               placeholder={placeholder}
               onContentSizeChange={onContentSizeChange}
               textChange={textChange}
+              onSubmitEditing={() => {
+                if (messageContent.trim().length > 0) {
+                  onSubmitEditing('text', messageContent)
+                } else {
+                  if (usePlus) {
+                    isShowPanel(!isPanelShow)
+                  } else {
+                    return null
+                  }
+                }
+              }}
               messageContent={messageContent}
               inputHeightFix={inputHeightFix}
               inputChangeSize={inputChangeSize}

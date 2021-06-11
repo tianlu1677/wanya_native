@@ -69,6 +69,7 @@ export default class ChatItem extends PureComponent {
 
     // 若匹配不到，则直接返回一个全文本
     if (emojiIndex === -1) {
+      console.log('textContent', textContent, isSelf)
       views.push(
         <Text
           style={isSelf ? rightMessageTextStyle : leftMessageTextStyle}
@@ -92,7 +93,7 @@ export default class ChatItem extends PureComponent {
       );
 
       // 将index部分作分别处理
-      this._matchEmojiString(textContent.substring(minIndex), views);
+      this._matchEmojiString(textContent.substring(minIndex), views, isSelf);
     }
   };
 

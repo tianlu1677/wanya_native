@@ -20,7 +20,7 @@ class Input extends PureComponent {
         <TextInput
           ref={e => (this.input = e)}
           multiline
-          blurOnSubmit={false}
+          blurOnSubmit={true}
           editable={!enabled}
           placeholder={placeholder}
           placeholderTextColor='#5f5d70'
@@ -28,6 +28,9 @@ class Input extends PureComponent {
           underlineColorAndroid='transparent'
           onChangeText={textChange}
           value={messageContent}
+          onSubmitEditing={this.props.onSubmitEditing}
+          returnKeyLabel={'发送'}
+          returnKeyType={'send'}
           style={[styles.commentBar__input, { height: Math.max(35 + inputHeightFix, inputChangeSize) }, inputStyle]}
         />
       </TouchableOpacity>
