@@ -7,9 +7,6 @@ import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/action
 import {getChatGroups} from '@/api/chat_api';
 import ScrollList from '@/components/ScrollList';
 import BaseChatGroup from './base-chat-group';
-import BaseTopic from '@/components/Item/base-topic';
-import BaseArticle from "@/components/Item/base-article"
-import BaseTheory from "@/components/Item/base-theory"
 
 const ChatGroups = ({navigation}) => {
   const dispatch = useDispatch();

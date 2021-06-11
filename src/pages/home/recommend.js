@@ -57,7 +57,7 @@ const Recommend = props => {
     return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
       {channel: 'OnlineChannel'},
       {
-        received(data) {},
+        // received(data) {},
         initialized() {
           console.log('initialized');
         },
@@ -74,7 +74,7 @@ const Recommend = props => {
           console.log('unsubscribe');
         },
         appear() {
-          console.log('appear')
+          // console.log('appear')
           this.perform('appear', {});
         },
       }
