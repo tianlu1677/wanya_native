@@ -19,6 +19,7 @@ import {createConsumer} from '@rails/actioncable';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
+import {getCurrentTime} from '@/plugins/react-native-easy-chat-ui/app/chat/utils';
 import ActionSheet from '@/components/ActionSheet';
 import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
@@ -511,6 +512,11 @@ const ChartDetail = props => {
         voicePlaying={voicePlaying}
         voiceVolume={voiceVolume}
         pressOutText="松开发送"
+        renderMessageTime={time => (
+          <View style={styles.chatTimeWrap}>
+            <Text style={styles.chatTime}>{getCurrentTime(Math.ceil(time))}</Text>
+          </View>
+        )}
         userProfile={{
           id: currentAccount.id.toString(),
           avatar: currentAccount.avatar_url,

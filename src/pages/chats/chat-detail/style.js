@@ -1,8 +1,8 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 const {width} = Dimensions.get('window');
-
 const panalWidth = (width - 30 - 15 * 3) / 4;
+
 const styles = StyleSheet.create({
   panelContainerStyle: {
     paddingTop: 15,
@@ -61,15 +61,13 @@ const styles = StyleSheet.create({
     lineHeight: RFValue(20),
     fontWeight: '300',
   },
-  video: {
-    width,
-    height: 200,
+  chatTimeWrap: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  videoIcon: {
-    position: 'absolute',
-    top: 50,
-    left: 50,
-    zIndex: 2,
+  chatTime: {
+    color: '#bdbdbd',
+    fontSize: RFValue(11),
   },
 });
 
