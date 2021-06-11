@@ -134,11 +134,11 @@ const MainTabScreen = props => {
         tabBarOptions={{
           safeAreaInsets: {bottom: 0},
           showLabel: false,
-          tabStyle: {height: RFValue(40)},
+          tabStyle: {height: RFValue(50)},
           style: {
             backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
             borderTopWidth: 0,
-            height: RFValue(40),
+            height: RFValue(50),
             paddingLeft: VWValue(34),
             paddingRight: VWValue(34),
           },
@@ -168,7 +168,7 @@ const MainTabScreen = props => {
 
 const styles = StyleSheet.create({
   blurView: {
-    height: RFValue(40),
+    height: RFValue(50),
     position: 'absolute',
     left: 0,
     bottom: 0,
