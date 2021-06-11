@@ -30,7 +30,6 @@ import FollowListPage from './follow-list-post';
 import NodeListPage from './node-list-page';
 import RecommendListPage from './recommend-list-post';
 import NearbyListPage from './nearby-list-post';
-import {translate} from '@/pages/chats/meta';
 
 const Recommend = props => {
   const dispatch = useDispatch();
