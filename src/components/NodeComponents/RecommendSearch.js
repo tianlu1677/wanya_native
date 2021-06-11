@@ -14,12 +14,12 @@ const RecommendSearch = () => {
 
   return (
     <>
-      <View style={{height: BarHeight, backgroundColor: 'black'}} />
-      <StatusBar barStyle="light-content" translucent={true} />
+      <View style={{height: BarHeight, backgroundColor: '#fff'}} />
+      <StatusBar barStyle="dark-content" translucent={true} />
       <Search
         getRef={refs => setinputRef(refs)}
-        style={{backgroundColor: '#000', paddingRight: 14}}
-        inputStyle={{borderRadius: RFValue(18), backgroundColor: '#fff'}}
+        style={{backgroundColor: '#fff', paddingRight: 14, paddingBottom: 0}}
+        inputStyle={{borderRadius: RFValue(18), backgroundColor: '#f2f3f5'}}
         height={RFValue(38)}
         placeholderTextColor="#aaa"
         placeholder="搜索顽法、帖子、文章、圈子等内容"

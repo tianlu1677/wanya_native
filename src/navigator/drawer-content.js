@@ -55,14 +55,14 @@ const DrawerContent = ({navigation}) => {
       </Pressable>
 
       <Pressable style={styles.drawerItem} onPress={onDetail}>
-        <IconFont name="gerenzhuye" size={RFValue(18)} color={'#000'} />
+        <IconFont name="zhuye" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>个人主页</Text>
         <View style={{marginLeft: 'auto'}}>
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
       <Pressable style={styles.drawerItem} onPress={onNotifyIndex}>
-        <IconFont name="notice" size={RFValue(18)} color={'#000'} />
+        <IconFont name="tongzhi" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>互动通知</Text>
         <View style={{marginLeft: 'auto', flexDirection: 'row'}}>
           <BadgeMessage

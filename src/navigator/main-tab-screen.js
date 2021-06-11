@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Pressable, StyleSheet, Platform, Dimensions} from 'react-native';
+import {View, Text, Pressable, StyleSheet, Platform, Dimensions} from 'react-native';
 import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -123,14 +123,25 @@ const MainTabScreen = props => {
                     },
                   ]}
                 />
-                <FastImg source={RenderImage(route.name, focused)} style={style} />
+                <Text style={style.tabText}>消息</Text>
+                {/* <FastImg source={RenderImage(route.name, focused)} style={style} /> */}
                 {focused && (
                   <View style={[styles.activeLine, {left: style.width / 2 - VWValue(12)}]} />
                 )}
               </View>
             ) : (
               <View style={{position: 'relative'}}>
-                <FastImg source={RenderImage(route.name, focused)} style={style} />
+                {route.name === 'Recommend' ? (
+                  focused ? (
+                    <FastImg source={indexActive} style={style} />
+                  ) : (
+                    <Text style={style.tabTextIndex}>首页</Text>
+                  )
+                ) : (
+                  <Text style={style.tabText}>发现</Text>
+                )}
+                {/* <FastImg source={RenderImage(route.name, focused)} style={style} /> */}
+                {/* <Text>{route.name === 'Recommend' ? '首页' : '发现'}</Text> */}
                 {focused && route.name === 'Discovery' && (
                   <View style={[styles.activeLine, {left: style.width / 2 - VWValue(12)}]} />
                 )}
@@ -167,7 +178,7 @@ const MainTabScreen = props => {
             },
           })}
         />
-        <Tab.Screen name="Discovery" component={Discovery} options={{}} />
+        <Tab.Screen name="Discovery" component={Discovery} options={{title: '323232'}} />
       </Tab.Navigator>
     </>
   );
@@ -194,6 +205,11 @@ const styles = StyleSheet.create({
     marginTop: RFValue(25),
     paddingBottom: RFValue(30),
   },
+  tabTextIndex: {
+    fontSize: 20,
+    color: '#aaa',
+  },
+  tabText: {},
   badge: {
     position: 'absolute',
     top: -7,
