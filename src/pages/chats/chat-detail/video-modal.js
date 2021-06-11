@@ -9,6 +9,8 @@ const VideoModal = props => {
   const videoRef = useRef(null);
   const {visible, message, onCancel} = props;
 
+  console.log(message);
+
   return (
     <Modal
       isVisible={visible}

@@ -55,3 +55,36 @@ export const calculateImg = (width, height) => {
   }
   return {...attr, x: x};
 };
+
+// 0.33 1/3
+export const scaleChatSize = media => {
+  const defaultSize = VWValue(140);
+  const mediaWidth = media.width || defaultSize;
+  const mediaHeight = media.height || defaultSize;
+  const scale = mediaWidth / mediaHeight;
+
+  let width = null;
+  let height = null;
+
+  if (scale === 1) {
+    width = defaultSize;
+    height = defaultSize;
+  }
+
+  if (scale > 1) {
+    width = defaultSize;
+    height = (defaultSize * mediaHeight) / mediaWidth;
+  }
+
+  if (scale < 0.33) {
+    width = VWValue(70);
+    height = (VWValue(70) * 210) / 70;
+  }
+
+  if (scale < 1 && scale >= 0.33) {
+    width = (VWValue(210) * mediaWidth) / mediaHeight;
+    height = VWValue(210);
+  }
+
+  return {width: Math.ceil(width), height: Math.ceil(height)};
+};

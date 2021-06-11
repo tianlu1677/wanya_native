@@ -10,7 +10,7 @@
  **/
 import dayjs from 'dayjs';
 import {VWValue} from '@/utils/response-fontsize';
-import {calculateImg} from '@/utils/scale';
+import {calculateImg, scaleChatSize} from '@/utils/scale';
 
 export function checkShowRule(arr, key) {
   var newArr = arr.map((item, index, array) => {
@@ -76,41 +76,31 @@ function compareTimeInterval(t1, t2) {
 // 原文链接：https://blog.csdn.net/qq_42740797/article/details/114930843
 
 export const translate = item => {
-  const defaultWidth = 100;
+  const {category} = item;
   let content = {};
 
-  const {category} = item;
-
-  if (category === 'text') {
-    content = item.content;
-  }
-
-  if (category === 'audio') {
-    content = {uri: item.payload.url, length: item.payload.seconds};
-  }
-
-  if (['image', 'video'].includes(category)) {
-    const {width, height} = item.payload;
-    const {width: innerWidth, height: innerHeight} = calculateImg(
-      width || defaultWidth,
-      height || defaultWidth
-    );
-
-    const mediaWidth = Math.ceil(VWValue(innerWidth) / 2);
-    const mediaHeight = Math.ceil((VWValue(innerWidth) * innerHeight) / innerWidth / 2);
-
-    if (category === 'image') {
-      content = {uri: item.payload.url, width: mediaWidth, height: mediaHeight};
-    }
-
-    if (category === 'video') {
+  switch (category) {
+    case 'text':
+      content = item.content;
+      break;
+    case 'audio':
+      content = {uri: item.payload.url, length: item.payload.seconds};
+      break;
+    case 'image':
+      content = {
+        uri: item.payload.url,
+        width: scaleChatSize(item.payload).width,
+        height: scaleChatSize(item.payload).height,
+      };
+      break;
+    case 'video':
       content = {
         uri: item.payload.url,
         poster: `${item.payload.url}?vframe/jpg/offset/0/rotate/auto`,
-        width: mediaWidth,
-        height: mediaHeight,
+        width: scaleChatSize(item.payload).width,
+        height: scaleChatSize(item.payload).height,
       };
-    }
+      break;
   }
 
   const newItem = {

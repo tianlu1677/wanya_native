@@ -33,6 +33,7 @@ import {
   getChatGroupsSendMessage,
   readSingleChatGroupMessage,
 } from '@/api/chat_api';
+import VideoModal from './video-modal';
 import {translate, checkShowRule} from '../meta';
 
 import {consumerWsUrl} from '@/utils/config';
