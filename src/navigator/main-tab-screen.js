@@ -129,7 +129,7 @@ const MainTabScreen = props => {
         tabBarOptions={{
           safeAreaInsets: {...insets, bottom: insets.bottom + BOTTOM_HEIGHT},
           showLabel: false,
-          tabStyle: {height: RFValue(40), backgroundColor: 'pink'},
+          tabStyle: {height: RFValue(40)},
           style: {
             backgroundColor: 'white',
             borderTopWidth: StyleSheet.hairlineWidth,

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Platform, View} from 'react-native';
+import {Platform, View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {throttle} from 'lodash';
 import ScrollList, {pagination} from '@/components/ScrollList';
@@ -121,7 +121,7 @@ const SingleList = props => {
       onRefresh={throttle(onRefresh, 300)}
       headers={headers}
       renderItem={renderItemMemo}
-      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
+      renderSeparator={() => <View style={styles.speator} />}
       style={{
         backgroundColor: '#FAFAFA',
         flex: listData.length === 0 && props.renderEmpty ? 1 : 0,
@@ -142,5 +142,13 @@ SingleList.propTypes = {
   request: PropTypes.object.isRequired, //获取数据请求 {api: api, id: 1, params:params}
   dataKey: PropTypes.string, // single-list 默认posts
 };
+
+const styles = StyleSheet.create({
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 14,
+  },
+});
 
 export default SingleList;
