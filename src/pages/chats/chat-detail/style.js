@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
   },
   itemContainerStyle: {
     paddingHorizontal: VWValue(15),
-    paddingVertical: RFValue(14),
+    paddingVertical: 0,
+    paddingBottom: RFValue(14),
     alignItems: 'flex-start',
   },
   leftMessageText: {
@@ -62,8 +63,10 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   chatTimeWrap: {
+    height: RFValue(13),
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: RFValue(14),
   },
   chatTime: {
     color: '#bdbdbd',

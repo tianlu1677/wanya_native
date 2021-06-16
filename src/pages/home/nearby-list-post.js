@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {View, Text, Pressable, Platform} from 'react-native';
+import {View, Text, Pressable, Platform, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {throttle} from 'lodash';
@@ -106,7 +106,7 @@ const NearByListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
-      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
+      renderSeparator={() => <View style={nstyles.speator} />}
       renderEmpty={
         <Pressable style={lstyles.emptyWrap} onPress={() => navigation.navigate('InviteDetail')}>
           <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(165)}]}>
@@ -163,5 +163,13 @@ const NearbyShareComponent = props => {
     </Pressable>
   ) : null;
 };
+
+const nstyles = StyleSheet.create({
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 14,
+  },
+});
 
 export default NearByListPost;

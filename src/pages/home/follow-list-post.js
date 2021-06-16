@@ -188,8 +188,8 @@ const FollowListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 10 : 20}
-      ListHeaderComponent={FollowShareComponent()}
-      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
+      ListHeaderComponent={listData.length > 0 ? FollowShareComponent() : null}
+      renderSeparator={() => <View style={styles.speator} />}
       renderEmpty={
         <View>
           {FollowShareComponent()}
@@ -249,6 +249,11 @@ const styles = StyleSheet.create({
   notfollow: {
     backgroundColor: '#000',
     color: '#fff',
+  },
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 14,
   },
 });
 

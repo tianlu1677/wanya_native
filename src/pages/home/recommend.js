@@ -83,7 +83,7 @@ const Recommend = props => {
   // 同步用户是否在线
   const appearOnline = () => {
     setInterval(() => {
-      console.log('appear')
+      console.log('appear');
       onlineChannel.perform('appear');
     }, 5000);
   };
@@ -224,11 +224,9 @@ const Recommend = props => {
             <TabView
               currentKey={currentKey}
               onChange={onChange}
-              type="index"
               align="left"
-              textStyle={{color: '#AAAA'}}
-              activeLineColor="#FF2242"
               bottomLine={true}
+              separator={false}
               tabData={[
                 {
                   key: 'follow',

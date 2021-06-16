@@ -137,7 +137,7 @@ const SearchIndex = ({navigation, route}) => {
       <View style={{height: BarHeight, backgroundColor: '#fff'}} />
       <Search
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#F2F3F5'}}
-        height={RFValue(38)}
+        height={RFValue(36)}
         textColor="#000"
         placeholderTextColor="#aaa"
         placeholder="搜索顽法、帖子、文章、圈子等内容"
@@ -151,11 +151,9 @@ const SearchIndex = ({navigation, route}) => {
         currentKey={currentKey}
         request={request}
         onChange={onChangeKey}
-        type="index"
         align="left"
-        textStyle={{color: '#000'}}
-        activeLineColor="#FF2242"
         bottomLine={true}
+        separator={false}
         tabData={[
           {
             key: 'all',

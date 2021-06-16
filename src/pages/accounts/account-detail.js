@@ -28,7 +28,7 @@ import {AccountDetailBgImg} from '@/utils/default-image';
 import PersonalImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
 
-const TOP_HEADER = RFValue(110);
+const TOP_HEADER = RFValue(110) + BarHeight;
 
 const filterScore = value => {
   if (value >= 10000) {
@@ -133,8 +133,7 @@ const AccountDetail = ({navigation, route}) => {
     const defaultImage = account.background_img_url || AccountDetailBgImg;
     return (
       <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
-        <TopBack top={BarHeight + RFValue(12)} onReportClick={() => setShowActionSheet(true)} />
-        <View style={{height: BarHeight, backgroundColor: 'black'}} />
+        <TopBack top={BarHeight} onReportClick={() => setShowActionSheet(true)} />
         <View style={styles.header}>
           <View style={styles.topHeader}>
             <View style={styles.coverOpacity} />
@@ -318,8 +317,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   nickname: {
-    fontSize: RFValue(16),
-    fontWeight: '500',
+    fontSize: VWValue(16),
+    fontWeight: '600',
   },
   uid: {
     fontSize: 10,

@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet, Platform, Dimensions} from 'react-native';
-import {createBottomTabNavigator, BottomTabBar} from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {isIphoneX} from 'react-native-iphone-x-helper';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
-import {BottomModal, BlurView, BadgeMessage} from '@/components/NodeComponents';
+import {BottomModal, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
 import ChatGroups from '@/pages/chats/chat_groups';
 import Recommend from '@/pages/home/recommend';
@@ -57,6 +59,8 @@ const PublishModal = props => {
 
 const MainTabScreen = props => {
   const dispatch = useDispatch();
+  const insets = useSafeAreaInsets();
+
   const {currentBaseInfo} = useSelector(state => state.account);
   const [visible, setVisible] = useState(false);
 
@@ -88,15 +92,6 @@ const MainTabScreen = props => {
       <PublishModal {...props} visible={visible} onCancel={() => setVisible(false)} />
       <Tab.Navigator
         initialRouteName="Recommend"
-        // tabBar={barprops => (
-        //   <BlurView
-        //     style={styles.blurView}
-        //     blurType="chromeMaterial"
-        //     blurAmount={20}
-        //     reducedTransparencyFallbackColor="#white">
-        //     <BottomTabBar {...barprops} />
-        //   </BlurView>
-        // )}
         screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
             return route.name === 'ChatGroups' ? (
@@ -132,13 +127,14 @@ const MainTabScreen = props => {
           },
         })}
         tabBarOptions={{
-          safeAreaInsets: {bottom: 0},
+          safeAreaInsets: {...insets, bottom: insets.bottom + BOTTOM_HEIGHT},
           showLabel: false,
-          tabStyle: {height: RFValue(50)},
+          tabStyle: {height: RFValue(40), backgroundColor: 'pink'},
           style: {
-            backgroundColor: Platform.OS === 'ios' ? 'white' : 'white',
-            borderTopWidth: 0,
-            height: RFValue(50),
+            backgroundColor: 'white',
+            borderTopWidth: StyleSheet.hairlineWidth,
+            borderTopColor: '#EBEBEB',
+            height: RFValue(40),
             paddingLeft: VWValue(34),
             paddingRight: VWValue(34),
           },
@@ -168,7 +164,7 @@ const MainTabScreen = props => {
 
 const styles = StyleSheet.create({
   blurView: {
-    height: RFValue(50),
+    height: RFValue(40),
     position: 'absolute',
     left: 0,
     bottom: 0,
@@ -190,14 +186,14 @@ const styles = StyleSheet.create({
   tabText: {
     width: RFValue(40),
     textAlign: 'center',
-    fontSize: RFValue(15),
+    fontSize: RFValue(16),
     color: '#aaa',
     fontWeight: '500',
   },
   tabActiveText: {
     width: RFValue(40),
     textAlign: 'center',
-    fontSize: RFValue(17),
+    fontSize: RFValue(16),
     color: '#000',
     fontWeight: '500',
   },

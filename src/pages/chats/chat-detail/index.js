@@ -417,11 +417,7 @@ const ChartDetail = props => {
   };
 
   const loadData = async page => {
-    if (page === 1) {
-      const ret = await getAccount(targetAccount.id);
-      setTargetAccountDetail(ret.data.account);
-    }
-    setLoading(false);
+    setLoading(true);
     const per_page = 10;
     const res = await getChatGroupsConversations({uuid, page, per_page});
     const newMessages = TransLateData(checkShowRule(res.data.conversations.reverse(), 'send_at'));
@@ -430,8 +426,15 @@ const ChartDetail = props => {
     setLoading(false);
   };
 
+  const loadAccount = async () => {
+    const ret = await getAccount(targetAccount.id);
+    setTargetAccountDetail(ret.data.account);
+  };
+
   useEffect(() => {
     loadData(1);
+    loadAccount();
+
     return () => {
       chatChannel.unsubscribe();
       readSingleChatGroupMessage({uuid: uuid});
@@ -443,8 +446,8 @@ const ChartDetail = props => {
       const {followed} = targetAccountDetail;
       navigation.setOptions({
         title: targetAccountDetail.nickname,
-        headerStyle: {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#ebebeb'},
-        headerRightContainerStyle: {paddingRight: 10},
+        headerStyle: {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#EBEBEB'},
+        headerRightContainerStyle: {paddingRight: 4},
         headerRight: () => (
           <View style={styles.headerRight}>
             {!followed && (

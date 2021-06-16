@@ -51,16 +51,12 @@ const TabViewIndex = props => {
       <TabView
         renderTabBar={() => (
           <TabList
-            data={routes}
             current={props.currentKey}
-            tabChange={tabChange}
-            center={props.center}
-            type={props.type}
-            align={props.align}
-            textStyle={props.textStyle}
             bottomLine={props.bottomLine}
-            activeLineColor={props.activeLineColor}
             separator={props.separator}
+            align={props.align}
+            tabChange={tabChange}
+            data={routes}
           />
         )}
         navigationState={{index, routes}}
@@ -87,10 +83,18 @@ const TabViewIndex = props => {
 };
 
 TabViewIndex.propTypes = {
-  tabData: PropTypes.array.isRequired, //tabList接收的数据[{key, value, component: () => <View />}]
-  onChange: PropTypes.func.isRequired, //onChange 返回key
-  currentKey: PropTypes.string, // 需要高亮第几项key 默认0
-  separator: PropTypes.bool, // 是否显示分割线
+  // tabData: PropTypes.array.isRequired, //tabList接收的数据[{key, value, component: () => <View />}]
+  // onChange: PropTypes.func.isRequired, //onChange 返回key
+  // currentKey: PropTypes.string, // 需要高亮第几项key 默认0
+  // separator: PropTypes.bool, // 是否显示分割线
+  align: PropTypes.string.isRequired, //对齐方式
+  bottomLine: PropTypes.bool.isRequired, //是否显示底部分界线
+  separator: PropTypes.bool.isRequired, //是否显示底部分界线
+  currentKey: PropTypes.string.isRequired, // 默认高亮第几项key
+  onChange: PropTypes.func.isRequired, //onChange 返回item
+  tabData: PropTypes.array.isRequired, //tabList接收的数据
+
+  request: PropTypes.func, //tabList接收的数据
 };
 
 export default TabViewIndex;

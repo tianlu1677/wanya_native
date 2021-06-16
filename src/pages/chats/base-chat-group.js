@@ -14,7 +14,6 @@ const PATTERNS = {
 };
 
 const BaseChatGroup = ({navigation, chat_group}) => {
-  // console.log('BaseChatGroup', chat_group.id)
   const {currentAccount} = useSelector(state => state.account);
   const {
     uuid,
@@ -40,7 +39,11 @@ const BaseChatGroup = ({navigation, chat_group}) => {
 
     // 若匹配不到，则直接返回一个全文本
     if (emojiIndex === -1) {
-      views.push(<Text key={'emptyTextView' + Math.random() * 100} style={{marginLeft: 10}}>{textContent}</Text>);
+      views.push(
+        <Text key={'emptyTextView' + Math.random() * 100} style={{marginLeft: 10}}>
+          {textContent}
+        </Text>
+      );
     } else {
       if (emojiIndex !== -1) {
         checkIndexArray.push(emojiIndex);
@@ -66,7 +69,9 @@ const BaseChatGroup = ({navigation, chat_group}) => {
     let emojiImg = EMOJIS_DATA[castStr[0]];
 
     if (emojiImg) {
-      views.push(<FastImg key={emojiStr} style={styles.subEmojiStyle} mode={'contain'} source={emojiImg} />);
+      views.push(
+        <FastImg key={emojiStr} style={styles.subEmojiStyle} mode={'contain'} source={emojiImg} />
+      );
     }
 
     _matchContentString(emojiStr.substring(emojiLength), views);
@@ -95,7 +100,9 @@ const BaseChatGroup = ({navigation, chat_group}) => {
               ? _getActualText(last_conversation.content)
               : last_conversation.payload.text}
           </Text>
-        ) : <Text style={styles.notifyContentDesc} />}
+        ) : (
+          <Text style={styles.notifyContentDesc} />
+        )}
       </View>
       <View style={styles.messageContent}>
         <Text style={styles.timeText}>{last_message_at_text}</Text>
@@ -112,6 +119,7 @@ const styles = StyleSheet.create({
   },
   itemView: {
     flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 14,
     paddingVertical: RFValue(12),
     backgroundColor: '#fff',
@@ -124,19 +132,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   notifyContentTitle: {
-    height: 20,
-    lineHeight: 20,
-    fontSize: 15,
+    fontSize: 16,
     letterSpacing: 1,
-    fontWeight: '400',
+    fontWeight: '500',
   },
   notifyContentDesc: {
-    marginTop: 6,
+    marginTop: 5,
     color: '#BDBDBD',
     letterSpacing: 1,
-    fontWeight: '400',
     fontSize: 13,
-    lineHeight: 20,
   },
   timeText: {
     fontSize: 11,
@@ -147,8 +151,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   subEmojiStyle: {
-    width: 18,
-    height: 18,
+    width: 20,
+    height: 20,
     marginRight: 5,
   },
 });

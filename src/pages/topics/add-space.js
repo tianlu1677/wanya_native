@@ -145,10 +145,8 @@ const AddSpace = props => {
             currentKey={currentKey}
             request={currentKey}
             onChange={onChangeKey}
-            type="index"
             align="left"
-            textStyle={{color: '#000', fontWeight: '300'}}
-            activeLineColor="#000"
+            bottomLine={false}
             separator={true}
             tabData={[
               {

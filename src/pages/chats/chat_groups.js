@@ -15,7 +15,8 @@ const ChatGroups = ({navigation}) => {
   const [listData, setListData] = useState([]);
 
   const renderItemMemo = useCallback(
-    ({item, index}) => <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />, []
+    ({item, index}) => <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />,
+    []
   );
 
   const loadData = async (page = 1) => {
@@ -56,8 +57,8 @@ const ChatGroups = ({navigation}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
-    backgroundColor: '#fff',
+    // flex: 1,
+    // backgroundColor: '#fff',
   },
   speator: {
     height: StyleSheet.hairlineWidth,

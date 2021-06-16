@@ -130,11 +130,9 @@ const DiscoveryIndex = props => {
           currentKey={currentKey}
           request={currentKey}
           onChange={key => setCurrentKey(key)}
-          type="index"
           align="left"
-          textStyle={{color: '#AAAA'}}
-          activeLineColor="#FF2242"
           bottomLine={true}
+          separator={false}
           tabData={coveryData.map(category => {
             return {
               key: category.category_name,

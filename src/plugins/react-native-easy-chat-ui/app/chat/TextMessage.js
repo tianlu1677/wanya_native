@@ -129,10 +129,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 24,
   },
   leftMessageContainer: {
-    borderTopLeftRadius: 2,
+    borderTopLeftRadius: 4,
   },
   rightMessageContainer: {
-    borderTopRightRadius: 2,
+    borderTopRightRadius: 4,
   },
   subEmojiStyle: {
     width: 25,

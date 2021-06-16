@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     paddingLeft: RFValue(35),
     fontSize: 14,
     color: '#000',
-    fontWeight: '300',
   },
   cancel: {
     textAlign: 'center',

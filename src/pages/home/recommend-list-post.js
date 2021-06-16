@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {View, Platform} from 'react-native';
+import {View, Platform, StyleSheet} from 'react-native';
 import {throttle} from 'lodash';
 import {TransFormType} from '@/utils';
 import ScrollList from '@/components/ScrollList';
@@ -72,9 +72,17 @@ const RecommendListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
-      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
+      renderSeparator={() => <View style={styles.speator} />}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 14,
+  },
+});
 
 export default RecommendListPost;
