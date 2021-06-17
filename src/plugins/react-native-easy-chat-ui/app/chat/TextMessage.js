@@ -70,7 +70,6 @@ export default class TextMessage extends PureComponent {
           <View
             style={[
               styles.container,
-              styles.container,
               isSelf ? styles.rightMessageContainer : styles.leftMessageContainer,
               {backgroundColor: isSelf ? rightMessageBackground : leftMessageBackground},
             ]}>
@@ -127,6 +126,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     borderBottomRightRadius: 24,
     borderBottomLeftRadius: 24,
+    minHeight: RFValue(38),
   },
   leftMessageContainer: {
     borderTopLeftRadius: 4,

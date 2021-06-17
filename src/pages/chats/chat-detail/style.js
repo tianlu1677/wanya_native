@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   leftMessageText: {
-    fontSize: VWValue(14),
+    fontSize: 14,
     color: 'black',
     lineHeight: RFValue(20),
     fontWeight: '300',
   },
   rightMessageText: {
-    fontSize: VWValue(14),
+    fontSize: 14,
     color: 'white',
     lineHeight: RFValue(20),
     fontWeight: '300',

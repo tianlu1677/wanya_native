@@ -28,6 +28,7 @@ import FastImg from '@/components/FastImg';
 import MediasPicker from '@/components/MediasPicker';
 import {pagination} from '@/components/ScrollList';
 import {BarHeight} from '@/utils/navbar';
+import {RFValue} from '@/utils/response-fontsize';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {
   getChatGroupsConversations,
@@ -487,10 +488,12 @@ const ChartDetail = props => {
         // headerHeight={BarHeight + getBottomSpace()}
         // iphoneXBottomPadding={getBottomSpace()}
         pressAvatar={pressAvatar}
+        flatListProps={{style: {paddingTop: RFValue(10)}}}
         leftMessageTextStyle={styles.leftMessageText}
         rightMessageTextStyle={styles.rightMessageText}
         rightMessageBackground={'black'}
         leftMessageBackground={'#F3F3F3'}
+        voiceRightLoadingColor="#000"
         itemContainerStyle={styles.itemContainerStyle}
         avatarStyle={styles.avatarStyle}
         usePopView={true}

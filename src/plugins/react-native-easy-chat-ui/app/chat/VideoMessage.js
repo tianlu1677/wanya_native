@@ -28,7 +28,7 @@ export default class VideoMessage extends PureComponent {
               message
             )
           }
-          style={{backgroundColor: 'transparent', padding: 5, borderRadius: 5}}
+          style={{backgroundColor: 'transparent', borderRadius: 5}}
           onLongPress={() => {
             this.props.onMessageLongPress(
               this[`item_${this.props.rowId}`],
