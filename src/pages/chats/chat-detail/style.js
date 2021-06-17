@@ -46,12 +46,13 @@ const styles = StyleSheet.create({
     borderRadius: RFValue(19),
   },
   inputOutContainerStyle: {
-    backgroundColor: 'pink',
-    marginVertical: 8,
-    paddingHorizontal: 10,
+    // paddingVertical: 8,
+    // paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
   inputStyle: {
     backgroundColor: '#fff',
+    borderColor:"#ebebeb",
     height: 35,
     // fontSize: 13,
   },

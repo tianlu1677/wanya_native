@@ -129,7 +129,6 @@ export default class InputBar extends PureComponent {
       }
     })();
 
-    console.log('inputHeight', this.inputHeight);
 
     return (
       <Container
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     flex: 1,
     borderWidth: StyleSheet.hairlineWidth,
-    paddingVertical: 0.8,
+    // paddingVertical: 0.8,
   },
   commentBar__input: {
     borderRadius: 18,

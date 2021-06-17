@@ -467,6 +467,7 @@ const ChartDetail = props => {
     }
   }, [targetAccountDetail]);
 
+  console.log('33', isIphoneX());
   return loading ? (
     <Loading />
   ) : (
@@ -483,12 +484,12 @@ const ChartDetail = props => {
         renderPanelRow={RenderPanelRow}
         panelContainerStyle={styles.panelContainerStyle}
         useEmoji={true}
-        isIPhoneX={isIphoneX}
+        isIPhoneX={Boolean(isIphoneX())}
         inverted={messages.length > 5}
         headerHeight={BarHeight + 50}
-        iphoneXBottomPadding={0}
         // headerHeight={BarHeight + getBottomSpace()}
         // iphoneXBottomPadding={getBottomSpace()}
+        iphoneXBottomPadding={10}
         pressAvatar={pressAvatar}
         flatListProps={{style: {paddingTop: RFValue(10)}}}
         leftMessageTextStyle={styles.leftMessageText}
@@ -499,7 +500,6 @@ const ChartDetail = props => {
         itemContainerStyle={styles.itemContainerStyle}
         avatarStyle={styles.avatarStyle}
         inputOutContainerStyle={styles.inputOutContainerStyle}
-        // inputContainerStyle={{backgroundColor: 'pink', marginVertical: 8, paddingHorizontal: 10}}
         inputStyle={styles.inputStyle}
         placeholder="请输入新消息"
         emojiIcon={<IconFont name={'biaoqing'} size={30} />}

@@ -29,7 +29,7 @@ class Container extends PureComponent {
             {
               flexDirection: 'row',
               alignItems: 'center',
-              marginVertical: 8,
+              paddingVertical: 8,
               paddingHorizontal: 10,
             },
             inputContainerStyle,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: width,
     backgroundColor: '#f5f5f5',
     justifyContent: 'center',
-    borderColor: '#ccc',
+    borderColor: '#EBEBEB',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
 });
