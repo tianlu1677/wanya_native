@@ -2,6 +2,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 const {width} = Dimensions.get('window');
 const panalWidth = (width - 30 - 15 * 3) / 4;
+const InputHeight = RFValue(33);
 
 const styles = StyleSheet.create({
   panelContainerStyle: {
@@ -43,6 +44,16 @@ const styles = StyleSheet.create({
     width: RFValue(38),
     height: RFValue(38),
     borderRadius: RFValue(19),
+  },
+  inputOutContainerStyle: {
+    backgroundColor: 'pink',
+    marginVertical: 8,
+    paddingHorizontal: 10,
+  },
+  inputStyle: {
+    backgroundColor: '#fff',
+    height: 35,
+    // fontSize: 13,
   },
   itemContainerStyle: {
     paddingHorizontal: VWValue(15),

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
+import {isIphoneX} from 'react-native-iphone-x-helper';
 import Clipboard from '@react-native-community/clipboard';
 import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
@@ -29,6 +30,7 @@ import MediasPicker from '@/components/MediasPicker';
 import {pagination} from '@/components/ScrollList';
 import {BarHeight} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
+import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {
   getChatGroupsConversations,
@@ -481,10 +483,10 @@ const ChartDetail = props => {
         renderPanelRow={RenderPanelRow}
         panelContainerStyle={styles.panelContainerStyle}
         useEmoji={true}
-        isIPhoneX
+        isIPhoneX={isIphoneX}
         inverted={messages.length > 5}
         headerHeight={BarHeight + 50}
-        iphoneXBottomPadding={20}
+        iphoneXBottomPadding={0}
         // headerHeight={BarHeight + getBottomSpace()}
         // iphoneXBottomPadding={getBottomSpace()}
         pressAvatar={pressAvatar}
@@ -496,6 +498,13 @@ const ChartDetail = props => {
         voiceRightLoadingColor="#000"
         itemContainerStyle={styles.itemContainerStyle}
         avatarStyle={styles.avatarStyle}
+        inputOutContainerStyle={styles.inputOutContainerStyle}
+        // inputContainerStyle={{backgroundColor: 'pink', marginVertical: 8, paddingHorizontal: 10}}
+        inputStyle={styles.inputStyle}
+        placeholder="请输入新消息"
+        emojiIcon={<IconFont name={'biaoqing'} size={30} />}
+        plusIcon={<IconFont name={'liaotian'} size={30} />}
+        voiceIcon={<IconFont name={'yuyin'} size={30} />}
         usePopView={true}
         setPopItems={popItems}
         showIsRead={false}

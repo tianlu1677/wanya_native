@@ -1,56 +1,92 @@
-import React, { PureComponent } from 'react'
-import {
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Dimensions
-} from 'react-native'
-import Container from './Container'
-import Voice from './Voice'
-import VoiceButton from './VoiceButton'
-import Input from './Input'
-const { width } = Dimensions.get('window')
+import React, {PureComponent} from 'react';
+import {Platform, StyleSheet, TouchableOpacity, View, Dimensions} from 'react-native';
+import Container from './Container';
+import Voice from './Voice';
+import VoiceButton from './VoiceButton';
+import Input from './Input';
+const {width} = Dimensions.get('window');
 
 export default class InputBar extends PureComponent {
-  constructor (props) {
-    super(props)
-    this.inputHeight = 0
+  constructor(props) {
+    super(props);
+    this.inputHeight = 0;
   }
 
-  setInputHeight = (height) => {
-    this.inputHeight = height
-  }
+  setInputHeight = height => {
+    this.inputHeight = height;
+    this.setState({inputHeight: height});
+  };
 
   renderIcon = () => {
-    const { sendIcon, plusIcon, usePlus, messageContent, sendUnableIcon, ImageComponent } = this.props
-    const sendAbleIcon = sendIcon || <ImageComponent source={require('../../source/image/sendAble.png')} style={{ width: 30, height: 30 }} />
-    const sendUnableIconDefault = sendUnableIcon || <ImageComponent source={require('../../source/image/send.png')} style={{ width: 30, height: 30 }} />
+    const {
+      sendIcon,
+      plusIcon,
+      usePlus,
+      messageContent,
+      sendUnableIcon,
+      ImageComponent,
+    } = this.props;
+
+    const sendAbleIcon = sendIcon || (
+      <ImageComponent
+        source={require('../../source/image/sendAble.png')}
+        style={{width: 30, height: 30}}
+      />
+    );
+    const sendUnableIconDefault = sendUnableIcon || (
+      <ImageComponent
+        source={require('../../source/image/send.png')}
+        style={{width: 30, height: 30}}
+      />
+    );
     if (usePlus) {
       if (messageContent.trim().length) {
-        return sendAbleIcon
+        return sendAbleIcon;
       } else {
-        return plusIcon || <ImageComponent source={require('../../source/image/more.png')} style={{ width: 30, height: 30 }} />
+        return (
+          plusIcon || (
+            <ImageComponent
+              source={require('../../source/image/more.png')}
+              style={{width: 30, height: 30}}
+            />
+          )
+        );
       }
     } else {
-      return messageContent.trim().length ? sendAbleIcon : sendUnableIconDefault
+      return messageContent.trim().length ? sendAbleIcon : sendUnableIconDefault;
     }
-  }
+  };
 
   renderEmojieIcon = () => {
-    const { isEmojiShow, keyboardIcon, emojiIcon, ImageComponent } = this.props
+    const {isEmojiShow, keyboardIcon, emojiIcon, ImageComponent} = this.props;
     if (isEmojiShow) {
-      return keyboardIcon || <ImageComponent source={require('../../source/image/keyboard.png')} style={{ width: 30, height: 30 }} />
+      return (
+        keyboardIcon || (
+          <ImageComponent
+            source={require('../../source/image/keyboard.png')}
+            style={{width: 30, height: 30}}
+          />
+        )
+      );
     } else {
-      return emojiIcon || <ImageComponent source={require('../../source/image/emoji.png')} style={{ width: 30, height: 30 }} />
+      return (
+        emojiIcon || (
+          <ImageComponent
+            source={require('../../source/image/emoji.png')}
+            style={{width: 30, height: 30}}
+          />
+        )
+      );
     }
-  }
+  };
 
-  render () {
+  render() {
     const {
       messageContent,
       onSubmitEditing = () => {},
-      textChange = () => {}, onMethodChange = () => {}, onContentSizeChange = () => {},
+      textChange = () => {},
+      onMethodChange = () => {},
+      onContentSizeChange = () => {},
       inputStyle,
       inputOutContainerStyle,
       inputContainerStyle,
@@ -77,44 +113,44 @@ export default class InputBar extends PureComponent {
       voiceStart,
       rootHeight,
       voiceEnd,
-      changeVoiceStatus
-    } = this.props
+      changeVoiceStatus,
+    } = this.props;
     const enabled = (() => {
       if (Platform.OS === 'android') {
         if (isPanelShow) {
-          return true
+          return true;
         }
         if (isEmojiShow) {
-          return true
+          return true;
         }
-        return false
+        return false;
       } else {
-        return false
+        return false;
       }
-    })()
+    })();
+
+    console.log('inputHeight', this.inputHeight);
+
     return (
       <Container
         setInputHeight={this.setInputHeight}
         inputOutContainerStyle={inputOutContainerStyle}
         isIphoneX={isIphoneX}
         xHeight={xHeight}
-        inputContainerStyle={inputContainerStyle}
-      >
-        {
-          useVoice
-            ? <Voice
-              showVoice={showVoice}
-              ImageComponent={ImageComponent}
-              keyboardIcon={keyboardIcon}
-              voiceIcon={voiceIcon}
-              inputHeightFix={inputHeightFix}
-              onMethodChange={onMethodChange}
-            />
-            : null
-        }
+        inputContainerStyle={inputContainerStyle}>
+        {useVoice ? (
+          <Voice
+            showVoice={showVoice}
+            ImageComponent={ImageComponent}
+            keyboardIcon={keyboardIcon}
+            voiceIcon={voiceIcon}
+            inputHeightFix={inputHeightFix}
+            onMethodChange={onMethodChange}
+          />
+        ) : null}
         <View style={styles.container}>
-          {showVoice
-            ? <VoiceButton
+          {showVoice ? (
+            <VoiceButton
               audioHasPermission={audioHasPermission}
               inputHeight={this.inputHeight}
               rootHeight={rootHeight}
@@ -126,8 +162,9 @@ export default class InputBar extends PureComponent {
               pressInText={pressInText}
               voiceEnd={voiceEnd}
               changeVoiceStatus={changeVoiceStatus}
-              />
-            : <Input
+            />
+          ) : (
+            <Input
               enabled={enabled}
               onFocus={onFocus}
               placeholder={placeholder}
@@ -135,12 +172,12 @@ export default class InputBar extends PureComponent {
               textChange={textChange}
               onSubmitEditing={() => {
                 if (messageContent.trim().length > 0) {
-                  onSubmitEditing('text', messageContent)
+                  onSubmitEditing('text', messageContent);
                 } else {
                   if (usePlus) {
-                    isShowPanel(!isPanelShow)
+                    isShowPanel(!isPanelShow);
                   } else {
-                    return null
+                    return null;
                   }
                 }
               }}
@@ -148,41 +185,34 @@ export default class InputBar extends PureComponent {
               inputHeightFix={inputHeightFix}
               inputChangeSize={inputChangeSize}
               inputStyle={inputStyle}
-            />}
+            />
+          )}
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {
-            useEmoji
-              ? <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => this.props.showEmoji()}
-                >
-                {this.renderEmojieIcon()}
-                </TouchableOpacity>
-              : null
-          }
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {useEmoji ? (
+            <TouchableOpacity activeOpacity={0.7} onPress={() => this.props.showEmoji()}>
+              {this.renderEmojieIcon()}
+            </TouchableOpacity>
+          ) : null}
           <TouchableOpacity
-            style={{ marginLeft: 8 }}
-            onPress={
-              () => {
-                if (messageContent.trim().length > 0) {
-                  onSubmitEditing('text', messageContent)
+            style={{marginLeft: 8}}
+            onPress={() => {
+              if (messageContent.trim().length > 0) {
+                onSubmitEditing('text', messageContent);
+              } else {
+                if (usePlus) {
+                  isShowPanel(!isPanelShow);
                 } else {
-                  if (usePlus) {
-                    isShowPanel(!isPanelShow)
-                  } else {
-                    return null
-                  }
+                  return null;
                 }
-            }
-            }
-            activeOpacity={0.7}
-          >
+              }
+            }}
+            activeOpacity={0.7}>
             {this.renderIcon()}
           </TouchableOpacity>
         </View>
       </Container>
-    )
+    );
   }
 }
 
@@ -192,7 +222,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     justifyContent: 'center',
     borderColor: '#ccc',
-    borderTopWidth: StyleSheet.hairlineWidth
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   container: {
     marginHorizontal: 8,
@@ -200,13 +230,13 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     flex: 1,
     borderWidth: StyleSheet.hairlineWidth,
-    paddingVertical: 0.8
+    paddingVertical: 0.8,
   },
   commentBar__input: {
     borderRadius: 18,
     height: 26,
     width: '100%',
     padding: 0,
-    paddingHorizontal: 20
-  }
-})
+    paddingHorizontal: 20,
+  },
+});
