@@ -164,6 +164,7 @@ export default class InputBar extends PureComponent {
             />
           ) : (
             <Input
+              getRef={this.props.getRef}
               enabled={enabled}
               onFocus={onFocus}
               placeholder={placeholder}

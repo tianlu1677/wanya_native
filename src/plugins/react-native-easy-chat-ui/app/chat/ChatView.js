@@ -74,7 +74,8 @@ class ChatWindow extends PureComponent {
       emojiShow: false,
       messageSelected: [],
       currentIndex: -1,
-      pressIndex: -1
+      pressIndex: -1,
+      inputBarRef: null,
     }
   }
 
@@ -405,7 +406,8 @@ class ChatWindow extends PureComponent {
           keyboardHeight: 0,
           xHeight: 0
         })
-        this.InputBar.input && this.InputBar.input.blur()
+        this.state.inputBarRef && this.state.inputBarRef.blur();
+        // this.InputBar.input && this.InputBar.input.blur()
       }
       if (showVoice) this.setState({ showVoice: false })
     } else {
@@ -793,6 +795,11 @@ class ChatWindow extends PureComponent {
                 sendIcon={this.props.sendIcon}
                 sendUnableIcon={this.props.sendUnableIcon}
                 ref={e => (this.InputBar = e)}
+                getRef={e => {
+                  this.setState({
+                    inputBarRef: e
+                  })
+                }}
                 isIphoneX={this.isIphoneX}
                 placeholder={this.props.placeholder}
                 useVoice={this.props.useVoice}

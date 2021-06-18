@@ -22,7 +22,8 @@ class Input extends PureComponent {
           onFocus();
         }}>
         <TextInput
-          ref={e => (this.input = e)}
+          // ref={e => (this.input = e)}
+          ref={this.props.getRef}
           multiline
           blurOnSubmit={true}
           editable={!enabled}
