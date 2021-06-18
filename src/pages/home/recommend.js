@@ -83,7 +83,7 @@ const Recommend = props => {
   // 同步用户是否在线
   const appearOnline = () => {
     setInterval(() => {
-      console.log('appear');
+      // console.log('appear');
       onlineChannel.perform('appear');
     }, 5000);
   };

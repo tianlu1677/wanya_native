@@ -30,6 +30,7 @@ import MediasPicker from '@/components/MediasPicker';
 import {pagination} from '@/components/ScrollList';
 import {BarHeight} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
+import Helper from '@/utils/helper';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {
@@ -87,7 +88,13 @@ const ChartDetail = props => {
       {channel: 'ChatChannel', room: `${uuid}`},
       {
         received(data) {
-          setMessages(m => m.concat(translate(data.conversation)));
+          const uid = data.conversation?.uid
+          if(messages.findIndex(m => m.id === uid) > -1) {
+            console.log('gooood') // 存在则改状态
+          } else {
+            // setMessages(m => m.concat(translate(data.conversation)));
+            // 不存在则新+1
+          }
         },
         initialized() {
           console.log('initialized');
@@ -110,13 +117,36 @@ const ChartDetail = props => {
         },
       }
     );
-  }, []);
+  }, [messages]);
 
   const chatGroupSendMessage = async params => {
     try {
-      await getChatGroupsSendMessage(params);
+      console.log('params', params)
+      // 先直接本地发送，接收数据后再排除掉当前列表中有相同的uid的数据;
+      const uid = Helper.generateUuid();
+      const fakeData = {
+        id: uid,
+        type: params.conversation.category,
+        content: params.conversation.content,
+        targetId: currentAccount.id.toString(),
+        chatInfo: {
+          avatar: currentAccount.avatar_url,
+          id: currentAccount.id.toString(),
+          nickName: currentAccount.nickname,
+        },
+        renderTime: false,
+        sendStatus: 0,
+        time: new Date().getTime(),
+      }
+      console.log('fakeData', fakeData)
+      setMessages(messages.concat(fakeData))
+      console.log('newwwmessage', messages.map(x => x.id) ) // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
+      // const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid}
+      // console.log('realsemd', paramsData)
+      // await getChatGroupsSendMessage(paramsData);
       Toast.hide();
-    } catch {
+    } catch(e) {
+      console.log('error', e)
       Toast.hide();
     }
   };

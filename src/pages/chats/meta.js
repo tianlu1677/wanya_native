@@ -104,7 +104,8 @@ export const translate = item => {
   }
 
   const newItem = {
-    id: item.id.toString(),
+    id: item.uid,
+    conversation_id: item.id,
     type: category === 'audio' ? 'voice' : category,
     content,
     targetId: item.creator.id.toString(),
