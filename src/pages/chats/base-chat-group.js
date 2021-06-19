@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
   },
   itemView: {
     flexDirection: 'row',
-    alignItems: 'center',
     paddingHorizontal: 14,
     paddingVertical: RFValue(12),
     backgroundColor: '#fff',
@@ -132,9 +131,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   notifyContentTitle: {
-    fontSize: 16,
+    fontSize: 15,
     letterSpacing: 1,
-    fontWeight: '500',
   },
   notifyContentDesc: {
     marginTop: 5,

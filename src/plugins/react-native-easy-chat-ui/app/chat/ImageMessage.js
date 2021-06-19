@@ -38,7 +38,13 @@ export default class ImageMessage extends PureComponent {
               message
             );
           }}>
-          <View style={{maxHeight: 300, overflow: 'hidden', borderRadius: 5}}>
+          {/* <View style={{maxHeight: 300, overflow: 'hidden', borderRadius: 5}}> */}
+          <View
+            style={{
+              overflow: 'hidden',
+              borderRadius: 5,
+              backgroundColor: 'green',
+            }}>
             <ImageComponent
               source={{uri: message.content.uri}}
               style={[
@@ -60,7 +66,7 @@ export default class ImageMessage extends PureComponent {
             )}
           </View>
         </TouchableOpacity>
-        <View style={{alignItems: 'center', justifyContent: 'center', marginRight: 10}}>
+        {/* <View style={{alignItems: 'center', justifyContent: 'center', marginRight: 10}}>
           {!isSelf ? null : message.sendStatus === undefined ? null : message.sendStatus === 0 ? (
             <ActivityIndicator />
           ) : message.sendStatus < 0 ? (
@@ -75,7 +81,7 @@ export default class ImageMessage extends PureComponent {
               {messageErrorIcon}
             </TouchableOpacity>
           ) : null}
-        </View>
+        </View> */}
       </View>
     );
   }
@@ -83,11 +89,10 @@ export default class ImageMessage extends PureComponent {
 
 const styles = StyleSheet.create({
   right: {
-    flexDirection: 'row-reverse',
     marginRight: 10,
   },
   left: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     marginLeft: 10,
   },
 });

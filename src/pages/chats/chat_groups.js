@@ -57,8 +57,8 @@ const ChatGroups = ({navigation}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    // flex: 1,
-    // backgroundColor: '#fff',
+    flex: 1,
+    backgroundColor: '#fafafa',
   },
   speator: {
     height: StyleSheet.hairlineWidth,

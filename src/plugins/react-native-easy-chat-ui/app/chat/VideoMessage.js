@@ -84,11 +84,11 @@ export default class VideoMessage extends PureComponent {
 
 const styles = StyleSheet.create({
   right: {
-    flexDirection: 'row-reverse',
+    // flexDirection: 'row-reverse',
     marginRight: 10,
   },
   left: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     marginLeft: 10,
   },
   playIcon: {

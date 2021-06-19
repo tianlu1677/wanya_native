@@ -82,18 +82,18 @@ const ChartDetail = props => {
   const [voicePlaying, setVoicePlaying] = useState(false);
   const [activeVoiceId, setActiveVoiceId] = useState(-1);
 
-  const receivedConversation = (conversation) => {
+  const receivedConversation = conversation => {
     const uid = conversation?.uid;
 
-    if(messages.findIndex(m => m.id === uid) > -1) {
-      console.log('gooood') // 存在则改状态
+    if (messages.findIndex(m => m.id === uid) > -1) {
+      console.log('gooood'); // 存在则改状态
       // setMessages(m => m.concat(translate(conversation)));
     } else {
-      console.log('no exist') // 存在则改状态
+      console.log('no exist'); // 存在则改状态
       // setMessages(m => m.concat(translate(conversation)));
       // 不存在则新+1
     }
-  }
+  };
 
   const chatChannel = useMemo(() => {
     // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
@@ -101,7 +101,13 @@ const ChartDetail = props => {
       {channel: 'ChatChannel', room: `${uuid}`},
       {
         received(data) {
-          receivedConversation(data.conversation);
+          const uid = data.conversation?.uid;
+          if (messages.findIndex(m => m.id === uid) > -1) {
+            console.log('gooood'); // 存在则改状态
+          } else {
+            // setMessages(m => m.concat(translate(data.conversation)));
+            // 不存在则新+1
+          }
         },
         initialized() {
           console.log('initialized');
@@ -128,7 +134,7 @@ const ChartDetail = props => {
 
   const chatGroupSendMessage = async params => {
     try {
-      console.log('params', params)
+      console.log('params', params);
       // 先直接本地发送，接收数据后再排除掉当前列表中有相同的uid的数据;
       const uid = Helper.generateUuid();
       const fakeData = {
@@ -144,17 +150,16 @@ const ChartDetail = props => {
         renderTime: false,
         sendStatus: 0,
         time: new Date().getTime(),
-      }
-      console.log('fakeData', fakeData)
-      // setMessages(m => m.concat(fakeData))
-      setMessages([...messages, fakeData])
-      console.log('newwwmessage', messages.map(x => x.id), uid ) // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
-      const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid}
+      };
+      console.log('fakeData', fakeData);
+      setMessages(messages.concat(fakeData));
+      console.log('newwwmessage', messages.map(x => x.id)); // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
+      // const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid}
       // console.log('realsemd', paramsData)
       await getChatGroupsSendMessage(paramsData);
       Toast.hide();
-    } catch(e) {
-      console.log('error', e)
+    } catch (e) {
+      console.log('error', e);
       Toast.hide();
     }
   };
@@ -504,14 +509,13 @@ const ChartDetail = props => {
     }
   }, [targetAccountDetail]);
 
-  console.log('33', isIphoneX());
   return loading ? (
     <Loading />
   ) : (
     <View style={{display: 'flex', flex: 1}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <ChatScreen
-        chatWindowStyle={{backgroundColor: 'white'}}
+        chatWindowStyle={{backgroundColor: '#fff'}}
         messageList={messages}
         sendMessage={sendMessage}
         panelSource={[
@@ -524,8 +528,6 @@ const ChartDetail = props => {
         isIPhoneX={Boolean(isIphoneX())}
         inverted={messages.length > 5}
         headerHeight={BarHeight + 50}
-        // headerHeight={BarHeight + getBottomSpace()}
-        // iphoneXBottomPadding={getBottomSpace()}
         iphoneXBottomPadding={10}
         pressAvatar={pressAvatar}
         flatListProps={{style: {paddingTop: RFValue(10)}}}

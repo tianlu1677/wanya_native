@@ -151,6 +151,7 @@ const DiscoveryIndex = props => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#fafafa',
   },
   content: {
     backgroundColor: '#fff',

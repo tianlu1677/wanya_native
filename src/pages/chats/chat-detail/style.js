@@ -52,12 +52,12 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     backgroundColor: '#fff',
-    borderColor:"#ebebeb",
+    borderColor: '#ebebeb',
     height: 35,
     // fontSize: 13,
   },
   itemContainerStyle: {
-    paddingHorizontal: VWValue(15),
+    paddingHorizontal: VWValue(12),
     paddingVertical: 0,
     paddingBottom: RFValue(14),
     alignItems: 'flex-start',

@@ -168,7 +168,7 @@ const nstyles = StyleSheet.create({
   speator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
-    marginLeft: 14,
+    marginHorizontal: 14,
   },
 });
 

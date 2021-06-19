@@ -160,6 +160,7 @@ const FollowListPost = () => {
       ),
     [listData]
   );
+
   const onRefresh = (page = 1) => {
     loadData(page);
   };
@@ -188,14 +189,9 @@ const FollowListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 10 : 20}
-      ListHeaderComponent={listData.length > 0 ? FollowShareComponent() : null}
+      ListHeaderComponent={FollowShareComponent()}
       renderSeparator={() => <View style={styles.speator} />}
-      renderEmpty={
-        <View>
-          {FollowShareComponent()}
-          {RelatedRecommend()}
-        </View>
-      }
+      renderEmpty={RelatedRecommend()}
     />
   );
 };
@@ -253,7 +249,7 @@ const styles = StyleSheet.create({
   speator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
-    marginLeft: 14,
+    marginHorizontal: 14,
   },
 });
 

@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   left_triangle: {
     // borderLeftWidth: 0,
     // borderRightWidth: Platform.OS === 'android' ? 6 : 10,
-    marginLeft: 15,
+    marginLeft: 5,
   },
   right_triangle: {
     // borderRightWidth: 0,

@@ -268,6 +268,9 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  header: {
+    backgroundColor: 'pink',
+  },
   topHeader: {
     height: TOP_HEADER,
     flexDirection: 'row',
@@ -314,7 +317,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: RFValue(10),
     marginTop: -RFValue(10),
     paddingHorizontal: 18,
-    paddingVertical: 14,
+    paddingTop: 14,
+    paddingBottom: 5,
   },
   nickname: {
     fontSize: VWValue(16),

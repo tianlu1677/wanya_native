@@ -150,7 +150,7 @@ const CollapsibleHeader = props => {
         <TabList
           current={props.currentKey}
           align="center"
-          bottomLine={props.bottomLine}
+          bottomLine={true}
           separator={false}
           tabChange={tab => props.onKeyChange(tab.key)}
           data={navigationState.routes}
