@@ -82,19 +82,26 @@ const ChartDetail = props => {
   const [voicePlaying, setVoicePlaying] = useState(false);
   const [activeVoiceId, setActiveVoiceId] = useState(-1);
 
+  const receivedConversation = (conversation) => {
+    const uid = conversation?.uid;
+
+    if(messages.findIndex(m => m.id === uid) > -1) {
+      console.log('gooood') // 存在则改状态
+      // setMessages(m => m.concat(translate(conversation)));
+    } else {
+      console.log('no exist') // 存在则改状态
+      // setMessages(m => m.concat(translate(conversation)));
+      // 不存在则新+1
+    }
+  }
+
   const chatChannel = useMemo(() => {
     // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
     return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
       {channel: 'ChatChannel', room: `${uuid}`},
       {
         received(data) {
-          const uid = data.conversation?.uid
-          if(messages.findIndex(m => m.id === uid) > -1) {
-            console.log('gooood') // 存在则改状态
-          } else {
-            // setMessages(m => m.concat(translate(data.conversation)));
-            // 不存在则新+1
-          }
+          receivedConversation(data.conversation);
         },
         initialized() {
           console.log('initialized');
@@ -117,7 +124,7 @@ const ChartDetail = props => {
         },
       }
     );
-  }, [messages]);
+  }, []);
 
   const chatGroupSendMessage = async params => {
     try {
@@ -139,11 +146,12 @@ const ChartDetail = props => {
         time: new Date().getTime(),
       }
       console.log('fakeData', fakeData)
-      setMessages(messages.concat(fakeData))
-      console.log('newwwmessage', messages.map(x => x.id) ) // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
-      // const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid}
+      // setMessages(m => m.concat(fakeData))
+      setMessages([...messages, fakeData])
+      console.log('newwwmessage', messages.map(x => x.id), uid ) // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
+      const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid}
       // console.log('realsemd', paramsData)
-      // await getChatGroupsSendMessage(paramsData);
+      await getChatGroupsSendMessage(paramsData);
       Toast.hide();
     } catch(e) {
       console.log('error', e)
@@ -450,7 +458,7 @@ const ChartDetail = props => {
   };
 
   const loadData = async page => {
-    setLoading(true);
+    // setLoading(true);
     const per_page = 10;
     const res = await getChatGroupsConversations({uuid, page, per_page});
     const newMessages = TransLateData(checkShowRule(res.data.conversations.reverse(), 'send_at'));
@@ -465,9 +473,8 @@ const ChartDetail = props => {
   };
 
   useEffect(() => {
-    loadData(1);
     loadAccount();
-
+    loadData(1);
     return () => {
       chatChannel.unsubscribe();
       readSingleChatGroupMessage({uuid: uuid});
