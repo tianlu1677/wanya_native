@@ -89,11 +89,11 @@ const CollapsibleHeader = props => {
     });
 
     return (
-      <View style={{backgroundColor: 'white'}}>
+      <View style={{backgroundColor: 'white', flex: 1}}>
         {/*<Animated.View style={{backgroundColor: 'yellow', opacity: opacity1, zIndex: -1, position: 'absolute', top: 0, left: 0, right: 0, height: 200 }} >*/}
         {/*  <Text style={{paddingTop: 40, textAlign: 'center', fontSize: 40}}>顽鸦你所相见</Text>*/}
         {/*</Animated.View>*/}
-        <View style={{flex: 1, height: tabBarHeight, backgroundColor: 'white'}} />
+        {/*<View style={{flex: 1, height: tabBarHeight, backgroundColor: 'white'}} />*/}
         <Animated.FlatList
           scrollToOverflowEnabled
           scrollEventThrottle={16}
@@ -103,6 +103,7 @@ const CollapsibleHeader = props => {
           })}
           onRefresh={false}
           bounces={true}
+          style={{flex: 1}}
           // refreshing={true}
           onMomentumScrollBegin={onMomentumScrollBegin}
           onScrollEndDrag={onScrollEndDrag}

@@ -43,7 +43,7 @@ const AccountDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const accountId = route.params.accountId;
   const {currentAccount} = useSelector(state => state.account);
-  const [headerHeight, setHeaderHeight] = useState(350);
+  const [headerHeight, setHeaderHeight] = useState(380);
   const [currentKey, setCurrentKey] = useState('publish');
   const [account, setAccount] = useState(null);
   const [showModal, setShowModal] = useState(false);
