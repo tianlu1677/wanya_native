@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet, Platform, Dimensions} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {isIphoneX} from 'react-native-iphone-x-helper';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
@@ -104,10 +103,10 @@ const MainTabScreen = props => {
                     {
                       right:
                         UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
-                          ? -VWValue(13)
+                          ? -VWValue(9)
                           : UnreadMessageCount() > 99
-                          ? -VWValue(14) * 1.75
-                          : -VWValue(14) * 1.45,
+                          ? -VWValue(12) * 1.75
+                          : -VWValue(10) * 1.45,
                     },
                   ]}
                 />
@@ -186,14 +185,14 @@ const styles = StyleSheet.create({
   tabText: {
     width: RFValue(40),
     textAlign: 'center',
-    fontSize: RFValue(16),
+    fontSize: VWValue(14),
     color: '#aaa',
     fontWeight: '500',
   },
   tabActiveText: {
     width: RFValue(40),
     textAlign: 'center',
-    fontSize: RFValue(16),
+    fontSize: VWValue(16),
     color: '#000',
     fontWeight: '500',
   },

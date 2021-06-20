@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   avatarStyle: {
-    width: RFValue(38),
-    height: RFValue(38),
+    width: 40,
+    height: 40,
     borderRadius: RFValue(19),
   },
   inputOutContainerStyle: {

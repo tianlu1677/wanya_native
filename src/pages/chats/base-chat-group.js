@@ -40,7 +40,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
     // 若匹配不到，则直接返回一个全文本
     if (emojiIndex === -1) {
       views.push(
-        <Text key={'emptyTextView' + Math.random() * 100} style={{marginLeft: 10}}>
+        <Text key={'emptyTextView' + Math.random() * 100} style={styles.notifyContentText}>
           {textContent}
         </Text>
       );
@@ -52,7 +52,7 @@ const BaseChatGroup = ({navigation, chat_group}) => {
       let minIndex = Math.min(...checkIndexArray);
       // 将0-index部分返回文本
       views.push(
-        <Text key={'firstTextView' + Math.random() * 100}>
+        <Text key={'firstTextView' + Math.random() * 100} style={styles.notifyContentText}>
           {textContent.substring(0, minIndex)}
         </Text>
       );
@@ -95,11 +95,13 @@ const BaseChatGroup = ({navigation, chat_group}) => {
       <View style={styles.notifyContent}>
         <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
         {last_conversation ? (
-          <Text style={styles.notifyContentDesc} numberOfLines={1}>
-            {last_conversation.category === 'text'
-              ? _getActualText(last_conversation.content)
-              : last_conversation.payload.text}
-          </Text>
+          <View style={styles.notifyContentDesc}>
+            {last_conversation.category === 'text' ? (
+              _getActualText(last_conversation.content)
+            ) : (
+              <Text style={styles.notifyContentText}>{last_conversation.payload.text}</Text>
+            )}
+          </View>
         ) : (
           <Text style={styles.notifyContentDesc} />
         )}
@@ -135,7 +137,11 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   notifyContentDesc: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 5,
+  },
+  notifyContentText: {
     color: '#BDBDBD',
     letterSpacing: 1,
     fontSize: 13,
@@ -149,9 +155,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   subEmojiStyle: {
-    width: 20,
-    height: 20,
-    marginRight: 5,
+    width: 18,
+    height: 18,
   },
 });
 

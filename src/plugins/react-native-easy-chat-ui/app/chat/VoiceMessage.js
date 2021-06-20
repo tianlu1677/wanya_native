@@ -235,13 +235,13 @@ const styles = StyleSheet.create({
   left_triangle: {
     // borderLeftWidth: 0,
     // borderRightWidth: Platform.OS === 'android' ? 6 : 10,
-    marginLeft: 5,
+    marginLeft: 10,
   },
   right_triangle: {
     // borderRightWidth: 0,
     // borderLeftWidth: Platform.OS === 'android' ? 6 : 10,
     // borderColor: '#a0e75a',
-    marginRight: 5,
+    marginRight: 10,
   },
   right: {
     flexDirection: 'row-reverse',
@@ -260,8 +260,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     borderBottomRightRadius: 24,
     borderBottomLeftRadius: 24,
-    lineHeight: RFValue(38),
-    minHeight: RFValue(38),
+    lineHeight: 40,
+    minHeight: 40,
     backgroundColor: 'pink',
   },
   voiceAreaRight: {

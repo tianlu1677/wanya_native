@@ -507,7 +507,10 @@ const ChartDetail = props => {
       const {followed} = targetAccountDetail;
       navigation.setOptions({
         title: targetAccountDetail.nickname,
-        headerStyle: {borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#EBEBEB'},
+        headerStyle: {
+          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomColor: '#EBEBEB',
+        },
         headerRightContainerStyle: {paddingRight: 4},
         headerRight: () => (
           <View style={styles.headerRight}>
@@ -558,6 +561,7 @@ const ChartDetail = props => {
         emojiIcon={<IconFont name={'biaoqing'} size={24} />}
         plusIcon={<IconFont name={'liaotian'} size={24} />}
         voiceIcon={<IconFont name={'yuyin'} size={24} />}
+        sendIcon={<IconFont name={'fasong'} size={24} />}
         usePopView={true}
         setPopItems={popItems}
         showIsRead={false}

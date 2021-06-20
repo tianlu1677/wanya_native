@@ -226,7 +226,7 @@ export default class InputBar extends PureComponent {
             }}>
             {showVoice ? (
               <View
-                style={{borderRadius: 18, backgroundColor: isVoiceEnd ? '#bbb' : '#f5f5f5'}}
+                style={{borderRadius: 18, backgroundColor: isVoiceEnd ? '#bbb' : '#fff'}}
                 {...this.panResponder.panHandlers}>
                 <View
                   style={[
@@ -238,7 +238,8 @@ export default class InputBar extends PureComponent {
                       borderRadius: 18,
                     },
                   ]}>
-                  <Text style={{fontSize: 16, fontWeight: 'bold', color: '#555'}}>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', color: isVoiceEnd ? '#fff' : '#000'}}>
                     {isVoiceEnd ? `${pressOutText}` : `${pressInText}`}
                   </Text>
                 </View>

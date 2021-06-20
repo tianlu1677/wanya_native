@@ -44,7 +44,6 @@ export default class TextMessage extends PureComponent {
             styles.triangle,
             isSelf ? styles.right_triangle : styles.left_triangle,
             {borderColor: isSelf ? rightMessageBackground : leftMessageBackground},
-            ,
           ]}
         />
         <TouchableOpacity
@@ -71,7 +70,9 @@ export default class TextMessage extends PureComponent {
             style={[
               styles.container,
               isSelf ? styles.rightMessageContainer : styles.leftMessageContainer,
-              {backgroundColor: isSelf ? rightMessageBackground : leftMessageBackground},
+              {
+                backgroundColor: isSelf ? rightMessageBackground : leftMessageBackground,
+              },
             ]}>
             {views}
           </View>
@@ -108,6 +109,7 @@ export default class TextMessage extends PureComponent {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -119,14 +121,14 @@ const styles = StyleSheet.create({
     // maxWidth: width - 160,
     // minHeight: 20,
     // wanya change
-    maxWidth: width - (RFValue(38) * 2 + VWValue(15) * 2 + 10 * 2),
+    maxWidth: width - (40 * 2 + VWValue(15) * 2 + 10 * 2),
     paddingHorizontal: RFValue(12),
     paddingVertical: RFValue(8),
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderBottomRightRadius: 24,
     borderBottomLeftRadius: 24,
-    minHeight: RFValue(38),
+    minHeight: 40,
   },
   leftMessageContainer: {
     borderTopLeftRadius: 4,
@@ -151,13 +153,13 @@ const styles = StyleSheet.create({
   left_triangle: {
     // borderLeftWidth: 0,
     // borderRightWidth: Platform.OS === 'android' ? 6 : 10,
-    marginLeft: 5,
+    marginLeft: 10,
   },
   right_triangle: {
     // borderRightWidth: 0,
     // borderLeftWidth: Platform.OS === 'android' ? 6 : 10,
     // borderColor: '#a0e75a',
-    marginRight: 5,
+    marginRight: 10,
   },
   right: {
     flexDirection: 'row-reverse',
