@@ -91,6 +91,7 @@ const ChartDetail = props => {
           setMessages(m => {
             const index = m.findIndex(item => item.id === uid);
             if (index > -1) {
+              // console.log('xxxxx', index)
               m[index].sendStatus = 1;
               return m; //m.concat(translate(data.conversation));
             } else {
@@ -138,7 +139,7 @@ const ChartDetail = props => {
             nickName: currentAccount.nickname,
           },
           renderTime: false,
-          sendStatus: 0,
+          sendStatus: 1,
           time: new Date().getTime(),
         };
         console.log('fakeData', fakeData);
