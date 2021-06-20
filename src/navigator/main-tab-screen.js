@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable, StyleSheet, Platform, Dimensions} from 'react-native';
+import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector, useDispatch} from 'react-redux';
@@ -106,7 +106,7 @@ const MainTabScreen = props => {
                           ? -VWValue(9)
                           : UnreadMessageCount() > 99
                           ? -VWValue(12) * 1.75
-                          : -VWValue(10) * 1.45,
+                          : -VWValue(11) * 1.45,
                     },
                   ]}
                 />
@@ -185,14 +185,14 @@ const styles = StyleSheet.create({
   tabText: {
     width: RFValue(40),
     textAlign: 'center',
-    fontSize: VWValue(14),
+    fontSize: 15,
     color: '#aaa',
     fontWeight: '500',
   },
   tabActiveText: {
     width: RFValue(40),
     textAlign: 'center',
-    fontSize: VWValue(16),
+    fontSize: 16,
     color: '#000',
     fontWeight: '500',
   },
