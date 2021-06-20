@@ -107,11 +107,12 @@ const ChartDetail = props => {
           //   // 不存在则新+1
           // }
 
+
           setMessages(m => {
             const index = m.findIndex(item => item.id === uid);
             if (index > -1) {
               m[index].sendStatus = 1;
-              return m.concat(translate(data.conversation));
+              return m //m.concat(translate(data.conversation));
             } else {
               return m.concat(translate(data.conversation));
             }
@@ -145,22 +146,24 @@ const ChartDetail = props => {
       console.log('params', params);
       // 先直接本地发送，接收数据后再排除掉当前列表中有相同的uid的数据;
       const uid = Helper.generateUuid();
-      const fakeData = {
-        id: uid,
-        type: params.conversation.category,
-        content: params.conversation.content,
-        targetId: currentAccount.id.toString(),
-        chatInfo: {
-          avatar: currentAccount.avatar_url,
-          id: currentAccount.id.toString(),
-          nickName: currentAccount.nickname,
-        },
-        renderTime: false,
-        sendStatus: 0,
-        time: new Date().getTime(),
-      };
-      console.log('fakeData', fakeData);
-      setMessages(messages.concat(fakeData));
+      if(params.category === 'text') {
+        const fakeData = {
+          id: uid,
+          type: params.conversation.category,
+          content: params.conversation.content,
+          targetId: currentAccount.id.toString(),
+          chatInfo: {
+            avatar: currentAccount.avatar_url,
+            id: currentAccount.id.toString(),
+            nickName: currentAccount.nickname,
+          },
+          renderTime: false,
+          sendStatus: 0,
+          time: new Date().getTime(),
+        };
+        console.log('fakeData', fakeData);
+        setMessages(m => m.concat(fakeData));
+      }
       console.log('newwwmessage', messages.map(x => x.id)); // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
       const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid};
       // console.log('realsemd', paramsData)
@@ -171,7 +174,6 @@ const ChartDetail = props => {
       Toast.hide();
     }
   };
-
   const sendMessage = async (type, content, isInverted) => {
     if (type === 'text') {
       const params = {uuid, conversation: {category: type, content}};
