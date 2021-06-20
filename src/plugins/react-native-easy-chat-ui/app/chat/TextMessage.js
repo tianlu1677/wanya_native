@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     // wanya change
     maxWidth: width - (RFValue(38) * 2 + VWValue(15) * 2 + 10 * 2),
     paddingHorizontal: RFValue(12),
-    paddingVertical: RFValue(10),
+    paddingVertical: RFValue(8),
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderBottomRightRadius: 24,
