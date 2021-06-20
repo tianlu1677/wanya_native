@@ -167,7 +167,7 @@ const NotifyIndex = ({navigation}) => {
             <View>
               <Avator
                 size={45}
-                account={{avatar_url: SystemNoticeImg, settled_type: 'brand'}}
+                account={{avatar_url: SystemNoticeImg}}
                 handleClick={goPageMethod.bind(this, 'notify_system')}
               />
               <BadgeMessage
@@ -177,7 +177,7 @@ const NotifyIndex = ({navigation}) => {
             </View>
           </View>
           <View style={styles.notifyContent}>
-            <Text style={styles.notifyContentTitle}>顽鸦小助手</Text>
+            <Text style={styles.notifyContentTitle}>系统通知</Text>
             <Text style={styles.notifyContentDesc}>
               ⚡️
               {unread_system_messages_count > 0
