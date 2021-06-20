@@ -52,6 +52,8 @@ const TransLateData = data => data.map(item => translate(item));
 global.addEventListener = EventRegister.addEventListener;
 global.removeEventListener = EventRegister.removeEventListener;
 
+Sound.setCategory('Playback'); // Enable playback in silence mode
+
 const ChartDetail = props => {
   const dispatch = useDispatch();
   const {navigation, route, imagePick, videoPick, uploadVideo, uploadAudio} = props;
@@ -133,24 +135,26 @@ const ChartDetail = props => {
       console.log('params', params);
       // 先直接本地发送，接收数据后再排除掉当前列表中有相同的uid的数据;
       const uid = Helper.generateUuid();
-      const fakeData = {
-        id: uid,
-        type: params.conversation.category,
-        content: params.conversation.content,
-        targetId: currentAccount.id.toString(),
-        chatInfo: {
-          avatar: currentAccount.avatar_url,
-          id: currentAccount.id.toString(),
-          nickName: currentAccount.nickname,
-        },
-        renderTime: false,
-        sendStatus: 0,
-        time: new Date().getTime(),
-      };
-      console.log('fakeData', fakeData);
-      setMessages(messages.concat(fakeData));
+      if(params.category === 'text') {
+        const fakeData = {
+          id: uid,
+          type: params.conversation.category,
+          content: params.conversation.content,
+          targetId: currentAccount.id.toString(),
+          chatInfo: {
+            avatar: currentAccount.avatar_url,
+            id: currentAccount.id.toString(),
+            nickName: currentAccount.nickname,
+          },
+          renderTime: false,
+          sendStatus: 0,
+          time: new Date().getTime(),
+        };
+        console.log('fakeData', fakeData);
+        setMessages(messages.concat(fakeData));
+      }
       console.log('newwwmessage', messages.map(x => x.id)); // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
-      // const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid}
+      const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid}
       // console.log('realsemd', paramsData)
       await getChatGroupsSendMessage(paramsData);
       Toast.hide();
@@ -481,6 +485,9 @@ const ChartDetail = props => {
   }, []);
 
   useEffect(() => {
+    navigation.setOptions({
+      title: targetAccount.nickname,
+    })
     if (targetAccountDetail) {
       const {followed} = targetAccountDetail;
       navigation.setOptions({
