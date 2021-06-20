@@ -144,10 +144,7 @@ const ChartDetail = props => {
         console.log('fakeData', fakeData);
         setMessages(m => m.concat(fakeData));
       }
-      console.log(
-        'newwwmessage',
-        messages.map(x => x.id)
-      ); // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
+
       const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid};
       // console.log('realsemd', paramsData)
       await getChatGroupsSendMessage(paramsData);
