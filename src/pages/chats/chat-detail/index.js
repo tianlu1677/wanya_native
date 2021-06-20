@@ -80,19 +80,6 @@ const ChartDetail = props => {
   const [voicePlaying, setVoicePlaying] = useState(false);
   const [activeVoiceId, setActiveVoiceId] = useState(-1);
 
-  const receivedConversation = conversation => {
-    const uid = conversation?.uid;
-
-    if (messages.findIndex(m => m.id === uid) > -1) {
-      console.log('gooood'); // 存在则改状态
-      // setMessages(m => m.concat(translate(conversation)));
-    } else {
-      console.log('no exist'); // 存在则改状态
-      // setMessages(m => m.concat(translate(conversation)));
-      // 不存在则新+1
-    }
-  };
-
   const chatChannel = useMemo(() => {
     // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
     return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
@@ -100,13 +87,6 @@ const ChartDetail = props => {
       {
         received(data) {
           const uid = data.conversation?.uid;
-          // if (messages.findIndex(m => m.id === uid) > -1) {
-          //   console.log('gooood'); // 存在则改状态
-          // } else {
-          //   // setMessages(m => m.concat(translate(data.conversation)));
-          //   // 不存在则新+1
-          // }
-
 
           setMessages(m => {
             const index = m.findIndex(item => item.id === uid);
