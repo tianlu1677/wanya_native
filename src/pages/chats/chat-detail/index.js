@@ -146,7 +146,7 @@ const ChartDetail = props => {
       console.log('params', params);
       // 先直接本地发送，接收数据后再排除掉当前列表中有相同的uid的数据;
       const uid = Helper.generateUuid();
-      if(params.category === 'text') {
+      if(params.conversation.category === 'text') {
         const fakeData = {
           id: uid,
           type: params.conversation.category,
