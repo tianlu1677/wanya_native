@@ -63,7 +63,7 @@ const ChartDetail = props => {
     login: {auth_token},
   } = useSelector(state => state);
   let timer = null;
-  let sound = null;
+  // let sound = null;
   const [pagin, setPagin] = useState(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoContent, setVideoContent] = useState(null);
@@ -79,6 +79,7 @@ const ChartDetail = props => {
   const [voiceLoading, setVoiceLoading] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
   const [activeVoiceId, setActiveVoiceId] = useState(-1);
+  const [whoosh, setWhoosh] = useState(null);
 
   const receivedConversation = conversation => {
     const uid = conversation?.uid;
@@ -107,12 +108,11 @@ const ChartDetail = props => {
           //   // 不存在则新+1
           // }
 
-
           setMessages(m => {
             const index = m.findIndex(item => item.id === uid);
             if (index > -1) {
               m[index].sendStatus = 1;
-              return m //m.concat(translate(data.conversation));
+              return m; //m.concat(translate(data.conversation));
             } else {
               return m.concat(translate(data.conversation));
             }
@@ -146,7 +146,7 @@ const ChartDetail = props => {
       console.log('params', params);
       // 先直接本地发送，接收数据后再排除掉当前列表中有相同的uid的数据;
       const uid = Helper.generateUuid();
-      if(params.conversation.category === 'text') {
+      if (params.conversation.category === 'text') {
         const fakeData = {
           id: uid,
           type: params.conversation.category,
@@ -164,7 +164,10 @@ const ChartDetail = props => {
         console.log('fakeData', fakeData);
         setMessages(m => m.concat(fakeData));
       }
-      console.log('newwwmessage', messages.map(x => x.id)); // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
+      console.log(
+        'newwwmessage',
+        messages.map(x => x.id)
+      ); // 不能立刻查找到？ messages.findIndex(m => m.id === uid) > -1
       const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid};
       // console.log('realsemd', paramsData)
       await getChatGroupsSendMessage(paramsData);
@@ -307,30 +310,46 @@ const ChartDetail = props => {
   };
 
   const playSound = (url, index) => {
-    setActiveVoiceId(index);
-    if (sound === null) {
-      setVoiceLoading(true);
-      sound = new Sound(url, '', error => {
-        if (error) {
-          setVoiceLoading(false);
-          sound = null;
-          return;
-        }
-        setVoiceLoading(false);
-        setVoicePlaying(true);
-        sound.play(success => setVoicePlaying(!success));
-      });
-    } else {
-      setVoicePlaying(true);
-      sound.play(success => setVoicePlaying(!success));
+    if (whoosh) {
+      whoosh.stop();
+      whoosh.release();
     }
+    const whooshs = new Sound(url, '', error => {
+      if (error) {
+        setVoiceLoading(false);
+        setWhoosh(null);
+        return;
+      }
+      setVoicePlaying(true);
+      whooshs.play(success => setVoicePlaying(!success));
+    });
+    setWhoosh(whooshs);
+
+    // setActiveVoiceId(index);
+    // if (sound === null) {
+    //   setVoiceLoading(true);
+    //   sound = new Sound(url, '', error => {
+    //     if (error) {
+    //       setVoiceLoading(false);
+    //       sound = null;
+    //       return;
+    //     }
+    //     setVoiceLoading(false);
+    //     setVoicePlaying(true);
+    //     sound.play(success => setVoicePlaying(!success));
+    //   });
+    // } else {
+    //   setVoicePlaying(true);
+    //   sound.play(success => setVoicePlaying(!success));
+    // }
   };
 
   const stopSound = (remove = false) => {
-    sound && sound.stop();
+    // sound && sound.stop();
     setVoicePlaying(false);
     if (remove) {
-      sound = null;
+      // sound = null;
+      setWhoosh(null);
     }
   };
 
@@ -346,19 +365,21 @@ const ChartDetail = props => {
     }
 
     if (type === 'voice') {
-      if (voicePlaying) {
-        if (index === activeVoiceId) {
-          stopSound();
-        } else {
-          stopSound(true);
-          playSound(content, index);
-        }
-      } else {
-        if (index !== activeVoiceId) {
-          stopSound(true);
-        }
-        playSound(content, index);
-      }
+      playSound(content, index);
+
+      // if (voicePlaying) {
+      //   if (index === activeVoiceId) {
+      //     stopSound();
+      //   } else {
+      //     stopSound(true);
+      //     playSound(content, index);
+      //   }
+      // } else {
+      //   if (index !== activeVoiceId) {
+      //     stopSound(true);
+      //   }
+      //   playSound(content, index);
+      // }
     }
   };
 
@@ -493,6 +514,12 @@ const ChartDetail = props => {
       readSingleChatGroupMessage({uuid: uuid});
     };
   }, []);
+
+  useEffect(() => {
+    return () => {
+      whoosh && whoosh.stop();
+    };
+  }, [whoosh]);
 
   useEffect(() => {
     navigation.setOptions({
