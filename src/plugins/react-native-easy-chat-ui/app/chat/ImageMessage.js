@@ -39,12 +39,7 @@ export default class ImageMessage extends PureComponent {
             );
           }}>
           {/* <View style={{maxHeight: 300, overflow: 'hidden', borderRadius: 5}}> */}
-          <View
-            style={{
-              overflow: 'hidden',
-              borderRadius: 5,
-              backgroundColor: 'green',
-            }}>
+          <View style={{overflow: 'hidden', borderRadius: 5}}>
             <ImageComponent
               source={{uri: message.content.uri}}
               style={[
