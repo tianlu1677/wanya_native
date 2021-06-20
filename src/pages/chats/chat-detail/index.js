@@ -23,7 +23,6 @@ import {ChatScreen} from '@/plugins/react-native-easy-chat-ui';
 import {getCurrentTime} from '@/plugins/react-native-easy-chat-ui/app/chat/utils';
 import ActionSheet from '@/components/ActionSheet';
 import Toast from '@/components/Toast';
-import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import MediasPicker from '@/components/MediasPicker';
@@ -31,7 +30,6 @@ import {pagination} from '@/components/ScrollList';
 import {BarHeight} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import Helper from '@/utils/helper';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {
   getChatGroupsConversations,
@@ -43,8 +41,8 @@ import {translate, checkShowRule} from '../meta';
 
 import {consumerWsUrl} from '@/utils/config';
 
-const AddPhoto = require('@/assets/images/add-photo.png');
-const AddVideo = require('@/assets/images/add-video.png');
+const AddPhoto = require('@/assets/images/chat-photo.png');
+const AddVideo = require('@/assets/images/chat-video.png');
 import styles from './style';
 
 const isIos = Platform.OS === 'ios';
@@ -64,8 +62,6 @@ const ChartDetail = props => {
   } = useSelector(state => state);
   let timer = null;
   let sound = null;
-
-  const [loading, setLoading] = useState(true);
   const [pagin, setPagin] = useState(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoContent, setVideoContent] = useState(null);
@@ -463,13 +459,11 @@ const ChartDetail = props => {
   };
 
   const loadData = async page => {
-    // setLoading(true);
     const per_page = 10;
     const res = await getChatGroupsConversations({uuid, page, per_page});
     const newMessages = TransLateData(checkShowRule(res.data.conversations.reverse(), 'send_at'));
     setPagin(pagination(res.headers));
     setMessages(page === 1 ? newMessages : [...messages, ...newMessages]);
-    setLoading(false);
   };
 
   const loadAccount = async () => {
@@ -509,9 +503,7 @@ const ChartDetail = props => {
     }
   }, [targetAccountDetail]);
 
-  return loading ? (
-    <Loading />
-  ) : (
+  return (
     <View style={{display: 'flex', flex: 1}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <ChatScreen
@@ -541,9 +533,9 @@ const ChartDetail = props => {
         inputOutContainerStyle={styles.inputOutContainerStyle}
         inputStyle={styles.inputStyle}
         placeholder="请输入新消息"
-        emojiIcon={<IconFont name={'biaoqing'} size={30} />}
-        plusIcon={<IconFont name={'liaotian'} size={30} />}
-        voiceIcon={<IconFont name={'yuyin'} size={30} />}
+        emojiIcon={<IconFont name={'biaoqing'} size={24} />}
+        plusIcon={<IconFont name={'liaotian'} size={24} />}
+        voiceIcon={<IconFont name={'yuyin'} size={24} />}
         usePopView={true}
         setPopItems={popItems}
         showIsRead={false}

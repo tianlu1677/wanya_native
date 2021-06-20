@@ -8,21 +8,30 @@ const styles = StyleSheet.create({
   panelContainerStyle: {
     paddingTop: 15,
     flexDirection: 'row',
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+    paddingHorizontal: VWValue(20),
   },
   panelImageWrap: {
-    width: panalWidth,
-    marginRight: 15,
+    // width: panalWidth,
+    width: VWValue(68),
+    height: VWValue(68),
+    marginRight: VWValue(30),
+    // marginRight: 15,
   },
   panelImage: {
-    width: panalWidth,
-    height: panalWidth,
+    // width: panalWidth,
+    // height: panalWidth,
+    width: VWValue(68),
+    height: VWValue(68),
   },
   panelText: {
-    width: panalWidth,
+    width: VWValue(68),
     color: '#7a7a7a',
     marginTop: 10,
     textAlign: 'center',
     marginRight: 1,
+    fontSize: 11,
   },
   headerRight: {
     flexDirection: 'row',
@@ -54,7 +63,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderColor: '#ebebeb',
     height: 35,
-    // fontSize: 13,
   },
   itemContainerStyle: {
     paddingHorizontal: VWValue(12),

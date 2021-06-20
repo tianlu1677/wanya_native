@@ -30,7 +30,7 @@ export default class InputBar extends PureComponent {
     const sendAbleIcon = sendIcon || (
       <ImageComponent
         source={require('../../source/image/sendAble.png')}
-        style={{width: 30, height: 30}}
+        style={{width: 24, height: 24}}
       />
     );
     const sendUnableIconDefault = sendUnableIcon || (
@@ -128,7 +128,6 @@ export default class InputBar extends PureComponent {
         return false;
       }
     })();
-
 
     return (
       <Container

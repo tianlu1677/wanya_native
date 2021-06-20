@@ -28,7 +28,8 @@ class Input extends PureComponent {
           blurOnSubmit={true}
           editable={!enabled}
           placeholder={placeholder}
-          placeholderTextColor="#5f5d70"
+          placeholderTextColor="#bdbdbd"
+          selectionColor={'#ff193a'}
           onContentSizeChange={onContentSizeChange}
           underlineColorAndroid="transparent"
           onChangeText={textChange}
@@ -56,5 +57,6 @@ const styles = StyleSheet.create({
     padding: 0,
     paddingHorizontal: 16,
     paddingTop: Platform.OS === 'ios' ? 8 : 0,
+    fontSize: 13,
   },
 });
