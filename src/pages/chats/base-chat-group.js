@@ -5,7 +5,7 @@ import FastImg from '@/components/FastImg';
 import {BadgeMessage, Avator} from '@/components/NodeComponents';
 import {readSingleChatGroupMessage} from '@/api/chat_api';
 import {RFValue} from '@/utils/response-fontsize';
-import {EMOJIS_DATA} from '@/plugins/react-native-easy-chat-ui';
+import {EMOJIS_DATA, EMOJIS_ZH} from '@/plugins/react-native-easy-chat-ui';
 
 const PATTERNS = {
   url: /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/i,
@@ -70,7 +70,11 @@ const BaseChatGroup = ({navigation, chat_group}) => {
 
     if (emojiImg) {
       views.push(
-        <FastImg key={emojiStr} style={styles.subEmojiStyle} mode={'contain'} source={emojiImg} />
+        <Text key={'firstTextView' + Math.random() * 100} style={styles.notifyContentText}>
+          {/* {textContent.substring(0, minIndex)} */}
+          {EMOJIS_ZH[castStr[0]]}
+        </Text>
+        // <FastImg key={emojiStr} style={styles.subEmojiStyle} mode={'contain'} source={emojiImg} />
       );
     }
 
@@ -95,13 +99,13 @@ const BaseChatGroup = ({navigation, chat_group}) => {
       <View style={styles.notifyContent}>
         <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
         {last_conversation ? (
-          <View style={styles.notifyContentDesc}>
+          <Text style={styles.notifyContentDesc} numberOfLines={1}>
             {last_conversation.category === 'text' ? (
               _getActualText(last_conversation.content)
             ) : (
               <Text style={styles.notifyContentText}>{last_conversation.payload.text}</Text>
             )}
-          </View>
+          </Text>
         ) : (
           <Text style={styles.notifyContentDesc} />
         )}
