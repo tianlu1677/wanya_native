@@ -153,7 +153,7 @@ class App extends Component {
   // 极光推送
   jpush_notice = async () => {
     console.log('jpush....');
-    JPush.init();
+    await JPush.init();
     JPush.setBadge({badge: 0, appBadge: 0});
     JPush.setLoggerEnable(true);
     // JPush.initCrashHandler();
@@ -165,7 +165,7 @@ class App extends Component {
     JPush.getRegistrationID(this.onRegister);
     JPush.addNotificationListener(this.notificationListener);
     // JPush.addCustomMessagegListener(this.customMessageListener);
-    await JPush.init();
+    // await JPush.init();
   };
   // 通知相关内容
   onRegister = async response => {

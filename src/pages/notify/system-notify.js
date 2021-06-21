@@ -3,7 +3,9 @@ import {View, StatusBar} from 'react-native';
 import {getSystemNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
-
+import {
+  SystemNoticeImg,
+} from '@/utils/default-image';
 const SystemNotify = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -81,7 +83,7 @@ const SystemNotify = ({navigation}) => {
     let notify = item;
     return (
       <NotifyContent
-        account={{...notify.actor, nickname: ''}}
+        account={{nickname: '', id: '', avatar_url: SystemNoticeImg}}
         notify_type={notify.message}
         time={notify.created_at_text}
         item={notify.item}

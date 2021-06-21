@@ -502,15 +502,15 @@ const ChartDetail = props => {
   useEffect(() => {
     navigation.setOptions({
       title: targetAccount.nickname,
+      headerStyle: {
+        borderBottomWidth: 0,
+        borderBottomColor: '#EBEBEB',
+      },
     });
     if (targetAccountDetail) {
       const {followed} = targetAccountDetail;
       navigation.setOptions({
         title: targetAccountDetail.nickname,
-        headerStyle: {
-          borderBottomWidth: StyleSheet.hairlineWidth,
-          borderBottomColor: '#EBEBEB',
-        },
         headerRightContainerStyle: {paddingRight: 4},
         headerRight: () => (
           <View style={styles.headerRight}>
