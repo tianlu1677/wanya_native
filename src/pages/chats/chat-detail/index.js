@@ -95,6 +95,7 @@ const ChartDetail = props => {
               m[index].sendStatus = 1;
               return m; //m.concat(translate(data.conversation));
             } else {
+              // console.log('add')
               return m.concat(translate(data.conversation));
             }
           });
@@ -188,8 +189,10 @@ const ChartDetail = props => {
         {
           title: '删除',
           onPress: () => {
+            console.log('type', type, index, text)
             chatChannel.deleteMessage(message.id);
             messages.splice(index, 1);
+            console.log('message', messages)
             setMessages([...messages]);
           },
         },
@@ -197,6 +200,7 @@ const ChartDetail = props => {
 
       items = items.concat(delItem);
     }
+    // console.log('type', type, index, text)
 
     return items;
   };
@@ -547,7 +551,7 @@ const ChartDetail = props => {
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={10}
         pressAvatar={pressAvatar}
-        flatListProps={{style: {paddingTop: RFValue(10)}}}
+        flatListProps={{style: {paddingTop: isIos ? RFValue(10) : 0}}}
         leftMessageTextStyle={styles.leftMessageText}
         rightMessageTextStyle={styles.rightMessageText}
         rightMessageBackground={'black'}

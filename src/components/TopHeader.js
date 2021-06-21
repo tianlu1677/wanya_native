@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusBar: {
-    height: IsIos ? STATUS_BAR_HEIGHT : 0,
+    height: IsIos ? STATUS_BAR_HEIGHT : 5,
   },
 });

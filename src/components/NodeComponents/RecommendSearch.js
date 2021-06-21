@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Pressable, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {BarHeight} from '@/utils/navbar';
+import {BarHeight, IsIos} from '@/utils/navbar';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import Search from '@/components/NodeComponents/Search';
@@ -22,8 +22,8 @@ const RecommendSearch = () => {
 
   return (
     <>
-      <View style={{height: BarHeight, backgroundColor: '#fff'}} />
-      <StatusBar barStyle="dark-content" translucent={true} />
+      <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
+      <StatusBar barStyle="dark-content" translucent={false} />
       <Search
         getRef={refs => setinputRef(refs)}
         style={{backgroundColor: '#fff', paddingRight: 14, paddingBottom: 0}}

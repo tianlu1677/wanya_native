@@ -209,7 +209,7 @@ const Recommend = props => {
 
   return (
     <>
-      {/*<StatusBar barStyle="light-content" backgroundColor={'black'} />*/}
+      <StatusBar barStyle="light-content" backgroundColor={'white'} translucent={false} />
       <View style={{flex: 1, position: 'relative'}}>
         <RecommendSearch />
         {uploadStatus ? (
