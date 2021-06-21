@@ -88,6 +88,7 @@ const ChartDetail = props => {
       {
         received(data) {
           const uid = data.conversation?.uid;
+          readSingleChatGroupMessage({uuid: uuid});
           setMessages(m => {
             const index = m.findIndex(item => item.id === uid);
             if (index > -1) {
@@ -117,7 +118,7 @@ const ChartDetail = props => {
         },
         deleteMessage(id) {
           console.log('delete id ', id);
-          this.perform('delete', {conversation_id: id});
+          this.perform('delete', {conversation_uid: id});
         },
       }
     );
@@ -551,7 +552,7 @@ const ChartDetail = props => {
         headerHeight={BarHeight + 50}
         iphoneXBottomPadding={10}
         pressAvatar={pressAvatar}
-        flatListProps={{style: {paddingTop: isIos ? RFValue(10) : 0}}}
+        flatListProps={{style: {marginTop: isIos ? RFValue(0) : 0}}}
         leftMessageTextStyle={styles.leftMessageText}
         rightMessageTextStyle={styles.rightMessageText}
         rightMessageBackground={'black'}

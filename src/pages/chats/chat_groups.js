@@ -33,9 +33,9 @@ const ChatGroups = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
+      loadData();
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
-      loadData();
     }, [])
   );
 

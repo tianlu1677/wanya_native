@@ -24,8 +24,8 @@ class Input extends PureComponent {
         <TextInput
           // ref={e => (this.input = e)}
           ref={this.props.getRef}
-          multiline
-          blurOnSubmit={true}
+          multiline={false}
+          blurOnSubmit={false}
           editable={!enabled}
           placeholder={placeholder}
           placeholderTextColor="#bdbdbd"
@@ -35,8 +35,15 @@ class Input extends PureComponent {
           onChangeText={textChange}
           value={messageContent}
           onSubmitEditing={this.props.onSubmitEditing}
+          // onKeyPress={({ nativeEvent: { key: keyValue } }) => {
+          //   console.log('keyValue', keyValue)
+          //   if(keyValue === 'Enter') {
+          //     this.props.onSubmitEditing()
+          //   }
+          // }}
           returnKeyLabel={'发送'}
           returnKeyType={'send'}
+          textAlignVertical={'top'}
           style={[
             styles.commentBar__input,
             {height: Math.max(35 + inputHeightFix, inputChangeSize)},
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 0,
     paddingHorizontal: 16,
-    paddingTop: Platform.OS === 'ios' ? 8 : 0,
+    // paddingTop: Platform.OS === 'ios' ? 8 : 0,
     fontSize: 13,
   },
 });
