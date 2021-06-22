@@ -541,7 +541,7 @@ const ChartDetail = props => {
         panelContainerStyle={styles.panelContainerStyle}
         useEmoji={true}
         isIPhoneX={Boolean(isIphoneX())}
-        inverted={messages.length > 5}
+        inverted={messages.length > 12}
         headerHeight={useHeaderHeight()}
         iphoneXBottomPadding={10}
         pressAvatar={pressAvatar}
