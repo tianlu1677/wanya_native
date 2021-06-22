@@ -1,14 +1,7 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  Platform,
-  StatusBar,
-  PermissionsAndroid,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, Pressable, Platform, StatusBar, PermissionsAndroid} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import {useHeaderHeight} from '@react-navigation/stack';
 import ImagePicker from 'react-native-image-picker';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 import Clipboard from '@react-native-community/clipboard';
@@ -190,10 +183,10 @@ const ChartDetail = props => {
         {
           title: '删除',
           onPress: () => {
-            console.log('type', type, index, text)
+            console.log('type', type, index, text);
             chatChannel.deleteMessage(message.id);
             messages.splice(index, 1);
-            console.log('message', messages)
+            console.log('message', messages);
             setMessages([...messages]);
           },
         },
@@ -549,7 +542,7 @@ const ChartDetail = props => {
         useEmoji={true}
         isIPhoneX={Boolean(isIphoneX())}
         inverted={messages.length > 5}
-        headerHeight={BarHeight + 50}
+        headerHeight={useHeaderHeight()}
         iphoneXBottomPadding={10}
         pressAvatar={pressAvatar}
         flatListProps={{style: {marginTop: isIos ? RFValue(0) : 0}}}
