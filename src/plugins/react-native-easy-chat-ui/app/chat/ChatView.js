@@ -402,7 +402,8 @@ class ChatWindow extends PureComponent {
     const {showVoice} = this.state;
     if (Platform.OS === 'ios') {
       if (emojiShow) {
-        return this.InputBar.input && this.InputBar.input.focus();
+        this.state.inputBarRef && this.state.inputBarRef.focus();
+        // return this.InputBar.input && this.InputBar.input.focus();
       }
       if (panelShow) {
         return this.closePanel(false, () => this.showEmoji());
