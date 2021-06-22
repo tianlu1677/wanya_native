@@ -41,6 +41,7 @@ const RecommendListPost = () => {
     if (page === 1) {
       setLoading(true);
     }
+    
     if (page === 1) {
       // 加载置顶
       const topItemList = (await getRecommendTopPosts()).data.posts;

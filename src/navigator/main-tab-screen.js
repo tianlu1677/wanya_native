@@ -41,6 +41,7 @@ const PublishModal = props => {
     <BottomModal
       visible={visible}
       cancleClick={onCancel}
+      overlayOpacity={0.2}
       modalStyle={{height: 270 + BOTTOM_HEIGHT}}
       contentWrapStyle={styles.contentModal}>
       <Pressable style={imgStyle} onPress={onTopic}>
