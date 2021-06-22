@@ -226,9 +226,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 8,
     borderRadius: 18,
-    borderColor: '#ccc',
     flex: 1,
-    borderWidth: StyleSheet.hairlineWidth,
     // paddingVertical: 0.8,
   },
   commentBar__input: {

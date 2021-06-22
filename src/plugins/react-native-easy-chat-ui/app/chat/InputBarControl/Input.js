@@ -65,5 +65,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     // paddingTop: Platform.OS === 'ios' ? 8 : 0,
     fontSize: 13,
+    // borderColor: '#ebebeb',
+    borderColor: '#ccc',
+    borderWidth: StyleSheet.hairlineWidth,
   },
 });

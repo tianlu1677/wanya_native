@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     backgroundColor: '#fff',
-    borderColor: '#ebebeb',
     height: 35,
   },
   itemContainerStyle: {
