@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {View, Platform, StyleSheet} from 'react-native';
 import {throttle} from 'lodash';
 import {TransFormType} from '@/utils';
-import ScrollList from '@/components/ScrollList';
+import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
 import BaseTheory from '@/components/Item/base-theory';
@@ -41,21 +41,33 @@ const RecommendListPost = () => {
     if (page === 1) {
       setLoading(true);
     }
-    
-    if (page === 1) {
-      // 加载置顶
-      const topItemList = (await getRecommendTopPosts()).data.posts;
-      const res = await getRecommendPosts({page});
-      const data = JSON.parse(JSON.stringify(topItemList.concat(res.data.posts)));
-      setListData(data);
-      setHeaders(res.headers);
-    } else {
-      const newData = JSON.parse(JSON.stringify(listData));
-      const res = await getRecommendPosts({page});
-      setListData([...newData, ...res.data.posts]);
-      setHeaders(res.headers);
-    }
+    // 加载置顶
+    const topItemList = (await getRecommendTopPosts()).data.posts;
+    const res = await getRecommendPosts({page});
+    let itemList =
+      page === 1 ? [...topItemList, ...res.data.posts] : [...listData, ...res.data.posts];
+    itemList = itemList.concat(topItemList);
+    setListData(itemList);
     setLoading(false);
+    setHeaders(res.headers);
+  };
+
+  const indexLoadData = async (page = 1) => {
+    let itemList = [];
+    const res = await getRecommendPosts({page});
+    itemList = itemList.concat(res.data.posts);
+    setListData(itemList);
+    setLoading(false);
+    setHeaders(res.headers);
+  };
+
+  const onRefresh = (page = 1) => {
+    console.log('page', page);
+    if (page === 1 || !page) {
+      indexLoadData(pagination(headers).nextPage);
+    } else {
+      loadData(page);
+    }
   };
 
   useEffect(() => {
@@ -67,7 +79,7 @@ const RecommendListPost = () => {
       keyExtractor={useCallback(item => `${item.id}${item.item_type}`, [])}
       data={listData}
       loading={loading}
-      onRefresh={throttle(loadData, 300)}
+      onRefresh={throttle(onRefresh, 300)}
       headers={headers}
       renderItem={renderItemMemo}
       initialNumToRender={6}
