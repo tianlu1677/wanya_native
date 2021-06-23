@@ -20,8 +20,8 @@ import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import MediasPicker from '@/components/MediasPicker';
 import {pagination} from '@/components/ScrollList';
-import {BarHeight} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
+import {consumerWsUrl} from '@/utils/config';
 import Helper from '@/utils/helper';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {
@@ -32,10 +32,9 @@ import {
 import VideoModal from './video-modal';
 import {translate, checkShowRule} from '../meta';
 
-import {consumerWsUrl} from '@/utils/config';
-
 const AddPhoto = require('@/assets/images/chat-photo.png');
 const AddVideo = require('@/assets/images/chat-video.png');
+
 import styles from './style';
 
 const isIos = Platform.OS === 'ios';
@@ -55,8 +54,8 @@ const ChartDetail = props => {
     account: {currentAccount},
     login: {auth_token},
   } = useSelector(state => state);
+
   let timer = null;
-  // let sound = null;
   const [pagin, setPagin] = useState(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoContent, setVideoContent] = useState(null);
@@ -71,7 +70,6 @@ const ChartDetail = props => {
   const [voiceVolume, setVoiceVolume] = useState(0);
   const [voiceLoading, setVoiceLoading] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
-  const [activeVoiceId, setActiveVoiceId] = useState(-1);
   const [whoosh, setWhoosh] = useState(null);
 
   const chatChannel = useMemo(() => {
@@ -85,11 +83,9 @@ const ChartDetail = props => {
           setMessages(m => {
             const index = m.findIndex(item => item.id === uid);
             if (index > -1) {
-              // console.log('xxxxx', index)
               m[index].sendStatus = 1;
-              return m; //m.concat(translate(data.conversation));
+              return m;
             } else {
-              // console.log('add')
               return m.concat(translate(data.conversation));
             }
           });
@@ -142,7 +138,6 @@ const ChartDetail = props => {
       }
 
       const paramsData = {conversation: {...params.conversation, uid: uid}, uuid: uuid};
-      // console.log('realsemd', paramsData)
       await getChatGroupsSendMessage(paramsData);
       Toast.hide();
     } catch (e) {
@@ -194,8 +189,6 @@ const ChartDetail = props => {
 
       items = items.concat(delItem);
     }
-    // console.log('type', type, index, text)
-
     return items;
   };
 
@@ -300,33 +293,6 @@ const ChartDetail = props => {
       whooshs.play(success => setVoicePlaying(!success));
     });
     setWhoosh(whooshs);
-
-    // setActiveVoiceId(index);
-    // if (sound === null) {
-    //   setVoiceLoading(true);
-    //   sound = new Sound(url, '', error => {
-    //     if (error) {
-    //       setVoiceLoading(false);
-    //       sound = null;
-    //       return;
-    //     }
-    //     setVoiceLoading(false);
-    //     setVoicePlaying(true);
-    //     sound.play(success => setVoicePlaying(!success));
-    //   });
-    // } else {
-    //   setVoicePlaying(true);
-    //   sound.play(success => setVoicePlaying(!success));
-    // }
-  };
-
-  const stopSound = (remove = false) => {
-    // sound && sound.stop();
-    setVoicePlaying(false);
-    if (remove) {
-      // sound = null;
-      setWhoosh(null);
-    }
   };
 
   const onMessagePress = (type, index, content, message) => {
@@ -342,20 +308,6 @@ const ChartDetail = props => {
 
     if (type === 'voice') {
       playSound(content, index);
-
-      // if (voicePlaying) {
-      //   if (index === activeVoiceId) {
-      //     stopSound();
-      //   } else {
-      //     stopSound(true);
-      //     playSound(content, index);
-      //   }
-      // } else {
-      //   if (index !== activeVoiceId) {
-      //     stopSound(true);
-      //   }
-      //   playSound(content, index);
-      // }
     }
   };
 

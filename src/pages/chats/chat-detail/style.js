@@ -1,8 +1,5 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
-const {width} = Dimensions.get('window');
-const panalWidth = (width - 30 - 15 * 3) / 4;
-const InputHeight = RFValue(33);
 
 const styles = StyleSheet.create({
   panelContainerStyle: {
@@ -13,15 +10,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: VWValue(20),
   },
   panelImageWrap: {
-    // width: panalWidth,
     width: VWValue(68),
     height: VWValue(68),
     marginRight: VWValue(30),
-    // marginRight: 15,
   },
   panelImage: {
-    // width: panalWidth,
-    // height: panalWidth,
     width: VWValue(68),
     height: VWValue(68),
   },
@@ -55,8 +48,6 @@ const styles = StyleSheet.create({
     borderRadius: RFValue(19),
   },
   inputOutContainerStyle: {
-    // paddingVertical: 8,
-    // paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
   inputStyle: {
@@ -65,8 +56,7 @@ const styles = StyleSheet.create({
   },
   itemContainerStyle: {
     paddingHorizontal: VWValue(12),
-    paddingVertical: 0,
-    paddingBottom: RFValue(14),
+    paddingVertical: RFValue(7),
     alignItems: 'flex-start',
   },
   leftMessageText: {
@@ -82,10 +72,9 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   chatTimeWrap: {
-    height: RFValue(13),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: RFValue(14),
+    paddingVertical: RFValue(7),
   },
   chatTime: {
     color: '#bdbdbd',
