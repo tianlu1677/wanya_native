@@ -46,6 +46,8 @@ global.removeEventListener = EventRegister.removeEventListener;
 
 Sound.setCategory('Playback'); // Enable playback in silence mode
 
+let timer = null;
+
 const ChartDetail = props => {
   const dispatch = useDispatch();
   const {navigation, route, imagePick, videoPick, uploadVideo, uploadAudio} = props;
@@ -55,7 +57,6 @@ const ChartDetail = props => {
     login: {auth_token},
   } = useSelector(state => state);
 
-  let timer = null;
   const [pagin, setPagin] = useState(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [videoContent, setVideoContent] = useState(null);
