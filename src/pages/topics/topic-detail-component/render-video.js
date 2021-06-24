@@ -20,7 +20,7 @@ const RenderVideo = props => {
   const {width, height} = detail.media_video;
   let videoHeight = height ? height * (screenWidth / width) : screenWidth;
   if (videoHeight > SCREEN_HEIGHT) {
-    videoHeight = SCREEN_HEIGHT - 500;
+    videoHeight = SCREEN_HEIGHT - 50;
   }
 
   useFocusEffect(
