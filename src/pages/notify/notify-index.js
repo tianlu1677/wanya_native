@@ -75,7 +75,7 @@ const NotifyIndex = ({navigation}) => {
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
-      JPush.setBadge({badge: currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count, appBadge: currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count});
+      JPush.setBadge({badge: currentBaseInfo.total_unread_messages_count, appBadge: currentBaseInfo.total_unread_messages_count});
     }, [])
   );
 
