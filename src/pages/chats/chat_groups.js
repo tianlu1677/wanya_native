@@ -7,12 +7,15 @@ import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/action
 import {getChatGroups} from '@/api/chat_api';
 import ScrollList from '@/components/ScrollList';
 import BaseChatGroup from './base-chat-group';
+import {useSelector} from 'react-redux';
+import JPush from 'jpush-react-native';
 
 const ChatGroups = ({navigation}) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
+  const {currentBaseInfo} = useSelector(state => state.account);
 
   const renderItemMemo = useCallback(
     ({item, index}) => <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />,
@@ -36,6 +39,7 @@ const ChatGroups = ({navigation}) => {
       loadData();
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
+      JPush.setBadge({badge: currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count, appBadge: currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count});
     }, [])
   );
 

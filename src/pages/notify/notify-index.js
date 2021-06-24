@@ -1,10 +1,11 @@
-import React, {useCallback} from 'react';
-import {StyleSheet, StatusBar, View, Text, Image, Pressable} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {StyleSheet, StatusBar,  View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {syncAccountInfo} from '@/api/mine_api';
 import {BadgeMessage, Avator, RecommendSearch} from '@/components/NodeComponents';
 import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
+import JPush from 'jpush-react-native';
 import {
   CommentNoticeImg,
   FollowNoticeImg,
@@ -16,6 +17,7 @@ import {
 const NotifyIndex = ({navigation}) => {
   const dispatch = useDispatch();
   const {currentAccount} = useSelector(state => state.account);
+  const {currentBaseInfo} = useSelector(state => state.account);
   const {
     unread_insite_notifies_count,
     unread_comments_notifies_count,
@@ -73,6 +75,7 @@ const NotifyIndex = ({navigation}) => {
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
+      JPush.setBadge({badge: currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count, appBadge: currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count});
     }, [])
   );
 
@@ -189,7 +192,7 @@ const NotifyIndex = ({navigation}) => {
       </View>
     </View>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   badgeContainer: {

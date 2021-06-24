@@ -154,9 +154,8 @@ class App extends Component {
   jpush_notice = async () => {
     console.log('jpush....');
     await JPush.init();
-    JPush.setBadge({badge: 0, appBadge: 0});
     JPush.setLoggerEnable(true);
-    // JPush.initCrashHandler();
+    JPush.initCrashHandler();
     // JPush.addConnectEventListener((result) => {
     //   console.log('addCollection')
     //   console.log('addCollection', JSON.stringify(result))
