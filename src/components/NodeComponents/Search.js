@@ -13,6 +13,7 @@ const Search = props => {
         <IconFont name="sousuo" size={14} color={placeholderTextColor} style={styles.icon} />
         <TextInput
           ref={props.getRef}
+          multiline={false}
           style={[styles.textInput, {height: height}]}
           placeholder={props.placeholder}
           placeholderTextColor={placeholderTextColor}
@@ -89,6 +90,8 @@ const styles = StyleSheet.create({
     paddingLeft: RFValue(35),
     fontSize: 14,
     color: '#000',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   cancel: {
     textAlign: 'center',

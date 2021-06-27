@@ -134,13 +134,15 @@ class ChatWindow extends PureComponent {
 
   _didShow() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', e => {
+      console.log('xxxxx')
+      const {panelShow, emojiShow} = this.state;
       this.setState({keyboardShow: true});
-      // if (panelShow) {
-      //   return this.closePanel(true)
-      // }
-      // if (emojiShow) {
-      //   return this.closeEmoji(true)
-      // }
+      if (panelShow) {
+        return this.closePanel(true)
+      }
+      if (emojiShow) {
+        return this.closeEmoji(true)
+      }
     });
   }
 
@@ -399,6 +401,7 @@ class ChatWindow extends PureComponent {
 
   tabEmoji = () => {
     const {keyboardShow, emojiShow, panelShow} = this.state;
+    console.log('keyboardShow', keyboardShow)
     const {showVoice} = this.state;
     if (Platform.OS === 'ios') {
       if (emojiShow) {
@@ -425,7 +428,7 @@ class ChatWindow extends PureComponent {
       }
     } else {
       if (emojiShow) {
-        return this.closeEmoji(true, () => this.InputBar.input && this.InputBar.input.focus());
+        return this.closeEmoji(true, () => this.state.inputBarRef && this.state.inputBarRef.focus());
       } else {
         if (panelShow) {
           return this.closePanel(false, () => this.showEmoji());
@@ -437,7 +440,8 @@ class ChatWindow extends PureComponent {
             keyboardShow: false,
             emojiShow: true,
           });
-          this.InputBar.input && this.InputBar.input.blur();
+          this.state.inputBarRef && this.state.inputBarRef.blur();
+          // this.InputBar.input && this.InputBar.input.blur();
         }
         if (this.state.showVoice) {
           this.setState({showVoice: false});

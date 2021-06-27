@@ -61,9 +61,9 @@ const styles = StyleSheet.create({
   commentBar__input: {
     borderRadius: 18,
     width: '100%',
-    padding: 0,
+    // padding: 0,
     paddingHorizontal: 16,
-    // paddingTop: Platform.OS === 'ios' ? 8 : 0,
+    paddingTop: Platform.OS === 'ios' ? 0 : 8,
     fontSize: 13,
     borderColor: '#ebebeb',
     // borderColor: '#ccc',
