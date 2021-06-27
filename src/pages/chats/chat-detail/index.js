@@ -104,6 +104,7 @@ const ChartDetail = props => {
           console.log('rejected');
         },
         unsubscribe() {
+          this.perform('unsubscribed');
           console.log('unsubscribe');
         },
         deleteMessage(id) {
