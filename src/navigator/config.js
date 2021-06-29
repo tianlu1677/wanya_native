@@ -115,6 +115,9 @@ import PasswordLogin from '@/pages/sessions/password-login';
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
+import AccountInfoMobile from '@/pages/auth-login/account-info/account-info-mobile';
+import AccountInfoLabel from '@/pages/auth-login/account-info/account-info-label';
+
 const searchRouter = [
   {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
 ];
@@ -271,6 +274,8 @@ const authRouter = [
   {name: 'InviteLogin', component: InviteLogin, options: {title: '输入邀请码'}},
   {name: 'InviteDetail', component: InviteDetail, options: {title: '邀请码'}},
   {name: 'AdminPhoneLogin', component: AdminPhoneLogin},
+  {name: 'AccountInfoMobile', component: AccountInfoMobile},
+  {name: 'AccountInfoLabel', component: AccountInfoLabel},
 ];
 
 export const MainRouters = [

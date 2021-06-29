@@ -61,7 +61,7 @@ export const MainStackScreen = props => {
 export const AuthStackScreen = props => {
   return (
     <AuthStack.Navigator
-      initialRouteName="SocialLogin"
+      initialRouteName="AccountInfoMobile"
       screenOptions={() => ({
         title: false,
         headerStyle: {

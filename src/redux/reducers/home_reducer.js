@@ -1,6 +1,7 @@
 import * as constants from '../constants';
 
 const defaultState = {
+  totalLabelList: [],
   channels: [],
   savetopic: {},
   previewImageData: {
@@ -23,6 +24,8 @@ const defaultState = {
 
 export const homeReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case constants.TOTAL_LABEL_LIST:
+      return {...state, totalLabelList: action.value};
     case constants.SAVE_CHANNELS:
       return {
         ...state,
@@ -72,7 +75,7 @@ export const homeReducer = (state = defaultState, action) => {
     case constants.LOAD_ALL_CITY_SUCCESS:
       return {
         ...state,
-        cityList: action.value
+        cityList: action.value,
       };
     default:
       return state;

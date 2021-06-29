@@ -2,8 +2,8 @@ import {Platform} from 'react-native';
 // API 的相关配置
 export const BaseProApi = 'https://meirixinxue.com/'; //'https://meirixinxue.com/';
 // export const BaseProApi = 'https://xinxue.meirixinxue.com/'; //'https://meirixinxue.com/';
-// export const BaseDevApi = 'https://xinxue.meirixinxue.com/';
-export const BaseDevApi = 'https://meirixinxue.com';
+export const BaseDevApi = 'https://xinxue.meirixinxue.com/';
+// export const BaseDevApi = 'https://meirixinxue.com';
 
 export const BaseApiUrl = __DEV__ ? BaseDevApi : BaseProApi;
 
@@ -20,10 +20,9 @@ export const BaseSentryURL = __DEV__ ? BaseDevSentryURL : BaseProSentryURL;
 export const IOS_LOCATION_KEY = '6da6626cf6588fb6e3052deff1e8d4e9';
 export const ANDROID_LOCATION_KEY = '648f6e4ce8f5b83b30e2eabcac060eee';
 
-
-export const consumerWsUrl = (auth_token) => {
+export const consumerWsUrl = auth_token => {
   const wsURL = BaseApiUrl.replace('https://', 'wss://');
   const wssUrl = `${wsURL}/cable?auth_token=${auth_token}`;
   // console.log('wssUrl', wssUrl);
-  return wssUrl
+  return wssUrl;
 };
