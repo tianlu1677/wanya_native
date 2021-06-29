@@ -72,7 +72,7 @@ export const AuthStackScreen = props => {
         },
         headerLeftContainerStyle: {paddingLeft: 15},
         headerRightContainerStyle: {paddingRight: 15},
-        headerLeft: () => AuthHeaderLeft({...props, image: BackWhite}),
+        // headerLeft: () => AuthHeaderLeft({...props, image: BackWhite}),
       })}>
       {AuthRouters.map(route => {
         const {name, options, component: Component} = route;

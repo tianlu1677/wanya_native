@@ -116,6 +116,7 @@ import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
 import AccountInfoMobile from '@/pages/auth-login/account-info/account-info-mobile';
+import AccountInfoGender from '@/pages/auth-login/account-info/account-info-gender';
 import AccountInfoLabel from '@/pages/auth-login/account-info/account-info-label';
 
 const searchRouter = [
@@ -275,6 +276,7 @@ const authRouter = [
   {name: 'InviteDetail', component: InviteDetail, options: {title: '邀请码'}},
   {name: 'AdminPhoneLogin', component: AdminPhoneLogin},
   {name: 'AccountInfoMobile', component: AccountInfoMobile},
+  {name: 'AccountInfoGender', component: AccountInfoGender},
   {name: 'AccountInfoLabel', component: AccountInfoLabel},
 ];
 

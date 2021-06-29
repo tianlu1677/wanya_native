@@ -38,7 +38,7 @@ const AccountInfoMobile = ({navigation}) => {
         onChangeText={text => setPhone(text)}
       />
 
-      <Text onPress={() => navigation.navigate('AccountInfoLabel')} style={{color: '#fff'}}>
+      <Text onPress={() => navigation.navigate('AccountInfoGender')} style={{color: '#fff'}}>
         下一步
       </Text>
     </View>
