@@ -37,7 +37,7 @@ const Recommend = props => {
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const auth_token = useSelector(state => state.login.auth_token);
   const home = useSelector(state => state.home);
-  const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
+  const [currentKey, setCurrentKey] = useState(defaultKey || 'nodes');
 
   const MemoVideo = React.memo(() => {
     const {content} = uploadStatus;
