@@ -32,13 +32,15 @@ const AccountInfoMobile = ({navigation}) => {
         selectionColor="#ff193a"
         placeholderTextColor="#353535"
         maxLength={11}
-        autoFocus={true}
+        // autoFocus={true}
         caretHidden={false}
         style={styles.inputContent}
         onChangeText={text => setPhone(text)}
       />
 
-      <Text onPress={() => navigation.navigate('AccountInfoGender')} style={{color: '#fff'}}>
+      <Text
+        onPress={() => navigation.navigate('AccountInfoGender')}
+        style={{color: '#fff', backgroundColor: 'pink', height: 100, width: 300}}>
         下一步
       </Text>
     </View>

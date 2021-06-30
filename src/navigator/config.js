@@ -118,6 +118,7 @@ import InviteDetail from '@/pages/mine/invite-detail';
 import AccountInfoMobile from '@/pages/auth-login/account-info/account-info-mobile';
 import AccountInfoGender from '@/pages/auth-login/account-info/account-info-gender';
 import AccountInfoLabel from '@/pages/auth-login/account-info/account-info-label';
+import AccountInfoInvite from '@/pages/auth-login/account-info/account-info-invite';
 
 const searchRouter = [
   {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
@@ -278,6 +279,7 @@ const authRouter = [
   {name: 'AccountInfoMobile', component: AccountInfoMobile},
   {name: 'AccountInfoGender', component: AccountInfoGender},
   {name: 'AccountInfoLabel', component: AccountInfoLabel},
+  {name: 'AccountInfoInvite', component: AccountInfoInvite},
 ];
 
 export const MainRouters = [

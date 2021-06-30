@@ -1,37 +1,77 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import IconFont from '@/iconfont';
+import {useDispatch} from 'react-redux';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
-import {SCREEN_WIDTH} from '@/utils/navbar';
+import cStyles from '../style';
 
-const AccountInfoLabel = () => {
+const AddDefaultCheck = data => {
+  const transLateData = data.map(item => {
+    const label_list = item.label_list.map(label => {
+      return {title: label, checked: false};
+    });
+    return {category: item.category, label_list: label_list};
+  });
+  return transLateData;
+};
+
+const AccountInfoLabel = ({navigation}) => {
+  const dispatch = useDispatch();
   const {totalLabelList} = useSelector(state => state.home);
-  console.log(totalLabelList);
+  const [labelList, setLabelList] = useState(AddDefaultCheck(totalLabelList));
+
+  const allChecked = labelList
+    .map(item => item.label_list)
+    .flat()
+    .filter(label => label.checked);
+
+  const handleLabelClick = (checked, labelIndex, categoryIndex) => {
+    labelList[categoryIndex].label_list[labelIndex].checked = checked;
+    setLabelList([...labelList]);
+  };
+
+  const handleNextClick = () => {
+    console.log(navigation);
+    navigation.navigate('AccountInfoInvite');
+  };
 
   return (
     <View style={styles.wrapper}>
       <ScrollView>
-        <Text style={styles.title}>选择个性标签</Text>
-        <Text style={styles.text}>完善个人信息，让大家更好地认识你</Text>
+        <Text style={cStyles.infoTitle}>选择性别和生日</Text>
+        <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
         <View style={styles.labelContent}>
-          {totalLabelList.map(data => {
+          {labelList.map((data, categoryIndex) => {
             return (
-              <View key={data.category} style={styles.categoryWapper}>
+              <View key={categoryIndex} style={styles.categoryWapper}>
                 <Text style={styles.category}>{data.category}</Text>
                 <View style={styles.labelWrapper}>
-                  {data.label_list.map((label, index) => (
-                    <Text key={label} style={styles.label}>
-                      {label}
-                    </Text>
-                  ))}
+                  {data.label_list.map((label, labelIndex) => {
+                    const {title, checked} = label;
+                    return (
+                      <Text
+                        key={labelIndex}
+                        style={[styles.label, checked ? styles.labelActive : styles.labelDefault]}
+                        onPress={() => handleLabelClick(!checked, labelIndex, categoryIndex)}>
+                        {title}
+                      </Text>
+                    );
+                  })}
                 </View>
               </View>
             );
           })}
         </View>
       </ScrollView>
-      <Text style={styles.complate}>完成</Text>
+      <Text
+        onPress={handleNextClick}
+        style={[
+          cStyles.nextStep,
+          styles.complete,
+          allChecked.length > 0 ? cStyles.active : cStyles.default,
+        ]}>
+        完成 {allChecked.length}/5
+      </Text>
     </View>
   );
 };
@@ -42,20 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000',
     paddingTop: 10,
-    paddingBottom: 50,
-  },
-  title: {
-    fontSize: 23,
-    color: '#fff',
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  text: {
-    fontSize: 12,
-    color: '#fff',
-    marginTop: VWValue(14),
-    marginBottom: VWValue(40),
-    textAlign: 'center',
+    paddingBottom: 40,
   },
   labelContent: {
     marginLeft: VWValue(52),
@@ -75,27 +102,26 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#fff',
     height: RFValue(29),
     lineHeight: RFValue(29),
     paddingHorizontal: VWValue(12),
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#BDBDBD',
-    borderRadius: 20,
+    borderRadius: 15,
+    overflow: 'hidden',
     marginBottom: RFValue(13),
     marginRight: VWValue(14),
   },
-  complate: {
-    width: SCREEN_WIDTH - VWValue(52 * 2),
-    height: RFValue(45),
-    lineHeight: RFValue(45),
-    textAlign: 'center',
-    fontSize: 15,
+  labelActive: {
     color: '#fff',
-    fontWeight: '500',
     backgroundColor: '#ff2242',
-    borderRadius: 24,
-    overflow: 'hidden',
+    borderColor: 'transparent',
+  },
+  labelDefault: {
+    color: '#fff',
+    backgroundColor: '#000',
+    borderColor: '#BDBDBD',
+  },
+  complete: {
     position: 'absolute',
     bottom: 15,
   },
