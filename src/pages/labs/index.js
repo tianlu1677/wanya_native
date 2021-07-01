@@ -175,6 +175,9 @@ const LabIndex = props => {
           <Pressable onPress={() => clickAna()}>
             <Text style={styles.text}>点击统计</Text>
           </Pressable>
+          <Pressable onPress={() => {navigation.navigate('OneLogin')}}>
+            <Text style={styles.text}>去一键登录</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </View>

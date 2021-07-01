@@ -115,6 +115,9 @@ import PasswordLogin from '@/pages/sessions/password-login';
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
+// 一键登录页面
+import OneLogin from '@/pages/sessions/one-login'
+
 const searchRouter = [
   {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
 ];
@@ -241,6 +244,7 @@ const commonRouter = [
   {name: 'WebView', component: WebView, options: {title: 'WebView'}},
   {name: 'SharePage', component: SharePage, options: {title: '分享'}},
   {name: 'Report', component: Report, options: {title: '投诉'}},
+  {name: 'OneLogin', component: OneLogin, options: {title: '一键登录'}}
 ];
 
 const LabRouter = [
