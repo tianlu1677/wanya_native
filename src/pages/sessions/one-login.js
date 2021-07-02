@@ -46,11 +46,11 @@ const customUIWithConfigiOS = {
   //登录按钮
   logBtnConstraints: [0, -80, 220, 40],
   loginBtnText: '一键登录good',
-  loginBtnTextColor: '#fff',
+  loginBtnTextColor: '#000',
   privacyConstraints: [0, 180, 200, 60],
   checkViewConstraints: [-108, 180, 10, 10],
-  unAgreePrivacyCallBack: false,
-  privacyCheckEnable: false,
+  unAgreePrivacyCallBack: true,
+  privacyCheckEnable: true,
   privacyOne: ['隐私条款一', 'https://www.jiguang.cn/about'], //隐私条款一（显示名称和url，请严格按照格式）
   privacyTwo: ['隐私条款二', 'https://www.jiguang.cn/about'], //隐私条款二（显示名称和url，请严格按照格式）
   privacyColor: [-16777216, -65536], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
@@ -343,6 +343,7 @@ const OneLogin = ({navigation, route}) => {
     console.log('LoginListener:' + JSON.stringify(result));
     // 获取到登录的token了, 返回值中会返回手机号。再用此手机号注册新用户
     if(result.code === 6000) {
+      createAlert('isInitSuccess:' + JSON.stringify(result));
       const res = await jverifyPhone({jverify_phone_token: result.content})
       console.log('res', res);
       // res {"answer": {"phone": "18612300141"}}
@@ -356,13 +357,13 @@ const OneLogin = ({navigation, route}) => {
   useEffect(() => {
     JVerification.init(initParams, result => {
       console.log('init:' + JSON.stringify(result));
-      if(result.code === 8000) {
-        // JVerification.preLogin(5000, result => {
-        //   console.log('preLogin:' + JSON.stringify(result));
-        // });
-      }
+      // if(result.code === 8000) {
+      //   // JVerification.preLogin(5000, result => {
+      //   //   console.log('preLogin:' + JSON.stringify(result));
+      //   // });
+      // }
     })
-    // JVerification.setLoggerEnable(true);
+    JVerification.setLoggerEnable(true);
 
     if (Platform.OS === 'ios') {
       // JVerification.addUncheckBoxEventListener((result) => {
@@ -382,36 +383,43 @@ const OneLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
-        {/*<Button*/}
-        {/*  title="isInitSuccess"*/}
-        {/*  onPress={() =>*/}
-        {/*    JVerification.isInitSuccess(result => {*/}
-        {/*      console.log('isInitSuccess:' + JSON.stringify(result));*/}
-        {/*      createAlert('isInitSuccess:' + JSON.stringify(result));*/}
-        {/*    })*/}
-        {/*  }*/}
-        {/*/>*/}
+        <Button
+          title="isInitSuccess"
+          onPress={() =>
+            JVerification.isInitSuccess(result => {
+              console.log('isInitSuccess:' + JSON.stringify(result));
+              createAlert('isInitSuccess:' + JSON.stringify(result));
+            })
+          }
+        />
 
-        {/*<Button*/}
-        {/*  title="checkLoginEnable"*/}
-        {/*  onPress={() =>*/}
-        {/*    JVerification.checkLoginEnable(result => {*/}
-        {/*      console.log('checkLoginEnable:' + JSON.stringify(result));*/}
-        {/*      createAlert('checkLoginEnable:' + JSON.stringify(result));*/}
-        {/*    })*/}
-        {/*  }*/}
-        {/*/>*/}
+        <Button
+          title="checkLoginEnable"
+          onPress={() =>
+            JVerification.checkLoginEnable(result => {
+              console.log('checkLoginEnable:' + JSON.stringify(result));
+              createAlert('checkLoginEnable:' + JSON.stringify(result));
+            })
+          }
+        />
 
-        {/*<Button*/}
-        {/*  title="preLogin"*/}
-        {/*  onPress={() => {*/}
-        {/*    // JVerification.clearPreLoginCache();*/}
-        {/*    JVerification.preLogin(5000, result => {*/}
-        {/*      console.log('preLogin:' + JSON.stringify(result));*/}
-        {/*      createAlert('preLogin:' + JSON.stringify(result));*/}
-        {/*    });*/}
-        {/*  }}*/}
-        {/*/>*/}
+        <Button title='getToken'
+                onPress={() => JVerification.getToken(5000, result => {
+                  console.log('getToken:' + JSON.stringify(result));
+                  createAlert('getToken:' + JSON.stringify(result));
+
+                })}/>
+
+        <Button
+          title="preLogin"
+          onPress={() => {
+            JVerification.clearPreLoginCache();
+            JVerification.preLogin(5000, result => {
+              console.log('preLogin:' + JSON.stringify(result));
+              createAlert('preLogin:' + JSON.stringify(result));
+            });
+          }}
+        />
 
         <Button
           title="addLoginCustomConfig"
@@ -436,49 +444,6 @@ const OneLogin = ({navigation, route}) => {
         {/*/>*/}
 
         <Button title="login" onPress={() => JVerification.login(true)} />
-
-        {/*<View*/}
-        {/*  style={{*/}
-        {/*    flex: 1,*/}
-        {/*    position: 'absolute',*/}
-        {/*    bottom: 91 + BOTTOM_HEIGHT,*/}
-        {/*    left: 0,*/}
-        {/*    right: 0,*/}
-        {/*  }}>*/}
-        {/*  <View style={styles.loginContainer}>*/}
-        {/*    <Pressable*/}
-        {/*      style={styles.loginButton}*/}
-        {/*      onPress={() => {*/}
-        {/*        wechatLogin();*/}
-        {/*      }}>*/}
-        {/*      <IconFont name={'weixin1'} />*/}
-        {/*      <Text style={styles.loginText}>通过微信登录</Text>*/}
-        {/*    </Pressable>*/}
-        {/*  </View>*/}
-        {/*  <View style={{...styles.phoneLoginContainer}}>*/}
-        {/*    <Pressable*/}
-        {/*      style={styles.loginButton}*/}
-        {/*      onPress={() => {*/}
-        {/*        phoneLogin();*/}
-        {/*      }}>*/}
-        {/*      <IconFont name={'shouji'} />*/}
-        {/*      <Text style={styles.loginText}>通过手机登录</Text>*/}
-        {/*    </Pressable>*/}
-        {/*  </View>*/}
-        {/*  {Platform.OS === 'ios' && (*/}
-        {/*    <View style={[styles.phoneLoginContainer]}>*/}
-        {/*      <AppleButton*/}
-        {/*        buttonStyle={AppleButton.Type.WHITE_OUTLINE}*/}
-        {/*        buttonType={AppleButton.Type.SIGN_IN}*/}
-        {/*        style={{...styles.loginButton, backgroundColor: 'black'}}*/}
-        {/*        cornerRadius={2}*/}
-        {/*        // textStyle={{...styles.loginText}}*/}
-        {/*        leftView={<Text />}*/}
-        {/*        onPress={onAppleButtonPress}*/}
-        {/*      />*/}
-        {/*    </View>*/}
-        {/*  )}*/}
-        {/*</View>*/}
 
         <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
           <Pressable
