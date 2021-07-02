@@ -107,11 +107,17 @@ const LabIndex = props => {
       console.log('error shareWeibo', e);
     }
   };
+  const loginWeibo = () => {
+    console.log('shareweibo');
+    ShareUtil.auth(1, (code,result,message) => {
+      console.log('res', code, result, message);
+    });
+  };
 
   const loginQQ = () => {
-    console.log('shareWeibo');
-    ShareUtil.auth(0, res => {
-      console.log('res', res);
+    console.log('shareQQ');
+    ShareUtil.auth(0, (code,result,message) => {
+      console.log('res', code, result, message);
     });
   };
 
@@ -171,9 +177,15 @@ const LabIndex = props => {
           <Pressable onPress={() => loginQQ()}>
             <Text style={styles.text}>QQ登录</Text>
           </Pressable>
+          <Pressable onPress={() => loginWeibo()}>
+            <Text style={styles.text}>微博登录</Text>
+          </Pressable>
 
           <Pressable onPress={() => clickAna()}>
             <Text style={styles.text}>点击统计</Text>
+          </Pressable>
+          <Pressable onPress={() => {navigation.navigate('OneLogin')}}>
+            <Text style={styles.text}>去一键登录</Text>
           </Pressable>
         </View>
       </ScrollView>

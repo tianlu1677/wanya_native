@@ -120,6 +120,9 @@ import AccountInfoGender from '@/pages/auth-login/account-info/account-info-gend
 import AccountInfoLabel from '@/pages/auth-login/account-info/account-info-label';
 import AccountInfoInvite from '@/pages/auth-login/account-info/account-info-invite';
 
+// 一键登录页面
+import OneLogin from '@/pages/sessions/one-login';
+
 const searchRouter = [
   {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
 ];
@@ -246,6 +249,7 @@ const commonRouter = [
   {name: 'WebView', component: WebView, options: {title: 'WebView'}},
   {name: 'SharePage', component: SharePage, options: {title: '分享'}},
   {name: 'Report', component: Report, options: {title: '投诉'}},
+  {name: 'OneLogin', component: OneLogin, options: {title: '一键登录'}},
 ];
 
 const LabRouter = [

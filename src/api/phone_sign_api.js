@@ -55,3 +55,14 @@ export async function phonePasswordLogin(data = {phone: '', phone_code: ''}) {
   });
   return res.data;
 }
+
+
+// 一键登录获取手机号
+export async function jverifyPhone(data = {jverify_phone_token: ''}) {
+  const res = await request({
+    url: '/api/v1/phones/jverify_phone',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}

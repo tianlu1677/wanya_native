@@ -41,3 +41,34 @@ export const SignInWithAppleButton = ({buttonText = '', callBack}) => {
 };
 
 export default SignInWithAppleButton;
+
+// import { SignInWithAppleButton } from 'components/AppleLogin'
+// <View style={styles.footerContent}>
+//   {SignInWithAppleButton({
+//     callBack: appleSignIn,
+//   })}
+
+// const appleSignIn = (result) => {
+//   // const { currnet } = route.params;
+//   const { fullName, identityToken, user } = result;
+//   try {
+//     let params = {
+//       user_id: user,
+//       identity_token: identityToken,
+//       nickname: fullName.givenName || fullName.familyName,
+//     }
+//     postAppleLogin(params).then(res => {
+//       // navigation.navigate(currnet)
+//       storeData('guide_auth', 'true')
+//       resetFun&&resetFun();
+//       setTimeout(() => {
+//         navigation.reset({
+//           index: 0,
+//           routes: [{ name: 'Home' }],
+//         });
+//       }, 0)
+//     })
+//   } catch {
+//     alert('登录失败')
+//   }
+// }

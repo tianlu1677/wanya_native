@@ -9,6 +9,8 @@ import ScrollList from '@/components/ScrollList';
 import BaseChatGroup from './base-chat-group';
 import {useSelector} from 'react-redux';
 import JPush from 'jpush-react-native';
+import {IsIos} from "@/utils/navbar"
+var BadgeAndroid = require('react-native-android-badge');
 
 const ChatGroups = ({navigation}) => {
   const dispatch = useDispatch();
@@ -40,6 +42,9 @@ const ChatGroups = ({navigation}) => {
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
       JPush.setBadge({badge: currentBaseInfo.total_unread_messages_count, appBadge: currentBaseInfo.total_unread_messages_count});
+      if(!IsIos) {
+        BadgeAndroid.setBadge(currentBaseInfo.total_unread_messages_count)
+      }
     }, [])
   );
 
