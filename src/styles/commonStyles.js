@@ -10,26 +10,25 @@ const commonStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#219bd930',
-    color: '#ff0000'
+    color: '#ff0000',
   },
   content: {
-    padding: 6
+    padding: 6,
   },
   header: {
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
-
   contentBlank: {
     height: 9,
     width: '100%',
     lineHeight: 9,
-    backgroundColor: '#FAFAFA'
+    backgroundColor: '#FAFAFA',
   },
   topBorder1px: {
     borderColor: '#ebebeb',
-    borderTopWidth: StyleSheet.hairlineWidth
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   bottomBorder1px: {
     borderColor: '#ebebeb',

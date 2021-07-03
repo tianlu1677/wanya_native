@@ -123,6 +123,7 @@ import RegisterInfoInvite from '@/pages/auth-login/register/register-info-invite
 import LoginPasswordCode from '@/pages/auth-login/login-password-code';
 import LoginPhoneCode from '@/pages/auth-login/login-phone-code';
 import LoginVerifyCode from '@/pages/auth-login/login-verify-code';
+import BindPhone from '@/pages/auth-login/bind-phone';
 
 // 一键登录页面
 import OneLogin from '@/pages/sessions/one-login';
@@ -228,7 +229,7 @@ const shopBrandRouter = [
 
 const mineRouter = [
   {name: 'Settings', component: Settings, options: {title: '设置'}},
-  {name: 'AccountContent', component: AccountContent, options: {title: '编辑信息'}},
+  {name: 'AccountContent', component: AccountContent, options: {title: '编辑个人资料'}},
   {name: 'EditAccountContent', component: EditAccountContent, options: {title: '编辑信息'}},
   {name: 'Feedback', component: Feedback, options: {title: '反馈'}},
   {name: 'About', component: About, options: {title: '关于顽鸦'}},
@@ -292,6 +293,7 @@ const authRouter = [
   {name: 'LoginPasswordCode', component: LoginPasswordCode},
   {name: 'LoginPhoneCode', component: LoginPhoneCode},
   {name: 'LoginVerifyCode', component: LoginVerifyCode},
+  {name: 'BindPhone', component: BindPhone},
 ];
 
 export const MainRouters = [

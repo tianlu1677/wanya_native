@@ -1,25 +1,16 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-  Pressable,
-  Image,
-  Text,
-  Dimensions,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import styled from 'styled-components/native';
-import {dispatchCurrentAccount} from '../../../redux/actions';
-import {syncAccountInfo} from '@/api/mine_api';
+import {SafeAreaView, StatusBar, StyleSheet, View, Text, Dimensions, Pressable} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import commonStyles from '@/styles/commonStyles';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {useDispatch, useSelector} from 'react-redux';
+import {dispatchCurrentAccount} from '@/redux/actions';
 import MediasPicker from '@/components/MediasPicker';
 import Toast from '@/components/Toast';
-import {useFocusEffect} from '@react-navigation/native';
+import FastImg from '@/components/FastImg';
+import {syncAccountInfo} from '@/api/mine_api';
+
 const {width: screenW} = Dimensions.get('window');
 
 const AccountContent = props => {
@@ -40,11 +31,7 @@ const AccountContent = props => {
     }, [])
   );
 
-  const ForwardRight = () => {
-    return <Icon color={'#C2C2C2'} name={'chevron-forward'} size={20} />;
-  };
-
-  const onImagePicker = () => {
+  const onImagePicker = type => {
     props.removeAllPhoto();
     const options = {
       imageCount: 1,
@@ -59,11 +46,12 @@ const AccountContent = props => {
       if (err) {
         return;
       }
+
       Toast.showLoading('更换中...');
       await props.uploadAvatar({
         uploadType: 'multipart',
         account_id: currentAccount.id,
-        keyParams: 'account[avatar]',
+        keyParams: type === 'avatar' ? 'account[avatar]' : 'account[background_img]',
         ...res[0],
       });
       dispatch(dispatchCurrentAccount());
@@ -73,7 +61,6 @@ const AccountContent = props => {
   };
 
   const setGenderValue = async value => {
-    console.log('xxxx', value);
     if (value.toString().length <= 0) {
       return;
     }
@@ -83,33 +70,10 @@ const AccountContent = props => {
   };
 
   const setBirthdayData = async value => {
-    // console.log('value', value);
     setBirthdayVisible(false);
     setBirthday(value);
     await syncAccountInfo({id: currentAccount.id, birthday: value});
     dispatch(dispatchCurrentAccount());
-  };
-
-  const GenderDropdown = () => {
-    return (
-      <RNPickerSelect
-        onValueChange={value => setGenderValue(value)}
-        fixAndroidTouchableBug
-        placeholder={{
-          label: '请选择',
-          value: '',
-          color: 'gray',
-        }}
-        value={gender}
-        doneText={'完成'}
-        style={{...pickerSelectStyles}}
-        items={[
-          {label: '男', value: 'man'},
-          {label: '女', value: 'woman'},
-          {label: '不显示', value: 'other'},
-        ]}
-      />
-    );
   };
 
   const goPages = (type = '') => {
@@ -124,7 +88,6 @@ const AccountContent = props => {
         break;
       case 'birthday':
         setBirthday(currentAccount.birthday);
-        console.log('currentAccount.birthday', currentAccount.birthday);
         setBirthdayVisible(true);
         break;
       case 'intro':
@@ -134,157 +97,139 @@ const AccountContent = props => {
         });
         break;
       case 'avatar':
-        onImagePicker();
+        onImagePicker('avatar');
         break;
+      case 'background_img':
+        onImagePicker('background_img');
+        break;
+
       default:
         console.log('not');
     }
   };
 
+  console.log(currentAccount);
+
+  const ForwardRight = () => <Icon color="#C2C2C2" name={'chevron-forward'} size={19} />;
+
   return (
     <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
-      <Text style={commonStyles.contentBlank} />
-      <ItemView
-        onPress={() => {
-          goPages('avatar');
-        }}>
-        <ItemTitle>头像</ItemTitle>
-        <ItemWrap>
-          <Image
-            source={{uri: currentAccount.avatar_url}}
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 20,
-            }}
-          />
-          <ForwardRight />
-        </ItemWrap>
-      </ItemView>
-      <Text style={commonStyles.contentBlank} />
-      <ItemView
-        style={{}}
-        onPress={() => {
-          goPages('nickname');
-        }}>
-        <ItemTitle>昵称</ItemTitle>
-        <ItemWrap>
-          <ItemTitle>{currentAccount.nickname}</ItemTitle>
-          <ForwardRight />
-        </ItemWrap>
-      </ItemView>
-      <ItemView
-        style={[commonStyles.topBorder1px, styles.nestLine]}
-        onPress={() => {
-          goPages('gender');
-        }}>
-        <ItemTitle>性别</ItemTitle>
-        <ItemWrap>
-          <GenderDropdown />
-          <ForwardRight />
-        </ItemWrap>
-      </ItemView>
+      <View style={styles.contentBlank} />
 
-      <ItemView
-        style={[commonStyles.topBorder1px, commonStyles.bottomBorder1px, styles.nestLine]}
-        onPress={() => {
-          goPages('birthday');
-        }}>
-        <ItemTitle>生日</ItemTitle>
-        <ItemWrap>
-          <ItemTitle>{currentAccount.birthday}</ItemTitle>
-          <ForwardRight />
+      <Pressable style={styles.itemWrap} onPress={() => goPages('avatar')}>
+        <Text style={styles.itemTitle}>头像</Text>
+        <FastImg
+          source={{uri: currentAccount.avatar_url}}
+          style={{...styles.itemContent, ...styles.avator}}
+        />
+        <ForwardRight />
+      </Pressable>
+      <View style={styles.bottomLine} />
 
-          <DateTimePickerModal
-            isVisible={birthdayVisible}
-            mode="date"
-            locale={'zh_CN'}
-            date={birthday ? new Date(birthday) : new Date()}
-            onConfirm={value => {
-              setBirthdayData(value);
-            }}
-            onCancel={() => {
-              setBirthdayVisible(false);
-            }}
-            cancelTextIOS={'取消'}
-            confirmTextIOS={'确认'}
-            headerTextIOS={'选择生日'}
+      <Pressable style={styles.itemWrap} onPress={() => goPages('background_img')}>
+        <Text style={styles.itemTitle}>背景图</Text>
+        <FastImg
+          source={{uri: currentAccount.background_img_url}}
+          style={{...styles.itemContent, ...styles.bgCover}}
+        />
+        <ForwardRight />
+      </Pressable>
+
+      <View style={styles.contentBlank} />
+
+      <Pressable style={styles.itemWrap} onPress={() => goPages('nickname')}>
+        <Text style={styles.itemTitle}>昵称</Text>
+        <Text style={styles.itemContent}>{currentAccount.nickname}</Text>
+        <ForwardRight />
+      </Pressable>
+      <View style={styles.bottomLine} />
+
+      <Pressable style={styles.itemWrap} onPress={() => goPages('gender')}>
+        <Text style={styles.itemTitle}>性别</Text>
+        <Pressable>
+          <RNPickerSelect
+            onValueChange={value => setGenderValue(value)}
+            fixAndroidTouchableBug
+            placeholder={{label: '请选择', value: '', color: 'gray'}}
+            value={gender}
+            doneText={'完成'}
+            items={[
+              {label: '男', value: 'man'},
+              {label: '女', value: 'woman'},
+              {label: '不显示', value: 'other'},
+            ]}
           />
-        </ItemWrap>
-      </ItemView>
-      <ItemView
-        style={{...commonStyles.bottomBorder1px}}
-        onPress={() => {
-          goPages('intro');
-        }}>
-        <ItemTitle numberOfLines={1}>简介</ItemTitle>
-        <ItemWrap style={{maxWidth: 200}}>
-          <ItemTitle numberOfLines={1}>{currentAccount.intro}</ItemTitle>
-          <ForwardRight />
-        </ItemWrap>
-      </ItemView>
+        </Pressable>
+        <ForwardRight />
+      </Pressable>
+      <View style={styles.bottomLine} />
+
+      <Pressable style={styles.itemWrap} onPress={() => goPages('birthday')}>
+        <Text style={styles.itemTitle}>生日</Text>
+        <Text style={styles.itemContent}>{currentAccount.birthday}</Text>
+        <ForwardRight />
+      </Pressable>
+      <View style={styles.bottomLine} />
+
+      <Pressable style={styles.itemWrap} onPress={() => goPages('intro')}>
+        <Text style={styles.itemTitle} numberOfLines={1}>
+          简介
+        </Text>
+        <Text style={styles.itemContent} numberOfLines={1}>
+          {currentAccount.intro}
+        </Text>
+        <ForwardRight />
+      </Pressable>
+
+      <DateTimePickerModal
+        isVisible={birthdayVisible}
+        mode="date"
+        locale="zh_CN"
+        date={birthday ? new Date(birthday) : new Date()}
+        onConfirm={value => setBirthdayData(value)}
+        onCancel={() => setBirthdayVisible(false)}
+        cancelTextIOS="取消"
+        confirmTextIOS="确认"
+        headerTextIOS="选择生日"
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  nestLine: {
+  bottomLine: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#ebebeb',
     marginLeft: 14,
-    paddingLeft: 0,
+  },
+  contentBlank: {
+    height: 9,
+    backgroundColor: '#FAFAFA',
+  },
+  itemWrap: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+  },
+  itemTitle: {
+    marginRight: 'auto',
+  },
+  itemContent: {
+    maxWidth: 300,
+    textAlign: 'right',
+  },
+  avator: {
+    width: 35,
+    height: 35,
+    borderRadius: 20,
+  },
+  bgCover: {
+    width: 85,
+    height: 30,
   },
 });
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    // paddingVertical: 12,
-    // paddingHorizontal: 10,
-    // borderWidth: 1,
-    // borderColor: 'gray',
-    // borderRadius: 4,
-    color: 'black',
-    fontSize: 14,
-    justifyContent: 'center',
-    paddingTop: 5,
-  },
-  inputAndroid: {
-    fontSize: 10,
-    // paddingHorizontal: 10,
-    // paddingVertical: 8,
-    // borderWidth: StyleSheet.hairlineWidth,
-    // borderColor: 'black',
-    // borderRadius: 8,
-    width: 150,
-    flex: 1,
-    marginLeft: 100,
-    // justifyContent: 'center',
-    color: 'black',
-    backgroundColor: 'white',
-    marginRight: -100,
-    paddingRight: 0, // to ensure the text is never behind the icon
-  },
-});
-
-const ItemWrap = styled(View)`
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-`;
-
-const ItemView = styled(Pressable)`
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 14px;
-  padding-right: 14px;
-  color: rgba(0, 0, 0, 1);
-`;
-
-const ItemTitle = styled(Text)`
-  font-size: 14px;
-  font-weight: 400;
-`;
 
 export default MediasPicker(AccountContent);

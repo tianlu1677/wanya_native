@@ -73,6 +73,10 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const editInfo = () => {
+    navigation.navigate('AccountContent');
+  };
+
   const createChat = async () => {
     const params = {receiver_id: account.id};
     const res = await getChatGroupsDetail(params);
@@ -187,25 +191,31 @@ const AccountDetail = ({navigation, route}) => {
             <Text style={styles.introWrap} numberOfLines={3} onPress={() => setShowModal(true)}>
               {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'}
             </Text>
-            {!isSelf ? (
-              <View style={styles.headerBtnWrap}>
-                <Text
-                  style={[
-                    styles.headerBtn,
-                    account.followed ? styles.unfollowed : styles.followBtn,
-                  ]}
-                  onPress={onFollow}>
-                  {account.followed && account.following
-                    ? '互相关注'
-                    : account.followed
-                    ? '已关注'
-                    : '关注'}
+            <View style={styles.headerBtnWrap}>
+              {isSelf ? (
+                <Text style={[styles.headerBtn, styles.editBth]} onPress={editInfo}>
+                  编辑个人资料
                 </Text>
-                <Text style={[styles.headerBtn, styles.chatBtn]} onPress={createChat}>
-                  私聊
-                </Text>
-              </View>
-            ) : null}
+              ) : (
+                <>
+                  <Text
+                    style={[
+                      styles.headerBtn,
+                      account.followed ? styles.unfollowed : styles.followBtn,
+                    ]}
+                    onPress={onFollow}>
+                    {account.followed && account.following
+                      ? '互相关注'
+                      : account.followed
+                      ? '已关注'
+                      : '关注'}
+                  </Text>
+                  <Text style={[styles.headerBtn, styles.chatBtn]} onPress={createChat}>
+                    私聊
+                  </Text>
+                </>
+              )}
+            </View>
           </View>
         </View>
       </View>
@@ -394,6 +404,12 @@ const styles = StyleSheet.create({
   },
   unfollowed: {
     flex: 1,
+    color: '#3d3d3d',
+    backgroundColor: '#fff',
+    borderColor: '#bdbdbd',
+  },
+  editBth: {
+    width: '100%',
     color: '#3d3d3d',
     backgroundColor: '#fff',
     borderColor: '#bdbdbd',
