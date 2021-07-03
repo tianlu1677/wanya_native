@@ -24,11 +24,12 @@ const HeaderLeft = props => {
 
 const AuthHeaderLeft = props => {
   const {image} = props;
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   return (
     <Pressable
       hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-      onPress={() => navigation.goBack()}>
+      // onPress={() => navigation.goBack()}
+    >
       <FastImg source={image} style={{width: 9, height: 15}} />
     </Pressable>
   );
@@ -72,7 +73,7 @@ export const AuthStackScreen = props => {
         },
         headerLeftContainerStyle: {paddingLeft: 15},
         headerRightContainerStyle: {paddingRight: 15},
-        // headerLeft: () => AuthHeaderLeft({...props, image: BackWhite}),
+        headerLeft: () => AuthHeaderLeft({...props, image: BackWhite}),
       })}>
       {AuthRouters.map(route => {
         const {name, options, component: Component} = route;

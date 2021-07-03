@@ -115,10 +115,14 @@ import PasswordLogin from '@/pages/sessions/password-login';
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
 
-import AccountInfoMobile from '@/pages/auth-login/account-info/account-info-mobile';
-import AccountInfoGender from '@/pages/auth-login/account-info/account-info-gender';
-import AccountInfoLabel from '@/pages/auth-login/account-info/account-info-label';
-import AccountInfoInvite from '@/pages/auth-login/account-info/account-info-invite';
+import RegisterInfo from '@/pages/auth-login/register/register-info';
+import RegisterInfoGender from '@/pages/auth-login/register/register-info-gender';
+import RegisterInfoLabel from '@/pages/auth-login/register/register-info-label';
+import RegisterInfoInvite from '@/pages/auth-login/register/register-info-invite';
+
+import LoginPasswordCode from '@/pages/auth-login/login-password-code';
+import LoginPhoneCode from '@/pages/auth-login/login-phone-code';
+import LoginVerifyCode from '@/pages/auth-login/login-verify-code';
 
 // 一键登录页面
 import OneLogin from '@/pages/sessions/one-login';
@@ -280,10 +284,14 @@ const authRouter = [
   {name: 'InviteLogin', component: InviteLogin, options: {title: '输入邀请码'}},
   {name: 'InviteDetail', component: InviteDetail, options: {title: '邀请码'}},
   {name: 'AdminPhoneLogin', component: AdminPhoneLogin},
-  {name: 'AccountInfoMobile', component: AccountInfoMobile},
-  {name: 'AccountInfoGender', component: AccountInfoGender},
-  {name: 'AccountInfoLabel', component: AccountInfoLabel},
-  {name: 'AccountInfoInvite', component: AccountInfoInvite},
+
+  {name: 'RegisterInfo', component: RegisterInfo},
+  {name: 'RegisterInfoGender', component: RegisterInfoGender},
+  {name: 'RegisterInfoLabel', component: RegisterInfoLabel},
+  {name: 'RegisterInfoInvite', component: RegisterInfoInvite},
+  {name: 'LoginPasswordCode', component: LoginPasswordCode},
+  {name: 'LoginPhoneCode', component: LoginPhoneCode},
+  {name: 'LoginVerifyCode', component: LoginVerifyCode},
 ];
 
 export const MainRouters = [

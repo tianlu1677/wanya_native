@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
-import {useDispatch} from 'react-redux';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import cStyles from '../style';
 
@@ -16,7 +15,6 @@ const AddDefaultCheck = data => {
 };
 
 const AccountInfoLabel = ({navigation}) => {
-  const dispatch = useDispatch();
   const {totalLabelList} = useSelector(state => state.home);
   const [labelList, setLabelList] = useState(AddDefaultCheck(totalLabelList));
 
@@ -31,12 +29,15 @@ const AccountInfoLabel = ({navigation}) => {
   };
 
   const handleNextClick = () => {
-    console.log(navigation);
-    navigation.navigate('AccountInfoInvite');
+    if (allChecked.length === 0) {
+      return false;
+    }
+    console.log('params', allChecked.map(item => item.title).join());
+    navigation.navigate('RegisterInfoInvite');
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[cStyles.wrapper, styles.wrapper]}>
       <ScrollView>
         <Text style={cStyles.infoTitle}>选择性别和生日</Text>
         <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
@@ -63,12 +64,13 @@ const AccountInfoLabel = ({navigation}) => {
           })}
         </View>
       </ScrollView>
+
       <Text
         onPress={handleNextClick}
         style={[
           cStyles.nextStep,
-          styles.complete,
-          allChecked.length > 0 ? cStyles.active : cStyles.default,
+          styles.nextBtn,
+          allChecked.length > 0 ? cStyles.nextStepActive : cStyles.nextStepNormal,
         ]}>
         完成 {allChecked.length}/5
       </Text>
@@ -78,22 +80,21 @@ const AccountInfoLabel = ({navigation}) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#000',
-    paddingTop: 10,
-    paddingBottom: 40,
+    paddingHorizontal: 0,
   },
   labelContent: {
-    marginLeft: VWValue(52),
-    marginRight: VWValue(52 - 13),
+    marginLeft: VWValue(50),
+    marginRight: VWValue(50 - 13),
+    marginTop: RFValue(40),
+    marginBottom: VWValue(35),
   },
   categoryWapper: {
-    marginBottom: RFValue(23),
+    marginBottom: RFValue(28),
   },
   category: {
-    color: '#fff',
     fontSize: 16,
+    color: '#fff',
+    fontWeight: '600',
   },
   labelWrapper: {
     flexWrap: 'wrap',
@@ -106,10 +107,10 @@ const styles = StyleSheet.create({
     lineHeight: RFValue(29),
     paddingHorizontal: VWValue(12),
     borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 15,
+    borderRadius: 18,
     overflow: 'hidden',
-    marginBottom: RFValue(13),
-    marginRight: VWValue(14),
+    marginRight: VWValue(13),
+    marginBottom: VWValue(13),
   },
   labelActive: {
     color: '#fff',
@@ -121,9 +122,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     borderColor: '#BDBDBD',
   },
-  complete: {
+  nextBtn: {
     position: 'absolute',
-    bottom: 15,
+    bottom: RFValue(15),
   },
 });
 

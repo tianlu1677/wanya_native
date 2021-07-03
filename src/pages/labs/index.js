@@ -109,14 +109,14 @@ const LabIndex = props => {
   };
   const loginWeibo = () => {
     console.log('shareweibo');
-    ShareUtil.auth(1, (code,result,message) => {
+    ShareUtil.auth(1, (code, result, message) => {
       console.log('res', code, result, message);
     });
   };
 
   const loginQQ = () => {
     console.log('shareQQ');
-    ShareUtil.auth(0, (code,result,message) => {
+    ShareUtil.auth(0, (code, result, message) => {
       console.log('res', code, result, message);
     });
   };
@@ -184,8 +184,17 @@ const LabIndex = props => {
           <Pressable onPress={() => clickAna()}>
             <Text style={styles.text}>点击统计</Text>
           </Pressable>
-          <Pressable onPress={() => {navigation.navigate('OneLogin')}}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('OneLogin');
+            }}>
             <Text style={styles.text}>去一键登录</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('LoginVerifyCode');
+            }}>
+            <Text style={styles.text}>跳转注册页面</Text>
           </Pressable>
         </View>
       </ScrollView>

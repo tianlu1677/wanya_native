@@ -1,17 +1,13 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable, StatusBar} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import moment from 'moment';
-import {dispatchCurrentAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
-
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
 import FastImg from '@/components/FastImg';
-import {syncAccountInfo} from '@/api/mine_api';
-import {SCREEN_WIDTH} from '@/utils/navbar';
 
 import MaleImg from '@/assets/login/male.png';
 import ActiveMaleImg from '@/assets/login/male-active.png';
@@ -20,16 +16,14 @@ import ActiveFemaleImg from '@/assets/login/female-active.png';
 
 import cStyles from '../style';
 
-const AccountInfoGender = ({navigation}) => {
+const RegisterInfoGender = ({navigation}) => {
   const dispatch = useDispatch();
   const {currentAccount} = useSelector(state => state.account);
   const [visible, setVisible] = useState(false);
-  const [gender, setGender] = useState('');
-  const [birthday, setBirthday] = useState(currentAccount.birthday);
+  const [gender, setGender] = useState(null);
+  const [birthday, setBirthday] = useState(currentAccount.birthday || null);
 
   const isCanClick = birthday && gender;
-
-  console.log('currentAccount', currentAccount);
 
   const handleClick = () => setVisible(true);
 
@@ -42,8 +36,12 @@ const AccountInfoGender = ({navigation}) => {
   };
 
   const handleNextClick = () => {
-    if (!isCanClick) return false;
-    navigation.navigate('AccountInfoLabel');
+    if (!isCanClick) {
+      return false;
+    }
+    console.log('params', {gender, birthday});
+
+    navigation.navigate('RegisterInfoLabel');
   };
 
   const loadData = async () => {
@@ -56,7 +54,7 @@ const AccountInfoGender = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.wrapper}>
+    <View style={cStyles.wrapper}>
       <Text style={cStyles.infoTitle}>选择性别和生日</Text>
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
       <View style={styles.maleWrapper}>
@@ -85,21 +83,22 @@ const AccountInfoGender = ({navigation}) => {
                 <IconFont name="yixuan" size={15} color="#ff2b57" />
               </View>
             )}
-            {/* <View style={styles.check}>
-              <IconFont name="yixuan" size={15} color="#ff2b57" />
-            </View> */}
           </View>
           <Text style={styles.maleText}>男</Text>
         </Pressable>
       </View>
-      <Pressable style={styles.inputWrapper} onPress={handleClick}>
+      <Pressable style={[cStyles.inputWrap, styles.inputContent]} onPress={handleClick}>
         <Text style={styles.inputText}>{birthday || '选择你的生日'}</Text>
-        <IconFont name="arrow-right" size={14} color="#BDBDBD" />
+        <IconFont name="arrow-right" size={10} color="#BDBDBD" />
       </Pressable>
 
       <Text
         onPress={handleNextClick}
-        style={[cStyles.nextStep, isCanClick ? cStyles.active : cStyles.default]}>
+        style={[
+          cStyles.nextStep,
+          styles.nextBtn,
+          isCanClick ? cStyles.nextStepActive : cStyles.nextStepNormal,
+        ]}>
         下一步
       </Text>
 
@@ -119,44 +118,9 @@ const AccountInfoGender = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: '#000',
-    paddingHorizontal: VWValue(52),
-    paddingTop: 10,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 23,
-    color: '#fff',
-    fontWeight: '600',
-  },
-  text: {
-    fontSize: 12,
-    color: '#fff',
-    marginTop: VWValue(14),
-    marginBottom: VWValue(40),
-  },
-  avator: {
-    width: VWValue(75),
-    height: VWValue(75),
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: RFValue(50),
-    borderColor: '#fff',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: VWValue(40),
-  },
-  inputContent: {
-    width: '100%',
-    height: RFValue(47),
-    fontSize: 15,
-    color: '#fff',
-    borderBottomColor: '#353535',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
   maleWrapper: {
     flexDirection: 'row',
+    marginTop: VWValue(40),
   },
   maleInfo: {
     justifyContent: 'center',
@@ -186,29 +150,19 @@ const styles = StyleSheet.create({
     bottom: -VWValue(8),
     left: VWValue(30),
   },
-  inputWrapper: {
-    width: SCREEN_WIDTH - VWValue(52 * 2),
-    height: RFValue(47),
+  inputContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: RFValue(25),
-    borderBottomColor: '#353535',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: RFValue(25),
   },
   inputText: {
     fontSize: 16,
     color: '#BDBDBD',
   },
-  active: {
-    color: '#fff',
-    backgroundColor: '#ff2242',
-  },
-  default: {
-    color: '#727272',
-    backgroundColor: '#3c3c3c',
+  nextBtn: {
+    marginTop: RFValue(25),
   },
 });
 
-export default AccountInfoGender;
+export default RegisterInfoGender;
