@@ -215,117 +215,6 @@ const iosDialogConfig = {
 };
 
 const OneLogin = ({navigation, route}) => {
-  // const [inviteCode, setInviteCode] = useState('');
-  const [canShowAgree, setCanShowAgree] = useState(false);
-  const dispatch = useDispatch();
-
-  const phoneLogin = () => {
-    navigation.navigate('PasswordLogin');
-  };
-  // 跳转逻辑
-  const verifyLoginStep = async (userInfoRes, loginType = 'wechatLogin') => {
-    if (userInfoRes.error) {
-      Toast.showError(userInfoRes.error);
-      console.log('error', userInfoRes.error);
-      return;
-    }
-    let accountInfo = userInfoRes.account;
-    console.log('accountInfo', accountInfo);
-    await Helper.setData('socialToken', accountInfo.token);
-    Toast.hide();
-    // 有手机且已验证码，跳转到首页
-    if (accountInfo.had_phone && accountInfo.had_invited) {
-      await Helper.setData('auth_token', accountInfo.token);
-      await dispatch(dispatchSetAuthToken(accountInfo.token));
-      await dispatch(dispatchCurrentAccount());
-
-      // navigation.reset({
-      //   index: 0,
-      //   routes: [{name: 'Recommend'}],
-      // });
-    }
-    // 没有手机跳转到手机
-    if (!accountInfo.had_phone) {
-      navigation.navigate('PhoneLogin', {loginType: loginType});
-      return;
-    }
-    // 有手机，没有验证码跳转到验证码
-    if (accountInfo.had_phone && !accountInfo.had_invited) {
-      navigation.navigate('InviteLogin');
-      return;
-    }
-  };
-  const wechatLogin = async () => {
-    // navigation.navigate('PhoneLogin')
-    // return
-    try {
-      const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
-      let signData = {
-        code: codeRes.code,
-        app_id: codeRes.appid || 'wx17b69998e914b8f0',
-        // source: 'vanyah_app'
-      };
-      const userInfoRes = await appWechatSignIn(signData);
-      await verifyLoginStep(userInfoRes);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  // 苹果登录的请求
-  const onAppleButtonPress = async updateCredentialStateForUser => {
-    // console.warn('Beginning Apple Authentication');
-    // start a login request
-    // {"authorizationCode": "c3c7f5d477b0e41ecbfb10d45f33e4c80.0.nruwt.zrZ-xHe1Pop43QMUFWxotw",
-    // "authorizedScopes": [], "email": null,
-    // "fullName": {"familyName": null, "givenName": null, "middleName": null, "namePrefix": null, "nameSuffix": null, "nickname": null},
-    // "identityToken": "eyJraWQiOiI4NkQ4OEtmIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLnZhbnlhaC5pb3MiLCJleHAiOjE2MDQwNzAzMTEsImlhdCI6MTYwMzk4MzkxMSwic3ViIjoiMDAxNDYzLjQxMDkyOGY2ZDA0MDQ2Y2I5MWI4OWY0MzAwMjc2Y2JjLjE0NTkiLCJub25jZSI6IjZmNDdhZTUzMzdlNzgzYmVkYTJkOTJlYWVjMTg3ZDYxZjA4ZjMzODVkMmI0MTk4YzViMmZmN2I1MTEyYjdmMzYiLCJjX2hhc2giOiJieE5aVXcybHM4eVJGZlhkVmpsUUtBIiwiZW1haWwiOiJ0aWFubHUxNjc3QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjoidHJ1ZSIsImF1dGhfdGltZSI6MTYwMzk4MzkxMSwibm9uY2Vfc3VwcG9ydGVkIjp0cnVlfQ.bu8WUXxSuNNc7XLB6jBulrn2kb-PYdZ5Zv6a9SCI7OX_7h0O5ROzOZa28POf_FHQxYqBeayEGOqe5kMMBOXZNY4Uv2pCxPZsr9XD1Fv5PttExX8g5lyMFYkoFj-HHP_eyzklIisAXpk5GTS7s0Wb0wg4Ri2jnP67PRNkzRHCS-qoWM9rzB8Vj_5UOsjejeYX0b67CazyNgAC0Jn38tLzGI1ZP8vTdtOuyjRa_IjJVtvRy6lUe7Tk5LKcq9Y2TCe-HSCwT9g5wncV-zZef8Et2GgJi0xqpnWPZOE-ZxVYD9cOSj1JzSR-UGFoc1w0QMmcwwzwMB26eXvqXSqYlm10nw", "nonce": ".NEl7LGpr8DjnjCeb4QjpRyCKJULJJ2Y",
-    // "realUserStatus": 1, "state": null, "user": "001463.410928f6d04046cb91b89f4300276cbc.1459"
-    // }
-    try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      });
-
-      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
-      const {
-        user,
-        email,
-        nonce,
-        fullName,
-        identityToken,
-        realUserStatus /* etc */,
-      } = appleAuthRequestResponse;
-
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user
-      );
-      Toast.showError('正在登录中...');
-      // realUserStatus
-      // use credentialState response to ensure the user is authenticated
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        const data = {
-          email: email,
-          user_id: user,
-          identity_token: identityToken,
-          nickname: fullName.nickname || fullName.failyName,
-        };
-        console.log('post', data);
-        const accountInfo = await appAppleSignIn(data);
-        await verifyLoginStep(accountInfo, 'appleLogin');
-      } else {
-        Toast.showError('您的苹果登录已失效，请重新尝试');
-      }
-    } catch (error) {
-      if (error.code === appleAuth.Error.CANCELED) {
-        Toast.showError('您取消了苹果登录');
-      } else {
-        Toast.showError('您的苹果登录失败, 请稍后重试。');
-      }
-    }
-  };
-
   const initParams = {
     time: 5000,
     appKey: '7cd75000d5932000b3d4ca59', //仅iOS
@@ -357,12 +246,16 @@ const OneLogin = ({navigation, route}) => {
   JVerification.addLoginEventListener(async result => {
     console.log('LoginListener:' + JSON.stringify(result));
     // 获取到登录的token了, 返回值中会返回手机号。再用此手机号注册新用户
+    const code = result.code
     if(result.code === 6000) {
       createAlert('isInitSuccess:' + JSON.stringify(result));
       const res = await jverifyPhone({jverify_phone_token: result.content})
       console.log('res', res);
       // res {"answer": {"phone": "18612300141"}}
+    } else if(code == '') {
+
     }
+
   });
 
   // JVerification.addUncheckBoxEventListener((result) => {
@@ -372,12 +265,17 @@ const OneLogin = ({navigation, route}) => {
   useEffect(() => {
     JVerification.init(initParams, result => {
       console.log('init:' + JSON.stringify(result));
-      // if(result.code === 8000) {
-      //   // JVerification.preLogin(5000, result => {
-      //   //   console.log('preLogin:' + JSON.stringify(result));
-      //   // });
-      // }
-      // JVerification.login(true)
+      if (Platform.OS === 'android') {
+        JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
+      } else {
+        JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
+      }
+      if(result.code === 8000) {
+        JVerification.preLogin(5000, result => {
+          console.log('preLogin:' + JSON.stringify(result));
+          JVerification.login(false)
+        });
+      }
     })
     JVerification.setLoggerEnable(true);
 
@@ -393,115 +291,106 @@ const OneLogin = ({navigation, route}) => {
   //
   return (
     <View style={{backgroundColor: 'black'}}>
-      <StatusBar barStyle={'light-content'} translucent backgroundColor="transparent" />
+      {/*<StatusBar barStyle={'light-content'} translucent backgroundColor="transparent" />*/}
 
       <ImageBackground
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
-        <Button
-          title="isInitSuccess"
-          onPress={() =>
-            JVerification.isInitSuccess(result => {
-              console.log('isInitSuccess:' + JSON.stringify(result));
-              createAlert('isInitSuccess:' + JSON.stringify(result));
-            })
-          }
-        />
+        {/*<Button*/}
+        {/*  title="isInitSuccess"*/}
+        {/*  onPress={() =>*/}
+        {/*    JVerification.isInitSuccess(result => {*/}
+        {/*      console.log('isInitSuccess:' + JSON.stringify(result));*/}
+        {/*      createAlert('isInitSuccess:' + JSON.stringify(result));*/}
+        {/*    })*/}
+        {/*  }*/}
+        {/*/>*/}
 
-        <Button
-          title="checkLoginEnable"
-          onPress={() =>
-            JVerification.checkLoginEnable(result => {
-              console.log('checkLoginEnable:' + JSON.stringify(result));
-              createAlert('checkLoginEnable:' + JSON.stringify(result));
-            })
-          }
-        />
+        {/*<Button*/}
+        {/*  title="checkLoginEnable"*/}
+        {/*  onPress={() =>*/}
+        {/*    JVerification.checkLoginEnable(result => {*/}
+        {/*      console.log('checkLoginEnable:' + JSON.stringify(result));*/}
+        {/*      createAlert('checkLoginEnable:' + JSON.stringify(result));*/}
+        {/*    })*/}
+        {/*  }*/}
+        {/*/>*/}
 
-        <Button title='getToken'
-                onPress={() => JVerification.getToken(5000, result => {
-                  console.log('getToken:' + JSON.stringify(result));
-                  createAlert('getToken:' + JSON.stringify(result));
+        {/*<Button title='getToken'*/}
+        {/*        onPress={() => JVerification.getToken(5000, result => {*/}
+        {/*          console.log('getToken:' + JSON.stringify(result));*/}
+        {/*          createAlert('getToken:' + JSON.stringify(result));*/}
 
-                })}/>
+        {/*        })}/>*/}
 
-        <Button
-          title="preLogin"
-          onPress={() => {
-            JVerification.clearPreLoginCache();
-            JVerification.preLogin(5000, result => {
-              console.log('preLogin:' + JSON.stringify(result));
-              createAlert('preLogin:' + JSON.stringify(result));
-            });
-          }}
-        />
+        {/*<Button*/}
+        {/*  title="preLogin"*/}
+        {/*  onPress={() => {*/}
+        {/*    JVerification.clearPreLoginCache();*/}
+        {/*    JVerification.preLogin(5000, result => {*/}
+        {/*      console.log('preLogin:' + JSON.stringify(result));*/}
+        {/*      createAlert('preLogin:' + JSON.stringify(result));*/}
+        {/*    });*/}
+        {/*  }}*/}
+        {/*/>*/}
 
-        <Button
-          title="addLoginCustomConfig"
-          onPress={() => {
-            if (Platform.OS === 'android') {
-              JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
-            } else {
-              JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
-            }
-          }}
-        />
+        {/*<Button*/}
+        {/*  title="addLoginCustomConfig"*/}
+        {/*  onPress={() => {*/}
+        {/*    if (Platform.OS === 'android') {*/}
+        {/*      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);*/}
+        {/*    } else {*/}
+        {/*      JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);*/}
+        {/*    }*/}
+        {/*  }}*/}
+        {/*/>*/}
 
-        <Button
-          title="自定义弹窗授权页"
-          onPress={() => {
-            if (Platform.OS == 'android') {
-              JVerification.addLoginCustomConfig(androidDialogConfig, customViewParams);
-            } else {
-              JVerification.addLoginCustomConfig(iosDialogConfig, customViewParams);
-            }
-          }}
-        />
+        {/*<Button*/}
+        {/*  title="自定义弹窗授权页"*/}
+        {/*  onPress={() => {*/}
+        {/*    if (Platform.OS == 'android') {*/}
+        {/*      JVerification.addLoginCustomConfig(androidDialogConfig, customViewParams);*/}
+        {/*    } else {*/}
+        {/*      JVerification.addLoginCustomConfig(iosDialogConfig, customViewParams);*/}
+        {/*    }*/}
+        {/*  }}*/}
+        {/*/>*/}
 
-        <Button title="login" onPress={() => JVerification.login(true)} />
+        {/*<Button title="login" onPress={() => JVerification.login(true)} />*/}
 
-        <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
-          <Pressable
-            style={styles.ruleWrapper}
-            hitSlop={{left: 10, right: 10, top: 30}}
-            onPress={() => {
-              if (!IsIos) {
-                setCanShowAgree(!canShowAgree);
-              }
-            }}>
-            <View style={styles.checkbox}>
-              {!canShowAgree && <IconFont name="yixuan" size={16} color="red" />}
-            </View>
-          </Pressable>
+        {/*<View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>*/}
+        {/*  /!*<Pressable*!/*/}
+        {/*  /!*  style={styles.ruleWrapper}*!/*/}
+        {/*  /!*  hitSlop={{left: 10, right: 10, top: 30}}*!/*/}
+        {/*  /!*  onPress={() => {*!/*/}
+        {/*  /!*    if (!IsIos) {*!/*/}
+        {/*  /!*      setCanShowAgree(!canShowAgree);*!/*/}
+        {/*  /!*    }*!/*/}
+        {/*  /!*  }}>*!/*/}
+        {/*  /!*  <View style={styles.checkbox}>*!/*/}
+        {/*  /!*    {!canShowAgree && <IconFont name="yixuan" size={16} color="red" />}*!/*/}
+        {/*  /!*  </View>*!/*/}
+        {/*  /!*</Pressable>*!/*/}
 
-          <Text style={styles.textContent}>我已阅读并同意</Text>
-          <Pressable
-            onPress={() => {
-              goPages('user');
-            }}
-            hitSlop={{top: 10, bottom: 10}}>
-            <Text style={styles.textContent}>《用户协议》</Text>
-          </Pressable>
-          <Text style={styles.textContent}>和</Text>
-          <Pressable
-            onPress={() => {
-              goPages('private');
-            }}
-            hitSlop={{top: 10, bottom: 10}}>
-            <Text style={styles.textContent}>《隐私政策》</Text>
-          </Pressable>
-        </View>
+        {/*  <Text style={styles.textContent}>我已阅读并同意</Text>*/}
+        {/*  <Pressable*/}
+        {/*    onPress={() => {*/}
+        {/*      goPages('user');*/}
+        {/*    }}*/}
+        {/*    hitSlop={{top: 10, bottom: 10}}>*/}
+        {/*    <Text style={styles.textContent}>《用户协议》</Text>*/}
+        {/*  </Pressable>*/}
+        {/*  <Text style={styles.textContent}>和</Text>*/}
+        {/*  <Pressable*/}
+        {/*    onPress={() => {*/}
+        {/*      goPages('private');*/}
+        {/*    }}*/}
+        {/*    hitSlop={{top: 10, bottom: 10}}>*/}
+        {/*    <Text style={styles.textContent}>《隐私政策》</Text>*/}
+        {/*  </Pressable>*/}
+        {/*</View>*/}
       </ImageBackground>
-
-      {!IsIos && (
-        <PolicyModal
-          canShowAgree={canShowAgree}
-          canShowAgreeFunc={status => {
-            setCanShowAgree(status);
-          }}
-        />
-      )}
     </View>
   );
 };
