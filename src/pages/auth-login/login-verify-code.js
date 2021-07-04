@@ -80,7 +80,13 @@ const LoginVerifyCode = ({navigation, route}) => {
       <Text style={cStyles.infoText}>
         验证码已发送至 +86 {phone.substr(0, 3)}****{phone.substr(7, phone.length)}
       </Text>
-      <CodeComponent style={styles.codeWrapper} getCode={code => setCodeData(code)} />
+
+      <CodeComponent
+        style={styles.codeWrapper}
+        getCode={code => setCodeData(code)}
+        keyboardType="numeric"
+        textContentType="oneTimeCode"
+      />
       <Text
         onPress={handleNextClick}
         style={[
