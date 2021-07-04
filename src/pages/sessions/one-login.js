@@ -34,30 +34,46 @@ import {RFValue} from '@/utils/response-fontsize';
 //一键登录页面自定义配置，需要在调用login之前设置
 
 const customUIWithConfigiOS = {
+  logoHidden: true,
+  statusBarHidden: true,
+  statusBarMode: 'dark',
   showWindow: false,
   navReturnHidden: false,
+  navHidden: true,
+  backgroundImage: 'bg.png',
   //logo
-  logoImage: 'umcsdk_mobile_logo',
-  logoConstraints: [0, -200, 60, 60],
+  // logoImage: 'umcsdk_mobile_logo',
+  // logoConstraints: [0, -200, 60, 60],
   //number
-  numberConstraints: [0, -132, 200, 14],
+  numberConstraints: [0, 30, 200, 14],
+  numberSize: 18,
+  numberColor: 16777215,
   //slogn
-  sloganConstraints: [0, -112, 200, 14],
+  sloganHidden: true,
+  // sloganConstraints: [0, 40, 200, 14],
   //登录按钮
-  logBtnConstraints: [0, -80, 220, 40],
-  loginBtnText: '一键登录good',
-  loginBtnTextColor: '#000',
-  privacyConstraints: [0, 180, 200, 60],
-  checkViewConstraints: [-108, 180, 10, 10],
+  logBtnConstraints: [0, 80, 220, 40],
+  loginBtnText: '同意协议并一键登录',
+  loginBtnTextColor: 16777215, // 白色
+  privacyConstraints: [0, 350, 300, 60],
+  checkViewConstraints: [-108, 350, 10, 10],
   unAgreePrivacyCallBack: true,
   privacyCheckEnable: true,
-  privacyOne: ['隐私条款一', 'https://www.jiguang.cn/about'], //隐私条款一（显示名称和url，请严格按照格式）
-  privacyTwo: ['隐私条款二', 'https://www.jiguang.cn/about'], //隐私条款二（显示名称和url，请严格按照格式）
-  privacyColor: [-16777216, -65536], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
-  privacyText: ['登录即同意1', '和', '、', '并使用本机号码登录'], //隐私条款名称外的文字
-  privacyTextSize: 15, //隐私条款文字字体大小
-  privacyTextGravityMode: 'left', //隐私条款文本对齐方式，目前仅支持 left、center
-  privacyBookSymbolEnable: false, //隐私条款是否显示书名号，默认不显示
+  privacyCheckboxSize: 20,
+  privacyOne: ['用户协议', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
+  privacyTwo: ['隐私政策', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
+  privacyColor: [12434877, 12434877], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
+  privacyText: ['登录即同意', '和', '、', '并使用本机号码登录'], //隐私条款名称外的文字
+  privacyTextSize: 10, //隐私条款文字字体大小
+  privacyTextGravityMode: 'center', //隐私条款文本对齐方式，目前仅支持 left、center
+  privacyBookSymbolEnable: true, //隐私条款是否显示书名号，默认不显示
+
+  privacyWebNavColor: -16777216,                              //协议页导航栏背景颜色
+  privacyWebNavTitle: '服务条款',                              //协议页导航栏标题（仅iOS）
+  privacyWebNavTitleSize: 16,                                 //协议页导航栏标题字体大小
+  privacyWebNavTitleColor: -1,                                //协议页导航栏标题字体颜色
+  privacyWebNavReturnImage: 'close',
+
 };
 const customUIWithConfigAndroid = {
   backgroundImage: '', //背景图
@@ -151,53 +167,52 @@ const customUIWithConfigAndroid = {
 //   // {customViewName: 'customView3', customViewPoint: [20, 400, 150, 30]},
 // ];
 
-const customViewParams = [{customViewName: 'customView1', customViewPoint: [20, 200, 150, 30]}]
+const customViewParams = [{customViewName: 'customView1', customViewPoint: [0, 0, 0, 0]}]
 // {customViewName: 'customView2', customViewPoint: [20, 300, 150, 30]},
 // {customViewName: 'customView3', customViewPoint: [20, 400, 150, 30]},
 
 
-// //安卓授权页弹窗模式
-// const androidDialogConfig = {
-//   privacyNeedClose: true, //弹窗是否需要关闭按钮
-//   privacyCloseTheme: [10, 60, 0, 0], //弹窗关闭按钮偏移量 privacyNeedClose为true时，必须设置它的偏移量
-//   privacyDialogTheme: [300, 400, 0, 0, false], //授权页弹窗模式
-//   privacyNeedStartAnim: true, //设置拉起授权页时是否需要显示默认动画 默认展示
-//   privacyNeedCloseAnim: true, //设置关闭授权页时是否需要显示默认动画 默认展示
-//   navColor: 0xff000000,
-//   loginBtnText: ' 极光认证测试 ',
-//   privacyCheckEnable: false,
-//   // privacyColor: [0xff00f000, 0xff000000],
-//   loginBtnWidth: 40,
-//   privacyOne: ['隐私条款一', 'https://www.jiguang.cn/about'], //隐私条款一（显示名称和url，请严格按照格式）
-//   privacyColor: [-16777216, -65536], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
-//   privacyText: ['登录即同意', '和', '、', '并使用本机号码登录'], //隐私条款名称外的文字
-//   privacyTextSize: 12,
-// };
-// //ios授权页弹窗模式
-// const iosDialogConfig = {
-//   navHidden: true, //导航栏是否隐藏
-//   logoImage: 'umcsdk_mobile_logo', //logo(android默认为应用图标;ios默认无)
-//   logoConstraints: [0, -100, 60, 60], //LOGO图片布局对象
-//   logoHidden: false, //logo是否隐藏
-//   numberConstraints: [0, -42, 200, 14], //号码栏布局对象
-//   sloganConstraints: [0, -20, 200, 14], //slogan布局对象
-//   logBtnConstraints: [0, 20, 220, 50],
-//   loginBtnText: '一键登录', //登录按钮文字
-//   loginBtnTextSize: 16, //登录按钮字体大小
-//   loginBtnTextColor: -16777216, //登录按钮文字颜色
-//   privacyConstraints: [0, 100, 200, 60], //隐私条款布局对象
-//   checkViewConstraints: [-108, 100, 10, 10], //checkBox布局对象
-//
-//   loadingConstraints: [0, 0, 20, 20],
-//   showWindow: true, // 是否弹窗，默认no
-//   //windowBackgroundImage:"bg", // 弹框内部背景图片
-//   windowBackgroundAlpha: 0.3, //弹窗外侧 透明度 0~1.0
-//   windowCornerRadius: 10, //弹窗圆角数值
-//   windowConstraints: [0, 0, 300, 300], //弹窗布局对象
-//   windowCloseBtnImgs: ['windowClose', 'windowClose'], //弹窗close按钮图片 @[普通状态图片，高亮状态图片]
-//   windowCloseBtnConstraints: [-135, -135, 20, 20], //弹窗close按钮布局,
-// };
+//安卓授权页弹窗模式
+const androidDialogConfig = {
+  privacyNeedClose: true, //弹窗是否需要关闭按钮
+  privacyCloseTheme: [10, 60, 0, 0], //弹窗关闭按钮偏移量 privacyNeedClose为true时，必须设置它的偏移量
+  privacyDialogTheme: [300, 400, 0, 0, false], //授权页弹窗模式
+  privacyNeedStartAnim: true, //设置拉起授权页时是否需要显示默认动画 默认展示
+  privacyNeedCloseAnim: true, //设置关闭授权页时是否需要显示默认动画 默认展示
+  navColor: 0xff000000,
+  loginBtnText: ' 极光认证测试 ',
+  privacyCheckEnable: false,
+  // privacyColor: [0xff00f000, 0xff000000],
+  loginBtnWidth: 40,
+  privacyOne: ['隐私条款一', 'https://www.jiguang.cn/about'], //隐私条款一（显示名称和url，请严格按照格式）
+  privacyColor: [-16777216, -65536], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
+  privacyText: ['登录即同意', '和', '、', '并使用本机号码登录'], //隐私条款名称外的文字
+  privacyTextSize: 12,
+};
+//ios授权页弹窗模式
+const iosDialogConfig = {
+  navHidden: true, //导航栏是否隐藏
+  logoImage: 'umcsdk_mobile_logo', //logo(android默认为应用图标;ios默认无)
+  logoConstraints: [0, -100, 60, 60], //LOGO图片布局对象
+  logoHidden: false, //logo是否隐藏
+  numberConstraints: [0, -42, 200, 14], //号码栏布局对象
+  sloganConstraints: [0, -20, 200, 14], //slogan布局对象
+  logBtnConstraints: [0, 20, 220, 50],
+  loginBtnText: '同意协议并一键登录', //登录按钮文字
+  loginBtnTextSize: 16, //登录按钮字体大小
+  loginBtnTextColor: '#FFF', //登录按钮文字颜色
+  privacyConstraints: [0, 100, 200, 60], //隐私条款布局对象
+  checkViewConstraints: [-108, 100, 10, 10], //checkBox布局对象
 
+  loadingConstraints: [0, 0, 20, 20],
+  showWindow: true, // 是否弹窗，默认no
+  //windowBackgroundImage:"bg", // 弹框内部背景图片
+  windowBackgroundAlpha: 0.3, //弹窗外侧 透明度 0~1.0
+  windowCornerRadius: 10, //弹窗圆角数值
+  windowConstraints: [0, 0, 500, 500], //弹窗布局对象
+  windowCloseBtnImgs: ['windowClose', 'windowClose'], //弹窗close按钮图片 @[普通状态图片，高亮状态图片]
+  windowCloseBtnConstraints: [-135, -135, 20, 20], //弹窗close按钮布局,
+};
 
 const OneLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
@@ -362,6 +377,7 @@ const OneLogin = ({navigation, route}) => {
       //   //   console.log('preLogin:' + JSON.stringify(result));
       //   // });
       // }
+      // JVerification.login(true)
     })
     JVerification.setLoggerEnable(true);
 
@@ -432,16 +448,16 @@ const OneLogin = ({navigation, route}) => {
           }}
         />
 
-        {/*<Button*/}
-        {/*  title="自定义弹窗授权页"*/}
-        {/*  onPress={() => {*/}
-        {/*    if (Platform.OS == 'android') {*/}
-        {/*      JVerification.addLoginCustomConfig(androidDialogConfig, customViewParams);*/}
-        {/*    } else {*/}
-        {/*      JVerification.addLoginCustomConfig(iosDialogConfig, customViewParams);*/}
-        {/*    }*/}
-        {/*  }}*/}
-        {/*/>*/}
+        <Button
+          title="自定义弹窗授权页"
+          onPress={() => {
+            if (Platform.OS == 'android') {
+              JVerification.addLoginCustomConfig(androidDialogConfig, customViewParams);
+            } else {
+              JVerification.addLoginCustomConfig(iosDialogConfig, customViewParams);
+            }
+          }}
+        />
 
         <Button title="login" onPress={() => JVerification.login(true)} />
 
