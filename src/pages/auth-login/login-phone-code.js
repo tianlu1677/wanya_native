@@ -6,6 +6,8 @@ import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
 import {sendPhoneCode} from '@/api/phone_sign_api';
+import {SendCodeType} from './meta';
+
 import cStyles from './style';
 
 const md5 = require('md5');
@@ -22,10 +24,10 @@ const LoginPhoneCode = ({navigation}) => {
     }
     const timestamp = new Date().getTime();
     const secret = md5(`phone_${phone}_${timestamp}`);
-    const data = {phone, secret, timestamp, send_code_type: 'login'};
+    const data = {phone, secret, timestamp, send_code_type: SendCodeType.Login};
     const res = await sendPhoneCode(data);
     if (res.status === 'success') {
-      navigation.navigate('LoginVerifyCode', {phone});
+      navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
     } else {
       Toast.showError(res.error);
     }

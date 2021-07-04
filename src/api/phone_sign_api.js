@@ -18,6 +18,7 @@ export async function sendPhoneCode(data = {phone: '', secret: '', timestamp: ''
   return res.data;
 }
 
+// 绑定手机号
 export async function verifyPhoneCode(data = {phone: '', phone_code: ''}) {
   const res = await request({
     url: '/api/v1/phones/verify_phone_code',

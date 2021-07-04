@@ -31,7 +31,11 @@ const AccountInfoInvite = ({navigation}) => {
     <View style={cStyles.wrapper}>
       <Text style={cStyles.infoTitle}>内测邀请</Text>
       <Text style={cStyles.infoText}>顽鸦社区为了更好的使用体验，登录需邀请码</Text>
-      <CodeComponent style={styles.inputContent} getCode={code => setCodeData(code)} />
+      <CodeComponent
+        style={styles.inputContent}
+        getCode={code => setCodeData(code)}
+        keyboardType="default"
+      />
       <Text
         onPress={handleNextClick}
         style={[
