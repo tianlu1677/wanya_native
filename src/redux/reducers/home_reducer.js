@@ -62,6 +62,11 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         categoryList: action.categories,
       };
+    case constants.UPDATE_TOTAL_LABEL_LIST:
+      return {
+        ...state,
+        totalLabelList: action.labelList,
+      };
     case constants.CHANGE_SHARE_STATUS:
       return {
         ...state,

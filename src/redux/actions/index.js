@@ -19,8 +19,10 @@ import {
   ACCOUNT_SAVE_TOKEN,
   UPDATE_SOCIAL_TOKEN,
   UPDATE_SOCIAL_ACCOUNT,
+  UPDATE_TOTAL_LABEL_LIST,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
+import {getLabelList} from '@/api/settings_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {createTopic} from '@/api/topic_api';
 import {getCities} from '@/api/space_api';
@@ -157,6 +159,12 @@ export const dispatchTopicDetail = (topic = {}) => async dispatch => {
 export const dispatchFetchCategoryList = () => async dispatch => {
   const categories = await getCategoryList();
   dispatch({type: UPDATE_CATEGORY_LIST, categories: categories});
+};
+
+// 获取label的数据
+export const dispatchFetchLabelList = () => async dispatch => {
+  const res = await getLabelList();
+  dispatch({type: UPDATE_TOTAL_LABEL_LIST, labelList: res.data.label_list});
 };
 
 export const changeUploadStatus = value => {

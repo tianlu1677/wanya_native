@@ -21,7 +21,6 @@ export async function getCurrentAccountBaseInfo() {
 
 // 更新用户信息
 export async function syncAccountInfo(data = {}) {
-  console.log('更新  传参', data);
   const res = await request({
     url: '/api/v1/mine/accounts/' + data.id,
     method: 'PUT',

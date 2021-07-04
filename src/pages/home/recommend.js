@@ -20,6 +20,7 @@ import {consumerWsUrl} from '@/utils/config';
 import {createConsumer} from '@rails/actioncable';
 import {
   dispatchFetchCategoryList,
+  dispatchFetchLabelList,
   dispatchBaseCurrentAccount,
   dispatchCurrentAccount,
   dispatchFetchUploadTopic,
@@ -196,6 +197,8 @@ const Recommend = props => {
     appearOnline(); // 是否在线
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
+    dispatch(dispatchFetchLabelList());
+
     if (uploadStatus) {
       const upload = (file, cb) => props.uploadVideo(file, cb);
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));

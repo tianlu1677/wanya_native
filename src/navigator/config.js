@@ -73,6 +73,8 @@ import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
 import EditAccountContent from '@/pages/mine/settings/edit-account-content';
+import EditAccountLabel from '@/pages/mine/settings/edit-account-label';
+
 import Feedback from '@/pages/mine/settings/feedback';
 
 // 用户
@@ -231,6 +233,7 @@ const mineRouter = [
   {name: 'Settings', component: Settings, options: {title: '设置'}},
   {name: 'AccountContent', component: AccountContent, options: {title: '编辑个人资料'}},
   {name: 'EditAccountContent', component: EditAccountContent, options: {title: '编辑信息'}},
+  {name: 'EditAccountLabel', component: EditAccountLabel, options: {title: ''}},
   {name: 'Feedback', component: Feedback, options: {title: '反馈'}},
   {name: 'About', component: About, options: {title: '关于顽鸦'}},
 ];

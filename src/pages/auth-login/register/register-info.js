@@ -83,7 +83,7 @@ const RegisterInfo = props => {
 
   const loadData = async () => {
     const res = await getLabelList();
-    dispatch({type: action.TOTAL_LABEL_LIST, value: res.data.label_list});
+    dispatch({type: action.UPDATE_TOTAL_LABEL_LIST, labelList: res.data.label_list});
   };
 
   useEffect(() => {
