@@ -1,42 +1,35 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
+import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
+import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
+import {passwordLogin} from '@/api/sign_api';
+
 import cStyles from './style';
 
 const LoginPasswordCode = ({navigation}) => {
   const dispatch = useDispatch();
-  const [phone, setPhone] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
 
   const [passwordHidden, setPasswordHidden] = useState(true);
-  const isCanClick = password && password.length === 11;
+  const isCanClick = phone.length === 11 && password.length >= 8 && password.length <= 16;
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (!isCanClick) {
       return false;
     }
-    console.log('params', {password});
-    navigation.navigate('RegisterInfoLabel');
+    const params = {phone: phone, password: password};
+    const res = await passwordLogin(params);
+    console.log('pasword login res', res);
+    res.error
+      ? Toast.showError(res.error, {})
+      : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
   };
-
-  const loadData = async () => {
-    const res = await getLabelList();
-    dispatch({type: action.TOTAL_LABEL_LIST, value: res.data.label_list});
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => <Text style={{color: '#BDBDBD'}}>密码登录</Text>,
-  //   });
-  // }, [navigation, phone]);
 
   return (
     <View style={cStyles.wrapper}>
@@ -84,7 +77,7 @@ const LoginPasswordCode = ({navigation}) => {
           styles.nextBtn,
           isCanClick ? cStyles.nextStepActive : cStyles.nextStepNormal,
         ]}>
-        下一步
+        登录
       </Text>
     </View>
   );

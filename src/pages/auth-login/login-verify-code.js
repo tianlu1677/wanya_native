@@ -51,7 +51,6 @@ const LoginVerifyCode = ({navigation, route}) => {
     }
     const params = {phone, phone_code: codeData.join('')};
     const res = await phoneCodeLogin(params);
-
     console.log('code login res', res);
 
     res.error

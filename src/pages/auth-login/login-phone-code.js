@@ -50,7 +50,11 @@ const LoginPhoneCode = ({navigation}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Text style={{color: '#BDBDBD'}}>密码登录</Text>,
+      headerRight: () => (
+        <Text style={{color: '#BDBDBD'}} onPress={() => navigation.navigate('LoginPasswordCode')}>
+          密码登录
+        </Text>
+      ),
     });
   }, [navigation, phone]);
 
