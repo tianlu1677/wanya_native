@@ -45,7 +45,7 @@ const LoginPhoneCode = ({navigation}) => {
   };
 
   useEffect(() => {
-    loadData();
+    // loadData();
   }, []);
 
   useLayoutEffect(() => {

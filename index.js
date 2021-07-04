@@ -33,5 +33,5 @@ React.$Helper = Helper;
 // React.$lodash = require('lodash');
 
 AppRegistry.registerComponent('customView1', () => CustomView1);
-AppRegistry.registerComponent('customView2', () => CustomView2);
-AppRegistry.registerComponent('customView3', () => CustomView3);
+// AppRegistry.registerComponent('customView2', () => CustomView2);
+// AppRegistry.registerComponent('customView3', () => CustomView3);
