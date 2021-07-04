@@ -8,26 +8,14 @@ import {
   ImageBackground,
   Pressable,
   Alert,
-  TouchableHighlight,
 } from 'react-native';
-import {Button} from 'react-native-elements';
-import styled from 'styled-components/native';
 import {useDispatch} from 'react-redux';
-import Helper from '../../utils/helper';
-import * as WeChat from 'react-native-wechat-lib';
-import {appWechatSignIn, appAppleSignIn} from '@/api/sign_api';
 import {jverifyPhone} from '@/api/phone_sign_api';
-import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
+import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
 import {BOTTOM_HEIGHT, SCALE, IsIos, SCREEN_WIDTH} from '@/utils/navbar';
-import {AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
 import Toast from '@/components/Toast';
-import IconFont from '@/iconfont';
-import PolicyModal from '@/components/PolicyModal';
 import JVerification from 'jverification-react-native';
-import CustomView1 from './login-templates/customView1';
-
-import {RFValue} from '@/utils/response-fontsize';
 
 //一键登录页面自定义配置，需要在调用login之前设置
 
@@ -168,6 +156,7 @@ const customUIWithConfigAndroid = {
 const customViewParams = [{customViewName: 'customView1', customViewPoint: [0, 550, SCREEN_WIDTH, 100]}]
 
 const OneLogin = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [canOnePhone, setCanOnePhone] = useState(false);
   const initParams = {
     time: 5000,
@@ -184,10 +173,17 @@ const OneLogin = ({navigation, route}) => {
     console.log('LoginListener:' + JSON.stringify(result));
     // 获取到登录的token了, 返回值中会返回手机号。再用此手机号注册新用户
     const code = result.code;
-    if (result.code === 6000) {
-      createAlert('isInitSuccess:' + JSON.stringify(result));
+    if (code === 6000) {
+      // createAlert('isInitSuccess:' + JSON.stringify(result));
       const res = await jverifyPhone({jverify_phone_token: result.content});
       console.log('res', res);
+      console.log('jverifyPhone login res', res);
+      if(res.error) {
+        Toast.showError(res.error, {})
+      } else {
+        JVerification.dismissLoginPage();
+        dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
+      }
       // res {"answer": {"phone": "18612300141"}}
     }
   });
@@ -222,7 +218,7 @@ const OneLogin = ({navigation, route}) => {
       }
     });
     // JVerification.setLoggerEnable(true);
-    loadPhone();
+    // loadPhone();
 
     return () => {};
   }, []);
@@ -333,79 +329,7 @@ const OneLogin = ({navigation, route}) => {
   );
 };
 const styles = StyleSheet.create({
-  //底部默认样式
-  loginContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-  },
 
-  phoneLoginContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  loginButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 28,
-    color: 'red',
-    width: 180,
-    height: 40,
-    backgroundColor: 'white',
-    borderRadius: 2,
-    marginTop: 10,
-  },
-
-  loginText: {
-    color: 'black',
-    fontWeight: '500',
-    letterSpacing: 1,
-    fontSize: 15,
-    marginLeft: 5,
-  },
-
-  privateText: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    position: 'absolute',
-    bottom: 18 + BOTTOM_HEIGHT,
-    left: 0,
-    right: 0,
-    paddingTop: 10,
-    fontSize: 12,
-    color: 'white',
-  },
-
-  textContent: {
-    fontSize: 11,
-    color: '#BDBDBD',
-  },
-  ruleWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    color: 'white',
-  },
-  checkbox: {
-    width: 15,
-    height: 15,
-    borderColor: 'white',
-    borderWidth: StyleSheet.hairlineWidth,
-    marginHorizontal: 15,
-    marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 3,
-  },
 });
 
 export default OneLogin;

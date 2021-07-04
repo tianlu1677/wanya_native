@@ -42,6 +42,7 @@ export const dispatchUpdateSocialAccount = (socialToken, navigation) => async di
 
   const {had_photo, had_gender, had_taglist, had_invited} = res.account;
   if (!had_photo) {
+    console.log('xxxxx')
     navigation.navigate('RegisterInfo');
   } else if (!had_gender) {
     navigation.navigate('RegisterInfoGender');
