@@ -58,6 +58,7 @@ const customUIWithConfigiOS = {
   privacyConstraints: [0, 350, 300, 60],
   checkViewConstraints: [-108, 350, 10, 10],
   unAgreePrivacyCallBack: true,
+  privacyCheckboxHidden: true,
   privacyCheckEnable: true,
   privacyCheckboxSize: 20,
   privacyOne: ['用户协议', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
@@ -147,7 +148,7 @@ const customUIWithConfigAndroid = {
   // privacyW:200,                                            //隐私条款宽度
   // privacyH:100,                                            //隐私条款高度
 
-  privacyCheckboxHidden: false, //checkBox是否隐藏，默认不隐藏
+  privacyCheckboxHidden: true, //checkBox是否隐藏，默认不隐藏
   privacyCheckEnable: false, //checkBox默认状态 默认:NO
   privacyCheckedImage: 'checkbox_selected', //checkBox选中时图片
   privacyUncheckedImage: 'checkbox_unSelected', //checkBox未选中时图片
@@ -215,6 +216,7 @@ const iosDialogConfig = {
 };
 
 const OneLogin = ({navigation, route}) => {
+  const [canOnePhone, setCanOnePhone] = useState(false);
   const initParams = {
     time: 5000,
     appKey: '7cd75000d5932000b3d4ca59', //仅iOS
@@ -226,23 +228,6 @@ const OneLogin = ({navigation, route}) => {
   const createAlert = title =>
     Alert.alert('提示', title, [{text: 'OK', onPress: () => console.log('OK Pressed')}]);
 
-  const goPages = type => {
-    if (type === 'private') {
-      navigation.navigate('WebView', {
-        sourceUrl: `${BaseApiUrl}/home/private_policy`,
-        title: '顽鸦隐私政策',
-        bgColor: 'black',
-      });
-    }
-    if (type === 'user') {
-      navigation.navigate('WebView', {
-        sourceUrl: `${BaseApiUrl}/home/user_agreement`,
-        title: '顽鸦用户协议',
-        bgColor: 'black',
-      });
-    }
-  };
-
   JVerification.addLoginEventListener(async result => {
     console.log('LoginListener:' + JSON.stringify(result));
     // 获取到登录的token了, 返回值中会返回手机号。再用此手机号注册新用户
@@ -252,11 +237,16 @@ const OneLogin = ({navigation, route}) => {
       const res = await jverifyPhone({jverify_phone_token: result.content})
       console.log('res', res);
       // res {"answer": {"phone": "18612300141"}}
-    } else if(code == '') {
-
     }
-
   });
+
+  const loadPhone = () => {
+    setTimeout(() => {
+      if(!canOnePhone) {
+        navigation.navigate('LoginPhoneCode');
+      }
+    }, 6000);
+  }
 
   // JVerification.addUncheckBoxEventListener((result) => {
   //   console.log('addUncheckBoxEventListener:' + JSON.stringify(result));
@@ -273,12 +263,14 @@ const OneLogin = ({navigation, route}) => {
       if(result.code === 8000) {
         JVerification.preLogin(5000, result => {
           console.log('preLogin:' + JSON.stringify(result));
-          JVerification.login(false)
+          setCanOnePhone(true)
+          JVerification.login(false);
+          return
         });
       }
     })
     JVerification.setLoggerEnable(true);
-
+    loadPhone();
     if (Platform.OS === 'ios') {
       // JVerification.addUncheckBoxEventListener((result) => {
       // console.log('UnCheckboxEvent:未选中隐私协议框');

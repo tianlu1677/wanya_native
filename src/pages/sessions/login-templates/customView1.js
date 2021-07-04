@@ -3,44 +3,38 @@ import {StyleSheet, Text, View, Alert, Pressable, Image, TouchableHighlight} fro
 import FastImg from '@/components/FastImg';
 import JVerification from 'jverification-react-native';
 
-export default class CustomView1 extends React.Component {
-  createAlert = title =>
-    Alert.alert('提示', title, [{text: 'OK', onPress: () => console.log('OK Pressed')}]);
+const ThirdLogin = ({navigation, route}) => {
+  return (
+    <View style={styles.container}>
+      <TouchableHighlight
+        onPress={() => {
+          JVerification.dismissLoginPage();
+          // navigation.navigate('LoginPhoneCode');
+          console.log('xxxx')
+        }}>
+        <Text style={styles.otherLogin}>其他号码登录</Text>
+      </TouchableHighlight>
 
-  render() {
-    return (
-      <View>
-        <View style={styles.container}>
-          <Pressable>
-            <Text style={styles.otherLogin}>其他号码登录</Text>
-          </Pressable>
-
-          <View style={styles.thirdLogin}>
-            <View style={styles.thirdLogoWraper}>
-              <FastImg source={require('../../../assets/login/wechat.png')} style={styles.thirdLogo} />
-            </View>
-            <View style={styles.thirdLogoWraper}>
-              <FastImg source={require('../../../assets/login/qq.png')} style={styles.thirdLogo}/>
-            </View>
-            <View style={styles.thirdLogoWraper}>
-              <FastImg source={require('../../../assets/login/weibo.png')} style={styles.thirdLogo} />
-            </View>
-            <View style={styles.thirdLogoWraper}>
-              <FastImg source={require('../../../assets/login/apple.png')} style={styles.thirdLogo} />
-          </View>
-          </View>
-          {/*<TouchableHighlight*/}
-          {/*  onPress={() => {*/}
-          {/*    this.createAlert("CustomView1 onClicked")*/}
-          {/*    JVerification.dismissLoginPage();*/}
-          {/*  }}>*/}
-          {/*  <Text>关闭</Text>*/}
-          {/*</TouchableHighlight>*/}
+      <View style={styles.thirdLogin}>
+        <Pressable style={styles.thirdLogoWraper} onPress={() => {console.log('xxx')}}>
+          <FastImg
+            source={require('../../../assets/login/wechat.png')}
+            style={styles.thirdLogo}
+          />
+        </Pressable>
+        <View style={styles.thirdLogoWraper}>
+          <FastImg source={require('../../../assets/login/qq.png')} style={styles.thirdLogo} />
+        </View>
+        <View style={styles.thirdLogoWraper}>
+          <FastImg source={require('../../../assets/login/weibo.png')} style={styles.thirdLogo} />
+        </View>
+        <View style={styles.thirdLogoWraper}>
+          <FastImg source={require('../../../assets/login/apple.png')} style={styles.thirdLogo} />
         </View>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -76,5 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 35,
     height: 35,
-  }
+  },
 });
+
+export default ThirdLogin;
