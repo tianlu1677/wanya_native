@@ -1,35 +1,59 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {passwordLogin} from '@/api/sign_api';
+import {sendPhoneCode} from '@/api/phone_sign_api';
+import {SendCodeType} from './meta';
 
 import cStyles from './style';
 
+const md5 = require('md5');
 const BindPhone = ({navigation}) => {
   const dispatch = useDispatch();
+  const {socialToken, socialAccount} = useSelector(state => state.login);
+
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
   const [passwordHidden, setPasswordHidden] = useState(true);
   const isCanClick = phone.length === 11 && password.length >= 8 && password.length <= 16;
 
+  const onSendPhoneCode = async () => {
+    const phoneReg = /^1[3456789]\d{9}$/;
+    if (!phoneReg.test(phone)) {
+      Toast.showError('请输入正确的手机号');
+      return;
+    }
+    const timestamp = new Date().getTime();
+    const data = {
+      phone,
+      secret: md5(`phone_${phone}_${timestamp}`),
+      timestamp,
+      token: socialToken,
+      send_code_type: SendCodeType.Binding,
+    };
+    const res = await sendPhoneCode(data);
+
+    if (res.status === 'success') {
+      navigation.navigate('LoginVerifyCode', {
+        phone: phone,
+        password: password,
+        type: SendCodeType.Binding,
+      });
+    } else {
+      Toast.showError(res.error);
+    }
+  };
+
   const handleNextClick = async () => {
     if (!isCanClick) {
       return false;
     }
-    const params = {phone: phone, password: password};
-    // navigation.navigate('LoginVerifyCode', {p})
-
-    // navigation.navigate('LoginVerifyCode', {phone});
-    // const res = await passwordLogin(params);
-    // console.log('pasword login res', res);
-    // res.error
-    //   ? Toast.showError(res.error, {})
-    //   : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
+    onSendPhoneCode();
   };
 
   return (
@@ -80,7 +104,7 @@ const BindPhone = ({navigation}) => {
           styles.nextBtn,
           isCanClick ? cStyles.nextStepActive : cStyles.nextStepNormal,
         ]}>
-        登录
+        下一步
       </Text>
     </View>
   );

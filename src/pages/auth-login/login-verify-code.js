@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
 import Toast from '@/components/Toast';
-import {sendPhoneCode, phoneCodeLogin} from '@/api/phone_sign_api';
+import {sendPhoneCode, phoneCodeLogin, verifyPhoneCode} from '@/api/phone_sign_api';
 import CodeComponent from './code-component';
+import {SendCodeType} from './meta';
 
 import cStyles from './style';
 
 const md5 = require('md5');
 const LoginVerifyCode = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const {phone} = route.params;
+  const {socialToken} = useSelector(state => state.login);
+  const {send_code_type, phone, password} = route.params;
   const [downTime, setDownTime] = useState(10);
   const [codeData, setCodeData] = useState([]);
 
@@ -35,7 +37,7 @@ const LoginVerifyCode = ({navigation, route}) => {
   const onSendPhoneCode = async () => {
     const timestamp = new Date().getTime();
     const secret = md5(`phone_${phone}_${timestamp}`);
-    const data = {phone, secret, timestamp, send_code_type: 'login'};
+    const data = {phone, secret, timestamp, send_code_type};
     const res = await sendPhoneCode(data);
     if (res.status === 'success') {
       downTimeRunner();
@@ -49,30 +51,23 @@ const LoginVerifyCode = ({navigation, route}) => {
     if (!isCanClick) {
       return false;
     }
-    const params = {phone, phone_code: codeData.join('')};
-    const res = await phoneCodeLogin(params);
-    console.log('code login res', res);
+    const phone_code = codeData.join('');
+
+    let res = null;
+
+    if (send_code_type === SendCodeType.Login) {
+      const params = {phone, phone_code};
+      res = await phoneCodeLogin(params);
+    }
+
+    if (send_code_type === SendCodeType.Binding) {
+      const data = {phone, phone_code, password: password, token: socialToken};
+      res = await verifyPhoneCode(data);
+    }
 
     res.error
       ? Toast.showError(res.error, {})
       : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
-
-    // const {
-    //   account: {had_photo, had_gender, had_taglist, had_invited},
-    // } = res;
-
-    // await Helper.setData('socialToken', res.account.token);
-    // await Helper.setData('socialAccount', JSON.stringify(res.account));
-
-    // if (!had_photo) {
-    //   navigation.navigate('RegisterInfo');
-    // } else if (!had_gender) {
-    //   navigation.navigate('RegisterInfoGender');
-    // } else if (!had_taglist) {
-    //   navigation.navigate('RegisterInfoLabel');
-    // } else if (!had_invited) {
-    //   navigation.navigate('InviteLogin');
-    // }
   };
 
   useEffect(() => {

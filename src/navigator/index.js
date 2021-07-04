@@ -60,6 +60,8 @@ const Navigation = () => {
     routeNameRef.current = currentRouteName;
   };
 
+  console.log('login.auth_token', login.auth_token);
+
   return (
     <NavigationContainer
       ref={navigationRef}
@@ -70,14 +72,14 @@ const Navigation = () => {
       initialState={initialState}
       onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}>
       <>
-        {!login.auth_token ? (
-          AuthStackScreen()
-        ) : (
+        {login.auth_token ? (
           <Drawer.Navigator
             overlayColor="rgba(0,0,0,0.3)"
             drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Recommend" component={MainStackScreen} />
           </Drawer.Navigator>
+        ) : (
+          <AuthStackScreen />
         )}
       </>
     </NavigationContainer>
