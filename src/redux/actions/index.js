@@ -48,9 +48,11 @@ export const dispatchUpdateSocialAccount = (socialToken, navigation) => async di
   } else if (!had_taglist) {
     navigation.navigate('RegisterInfoLabel');
   } else if (!had_invited) {
-    navigation.navigate('InviteLogin');
-  } else if (!had_invited) {
-    navigation.navigate('Recommend');
+    navigation.navigate('RegisterInfoInvite');
+  } else {
+    console.log(navigation);
+
+    navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
   }
 };
 

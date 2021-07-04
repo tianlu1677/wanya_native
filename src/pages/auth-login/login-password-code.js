@@ -1,14 +1,11 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
-import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
-import {getLabelList} from '@/api/settings_api';
 import {passwordLogin} from '@/api/sign_api';
-
 import cStyles from './style';
 
 const LoginPasswordCode = ({navigation}) => {

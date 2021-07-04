@@ -41,7 +41,12 @@ const RegisterInfoGender = ({navigation}) => {
     if (!isCanClick) {
       return false;
     }
-    const data = {id: socialAccount.id, token: socialToken, account: {gender, birthday}};
+
+    const data = {
+      id: socialAccount.id,
+      token: socialToken,
+      account: {gender, birthday, profile_attributes: {init_gender: true}},
+    };
     await syncAccountInfo(data);
     dispatch(dispatchUpdateSocialAccount(socialToken, navigation));
   };

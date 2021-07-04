@@ -51,7 +51,7 @@ const LoginPhoneCode = ({navigation}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Text style={{color: '#BDBDBD'}} onPress={() => navigation.navigate('LoginPasswordCode')}>
+        <Text style={{color: '#BDBDBD'}} onPress={() => navigation.navigate('BindPhone')}>
           密码登录
         </Text>
       ),
@@ -77,7 +77,7 @@ const LoginPhoneCode = ({navigation}) => {
           onChangeText={text => setPhone(text)}
         />
       </View>
-
+      <Text>8-16位数字、英文、符号中的任意两类</Text>
       <Text
         onPress={handleNextClick}
         style={[

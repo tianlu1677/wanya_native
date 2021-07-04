@@ -19,8 +19,6 @@ const RegisterInfo = props => {
   const [nickname, setNickname] = useState(socialAccount?.nickname || '');
   const [imageSource, setImageSource] = useState(socialAccount?.avatar_url || '');
 
-  console.log('register socialAccount', socialToken, socialAccount);
-
   const isCanClick = nickname && imageSource;
 
   const checkPermission = async () => {
@@ -76,7 +74,11 @@ const RegisterInfo = props => {
       await uploadAvatar(imageData, socialToken);
     }
 
-    const data = {id: socialAccount.id, token: socialToken, account: {nickname}};
+    const data = {
+      id: socialAccount.id,
+      token: socialToken,
+      account: {nickname, profile_attributes: {init_photo: true}},
+    };
     await syncAccountInfo(data);
     dispatch(dispatchUpdateSocialAccount(socialToken, navigation));
   };

@@ -46,7 +46,7 @@ const AccountInfoLabel = ({navigation}) => {
     const data = {
       id: socialAccount.id,
       token: socialToken,
-      account: {profile_attributes: {label_list}},
+      account: {profile_attributes: {label_list, init_taglist: true}},
     };
     await syncAccountInfo(data);
     dispatch(dispatchUpdateSocialAccount(socialToken, navigation));

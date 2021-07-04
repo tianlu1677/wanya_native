@@ -1,47 +1,41 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
-import * as action from '@/redux/constants';
+import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
+import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
-import {getLabelList} from '@/api/settings_api';
+import {passwordLogin} from '@/api/sign_api';
+
 import cStyles from './style';
 
 const BindPhone = ({navigation}) => {
   const dispatch = useDispatch();
-  const [phone, setPhone] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
 
   const [passwordHidden, setPasswordHidden] = useState(true);
-  const isCanClick = password && password.length === 11;
+  const isCanClick = phone.length === 11 && password.length >= 8 && password.length <= 16;
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (!isCanClick) {
       return false;
     }
-    console.log('params', {password});
-    navigation.navigate('RegisterInfoLabel');
+    const params = {phone: phone, password: password};
+    // navigation.navigate('LoginVerifyCode', {p})
+
+    // navigation.navigate('LoginVerifyCode', {phone});
+    // const res = await passwordLogin(params);
+    // console.log('pasword login res', res);
+    // res.error
+    //   ? Toast.showError(res.error, {})
+    //   : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
   };
-
-  const loadData = async () => {
-    const res = await getLabelList();
-    dispatch({type: action.TOTAL_LABEL_LIST, value: res.data.label_list});
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => <Text style={{color: '#BDBDBD'}}>密码登录</Text>,
-  //   });
-  // }, [navigation, phone]);
 
   return (
     <View style={cStyles.wrapper}>
-      <Text style={cStyles.infoTitle}>手机密码登录</Text>
-      <Text style={cStyles.infoText}>请输入你的手机号码和登录密码</Text>
+      <Text style={cStyles.infoTitle}>绑定手机号</Text>
+      <Text style={cStyles.infoText}>完善帐号信息，更方便地使用产品</Text>
       <View style={[cStyles.inputWrap, styles.phoneWrapper]}>
         <Text style={styles.phoneNumber}>+ 86</Text>
         <TextInput
@@ -77,6 +71,8 @@ const BindPhone = ({navigation}) => {
         </Pressable>
       </View>
 
+      <Text style={styles.tipsText}>8-16位数字、英文、符号中的任意两类</Text>
+
       <Text
         onPress={handleNextClick}
         style={[
@@ -84,7 +80,7 @@ const BindPhone = ({navigation}) => {
           styles.nextBtn,
           isCanClick ? cStyles.nextStepActive : cStyles.nextStepNormal,
         ]}>
-        下一步
+        登录
       </Text>
     </View>
   );
@@ -114,7 +110,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     fontWeight: '500',
-    // backgroundColor: 'pink',
+  },
+  tipsText: {
+    fontSize: 12,
+    color: '#727272',
+    marginTop: RFValue(12),
   },
   nextBtn: {
     marginTop: RFValue(25),
