@@ -36,7 +36,6 @@ export async function phoneRegisterAccount(data = {phone: '', phone_code: '', pa
   return res.data;
 }
 
-
 export async function verifyInviteCode(data = {invite_code: ''}) {
   const res = await request({
     url: '/api/v1/invites',
@@ -56,6 +55,15 @@ export async function phonePasswordLogin(data = {phone: '', phone_code: ''}) {
   return res.data;
 }
 
+//验证码登录
+export async function phoneCodeLogin(data = {phone: '', phone_code: ''}) {
+  const res = await request({
+    url: '/api/v1/phones/phone_login',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
 
 // 一键登录获取手机号
 export async function jverifyPhone(data = {jverify_phone_token: ''}) {

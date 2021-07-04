@@ -1,21 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable, Platform, StatusBar} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import MediasPicker from '@/components/MediasPicker';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
-
+import {syncAccountInfo} from '@/api/account_api';
 import cStyles from '../style';
 
 const RegisterInfo = props => {
   const dispatch = useDispatch();
-  const {navigation, imagePick, removeAllPhoto, uploadImage} = props;
-  const [nickname, setNickname] = useState(null);
-  const [imageSource, setImageSource] = useState(null);
+  const {socialToken, socialAccount} = useSelector(state => state.login);
+  const {navigation, imagePick, removeAllPhoto, uploadAvatar} = props;
+  const [nickname, setNickname] = useState(socialAccount?.nickname || '');
+  const [imageSource, setImageSource] = useState(socialAccount?.avatar_url || '');
+
+  console.log('register socialAccount', socialToken, socialAccount);
 
   const isCanClick = nickname && imageSource;
 
@@ -53,18 +57,28 @@ const RegisterInfo = props => {
       if (err) {
         return;
       }
-      const result = await uploadImage({uploadType: 'multipart', ...res[0]});
-      setImageSource(result.asset);
-      console.log('result', result);
+      setImageSource(res[0]);
     });
   };
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (!isCanClick) {
       return false;
     }
-    console.log('params', {nickname, imageSource});
-    navigation.navigate('RegisterInfoGender');
+
+    if (imageSource.uri) {
+      const imageData = {
+        uploadType: 'multipart',
+        account_id: socialAccount.id,
+        keyParams: 'account[avatar]',
+        ...imageSource,
+      };
+      await uploadAvatar(imageData, socialToken);
+    }
+
+    const data = {id: socialAccount.id, token: socialToken, account: {nickname}};
+    await syncAccountInfo(data);
+    dispatch(dispatchUpdateSocialAccount(socialToken, navigation));
   };
 
   const loadData = async () => {
@@ -82,13 +96,14 @@ const RegisterInfo = props => {
       <Text style={cStyles.infoTitle}>欢迎来到顽鸦</Text>
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
       {imageSource ? (
-        <FastImg source={{uri: imageSource.url}} style={styles.avator} />
+        <Pressable onPress={onImagePicker}>
+          <FastImg source={{uri: imageSource.uri || imageSource}} style={styles.avator} />
+        </Pressable>
       ) : (
         <Pressable style={[styles.avator, styles.avatorWrap]} onPress={onImagePicker}>
           <IconFont name="shangchuan" size={20} color="#fff" />
         </Pressable>
       )}
-
       <Text style={[styles.avatorText, {color: imageSource ? '#000' : '#BDBDBD'}]}>上传头像</Text>
       <TextInput
         placeholder="填写昵称"
@@ -98,8 +113,9 @@ const RegisterInfo = props => {
         maxLength={11}
         autoFocus={true}
         caretHidden={false}
-        style={[cStyles.inputWrap, styles.inputContent]}
+        value={nickname}
         onChangeText={text => setNickname(text)}
+        style={[cStyles.inputWrap, styles.inputContent]}
       />
 
       <Text

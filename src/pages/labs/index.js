@@ -192,7 +192,7 @@ const LabIndex = props => {
           </Pressable>
           <Pressable
             onPress={() => {
-              navigation.navigate('BindPhone');
+              navigation.navigate('LoginPhoneCode');
             }}>
             <Text style={styles.text}>跳转注册页面</Text>
           </Pressable>

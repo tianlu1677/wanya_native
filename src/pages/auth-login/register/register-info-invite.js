@@ -1,16 +1,31 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchSetAuthToken} from '@/redux/actions';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {SCREEN_WIDTH} from '@/utils/navbar';
+import Toast from '@/components/Toast';
+import {verifyInviteCode} from '@/api/phone_sign_api';
 import CodeComponent from '../code-component';
 
 import cStyles from '../style';
 
-const AccountInfoInvite = () => {
+const AccountInfoInvite = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {socialToken} = useSelector(state => state.login);
   const [codeData, setCodeData] = useState([]);
+
   const isCanClick = codeData.every(item => item);
 
-  const handleNextClick = () => {};
+  const handleNextClick = async () => {
+    const data = {invite_code: codeData.join(''), token: socialToken};
+    const res = await verifyInviteCode(data);
+    if (res.error) {
+      Toast.showError(res.error);
+    }
+    dispatch(dispatchSetAuthToken(socialToken));
+    navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+  };
 
   return (
     <View style={cStyles.wrapper}>

@@ -16,7 +16,9 @@ import {
   THEORY_DETAIL,
   LOGOUT_SUCCESS,
   LOAD_ALL_CITY_SUCCESS,
-  ACCOUNT_SAVE_TOKEN
+  ACCOUNT_SAVE_TOKEN,
+  UPDATE_SOCIAL_TOKEN,
+  UPDATE_SOCIAL_ACCOUNT,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
@@ -26,6 +28,29 @@ import Helper from '@/utils/helper';
 import * as node from './node_action';
 
 export const nodeAction = node;
+
+// 未完成认证用户
+export const dispatchUpdateSocialAccount = (socialToken, navigation) => async dispatch => {
+  const res = await getCurrentAccount({token: socialToken});
+  console.log('获取最新res', res);
+  await Helper.setData('socialToken', socialToken);
+  await Helper.setData('socialAccount', JSON.stringify(res.account));
+  dispatch({type: UPDATE_SOCIAL_TOKEN, socialToken: socialToken});
+  dispatch({type: UPDATE_SOCIAL_ACCOUNT, socialAccount: res.account});
+
+  const {had_photo, had_gender, had_taglist, had_invited} = res.account;
+  if (!had_photo) {
+    navigation.navigate('RegisterInfo');
+  } else if (!had_gender) {
+    navigation.navigate('RegisterInfoGender');
+  } else if (!had_taglist) {
+    navigation.navigate('RegisterInfoLabel');
+  } else if (!had_invited) {
+    navigation.navigate('InviteLogin');
+  } else if (!had_invited) {
+    navigation.navigate('Recommend');
+  }
+};
 
 // 当前用户
 export const dispatchCurrentAccount = () => async dispatch => {
@@ -168,13 +193,12 @@ export const updateTheoryVideo = (videoId, pause) => async dispatch => {
   });
 };
 
-
 // 提前加载city
 export const loadAllCityList = () => async dispatch => {
   const res = await getCities();
-  console.log('res', res.data)
+  console.log('res', res.data);
   await dispatch({
     type: LOAD_ALL_CITY_SUCCESS,
-    value: res.data
+    value: res.data,
   });
 };

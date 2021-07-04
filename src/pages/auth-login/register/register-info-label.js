@@ -1,22 +1,32 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
+import {syncAccountInfo} from '@/api/account_api';
 import cStyles from '../style';
 
-const AddDefaultCheck = data => {
+const AddDefaultCheck = (data, checked) => {
   const transLateData = data.map(item => {
     const label_list = item.label_list.map(label => {
-      return {title: label, checked: false};
+      return {title: label, checked: checked.includes(label) ? true : false};
     });
     return {category: item.category, label_list: label_list};
   });
+
   return transLateData;
 };
 
 const AccountInfoLabel = ({navigation}) => {
-  const {totalLabelList} = useSelector(state => state.home);
-  const [labelList, setLabelList] = useState(AddDefaultCheck(totalLabelList));
+  const dispatch = useDispatch();
+  const {
+    home: {totalLabelList},
+    login: {socialToken, socialAccount},
+  } = useSelector(state => state);
+
+  const [labelList, setLabelList] = useState(
+    AddDefaultCheck(totalLabelList, socialAccount?.label_list)
+  );
 
   const allChecked = labelList
     .map(item => item.label_list)
@@ -28,12 +38,18 @@ const AccountInfoLabel = ({navigation}) => {
     setLabelList([...labelList]);
   };
 
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (allChecked.length === 0) {
       return false;
     }
-    console.log('params', allChecked.map(item => item.title).join());
-    navigation.navigate('RegisterInfoInvite');
+    const label_list = allChecked.map(item => item.title);
+    const data = {
+      id: socialAccount.id,
+      token: socialToken,
+      account: {profile_attributes: {label_list}},
+    };
+    await syncAccountInfo(data);
+    dispatch(dispatchUpdateSocialAccount(socialToken, navigation));
   };
 
   return (
@@ -124,6 +140,7 @@ const styles = StyleSheet.create({
   },
   nextBtn: {
     position: 'absolute',
+    left: VWValue(50),
     bottom: RFValue(15),
   },
 });

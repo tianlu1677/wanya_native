@@ -2,21 +2,41 @@ import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import {useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
+import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
+import {sendPhoneCode} from '@/api/phone_sign_api';
 import cStyles from './style';
 
+const md5 = require('md5');
 const LoginPhoneCode = ({navigation}) => {
   const dispatch = useDispatch();
   const [phone, setPhone] = useState(null);
   const isCanClick = phone && phone.length === 11;
 
+  const onSendPhoneCode = async () => {
+    const phoneReg = /^1[3456789]\d{9}$/;
+    if (!phoneReg.test(phone)) {
+      Toast.showError('请输入正确的手机号');
+      return;
+    }
+    const timestamp = new Date().getTime();
+    const secret = md5(`phone_${phone}_${timestamp}`);
+    const data = {phone, secret, timestamp, send_code_type: 'login'};
+    const res = await sendPhoneCode(data);
+    if (res.status === 'success') {
+      navigation.navigate('LoginVerifyCode', {phone});
+    } else {
+      Toast.showError(res.error);
+    }
+  };
+
   const handleNextClick = () => {
     if (!isCanClick) {
       return false;
     }
-    console.log('params', {phone});
-    navigation.navigate('RegisterInfoLabel');
+    // navigation.navigate('LoginVerifyCode', {phone});
+    onSendPhoneCode();
   };
 
   const loadData = async () => {

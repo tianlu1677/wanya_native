@@ -43,7 +43,7 @@ const CodeComponent = props => {
           value={item}
           caretHidden={false}
           maxLength={1}
-          keyboardType="numeric"
+          // keyboardType="numeric"
           selectionColor="#ff193a"
           style={styles.inputItem}
           onChangeText={text => onChangeText(text, index)}
