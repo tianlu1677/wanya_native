@@ -62,7 +62,7 @@ export const MainStackScreen = props => {
 export const AuthStackScreen = props => {
   return (
     <AuthStack.Navigator
-      initialRouteName="BindPhone"
+      initialRouteName="OneLogin"
       screenOptions={() => ({
         title: false,
         headerStyle: {

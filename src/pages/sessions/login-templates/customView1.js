@@ -1,68 +1,80 @@
 import React from 'react';
-import {StyleSheet, Text, View,Alert,Image, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, View, Alert, Pressable, Image, TouchableHighlight} from 'react-native';
+import FastImg from '@/components/FastImg';
 import JVerification from 'jverification-react-native';
 
 export default class CustomView1 extends React.Component {
-  createAlert = (title) =>
-    Alert.alert(
-      "提示",
-      title,
-      [
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
-
-
+  createAlert = title =>
+    Alert.alert('提示', title, [{text: 'OK', onPress: () => console.log('OK Pressed')}]);
 
   render() {
-
     return (
       <View>
-        <TouchableHighlight onPress={() =>{
-          // this.createAlert("CustomView1 onClicked")
-          JVerification.dismissLoginPage()
-        }}>
-          <Image
-            source={{uri: "https://reactnative.dev/docs/assets/p_cat1.png"}}
-            style={{width: 50, height: 50}}
-          />
-        </TouchableHighlight>
+        <View style={styles.container}>
+          <Pressable>
+            <Text style={styles.otherLogin}>其他号码登录</Text>
+          </Pressable>
+
+          <View style={styles.thirdLogin}>
+            <View style={styles.thirdLogoWraper}>
+              <FastImg source={require('../../../assets/login/wechat.png')} style={styles.thirdLogo} />
+            </View>
+            <View style={styles.thirdLogoWraper}>
+              <FastImg source={require('../../../assets/login/qq.png')} style={styles.thirdLogo}/>
+            </View>
+            <View style={styles.thirdLogoWraper}>
+              <FastImg source={require('../../../assets/login/weibo.png')} style={styles.thirdLogo} />
+            </View>
+            <View style={styles.thirdLogoWraper}>
+              <FastImg source={require('../../../assets/login/apple.png')} style={styles.thirdLogo} />
+          </View>
+          </View>
+          {/*<TouchableHighlight*/}
+          {/*  onPress={() => {*/}
+          {/*    this.createAlert("CustomView1 onClicked")*/}
+          {/*    JVerification.dismissLoginPage();*/}
+          {/*  }}>*/}
+          {/*  <Text>关闭</Text>*/}
+          {/*</TouchableHighlight>*/}
+        </View>
       </View>
     );
-    //  return (
-    //      <View style={styles.container}>
-    //          <Button title="this is CustomView1"
-    //                  onPress={() =>
-    // this.createAlert("CustomView1 onClicked")
-    //             }/>
-    //      </View>
-    //  );
   }
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
-    width: 150,
+    marginTop: 550,
+    width: 400,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#6FC6FC',
+    backgroundColor: 'black',
+    color: '#FFF',
+  },
+  otherLogin: {
+    color: '#bdbdbd',
+    fontSize: 12,
+  },
+  thirdLogin: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingTop: 60,
+    paddingLeft: 56,
+    paddingRight: 56,
+  },
+  thirdLogoWraper: {
+    width: 35,
+    height: 35,
+    borderRadius: 35,
+  },
+  thirdLogo: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 35,
+    height: 35,
   }
 });
-
-class Button extends React.Component {
-  render() {
-    return <TouchableHighlight
-      onPress={this.props.onPress}
-      underlayColor='#e4083f'
-      activeOpacity={0.5}>
-
-      <View style={styles.setBtnStyle}>
-        <Text style={styles.textStyle}>{this.props.title}</Text>
-      </View>
-
-    </TouchableHighlight>
-  }
-}

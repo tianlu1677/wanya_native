@@ -110,7 +110,7 @@ import LabTabIndex from '@/pages/labs/tabindex';
 import LabStorageIndex from '@/pages/labs/storageindex';
 
 //登录页面
-import SocialLogin from '@/pages/sessions/social-login';
+import SocialLogin from '@/pages/sessions/one-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
 import PasswordLogin from '@/pages/sessions/password-login';
@@ -282,6 +282,7 @@ const chatRouter = [
 ];
 
 const authRouter = [
+  {name: 'OneLogin', component: OneLogin, options: {headerShown: false}},
   {name: 'SocialLogin', component: SocialLogin, options: {headerShown: false}},
   {name: 'PhoneLogin', component: PhoneLogin},
   {name: 'PasswordLogin', component: PasswordLogin},
