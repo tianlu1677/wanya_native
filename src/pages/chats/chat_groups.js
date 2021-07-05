@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {RecommendSearch} from '@/components/NodeComponents';
 import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
-import {getChatGroups} from '@/api/chat_api';
+import {getChatGroups, deleteChatGroup} from '@/api/chat_api';
 import ScrollList from '@/components/ScrollList';
 import BaseChatGroup from './base-chat-group';
 import {useSelector} from 'react-redux';
@@ -20,9 +20,15 @@ const ChatGroups = ({navigation}) => {
   const {currentBaseInfo} = useSelector(state => state.account);
 
   const renderItemMemo = useCallback(
-    ({item, index}) => <BaseChatGroup navigation={navigation} chat_group={item} key={item.uuid} />,
+    ({item, index}) => <BaseChatGroup navigation={navigation} deleteChatgroup={deleteChatgroup} chat_group={item} key={item.uuid} />,
     []
   );
+
+  //TODO 更新
+  const deleteChatgroup = (data = {}) => {
+    console.log('real delete', data)
+    deleteChatGroup({uuid: data.uuid})
+  }
 
   const loadData = async (page = 1) => {
     // setLoading(true);
