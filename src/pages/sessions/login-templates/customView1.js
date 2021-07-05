@@ -15,6 +15,7 @@ import Toast from '@/components/Toast';
 import ShareUtil from '@/utils/umeng_share_util';
 import {SignInWithAppleButton} from '@/components/AppleLogin';
 import {store} from '@/redux/stores/store';
+import ThirdLogin from "@/pages/sessions/login-templates/third_login"
 
 const CustomView1 = ({}) => {
   // const dispatch = useDispatch();
@@ -191,21 +192,7 @@ const CustomView1 = ({}) => {
       </Pressable>
 
       <View style={styles.thirdLogin}>
-        <Pressable style={styles.thirdLogoWraper} onPress={wechatLogin}>
-          <FastImg source={require('../../../assets/login/wechat.png')} style={styles.thirdLogo} />
-        </Pressable>
-        <Pressable style={styles.thirdLogoWraper} onPress={qqLogin}>
-          <FastImg source={require('../../../assets/login/qq.png')} style={styles.thirdLogo} />
-        </Pressable>
-        <Pressable style={styles.thirdLogoWraper} onPress={weiboLogin}>
-          <FastImg source={require('../../../assets/login/weibo.png')} style={styles.thirdLogo} />
-        </Pressable>
-        <View style={styles.thirdLogoWraper}>
-          {/*<FastImg source={require('../../../assets/login/apple.png')} style={styles.thirdLogo} />*/}
-          {SignInWithAppleButton({
-            callBack: appleSignIn,
-          })}
-        </View>
+        <ThirdLogin />
       </View>
     </View>
   );

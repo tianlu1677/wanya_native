@@ -187,7 +187,7 @@ const OneLogin = ({navigation, route}) => {
       if (!canOnePhone) {
         navigation.navigate('LoginPhoneCode');
       }
-    }, 6000);
+    }, 3000);
   };
 
   // JVerification.addUncheckBoxEventListener((result) => {
@@ -212,8 +212,7 @@ const OneLogin = ({navigation, route}) => {
       }
     });
     // JVerification.setLoggerEnable(true);
-    // loadPhone();
-
+    loadPhone();
     return () => {};
   }, []);
   //
