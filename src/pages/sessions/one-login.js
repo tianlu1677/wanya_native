@@ -172,39 +172,37 @@ const OneLogin = ({navigation, route}) => {
         Toast.showError(res.error, {});
       } else {
         JVerification.dismissLoginPage();
-        dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
+        dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
       }
       // res {"answer": {"phone": "18612300141"}}
     }
   });
-
-  const loadPhone = () => {
-    setTimeout(() => {
-      if (canOnePhone !== 'phone') {
-        setCanOnePhone('phone');
-        navigation.navigate('LoginPhoneCode');
-      }
-    }, 4000);
-  };
 
   // JVerification.addUncheckBoxEventListener((result) => {
   //   console.log('addUncheckBoxEventListener:' + JSON.stringify(result));
   // })
 
   const checkJverify = () => {
-    if (Platform.OS === 'android') {
-      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
-    } else {
-      JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
-    }
-    JVerification.preLogin(3000, result => {
-      console.log('preLogin:' + JSON.stringify(result));
-      if (result.code === 7000) {
-        JVerification.login(false);
+    try {
+      if (Platform.OS === 'android') {
+        JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
       } else {
-        navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
+        JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
       }
-    });
+      JVerification.preLogin(3000, result => {
+        console.log('preLogin:' + JSON.stringify(result));
+        if (result.code === 7000) {
+          JVerification.login(false);
+        } else {
+          navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
+        }
+      });
+    } catch (e) {
+      console.log('ee', e)
+      navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
+    }
+
+    navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
   };
 
   useEffect(() => {

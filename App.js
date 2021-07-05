@@ -61,7 +61,7 @@ class App extends Component {
       scale = 1.08;
     }
 
-    this.saveToken(); //保存token
+    // this.saveToken(); //保存token
     this.getIndexTabData(); //获取首页频道信息
     // console.log('scale', scale);
     this.initJverify();

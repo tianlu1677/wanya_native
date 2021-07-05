@@ -38,8 +38,9 @@ const LoginPhoneCode = ({navigation}) => {
     if (!isCanClick) {
       return false;
     }
+    navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
     // navigation.navigate('LoginVerifyCode', {phone});
-    onSendPhoneCode();
+    // onSendPhoneCode();
   };
 
   const loadData = async () => {

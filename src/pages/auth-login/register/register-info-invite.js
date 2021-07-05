@@ -22,9 +22,10 @@ const AccountInfoInvite = ({navigation}) => {
     const res = await verifyInviteCode(data);
     if (res.error) {
       Toast.showError(res.error);
+    } else {
+      dispatch(dispatchSetAuthToken(socialToken));
+      navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
     }
-    dispatch(dispatchSetAuthToken(socialToken));
-    navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
   };
 
   return (
