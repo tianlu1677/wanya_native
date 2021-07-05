@@ -16,7 +16,7 @@ import {cancelAction, createAction} from '@/api/action_api';
 export const Header = props => {
   const {
     typeHeader,
-    data: {id, account, node_name, published_at_text, space, distance, location},
+    data: {id, account, node_id, node_name, published_at_text, space, distance, location},
   } = props;
   const navigation = useNavigation();
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -148,16 +148,22 @@ export const Header = props => {
   };
 
   const NodeHeader = () => {
+    const goNodeDetail = () => {
+      navigation.push('NodeDetail', {nodeId: node_id});
+    };
+
     return (
       <>
-        <FastImg source={{uri: account.avatar_url}} style={styles.nodeImage} />
+        <Pressable onPress={goNodeDetail}>
+          <FastImg source={{uri: account.avatar_url}} style={styles.nodeImage} />
+        </Pressable>
         <Pressable style={styles.content} onPress={goAccountDetail}>
           <Text style={styles.nameText}>{node_name}</Text>
-          <View style={styles.infoWrapper}>
+          <Pressable style={styles.infoWrapper} onPress={goAccountDetail}>
             <Avator account={account} size={VWValue(17)} />
             <Text style={styles.nickname}>{account.nickname}</Text>
             <Text style={styles.timeText}>{published_at_text}</Text>
-          </View>
+          </Pressable>
         </Pressable>
       </>
     );

@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, NodeHeader, Bottom, PlainContent} from '@/components/Item/single-list-item';
+import LocationBar from '@/components/LocationBar';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import {VWValue, RFValue} from '@/utils/response-fontsize';
@@ -137,14 +138,7 @@ const BaseTopic = props => {
     <BaseLongVideo data={props.data} />
   ) : (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
-      {/* {['recommend-node'].includes(type) ? (
-        <NodeHeader data={data} type="topic" onRemove={props.onRemove} />
-      ) : (
-        <Header data={data} type="topic" onRemove={props.onRemove} />
-      )} */}
-
       <Header data={data} type="topic" typeHeader={type} onRemove={props.onRemove} />
-
       {data.plain_content ? (
         <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(13)}} />
       ) : (
@@ -167,12 +161,22 @@ const BaseTopic = props => {
       ) : (
         <View />
       )}
-      <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
-        <Pressable style={styles.infoView} onPress={goNodeDetail}>
-          <IconFont name="node-solid" size={15} color={'#1B5C79'} />
-          <Text style={styles.nodeName}>{data.node_name}</Text>
-        </Pressable>
-      </View>
+
+      {type === 'recommend-node' && (
+        <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
+          <LocationBar space={data.space} location={data.location} style={styles.infoView} />
+        </View>
+      )}
+
+      {type !== 'recommend-node' && (
+        <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
+          <Pressable style={styles.infoView} onPress={goNodeDetail}>
+            <IconFont name="node-solid" size={15} color={'#1B5C79'} />
+            <Text style={styles.nodeName}>{data.node_name}</Text>
+          </Pressable>
+        </View>
+      )}
+
       <Bottom data={data} type="topic" share={true} />
     </Pressable>
   );
