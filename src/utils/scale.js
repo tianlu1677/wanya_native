@@ -1,5 +1,6 @@
 import {VWValue} from '@/utils/response-fontsize';
 
+// 顽法图片视频显示宽高比
 export const scaleSize = (media, innerWidth) => {
   const defaultScale = 3 / 4;
 
@@ -17,6 +18,7 @@ export const scaleSize = (media, innerWidth) => {
   return {width: Math.ceil(width), height: Math.ceil(height)};
 };
 
+// 活动显示宽高比
 export const scaleFixedWidth = (media, innerWidth) => {
   const defaultWidth = media.width;
   const defaultHeight = media.height;
@@ -27,36 +29,40 @@ export const scaleFixedWidth = (media, innerWidth) => {
   return {width: Math.ceil(width), height: Math.ceil(height)};
 };
 
+// 单排列表图片视频显示宽高比
 export const calculateImg = (width, height) => {
-  let newWidth = 500;
-  let newHeight = 500;
-  let x = (width / height).toFixed(2);
-  let attr = {};
-  if (x > 0 && x <= 0.33) {
-    newHeight = 420;
-    newWidth = newHeight / 3;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 0.33 && x <= 1) {
-    newHeight = 420;
-    newWidth = newHeight * x;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 1 && x <= 2) {
-    newWidth = 480;
-    newHeight = (height * newWidth) / width;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 2 && x <= 2.89) {
-    newHeight = 240;
-    newWidth = newHeight * x;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 2.89) {
-    newHeight = 240;
-    newWidth = newHeight * 2.89;
-    attr = {width: newWidth, height: newHeight};
+  const scale = (width / height).toFixed(2);
+  let scaleWidth = 500;
+  let scaleHeight = 500;
+
+  if (scale > 0 && scale < 0.66) {
+    scaleWidth = 420;
+    scaleHeight = 560;
   }
-  return {...attr, x: x};
+
+  if (scale > 0.66 && scale <= 1) {
+    scaleWidth = 420;
+    scaleHeight = scaleWidth / scale;
+  }
+
+  if (scale > 1 && scale <= 2) {
+    scaleWidth = 480;
+    scaleHeight = (height * scaleWidth) / width;
+  }
+
+  if (scale > 2 && scale <= 2.89) {
+    scaleHeight = 240;
+    scaleWidth = scaleHeight * scale;
+  }
+
+  if (scale > 2.89) {
+    scaleHeight = 240;
+    scaleWidth = scaleHeight * 2.89;
+  }
+  return {width: Math.ceil(scaleWidth / 2), height: Math.ceil(scaleWidth / 2)};
 };
 
-// 0.33 1/3
+// 聊天列表图片视频显示宽高比   0.33 1/3
 export const scaleChatSize = media => {
   const defaultSize = VWValue(140);
   const mediaWidth = media.width || defaultSize;

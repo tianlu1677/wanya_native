@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
-import {Header, NodeHeader, Bottom, PlainContent} from '@/components/Item/single-list-item';
+import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
 import LocationBar from '@/components/LocationBar';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
@@ -25,10 +25,7 @@ export const TopicImageContent = props => {
     return <View />;
   }
 
-  const singleStyle = {
-    width: Math.ceil(VWValue(imgAttr.width) / 2),
-    height: Math.ceil((VWValue(imgAttr.width) * imgAttr.height) / imgAttr.width / 2),
-  };
+  const singleStyle = {width: VWValue(imgAttr.width), height: VWValue(imgAttr.height)};
 
   const onPreview = index => {
     const data = {
@@ -62,22 +59,17 @@ export const TopicImageContent = props => {
 
 export const TopicVideoContent = props => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const {data} = props;
-  const onGoDetail = () => {
-    // dispatch(dispatchTopicDetail(null));
-    navigation.push('TopicDetail', {topicId: data.id});
-  };
-  const {single_cover} = props.data;
-  const videoAttr = calculateImg(
-    single_cover.width ? single_cover.width : 100,
-    single_cover.height ? single_cover.height : 100
-  );
 
-  const videoAttrStyle = {
-    width: Math.ceil(VWValue(videoAttr.width) / 2),
-    height: Math.ceil((VWValue(videoAttr.width) * videoAttr.height) / videoAttr.width / 2),
+  const {
+    data: {id, single_cover},
+  } = props;
+
+  const onGoDetail = () => {
+    navigation.push('TopicDetail', {topicId: id});
   };
+
+  const videoAttr = calculateImg(single_cover.width || 100, single_cover.height || 100);
+  const videoAttrStyle = {width: VWValue(videoAttr.width), height: VWValue(videoAttr.height)};
 
   return (
     <Pressable style={{flex: 1, ...videoAttrStyle}} onPress={onGoDetail}>

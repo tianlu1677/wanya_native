@@ -9,8 +9,7 @@
  * is_show_time：间隔上个时间是否大于5分钟，大于则显示当前时间，反之。
  **/
 import dayjs from 'dayjs';
-import {VWValue} from '@/utils/response-fontsize';
-import {calculateImg, scaleChatSize} from '@/utils/scale';
+import {scaleChatSize} from '@/utils/scale';
 
 export function checkShowRule(arr, key) {
   var newArr = arr.map((item, index, array) => {
