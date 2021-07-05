@@ -4,6 +4,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {RegionPicker} from '@yz1311/react-native-wheel-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import MediasPicker from '@/components/MediasPicker';
@@ -18,12 +19,15 @@ const {width: screenW} = Dimensions.get('window');
 const TOP_HEADER = RFValue(110) + BarHeight;
 
 const AccountContent = props => {
+  const dispatch = useDispatch();
   const {currentAccount} = useSelector(state => state.account);
   const {navigation, uploadAvatar} = props;
   const [gender, setGender] = useState('');
   const [birthdayVisible, setBirthdayVisible] = useState(false);
-  const [birthday, setBirthday] = useState('');
-  const dispatch = useDispatch();
+  const [cityVisible, setCityVisible] = useState(false);
+
+  const defaultCity = (currentAccount.city && currentAccount.city.split(',')) || [];
+  const defaultBirthday = currentAccount.birthday ? new Date(currentAccount.birthday) : new Date();
 
   const onImagePicker = type => {
     props.removeAllPhoto();
@@ -56,6 +60,7 @@ const AccountContent = props => {
   };
 
   const setGenderValue = async value => {
+    console.log(value);
     if (value.toString().length <= 0) {
       return;
     }
@@ -64,10 +69,23 @@ const AccountContent = props => {
     dispatch(dispatchCurrentAccount());
   };
 
-  const setBirthdayData = async value => {
+  const onBirthdayCancel = () => {
     setBirthdayVisible(false);
-    setBirthday(value);
+  };
+
+  const onBirthdayConfirm = async value => {
+    onBirthdayCancel();
     await syncAccountInfo({id: currentAccount.id, birthday: value});
+    dispatch(dispatchCurrentAccount());
+  };
+
+  const onCityPickerCancel = () => {
+    setCityVisible(false);
+  };
+
+  const onCityPickerConfirm = async (names, codes) => {
+    onCityPickerCancel();
+    await syncAccountInfo({id: currentAccount.id, city: names.join(',')});
     dispatch(dispatchCurrentAccount());
   };
 
@@ -79,11 +97,11 @@ const AccountContent = props => {
           content: currentAccount.nickname,
         });
         break;
-      case 'gender':
-        break;
       case 'birthday':
-        setBirthday(currentAccount.birthday);
         setBirthdayVisible(true);
+        break;
+      case 'city':
+        setCityVisible(true);
         break;
       case 'intro':
         navigation.navigate('EditAccountContent', {
@@ -168,7 +186,7 @@ const AccountContent = props => {
             onValueChange={value => setGenderValue(value)}
             fixAndroidTouchableBug
             placeholder={{label: '请选择', value: '', color: 'gray'}}
-            value={gender}
+            value={currentAccount.gender}
             doneText={'完成'}
             items={[
               {label: '男', value: 'man'},
@@ -188,9 +206,9 @@ const AccountContent = props => {
       </Pressable>
       <View style={styles.bottomLine} />
 
-      <Pressable style={styles.itemWrap} onPress={() => goPages('birthday')}>
+      <Pressable style={styles.itemWrap} onPress={() => goPages('city')}>
         <Text style={styles.itemTitle}>所在地</Text>
-        <Text style={styles.itemContent}>{currentAccount.birthday}</Text>
+        <Text style={styles.itemContent}>{currentAccount.city.replace(',', '')}</Text>
         <ForwardRight />
       </Pressable>
 
@@ -210,20 +228,33 @@ const AccountContent = props => {
         <Text style={styles.itemTitle}>身份标签</Text>
         <View style={[styles.itemContent, styles.labelWrapper]}>
           {currentAccount.label_list.map(label => (
-            <Text style={styles.label}>{label}</Text>
+            <Text style={styles.label} key={label}>
+              {label}
+            </Text>
           ))}
         </View>
         <ForwardRight />
       </Pressable>
       <View style={styles.bottomLine} />
 
+      <RegionPicker
+        mode="pc"
+        isModal={true}
+        modalVisible={cityVisible}
+        selectedValue={defaultCity}
+        onPickerConfirm={onCityPickerConfirm}
+        onPickerCancel={onCityPickerCancel}
+      />
+
       <DateTimePickerModal
-        isVisible={birthdayVisible}
         mode="date"
         locale="zh_CN"
-        date={birthday ? new Date(birthday) : new Date()}
-        onConfirm={value => setBirthdayData(value)}
-        onCancel={() => setBirthdayVisible(false)}
+        isVisible={birthdayVisible}
+        date={defaultBirthday}
+        onConfirm={onBirthdayConfirm}
+        onCancel={onBirthdayCancel}
+        // onConfirm={value => setBirthdayData(value)}
+        // onCancel={() => setBirthdayVisible(false)}
         cancelTextIOS="取消"
         confirmTextIOS="确认"
         headerTextIOS="选择生日"
@@ -268,6 +299,7 @@ const styles = StyleSheet.create({
   labelWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'flex-end',
     flex: 1,
     marginLeft: 20,
     paddingTop: 7,

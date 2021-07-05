@@ -129,8 +129,6 @@ const BaseTopic = props => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
   };
 
-  console.log('BaseTopic', type);
-
   const goTopicDetail = () => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
