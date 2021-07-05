@@ -21,7 +21,7 @@ const Loading = props => {
   return (
     <View style={[styles.loading, props.style]}>
       {/*<ActivityIndicator size={'small'} />*/}
-      <Spinner style={{}} isVisible={true} size={35} type={'Bounce'} color={'#BDBDBD'} />
+      <Spinner style={{}} isVisible={true} size={35} type={props.type || 'Bounce'} color={'#BDBDBD'} />
       <Text style={styles.text}>加载中...</Text>
     </View>
   );

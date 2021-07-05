@@ -1,11 +1,5 @@
 import React, {Component, useState, useEffect, useLayoutEffect} from 'react';
-import {
-  StyleSheet,
-  StatusBar,
-  Platform,
-  View,
-  ImageBackground,
-} from 'react-native';
+import {StyleSheet, StatusBar, Platform, View, ImageBackground} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {jverifyPhone} from '@/api/phone_sign_api';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
@@ -13,7 +7,7 @@ import {BaseApiUrl} from '@/utils/config';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import Toast from '@/components/Toast';
 import JVerification from 'jverification-react-native';
-
+import Loading from '@/components/Loading';
 //一键登录页面自定义配置，需要在调用login之前设置
 
 const customUIWithConfigiOS = {
@@ -150,7 +144,9 @@ const customUIWithConfigAndroid = {
 //   // {customViewName: 'customView3', customViewPoint: [20, 400, 150, 30]},
 // ];
 
-const customViewParams = [{customViewName: 'customView1', customViewPoint: [0, 550, SCREEN_WIDTH, 100]}]
+const customViewParams = [
+  {customViewName: 'customView1', customViewPoint: [0, 500, SCREEN_WIDTH, 120]},
+];
 
 const OneLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -172,8 +168,8 @@ const OneLogin = ({navigation, route}) => {
       const res = await jverifyPhone({jverify_phone_token: result.content});
       console.log('res', res);
       console.log('jverifyPhone login res', res);
-      if(res.error) {
-        Toast.showError(res.error, {})
+      if (res.error) {
+        Toast.showError(res.error, {});
       } else {
         JVerification.dismissLoginPage();
         dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
@@ -184,7 +180,7 @@ const OneLogin = ({navigation, route}) => {
 
   const loadPhone = () => {
     setTimeout(() => {
-      if (canOnePhone === 'phone') {
+      if (canOnePhone !== 'phone') {
         setCanOnePhone('phone');
         navigation.navigate('LoginPhoneCode');
       }
@@ -195,30 +191,28 @@ const OneLogin = ({navigation, route}) => {
   //   console.log('addUncheckBoxEventListener:' + JSON.stringify(result));
   // })
 
-  useEffect(() => {
-    JVerification.init(initParams, result => {
-      console.log('init:' + JSON.stringify(result));
-      if (result.code === 8000) {
-        if (Platform.OS === 'android') {
-          JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
-        } else {
-          JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
-        }
-        JVerification.preLogin(5000, result => {
-          console.log('preLogin:' + JSON.stringify(result));
-          if(canOnePhone === 'onelogin') {
-            setCanOnePhone('onelogin')
-            JVerification.login(false);
-          }
-          return;
-        });
+  const checkJverify = () => {
+    if (Platform.OS === 'android') {
+      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
+    } else {
+      JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
+    }
+    JVerification.preLogin(3000, result => {
+      console.log('preLogin:' + JSON.stringify(result));
+      if (result.code === 7000) {
+        JVerification.login(false);
+      } else {
+        navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
       }
     });
-    // JVerification.setLoggerEnable(true);
-    loadPhone();
+  };
+
+  useEffect(() => {
+    checkJverify();
+    JVerification.setLoggerEnable(true);
+
     return () => {};
   }, []);
-  //
   return (
     <View style={{backgroundColor: 'black'}}>
       <StatusBar barStyle={'light-content'} translucent backgroundColor="transparent" />
@@ -227,6 +221,7 @@ const OneLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
+        <Loading type={'CircleFlip'} style={{backgroundColor: 'black'}} />
         {/*<Button*/}
         {/*  title="isInitSuccess"*/}
         {/*  onPress={() =>*/}

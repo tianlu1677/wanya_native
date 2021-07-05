@@ -29,6 +29,7 @@ import * as action from '@/redux/constants';
 import {getChannels, getChannelPosts} from '@/api/home_api';
 import JPush from 'jpush-react-native';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
+import JVerification from 'jverification-react-native';
 
 const queryString = require('query-string');
 const codePushOptions = {
@@ -63,6 +64,7 @@ class App extends Component {
     this.saveToken(); //保存token
     this.getIndexTabData(); //获取首页频道信息
     // console.log('scale', scale);
+    this.initJverify();
 
     this.loadSplashImg();
     this.loadSettings();
@@ -98,6 +100,18 @@ class App extends Component {
       Helper.setData('settings', JSON.stringify(res));
     });
   };
+
+  //初始化jverify
+  initJverify = () => {
+    const initParams = {
+      time: 5000,
+      appKey: '7cd75000d5932000b3d4ca59', //仅iOS
+      channel: 'release', //仅iOS
+      // advertisingId: 'advertisingId', //仅iOS
+      isProduction: true, //仅iOS
+    };
+    JVerification.init(initParams, result => console.log('result', result))
+  }
 
   checkPermission = () => {
     checkMultiple([PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]).then(statuses => {
