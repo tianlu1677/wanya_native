@@ -2,7 +2,7 @@ import request from './request';
 
 export const getLabelList = async () => {
   const res = await request({
-    url: '/api/v1/settings/total_lable_list',
+    url: '/api/v1/settings/total_label_list',
     method: 'GET',
   });
   return res;

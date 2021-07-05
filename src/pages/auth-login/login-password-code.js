@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
+import {View, Text, StyleSheet, StatusBar, TextInput, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
@@ -30,6 +30,7 @@ const LoginPasswordCode = ({navigation}) => {
 
   return (
     <View style={cStyles.wrapper}>
+      <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>手机密码登录</Text>
       <Text style={cStyles.infoText}>请输入你的手机号码和登录密码</Text>
       <View style={[cStyles.inputWrap, styles.phoneWrapper]}>

@@ -1,15 +1,15 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, StatusBar} from 'react-native';
 import {useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
 import {sendPhoneCode} from '@/api/phone_sign_api';
-import CustomView1 from "@/pages/sessions/login-templates/customView1"
 import {SendCodeType} from './meta';
 
 import cStyles from './style';
+import ThirdLogin from "@/pages/sessions/login-templates/third_login"
 
 const md5 = require('md5');
 const LoginPhoneCode = ({navigation}) => {
@@ -63,6 +63,7 @@ const LoginPhoneCode = ({navigation}) => {
 
   return (
     <View style={cStyles.wrapper}>
+      <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>手机验证登录</Text>
       <Text style={cStyles.infoText}>请输入你的手机号码，获取验证码</Text>
       <View style={[cStyles.inputWrap, styles.phoneWrapper]}>
@@ -91,7 +92,7 @@ const LoginPhoneCode = ({navigation}) => {
         下一步
       </Text>
 
-      <CustomView1 />
+      <ThirdLogin />
     </View>
   );
 };

@@ -143,14 +143,10 @@ const ThirdLogin = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-    color: 'black',
-  },
-  otherLogin: {
-    color: '#bdbdbd',
-    fontSize: 12,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: 'black',
+    // color: 'black',
   },
   thirdLogin: {
     flexDirection: 'row',
@@ -158,8 +154,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingTop: 60,
-    paddingLeft: 56,
-    paddingRight: 56,
+    // paddingLeft: 56,
+    // paddingRight: 56,
     backgroundColor: 'black',
   },
   thirdLogoWraper: {

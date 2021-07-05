@@ -52,8 +52,11 @@ export const dispatchUpdateSocialAccount = (socialToken, navigation = '') => asy
   } else if (!had_invited) {
     RootNavigation.navigate('RegisterInfoInvite');
   } else {
-    // console.log(navigation);
-
+    // 必须先设置token
+    await Helper.setData('auth_token', socialToken);
+    await dispatch(dispatchSetAuthToken(socialToken));
+    await dispatch(dispatchCurrentAccount());
+    console.log('other');
     RootNavigation.reset({index: 0, routes: [{name: 'Recommend'}]});
   }
 };

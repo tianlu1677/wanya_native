@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
@@ -76,6 +76,7 @@ const LoginVerifyCode = ({navigation, route}) => {
 
   return (
     <View style={cStyles.wrapper}>
+      <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>输入验证码</Text>
       <Text style={cStyles.infoText}>
         验证码已发送至 +86 {phone.substr(0, 3)}****{phone.substr(7, phone.length)}

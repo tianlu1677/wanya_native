@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
+import {View, Text, StyleSheet, TextInput, StatusBar, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
@@ -58,6 +58,7 @@ const BindPhone = ({navigation}) => {
 
   return (
     <View style={cStyles.wrapper}>
+      <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>绑定手机号</Text>
       <Text style={cStyles.infoText}>完善帐号信息，更方便地使用产品</Text>
       <View style={[cStyles.inputWrap, styles.phoneWrapper]}>
