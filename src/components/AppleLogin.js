@@ -7,6 +7,7 @@ import {
   Platform,
   Text,
 } from 'react-native';
+import FastImg from "@/components/FastImg"
 
 const {AppleAuthentication} = NativeModules;
 
@@ -32,7 +33,11 @@ export const SignInWithAppleButton = ({buttonText = '', callBack}) => {
         onPress={async () => {
           await appleAuth(callBack);
         }}>
-        <Text>Apple login</Text>
+        <FastImg source={require('../assets/login/apple.png')} style={{flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 35,
+          height: 35,}} />
       </TouchableOpacity>
     );
   } else {
