@@ -16,6 +16,7 @@ const CustomView1 = ({}) => {
         }}>
         <Text style={styles.otherLogin}>其他号码登录</Text>
       </Pressable>
+      <View style={{height: 30}} />
       <View style={styles.thirdLogin}>
         <ThirdLogin />
       </View>
@@ -25,9 +26,9 @@ const CustomView1 = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // marginTop: 100,
+    // marginTop: 20,
     // width: 400,
-    // height: 30,
+    // height: 200,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'black',
@@ -39,13 +40,14 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     paddingTop: 5,
     paddingBottom: 5,
+    // marginBottom: 50,
   },
   thirdLogin: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     // width: '100%',
-    paddingTop: 60,
+    // paddingTop: 60,
     paddingLeft: 80,
     paddingRight: 80,
     backgroundColor: 'black',

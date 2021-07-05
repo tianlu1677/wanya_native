@@ -143,6 +143,7 @@ const ThirdLogin = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
     // justifyContent: 'center',
     // alignItems: 'center',
     // backgroundColor: 'black',
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    // width: '100%',
     paddingTop: 60,
     // paddingLeft: 56,
     // paddingRight: 56,
