@@ -1,19 +1,8 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Vibration} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react';
+import {Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import * as Animatable from 'react-native-animatable';
-import {Avator} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
-import IconFont from '@/iconfont';
-import Toast from '@/components/Toast';
-import LocationBar from '@/components/LocationBar';
-import {deleteTopic} from '@/api/topic_api';
-import {deleteTheory} from '@/api/theory_api';
 import {getAccountBaseInfo} from '@/api/account_api';
-import {dispatchShareItem} from '@/redux/actions';
-import ActionSheet from '@/components/ActionSheet';
-import {cancelAction, createAction} from '@/api/action_api';
 
 export const PlainContent = props => {
   const {data} = props;
