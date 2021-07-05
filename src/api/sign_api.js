@@ -29,6 +29,24 @@ export async function appWechatSignIn(data = {code: '', app_id: '', source: ''})
   return res.data;
 }
 
+export async function appQqSignIn(data = {}) {
+  const res = await request({
+    url: '/api/sessions/app_qq_login.json',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
+export async function appWeiboSignIn(data = {}) {
+  const res = await request({
+    url: '/api/sessions/app_weibo_login.json',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
 export async function appAppleSignIn(data = {user_id: '', identity_token: '', nickname: ''}) {
   const res = await request({
     url: '/api/sessions/app_apple_login.json',

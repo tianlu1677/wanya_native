@@ -24,11 +24,11 @@ const HeaderLeft = props => {
 
 const AuthHeaderLeft = props => {
   const {image} = props;
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   return (
     <Pressable
       hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-      // onPress={() => navigation.goBack()}
+      onPress={() => navigation.goBack()}
     >
       <FastImg source={image} style={{width: 9, height: 15}} />
     </Pressable>
@@ -62,7 +62,7 @@ export const MainStackScreen = props => {
 export const AuthStackScreen = props => {
   return (
     <AuthStack.Navigator
-      initialRouteName="OneLogin"
+      initialRouteName="SocialLogin"
       screenOptions={() => ({
         title: false,
         headerStyle: {

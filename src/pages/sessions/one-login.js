@@ -4,16 +4,13 @@ import {
   StatusBar,
   Platform,
   View,
-  Text,
   ImageBackground,
-  Pressable,
-  Alert,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {jverifyPhone} from '@/api/phone_sign_api';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
-import {BOTTOM_HEIGHT, SCALE, IsIos, SCREEN_WIDTH} from '@/utils/navbar';
+import {SCREEN_WIDTH} from '@/utils/navbar';
 import Toast from '@/components/Toast';
 import JVerification from 'jverification-react-native';
 
@@ -165,9 +162,6 @@ const OneLogin = ({navigation, route}) => {
     // advertisingId: 'advertisingId', //仅iOS
     isProduction: true, //仅iOS
   };
-
-  const createAlert = title =>
-    Alert.alert('提示', title, [{text: 'OK', onPress: () => console.log('OK Pressed')}]);
 
   JVerification.addLoginEventListener(async result => {
     console.log('LoginListener:' + JSON.stringify(result));
@@ -328,8 +322,5 @@ const OneLogin = ({navigation, route}) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-
-});
 
 export default OneLogin;

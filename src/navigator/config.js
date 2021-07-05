@@ -257,7 +257,7 @@ const commonRouter = [
   {name: 'WebView', component: WebView, options: {title: 'WebView'}},
   {name: 'SharePage', component: SharePage, options: {title: '分享'}},
   {name: 'Report', component: Report, options: {title: '投诉'}},
-  {name: 'OneLogin', component: OneLogin, options: {title: '一键登录'}},
+  // {name: 'OneLogin', component: OneLogin, options: {title: '一键登录'}},
 ];
 
 const LabRouter = [
@@ -282,7 +282,7 @@ const chatRouter = [
 ];
 
 const authRouter = [
-  {name: 'OneLogin', component: OneLogin, options: {headerShown: false}},
+  // {name: 'OneLogin', component: OneLogin, options: {headerShown: false}},
   {name: 'SocialLogin', component: SocialLogin, options: {headerShown: false}},
   {name: 'PhoneLogin', component: PhoneLogin},
   {name: 'PasswordLogin', component: PasswordLogin},

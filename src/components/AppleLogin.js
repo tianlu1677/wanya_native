@@ -32,7 +32,7 @@ export const SignInWithAppleButton = ({buttonText = '', callBack}) => {
       <TouchableOpacity
         onPress={async () => {
           await appleAuth(callBack);
-        }}>
+        }} style={{width: 35, height: 35 }}>
         <FastImg source={require('../assets/login/apple.png')} style={{flex: 1,
           justifyContent: 'center',
           alignItems: 'center',

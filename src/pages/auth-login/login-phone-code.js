@@ -6,6 +6,7 @@ import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
 import {sendPhoneCode} from '@/api/phone_sign_api';
+import CustomView1 from "@/pages/sessions/login-templates/customView1"
 import {SendCodeType} from './meta';
 
 import cStyles from './style';
@@ -47,7 +48,7 @@ const LoginPhoneCode = ({navigation}) => {
   };
 
   useEffect(() => {
-    // loadData();
+    loadData();
   }, []);
 
   useLayoutEffect(() => {
@@ -89,6 +90,8 @@ const LoginPhoneCode = ({navigation}) => {
         ]}>
         下一步
       </Text>
+
+      <CustomView1 />
     </View>
   );
 };

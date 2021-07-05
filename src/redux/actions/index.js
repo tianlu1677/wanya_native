@@ -27,12 +27,13 @@ import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {createTopic} from '@/api/topic_api';
 import {getCities} from '@/api/space_api';
 import Helper from '@/utils/helper';
+import * as RootNavigation from '@/navigator/root-navigation';
 import * as node from './node_action';
 
 export const nodeAction = node;
 
 // 未完成认证用户
-export const dispatchUpdateSocialAccount = (socialToken, navigation) => async dispatch => {
+export const dispatchUpdateSocialAccount = (socialToken, navigation = '') => async dispatch => {
   const res = await getCurrentAccount({token: socialToken});
   console.log('获取最新res', res);
   await Helper.setData('socialToken', socialToken);
@@ -43,17 +44,17 @@ export const dispatchUpdateSocialAccount = (socialToken, navigation) => async di
   const {had_photo, had_gender, had_taglist, had_invited} = res.account;
   if (!had_photo) {
     console.log('xxxxx')
-    navigation.navigate('RegisterInfo');
+    RootNavigation.navigate('RegisterInfo');
   } else if (!had_gender) {
-    navigation.navigate('RegisterInfoGender');
+    RootNavigation.navigate('RegisterInfoGender');
   } else if (!had_taglist) {
-    navigation.navigate('RegisterInfoLabel');
+    RootNavigation.navigate('RegisterInfoLabel');
   } else if (!had_invited) {
-    navigation.navigate('RegisterInfoInvite');
+    RootNavigation.navigate('RegisterInfoInvite');
   } else {
-    console.log(navigation);
+    // console.log(navigation);
 
-    navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+    RootNavigation.reset({index: 0, routes: [{name: 'Recommend'}]});
   }
 };
 

@@ -6,43 +6,74 @@ import * as RootNavigation from '@/navigator/root-navigation';
 import {useDispatch} from 'react-redux';
 
 import * as WeChat from 'react-native-wechat-lib';
-import {appWechatSignIn, appAppleSignIn} from '@/api/sign_api';
-import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
+import {appWechatSignIn, appQqSignIn, appWeiboSignIn, appAppleSignIn} from '@/api/sign_api';
+import {dispatchCurrentAccount, dispatchUpdateSocialAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
 import Toast from '@/components/Toast';
-import IconFont from '@/iconfont';
-import PolicyModal from '@/components/PolicyModal';
+// import IconFont from '@/iconfont';
+// import PolicyModal from '@/components/PolicyModal';
 import ShareUtil from '@/utils/umeng_share_util';
 import {SignInWithAppleButton} from '@/components/AppleLogin';
+import {store} from '@/redux/stores/store';
 
-const customView1 = ({}) => {
+const CustomView1 = ({}) => {
+  // const dispatch = useDispatch();
+
+  //{"accessToken": "2D07206AFCBD395D8C6E13572734266E", "city": "海淀", "expiration": null, "gender": "男", "iconurl": "https://thirdqq.qlogo.cn/g?b=oidb&k=37YbkEGP192zF3YTbvzR4A&s=100&t=1556440734", "name": "狂奔的蜗牛", "openid": "2F942F4D00671AE32030DE17B870EBCA", "province": "北京", "uid": "2F942F4D00671AE32030DE17B870EBCA"}
   const qqLogin = async () => {
     try {
       ShareUtil.auth(0, async (code, result, message) => {
         console.log('res', code, result, message);
-
-        const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
-        let signData = {
-          code: codeRes.code,
-          app_id: codeRes.appid || 'wx17b69998e914b8f0',
-        };
-        const userInfoRes = await appWechatSignIn(signData);
+        if (code === 200) {
+          let gender = result.gender === '男' ? 'man' : 'woman';
+          let signData = {
+            gender: gender,
+            city: result.city,
+            avatar_url: result.iconurl,
+            nickname: result.name,
+            openid: result.openid,
+            province: result.province,
+            unionid: result.uid,
+          };
+          const res = await appQqSignIn(signData);
+          JVerification.dismissLoginPage();
+          res.error
+            ? Toast.showError(res.error, {})
+            : store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+        } else {
+          Toast.showError('获取QQ信息失败，请稍后再试');
+        }
       });
     } catch (e) {
       console.error(e);
     }
   };
 
+  // {"accessToken": "2.00okeQaCAAunBE6c79b21cd0chvo4D", "city": "8", "expiration": null, "gender": "男", "iconurl": "https://tva1.sinaimg.cn/crop.0.0.180.180.180/8d279d76jw1e8qgp5bmzyj2050050aa8.jpg?KID=imgbed,tva&Expires=1625466852&ssig=ttOGekAaG9", "name": "风前无止境", "province": "50", "refreshToken": "2.00okeQaCAAunBEfa3e742d05kRjUfE", "uid": "2368183670", "unionid": "2368183670"}
   const weiboLogin = async () => {
     try {
       ShareUtil.auth(1, async (code, result, message) => {
-        console.log('res', code, result, message);
-        const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
-        let signData = {
-          code: codeRes.code,
-          app_id: codeRes.appid || 'wx17b69998e914b8f0',
-        };
-        const userInfoRes = await appWechatSignIn(signData);
+        console.log('weiboLogin res', code, result, message);
+        if (code === 200) {
+          let gender = result.gender === '男' ? 'man' : 'woman';
+          let signData = {
+            gender: gender,
+            city: result.city,
+            avatar_url: result.iconurl,
+            nickname: result.name,
+            openid: result.unionid,
+            province: result.province,
+            unionid: result.uid,
+          };
+          const res = await appWeiboSignIn(signData);
+          console.log('weiboLogin res account', res);
+          JVerification.dismissLoginPage();
+          res.error
+            ? Toast.showError(res.error, {})
+            : store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+        } else {
+          Toast.showError('获取微博信息失败，请稍后再试');
+        }
       });
     } catch (e) {
       console.error(e);
@@ -56,7 +87,11 @@ const customView1 = ({}) => {
         code: codeRes.code,
         app_id: codeRes.appid || 'wx17b69998e914b8f0',
       };
-      const userInfoRes = await appWechatSignIn(signData);
+      const res = await appWechatSignIn(signData);
+      JVerification.dismissLoginPage();
+      res.error
+        ? Toast.showError(res.error, {})
+        : store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
     } catch (e) {
       console.error(e);
     }
@@ -116,28 +151,30 @@ const customView1 = ({}) => {
     // }
   };
 
-  const appleSignIn = result => {
-    // const { currnet } = route.params;
-    const {fullName, identityToken, user} = result;
+  const appleSignIn = async result => {
+    const {fullName, identityToken, user, email} = result;
+    console.log('result', result);
     try {
-      let params = {
+      const data = {
+        email: email,
         user_id: user,
         identity_token: identityToken,
-        nickname: fullName.givenName || fullName.familyName,
+        nickname: fullName.nickname || fullName.failyName,
       };
-      // postAppleLogin(params).then(res => {
-      //   // navigation.navigate(currnet)
-      //   storeData('guide_auth', 'true')
-      //   resetFun&&resetFun();
-      //   setTimeout(() => {
-      //     navigation.reset({
-      //       index: 0,
-      //       routes: [{ name: 'Home' }],
-      //     });
-      //   }, 0)
-      // })
-    } catch {
-      alert('登录失败');
+      const res = await appAppleSignIn(data);
+      afterLoginSuccess(res);
+    } catch (e) {
+      console.log('e', e);
+      Toast.showError('苹果登录失败, 请稍后重试。');
+    }
+  };
+
+  const afterLoginSuccess = async res => {
+    if (res.error) {
+      Toast.showError(res.error, {});
+    } else {
+      store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+      JVerification.dismissLoginPage();
     }
   };
 
@@ -163,12 +200,12 @@ const customView1 = ({}) => {
         <Pressable style={styles.thirdLogoWraper} onPress={weiboLogin}>
           <FastImg source={require('../../../assets/login/weibo.png')} style={styles.thirdLogo} />
         </Pressable>
-        <Pressable style={styles.thirdLogoWraper} onPress={onAppleButtonPress}>
+        <View style={styles.thirdLogoWraper}>
           {/*<FastImg source={require('../../../assets/login/apple.png')} style={styles.thirdLogo} />*/}
           {SignInWithAppleButton({
             callBack: appleSignIn,
           })}
-        </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -213,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default customView1;
+export default CustomView1;
