@@ -5,6 +5,7 @@ import FastImg from '@/components/FastImg';
 import MainTabScreen from './main-tab-screen';
 import {MainRouters, AuthRouters} from './config';
 import {useNavigation, useRoute} from '@react-navigation/native';
+
 const BackBlack = require('@/assets/images/back.png');
 const BackWhite = require('@/assets/images/back-white.png');
 
@@ -25,14 +26,17 @@ const HeaderLeft = props => {
 const AuthHeaderLeft = props => {
   const {image} = props;
   const navigation = useNavigation();
-  return (
-    <Pressable
-      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-      onPress={() => navigation.goBack()}
-    >
-      <FastImg source={image} style={{width: 9, height: 15}} />
-    </Pressable>
-  );
+  if (navigation.canGoBack()) {
+    return (
+      <Pressable
+        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+        onPress={() => navigation.goBack()}>
+        <FastImg source={image} style={{width: 9, height: 15}} />
+      </Pressable>
+    );
+  } else {
+    return null;
+  }
 };
 
 // MainStackScreen

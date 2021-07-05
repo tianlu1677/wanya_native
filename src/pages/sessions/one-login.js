@@ -154,11 +154,11 @@ const customViewParams = [{customViewName: 'customView1', customViewPoint: [0, 5
 
 const OneLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const [canOnePhone, setCanOnePhone] = useState(false);
+  const [canOnePhone, setCanOnePhone] = useState('onelogin');
   const initParams = {
     time: 5000,
     appKey: '7cd75000d5932000b3d4ca59', //仅iOS
-    // channel: 'release', //仅iOS
+    channel: 'release', //仅iOS
     // advertisingId: 'advertisingId', //仅iOS
     isProduction: true, //仅iOS
   };
@@ -184,10 +184,11 @@ const OneLogin = ({navigation, route}) => {
 
   const loadPhone = () => {
     setTimeout(() => {
-      if (!canOnePhone) {
+      if (canOnePhone === 'phone') {
+        setCanOnePhone('phone');
         navigation.navigate('LoginPhoneCode');
       }
-    }, 3000);
+    }, 4000);
   };
 
   // JVerification.addUncheckBoxEventListener((result) => {
@@ -205,8 +206,10 @@ const OneLogin = ({navigation, route}) => {
         }
         JVerification.preLogin(5000, result => {
           console.log('preLogin:' + JSON.stringify(result));
-          setCanOnePhone(true);
-          JVerification.login(false);
+          if(canOnePhone === 'onelogin') {
+            setCanOnePhone('onelogin')
+            JVerification.login(false);
+          }
           return;
         });
       }
