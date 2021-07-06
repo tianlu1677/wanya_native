@@ -9,26 +9,41 @@ import ScrollList from '@/components/ScrollList';
 import BaseChatGroup from './base-chat-group';
 import {useSelector} from 'react-redux';
 import JPush from 'jpush-react-native';
-import {IsIos} from "@/utils/navbar"
+import {IsIos} from '@/utils/navbar';
+
 var BadgeAndroid = require('react-native-android-badge');
 
 const ChatGroups = ({navigation}) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [currentOpenId, setCurrentOpenId] = useState('');
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
   const {currentBaseInfo} = useSelector(state => state.account);
 
   const renderItemMemo = useCallback(
-    ({item, index}) => <BaseChatGroup navigation={navigation} deleteChatgroup={deleteChatgroup} chat_group={item} key={item.uuid} />,
+    ({item, index}) => (
+      <BaseChatGroup
+        currentOpenId={currentOpenId}
+        onOpen={onOpen}
+        navigation={navigation}
+        deleteChatgroup={deleteChatgroup}
+        chat_group={item}
+        key={item.uuid}
+      />
+    ),
     []
   );
 
   //TODO 更新
   const deleteChatgroup = (data = {}) => {
-    console.log('real delete', data)
-    deleteChatGroup({uuid: data.uuid})
-  }
+    console.log('real delete', data);
+    deleteChatGroup({uuid: data.uuid});
+  };
+
+  const onOpen = openid => {
+    setCurrentOpenId(openid);
+  };
 
   const loadData = async (page = 1) => {
     // setLoading(true);
@@ -47,9 +62,12 @@ const ChatGroups = ({navigation}) => {
       loadData();
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
-      JPush.setBadge({badge: currentBaseInfo.total_unread_messages_count, appBadge: currentBaseInfo.total_unread_messages_count});
-      if(!IsIos) {
-        BadgeAndroid.setBadge(currentBaseInfo.total_unread_messages_count)
+      JPush.setBadge({
+        badge: currentBaseInfo.total_unread_messages_count,
+        appBadge: currentBaseInfo.total_unread_messages_count,
+      });
+      if (!IsIos) {
+        BadgeAndroid.setBadge(currentBaseInfo.total_unread_messages_count);
       }
     }, [])
   );

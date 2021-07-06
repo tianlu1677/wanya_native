@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect, useLayoutEffect} from 'react';
-import {StyleSheet, StatusBar, Platform, View, ImageBackground} from 'react-native';
+import {StyleSheet, Button, StatusBar, Platform, View, ImageBackground} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {jverifyPhone} from '@/api/phone_sign_api';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
@@ -29,6 +29,8 @@ const customUIWithConfigiOS = {
   sloganHidden: true,
   // sloganConstraints: [0, 40, 200, 14],
   //登录按钮
+  loginBtnNormalImage: 'loginBtn.png',
+  loginBtnSelectedImage: 'loginBtn.png',
   logBtnConstraints: [0, 80, 220, 40],
   loginBtnText: '同意协议并一键登录',
   loginBtnTextColor: 16777215, // 白色
@@ -161,23 +163,23 @@ const OneLogin = ({navigation, route}) => {
 
   JVerification.addLoginEventListener(async result => {
     console.log('LoginListener:' + JSON.stringify(result));
-    // 获取到登录的token了, 返回值中会返回手机号。再用此手机号注册新用户
     const code = result.code;
     if (code === 6000) {
-      // createAlert('isInitSuccess:' + JSON.stringify(result));
       const res = await jverifyPhone({jverify_phone_token: result.content});
-      console.log('res', res);
-      console.log('jverifyPhone login res', res);
       if (res.error) {
         Toast.showError(res.error, {});
       } else {
         JVerification.dismissLoginPage();
         dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
       }
-      // res {"answer": {"phone": "18612300141"}}
+    } else if (code === 6004) {
+      goToPhone();
     }
   });
 
+  const goToPhone = () => {
+    navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
+  };
   // JVerification.addUncheckBoxEventListener((result) => {
   //   console.log('addUncheckBoxEventListener:' + JSON.stringify(result));
   // })
@@ -189,20 +191,22 @@ const OneLogin = ({navigation, route}) => {
       } else {
         JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
       }
-      JVerification.preLogin(3000, result => {
-        console.log('preLogin:' + JSON.stringify(result));
-        if (result.code === 7000) {
-          JVerification.login(false);
+      JVerification.checkLoginEnable(result => {
+        console.log('checkLoginEnable:' + JSON.stringify(result));
+        if (result.enable) {
+          setTimeout(() => {
+            JVerification.login(true);
+          }, 2000)
         } else {
-          navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
+          goToPhone();
         }
       });
-    } catch (e) {
-      console.log('ee', e)
-      navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
-    }
 
-    navigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
+      JVerification.login(true);
+    } catch (e) {
+      console.log('ee', e);
+      goToPhone();
+    }
   };
 
   useEffect(() => {
@@ -214,12 +218,12 @@ const OneLogin = ({navigation, route}) => {
   return (
     <View style={{backgroundColor: 'black'}}>
       <StatusBar barStyle={'light-content'} translucent backgroundColor="transparent" />
-
+      {/*<Loading type={'CircleFlip'} style={{backgroundColor: 'black'}} />*/}
       <ImageBackground
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
-        <Loading type={'CircleFlip'} style={{backgroundColor: 'black'}} />
+        <Loading type={'9CubeGrid'} style={{backgroundColor: 'black'}}  text={'顽鸦'}/>
         {/*<Button*/}
         {/*  title="isInitSuccess"*/}
         {/*  onPress={() =>*/}
@@ -261,6 +265,7 @@ const OneLogin = ({navigation, route}) => {
         {/*<Button*/}
         {/*  title="addLoginCustomConfig"*/}
         {/*  onPress={() => {*/}
+        {/*    JVerification.clearPreLoginCache()*/}
         {/*    if (Platform.OS === 'android') {*/}
         {/*      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);*/}
         {/*    } else {*/}

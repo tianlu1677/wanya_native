@@ -110,7 +110,9 @@ class App extends Component {
       // advertisingId: 'advertisingId', //仅iOS
       isProduction: true, //仅iOS
     };
-    JVerification.init(initParams, result => console.log('result', result))
+    JVerification.init(initParams, result => {
+      console.log('init result', result)
+    })
   }
 
   checkPermission = () => {

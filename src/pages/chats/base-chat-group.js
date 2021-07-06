@@ -14,12 +14,8 @@ const PATTERNS = {
   emoji: new RegExp('\\/\\{[a-zA-Z_]{1,14}\\}'),
 };
 
-const BaseChatGroup = ({navigation, chat_group, deleteChatgroup}) => {
+const BaseChatGroup = ({navigation, chat_group, deleteChatgroup, currentOpenId, onOpen}) => {
   const {currentAccount} = useSelector(state => state.account);
-
-  const [sectionID, setSectionID] = useState('');
-  const [rowID, setRowID] = useState('');
-
   const {
     uuid,
     send_message_account,
@@ -92,10 +88,9 @@ const BaseChatGroup = ({navigation, chat_group, deleteChatgroup}) => {
     return views;
   };
 
-  const onOpen = (sectionID, rowId) => {
+  const changeOpen = (sectionID, rowId) => {
     console.log('onOpen item', sectionID, rowId);
-    setSectionID(sectionID);
-    setRowID(rowId);
+    onOpen(sectionID);
   };
   return (
     <Swipeout
@@ -109,14 +104,16 @@ const BaseChatGroup = ({navigation, chat_group, deleteChatgroup}) => {
           key: chat_group.uuid,
           backgroundColor: 'red',
           type: 'delete',
+          autoClose: true,
         },
       ]}
+      close={true}
       rowID={chat_group.uuid}
       sectionID={chat_group.uuid}
       autoClose={true}
-      onOpen={onOpen}
+      onOpen={changeOpen}
       key={chat_group.uuid}
-      scroll={event => console.log('scroll event')}>
+      >
       <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
         <View style={styles.coverWrapView}>
           <Avator size={45} account={send_message_account} />
