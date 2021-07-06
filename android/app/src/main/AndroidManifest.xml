@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE "/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!--    <uses-feature android:name="android.hardware.camera" android:required="false" />-->
 <!--    <uses-feature android:name="android.hardware.camera.front" android:required="false" />-->

@@ -10,7 +10,7 @@ const CustomView1 = ({}) => {
     <View style={styles.container}>
       <Pressable
         onPress={() => {
-          RootNavigation.reset({index: 0, routes: [{name: 'LoginPhoneCode'}]});
+          RootNavigation.navigate('LoginPhoneCode');
           JVerification.dismissLoginPage();
           console.log('click')
         }}>
