@@ -130,7 +130,6 @@ const Recommend = props => {
   console.log(home.channels);
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
-
     return {
       key: item.name,
       title: item.name,
@@ -162,6 +161,11 @@ const Recommend = props => {
             />
           );
         }
+
+        if (item.display_style === 'nearby') {
+          component = <NearbyListPage />;
+        }
+
         return component;
       },
     };
@@ -246,11 +250,6 @@ const Recommend = props => {
                   key: 'nodes',
                   title: '圈子',
                   component: NodeListPage,
-                },
-                {
-                  key: 'nearby',
-                  title: '附近',
-                  component: NearbyListPage,
                 },
                 ...channels,
               ]}

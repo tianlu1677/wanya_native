@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput, StatusBar, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
@@ -15,7 +15,6 @@ const md5 = require('md5');
 const BindPhone = ({navigation}) => {
   const dispatch = useDispatch();
   const {socialToken, socialAccount} = useSelector(state => state.login);
-
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
@@ -37,12 +36,12 @@ const BindPhone = ({navigation}) => {
       send_code_type: SendCodeType.Binding,
     };
     const res = await sendPhoneCode(data);
-
     if (res.status === 'success') {
+      res.error && Toast.showError(res.error);
       navigation.navigate('LoginVerifyCode', {
-        phone: phone,
-        password: password,
-        type: SendCodeType.Binding,
+        phone,
+        password,
+        send_code_type: SendCodeType.Binding,
       });
     } else {
       Toast.showError(res.error);
@@ -70,8 +69,8 @@ const BindPhone = ({navigation}) => {
           keyboardType="numeric"
           autoComplete="tel"
           maxLength={11}
-          autoFocus={true}
           caretHidden={false}
+          autoFocus={true}
           style={styles.inputContent}
           onChangeText={text => setPhone(text)}
         />
@@ -79,13 +78,13 @@ const BindPhone = ({navigation}) => {
 
       <View style={[cStyles.inputWrap, styles.passwordWrapper]}>
         <TextInput
-          placeholder="输入登录密码"
+          placeholder="设置登录密码"
           selectionColor="#ff193a"
           placeholderTextColor="#BDBDBD"
           autoComplete="tel"
           textContentType="password"
+          maxLength={11}
           caretHidden={false}
-          maxLength={16}
           secureTextEntry={passwordHidden}
           style={styles.inputContent}
           onChangeText={text => setPassword(text)}

@@ -4,10 +4,10 @@ import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
 import Toast from '@/components/Toast';
+import Helper from '@/utils/helper';
 import {sendPhoneCode, phoneCodeLogin, verifyPhoneCode} from '@/api/phone_sign_api';
 import CodeComponent from './code-component';
 import {SendCodeType} from './meta';
-
 import cStyles from './style';
 
 const md5 = require('md5');
@@ -65,9 +65,14 @@ const LoginVerifyCode = ({navigation, route}) => {
       res = await verifyPhoneCode(data);
     }
 
-    res.error
-      ? Toast.showError(res.error, {})
-      : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
+    console.log('登录成功', res);
+
+    if (res.error) {
+      Toast.showError(res.error, {});
+    } else {
+      dispatch(dispatchUpdateSocialAccount(res.account.token));
+      await Helper.setData('socialToken', res.account.token);
+    }
 
     Toast.hide();
   };
@@ -86,9 +91,8 @@ const LoginVerifyCode = ({navigation, route}) => {
 
       <CodeComponent
         style={styles.codeWrapper}
-        getCode={value => setCode(value)}
         keyboardType="numeric"
-        textContentType="oneTimeCode"
+        getCode={value => setCode(value)}
       />
 
       <Text

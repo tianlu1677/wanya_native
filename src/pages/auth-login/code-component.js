@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
 
 CodeComponent.propTypes = {
   keyboardType: PropTypes.string.isRequired,
-  textContentType: PropTypes.string.isRequired,
   getCode: PropTypes.func.isRequired,
   style: PropTypes.object,
 };

@@ -14,7 +14,7 @@ import ThirdLogin from '@/pages/sessions/login-templates/third_login';
 const md5 = require('md5');
 const LoginPhoneCode = ({navigation}) => {
   const dispatch = useDispatch();
-  const [phone, setPhone] = useState(null);
+  const [phone, setPhone] = useState('');
   const isCanClick = phone && phone.length === 11;
 
   const onSendPhoneCode = async () => {
@@ -39,9 +39,8 @@ const LoginPhoneCode = ({navigation}) => {
     if (!isCanClick) {
       return false;
     }
-    navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
-    // navigation.navigate('LoginVerifyCode', {phone});
     onSendPhoneCode();
+    // navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
   };
 
   const loadData = async () => {
@@ -54,14 +53,18 @@ const LoginPhoneCode = ({navigation}) => {
   }, []);
 
   useLayoutEffect(() => {
+    const goPasswordLogin = () => {
+      navigation.navigate('LoginPasswordCode', {phone: phone.length === 11 ? phone : ''});
+    };
+
     navigation.setOptions({
       headerRight: () => (
-        <Text style={{color: '#BDBDBD'}} onPress={() => navigation.navigate('BindPhone')}>
+        <Text style={{color: '#BDBDBD'}} onPress={goPasswordLogin}>
           密码登录
         </Text>
       ),
     });
-  }, [navigation, phone]);
+  }, [phone]);
 
   return (
     <View style={cStyles.wrapper}>
