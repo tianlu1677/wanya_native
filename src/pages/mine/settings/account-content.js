@@ -126,7 +126,7 @@ const AccountContent = props => {
   const ForwardRight = () => <Icon color="#C2C2C2" name={'chevron-forward'} size={19} />;
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.contentBlank} />
 
@@ -159,10 +159,8 @@ const AccountContent = props => {
       <View style={styles.bottomLine} />
 
       <Pressable style={styles.itemWrap} onPress={() => goPages('intro')}>
-        <Text style={styles.itemTitle} numberOfLines={2}>
-          个性签名
-        </Text>
-        <Text style={styles.itemContent} numberOfLines={1}>
+        <Text style={styles.itemTitle}>个性签名</Text>
+        <Text style={[styles.itemContent, styles.introText]} numberOfLines={2}>
           {currentAccount.intro}
         </Text>
         <ForwardRight />
@@ -201,8 +199,9 @@ const AccountContent = props => {
         <Text style={styles.itemContent}>{currentAccount.city.replace(',', '')}</Text>
         <ForwardRight />
       </Pressable>
+      {/* <View style={styles.bottomLine} /> */}
 
-      <View style={styles.bottomLine} />
+      {/* <View style={styles.bottomLine} />
       <Pressable style={styles.itemWrap} onPress={() => goPages('intro')}>
         <Text style={styles.itemTitle} numberOfLines={1}>
           简介
@@ -212,8 +211,9 @@ const AccountContent = props => {
         </Text>
         <ForwardRight />
       </Pressable>
-      <View style={styles.bottomLine} />
+      <View style={styles.bottomLine} /> */}
 
+      <View style={styles.contentBlank} />
       <Pressable style={styles.itemWrap} onPress={() => goPages('label')}>
         <Text style={styles.itemTitle}>身份标签</Text>
         <View style={[styles.itemContent, styles.labelWrapper]}>
@@ -225,7 +225,6 @@ const AccountContent = props => {
         </View>
         <ForwardRight />
       </Pressable>
-      <View style={styles.bottomLine} />
 
       <RegionPicker
         mode="pc"
@@ -269,6 +268,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 14,
+    backgroundColor: '#fff',
   },
   itemTitle: {
     marginRight: 'auto',
@@ -276,6 +276,12 @@ const styles = StyleSheet.create({
   itemContent: {
     maxWidth: 300,
     textAlign: 'right',
+  },
+  introText: {
+    lineHeight: 20,
+    flex: 1,
+    marginLeft: 20,
+    paddingVertical: 7,
   },
   avator: {
     width: 35,
