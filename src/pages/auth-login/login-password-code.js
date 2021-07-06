@@ -4,13 +4,17 @@ import {useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
+import Helper from '@/utils/helper';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {passwordLogin} from '@/api/sign_api';
 import cStyles from './style';
 
-const LoginPasswordCode = ({navigation}) => {
+const LoginPasswordCode = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const [phone, setPhone] = useState('');
+  console.log(route.params.phone);
+  const [phone, setPhone] = useState(route.params.phone || '');
+  const [phoneAutoFocus] = useState(route.params.phone ? false : true);
+
   const [password, setPassword] = useState('');
 
   const [passwordHidden, setPasswordHidden] = useState(true);
@@ -20,12 +24,21 @@ const LoginPasswordCode = ({navigation}) => {
     if (!isCanClick) {
       return false;
     }
+
+    Toast.showLoading('正在登录中...');
     const params = {phone: phone, password: password};
     const res = await passwordLogin(params);
-    console.log('pasword login res', res);
-    res.error
-      ? Toast.showError(res.error, {})
-      : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
+
+    console.log('登录成功', res);
+
+    if (res.error) {
+      Toast.showError(res.error, {});
+    } else {
+      dispatch(dispatchUpdateSocialAccount(res.account.token));
+      await Helper.setData('socialToken', res.account.token);
+    }
+
+    Toast.hide();
   };
 
   return (
@@ -42,9 +55,10 @@ const LoginPasswordCode = ({navigation}) => {
           keyboardType="numeric"
           autoComplete="tel"
           maxLength={11}
-          autoFocus={true}
           caretHidden={false}
+          autoFocus={phoneAutoFocus}
           style={styles.inputContent}
+          value={phone}
           onChangeText={text => setPhone(text)}
         />
       </View>
@@ -56,8 +70,9 @@ const LoginPasswordCode = ({navigation}) => {
           placeholderTextColor="#BDBDBD"
           autoComplete="tel"
           textContentType="password"
-          caretHidden={false}
           maxLength={16}
+          caretHidden={false}
+          autoFocus={!phoneAutoFocus}
           secureTextEntry={passwordHidden}
           style={styles.inputContent}
           onChangeText={text => setPassword(text)}

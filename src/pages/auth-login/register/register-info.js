@@ -15,9 +15,9 @@ import cStyles from '../style';
 const RegisterInfo = props => {
   const dispatch = useDispatch();
   const {socialToken, socialAccount} = useSelector(state => state.login);
-  const {navigation, imagePick, removeAllPhoto, uploadAvatar} = props;
-  const [nickname, setNickname] = useState(socialAccount?.nickname || '');
-  const [imageSource, setImageSource] = useState(socialAccount?.avatar_url || '');
+  const {imagePick, removeAllPhoto, uploadAvatar} = props;
+  const [nickname, setNickname] = useState('');
+  const [imageSource, setImageSource] = useState('');
 
   const isCanClick = nickname && imageSource;
 
@@ -45,17 +45,31 @@ const RegisterInfo = props => {
     }
   };
 
+  const updateAvatar = async file => {
+    const imageData = {
+      uploadType: 'multipart',
+      account_id: socialAccount.id,
+      keyParams: 'account[avatar]',
+      ...file,
+    };
+    const res = await uploadAvatar(imageData, socialToken);
+    console.log('avatar', imageSource, res.account, imageSource);
+    setImageSource({...file, url: res.account.avatar_url});
+  };
+
   const onImagePicker = async () => {
     const hasPermission = await checkPermission();
     if (!hasPermission) {
       return;
     }
+
     removeAllPhoto();
     imagePick({imageCount: 1}, async (err, res) => {
       if (err) {
         return;
       }
       setImageSource(res[0]);
+      updateAvatar(res[0]);
     });
   };
 
@@ -64,14 +78,8 @@ const RegisterInfo = props => {
       return false;
     }
 
-    if (imageSource.uri) {
-      const imageData = {
-        uploadType: 'multipart',
-        account_id: socialAccount.id,
-        keyParams: 'account[avatar]',
-        ...imageSource,
-      };
-      await uploadAvatar(imageData, socialToken);
+    if (!imageSource.url) {
+      updateAvatar(imageSource);
     }
 
     const data = {
@@ -79,8 +87,10 @@ const RegisterInfo = props => {
       token: socialToken,
       account: {nickname, profile_attributes: {init_photo: true}},
     };
-    await syncAccountInfo(data);
-    dispatch(dispatchUpdateSocialAccount(socialToken, navigation));
+
+    const res = await syncAccountInfo(data);
+    console.log('更新信息res: ', res);
+    dispatch(dispatchUpdateSocialAccount(socialToken));
   };
 
   const loadData = async () => {
@@ -92,6 +102,8 @@ const RegisterInfo = props => {
     loadData();
   }, []);
 
+  console.log('socialAccount', socialAccount);
+
   return (
     <View style={[cStyles.wrapper, styles.wrapper]}>
       <StatusBar barStyle="light-content" />
@@ -99,7 +111,7 @@ const RegisterInfo = props => {
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
       {imageSource ? (
         <Pressable onPress={onImagePicker}>
-          <FastImg source={{uri: imageSource.uri || imageSource}} style={styles.avator} />
+          <FastImg source={{uri: imageSource.uri}} style={styles.avator} />
         </Pressable>
       ) : (
         <Pressable style={[styles.avator, styles.avatorWrap]} onPress={onImagePicker}>

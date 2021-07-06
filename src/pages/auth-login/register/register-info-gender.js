@@ -1,40 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {useSelector, useDispatch} from 'react-redux';
-import * as action from '@/redux/constants';
-import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import moment from 'moment';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
-import {getLabelList} from '@/api/settings_api';
 import FastImg from '@/components/FastImg';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {syncAccountInfo} from '@/api/account_api';
-
 import MaleImg from '@/assets/login/male.png';
 import ActiveMaleImg from '@/assets/login/male-active.png';
 import FemaleImg from '@/assets/login/female.png';
 import ActiveFemaleImg from '@/assets/login/female-active.png';
-
 import cStyles from '../style';
 
-const RegisterInfoGender = ({navigation}) => {
-  const dispatch = useDispatch();
-  const {currentAccount} = useSelector(state => state.account);
-  const {socialToken, socialAccount} = useSelector(state => state.login);
+const GenderType = {
+  Woman: 'woman',
+  Man: 'man',
+};
 
+const RegisterInfoGender = () => {
+  const dispatch = useDispatch();
+  const {socialToken, socialAccount} = useSelector(state => state.login);
   const [visible, setVisible] = useState(false);
-  const [gender, setGender] = useState(socialAccount?.gender || '');
-  const [birthday, setBirthday] = useState(currentAccount.birthday || null);
+  const [gender, setGender] = useState('');
+  const [birthday, setBirthday] = useState('');
 
   const isCanClick = birthday && gender;
 
-  const handleClick = () => setVisible(true);
+  const onChooseGender = value => {
+    setGender(value);
+  };
 
   const setBirthdayData = async value => {
+    setVisible(false);
     const currentDate = moment(value).format('YYYY-MM-DD');
     setBirthday(currentDate);
-    setVisible(false);
   };
 
   const handleNextClick = async () => {
@@ -47,31 +48,24 @@ const RegisterInfoGender = ({navigation}) => {
       token: socialToken,
       account: {gender, birthday, profile_attributes: {init_gender: true}},
     };
-    await syncAccountInfo(data);
-    dispatch(dispatchUpdateSocialAccount(socialToken, navigation));
-  };
 
-  const loadData = async () => {
-    const res = await getLabelList();
-    dispatch({type: action.TOTAL_LABEL_LIST, value: res.data.label_list});
+    const res = await syncAccountInfo(data);
+    console.log('更新信息res: ', res);
+    dispatch(dispatchUpdateSocialAccount(socialToken));
   };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   return (
     <View style={cStyles.wrapper}>
       <Text style={cStyles.infoTitle}>选择性别和生日</Text>
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
       <View style={styles.maleWrapper}>
-        <Pressable style={styles.maleInfo} onPress={() => setGender('woman')}>
+        <Pressable style={styles.maleInfo} onPress={() => onChooseGender(GenderType.Woman)}>
           <View style={styles.maleImageWrapper}>
             <FastImg
-              source={gender === 'woman' ? ActiveFemaleImg : FemaleImg}
+              source={gender === GenderType.Woman ? ActiveFemaleImg : FemaleImg}
               style={styles.maleImage}
             />
-            {gender === 'woman' && (
+            {gender === GenderType.Woman && (
               <View style={styles.check}>
                 <IconFont name="yixuan" size={15} color="#ff2b57" />
               </View>
@@ -79,10 +73,13 @@ const RegisterInfoGender = ({navigation}) => {
           </View>
           <Text style={styles.maleText}>女</Text>
         </Pressable>
-        <Pressable style={styles.maleInfo} onPress={() => setGender('man')}>
+        <Pressable style={styles.maleInfo} onPress={() => onChooseGender(GenderType.Man)}>
           <View style={styles.maleImageWrapper}>
-            <FastImg source={gender === 'man' ? ActiveMaleImg : MaleImg} style={styles.maleImage} />
-            {gender === 'man' && (
+            <FastImg
+              source={gender === GenderType.Man ? ActiveMaleImg : MaleImg}
+              style={styles.maleImage}
+            />
+            {gender === GenderType.Man && (
               <View style={styles.check}>
                 <IconFont name="yixuan" size={15} color="#ff2b57" />
               </View>
@@ -91,7 +88,7 @@ const RegisterInfoGender = ({navigation}) => {
           <Text style={styles.maleText}>男</Text>
         </Pressable>
       </View>
-      <Pressable style={[cStyles.inputWrap, styles.inputContent]} onPress={handleClick}>
+      <Pressable style={[cStyles.inputWrap, styles.inputContent]} onPress={() => setVisible(true)}>
         <Text style={styles.inputText}>{birthday || '选择你的生日'}</Text>
         <IconFont name="arrow-right" size={10} color="#BDBDBD" />
       </Pressable>
@@ -113,9 +110,11 @@ const RegisterInfoGender = ({navigation}) => {
         date={birthday ? new Date(birthday) : new Date()}
         onConfirm={setBirthdayData}
         onCancel={() => setVisible(false)}
-        cancelTextIOS={'取消'}
-        confirmTextIOS={'确认'}
-        headerTextIOS={'选择生日'}
+        cancelTextIOS="取消"
+        confirmTextIOS="确认"
+        headerTextIOS="选择生日"
+        minimumDate={new Date('1960-01-01')}
+        maximumDate={new Date()}
       />
     </View>
   );

@@ -4,10 +4,10 @@ import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
 import Toast from '@/components/Toast';
+import Helper from '@/utils/helper';
 import {sendPhoneCode, phoneCodeLogin, verifyPhoneCode} from '@/api/phone_sign_api';
 import CodeComponent from './code-component';
 import {SendCodeType} from './meta';
-
 import cStyles from './style';
 
 const md5 = require('md5');
@@ -15,14 +15,14 @@ const LoginVerifyCode = ({navigation, route}) => {
   const dispatch = useDispatch();
   const {socialToken} = useSelector(state => state.login);
   const {send_code_type, phone, password} = route.params;
-  const [downTime, setDownTime] = useState(10);
-  const [codeData, setCodeData] = useState([]);
+  const [downTime, setDownTime] = useState(60);
+  const [code, setCode] = useState('');
 
   const isCanSend = downTime === 0 ? true : false;
-  const isCanClick = codeData.every(item => item);
+  const isCanClick = code.length === 6;
 
   const downTimeRunner = () => {
-    let time = 10;
+    let time = 60;
     const timer = setInterval(() => {
       time--;
       if (time >= 0) {
@@ -51,23 +51,30 @@ const LoginVerifyCode = ({navigation, route}) => {
     if (!isCanClick) {
       return false;
     }
-    const phone_code = codeData.join('');
 
     let res = null;
 
+    Toast.showLoading('正在登录中...');
     if (send_code_type === SendCodeType.Login) {
-      const params = {phone, phone_code};
+      const params = {phone, phone_code: code};
       res = await phoneCodeLogin(params);
     }
 
     if (send_code_type === SendCodeType.Binding) {
-      const data = {phone, phone_code, password: password, token: socialToken};
+      const data = {phone, phone_code: code, password: password, token: socialToken};
       res = await verifyPhoneCode(data);
     }
 
-    res.error
-      ? Toast.showError(res.error, {})
-      : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
+    console.log('登录成功', res);
+
+    if (res.error) {
+      Toast.showError(res.error, {});
+    } else {
+      dispatch(dispatchUpdateSocialAccount(res.account.token));
+      await Helper.setData('socialToken', res.account.token);
+    }
+
+    Toast.hide();
   };
 
   useEffect(() => {
@@ -84,10 +91,10 @@ const LoginVerifyCode = ({navigation, route}) => {
 
       <CodeComponent
         style={styles.codeWrapper}
-        getCode={code => setCodeData(code)}
         keyboardType="numeric"
-        textContentType="oneTimeCode"
+        getCode={value => setCode(value)}
       />
+
       <Text
         onPress={handleNextClick}
         style={[

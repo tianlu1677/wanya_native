@@ -33,17 +33,16 @@ import * as node from './node_action';
 export const nodeAction = node;
 
 // 未完成认证用户
-export const dispatchUpdateSocialAccount = (socialToken, navigation = '') => async dispatch => {
+export const dispatchUpdateSocialAccount = socialToken => async dispatch => {
   const res = await getCurrentAccount({token: socialToken});
-  console.log('获取最新res', res);
-  await Helper.setData('socialToken', socialToken);
-  await Helper.setData('socialAccount', JSON.stringify(res.account));
+  console.log('主动获取AccountInfo res: ', res);
   dispatch({type: UPDATE_SOCIAL_TOKEN, socialToken: socialToken});
   dispatch({type: UPDATE_SOCIAL_ACCOUNT, socialAccount: res.account});
 
-  const {had_photo, had_gender, had_taglist, had_invited} = res.account;
-  if (!had_photo) {
-    console.log('xxxxx')
+  const {had_phone, had_photo, had_gender, had_taglist, had_invited} = res.account;
+  if (!had_phone) {
+    RootNavigation.navigate('BindPhone');
+  } else if (!had_photo) {
     RootNavigation.navigate('RegisterInfo');
   } else if (!had_gender) {
     RootNavigation.navigate('RegisterInfoGender');
@@ -53,10 +52,7 @@ export const dispatchUpdateSocialAccount = (socialToken, navigation = '') => asy
     RootNavigation.navigate('RegisterInfoInvite');
   } else {
     // 必须先设置token
-    await Helper.setData('auth_token', socialToken);
     await dispatch(dispatchSetAuthToken(socialToken));
-    await dispatch(dispatchCurrentAccount());
-    console.log('other');
     RootNavigation.reset({index: 0, routes: [{name: 'Recommend'}]});
   }
 };
@@ -117,8 +113,8 @@ export const dispatchEmptyCurrentAccount = account_id => {
 
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
-  dispatchCurrentAccount();
   Helper.setData('auth_token', token);
+  dispatchCurrentAccount();
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
   dispatch({type: ACCOUNT_SAVE_TOKEN, userToken: token});
 };

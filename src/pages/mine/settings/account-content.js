@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, View, Text, Dimensions, Pressable} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -22,7 +22,6 @@ const AccountContent = props => {
   const dispatch = useDispatch();
   const {currentAccount} = useSelector(state => state.account);
   const {navigation, uploadAvatar} = props;
-  const [gender, setGender] = useState('');
   const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [cityVisible, setCityVisible] = useState(false);
 
@@ -60,11 +59,6 @@ const AccountContent = props => {
   };
 
   const setGenderValue = async value => {
-    console.log(value);
-    if (value.toString().length <= 0) {
-      return;
-    }
-    setGender(value);
     await syncAccountInfo({id: currentAccount.id, gender: value});
     dispatch(dispatchCurrentAccount());
   };
@@ -97,17 +91,17 @@ const AccountContent = props => {
           content: currentAccount.nickname,
         });
         break;
-      case 'birthday':
-        setBirthdayVisible(true);
-        break;
-      case 'city':
-        setCityVisible(true);
-        break;
       case 'intro':
         navigation.navigate('EditAccountContent', {
           editKey: 'intro',
           content: currentAccount.intro,
         });
+        break;
+      case 'birthday':
+        setBirthdayVisible(true);
+        break;
+      case 'city':
+        setCityVisible(true);
         break;
       case 'avatar':
         onImagePicker('avatar');
@@ -122,10 +116,6 @@ const AccountContent = props => {
         console.log('not');
     }
   };
-
-  useEffect(() => {
-    setGender(currentAccount.gender);
-  }, [navigation]);
 
   useFocusEffect(
     useCallback(() => {
@@ -185,13 +175,13 @@ const AccountContent = props => {
           <RNPickerSelect
             onValueChange={value => setGenderValue(value)}
             fixAndroidTouchableBug
-            placeholder={{label: '请选择', value: '', color: 'gray'}}
+            placeholder={{}}
             value={currentAccount.gender}
-            doneText={'完成'}
+            doneText="完成"
             items={[
               {label: '男', value: 'man'},
               {label: '女', value: 'woman'},
-              {label: '不显示', value: 'other'},
+              {label: '保密', value: 'other'},
             ]}
           />
         </Pressable>
@@ -253,11 +243,11 @@ const AccountContent = props => {
         date={defaultBirthday}
         onConfirm={onBirthdayConfirm}
         onCancel={onBirthdayCancel}
-        // onConfirm={value => setBirthdayData(value)}
-        // onCancel={() => setBirthdayVisible(false)}
         cancelTextIOS="取消"
         confirmTextIOS="确认"
         headerTextIOS="选择生日"
+        minimumDate={new Date('1960-01-01')}
+        maximumDate={new Date()}
       />
     </SafeAreaView>
   );

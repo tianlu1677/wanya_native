@@ -181,7 +181,7 @@ const NewTopic = props => {
   };
 
   const isValidateForm = () => {
-    //图片 视频 外链 文字 选1+node
+    //图片 视频 外链 文字 选1
     if (imageSource.length === 0 && videoSource.length === 0 && !content && !linkSource) {
       return false;
     } else {
@@ -224,11 +224,6 @@ const NewTopic = props => {
         Toast.show('图片正在上传中');
         return false;
       }
-    }
-
-    if (!savetopic.node) {
-      navigation.navigate('AddNode');
-      return false;
     }
 
     const data = getValidateForm();
@@ -352,7 +347,12 @@ const NewTopic = props => {
                 {v.id ? (
                   <>
                     <Pressable onPress={() => onPreview(index)}>
-                      <FastImg mode={'cover'} key={index} style={styles.media} source={{uri: v.url}} />
+                      <FastImg
+                        mode={'cover'}
+                        key={index}
+                        style={styles.media}
+                        source={{uri: v.url}}
+                      />
                     </Pressable>
                     <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
                       <FastImg

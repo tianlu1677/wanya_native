@@ -17,21 +17,20 @@ const AddDefaultCheck = (data, checked) => {
   return transLateData;
 };
 
-const AccountInfoLabel = ({navigation}) => {
+const AccountInfoLabel = () => {
   const dispatch = useDispatch();
   const {
     home: {totalLabelList},
     login: {socialToken, socialAccount},
   } = useSelector(state => state);
 
-  const [labelList, setLabelList] = useState(
-    AddDefaultCheck(totalLabelList, socialAccount?.label_list)
-  );
-
+  const [labelList, setLabelList] = useState(AddDefaultCheck(totalLabelList, []));
   const allChecked = labelList
     .map(item => item.label_list)
     .flat()
     .filter(label => label.checked);
+
+  const isCanClick = allChecked.length >= 5;
 
   const handleLabelClick = (checked, labelIndex, categoryIndex) => {
     labelList[categoryIndex].label_list[labelIndex].checked = checked;
@@ -48,8 +47,10 @@ const AccountInfoLabel = ({navigation}) => {
       token: socialToken,
       account: {profile_attributes: {label_list, init_taglist: true}},
     };
-    await syncAccountInfo(data);
-    dispatch(dispatchUpdateSocialAccount(socialToken, navigation));
+
+    const res = await syncAccountInfo(data);
+    console.log('更新信息res: ', res);
+    dispatch(dispatchUpdateSocialAccount(socialToken));
   };
 
   return (
@@ -86,7 +87,7 @@ const AccountInfoLabel = ({navigation}) => {
         style={[
           cStyles.nextStep,
           styles.nextBtn,
-          allChecked.length > 0 ? cStyles.nextStepActive : cStyles.nextStepNormal,
+          isCanClick ? cStyles.nextStepActive : cStyles.nextStepNormal,
         ]}>
         完成 {allChecked.length}/5
       </Text>
