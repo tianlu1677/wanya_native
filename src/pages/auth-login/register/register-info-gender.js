@@ -113,9 +113,11 @@ const RegisterInfoGender = ({navigation}) => {
         date={birthday ? new Date(birthday) : new Date()}
         onConfirm={setBirthdayData}
         onCancel={() => setVisible(false)}
-        cancelTextIOS={'取消'}
-        confirmTextIOS={'确认'}
-        headerTextIOS={'选择生日'}
+        cancelTextIOS="取消"
+        confirmTextIOS="确认"
+        headerTextIOS="选择生日"
+        minimumDate={new Date('1960-01-01')}
+        maximumDate={new Date()}
       />
     </View>
   );

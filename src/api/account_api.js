@@ -31,13 +31,11 @@ export async function getCurrentAccount() {
 
 // 更新用户头像昵称等数据
 export async function syncAccountInfo(data = {}) {
-  console.log('data ai', data);
   const res = await request({
     url: '/api/v1/mine/accounts/' + data.id,
     method: 'PUT',
     data,
   });
-  console.log('reere', res);
   return res.data;
 }
 

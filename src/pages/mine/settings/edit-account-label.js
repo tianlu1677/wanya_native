@@ -90,7 +90,7 @@ const AccountLabel = ({navigation}) => {
           styles.nextStep,
           allChecked.length > 0 ? styles.nextStepActive : styles.nextStepNormal,
         ]}>
-        完成 {allChecked.length}/5
+        保存
       </Text>
     </View>
   );

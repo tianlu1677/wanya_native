@@ -15,14 +15,14 @@ const LoginVerifyCode = ({navigation, route}) => {
   const dispatch = useDispatch();
   const {socialToken} = useSelector(state => state.login);
   const {send_code_type, phone, password} = route.params;
-  const [downTime, setDownTime] = useState(10);
-  const [codeData, setCodeData] = useState([]);
+  const [downTime, setDownTime] = useState(60);
+  const [code, setCode] = useState('');
 
   const isCanSend = downTime === 0 ? true : false;
-  const isCanClick = codeData.every(item => item);
+  const isCanClick = code.length === 6;
 
   const downTimeRunner = () => {
-    let time = 10;
+    let time = 60;
     const timer = setInterval(() => {
       time--;
       if (time >= 0) {
@@ -51,23 +51,25 @@ const LoginVerifyCode = ({navigation, route}) => {
     if (!isCanClick) {
       return false;
     }
-    const phone_code = codeData.join('');
 
     let res = null;
 
+    Toast.showLoading('正在登录中...');
     if (send_code_type === SendCodeType.Login) {
-      const params = {phone, phone_code};
+      const params = {phone, phone_code: code};
       res = await phoneCodeLogin(params);
     }
 
     if (send_code_type === SendCodeType.Binding) {
-      const data = {phone, phone_code, password: password, token: socialToken};
+      const data = {phone, phone_code: code, password: password, token: socialToken};
       res = await verifyPhoneCode(data);
     }
 
     res.error
       ? Toast.showError(res.error, {})
       : dispatch(dispatchUpdateSocialAccount(res.account.token, navigation));
+
+    Toast.hide();
   };
 
   useEffect(() => {
@@ -84,10 +86,11 @@ const LoginVerifyCode = ({navigation, route}) => {
 
       <CodeComponent
         style={styles.codeWrapper}
-        getCode={code => setCodeData(code)}
+        getCode={value => setCode(value)}
         keyboardType="numeric"
         textContentType="oneTimeCode"
       />
+
       <Text
         onPress={handleNextClick}
         style={[

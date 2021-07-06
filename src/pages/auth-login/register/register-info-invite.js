@@ -13,12 +13,12 @@ import cStyles from '../style';
 const AccountInfoInvite = ({navigation}) => {
   const dispatch = useDispatch();
   const {socialToken} = useSelector(state => state.login);
-  const [codeData, setCodeData] = useState([]);
+  const [code, setCode] = useState('');
 
-  const isCanClick = codeData.every(item => item);
+  const isCanClick = code.length === 6;
 
   const handleNextClick = async () => {
-    const data = {invite_code: codeData.join(''), token: socialToken};
+    const data = {invite_code: code, token: socialToken};
     const res = await verifyInviteCode(data);
     if (res.error) {
       Toast.showError(res.error);
@@ -34,7 +34,7 @@ const AccountInfoInvite = ({navigation}) => {
       <Text style={cStyles.infoText}>顽鸦社区为了更好的使用体验，登录需邀请码</Text>
       <CodeComponent
         style={styles.inputContent}
-        getCode={code => setCodeData(code)}
+        getCode={value => setCode(code)}
         keyboardType="default"
       />
       <Text

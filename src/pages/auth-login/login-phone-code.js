@@ -9,7 +9,7 @@ import {sendPhoneCode} from '@/api/phone_sign_api';
 import {SendCodeType} from './meta';
 
 import cStyles from './style';
-import ThirdLogin from "@/pages/sessions/login-templates/third_login"
+import ThirdLogin from '@/pages/sessions/login-templates/third_login';
 
 const md5 = require('md5');
 const LoginPhoneCode = ({navigation}) => {
@@ -28,6 +28,7 @@ const LoginPhoneCode = ({navigation}) => {
     const data = {phone, secret, timestamp, send_code_type: SendCodeType.Login};
     const res = await sendPhoneCode(data);
     if (res.status === 'success') {
+      res.error && Toast.showError(res.error);
       navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
     } else {
       Toast.showError(res.error);
@@ -40,7 +41,7 @@ const LoginPhoneCode = ({navigation}) => {
     }
     navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
     // navigation.navigate('LoginVerifyCode', {phone});
-    // onSendPhoneCode();
+    onSendPhoneCode();
   };
 
   const loadData = async () => {
