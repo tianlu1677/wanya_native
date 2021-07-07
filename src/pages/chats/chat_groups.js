@@ -34,11 +34,13 @@ const ChatGroups = ({navigation}) => {
     ),
     []
   );
-
-  //TODO 更新
   const deleteChatgroup = (data = {}) => {
     console.log('real delete', data);
     deleteChatGroup({uuid: data.uuid});
+    const newlist = listData.filter((item, index, arr) => {
+      return item.uuid !== data.uuid;
+    });
+    setListData(newlist);
   };
 
   const onOpen = openid => {
