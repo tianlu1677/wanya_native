@@ -147,26 +147,13 @@ import Loading from '@/components/Loading';
 
 const OneLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const [downTime, setDownTime] = useState(5);
+  const [currentState, setCurrentState] = useState('');
   const initParams = {
     time: 5000,
     appKey: '7cd75000d5932000b3d4ca59', //仅iOS
     channel: 'release', //仅iOS
     // advertisingId: 'advertisingId', //仅iOS
     isProduction: true, //仅iOS
-  };
-
-  const downTimeRunner = () => {
-    let time = 10;
-    const timer = setInterval(() => {
-      time--;
-      if (time >= 0) {
-        setDownTime(time);
-      } else {
-        time = 0;
-        clearInterval(timer);
-      }
-    }, 1000);
   };
 
   JVerification.addLoginEventListener(async result => {
@@ -203,11 +190,8 @@ const OneLogin = ({navigation, route}) => {
       JVerification.checkLoginEnable(result => {
         console.log('checkLoginEnable:' + JSON.stringify(result));
         if (result.enable) {
-          // console.log('start page');
-          setTimeout(() => {
-            // goToPhone();
-            JVerification.login(false);
-          }, 1000);
+          console.log('start page');
+          // setCurrentState('onelogin')
           JVerification.login(false);
         } else {
           goToPhone('reset');
@@ -223,10 +207,8 @@ const OneLogin = ({navigation, route}) => {
   useFocusEffect(() => {
     checkJverify();
     console.log('fouce');
-    // JVerification.setLoggerEnable(true);
-    // downTimeRunner();
     return () => {
-      setDownTime(0);
+      // setCurrentState('');
     };
   }, []);
   return (
@@ -237,7 +219,7 @@ const OneLogin = ({navigation, route}) => {
         source={require('../../assets/images/social-login.jpg')}
         style={{width: '100%', height: '100%', backgroundColor: 'black'}}
         resizeMode={'cover'}>
-        <Loading type={'9CubeGrid'} style={{backgroundColor: 'black'}} text={'顽鸦'} />
+        <Loading type={'9CubeGrid'} style={{backgroundColor: 'black'}} text={'顽鸦'} size={80} />
         {/*<ThirdLogin />*/}
         {/*<Button*/}
         {/*  title="isInitSuccess"*/}

@@ -113,7 +113,8 @@ class App extends Component {
       isProduction: true, //仅iOS
     };
     JVerification.init(initParams, result => {
-      if(result.code === 8000) {
+      console.log('JVerification init', result);
+      if(result.code !== 8000) {
         return;
       }
       const customUIWithConfigiOS = {
@@ -249,7 +250,7 @@ class App extends Component {
       const customViewParams = [
         {customViewName: 'customView1', customViewPoint: [0, 500, SCREEN_WIDTH, 120]},
       ];
-      JVerification.preLogin(3000);
+      // JVerification.preLogin(3000);
       console.log('init result', result)
       if (Platform.OS === 'android') {
         JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
