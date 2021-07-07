@@ -173,7 +173,7 @@ const OneLogin = ({navigation, route}) => {
     } else if (code === 6004) {
       setTimeout(() => {
         goToPhone();
-      }, 3000);
+      }, 4000);
     }
   });
 
@@ -191,8 +191,10 @@ const OneLogin = ({navigation, route}) => {
         console.log('checkLoginEnable:' + JSON.stringify(result));
         if (result.enable) {
           console.log('start page');
+          setTimeout(() => {
+            JVerification.login(false);
+          }, 1000);
           // setCurrentState('onelogin')
-          JVerification.login(false);
         } else {
           goToPhone('reset');
         }
