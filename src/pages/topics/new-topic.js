@@ -503,7 +503,7 @@ const NewTopic = props => {
               <Text style={styles.addText}>关联圈子</Text>
               {savetopic.node && savetopic.node.name ? (
                 <View style={styles.checkTextWrap}>
-                  <IconFont name="node-solid" size={15} color="#FFE30A" />
+                  <IconFont name="node-solid" size={15} color={'#1B5C79'} />
                   <Text style={styles.checkText}>{savetopic.node?.name}</Text>
                 </View>
               ) : null}
@@ -663,7 +663,7 @@ const styles = StyleSheet.create({
     height: RFValue(25),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F6F6F6',
+    backgroundColor: '#EFEFEF',
     borderRadius: 15,
     paddingHorizontal: RFValue(10),
     marginRight: 7,
@@ -671,7 +671,7 @@ const styles = StyleSheet.create({
   checkText: {
     fontSize: 11,
     marginLeft: 5,
-    color: '#3c3c3c',
+    color: '#1B5C79',
     fontWeight: '300',
   },
   finishBtn: {

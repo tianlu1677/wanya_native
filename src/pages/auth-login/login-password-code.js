@@ -78,7 +78,9 @@ const LoginPasswordCode = ({navigation, route}) => {
           onChangeText={text => setPassword(text)}
         />
 
-        <Pressable onPress={() => setPasswordHidden(!passwordHidden)}>
+        <Pressable
+          onPress={() => setPasswordHidden(!passwordHidden)}
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
           <IconFont name={passwordHidden ? 'yincang' : 'kejian'} size={14} color="white" />
         </Pressable>
       </View>
@@ -114,14 +116,14 @@ const styles = StyleSheet.create({
     marginRight: VWValue(18),
   },
   inputContent: {
+    width: '60%',
+    height: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     fontSize: 15,
     color: '#fff',
     fontWeight: '500',
-    width: '60%'
-    // backgroundColor: 'pink',
   },
   nextBtn: {
     marginTop: RFValue(25),

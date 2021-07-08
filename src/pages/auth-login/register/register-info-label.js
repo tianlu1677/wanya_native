@@ -38,7 +38,7 @@ const AccountInfoLabel = () => {
   };
 
   const handleNextClick = async () => {
-    if (allChecked.length === 0) {
+    if (!isCanClick) {
       return false;
     }
     const label_list = allChecked.map(item => item.title);
@@ -56,7 +56,7 @@ const AccountInfoLabel = () => {
   return (
     <View style={[cStyles.wrapper, styles.wrapper]}>
       <ScrollView>
-        <Text style={cStyles.infoTitle}>选择性别和生日</Text>
+        <Text style={cStyles.infoTitle}>选择个性标签</Text>
         <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
         <View style={styles.labelContent}>
           {labelList.map((data, categoryIndex) => {

@@ -62,7 +62,7 @@ const LoginPhoneCode = ({navigation}) => {
       return false;
     }
     onSendPhoneCode();
-    // navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
+    // navigation.navigate('RegisterInfoGender', {phone, send_code_type: SendCodeType.Login});
   };
 
   const loadData = async () => {
