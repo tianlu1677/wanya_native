@@ -59,23 +59,23 @@ const Recommend = props => {
       {
         // received(data) {},
         initialized() {
-          console.log('initialized');
+          // console.log('initialized');
         },
         connected() {
-          console.log('connected');
+          // console.log('connected');
         },
         disconnected() {
-          console.log('disconnected');
+          // console.log('disconnected');
         },
         rejected() {
           console.log('rejected');
         },
         unsubscribe() {
-          console.log('unsubscribe');
+          // console.log('unsubscribe');
         },
         appear() {
           // console.log('appear')
-          this.perform('appear', {});
+          // this.perform('appear', {});
         },
       }
     );
@@ -127,7 +127,7 @@ const Recommend = props => {
     );
   };
 
-  console.log(home.channels);
+  // console.log(home.channels);
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {

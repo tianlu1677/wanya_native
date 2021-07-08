@@ -102,7 +102,7 @@ const BaseChatGroup = ({navigation, chat_group, deleteChatgroup, currentOpenId, 
             deleteChatgroup({uuid: item.key});
           },
           key: chat_group.uuid,
-          backgroundColor: 'red',
+          backgroundColor: '#FF2242',
           type: 'delete',
           autoClose: true,
         },
