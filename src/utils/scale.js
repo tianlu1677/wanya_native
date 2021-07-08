@@ -59,7 +59,7 @@ export const calculateImg = (width, height) => {
     scaleHeight = 240;
     scaleWidth = scaleHeight * 2.89;
   }
-  return {width: Math.ceil(scaleWidth / 2), height: Math.ceil(scaleWidth / 2)};
+  return {width: Math.ceil(scaleWidth / 2), height: Math.ceil(scaleHeight / 2)};
 };
 
 // 聊天列表图片视频显示宽高比   0.33 1/3

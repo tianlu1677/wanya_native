@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, StatusBar, Pressable} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -38,7 +38,7 @@ const Recommend = props => {
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const auth_token = useSelector(state => state.login.auth_token);
   const home = useSelector(state => state.home);
-  const [currentKey, setCurrentKey] = useState(defaultKey || 'nodes');
+  const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
   const MemoVideo = React.memo(() => {
     const {content} = uploadStatus;

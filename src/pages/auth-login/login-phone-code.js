@@ -178,6 +178,8 @@ const styles = StyleSheet.create({
     marginRight: VWValue(18),
   },
   inputContent: {
+    flex: 1,
+    height: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

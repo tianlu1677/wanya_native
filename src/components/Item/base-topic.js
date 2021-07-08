@@ -37,6 +37,9 @@ export const TopicImageContent = props => {
     };
     dispatch(dispatchPreviewImage(data));
   };
+  if (props.data.id === 890) {
+    console.log(props.data);
+  }
 
   return imgStyle === 'single' ? (
     <Pressable onPress={() => onPreview(0)} style={singleStyle}>
