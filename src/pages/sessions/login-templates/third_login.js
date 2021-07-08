@@ -11,6 +11,7 @@ import Toast from '@/components/Toast';
 import ShareUtil from '@/utils/umeng_share_util';
 import {SignInWithAppleButton} from '@/components/AppleLogin';
 import {store} from '@/redux/stores/store';
+import {IsIos} from '@/utils/navbar';
 
 const ThirdLogin = ({}) => {
   //{"accessToken": "2D07206AFCBD395D8C6E13572734266E", "city": "海淀", "expiration": null, "gender": "男", "iconurl": "https://thirdqq.qlogo.cn/g?b=oidb&k=37YbkEGP192zF3YTbvzR4A&s=100&t=1556440734", "name": "狂奔的蜗牛", "openid": "2F942F4D00671AE32030DE17B870EBCA", "province": "北京", "uid": "2F942F4D00671AE32030DE17B870EBCA"}
@@ -122,20 +123,31 @@ const ThirdLogin = ({}) => {
   return (
     <View style={styles.container}>
       <View style={styles.thirdLogin}>
-        <Pressable style={styles.thirdLogoWraper} onPress={wechatLogin} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
+        <Pressable
+          style={styles.thirdLogoWraper}
+          onPress={wechatLogin}
+          hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
           <FastImg source={require('../../../assets/login/wechat.png')} style={styles.thirdLogo} />
         </Pressable>
-        <Pressable style={styles.thirdLogoWraper} onPress={qqLogin} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
+        <Pressable
+          style={styles.thirdLogoWraper}
+          onPress={qqLogin}
+          hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
           <FastImg source={require('../../../assets/login/qq.png')} style={styles.thirdLogo} />
         </Pressable>
-        <Pressable style={styles.thirdLogoWraper} onPress={weiboLogin} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
+        <Pressable
+          style={styles.thirdLogoWraper}
+          onPress={weiboLogin}
+          hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
           <FastImg source={require('../../../assets/login/weibo.png')} style={styles.thirdLogo} />
         </Pressable>
-        <View style={styles.thirdLogoWraper}>
-          {SignInWithAppleButton({
-            callBack: appleSignIn,
-          })}
-        </View>
+        {IsIos ? (
+          <View style={styles.thirdLogoWraper}>
+            {SignInWithAppleButton({
+              callBack: appleSignIn,
+            })}
+          </View>
+        ) : null}
       </View>
     </View>
   );
@@ -143,17 +155,18 @@ const ThirdLogin = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    backgroundColor: 'black',
-    // color: 'black',
+    // flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+    color: 'black',
   },
   thirdLogin: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // width: '100%',
+    width: '100%',
     paddingTop: 60,
     // paddingLeft: 56,
     // paddingRight: 56,

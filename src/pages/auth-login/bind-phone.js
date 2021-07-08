@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     fontSize: 15,
     color: '#fff',
+    width: '80%',
     fontWeight: '500',
   },
   tipsText: {

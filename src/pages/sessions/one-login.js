@@ -195,12 +195,10 @@ const OneLogin = ({navigation, route}) => {
           setTimeout(() => {
             JVerification.login(false);
           }, 500);
-          // setCurrentState('onelogin')
         } else {
           goToPhone('reset');
         }
       });
-      // JVerification.login(true);
     } catch (e) {
       console.log('ee', e);
       goToPhone();
@@ -209,7 +207,7 @@ const OneLogin = ({navigation, route}) => {
 
   useFocusEffect(() => {
     checkJverify();
-    console.log('fouce');
+    // console.log('fouce');
     return () => {
       // setCurrentState('');
     };
@@ -240,17 +238,18 @@ const OneLogin = ({navigation, route}) => {
       {/*  onPress={() =>*/}
       {/*    JVerification.checkLoginEnable(result => {*/}
       {/*      console.log('checkLoginEnable:' + JSON.stringify(result));*/}
-      {/*      createAlert('checkLoginEnable:' + JSON.stringify(result));*/}
       {/*    })*/}
       {/*  }*/}
       {/*/>*/}
 
-      {/*<Button title='getToken'*/}
-      {/*        onPress={() => JVerification.getToken(5000, result => {*/}
-      {/*          console.log('getToken:' + JSON.stringify(result));*/}
-      {/*          createAlert('getToken:' + JSON.stringify(result));*/}
-
-      {/*        })}/>*/}
+      {/*<Button*/}
+      {/*  title="getToken"*/}
+      {/*  onPress={() =>*/}
+      {/*    JVerification.getToken(5000, result => {*/}
+      {/*      console.log('getToken:' + JSON.stringify(result));*/}
+      {/*    })*/}
+      {/*  }*/}
+      {/*/>*/}
 
       {/*<Button*/}
       {/*  title="preLogin"*/}
@@ -258,7 +257,6 @@ const OneLogin = ({navigation, route}) => {
       {/*    JVerification.clearPreLoginCache();*/}
       {/*    JVerification.preLogin(5000, result => {*/}
       {/*      console.log('preLogin:' + JSON.stringify(result));*/}
-      {/*      createAlert('preLogin:' + JSON.stringify(result));*/}
       {/*    });*/}
       {/*  }}*/}
       {/*/>*/}

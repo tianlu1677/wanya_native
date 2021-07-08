@@ -13,7 +13,7 @@ import {name as appName} from './app.json';
 import * as Sentry from '@sentry/react-native';
 import {BaseSentryURL} from '@/utils/config';
 
-import CustomView1 from '@/pages/sessions/login-templates/customView1';
+import JveryfyBottomView from '@/pages/sessions/login-templates/jverify_bottom_view';
 
 AppRegistry.registerComponent(appName, () => App);
 
@@ -29,4 +29,4 @@ React.$Helper = Helper;
 
 // React.$lodash = require('lodash');
 
-AppRegistry.registerComponent('customView1', () => CustomView1);
+AppRegistry.registerComponent('jverify_bottom_view', () => JveryfyBottomView);

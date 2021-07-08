@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, TextInput, StatusBar} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Pressable, StatusBar} from 'react-native';
 import {useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
@@ -10,12 +10,34 @@ import {SendCodeType} from './meta';
 
 import cStyles from './style';
 import ThirdLogin from '@/pages/sessions/login-templates/third_login';
+import {BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
+import PolicyModal from '@/components/PolicyModal';
+import IconFont from '@/iconfont';
+import {BaseApiUrl} from '@/utils/config';
 
 const md5 = require('md5');
 const LoginPhoneCode = ({navigation}) => {
   const dispatch = useDispatch();
   const [phone, setPhone] = useState('');
+  const [canShowAgree, setCanShowAgree] = useState(false);
   const isCanClick = phone && phone.length === 11;
+
+  const goPages = type => {
+    if (type === 'private') {
+      navigation.navigate('WebView', {
+        sourceUrl: `${BaseApiUrl}/home/private_policy`,
+        title: '顽鸦隐私政策',
+        bgColor: 'black',
+      });
+    }
+    if (type === 'user') {
+      navigation.navigate('WebView', {
+        sourceUrl: `${BaseApiUrl}/home/user_agreement`,
+        title: '顽鸦用户协议',
+        bgColor: 'black',
+      });
+    }
+  };
 
   const onSendPhoneCode = async () => {
     const phoneReg = /^1[3456789]\d{9}$/;
@@ -98,6 +120,47 @@ const LoginPhoneCode = ({navigation}) => {
       </Text>
 
       <ThirdLogin />
+
+      {/* 同意协议*/}
+      <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
+        <Pressable
+          style={styles.ruleWrapper}
+          hitSlop={{left: 10, right: 10, top: 30}}
+          onPress={() => {
+            if (!IsIos) {
+              setCanShowAgree(!canShowAgree);
+            }
+          }}>
+          <View style={styles.checkbox}>
+            {!canShowAgree && <IconFont name="yixuan" size={16} color="red" />}
+          </View>
+        </Pressable>
+        <Text style={styles.textContent}>我已阅读并同意</Text>
+        <Pressable
+          onPress={() => {
+            goPages('user');
+          }}
+          hitSlop={{top: 10, bottom: 10}}>
+          <Text style={styles.textContent}>《用户协议》</Text>
+        </Pressable>
+        <Text style={styles.textContent}>和</Text>
+        <Pressable
+          onPress={() => {
+            goPages('private');
+          }}
+          hitSlop={{top: 10, bottom: 10}}>
+          <Text style={styles.textContent}>《隐私政策》</Text>
+        </Pressable>
+      </View>
+
+      {!IsIos && (
+        <PolicyModal
+          canShowAgree={canShowAgree}
+          canShowAgreeFunc={status => {
+            setCanShowAgree(status);
+          }}
+        />
+      )}
     </View>
   );
 };
@@ -121,9 +184,44 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     fontWeight: '500',
+    width: '80%'
   },
   nextBtn: {
     marginTop: RFValue(25),
+  },
+  privateText: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: 18 + BOTTOM_HEIGHT,
+    left: 0,
+    right: 0,
+    paddingTop: 20,
+    fontSize: 12,
+    color: 'white',
+  },
+
+  textContent: {
+    fontSize: 11,
+    color: '#BDBDBD',
+  },
+  ruleWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: 'white',
+  },
+  checkbox: {
+    width: 15,
+    height: 15,
+    borderColor: 'white',
+    borderWidth: StyleSheet.hairlineWidth,
+    marginHorizontal: 15,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 3,
   },
 });
 

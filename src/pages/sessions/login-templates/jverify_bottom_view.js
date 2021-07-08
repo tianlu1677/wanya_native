@@ -5,7 +5,7 @@ import JVerification from 'jverification-react-native';
 import * as RootNavigation from '@/navigator/root-navigation';
 import ThirdLogin from '@/pages/sessions/login-templates/third_login';
 
-const CustomView1 = ({}) => {
+const JveryfyBottomView = ({}) => {
   return (
     <View style={styles.container}>
       <Pressable
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomView1;
+export default JveryfyBottomView;

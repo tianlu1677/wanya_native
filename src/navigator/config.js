@@ -254,7 +254,6 @@ const commonRouter = [
   {name: 'RelatedAccounts', component: RelatedAccounts, options: {title: '相关推荐'}},
   {name: 'ChooseCity', component: ChooseCity, options: {title: '选择城市'}},
   {name: 'JoinAccountsList', component: JoinAccountsList, options: {title: '最近加入列表'}},
-  {name: 'WebView', component: WebView, options: {title: 'WebView'}},
   {name: 'SharePage', component: SharePage, options: {title: '分享'}},
   {name: 'Report', component: Report, options: {title: '投诉'}},
   // {name: 'OneLogin', component: OneLogin, options: {title: '一键登录'}},
@@ -298,6 +297,7 @@ const authRouter = [
   {name: 'LoginPhoneCode', component: LoginPhoneCode},
   {name: 'LoginVerifyCode', component: LoginVerifyCode},
   {name: 'BindPhone', component: BindPhone},
+  {name: 'WebView', component: WebView}
 ];
 
 export const MainRouters = [

@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     fontWeight: '500',
+    width: '60%'
     // backgroundColor: 'pink',
   },
   nextBtn: {
