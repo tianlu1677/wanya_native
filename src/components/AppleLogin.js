@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  TouchableOpacity,
+  Pressable,
   Image,
   NativeModules,
   requireNativeComponent,
@@ -29,16 +29,16 @@ const appleAuth = async callBack => {
 export const SignInWithAppleButton = ({buttonText = '', callBack}) => {
   if (Platform.OS === 'ios') {
     return (
-      <TouchableOpacity
+      <Pressable
         onPress={async () => {
           await appleAuth(callBack);
-        }} style={{width: 35, height: 35 }}>
+        }} style={{width: 35, height: 35 }} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
         <FastImg source={require('../assets/login/apple.png')} style={{flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
           width: 35,
           height: 35,}} />
-      </TouchableOpacity>
+      </Pressable>
     );
   } else {
     return null;

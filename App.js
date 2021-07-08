@@ -93,7 +93,7 @@ class App extends Component {
   loadSplashImg = () => {
     setTimeout(() => {
       RNBootSplash.hide({duration: 10});
-    }, 1000);
+    }, 500);
   };
 
   loadSettings = () => {

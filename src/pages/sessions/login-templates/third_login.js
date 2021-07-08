@@ -122,13 +122,13 @@ const ThirdLogin = ({}) => {
   return (
     <View style={styles.container}>
       <View style={styles.thirdLogin}>
-        <Pressable style={styles.thirdLogoWraper} onPress={wechatLogin}>
+        <Pressable style={styles.thirdLogoWraper} onPress={wechatLogin} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
           <FastImg source={require('../../../assets/login/wechat.png')} style={styles.thirdLogo} />
         </Pressable>
-        <Pressable style={styles.thirdLogoWraper} onPress={qqLogin}>
+        <Pressable style={styles.thirdLogoWraper} onPress={qqLogin} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
           <FastImg source={require('../../../assets/login/qq.png')} style={styles.thirdLogo} />
         </Pressable>
-        <Pressable style={styles.thirdLogoWraper} onPress={weiboLogin}>
+        <Pressable style={styles.thirdLogoWraper} onPress={weiboLogin} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
           <FastImg source={require('../../../assets/login/weibo.png')} style={styles.thirdLogo} />
         </Pressable>
         <View style={styles.thirdLogoWraper}>
@@ -143,10 +143,10 @@ const ThirdLogin = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    // backgroundColor: 'black',
+    backgroundColor: 'black',
     // color: 'black',
   },
   thirdLogin: {

@@ -178,6 +178,7 @@ const OneLogin = ({navigation, route}) => {
   });
 
   const goToPhone = (type = 'nav') => {
+    JVerification.dismissLoginPage();
     if (type === 'nav') {
       navigation.navigate('LoginPhoneCode');
     } else if (type === 'reset') {
@@ -193,7 +194,7 @@ const OneLogin = ({navigation, route}) => {
           console.log('start page');
           setTimeout(() => {
             JVerification.login(false);
-          }, 1000);
+          }, 500);
           // setCurrentState('onelogin')
         } else {
           goToPhone('reset');
@@ -214,110 +215,111 @@ const OneLogin = ({navigation, route}) => {
     };
   }, []);
   return (
-    <View style={{backgroundColor: 'black'}}>
-      <StatusBar barStyle={'light-content'} translucent backgroundColor="transparent" />
+    <View style={{backgroundColor: 'black', width: '100%', height: '100%'}}>
+      <StatusBar barStyle={'light-content'} translucent />
+      <Loading type={'Bounce'} style={{backgroundColor: 'black'}} text={'顽鸦'} size={36} />
       {/*<Loading type={'CircleFlip'} style={{backgroundColor: 'black'}} />*/}
-      <ImageBackground
-        source={require('../../assets/images/social-login.jpg')}
-        style={{width: '100%', height: '100%', backgroundColor: 'black'}}
-        resizeMode={'cover'}>
-        <Loading type={'9CubeGrid'} style={{backgroundColor: 'black'}} text={'顽鸦'} size={80} />
-        {/*<ThirdLogin />*/}
-        {/*<Button*/}
-        {/*  title="isInitSuccess"*/}
-        {/*  onPress={() =>*/}
-        {/*    JVerification.isInitSuccess(result => {*/}
-        {/*      console.log('isInitSuccess:' + JSON.stringify(result));*/}
-        {/*      createAlert('isInitSuccess:' + JSON.stringify(result));*/}
-        {/*    })*/}
-        {/*  }*/}
-        {/*/>*/}
+      {/*<ImageBackground*/}
+      {/*source={require('../../assets/images/social-login.jpg')}*/}
+      {/*style={{width: '100%', height: '100%', backgroundColor: 'black'}}*/}
+      {/*resizeMode={'cover'}>*/}
 
-        {/*<Button*/}
-        {/*  title="checkLoginEnable"*/}
-        {/*  onPress={() =>*/}
-        {/*    JVerification.checkLoginEnable(result => {*/}
-        {/*      console.log('checkLoginEnable:' + JSON.stringify(result));*/}
-        {/*      createAlert('checkLoginEnable:' + JSON.stringify(result));*/}
-        {/*    })*/}
-        {/*  }*/}
-        {/*/>*/}
+      {/*<ThirdLogin />*/}
+      {/*<Button*/}
+      {/*  title="isInitSuccess"*/}
+      {/*  onPress={() =>*/}
+      {/*    JVerification.isInitSuccess(result => {*/}
+      {/*      console.log('isInitSuccess:' + JSON.stringify(result));*/}
+      {/*      createAlert('isInitSuccess:' + JSON.stringify(result));*/}
+      {/*    })*/}
+      {/*  }*/}
+      {/*/>*/}
 
-        {/*<Button title='getToken'*/}
-        {/*        onPress={() => JVerification.getToken(5000, result => {*/}
-        {/*          console.log('getToken:' + JSON.stringify(result));*/}
-        {/*          createAlert('getToken:' + JSON.stringify(result));*/}
+      {/*<Button*/}
+      {/*  title="checkLoginEnable"*/}
+      {/*  onPress={() =>*/}
+      {/*    JVerification.checkLoginEnable(result => {*/}
+      {/*      console.log('checkLoginEnable:' + JSON.stringify(result));*/}
+      {/*      createAlert('checkLoginEnable:' + JSON.stringify(result));*/}
+      {/*    })*/}
+      {/*  }*/}
+      {/*/>*/}
 
-        {/*        })}/>*/}
+      {/*<Button title='getToken'*/}
+      {/*        onPress={() => JVerification.getToken(5000, result => {*/}
+      {/*          console.log('getToken:' + JSON.stringify(result));*/}
+      {/*          createAlert('getToken:' + JSON.stringify(result));*/}
 
-        {/*<Button*/}
-        {/*  title="preLogin"*/}
-        {/*  onPress={() => {*/}
-        {/*    JVerification.clearPreLoginCache();*/}
-        {/*    JVerification.preLogin(5000, result => {*/}
-        {/*      console.log('preLogin:' + JSON.stringify(result));*/}
-        {/*      createAlert('preLogin:' + JSON.stringify(result));*/}
-        {/*    });*/}
-        {/*  }}*/}
-        {/*/>*/}
+      {/*        })}/>*/}
 
-        {/*<Button*/}
-        {/*  title="addLoginCustomConfig"*/}
-        {/*  onPress={() => {*/}
-        {/*    JVerification.clearPreLoginCache()*/}
-        {/*    if (Platform.OS === 'android') {*/}
-        {/*      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);*/}
-        {/*    } else {*/}
-        {/*      JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);*/}
-        {/*    }*/}
-        {/*  }}*/}
-        {/*/>*/}
+      {/*<Button*/}
+      {/*  title="preLogin"*/}
+      {/*  onPress={() => {*/}
+      {/*    JVerification.clearPreLoginCache();*/}
+      {/*    JVerification.preLogin(5000, result => {*/}
+      {/*      console.log('preLogin:' + JSON.stringify(result));*/}
+      {/*      createAlert('preLogin:' + JSON.stringify(result));*/}
+      {/*    });*/}
+      {/*  }}*/}
+      {/*/>*/}
 
-        {/*<Button*/}
-        {/*  title="自定义弹窗授权页"*/}
-        {/*  onPress={() => {*/}
-        {/*    if (Platform.OS == 'android') {*/}
-        {/*      JVerification.addLoginCustomConfig(androidDialogConfig, customViewParams);*/}
-        {/*    } else {*/}
-        {/*      JVerification.addLoginCustomConfig(iosDialogConfig, customViewParams);*/}
-        {/*    }*/}
-        {/*  }}*/}
-        {/*/>*/}
+      {/*<Button*/}
+      {/*  title="addLoginCustomConfig"*/}
+      {/*  onPress={() => {*/}
+      {/*    JVerification.clearPreLoginCache()*/}
+      {/*    if (Platform.OS === 'android') {*/}
+      {/*      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);*/}
+      {/*    } else {*/}
+      {/*      JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);*/}
+      {/*    }*/}
+      {/*  }}*/}
+      {/*/>*/}
 
-        {/*<Button title="login" onPress={() => JVerification.login(true)} />*/}
+      {/*<Button*/}
+      {/*  title="自定义弹窗授权页"*/}
+      {/*  onPress={() => {*/}
+      {/*    if (Platform.OS == 'android') {*/}
+      {/*      JVerification.addLoginCustomConfig(androidDialogConfig, customViewParams);*/}
+      {/*    } else {*/}
+      {/*      JVerification.addLoginCustomConfig(iosDialogConfig, customViewParams);*/}
+      {/*    }*/}
+      {/*  }}*/}
+      {/*/>*/}
 
-        {/*<View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>*/}
-        {/*  /!*<Pressable*!/*/}
-        {/*  /!*  style={styles.ruleWrapper}*!/*/}
-        {/*  /!*  hitSlop={{left: 10, right: 10, top: 30}}*!/*/}
-        {/*  /!*  onPress={() => {*!/*/}
-        {/*  /!*    if (!IsIos) {*!/*/}
-        {/*  /!*      setCanShowAgree(!canShowAgree);*!/*/}
-        {/*  /!*    }*!/*/}
-        {/*  /!*  }}>*!/*/}
-        {/*  /!*  <View style={styles.checkbox}>*!/*/}
-        {/*  /!*    {!canShowAgree && <IconFont name="yixuan" size={16} color="red" />}*!/*/}
-        {/*  /!*  </View>*!/*/}
-        {/*  /!*</Pressable>*!/*/}
+      {/*<Button title="login" onPress={() => JVerification.login(true)} />*/}
 
-        {/*  <Text style={styles.textContent}>我已阅读并同意</Text>*/}
-        {/*  <Pressable*/}
-        {/*    onPress={() => {*/}
-        {/*      goPages('user');*/}
-        {/*    }}*/}
-        {/*    hitSlop={{top: 10, bottom: 10}}>*/}
-        {/*    <Text style={styles.textContent}>《用户协议》</Text>*/}
-        {/*  </Pressable>*/}
-        {/*  <Text style={styles.textContent}>和</Text>*/}
-        {/*  <Pressable*/}
-        {/*    onPress={() => {*/}
-        {/*      goPages('private');*/}
-        {/*    }}*/}
-        {/*    hitSlop={{top: 10, bottom: 10}}>*/}
-        {/*    <Text style={styles.textContent}>《隐私政策》</Text>*/}
-        {/*  </Pressable>*/}
-        {/*</View>*/}
-      </ImageBackground>
+      {/*<View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>*/}
+      {/*  /!*<Pressable*!/*/}
+      {/*  /!*  style={styles.ruleWrapper}*!/*/}
+      {/*  /!*  hitSlop={{left: 10, right: 10, top: 30}}*!/*/}
+      {/*  /!*  onPress={() => {*!/*/}
+      {/*  /!*    if (!IsIos) {*!/*/}
+      {/*  /!*      setCanShowAgree(!canShowAgree);*!/*/}
+      {/*  /!*    }*!/*/}
+      {/*  /!*  }}>*!/*/}
+      {/*  /!*  <View style={styles.checkbox}>*!/*/}
+      {/*  /!*    {!canShowAgree && <IconFont name="yixuan" size={16} color="red" />}*!/*/}
+      {/*  /!*  </View>*!/*/}
+      {/*  /!*</Pressable>*!/*/}
+
+      {/*  <Text style={styles.textContent}>我已阅读并同意</Text>*/}
+      {/*  <Pressable*/}
+      {/*    onPress={() => {*/}
+      {/*      goPages('user');*/}
+      {/*    }}*/}
+      {/*    hitSlop={{top: 10, bottom: 10}}>*/}
+      {/*    <Text style={styles.textContent}>《用户协议》</Text>*/}
+      {/*  </Pressable>*/}
+      {/*  <Text style={styles.textContent}>和</Text>*/}
+      {/*  <Pressable*/}
+      {/*    onPress={() => {*/}
+      {/*      goPages('private');*/}
+      {/*    }}*/}
+      {/*    hitSlop={{top: 10, bottom: 10}}>*/}
+      {/*    <Text style={styles.textContent}>《隐私政策》</Text>*/}
+      {/*  </Pressable>*/}
+      {/*</View>*/}
+      {/*</ImageBackground>*/}
     </View>
   );
 };

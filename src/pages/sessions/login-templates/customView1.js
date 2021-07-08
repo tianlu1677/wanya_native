@@ -10,10 +10,12 @@ const CustomView1 = ({}) => {
     <View style={styles.container}>
       <Pressable
         onPress={() => {
-          RootNavigation.navigate('LoginPhoneCode');
+          console.log('click');
           JVerification.dismissLoginPage();
-          console.log('click')
-        }}>
+          RootNavigation.navigate('LoginPhoneCode');
+        }}
+        hitSlop={{top: 10, bottom: 20, left: 10, right: 10}}
+      >
         <Text style={styles.otherLogin}>其他号码登录</Text>
       </Pressable>
       <View style={{height: 30}} />
