@@ -33,7 +33,7 @@ export const SCREEN_HEIGHT = Dimensions.get('window').height;
 // console.log('UNSAFE_TOP', <UNSAFE_TOP></UNSAFE_TOP>)
 
 export const BarHeight = IsIos
-  ? isIphoneX
+  ? isIphoneX()
     ? getStatusBarHeight(true)
     : getStatusBarHeight(false)
   : StatusBar.currentHeight;

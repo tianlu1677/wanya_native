@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {KeyboardAvoidingView} from 'react-native';
 import {View, Text, StyleSheet, Platform, Pressable, StatusBar} from 'react-native';
+import {useHeaderHeight} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -10,7 +11,7 @@ import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
 import ActionSheet from '@/components/ActionSheet';
 import {Avator} from '@/components/NodeComponents';
-import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {IsIos, STATUS_BAR_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 import {getCommentList, createComment, deleteComment} from '@/api/comment_api';
 import {getArticle} from '@/api/article_api';
@@ -22,6 +23,7 @@ import RichContent from './components/RichContent';
 
 const ArticleDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const headerHeight = useHeaderHeight();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const currentArticle = useSelector(state => state.article.articleDetail);
   const [articleId] = useState(route.params.articleId);
@@ -96,11 +98,6 @@ const ArticleDetail = ({navigation, route}) => {
               <Text style={styles.headerText}>{detail.account.nickname}</Text>
             </Pressable>
           ) : null,
-        // headerLeft: () => (
-        //   <Pressable onPress={() => navigation.goBack()} style={{marginLeft: 5}} hitSlop={hitSlop}>
-        //     <IconFont name={'close'} size={14} />
-        //   </Pressable>
-        // ),
         headerRight: () =>
           detail.account_id === currentAccount.id ? null : (
             <Pressable onPress={onReportClick} hitSlop={hitSlop}>
@@ -119,7 +116,7 @@ const ArticleDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={IsIos ? NAV_BAR_HEIGHT + SAFE_TOP : STATUS_BAR_HEIGHT + 55}>
+      keyboardVerticalOffset={IsIos ? headerHeight - BOTTOM_HEIGHT : STATUS_BAR_HEIGHT + 55}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       <CommentList
         detail={detail}
@@ -235,7 +232,6 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     fontWeight: '500',
     lineHeight: 28,
-    // marginTop: 18,
     color: '#1F1F1F',
     letterSpacing: 1,
   },

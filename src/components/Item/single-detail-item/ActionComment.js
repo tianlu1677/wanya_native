@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Pressable, TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import IconFont from '@/iconfont';
+import {IsIos, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {dispatchTopicDetail, dispatchArticleDetail, dispatchShareItem} from '@/redux/actions';
 import {createAction, cancelAction} from '@/api/action_api';
 import * as action from '@/redux/constants';
@@ -148,59 +149,62 @@ const ActionComment = props => {
   }, [comment]);
 
   return (
-    <View style={styles.actionWrapper}>
-      {!props.visible && (
-        <>
-          <Text style={styles.text} onPress={onCreateComment}>
-            快来评论吧
-          </Text>
-          <View style={styles.wrapBottomBtns}>
-            <Pressable style={styles.btnWrap} onPress={() => onCreate('praise')}>
-              <IconFont name="like" size={19} color={praise ? '#000' : '#bdbdbd'} />
-              <Text style={[styles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
-                {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
-              </Text>
-            </Pressable>
-            <Pressable style={styles.btnWrap} onPress={() => onCreate('star')}>
-              <IconFont
-                name={star ? 'star-solid' : 'star'}
-                size={22}
-                color={star ? '#f4ea2a' : '#bdbdbd'}
-              />
-              <Text style={[styles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
-                {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
-              </Text>
-            </Pressable>
-            <Pressable
-              hitSlop={{right: 20, left: 5}}
-              style={[styles.btnWrap, {minWidth: 25}]}
-              onPress={() => {
-                onShare();
-              }}>
-              <IconFont name="zhuanfa" size={18} />
-            </Pressable>
-          </View>
-        </>
-      )}
+    <>
+      <View style={styles.actionWrapper}>
+        {!props.visible && (
+          <>
+            <Text style={styles.text} onPress={onCreateComment}>
+              快来评论吧
+            </Text>
+            <View style={styles.wrapBottomBtns}>
+              <Pressable style={styles.btnWrap} onPress={() => onCreate('praise')}>
+                <IconFont name="like" size={19} color={praise ? '#000' : '#bdbdbd'} />
+                <Text style={[styles.btnText, {color: praise ? '#000' : '#bdbdbd'}]}>
+                  {props.detail.praises_count > 0 ? props.detail.praises_count : ''}
+                </Text>
+              </Pressable>
+              <Pressable style={styles.btnWrap} onPress={() => onCreate('star')}>
+                <IconFont
+                  name={star ? 'star-solid' : 'star'}
+                  size={22}
+                  color={star ? '#f4ea2a' : '#bdbdbd'}
+                />
+                <Text style={[styles.btnText, {color: star ? '#000' : '#bdbdbd'}]}>
+                  {props.detail.stars_count > 0 ? props.detail.stars_count : ''}
+                </Text>
+              </Pressable>
+              <Pressable
+                hitSlop={{right: 20, left: 5}}
+                style={[styles.btnWrap, {minWidth: 25}]}
+                onPress={() => {
+                  onShare();
+                }}>
+                <IconFont name="zhuanfa" size={18} />
+              </Pressable>
+            </View>
+          </>
+        )}
 
-      {props.visible && (
-        <>
-          <TextInput
-            style={styles.input}
-            placeholder={comment.placeholder}
-            onChangeText={onChangeValue}
-            value={value}
-            autoFocus
-            onBlur={() => props.changeVisible(false)}
-          />
-          <Text
-            style={[styles.sendBtn, {color: value ? '#000' : '#bdbdbd'}]}
-            onPress={publishComment}>
-            发送
-          </Text>
-        </>
-      )}
-    </View>
+        {props.visible && (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder={comment.placeholder}
+              onChangeText={onChangeValue}
+              value={value}
+              autoFocus
+              onBlur={() => props.changeVisible(false)}
+            />
+            <Text
+              style={[styles.sendBtn, {color: value ? '#000' : '#bdbdbd'}]}
+              onPress={publishComment}>
+              发送
+            </Text>
+          </>
+        )}
+      </View>
+      {IsIos && <View style={styles.safaAreaBottom} />}
+    </>
   );
 };
 
@@ -213,6 +217,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopColor: '#ebebeb',
     borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  safaAreaBottom: {
+    height: BOTTOM_HEIGHT,
   },
   wrapBottomBtns: {
     height: 57,
