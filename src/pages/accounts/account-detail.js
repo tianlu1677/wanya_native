@@ -188,8 +188,9 @@ const AccountDetail = ({navigation, route}) => {
               <Text style={styles.introtag}>{account.age || '18'}岁</Text>
               <Text style={styles.introtag}>{account.province || '未知街区'}</Text>
             </View>
-            <Text style={styles.introWrap} numberOfLines={3} onPress={() => setShowModal(true)}>
-              {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'}
+            <Text style={styles.introWrap} onPress={() => setShowModal(true)}>
+              {/* {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'} */}
+              {account.intro || '这个人很懒，还没有填写简介'}
             </Text>
             <View style={styles.headerBtnWrap}>
               {isSelf ? (

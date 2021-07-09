@@ -89,14 +89,13 @@ const EditAccountContent = ({navigation, route}) => {
           <TextInput
             caretHidden={false}
             selectionColor={'#ff193a'}
-            maxLength={40}
+            maxLength={60}
             multiline
             numberOfLines={10}
             onChangeText={text => {
               setContent(text);
             }}
-            // returnKeyType={'done'}
-            placeholder={'输入简介，30个字以内'}
+            placeholder={'输入简介，60个字以内'}
             placeholderTextColor={'#c2c2c2'}
             defaultValue={content}
             style={styles.multiLine}
