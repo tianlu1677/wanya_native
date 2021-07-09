@@ -8,7 +8,7 @@ import {RegionPicker} from '@yz1311/react-native-wheel-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {dispatchCurrentAccount} from '@/redux/actions';
 import MediasPicker from '@/components/MediasPicker';
-import {RFValue} from '@/utils/response-fontsize';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {BarHeight} from '@/utils/navbar';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
@@ -132,20 +132,21 @@ const AccountContent = props => {
 
       <Pressable style={styles.itemWrap} onPress={() => goPages('avatar')}>
         <Text style={styles.itemTitle}>头像</Text>
-        <FastImg
-          source={{uri: currentAccount.avatar_url}}
-          style={{...styles.itemContent, ...styles.avator}}
-        />
+        <View style={styles.itemContent}>
+          <FastImg source={{uri: currentAccount.avatar_url}} style={styles.avator} />
+        </View>
         <ForwardRight />
       </Pressable>
       <View style={styles.bottomLine} />
 
       <Pressable style={styles.itemWrap} onPress={() => goPages('background_img')}>
         <Text style={styles.itemTitle}>背景图</Text>
-        <FastImg
-          source={{uri: currentAccount.background_img_url || AccountDetailBgImg}}
-          style={{...styles.itemContent, ...styles.bgCover}}
-        />
+        <View style={styles.itemContent}>
+          <FastImg
+            source={{uri: currentAccount.background_img_url || AccountDetailBgImg}}
+            style={styles.bgCover}
+          />
+        </View>
         <ForwardRight />
       </Pressable>
 
@@ -169,20 +170,22 @@ const AccountContent = props => {
       <View style={styles.contentBlank} />
       <Pressable style={styles.itemWrap} onPress={() => goPages('gender')}>
         <Text style={styles.itemTitle}>性别</Text>
-        <Pressable>
+        <View style={styles.itemContent}>
           <RNPickerSelect
             onValueChange={value => setGenderValue(value)}
             fixAndroidTouchableBug
             placeholder={{}}
             value={currentAccount.gender}
             doneText="完成"
+            textInputProps={{style: {height: 50, textAlign: 'right'}}}
             items={[
               {label: '男', value: 'man'},
               {label: '女', value: 'woman'},
               {label: '保密', value: 'other'},
             ]}
           />
-        </Pressable>
+        </View>
+
         <ForwardRight />
       </Pressable>
       <View style={styles.bottomLine} />
@@ -199,19 +202,6 @@ const AccountContent = props => {
         <Text style={styles.itemContent}>{currentAccount.city.replace(',', '')}</Text>
         <ForwardRight />
       </Pressable>
-      {/* <View style={styles.bottomLine} /> */}
-
-      {/* <View style={styles.bottomLine} />
-      <Pressable style={styles.itemWrap} onPress={() => goPages('intro')}>
-        <Text style={styles.itemTitle} numberOfLines={1}>
-          简介
-        </Text>
-        <Text style={styles.itemContent} numberOfLines={1}>
-          {currentAccount.intro}
-        </Text>
-        <ForwardRight />
-      </Pressable>
-      <View style={styles.bottomLine} /> */}
 
       <View style={styles.contentBlank} />
       <Pressable style={styles.itemWrap} onPress={() => goPages('label')}>
@@ -271,17 +261,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   itemTitle: {
-    marginRight: 'auto',
+    width: VWValue(70),
   },
   itemContent: {
-    maxWidth: 300,
-    textAlign: 'right',
-  },
-  introText: {
-    lineHeight: 20,
     flex: 1,
-    marginLeft: 20,
-    paddingVertical: 7,
+    height: 50,
+    lineHeight: 50,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    textAlign: 'right',
   },
   avator: {
     width: 35,
@@ -292,12 +280,16 @@ const styles = StyleSheet.create({
     width: 85,
     height: 30,
   },
+  introText: {
+    lineHeight: 20,
+    paddingVertical: 4,
+  },
   labelWrapper: {
+    height: 'auto',
+    lineHeight: 0,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-end',
-    flex: 1,
-    marginLeft: 20,
     paddingTop: 7,
   },
   label: {

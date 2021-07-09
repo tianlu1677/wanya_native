@@ -45,16 +45,14 @@ const LoginPhoneCode = ({navigation}) => {
       Toast.showError('请输入正确的手机号');
       return;
     }
+
+    navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
+
     const timestamp = new Date().getTime();
     const secret = md5(`phone_${phone}_${timestamp}`);
     const data = {phone, secret, timestamp, send_code_type: SendCodeType.Login};
     const res = await sendPhoneCode(data);
-    if (res.status === 'success') {
-      res.error && Toast.showError(res.error);
-      navigation.navigate('LoginVerifyCode', {phone, send_code_type: SendCodeType.Login});
-    } else {
-      Toast.showError(res.error);
-    }
+    Toast.showError(res.status === 'success' && !res.error ? '发送成功' : res.error);
   };
 
   const handleNextClick = () => {
@@ -186,7 +184,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     fontWeight: '500',
-    width: '80%'
+    width: '80%',
   },
   nextBtn: {
     marginTop: RFValue(25),

@@ -163,7 +163,7 @@ const BaseTopic = props => {
         </View>
       )}
 
-      {type !== 'recommend-node' && (
+      {type !== 'recommend-node' && data.node_name && (
         <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
           <Pressable style={styles.infoView} onPress={goNodeDetail}>
             <IconFont name="node-solid" size={15} color={'#1B5C79'} />

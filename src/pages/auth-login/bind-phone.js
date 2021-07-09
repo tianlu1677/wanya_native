@@ -27,6 +27,13 @@ const BindPhone = ({navigation}) => {
       Toast.showError('请输入正确的手机号');
       return;
     }
+
+    navigation.navigate('LoginVerifyCode', {
+      phone,
+      password,
+      send_code_type: SendCodeType.Binding,
+    });
+
     const timestamp = new Date().getTime();
     const data = {
       phone,
@@ -36,16 +43,7 @@ const BindPhone = ({navigation}) => {
       send_code_type: SendCodeType.Binding,
     };
     const res = await sendPhoneCode(data);
-    if (res.status === 'success') {
-      res.error && Toast.showError(res.error);
-      navigation.navigate('LoginVerifyCode', {
-        phone,
-        password,
-        send_code_type: SendCodeType.Binding,
-      });
-    } else {
-      Toast.showError(res.error);
-    }
+    Toast.showError(res.status === 'success' && !res.error ? '发送成功' : res.error);
   };
 
   const handleNextClick = async () => {

@@ -1,16 +1,13 @@
-import React, {Component, useRef, useState, useLayoutEffect, useEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableWithoutFeedback,
-  SafeAreaView,
   Keyboard,
-  Platform,
   StatusBar,
   View,
   TextInput,
-  Text,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 // import {SafeAreaView} from 'react-native-safe-area-context';
 import {syncAccountInfo} from '@/api/mine_api';
 import {secureCheck} from '@/api/secure_check';
@@ -51,8 +48,6 @@ const EditAccountContent = ({navigation, route}) => {
 
     const res = await secureCheck('text', content);
     if (!res.status) {
-      // Taro.showToast({title: '您输入的内容有违法违规内容，请重新输入', icon: 'none' })
-      console.log('error', res);
       return;
     }
 
