@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     height: RFValue(29),
     lineHeight: RFValue(29),
     paddingHorizontal: VWValue(12),
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderRadius: 18,
     overflow: 'hidden',
     marginRight: VWValue(13),

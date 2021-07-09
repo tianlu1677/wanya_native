@@ -60,7 +60,7 @@ const LoginPhoneCode = ({navigation}) => {
       return false;
     }
     onSendPhoneCode();
-    // navigation.navigate('RegisterInfoGender', {phone, send_code_type: SendCodeType.Login});
+    // navigation.navigate('RegisterInfoLabel', {phone, send_code_type: SendCodeType.Login});
   };
 
   const loadData = async () => {
