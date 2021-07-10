@@ -162,10 +162,10 @@ class App extends Component {
         privacyWebNavReturnImage: 'close',
       };
       const customUIWithConfigAndroid = {
-        backgroundImage: '', //背景图
+        backgroundImage: 'bg', //背景图
 
         statusBarHidden: true, //状态栏是否隐藏
-        // statusBarMode: 'light', //状态栏模式 light,dark
+        statusBarMode: 'light', //状态栏模式 light,dark
 
         navHidden: true, //导航栏是否隐藏
         navColor: -16777216, //导航栏颜色
@@ -210,29 +210,29 @@ class App extends Component {
         loginBtnTextSize: 16, //登录按钮字体大小
         loginBtnTextColor: -16777216, //登录按钮文字颜色
 
-        loginBtnImage: 'loginBtn.png', //登录按钮selector选择样式 （仅android）
-        // loginBtnNormalImage: 'loginBtn.png', //登录按钮正常图片 （仅ios,三个同时设置生效）
-        // loginBtnDisabledImage: 'loginBtn.png', //登录按钮失效图片  (仅ios,三个同时设置生效）
-        // loginBtnSelectedImage: 'loginBtn.png', //登录按钮按下图片  (仅ios,三个同时设置生效）
+        loginBtnImageSelector: 'login_btn_selector', //登录按钮selector选择样式 （仅android）
+        // loginBtnNormalImage: 'login_btn_normal', //登录按钮正常图片 （仅ios,三个同时设置生效）
+        // loginBtnDisabledImage: 'login_btn_press', //登录按钮失效图片  (仅ios,三个同时设置生效）
+        // loginBtnSelectedImage: 'login_btn_unable', //登录按钮按下图片  (仅ios,三个同时设置生效）
         //为保障显示效果，请同时设置x,y,w,h
         // 0, 80, 265, 45
-        loginBtnX: 0,                          //登录按钮相对于屏幕左边x轴偏移
-        loginBtnY: 80,                         //登录按钮相对于标题栏下边缘y偏移
-        loginBtnW: 265,                         //登录按钮宽度
-        loginBtnH: 45,                          //登录按钮高度
+        // loginBtnOffsetX: 0,                          //登录按钮相对于屏幕左边x轴偏移
+        loginBtnOffsetY: 120,                         //登录按钮相对于标题栏下边缘y偏移
+        loginBtnWidth: 60,                         //登录按钮宽度
+        loginBtnHeight: 10,//180/(1062/70),                          //登录按钮高度
 
-        privacyOne: ['用户协议', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
-        privacyTwo: ['隐私政策', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
-        privacyColor: [12434877, 12434877], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
+        privacyOne: ['《用户协议》', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
+        privacyTwo: ['《隐私政策》', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
+        privacyColor: [0xff00f000, 0xff000000], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
         privacyText: ['登录即同意', '和', '、', '并使用本机号码登录'], //隐私条款名称外的文字
-        privacyTextSize: 10, //隐私条款文字字体大小
+        privacyTextSize: 5, //隐私条款文字字体大小
         privacyTextGravityMode: 'center', //隐私条款文本对齐方式，目前仅支持 left、center
         privacyBookSymbolEnable: true, //隐私条款是否显示书名号，默认不显示
         //为保障显示效果，请同时设置x,y,w,h
-        // privacyX:50,                                             //隐私条款相对于屏幕左边x轴偏移
-        // privacyY:20,                                             //隐私条款相对于授权页面底部下边缘y偏移
-        // privacyW:200,                                            //隐私条款宽度
-        // privacyH:100,                                            //隐私条款高度
+        privacyX: 20,                                             //隐私条款相对于屏幕左边x轴偏移
+        privacyY: 30,                                             //隐私条款相对于授权页面底部下边缘y偏移
+        privacyW: 200,                                            //隐私条款宽度
+        privacyH: 100,                                            //隐私条款高度
 
         privacyCheckboxHidden: true, //checkBox是否隐藏，默认不隐藏
         privacyCheckEnable: true, //checkBox默认状态 默认:NO
@@ -254,6 +254,7 @@ class App extends Component {
       // JVerification.preLogin(3000);
       console.log('init result', result)
       if (Platform.OS === 'android') {
+        console.log('android')
         JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
       } else {
         JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);

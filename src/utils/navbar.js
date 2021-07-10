@@ -23,7 +23,7 @@ export const UNSAFE_TOP = IsIos ? getStatusBarHeight(false) : 0;
 // 设备的宽高
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 export const SCREEN_HEIGHT = Dimensions.get('window').height;
-
+// console.log('SCREEN_WIDTH', SCREEN_WIDTH)
 // console.log('getStatusBarHeight();', getStatusBarHeight(true))
 // console.log('getStatusBarHeight();', getStatusBarHeight(false))
 // console.log('getBottomSpace();', getBottomSpace())

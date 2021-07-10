@@ -166,7 +166,7 @@ const OneLogin = ({navigation, route}) => {
         Toast.showError(res.error, {});
       } else {
         JVerification.dismissLoginPage();
-        dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+        dispatch(dispatchUpdateSocialAccount(res.account.token));
       }
     } else if (badCode.includes(code)) {
       goToPhone();

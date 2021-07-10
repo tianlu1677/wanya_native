@@ -28,6 +28,7 @@ const JveryfyBottomView = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     // marginTop: 20,
     // width: 400,
     // height: 200,
