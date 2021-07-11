@@ -10,7 +10,8 @@ const CodeComponent = props => {
   const [codeValue, setCodeValue] = useState('');
 
   const onChangeText = text => {
-    setCodeValue(text);
+    const value = text.replace(/\s/g, '');
+    setCodeValue(value);
   };
 
   useEffect(() => {
@@ -33,12 +34,11 @@ const CodeComponent = props => {
       <TextInput
         autoFocus={true}
         maxLength={6}
+        value={codeValue}
         keyboardType={keyboardType}
         textContentType={textContentType}
-        // selectionColor="#ff193a"
         selectionColor="transparent"
         style={styles.inputItem}
-        value={null}
         onChangeText={text => onChangeText(text)}
       />
     </View>
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     textAlign: 'center',
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
+    borderRadius: 2,
   },
   codeTextActive: {
     borderColor: '#ff193a',
@@ -71,22 +72,12 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   inputItem: {
-    // width: innerWidth - VWValue(17),
     position: 'absolute',
     height: VWValue(45),
     left: 0,
     right: 0,
-    // backgroundColor: 'pink',
     bottom: 0,
-    zIndex: -1,
-    // width: (innerWidth - VWValue(17) * 5) / 6,
-    // height: VWValue(45),
-    // fontSize: 20,
-    // color: '#fff',
-    // fontWeight: '600',
-    // textAlign: 'center',
-    // borderBottomColor: '#353535',
-    // borderBottomWidth: StyleSheet.hairlineWidth,
+    zIndex: 1,
   },
 });
 

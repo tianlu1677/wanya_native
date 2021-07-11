@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, Pressable, Keyboard} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchSetAuthToken} from '@/redux/actions';
@@ -19,7 +19,7 @@ const AccountInfoInvite = ({navigation}) => {
   const handleNextClick = async () => {
     const data = {invite_code: code, token: socialToken};
     const res = await verifyInviteCode(data);
-    console.log('邀请成功res ', res);
+    console.log('邀请成功', res.error);
     if (res.error) {
       Toast.showError(res.error);
     } else {
@@ -34,7 +34,7 @@ const AccountInfoInvite = ({navigation}) => {
   };
 
   return (
-    <View style={cStyles.wrapper}>
+    <Pressable style={cStyles.wrapper} onPress={() => Keyboard.dismiss()}>
       <Text style={cStyles.infoTitle}>内测邀请</Text>
       <Text style={cStyles.infoText}>顽鸦社区为了更好的使用体验，登录需邀请码</Text>
       <CodeComponent
@@ -51,10 +51,13 @@ const AccountInfoInvite = ({navigation}) => {
         ]}>
         进入顽鸦APP
       </Text>
-      <Text style={styles.tipsText} onPress={copyToClipboard}>
+      <Text
+        style={styles.tipsText}
+        onPress={copyToClipboard}
+        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
         获取邀请码
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -67,7 +70,7 @@ const styles = StyleSheet.create({
     marginTop: RFValue(25),
   },
   tipsText: {
-    color: '#fff',
+    color: '#BDBDBD',
     marginTop: RFValue(18),
   },
 });

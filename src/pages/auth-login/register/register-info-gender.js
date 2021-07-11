@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
@@ -55,7 +55,7 @@ const RegisterInfoGender = () => {
   };
 
   return (
-    <View style={cStyles.wrapper}>
+    <Pressable style={cStyles.wrapper} onPress={() => Keyboard.dismiss()}>
       <Text style={cStyles.infoTitle}>选择性别和生日</Text>
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
       <View style={styles.maleWrapper}>
@@ -116,7 +116,7 @@ const RegisterInfoGender = () => {
         minimumDate={new Date('1960-01-01')}
         maximumDate={new Date()}
       />
-    </View>
+    </Pressable>
   );
 };
 

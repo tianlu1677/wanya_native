@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 13,
     paddingHorizontal: 10,
+    marginLeft: 0,
   },
   nodeName: {
     fontSize: 11,

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Pressable, Keyboard} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
@@ -54,7 +54,8 @@ const AccountInfoLabel = () => {
   };
 
   return (
-    <View style={[cStyles.wrapper, styles.wrapper]}>
+    <Pressable style={[cStyles.wrapper, styles.wrapper]} onPress={() => Keyboard.dismiss()}>
+      >
       <ScrollView>
         <Text style={cStyles.infoTitle}>选择个性标签</Text>
         <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
@@ -81,7 +82,6 @@ const AccountInfoLabel = () => {
           })}
         </View>
       </ScrollView>
-
       <Text
         onPress={handleNextClick}
         style={[
@@ -91,7 +91,7 @@ const AccountInfoLabel = () => {
         ]}>
         完成 {allChecked.length}/5
       </Text>
-    </View>
+    </Pressable>
   );
 };
 

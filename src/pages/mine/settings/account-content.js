@@ -169,8 +169,8 @@ const AccountContent = props => {
 
       <View style={styles.contentBlank} />
       <Pressable style={styles.itemWrap} onPress={() => goPages('gender')}>
-        <Text style={styles.itemTitle}>性别</Text>
-        <View style={styles.itemContent}>
+        <Text style={[styles.itemTitle, {position: 'absolute', zIndex: 1, left: 14}]}>性别</Text>
+        <View style={[styles.itemContent]}>
           <RNPickerSelect
             onValueChange={value => setGenderValue(value)}
             fixAndroidTouchableBug

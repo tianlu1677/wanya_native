@@ -1,20 +1,16 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TextInput, StatusBar, Pressable} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {dispatchUpdateSocialAccount} from '@/redux/actions';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TextInput, StatusBar, Pressable, Keyboard} from 'react-native';
+import {useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
-import {passwordLogin} from '@/api/sign_api';
 import {sendPhoneCode} from '@/api/phone_sign_api';
 import {SendCodeType} from './meta';
-
 import cStyles from './style';
 
 const md5 = require('md5');
 const BindPhone = ({navigation}) => {
-  const dispatch = useDispatch();
-  const {socialToken, socialAccount} = useSelector(state => state.login);
+  const {socialToken} = useSelector(state => state.login);
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,6 +21,11 @@ const BindPhone = ({navigation}) => {
     const phoneReg = /^1[3456789]\d{9}$/;
     if (!phoneReg.test(phone)) {
       Toast.showError('请输入正确的手机号');
+      return;
+    }
+
+    if (!/^(?!(?:[0-9]+|[a-zA-Z]+|[!-\/:-@\[-`{-~]+)$)[!-~]+$/g.test(password)) {
+      Toast.showError('密码格式有误');
       return;
     }
 
@@ -54,7 +55,7 @@ const BindPhone = ({navigation}) => {
   };
 
   return (
-    <View style={cStyles.wrapper}>
+    <Pressable style={cStyles.wrapper} onPress={() => Keyboard.dismiss()}>
       <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>绑定手机号</Text>
       <Text style={cStyles.infoText}>完善帐号信息，更方便地使用产品</Text>
@@ -104,7 +105,7 @@ const BindPhone = ({navigation}) => {
         ]}>
         下一步
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -136,8 +137,8 @@ const styles = StyleSheet.create({
   },
   tipsText: {
     fontSize: 12,
-    color: '#727272',
-    marginTop: RFValue(12),
+    color: '#BDBDBD',
+    marginTop: RFValue(18),
   },
   nextBtn: {
     marginTop: RFValue(25),

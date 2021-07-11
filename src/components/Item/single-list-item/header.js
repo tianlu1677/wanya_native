@@ -157,8 +157,10 @@ export const Header = props => {
         <Pressable onPress={goNodeDetail}>
           <FastImg source={{uri: account.avatar_url}} style={styles.nodeImage} />
         </Pressable>
-        <Pressable style={styles.content} onPress={goAccountDetail}>
-          <Text style={styles.nameText}>{node_name}</Text>
+        <Pressable style={styles.content}>
+          <Text style={styles.nameText} onPress={goNodeDetail}>
+            {node_name}
+          </Text>
           <Pressable style={styles.infoWrapper} onPress={goAccountDetail}>
             <Avator account={account} size={VWValue(17)} />
             <Text style={styles.nickname}>{account.nickname}</Text>

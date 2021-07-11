@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 12,
-    color: '#fff',
+    color: '#BDBDBD',
     marginTop: VWValue(14),
     textAlign: 'center',
   },

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable, StatusBar} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Pressable, StatusBar, Keyboard} from 'react-native';
 import {useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
@@ -59,8 +59,9 @@ const LoginPhoneCode = ({navigation}) => {
     if (!isCanClick) {
       return false;
     }
+
     onSendPhoneCode();
-    // navigation.navigate('RegisterInfoLabel', {phone, send_code_type: SendCodeType.Login});
+    // navigation.navigate('RegisterInfoInvite', {phone, send_code_type: SendCodeType.Login});
   };
 
   const loadData = async () => {
@@ -87,7 +88,7 @@ const LoginPhoneCode = ({navigation}) => {
   }, [phone]);
 
   return (
-    <View style={cStyles.wrapper}>
+    <Pressable style={cStyles.wrapper} onPress={() => Keyboard.dismiss()}>
       <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>手机验证登录</Text>
       <Text style={cStyles.infoText}>请输入你的手机号码，获取验证码</Text>
@@ -159,7 +160,7 @@ const LoginPhoneCode = ({navigation}) => {
           }}
         />
       )}
-    </View>
+    </Pressable>
   );
 };
 
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     borderColor: 'white',
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     marginHorizontal: 15,
     marginRight: 10,
     alignItems: 'center',
