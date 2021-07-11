@@ -55,7 +55,6 @@ const AccountInfoLabel = () => {
 
   return (
     <Pressable style={[cStyles.wrapper, styles.wrapper]} onPress={() => Keyboard.dismiss()}>
-      >
       <ScrollView>
         <Text style={cStyles.infoTitle}>选择个性标签</Text>
         <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
@@ -121,10 +120,10 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     height: RFValue(29),
-    lineHeight: RFValue(29),
+    lineHeight: RFValue(27),
     paddingHorizontal: VWValue(12),
     borderWidth: 1,
-    borderRadius: 18,
+    borderRadius: 16,
     overflow: 'hidden',
     marginRight: VWValue(13),
     marginBottom: VWValue(13),
