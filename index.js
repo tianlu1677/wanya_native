@@ -14,6 +14,7 @@ import * as Sentry from '@sentry/react-native';
 import {BaseSentryURL} from '@/utils/config';
 
 import JveryfyBottomView from '@/pages/sessions/login-templates/jverify_bottom_view';
+import JveryfyBottomViewAndroid from '@/pages/sessions/login-templates/jverify_bottom_view_android';
 
 AppRegistry.registerComponent(appName, () => App);
 
@@ -30,3 +31,4 @@ React.$Helper = Helper;
 // React.$lodash = require('lodash');
 
 AppRegistry.registerComponent('jverify_bottom_view', () => JveryfyBottomView);
+AppRegistry.registerComponent('jverify_bottom_view_android', () => JveryfyBottomViewAndroid);

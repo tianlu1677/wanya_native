@@ -217,7 +217,7 @@ class App extends Component {
         //为保障显示效果，请同时设置x,y,w,h
         // 0, 80, 265, 45
         // loginBtnOffsetX: 0,                          //登录按钮相对于屏幕左边x轴偏移
-        loginBtnOffsetY: 120,                         //登录按钮相对于标题栏下边缘y偏移
+        loginBtnOffsetY: 110,                         //登录按钮相对于标题栏下边缘y偏移
         loginBtnWidth: 60,                         //登录按钮宽度
         loginBtnHeight: 10,//180/(1062/70),                          //登录按钮高度
 
@@ -225,11 +225,11 @@ class App extends Component {
         privacyTwo: ['《隐私政策》', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
         privacyColor: [0xff00f000, 0xff000000], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
         privacyText: ['登录即同意', '和', '、', '并使用本机号码登录'], //隐私条款名称外的文字
-        privacyTextSize: 5, //隐私条款文字字体大小
+        privacyTextSize: 8, //隐私条款文字字体大小
         privacyTextGravityMode: 'center', //隐私条款文本对齐方式，目前仅支持 left、center
         privacyBookSymbolEnable: true, //隐私条款是否显示书名号，默认不显示
         //为保障显示效果，请同时设置x,y,w,h
-        privacyX: 20,                                             //隐私条款相对于屏幕左边x轴偏移
+        // privacyX: 20,                                             //隐私条款相对于屏幕左边x轴偏移
         privacyY: 30,                                             //隐私条款相对于授权页面底部下边缘y偏移
         privacyW: 200,                                            //隐私条款宽度
         privacyH: 100,                                            //隐私条款高度
@@ -251,15 +251,18 @@ class App extends Component {
       const customViewParams = [
         {customViewName: 'jverify_bottom_view', customViewPoint: [0, 500, SCREEN_WIDTH, 120]},
       ];
+      const customViewParamsAdnroid = [
+        {customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 440, SCREEN_WIDTH, 80]},
+      ];
+
       // JVerification.preLogin(3000);
       console.log('init result', result)
       if (Platform.OS === 'android') {
         console.log('android')
-        JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);
+        JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParamsAdnroid);
       } else {
         JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
       }
-
     })
   }
 
