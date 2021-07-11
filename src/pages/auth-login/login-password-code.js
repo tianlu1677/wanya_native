@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, StatusBar, TextInput, Pressable} from 'react-native';
+import {View, Text, StyleSheet, StatusBar, TextInput, Pressable, Keyboard} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import IconFont from '@/iconfont';
@@ -11,7 +11,6 @@ import cStyles from './style';
 
 const LoginPasswordCode = ({navigation, route}) => {
   const dispatch = useDispatch();
-  console.log(route.params.phone);
   const [phone, setPhone] = useState(route.params.phone || '');
   const [phoneAutoFocus] = useState(route.params.phone ? false : true);
 
@@ -28,21 +27,17 @@ const LoginPasswordCode = ({navigation, route}) => {
     Toast.showLoading('正在登录中...');
     const params = {phone: phone, password: password};
     const res = await passwordLogin(params);
-
-    console.log('登录成功', res);
-
-    if (res.error) {
-      Toast.showError(res.error, {});
-    } else {
+    Toast.hide();
+    if (res.account) {
       dispatch(dispatchUpdateSocialAccount(res.account.token));
       await Helper.setData('socialToken', res.account.token);
+    } else {
+      Toast.showError(res.msg);
     }
-
-    Toast.hide();
   };
 
   return (
-    <View style={cStyles.wrapper}>
+    <Pressable style={cStyles.wrapper} onPress={() => Keyboard.dismiss()}>
       <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>手机密码登录</Text>
       <Text style={cStyles.infoText}>请输入你的手机号码和登录密码</Text>
@@ -94,7 +89,7 @@ const LoginPasswordCode = ({navigation, route}) => {
         ]}>
         登录
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -116,7 +111,7 @@ const styles = StyleSheet.create({
     marginRight: VWValue(18),
   },
   inputContent: {
-    width: '60%',
+    flex: 1,
     height: '100%',
     flexDirection: 'row',
     alignItems: 'center',

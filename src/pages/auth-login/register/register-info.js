@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable, Platform, StatusBar} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Platform,
+  StatusBar,
+  Keyboard,
+} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
@@ -102,10 +111,8 @@ const RegisterInfo = props => {
     loadData();
   }, []);
 
-  console.log('socialAccount', socialAccount);
-
   return (
-    <View style={[cStyles.wrapper, styles.wrapper]}>
+    <Pressable style={[cStyles.wrapper, styles.wrapper]} onPress={() => Keyboard.dismiss()}>
       <StatusBar barStyle="light-content" />
       <Text style={cStyles.infoTitle}>欢迎来到顽鸦</Text>
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
@@ -141,7 +148,7 @@ const RegisterInfo = props => {
         ]}>
         下一步
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -154,7 +161,7 @@ const styles = StyleSheet.create({
     height: VWValue(75),
     marginTop: RFValue(40),
     borderColor: 'transparent',
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderRadius: VWValue(40),
   },
   avatorWrap: {

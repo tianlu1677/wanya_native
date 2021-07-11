@@ -8,7 +8,7 @@ import CodePush from 'react-native-code-push';
 import checkHotUpdate from '@/utils/codepush';
 import {BaseApiUrl} from '@/utils/config';
 import {IsIos} from '@/utils/navbar';
-import { WANYA_VERSION } from "@/utils/config"
+import {WANYA_VERSION} from '@/utils/config';
 import {logoutCurrentAccount} from '@/redux/actions';
 
 const Settings = ({navigation, route}) => {
@@ -159,8 +159,6 @@ const Settings = ({navigation, route}) => {
           <ItemTitle>退出</ItemTitle>
           <ForwardRight />
         </ItemView>
-
-
       </View>
       <Text style={styles.version}>current Version {WANYA_VERSION}</Text>
     </View>
@@ -184,8 +182,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     fontSize: 10,
     textAlign: 'center',
-    color: '#aea9a9'
-  }
+    color: '#aea9a9',
+  },
 });
 
 const ItemView = styled(Pressable)`

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 12,
-    color: '#fff',
+    color: '#BDBDBD',
     marginTop: VWValue(14),
     textAlign: 'center',
   },
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     textAlign: 'center',
-    borderRadius: 28,
+    borderRadius: 26,
     overflow: 'hidden',
   },
   nextStepNormal: {

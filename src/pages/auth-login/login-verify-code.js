@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, StatusBar} from 'react-native';
+import {Text, StyleSheet, StatusBar, Pressable, Keyboard} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
@@ -65,16 +65,14 @@ const LoginVerifyCode = ({navigation, route}) => {
       res = await verifyPhoneCode(data);
     }
 
-    console.log('登录成功', res);
+    Toast.hide();
 
     if (res.error) {
-      Toast.showError(res.error, {});
+      Toast.showError(res.error);
     } else {
       dispatch(dispatchUpdateSocialAccount(res.account.token));
       await Helper.setData('socialToken', res.account.token);
     }
-
-    Toast.hide();
   };
 
   useEffect(() => {
@@ -82,7 +80,7 @@ const LoginVerifyCode = ({navigation, route}) => {
   }, []);
 
   return (
-    <View style={cStyles.wrapper}>
+    <Pressable style={cStyles.wrapper} onPress={() => Keyboard.dismiss()}>
       <StatusBar barStyle={'light-content'} />
       <Text style={cStyles.infoTitle}>输入验证码</Text>
       <Text style={cStyles.infoText}>
@@ -107,7 +105,7 @@ const LoginVerifyCode = ({navigation, route}) => {
       <Text style={styles.tipsText} onPress={isCanSend ? onSendPhoneCode : null}>
         {downTime === 0 ? '重新获取' : `重新获取（${downTime}s）`}
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
