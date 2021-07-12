@@ -36,8 +36,8 @@ const customUIWithConfigiOS = {
   logBtnConstraints: [0, 94, 290, 50], //1062*180
   loginBtnText: '',
   loginBtnTextColor: 16777215, // 白色
-  privacyConstraints: [0, 325, 300, 60],
-  checkViewConstraints: [-160, 318, 40, 40],
+  privacyConstraints: [0, 325, 300, 70],
+  checkViewConstraints: [-157, 318, 50, 50],
   unAgreePrivacyCallBack: false,
   privacyCheckboxHidden: false,
   privacyCheckEnable: true,
@@ -46,7 +46,7 @@ const customUIWithConfigiOS = {
   privacyTwo: ['隐私政策', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
   privacyColor: [12434877, 16777215], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
   privacyText: ['登录注册即表示已阅读并同意', '和', '、', '  '], //隐私条款名称外的文字
-  privacyTextSize: 10, //隐私条款文字字体大小
+  privacyTextSize: 11, //隐私条款文字字体大小
   privacyTextGravityMode: 'center', //隐私条款文本对齐方式，目前仅支持 left、center
   privacyBookSymbolEnable: true, //隐私条款是否显示书名号，默认不显示
 

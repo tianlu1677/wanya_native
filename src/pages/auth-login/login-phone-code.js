@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   checkbox: {
     width: 15,
     height: 15,
-    borderColor: 'white',
+    borderColor: 'red',
     borderWidth: 1,
     marginHorizontal: 15,
     marginRight: 10,

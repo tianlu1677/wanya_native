@@ -116,7 +116,7 @@ const ThirdLogin = ({}) => {
     if (res.error) {
       Toast.showError(res.error, {});
     } else {
-      store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+      store.dispatch(dispatchUpdateSocialAccount(res.account.token));
       Helper.setData('thirdLogin', JSON.stringify(raw_data));
       JVerification.dismissLoginPage();
     }
