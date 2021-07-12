@@ -1,11 +1,9 @@
 import React from 'react';
-import {Platform, Pressable} from 'react-native';
+import {Pressable} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import FastImg from '@/components/FastImg';
 import MainTabScreen from './main-tab-screen';
 import {MainRouters, AuthRouters} from './config';
-import {useNavigation, useRoute} from '@react-navigation/native';
-
 const BackBlack = require('@/assets/images/back.png');
 const BackWhite = require('@/assets/images/back-white.png');
 
@@ -14,29 +12,13 @@ const AuthStack = createStackNavigator();
 
 const HeaderLeft = props => {
   const {image, navigation} = props;
-  return (
+  return navigation.canGoBack() ? (
     <Pressable
       hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
       onPress={() => navigation.goBack()}>
       <FastImg source={image} style={{width: 9, height: 15}} />
     </Pressable>
-  );
-};
-
-const AuthHeaderLeft = props => {
-  const {image} = props;
-  const navigation = useNavigation();
-  if (navigation.canGoBack()) {
-    return (
-      <Pressable
-        hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-        onPress={() => navigation.goBack()}>
-        <FastImg source={image} style={{width: 9, height: 15}} />
-      </Pressable>
-    );
-  } else {
-    return null;
-  }
+  ) : null;
 };
 
 // MainStackScreen
@@ -46,7 +28,7 @@ export const MainStackScreen = props => {
       initialRouteName="Recommend"
       headerMode="screen"
       screenOptions={() => ({
-        headerStyle: {backgroundColor: Platform.OS === 'ios' ? 'white' : 'white', shadowOpacity: 0},
+        headerStyle: {backgroundColor: 'white', shadowOpacity: 0},
         headerBackTitleVisible: false,
         headerLeftContainerStyle: {paddingLeft: 14},
         headerRightContainerStyle: {paddingRight: 14},
@@ -63,22 +45,24 @@ export const MainStackScreen = props => {
 };
 
 // AuthStackScreen
-export const AuthStackScreen = props => {
+export const AuthStackScreen = () => {
   return (
     <AuthStack.Navigator
       initialRouteName="SocialLogin"
-      screenOptions={() => ({
-        title: false,
-        headerStyle: {
-          backgroundColor: 'black',
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-        },
-        headerLeftContainerStyle: {paddingLeft: 15},
-        headerRightContainerStyle: {paddingRight: 15},
-        // headerLeft: () => AuthHeaderLeft({...props, image: BackWhite}),
-      })}>
+      screenOptions={props => {
+        return {
+          title: false,
+          headerStyle: {
+            backgroundColor: 'black',
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerLeftContainerStyle: {paddingLeft: 14},
+          headerRightContainerStyle: {paddingRight: 14},
+          headerLeft: () => HeaderLeft({...props, image: BackWhite}),
+        };
+      }}>
       {AuthRouters.map(route => {
         const {name, options, component: Component} = route;
         return <AuthStack.Screen key={name} name={name} options={options} component={Component} />;

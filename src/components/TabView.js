@@ -94,7 +94,7 @@ TabViewIndex.propTypes = {
   onChange: PropTypes.func.isRequired, //onChange 返回item
   tabData: PropTypes.array.isRequired, //tabList接收的数据
 
-  request: PropTypes.func, //tabList接收的数据
+  request: PropTypes.object, //tabList接收的数据
 };
 
 export default TabViewIndex;

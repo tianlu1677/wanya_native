@@ -74,7 +74,11 @@ const NodeListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    const data = {...item.item, published_at_text: `发布了${TransFormType(item.item)}`};
+    const data = {
+      ...item.item,
+      published_at_text: `发布了${TransFormType(item.item)}`,
+      nodeInfo: item.node,
+    };
 
     return useMemo(() => {
       switch (item.item_type) {

@@ -19,7 +19,7 @@ const AccountInfoInvite = ({navigation}) => {
   const handleNextClick = async () => {
     const data = {invite_code: code, token: socialToken};
     const res = await verifyInviteCode(data);
-    console.log('邀请成功', res.error);
+    console.log('邀请成功', res);
     if (res.error) {
       Toast.showError(res.error);
     } else {

@@ -66,22 +66,16 @@ const Navigation = () => {
     <NavigationContainer
       ref={navigationRef}
       onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
-      onStateChange={state => {
-        onStateChangeRecord(state);
-      }}
-      // initialState={initialState}
-      onStateChange={state => Helper.setData(PERSISTENCE_KEY, JSON.stringify(state))}>
-      <>
-        {login.auth_token ? (
-          <Drawer.Navigator
-            overlayColor="rgba(0,0,0,0.3)"
-            drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Recommend" component={MainStackScreen} />
-          </Drawer.Navigator>
-        ) : (
-          <AuthStackScreen />
-        )}
-      </>
+      onStateChange={onStateChangeRecord}>
+      {login.auth_token ? (
+        <Drawer.Navigator
+          overlayColor="rgba(0,0,0,0.3)"
+          drawerContent={props => <DrawerContent {...props} />}>
+          <Drawer.Screen name="Recommend" component={MainStackScreen} />
+        </Drawer.Navigator>
+      ) : (
+        <AuthStackScreen />
+      )}
     </NavigationContainer>
   );
 };
