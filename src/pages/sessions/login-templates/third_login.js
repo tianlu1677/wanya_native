@@ -12,6 +12,7 @@ import ShareUtil from '@/utils/umeng_share_util';
 import {SignInWithAppleButton} from '@/components/AppleLogin';
 import {store} from '@/redux/stores/store';
 import {IsIos} from '@/utils/navbar';
+import Helper from "@/utils/helper"
 
 const ThirdLogin = ({}) => {
   //{"accessToken": "2D07206AFCBD395D8C6E13572734266E", "city": "海淀", "expiration": null, "gender": "男", "iconurl": "https://thirdqq.qlogo.cn/g?b=oidb&k=37YbkEGP192zF3YTbvzR4A&s=100&t=1556440734", "name": "狂奔的蜗牛", "openid": "2F942F4D00671AE32030DE17B870EBCA", "province": "北京", "uid": "2F942F4D00671AE32030DE17B870EBCA"}
@@ -29,12 +30,10 @@ const ThirdLogin = ({}) => {
             openid: result.openid,
             province: result.province,
             unionid: result.uid,
+            provider: 'qq',
           };
           const res = await appQqSignIn(signData);
-          JVerification.dismissLoginPage();
-          res.error
-            ? Toast.showError(res.error, {})
-            : store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+          afterLoginSuccess(res, signData);
         } else {
           Toast.showError('获取QQ信息失败，请稍后再试');
         }
@@ -59,13 +58,10 @@ const ThirdLogin = ({}) => {
             openid: result.unionid,
             province: result.province,
             unionid: result.uid,
+            provider: 'weibo',
           };
           const res = await appWeiboSignIn(signData);
-          console.log('weiboLogin res account', res);
-          JVerification.dismissLoginPage();
-          res.error
-            ? Toast.showError(res.error, {})
-            : store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+          afterLoginSuccess(res, signData);
         } else {
           Toast.showError('获取微博信息失败，请稍后再试');
         }
@@ -78,15 +74,18 @@ const ThirdLogin = ({}) => {
   const wechatLogin = async () => {
     try {
       const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
-      let signData = {
+      let data = {
         code: codeRes.code,
         app_id: codeRes.appid || 'wx17b69998e914b8f0',
       };
-      const res = await appWechatSignIn(signData);
-      JVerification.dismissLoginPage();
-      res.error
-        ? Toast.showError(res.error, {})
-        : store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+      console.log('codeRes', codeRes)
+      const res = await appWechatSignIn(data);
+      const signData = {
+        ...res.account,
+        provider: 'wechat',
+      }
+      console.log('res', res);
+      afterLoginSuccess(res, signData);
     } catch (e) {
       console.error(e);
     }
@@ -102,20 +101,23 @@ const ThirdLogin = ({}) => {
         user_id: user,
         identity_token: identityToken,
         nickname: fullName.nickname || fullName.failyName,
+        provider: 'apple',
+        unionid: user,
       };
       const res = await appAppleSignIn(data);
-      afterLoginSuccess(res);
+      afterLoginSuccess(res, data);
     } catch (e) {
       console.log('e', e);
       Toast.showError('苹果登录失败, 请稍后重试。');
     }
   };
 
-  const afterLoginSuccess = async res => {
+  const afterLoginSuccess = async (res, raw_data = {}) => {
     if (res.error) {
       Toast.showError(res.error, {});
     } else {
       store.dispatch(dispatchUpdateSocialAccount(res.account.token, ''));
+      Helper.setData('thirdLogin', JSON.stringify(raw_data));
       JVerification.dismissLoginPage();
     }
   };

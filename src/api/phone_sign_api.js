@@ -18,7 +18,7 @@ export async function sendPhoneCode(data = {phone: '', secret: '', timestamp: ''
   return res.data;
 }
 
-// 绑定手机号
+// 绑定手机号, 弃用
 export async function verifyPhoneCode(data = {phone: '', phone_code: ''}) {
   const res = await request({
     url: '/api/v1/phones/verify_phone_code',
@@ -27,6 +27,17 @@ export async function verifyPhoneCode(data = {phone: '', phone_code: ''}) {
   });
   return res.data;
 }
+
+// 新版本绑定手机号
+export async function bindingPhone(data = {phone: '', phone_code: ''}) {
+  const res = await request({
+    url: '/api/v1/phones/binding_phone',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
 // 手机注册用户
 export async function phoneRegisterAccount(data = {phone: '', phone_code: '', password: ''}) {
   const res = await request({

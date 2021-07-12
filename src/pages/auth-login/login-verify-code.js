@@ -5,7 +5,7 @@ import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
 import Toast from '@/components/Toast';
 import Helper from '@/utils/helper';
-import {sendPhoneCode, phoneCodeLogin, verifyPhoneCode} from '@/api/phone_sign_api';
+import {sendPhoneCode, phoneCodeLogin, verifyPhoneCode, bindingPhone} from '@/api/phone_sign_api';
 import CodeComponent from './code-component';
 import {SendCodeType} from './meta';
 import cStyles from './style';
@@ -60,9 +60,14 @@ const LoginVerifyCode = ({navigation, route}) => {
       res = await phoneCodeLogin(params);
     }
 
+    // 绑定手机号，将之前获取到的第三方登录的信息回传回来
     if (send_code_type === SendCodeType.Binding) {
-      const data = {phone, phone_code: code, password: password, token: socialToken};
-      res = await verifyPhoneCode(data);
+      let thirdData = await Helper.getData('thirdLogin');
+      if(thirdData) {
+        thirdData = JSON.parse(thirdData);
+      }
+      const data = { phone, phone_code: code, password: password, token: socialToken, third_data: thirdData };
+      res = await bindingPhone(data);
     }
 
     Toast.hide();
