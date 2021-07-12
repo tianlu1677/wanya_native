@@ -18,7 +18,7 @@ const JveryfyBottomView = ({}) => {
       >
         <Text style={styles.otherLogin}>其他号码登录</Text>
       </Pressable>
-      <View style={{height: 30}} />
+      {/*<View style={{height: 20}} />*/}
       <View style={styles.thirdLogin}>
         <ThirdLogin />
       </View>
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     fontSize: 12,
     // backgroundColor: 'red',
-    paddingTop: 5,
-    paddingBottom: 5,
+    // paddingTop: 5,
+    paddingBottom: 20,
     // marginBottom: 50,
   },
   thirdLogin: {

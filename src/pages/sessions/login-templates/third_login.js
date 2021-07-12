@@ -173,17 +173,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   thirdLogoWraper: {
-    width: 35,
-    height: 35,
-    borderRadius: 35,
+    width: 40,
+    height: 40,
+    borderRadius: 40,
     backgroundColor: 'black',
   },
   thirdLogo: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 40,
   },
 });
 

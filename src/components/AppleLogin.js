@@ -32,12 +32,12 @@ export const SignInWithAppleButton = ({buttonText = '', callBack}) => {
       <Pressable
         onPress={async () => {
           await appleAuth(callBack);
-        }} style={{width: 35, height: 35 }} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
+        }} style={{width: 40, height: 40 }} hitSlop={{top: 20, bottom: 20, left: 10, right: 10}}>
         <FastImg source={require('../assets/login/apple.png')} style={{flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          width: 35,
-          height: 35,}} />
+          width: 40,
+          height: 40,}} />
       </Pressable>
     );
   } else {
