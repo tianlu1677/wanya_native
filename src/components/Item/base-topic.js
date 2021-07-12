@@ -37,13 +37,10 @@ export const TopicImageContent = props => {
     };
     dispatch(dispatchPreviewImage(data));
   };
-  if (props.data.id === 890) {
-    console.log(props.data);
-  }
 
   return imgStyle === 'single' ? (
     <Pressable onPress={() => onPreview(0)} style={singleStyle}>
-      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
+      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} mode="cover" />
     </Pressable>
   ) : (
     <View style={styles.imageMultiWrapper}>

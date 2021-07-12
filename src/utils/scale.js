@@ -59,6 +59,7 @@ export const calculateImg = (width, height) => {
     scaleHeight = 240;
     scaleWidth = scaleHeight * 2.89;
   }
+
   return {width: Math.ceil(scaleWidth / 2), height: Math.ceil(scaleHeight / 2)};
 };
 

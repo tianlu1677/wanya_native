@@ -155,7 +155,7 @@ export const Header = props => {
     return (
       <>
         <Pressable onPress={goNodeDetail}>
-          <FastImg source={{uri: account.avatar_url}} style={styles.nodeImage} />
+          <FastImg source={{uri: props.data.nodeInfo.cover_url}} style={styles.nodeImage} />
         </Pressable>
         <Pressable style={styles.content}>
           <Text style={styles.nameText} onPress={goNodeDetail}>
