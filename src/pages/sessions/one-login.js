@@ -159,6 +159,8 @@ if (Platform.OS === 'android') {
   JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
 }
 
+let tgophonetimeout = ''
+
 const OneLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [currentState, setCurrentState] = useState('');
@@ -185,13 +187,15 @@ const OneLogin = ({navigation, route}) => {
     } else if (badCode.includes(code)) {
       goToPhone();
     } else if (code === 6004) {
-      setTimeout(() => {
+      tgophonetimeout = setTimeout(() => {
         goToPhone();
       }, 4000);
     } else if (code === 7) {
       Toast.showError("请勾选同意协议")
     } else if(code === 6) {
       Toast.hide()
+    } else if (code === 2) {
+      tgophonetimeout && clearTimeout(tgophonetimeout)
     }
   });
 
