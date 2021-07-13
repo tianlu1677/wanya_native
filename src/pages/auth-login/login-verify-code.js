@@ -63,10 +63,16 @@ const LoginVerifyCode = ({navigation, route}) => {
     // 绑定手机号，将之前获取到的第三方登录的信息回传回来
     if (send_code_type === SendCodeType.Binding) {
       let thirdData = await Helper.getData('thirdLogin');
-      if(thirdData) {
+      if (thirdData) {
         thirdData = JSON.parse(thirdData);
       }
-      const data = { phone, phone_code: code, password: password, token: socialToken, third_data: thirdData };
+      const data = {
+        phone,
+        phone_code: code,
+        password: password,
+        token: socialToken,
+        third_data: thirdData,
+      };
       res = await bindingPhone(data);
     }
 

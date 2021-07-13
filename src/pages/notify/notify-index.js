@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, StatusBar,  View, Text, Image, Pressable} from 'react-native';
+import React, {useCallback} from 'react';
+import {StyleSheet, StatusBar, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import {syncAccountInfo} from '@/api/mine_api';
-import {BadgeMessage, Avator, RecommendSearch} from '@/components/NodeComponents';
-import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
 import JPush from 'jpush-react-native';
-var BadgeAndroid = require('react-native-android-badge');
+import {syncAccountInfo} from '@/api/mine_api';
+import {BadgeMessage, Avator} from '@/components/NodeComponents';
+import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
+import {IsIos} from '@/utils/navbar';
 import {
   CommentNoticeImg,
   FollowNoticeImg,
@@ -14,7 +14,7 @@ import {
   SystemNoticeImg,
   MineMentionNoticeUserImg,
 } from '@/utils/default-image';
-import {IsIos} from "@/utils/navbar"
+var BadgeAndroid = require('react-native-android-badge');
 
 const NotifyIndex = ({navigation}) => {
   const dispatch = useDispatch();
@@ -77,9 +77,12 @@ const NotifyIndex = ({navigation}) => {
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
       dispatch(dispatchBaseCurrentAccount());
-      JPush.setBadge({badge: currentBaseInfo.total_unread_messages_count, appBadge: currentBaseInfo.total_unread_messages_count});
-      if(!IsIos) {
-        BadgeAndroid.setBadge(currentBaseInfo.total_unread_messages_count)
+      JPush.setBadge({
+        badge: currentBaseInfo.total_unread_messages_count,
+        appBadge: currentBaseInfo.total_unread_messages_count,
+      });
+      if (!IsIos) {
+        BadgeAndroid.setBadge(currentBaseInfo.total_unread_messages_count);
       }
     }, [])
   );
@@ -197,7 +200,7 @@ const NotifyIndex = ({navigation}) => {
       </View>
     </View>
   );
-};;
+};
 
 const styles = StyleSheet.create({
   badgeContainer: {

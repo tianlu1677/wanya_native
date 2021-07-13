@@ -27,6 +27,7 @@ const LoginPasswordCode = ({navigation, route}) => {
     Toast.showLoading('正在登录中...');
     const params = {phone: phone, password: password};
     const res = await passwordLogin(params);
+
     Toast.hide();
     if (res.account) {
       dispatch(dispatchUpdateSocialAccount(res.account.token));
