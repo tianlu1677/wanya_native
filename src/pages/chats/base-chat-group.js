@@ -98,13 +98,14 @@ const BaseChatGroup = ({navigation, chat_group, deleteChatgroup, currentOpenId, 
         {
           text: '删除',
           onPress: item => {
-            console.log(item);
+            console.log(item)
             deleteChatgroup({uuid: item.key});
           },
           key: chat_group.uuid,
           backgroundColor: '#FF2242',
           type: 'delete',
-          autoClose: true,
+
+          autoClose: false,
         },
       ]}
       close={true}
