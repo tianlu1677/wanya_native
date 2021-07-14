@@ -113,7 +113,7 @@ export const dispatchEmptyCurrentAccount = account_id => {
 
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
-  Helper.setData('auth_token', token);
+  await Helper.setData('auth_token', token);
   dispatchCurrentAccount();
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
   dispatch({type: ACCOUNT_SAVE_TOKEN, userToken: token});

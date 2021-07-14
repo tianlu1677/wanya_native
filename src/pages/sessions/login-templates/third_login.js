@@ -118,7 +118,7 @@ const ThirdLogin = ({}) => {
     } else {
       store.dispatch(dispatchUpdateSocialAccount(res.account.token));
       Helper.setData('thirdLogin', JSON.stringify(raw_data));
-      JVerification.dismissLoginPage();
+      // JVerification.dismissLoginPage();
     }
   };
 

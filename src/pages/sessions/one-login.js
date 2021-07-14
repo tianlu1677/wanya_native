@@ -9,8 +9,8 @@ import {SCREEN_WIDTH} from '@/utils/navbar';
 import Toast from '@/components/Toast';
 import JVerification from 'jverification-react-native';
 import Loading from '@/components/Loading';
+import {debounce, throttle} from 'lodash';
 //一键登录页面自定义配置，需要在调用login之前设置
-
 
 const customUIWithConfigiOS = {
   logoHidden: true,
@@ -38,8 +38,9 @@ const customUIWithConfigiOS = {
   loginBtnTextColor: 16777215, // 白色
   privacyConstraints: [0, 325, 300, 70],
   checkViewConstraints: [-157, 318, 50, 50],
-  unAgreePrivacyCallBack: false,
+  unAgreePrivacyCallBack: true,
   privacyCheckboxHidden: false,
+  UncheckBoxCallBack: true,
   privacyCheckEnable: true,
   privacyCheckboxSize: 20,
   privacyOne: ['用户协议', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
@@ -112,9 +113,9 @@ const customUIWithConfigAndroid = {
   //为保障显示效果，请同时设置x,y,w,h
   // 0, 80, 265, 45
   // loginBtnOffsetX: 0,                          //登录按钮相对于屏幕左边x轴偏移
-  loginBtnOffsetY: 110,                         //登录按钮相对于标题栏下边缘y偏移
-  loginBtnWidth: 60,                         //登录按钮宽度
-  loginBtnHeight: 10,//180/(1062/70),                          //登录按钮高度
+  loginBtnOffsetY: 110, //登录按钮相对于标题栏下边缘y偏移
+  loginBtnWidth: 60, //登录按钮宽度
+  loginBtnHeight: 10, //180/(1062/70),                          //登录按钮高度
 
   privacyOne: ['《用户协议》', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
   privacyTwo: ['《隐私政策》', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
@@ -125,9 +126,9 @@ const customUIWithConfigAndroid = {
   privacyBookSymbolEnable: true, //隐私条款是否显示书名号，默认不显示
   //为保障显示效果，请同时设置x,y,w,h
   // privacyX: 20,                                             //隐私条款相对于屏幕左边x轴偏移
-  privacyY: 30,                                             //隐私条款相对于授权页面底部下边缘y偏移
-  privacyW: 200,                                            //隐私条款宽度
-  privacyH: 100,                                            //隐私条款高度
+  privacyY: 30, //隐私条款相对于授权页面底部下边缘y偏移
+  privacyW: 200, //隐私条款宽度
+  privacyH: 100, //隐私条款高度
 
   privacyCheckboxHidden: true, //checkBox是否隐藏，默认不隐藏
   privacyCheckEnable: true, //checkBox默认状态 默认:NO
@@ -153,51 +154,55 @@ const customViewParamsAdnroid = [
 // JVerification.preLogin(3000);
 // console.log('init result', result)
 if (Platform.OS === 'android') {
-  console.log('android')
+  console.log('android');
   JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParamsAdnroid);
 } else {
   JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);
 }
 
-let tgophonetimeout = ''
+let tgophonetimeout = '';
 
 const OneLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const [currentState, setCurrentState] = useState('');
-  const initParams = {
-    time: 5000,
-    appKey: '7cd75000d5932000b3d4ca59', //仅iOS
-    channel: 'release', //仅iOS
-    // advertisingId: 'advertisingId', //仅iOS
-    isProduction: true, //仅iOS
-  };
 
-  JVerification.addLoginEventListener(async result => {
+  // const initParams = {
+  //   time: 5000,
+  //   appKey: '7cd75000d5932000b3d4ca59', //仅iOS
+  //   channel: 'release', //仅iOS
+  //   // advertisingId: 'advertisingId', //仅iOS
+  //   isProduction: true, //仅iOS
+  // };
+
+  this.listener = JVerification.addLoginEventListener(async result => {
     console.log('LoginListener:' + JSON.stringify(result));
-    const badCode = [6001, 6002, 6003, -994, -996, -997];
-    const code = result.code;
-    if (code === 6000) {
-      const res = await jverifyPhone({jverify_phone_token: result.content});
-      if (res.error) {
-        Toast.showError(res.error, {});
-      } else {
-        Toast.hide();
-        JVerification.dismissLoginPage();
-        dispatch(dispatchUpdateSocialAccount(res.account.token));
-      }
-    } else if (badCode.includes(code)) {
-      goToPhone();
-    } else if (code === 6004) {
-      tgophonetimeout = setTimeout(() => {
+    throttle(async () => {
+      const badCode = [6001, 6002, 6003, -994, -996, -997];
+      const code = result.code;
+      if (code === 6000) {
+        // Toast.showError('请勾选同意协议');
+        const res = await jverifyPhone({jverify_phone_token: result.content});
+        if (res.error) {
+          // Toast.showError(res.error, {});
+        } else {
+          Toast.hide();
+          JVerification.dismissLoginPage();
+          dispatch(dispatchUpdateSocialAccount(res.account.token));
+        }
+      } else if (badCode.includes(code)) {
         goToPhone();
-      }, 4000);
-    } else if (code === 7) {
-      Toast.showError("请勾选同意协议");
-    } else if(code === 6) {
-      Toast.hide()
-    } else if (code === 2) {
-      tgophonetimeout && clearTimeout(tgophonetimeout)
-    }
+      } else if (code === 6004) {
+        tgophonetimeout = setTimeout(() => {
+          goToPhone();
+        }, 4000);
+      } else if (code === 7) {
+        console.log('toast');
+        Toast.showError('请勾选同意协议');
+      } else if (code === 6) {
+        Toast.hide();
+      } else if (code === 2) {
+        tgophonetimeout && clearTimeout(tgophonetimeout);
+      }
+    }, 800);
   });
 
   const goToPhone = (type = 'nav') => {
@@ -226,12 +231,20 @@ const OneLogin = ({navigation, route}) => {
       console.log('ee', e);
       goToPhone();
     }
+
+    // if(Platform.OS === 'ios'){
+    //   JVerification.addUncheckBoxCallBackListener(() => {
+    //     console.log('UnCheckboxEvent:未选中隐私协议框', '');
+    //   });
+    // }
   };
 
   useFocusEffect(() => {
     checkJverify();
     // console.log('fouce');
     return () => {
+
+      this.listener && this.listener.remove();
       // setCurrentState('');
     };
   }, []);
@@ -284,8 +297,6 @@ const OneLogin = ({navigation, route}) => {
       {/*  }}*/}
       {/*/>*/}
 
-
-
       {/*<Button*/}
       {/*  title="addLoginCustomConfig"*/}
       {/*  style={{marginTop: 30}}*/}
@@ -311,8 +322,6 @@ const OneLogin = ({navigation, route}) => {
       {/*    }*/}
       {/*  }}*/}
       {/*/>*/}
-
-
 
       {/*<View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>*/}
       {/*  /!*<Pressable*!/*/}
