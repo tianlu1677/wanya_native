@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   tipsText: {
     color: '#BDBDBD',
     marginTop: RFValue(18),
+    fontSize: 12,
   },
 });
 
