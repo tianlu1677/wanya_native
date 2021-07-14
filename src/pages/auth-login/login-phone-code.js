@@ -61,7 +61,7 @@ const LoginPhoneCode = ({navigation}) => {
     }
 
     onSendPhoneCode();
-    // navigation.navigate('RegisterInfo', {phone, send_code_type: SendCodeType.Login});
+    // navigation.navigate('RegisterInfoInvite', {phone, send_code_type: SendCodeType.Login});
   };
 
   const loadData = async () => {

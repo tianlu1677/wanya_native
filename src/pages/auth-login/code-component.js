@@ -5,13 +5,18 @@ import {VWValue} from '@/utils/response-fontsize';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 
 const CodeComponent = props => {
-  const {style, getCode, keyboardType, textContentType} = props;
+  const {style, getCode, keyboardType, autoCapitalize, textContentType} = props;
   const defaultSize = Array(6).fill(null);
   const [codeValue, setCodeValue] = useState('');
 
   const onChangeText = text => {
     const value = text.replace(/\s/g, '');
-    setCodeValue(value);
+
+    if (autoCapitalize === 'characters') {
+      setCodeValue(value.toUpperCase());
+    } else {
+      setCodeValue(value);
+    }
   };
 
   useEffect(() => {
@@ -36,6 +41,7 @@ const CodeComponent = props => {
         maxLength={6}
         value={codeValue}
         keyboardType={keyboardType}
+        autoCapitalize={autoCapitalize}
         textContentType={textContentType}
         selectionColor="transparent"
         style={styles.inputItem}
@@ -64,7 +70,6 @@ const styles = StyleSheet.create({
   codeTextNormal: {
     borderColor: '#353535',
   },
-
   inputContent: {
     height: VWValue(45),
     flexDirection: 'row',
@@ -85,6 +90,7 @@ const styles = StyleSheet.create({
 
 CodeComponent.propTypes = {
   keyboardType: PropTypes.string.isRequired,
+  autoCapitalize: PropTypes.string.isRequired,
   getCode: PropTypes.func.isRequired,
   style: PropTypes.object,
 };
