@@ -157,17 +157,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avator: {
-    width: VWValue(75),
-    height: VWValue(75),
+    width: VWValue(76),
+    height: VWValue(76),
     marginTop: RFValue(40),
     borderColor: 'transparent',
-    borderWidth: 1,
-    borderRadius: VWValue(40),
+    borderRadius: VWValue(38),
   },
   avatorWrap: {
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#fff',
+    borderWidth: 1,
   },
   avatorText: {
     fontSize: 12,

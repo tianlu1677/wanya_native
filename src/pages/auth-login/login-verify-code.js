@@ -101,6 +101,7 @@ const LoginVerifyCode = ({navigation, route}) => {
       <CodeComponent
         style={styles.codeWrapper}
         keyboardType="numeric"
+        autoCapitalize="none"
         getCode={value => setCode(value)}
       />
 
@@ -111,7 +112,7 @@ const LoginVerifyCode = ({navigation, route}) => {
           styles.nextBtn,
           isCanClick ? cStyles.nextStepActive : cStyles.nextStepNormal,
         ]}>
-        下一步
+        确定
       </Text>
       <Text style={styles.tipsText} onPress={isCanSend ? onSendPhoneCode : null}>
         {downTime === 0 ? '重新获取' : `重新获取（${downTime}s）`}

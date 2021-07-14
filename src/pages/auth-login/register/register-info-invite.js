@@ -40,6 +40,7 @@ const AccountInfoInvite = ({navigation}) => {
       <CodeComponent
         style={styles.inputContent}
         keyboardType="default"
+        autoCapitalize="characters"
         getCode={value => setCode(value)}
       />
       <Text
