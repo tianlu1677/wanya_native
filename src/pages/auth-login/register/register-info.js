@@ -118,7 +118,7 @@ const RegisterInfo = props => {
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
       {imageSource ? (
         <Pressable onPress={onImagePicker}>
-          <FastImg source={{uri: imageSource.uri}} style={styles.avator} />
+          <FastImg source={{uri: imageSource.uri}} style={styles.avator} mode="cover" />
         </Pressable>
       ) : (
         <Pressable style={[styles.avator, styles.avatorWrap]} onPress={onImagePicker}>

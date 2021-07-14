@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     zIndex: 1,
+    backgroundColor: 'transparent',
+    color: 'transparent',
   },
 });
 

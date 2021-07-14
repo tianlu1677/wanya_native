@@ -12,13 +12,16 @@ const AuthStack = createStackNavigator();
 
 const HeaderLeft = props => {
   const {image, navigation} = props;
-  return navigation.canGoBack() ? (
-    <Pressable
-      hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
-      onPress={() => navigation.goBack()}>
+
+  const onPress = () => {
+    navigation.goBack();
+  };
+
+  return (
+    <Pressable hitSlop={{left: 10, right: 10, top: 10, bottom: 10}} onPress={onPress}>
       <FastImg source={image} style={{width: 9, height: 15}} />
     </Pressable>
-  ) : null;
+  );
 };
 
 // MainStackScreen
@@ -33,7 +36,7 @@ export const MainStackScreen = props => {
         headerLeftContainerStyle: {paddingLeft: 14},
         headerRightContainerStyle: {paddingRight: 14},
         headerTitleStyle: {fontWeight: '500', fontSize: 16},
-        headerLeft: () => HeaderLeft({...props, image: BackBlack}),
+        headerLeft: () => <HeaderLeft {...props} image={BackBlack} />,
       })}>
       <MainStack.Screen name="Recommend" component={MainTabScreen} options={{headerShown: false}} />
       {MainRouters.map(route => {
@@ -60,7 +63,7 @@ export const AuthStackScreen = () => {
           },
           headerLeftContainerStyle: {paddingLeft: 14},
           headerRightContainerStyle: {paddingRight: 14},
-          headerLeft: () => HeaderLeft({...props, image: BackWhite}),
+          headerLeft: () => <HeaderLeft {...props} image={BackWhite} />,
         };
       }}>
       {AuthRouters.map(route => {
