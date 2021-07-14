@@ -38,7 +38,7 @@ const customUIWithConfigiOS = {
   loginBtnTextColor: 16777215, // 白色
   privacyConstraints: [0, 325, 300, 70],
   checkViewConstraints: [-157, 318, 50, 50],
-  unAgreePrivacyCallBack: true,
+  unAgreePrivacyCallBack: false,
   privacyCheckboxHidden: false,
   UncheckBoxCallBack: true,
   privacyCheckEnable: true,
@@ -175,34 +175,37 @@ const OneLogin = ({navigation, route}) => {
 
   this.listener = JVerification.addLoginEventListener(async result => {
     console.log('LoginListener:' + JSON.stringify(result));
-    throttle(async () => {
-      const badCode = [6001, 6002, 6003, -994, -996, -997];
-      const code = result.code;
-      if (code === 6000) {
-        // Toast.showError('请勾选同意协议');
-        const res = await jverifyPhone({jverify_phone_token: result.content});
-        if (res.error) {
-          // Toast.showError(res.error, {});
-        } else {
-          Toast.hide();
-          JVerification.dismissLoginPage();
-          dispatch(dispatchUpdateSocialAccount(res.account.token));
-        }
-      } else if (badCode.includes(code)) {
-        goToPhone();
-      } else if (code === 6004) {
-        tgophonetimeout = setTimeout(() => {
-          goToPhone();
-        }, 4000);
-      } else if (code === 7) {
-        console.log('toast');
-        Toast.showError('请勾选同意协议');
-      } else if (code === 6) {
+    // debounce(async () => {
+    console.log('gggggg');
+    const badCode = [2005, 6001, 6002, 6003, -994, -996, -997];
+    const code = result.code;
+    if (code === 6000) {
+      // Toast.showError('请勾选同意协议');
+      const res = await jverifyPhone({jverify_phone_token: result.content});
+      if (res.error) {
+        // Toast.showError(res.error, {});
+      } else {
         Toast.hide();
-      } else if (code === 2) {
-        tgophonetimeout && clearTimeout(tgophonetimeout);
+        JVerification.dismissLoginPage();
+        dispatch(dispatchUpdateSocialAccount(res.account.token));
       }
-    }, 800);
+    } else if (badCode.includes(code)) {
+      goToPhone();
+    } else if (code === 6004) {
+      tgophonetimeout = setTimeout(() => {
+        goToPhone();
+      }, 4000);
+    } else if (code === 7) {
+      console.log('toast');
+      Toast.showError('请勾选同意协议');
+    } else if (code === 6) {
+      Toast.hide();
+    } else if (code === 2) {
+      tgophonetimeout && clearTimeout(tgophonetimeout);
+    } else if (code >= 2000 && code <= 2016) {
+      goToPhone();
+    }
+    // }, 800);
   });
 
   const goToPhone = (type = 'nav') => {
@@ -243,7 +246,6 @@ const OneLogin = ({navigation, route}) => {
     checkJverify();
     // console.log('fouce');
     return () => {
-
       this.listener && this.listener.remove();
       // setCurrentState('');
     };
