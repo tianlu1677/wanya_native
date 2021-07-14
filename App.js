@@ -30,6 +30,7 @@ import {getChannels, getChannelPosts} from '@/api/home_api';
 import JPush from 'jpush-react-native';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 import JVerification from 'jverification-react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 const queryString = require('query-string');
 const codePushOptions = {
@@ -240,20 +241,22 @@ class App extends Component {
   render() {
     return (
       <>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <Navigation />
-            <NetworkErrorModal
-              visible={this.state.netInfoErr}
-              handleCancel={() => {
-                this.setState({netInfoErr: false});
-              }}
-            />
-            <ImagePreview />
-            <ShareMultiModal />
-            <ModalPortal />
-          </PersistGate>
-        </Provider>
+        <RootSiblingParent>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <Navigation />
+              <NetworkErrorModal
+                visible={this.state.netInfoErr}
+                handleCancel={() => {
+                  this.setState({netInfoErr: false});
+                }}
+              />
+              <ImagePreview />
+              <ShareMultiModal />
+              <ModalPortal />
+            </PersistGate>
+          </Provider>
+        </RootSiblingParent>
       </>
     );
   }
