@@ -60,8 +60,8 @@ const LoginPhoneCode = ({navigation}) => {
       return false;
     }
 
-    // onSendPhoneCode();
-    navigation.navigate('RegisterInfoInvite', {phone, send_code_type: SendCodeType.Login});
+    onSendPhoneCode();
+    // navigation.navigate('RegisterInfoInvite', {phone, send_code_type: SendCodeType.Login});
   };
 
   const loadData = async () => {

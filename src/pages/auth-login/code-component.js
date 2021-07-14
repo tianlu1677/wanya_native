@@ -11,7 +11,12 @@ const CodeComponent = props => {
 
   const onChangeText = text => {
     const value = text.replace(/\s/g, '');
-    setCodeValue(value);
+
+    if (autoCapitalize === 'characters') {
+      setCodeValue(value.toUpperCase());
+    } else {
+      setCodeValue(value);
+    }
   };
 
   useEffect(() => {
