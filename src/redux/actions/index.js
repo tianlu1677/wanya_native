@@ -23,7 +23,7 @@ import {
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
 import {getLabelList} from '@/api/settings_api';
-import {getLoginBaseInfo, getCurrentAccountBaseInfo} from '@/api/mine_api';
+import {getLoginBaseInfo, getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {createTopic} from '@/api/topic_api';
 import {getCities} from '@/api/space_api';
 import Helper from '@/utils/helper';
