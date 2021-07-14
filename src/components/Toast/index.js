@@ -8,7 +8,7 @@ class Toast extends Component {
   static duration = duration;
 
   static showSuccess(message, options = {}) {
-    this.show(message, {
+    this.show(String(message), {
       containerStyle: {
         minWidth: 105,
         minHeight: 105,
@@ -30,7 +30,7 @@ class Toast extends Component {
   }
 
   static showLoading(message, options = {}) {
-    this.show(message, {
+    this.show(String(message), {
       containerStyle: {
         minWidth: '30%',
         minHeight: 100,
@@ -50,7 +50,7 @@ class Toast extends Component {
   }
 
   static showError(message, options = {}) {
-    this.show(message, {
+    this.show(String(message), {
       containerStyle: {
         minHeight: 43,
         backgroundColor: '#222222',
@@ -74,7 +74,7 @@ class Toast extends Component {
   static show(message, options = {}) {
     let onHidden = options.onHidden;
     let toast;
-    options.onHidden = function() {
+    options.onHidden = function () {
       toast && toast.destroy();
       onHidden && onHidden();
     };
