@@ -181,6 +181,7 @@ const OneLogin = ({navigation, route}) => {
       if (res.error) {
         Toast.showError(res.error, {});
       } else {
+        Toast.hide();
         JVerification.dismissLoginPage();
         dispatch(dispatchUpdateSocialAccount(res.account.token));
       }
@@ -191,7 +192,7 @@ const OneLogin = ({navigation, route}) => {
         goToPhone();
       }, 4000);
     } else if (code === 7) {
-      Toast.showError("请勾选同意协议")
+      Toast.showError("请勾选同意协议");
     } else if(code === 6) {
       Toast.hide()
     } else if (code === 2) {
