@@ -60,10 +60,10 @@ const Settings = ({navigation, route}) => {
       case 'logout':
         await Helper.clearAllData();
         await dispatch(logoutCurrentAccount());
-        // navigation.reset({
-        //   index: 0,
-        //   routes: [{name: 'SocialLogin'}],
-        // });
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'SocialLogin'}],
+        });
         break;
       default:
         break;

@@ -116,9 +116,12 @@ const ThirdLogin = ({}) => {
     if (res.error) {
       Toast.showError(res.error, {});
     } else {
+      // Toast.showError('跳转中...',{ duration: 1000});
+      await Helper.setData('thirdLogin', JSON.stringify(raw_data));
       store.dispatch(dispatchUpdateSocialAccount(res.account.token));
-      Helper.setData('thirdLogin', JSON.stringify(raw_data));
-      // JVerification.dismissLoginPage();
+      setTimeout(() => {
+        JVerification.dismissLoginPage();
+      }, 900);
     }
   };
 
