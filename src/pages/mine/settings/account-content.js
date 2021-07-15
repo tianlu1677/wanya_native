@@ -14,6 +14,7 @@ import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
 import {syncAccountInfo} from '@/api/mine_api';
 import {AccountDetailBgImg} from '@/utils/default-image';
+import data from './pc-code.json';
 
 const {width: screenW} = Dimensions.get('window');
 const TOP_HEADER = RFValue(110) + BarHeight;
@@ -24,7 +25,6 @@ const AccountContent = props => {
   const {navigation, uploadAvatar} = props;
   const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [cityVisible, setCityVisible] = useState(false);
-
   const defaultCity = (currentAccount.city && currentAccount.city.split(',')) || [];
   const defaultBirthday = currentAccount.birthday ? new Date(currentAccount.birthday) : new Date();
 
@@ -199,7 +199,7 @@ const AccountContent = props => {
 
       <Pressable style={styles.itemWrap} onPress={() => goPages('city')}>
         <Text style={styles.itemTitle}>所在地</Text>
-        <Text style={styles.itemContent}>{currentAccount.city.replace(',', '')}</Text>
+        <Text style={styles.itemContent}>{currentAccount.city.replace(',', ' ')}</Text>
         <ForwardRight />
       </Pressable>
 
@@ -218,6 +218,7 @@ const AccountContent = props => {
 
       <RegionPicker
         mode="pc"
+        data={data}
         isModal={true}
         modalVisible={cityVisible}
         selectedValue={defaultCity}
