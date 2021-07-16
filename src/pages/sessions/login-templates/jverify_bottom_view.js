@@ -4,6 +4,7 @@ import FastImg from '@/components/FastImg';
 import JVerification from 'jverification-react-native';
 import * as RootNavigation from '@/navigator/root-navigation';
 import ThirdLogin from '@/pages/sessions/login-templates/third_login';
+import Toast from '@/components/Toast';
 
 const JveryfyBottomView = ({}) => {
   return (
