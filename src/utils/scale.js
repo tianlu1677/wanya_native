@@ -1,4 +1,6 @@
+import {Dimensions} from 'react-native';
 import {VWValue} from '@/utils/response-fontsize';
+const {width: screenWidth} = Dimensions.get('window');
 
 // 顽法图片视频显示宽高比
 export const scaleSize = (media, innerWidth) => {
@@ -94,4 +96,24 @@ export const scaleChatSize = media => {
   }
 
   return {width: Math.ceil(width), height: Math.ceil(height)};
+};
+
+//帖子详情图片显示
+export const scaleDetailImage = images => {
+  const scale = 3 / 4;
+  images = images.map((image, index) => {
+    const scaleImages = images.map(item => item.width / item.height);
+    const minScale = Math.min.apply(null, scaleImages);
+    const minIndex = scaleImages.findIndex(item => item === minScale);
+
+    if (minScale < scale) {
+      const height = Math.ceil((screenWidth * 4) / 3);
+      return {...image, width: screenWidth, height, mode: index === minIndex ? 'cover' : 'center'};
+    } else {
+      const height = Math.ceil((screenWidth * image.height) / image.width);
+      return {...image, width: screenWidth, height, mode: 'center'};
+    }
+  });
+
+  return images;
 };

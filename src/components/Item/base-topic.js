@@ -26,15 +26,16 @@ export const TopicImageContent = props => {
   }
 
   const singleStyle = {width: VWValue(imgAttr.width), height: VWValue(imgAttr.height)};
+  const multiStyle = {
+    width: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
+    height: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
+  };
 
   const onPreview = index => {
-    const data = {
-      index,
-      visible: true,
-      images: medias.map(v => {
-        return {url: v.split('?')[0]};
-      }),
-    };
+    const images = medias.map(v => {
+      return {url: v.split('?')[0]};
+    });
+    const data = {index, visible: true, images};
     dispatch(dispatchPreviewImage(data));
   };
 
@@ -49,7 +50,7 @@ export const TopicImageContent = props => {
           <FastImg
             key={media}
             source={{uri: media}}
-            style={{...styles.imageMulti, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
+            style={{...multiStyle, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
           />
         </Pressable>
       ))}
@@ -154,7 +155,7 @@ const BaseTopic = props => {
         <View />
       )}
 
-      {type === 'recommend-node' && (
+      {type === 'recommend-node' && (data.space || data.location) && (
         <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
           <LocationBar space={data.space} location={data.location} style={styles.infoView} />
         </View>
@@ -174,7 +175,6 @@ const BaseTopic = props => {
   );
 };
 
-const imageMultiWidth = Math.floor((SCREEN_WIDTH - 28 - 6) / 3);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
@@ -184,12 +184,6 @@ const styles = StyleSheet.create({
   imageMultiWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-  },
-  imageMulti: {
-    width: imageMultiWidth,
-    height: imageMultiWidth,
-    marginBottom: 3,
-    borderRadius: 2,
   },
   imageCover: {
     borderRadius: 2,

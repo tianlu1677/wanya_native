@@ -33,8 +33,8 @@ const PublishModal = props => {
   };
 
   const onTopic = () => {
-    onCancel();
     navigation.navigate('NewTopic');
+    onCancel();
   };
 
   return (

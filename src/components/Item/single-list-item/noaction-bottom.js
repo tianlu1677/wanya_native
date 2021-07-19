@@ -25,6 +25,7 @@ const nbstyles = StyleSheet.create({
   infotext: {
     color: '#BDBDBD',
     fontSize: 11,
+    backgroundColor: '#fff',
   },
 });
 

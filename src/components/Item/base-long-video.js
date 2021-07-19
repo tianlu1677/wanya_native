@@ -28,9 +28,11 @@ const BaseLongVideo = props => {
           mode={'cover'}
         />
         <FastImg style={styles.playImage} source={VideoPlayImg} />
-        <View style={styles.bottom}>
-          <NoActionBottom data={data} />
-        </View>
+        {data.node_name || data.praises_count || data.comments_count ? (
+          <View style={styles.bottom}>
+            <NoActionBottom data={data} />
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
     paddingBottom: 0,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
   content: {
     marginTop: RFValue(13),

@@ -262,7 +262,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 24,
     lineHeight: 40,
     minHeight: 40,
-    backgroundColor: 'pink',
   },
   voiceAreaRight: {
     borderTopRightRadius: 4,

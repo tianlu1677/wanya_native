@@ -62,7 +62,6 @@ const RecommendListPost = () => {
   };
 
   const onRefresh = (page = 1) => {
-    console.log('page', page);
     if (page === 1 || !page) {
       indexLoadData(pagination(headers).nextPage);
     } else {

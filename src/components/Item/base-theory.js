@@ -27,9 +27,11 @@ const BaseTheory = props => {
         <Text style={styles.titleText}>{data.title}</Text>
         <FastImg source={{uri: cover_url}} style={styles.imageCover} mode={'cover'} />
         {category === 'video' && <FastImg style={styles.playImage} source={VideoPlayImg} />}
-        <View style={styles.bottom}>
-          <NoActionBottom data={data} />
-        </View>
+        {data.node_name || data.praises_count || data.comments_count ? (
+          <View style={styles.bottom}>
+            <NoActionBottom data={data} />
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );

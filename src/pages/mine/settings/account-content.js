@@ -161,7 +161,7 @@ const AccountContent = props => {
 
       <Pressable style={styles.itemWrap} onPress={() => goPages('intro')}>
         <Text style={styles.itemTitle}>个性签名</Text>
-        <Text style={[styles.itemContent, styles.introText]} numberOfLines={2}>
+        <Text style={styles.itemContent} numberOfLines={1}>
           {currentAccount.intro}
         </Text>
         <ForwardRight />
@@ -280,10 +280,6 @@ const styles = StyleSheet.create({
   bgCover: {
     width: 85,
     height: 30,
-  },
-  introText: {
-    lineHeight: 20,
-    paddingVertical: 4,
   },
   labelWrapper: {
     height: 'auto',
