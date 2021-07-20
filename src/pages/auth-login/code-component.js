@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   inputItem: {
+    width: 0,
     position: 'absolute',
     height: VWValue(45),
     left: 0,
