@@ -29,6 +29,7 @@ export const TopicImageContent = props => {
   const multiStyle = {
     width: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
     height: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
+    marginBottom: 3,
   };
 
   const onPreview = index => {
@@ -78,6 +79,7 @@ export const TopicVideoContent = props => {
         gif_url={single_cover.link_url}
         source={{uri: `${single_cover.link_url}?imageView2/2/w/720/interlace/1/format/jpg/q/80`}}
         style={{...styles.imageCover, ...videoAttrStyle}}
+        mode="cover"
       />
       <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
     </Pressable>

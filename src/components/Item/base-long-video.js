@@ -42,7 +42,7 @@ const ImageHeight = Math.ceil((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
-    paddingBottom: 0,
+    paddingBottom: 18,
     backgroundColor: '#fff',
   },
   content: {

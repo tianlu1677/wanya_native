@@ -42,7 +42,7 @@ export const calculateImg = (width, height) => {
     scaleHeight = 560;
   }
 
-  if (scale > 0.66 && scale <= 1) {
+  if (scale >= 0.66 && scale <= 1) {
     scaleWidth = 420;
     scaleHeight = scaleWidth / scale;
   }
@@ -63,6 +63,26 @@ export const calculateImg = (width, height) => {
   }
 
   return {width: Math.ceil(scaleWidth / 2), height: Math.ceil(scaleHeight / 2)};
+};
+
+//帖子详情图片显示
+export const scaleDetailImage = images => {
+  const scale = 3 / 4;
+  images = images.map((image, index) => {
+    const scaleImages = images.map(item => item.width / item.height);
+    const minScale = Math.min.apply(null, scaleImages);
+    const minIndex = scaleImages.findIndex(item => item === minScale);
+
+    if (minScale < scale) {
+      const height = Math.ceil((screenWidth * 4) / 3);
+      return {...image, width: screenWidth, height, mode: index === minIndex ? 'cover' : 'center'};
+    } else {
+      const height = Math.ceil((screenWidth * image.height) / image.width);
+      return {...image, width: screenWidth, height, mode: 'center'};
+    }
+  });
+
+  return images;
 };
 
 // 聊天列表图片视频显示宽高比   0.33 1/3
@@ -96,24 +116,4 @@ export const scaleChatSize = media => {
   }
 
   return {width: Math.ceil(width), height: Math.ceil(height)};
-};
-
-//帖子详情图片显示
-export const scaleDetailImage = images => {
-  const scale = 3 / 4;
-  images = images.map((image, index) => {
-    const scaleImages = images.map(item => item.width / item.height);
-    const minScale = Math.min.apply(null, scaleImages);
-    const minIndex = scaleImages.findIndex(item => item === minScale);
-
-    if (minScale < scale) {
-      const height = Math.ceil((screenWidth * 4) / 3);
-      return {...image, width: screenWidth, height, mode: index === minIndex ? 'cover' : 'center'};
-    } else {
-      const height = Math.ceil((screenWidth * image.height) / image.width);
-      return {...image, width: screenWidth, height, mode: 'center'};
-    }
-  });
-
-  return images;
 };
