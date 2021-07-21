@@ -1,8 +1,8 @@
 import React, {useRef, useCallback} from 'react';
-import {View, Text, StatusBar, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, StatusBar, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {SAFE_TOP, SCREEN_HEIGHT} from '@/utils/navbar';
+import {SAFE_TOP} from '@/utils/navbar';
 import VideoPlayerContent from '@/components/react-native-video-player';
 import {PlainContent} from '@/components/Item/single-list-item';
 import {
@@ -10,18 +10,13 @@ import {
   PublishRelated,
   RelatedComponent,
 } from '@/components/Item/single-detail-item';
-
-const {width: screenWidth} = Dimensions.get('window');
+import {scaleDetailVideo} from '@/utils/scale';
 
 const RenderVideo = props => {
   const videoRef = useRef(null);
   const currentAccount = useSelector(state => state.account.currentAccount);
   const {detail} = props;
-  const {width, height} = detail.media_video;
-  let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-  if (videoHeight > SCREEN_HEIGHT) {
-    videoHeight = SCREEN_HEIGHT - 50;
-  }
+  const {width, height} = scaleDetailVideo(detail.media_video.width, detail.media_video.height);
 
   useFocusEffect(
     useCallback(() => {
@@ -40,21 +35,20 @@ const RenderVideo = props => {
   return (
     <>
       <StatusBar barStyle={'light-content'} backgroundColor={'black'} translucent={false} />
+      <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
       <View style={{position: 'relative'}}>
-        <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         <VideoPlayerContent
           ref={videoRef}
-          customStyles={{position: 'absolute', zIndex: 1, bottom: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
-          videoWidth={screenWidth}
-          videoHeight={videoHeight}
+          videoWidth={width}
+          videoHeight={height}
           poster={`${detail.video_content_m3u8}?vframe/jpg/offset/0/rotate/auto`}
-          posterResizeMode={'contain'}
+          posterResizeMode="cover"
           hideControlsOnStart
           pauseOnPress
           muted={false}
-          resizeMode={'cover'}
+          resizeMode="cover"
           autoplay={true}
           loop
         />
@@ -94,7 +88,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
     left: 40,
-    top: SAFE_TOP,
+    top: 0,
     zIndex: 1,
     marginTop: 9,
   },

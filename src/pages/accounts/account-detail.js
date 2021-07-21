@@ -385,6 +385,7 @@ const styles = StyleSheet.create({
     color: '#3d3d3d',
     marginRight: 5,
     marginTop: 8,
+    fontWeight: '300',
   },
   labelLine: {
     height: 12,

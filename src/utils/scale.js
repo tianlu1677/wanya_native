@@ -85,6 +85,20 @@ export const scaleDetailImage = images => {
   return images;
 };
 
+//帖子详情视频显示
+export const scaleDetailVideo = (width = screenWidth, height = screenWidth) => {
+  const scale = 3 / 4;
+  const videoScale = width / height;
+
+  if (videoScale < scale) {
+    const scaleHeight = Math.ceil((screenWidth * 4) / 3);
+    return {width: screenWidth, height: scaleHeight};
+  } else {
+    const scaleHeight = Math.ceil((screenWidth * height) / width);
+    return {width: screenWidth, height: scaleHeight};
+  }
+};
+
 // 聊天列表图片视频显示宽高比   0.33 1/3
 export const scaleChatSize = media => {
   const defaultSize = VWValue(140);
