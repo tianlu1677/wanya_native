@@ -18,7 +18,7 @@ import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import TabView from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
-import {SAFE_TOP, BarHeight} from '@/utils/navbar';
+import {SAFE_TOP, BarHeight, IsIos} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 
 const SearchIndex = ({navigation, route}) => {
@@ -134,7 +134,7 @@ const SearchIndex = ({navigation, route}) => {
   return (
     <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
-      <View style={{height: BarHeight, backgroundColor: '#fff'}} />
+      <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
       <Search
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#F2F3F5'}}
         height={RFValue(36)}

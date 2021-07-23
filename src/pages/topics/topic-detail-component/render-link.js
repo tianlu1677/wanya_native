@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, StatusBar, Pressable, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {dispatchTopicDetail} from '@/redux/actions';
@@ -25,6 +25,7 @@ const RenderLink = props => {
 
   return (
     <>
+      <StatusBar barStyle={'light-content'} translucent={false} backgroundColor={'black'} />
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
       <RelatedComponent data={detail} />
       <Pressable onPress={onGoDetail}>

@@ -19,7 +19,8 @@ const HeaderLeft = props => {
 
   return (
     <Pressable hitSlop={{left: 10, right: 10, top: 10, bottom: 10}} onPress={onPress}>
-      <FastImg source={image} style={{width: 9, height: 15}} />
+      { navigation.canGoBack() ? <FastImg source={image} style={{width: 9, height: 15}} />  : null}
+      {/*<FastImg source={image} style={{width: 9, height: 15}} />*/}
     </Pressable>
   );
 };

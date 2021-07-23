@@ -177,13 +177,17 @@ const AccountContent = props => {
             placeholder={{}}
             value={currentAccount.gender}
             doneText="完成"
+            Icon={{position: 'absolute', right: 0}}
+            style={{width: 100}}
             textInputProps={{style: {height: 50, textAlign: 'right'}}}
             items={[
               {label: '男', value: 'man'},
               {label: '女', value: 'woman'},
               {label: '保密', value: 'other'},
             ]}
-          />
+          >
+            <Text style={{width: 300, textAlign: 'right'}}>{currentAccount.gender_text}</Text>
+          </RNPickerSelect>
         </View>
 
         <ForwardRight />
