@@ -72,13 +72,22 @@ export const scaleDetailImage = images => {
     const scaleImages = images.map(item => item.width / item.height);
     const minScale = Math.min.apply(null, scaleImages);
     const minIndex = scaleImages.findIndex(item => item === minScale);
-
-    if (minScale < scale) {
+    if (minScale <= scale) {
       const height = Math.ceil((screenWidth * 4) / 3);
-      return {...image, width: screenWidth, height, mode: index === minIndex ? 'cover' : 'center'};
+      return {
+        ...image,
+        width: screenWidth,
+        height,
+        mode: index === minIndex ? 'cover' : 'contain',
+      };
     } else {
       const height = Math.ceil((screenWidth * image.height) / image.width);
-      return {...image, width: screenWidth, height, mode: 'center'};
+      return {
+        ...image,
+        width: screenWidth,
+        height,
+        mode: index === minIndex ? 'cover' : 'contain',
+      };
     }
   });
 
@@ -90,7 +99,7 @@ export const scaleDetailVideo = (width = screenWidth, height = screenWidth) => {
   const scale = 3 / 4;
   const videoScale = width / height;
 
-  if (videoScale < scale) {
+  if (videoScale <= scale) {
     const scaleHeight = Math.ceil((screenWidth * 4) / 3);
     return {width: screenWidth, height: scaleHeight};
   } else {
