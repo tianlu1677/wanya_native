@@ -32,7 +32,12 @@ const RenderImage = props => {
     dispatch(dispatchPreviewImage(data));
   };
 
-  const viewStyle = {width: mediaImages[0].width, height: mediaImages[0].height};
+  const heightImages = mediaImages.map(item => item.height);
+  const maxIndex = heightImages.findIndex(item => item === Math.max.apply(null, heightImages));
+  const maxHeight = heightImages[maxIndex];
+
+  const viewStyle = {width: mediaImages[0].width, height: maxHeight};
+
   return (
     <>
       <StatusBar barStyle={'light-content'} backgroundColor={'black'} translucent={false} />
@@ -46,12 +51,13 @@ const RenderImage = props => {
           dotColor="white"
           removeClippedSubviews={false}
           loadMinimal
-          style={{backgroundColor: 'black'}}
+          style={{backgroundColor: '#000'}}
           showsPagination={mediaImages.length > 0}>
           {mediaImages.map((media, index) => {
             const {width, height, image_url, mode} = media;
+            const paddingTop = (maxHeight - height) / 2;
             return (
-              <Pressable key={image_url} onPress={() => onPreview(index)}>
+              <Pressable key={image_url} onPress={() => onPreview(index)} style={{paddingTop}}>
                 <FastImg source={{uri: image_url}} style={{width, height}} mode={mode} />
               </Pressable>
             );

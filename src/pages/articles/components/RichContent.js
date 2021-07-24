@@ -58,7 +58,7 @@ const RichContent = props => {
       const findImg = images_info.find(x => x.url === htmlAttribs.src);
       const imageHeight = (imageWidth * findImg.height) / findImg.width;
       return (
-        <View style={{flex: 1, backgroundColor: '#F2F3F5', marginBottom: 12}} key={htmlAttribs.src}>
+        <View style={{flex: 1, marginBottom: 12}} key={htmlAttribs.src}>
           <FastImg
             source={{uri: htmlAttribs.src}}
             style={{width: imageWidth, height: imageHeight}}
