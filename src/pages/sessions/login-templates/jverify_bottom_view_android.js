@@ -43,16 +43,17 @@ const styles = StyleSheet.create({
   otherLogin: {
     color: '#bdbdbd',
     fontSize: 12,
+
     // backgroundColor: 'red',
-    paddingTop: 5,
-    paddingBottom: 5,
+    // paddingTop: 5,
+    // paddingBottom: 5,
     // marginBottom: 50,
   },
   thirdLogin: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    // width: '100%',
     // paddingTop: 60,
     paddingLeft: 80,
     paddingRight: 80,
