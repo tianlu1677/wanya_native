@@ -156,7 +156,7 @@ const OneLogin = ({navigation, route}) => {
     {customViewName: 'jverify_bottom_view', customViewPoint: [0, 500, SCREEN_WIDTH, 150]},
   ];
   const customViewParamsAdnroid = [
-    {customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 440, SCREEN_WIDTH, 80]},
+    {customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 500, SCREEN_WIDTH, 150]},
   ];
   // JVerification.preLogin();
   if (Platform.OS === 'android') {
