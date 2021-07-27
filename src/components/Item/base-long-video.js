@@ -15,8 +15,12 @@ const BaseLongVideo = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
+  const isShowBottom = data.node_name || data.praises_count || data.comments_count;
+
   return (
-    <Pressable style={styles.postSlide} onPress={goArticleDetail}>
+    <Pressable
+      style={[styles.postSlide, {paddingBottom: isShowBottom ? 0 : 16}]}
+      onPress={goArticleDetail}>
       <Header data={data} type="article" onRemove={props.onRemove} />
       <View style={styles.content}>
         <Text style={styles.titleText} numberOfLines={2}>
@@ -28,7 +32,7 @@ const BaseLongVideo = props => {
           mode={'cover'}
         />
         <FastImg style={styles.playImage} source={VideoPlayImg} />
-        {data.node_name || data.praises_count || data.comments_count ? (
+        {isShowBottom ? (
           <View style={styles.bottom}>
             <NoActionBottom data={data} />
           </View>
@@ -42,8 +46,7 @@ const ImageHeight = Math.ceil((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
-    paddingBottom: 18,
-    backgroundColor: '#fff',
+    // backgroundColor: 'pink',
   },
   content: {
     marginTop: RFValue(13),
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: RFValue(5),
   },
   bottom: {
-    height: RFValue(35),
+    paddingVertical: 12,
     justifyContent: 'center',
   },
 });

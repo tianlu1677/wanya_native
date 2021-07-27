@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
   imageMultiWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginBottom: -3,
   },
   imageCover: {
     borderRadius: 2,
