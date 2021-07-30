@@ -243,6 +243,7 @@ const ScrollList = props => {
       removeClippedSubviews={false}
       windowSize={6}
       progressViewOffset={1}
+      getItemLayout={props.getItemLayout}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}

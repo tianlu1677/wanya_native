@@ -21,8 +21,10 @@ const ChatGroups = ({navigation}) => {
   const [listData, setListData] = useState([]);
   const {currentBaseInfo} = useSelector(state => state.account);
 
-  const renderItemMemo = useCallback(
-    ({item, index}) => (
+  const renderItemMemo = useCallback(({item, index}) => <Child item={item} />, []);
+
+  const Child = React.memo(({item, index}) => {
+    return (
       <BaseChatGroup
         currentOpenId={currentOpenId}
         onOpen={onOpen}
@@ -31,15 +33,14 @@ const ChatGroups = ({navigation}) => {
         chat_group={item}
         key={item.uuid}
       />
-    ),
-    []
-  );
+    );
+  });
   const deleteChatgroup = (data = {}) => {
     console.log('real delete', data);
     deleteChatGroup({uuid: data.uuid});
     // console.log('new1', listData)
     // console.log('new', newlist);
-    setListData(m => m.filter((item) => item.uuid !== data.uuid));
+    setListData(m => m.filter(item => item.uuid !== data.uuid));
   };
 
   const onOpen = openid => {
@@ -84,6 +85,11 @@ const ChatGroups = ({navigation}) => {
         headers={headers}
         renderItem={renderItemMemo}
         renderSeparator={() => <View style={styles.speator} />}
+        getItemLayout={(data, index) => ({length: 71, offset: 71 * index, index})}
+        settings={{
+          initialNumToRender: 10,
+          windowSize: 10
+        }}
       />
     </View>
   );

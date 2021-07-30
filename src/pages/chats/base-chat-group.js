@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     paddingVertical: RFValue(12),
     backgroundColor: '#fff',
     width: '100%',
+    height: 70
   },
   coverWrapView: {
     marginRight: 12,
