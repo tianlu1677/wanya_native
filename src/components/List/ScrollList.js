@@ -76,7 +76,6 @@ const ScrollList = props => {
   };
 
   const onEndReached = () => {
-    console.log('onEndReached start');
     if (!pagin.hasMore) {
       setState(loadState.EMPTY);
       return;
