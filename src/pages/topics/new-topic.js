@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {View, Text, TextInput, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
 import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
+import {debounce} from 'lodash';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
@@ -282,7 +283,7 @@ const NewTopic = props => {
 
   const RightBtn = () => {
     return (
-      <Pressable onPress={onSubmit}>
+      <Pressable onPress={debounce(onSubmit, 1000)}>
         <Text style={[styles.finishBtn, {color: isValidateForm() ? '#000' : '#bdbdbd'}]}>发布</Text>
       </Pressable>
     );

@@ -27,7 +27,7 @@ const BaseLongVideo = props => {
           {data.title}
         </Text>
         <FastImg
-          source={{uri: data.single_cover.link_url}}
+          source={{uri: data.single_cover.cover_url}}
           style={styles.imageCover}
           mode={'cover'}
         />
@@ -46,7 +46,6 @@ const ImageHeight = Math.ceil((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
-    // backgroundColor: 'pink',
   },
   content: {
     marginTop: RFValue(13),
