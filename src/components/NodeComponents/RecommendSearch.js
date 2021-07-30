@@ -5,8 +5,8 @@ import {useNavigation} from '@react-navigation/native';
 import {BarHeight, IsIos} from '@/utils/navbar';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
-import Search from '@/components/NodeComponents/Search';
-import {BadgeMessage} from '@/components/NodeComponents';
+import Search from './Search';
+import BadgeMessage from './BadgeMessage';
 
 const RecommendSearch = () => {
   const navigation = useNavigation();
