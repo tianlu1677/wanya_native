@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import FastImg from '@/components/FastImg';
 import {StatusBar} from 'react-native';
+import Helper from "@/utils/helper"
 
 const About = ({navigation, route}) => {
   useLayoutEffect(() => {
@@ -13,6 +14,15 @@ const About = ({navigation, route}) => {
   const logo_url =
     'http://file.meirixinxue.com/assets/2019/6840c9bd-73f0-497b-8239-ff9228935e9b.png';
   const qqnumber = '3354456216';
+
+  const loadToken = async () => {
+    const token = await Helper.getData('auth_token')
+    console.log('token', token)
+  }
+
+  useEffect(() => {
+    loadToken()
+  })
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>

@@ -90,6 +90,7 @@
     "react-native-wechat-lib": "^1.1.19",
     "react-redux": "^7.2.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "recyclerlistview": "^3.0.5",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",

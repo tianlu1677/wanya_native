@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    fontSize: 15,
+    fontSize: 16,
     color: '#fff',
     fontWeight: '500',
   },

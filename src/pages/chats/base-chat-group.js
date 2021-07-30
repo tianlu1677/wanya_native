@@ -7,14 +7,14 @@ import {readSingleChatGroupMessage} from '@/api/chat_api';
 import {RFValue} from '@/utils/response-fontsize';
 import {EMOJIS_DATA, EMOJIS_ZH} from '@/plugins/react-native-easy-chat-ui';
 import Swipeout from '@/components/Swipeout';
-
+import * as RootNavigation from '@/navigator/root-navigation';
 const PATTERNS = {
   url: /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/i,
   phone: /[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,7}/,
   emoji: new RegExp('\\/\\{[a-zA-Z_]{1,14}\\}'),
 };
 
-const BaseChatGroup = ({navigation, chat_group, deleteChatgroup, currentOpenId, onOpen}) => {
+const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => {
   const {currentAccount} = useSelector(state => state.account);
   const {
     uuid,
@@ -25,9 +25,9 @@ const BaseChatGroup = ({navigation, chat_group, deleteChatgroup, currentOpenId, 
   } = chat_group;
 
   const goChatDetail = () => {
-    navigation.navigate('ChatDetail', {uuid, targetAccount: send_message_account});
-    readSingleChatGroupMessage({uuid: uuid});
+    RootNavigation.push('ChatDetail', {uuid, targetAccount: send_message_account});
     unread_message[currentAccount.id] = 0;
+    readSingleChatGroupMessage({uuid: uuid});
   };
 
   const _matchContentString = (textContent, views) => {
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: RFValue(12),
     backgroundColor: '#fff',
+    width: '100%',
   },
   coverWrapView: {
     marginRight: 12,

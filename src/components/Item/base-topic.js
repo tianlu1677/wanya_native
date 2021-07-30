@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     padding: 14,
     paddingBottom: 0,
     backgroundColor: '#fff',
+    width: '100%'
   },
   imageMultiWrapper: {
     flexDirection: 'row',

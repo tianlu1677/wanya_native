@@ -246,10 +246,10 @@ const ScrollList = props => {
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}
-      onContentSizeChange={() => {
-        // console.log('finish...')
-        setFinishContent(true);
-      }}
+      // onContentSizeChange={() => {
+      //   // console.log('finish...')
+      //   setFinishContent(true);
+      // }}
       refreshControl={
         enableRefresh ? (
           <RefreshControl
