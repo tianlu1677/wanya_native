@@ -20,7 +20,7 @@ const ThirdLogin = ({}) => {
     try {
       ShareUtil.auth(0, async (code, result, message) => {
         console.log('res', code, result, message);
-        if (code === 200) {
+        if (code === 200 || code === 0) {
           let gender = result.gender === '男' ? 'man' : 'woman';
           let signData = {
             gender: gender,
@@ -49,7 +49,7 @@ const ThirdLogin = ({}) => {
     try {
       ShareUtil.auth(1, async (code, result, message) => {
         console.log('weiboLogin res', code, result, message);
-        if (code === 200) {
+        if (code === 200 || code === 0) {
           let gender = result.gender === '男' ? 'man' : 'woman';
           let signData = {
             gender: gender,
