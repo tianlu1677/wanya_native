@@ -130,17 +130,17 @@ const OneLogin = ({navigation, route}) => {
 
     privacyOne: ['《用户协议》', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
     privacyTwo: ['《隐私政策》', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
-    privacyColor: [0xff00f000, 0xff000000], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
+    privacyColor: [0xffbdbdbd, -67333], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式） https://www.shuxuele.com/hexadecimal-decimal-colors.html
     privacyText: ['登录注册即表示已阅读并同意', '和', '、', ''], //隐私条款名称外的文字
-    privacyTextSize: 15, //隐私条款文字字体大小
+    privacyTextSize: 14, //隐私条款文字字体大小
     privacyTextGravityMode: 'center', //隐私条款文本对齐方式，目前仅支持 left、center
     privacyBookSymbolEnable: true, //隐私条款是否显示书名号，默认不显示
     //为保障显示效果，请同时设置x,y,w,h
     //privacyConstraints: [0, 325, 300, 70],
-    // privacyOffsetX: 1,                                             //隐私条款相对于屏幕左边x轴偏移
+    // privacyOffsetX: -1,                                             //隐私条款相对于屏幕左边x轴偏移
     // privacyOffsetY: 0, //隐私条款相对于授权页面底部下边缘y偏移
     privacyW: 200, //隐私条款宽度
-    privacyH: 6, //隐私条款高度
+    privacyH: -5, //隐私条款高度
     privacyCheckboxHidden: false, //checkBox是否隐藏，默认不隐藏
     privacyCheckEnable: true, //checkBox默认状态 默认:NO
     privacyCheckedImage: 'checkbox_selected', //checkBox选中时图片
