@@ -51,6 +51,9 @@ const LoginPhoneCode = ({navigation}) => {
     const timestamp = new Date().getTime();
     const secret = md5(`phone_${phone}_${timestamp}`);
     const data = {phone, secret, timestamp, send_code_type: SendCodeType.Login};
+    if(__DEV__) {
+      return
+    }
     const res = await sendPhoneCode(data);
     Toast.showError(res.status === 'success' && !res.error ? '发送成功' : res.error);
   };

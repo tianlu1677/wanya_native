@@ -45,6 +45,7 @@ const ThirdLogin = ({}) => {
 
   // {"accessToken": "2.00okeQaCAAunBE6c79b21cd0chvo4D", "city": "8", "expiration": null, "gender": "男", "iconurl": "https://tva1.sinaimg.cn/crop.0.0.180.180.180/8d279d76jw1e8qgp5bmzyj2050050aa8.jpg?KID=imgbed,tva&Expires=1625466852&ssig=ttOGekAaG9", "name": "风前无止境", "province": "50", "refreshToken": "2.00okeQaCAAunBEfa3e742d05kRjUfE", "uid": "2368183670", "unionid": "2368183670"}
   const weiboLogin = async () => {
+    // console.log('weibologin');
     try {
       ShareUtil.auth(1, async (code, result, message) => {
         console.log('weiboLogin res', code, result, message);

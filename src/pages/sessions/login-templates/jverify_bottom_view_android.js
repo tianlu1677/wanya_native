@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // width: '100%',
     // width: SCREEN_WIDTH,
-    paddingLeft: 60,
+    paddingLeft: 80,
     paddingRight: 80,
     backgroundColor: 'black',
   },
