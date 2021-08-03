@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   tabWrap: {
     height: RFValue(33),
     backgroundColor: '#fff',
-    paddingRight: 15,
+    paddingRight: 5,
   },
   tabScroll: {
     paddingLeft: 10,

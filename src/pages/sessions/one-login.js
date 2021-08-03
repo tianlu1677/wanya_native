@@ -67,10 +67,10 @@ const OneLogin = ({navigation, route}) => {
     privacyWebNavReturnImage: 'close',
   };
   const customUIWithConfigAndroid = {
-    backgroundImage: 'bg', //背景图
+    backgroundImage: 'bg1', //背景图
 
-    statusBarHidden: true, //状态栏是否隐藏
-    statusBarMode: 'light', //状态栏模式 light,dark
+    statusBarHidden: false, //状态栏是否隐藏
+    statusBarMode: 'dark', //状态栏模式 light,dark
 
     navHidden: true, //导航栏是否隐藏
     navColor: -16777216, //导航栏颜色
