@@ -118,7 +118,7 @@ const SingleList = props => {
     <ScrollList
       data={listData}
       loading={loading}
-      onRefresh={throttle(onRefresh, 300)}
+      onRefresh={throttle(onRefresh, 100)}
       headers={headers}
       renderItem={renderItemMemo}
       renderSeparator={() => <View style={styles.speator} />}

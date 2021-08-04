@@ -119,6 +119,7 @@ const ThirdLogin = ({}) => {
     } else {
       // Toast.showError('跳转中...',{ duration: 1000});
       await Helper.setData('thirdLogin', JSON.stringify(raw_data));
+      JVerification.dismissLoginPage();
       store.dispatch(dispatchUpdateSocialAccount(res.account.token));
       setTimeout(() => {
         JVerification.dismissLoginPage();
