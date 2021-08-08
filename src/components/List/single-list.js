@@ -19,9 +19,7 @@ const SingleList = props => {
     setListData([...data]);
   };
 
-  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, [
-    listData,
-  ]);
+  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, []);
 
   const Child = React.memo(({item, index}) => {
     const ItemComponent = () => {

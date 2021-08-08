@@ -43,10 +43,11 @@ const RecommendListPost = () => {
       // 加载置顶
       setLoading(true);
       itemList = (await getRecommendTopPosts()).data.posts;
+      setListData(itemList);
     }
     const res = await getRecommendPosts({page});
-    itemList = [...itemList, ...listData, ...res.data.posts]
-    setListData(itemList);
+    // itemList = [...itemList, ...listData, ...res.data.posts]
+    setListData(listData => listData.concat(res.data.posts));
     setLoading(false);
     setHeaders(res.headers);
   };
