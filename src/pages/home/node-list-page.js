@@ -111,7 +111,7 @@ const NodeListPost = () => {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(1);
   }, []);
 
   return (
