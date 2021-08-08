@@ -131,7 +131,7 @@ const SingleList = props => {
       }}
       settings={{
         initialNumToRender: 6,
-        onEndReachedThreshold: 0.25,
+        onEndReachedThreshold: 0.3,
         windowSize: Platform.OS === 'ios' ? 8 : 20,
       }}
       {...props}

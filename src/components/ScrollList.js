@@ -229,8 +229,8 @@ const ScrollList = props => {
       // }}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
-      onEndReached={enableLoadMore ? throttle(onEndReached, 200) : null}
-      onEndReachedThreshold={0.2}
+      onEndReached={enableLoadMore ? throttle(onEndReached, 100) : null}
+      onEndReachedThreshold={0.3}
       // maxToRenderPerBatch={1} // 增量渲染最大数量
       // updateCellsBatchingPeriod={3000}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
