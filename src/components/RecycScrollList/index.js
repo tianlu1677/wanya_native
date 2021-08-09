@@ -145,10 +145,10 @@ const RecycleScrollList = props => {
       onEndReachedThreshold={50}
       // onVisibleIndicesChanged={index => console.log('onVisibleIndicesChanged\t', index)}
       // renderFooter={renderFooter}
-      renderAheadOffset={500}
+      renderAheadOffset={2000}
       // initialRenderIndex={5}
       isHorizontal={false}
-      forceNonDeterministicRendering={false}
+      forceNonDeterministicRendering={true}
       optimizeForInsertDeleteAnimations={true}
       style={props.style}
       canChangeSize={true}

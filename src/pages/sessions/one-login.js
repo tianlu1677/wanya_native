@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import {jverifyPhone} from '@/api/phone_sign_api';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
-import {SCREEN_WIDTH} from '@/utils/navbar';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 import Toast from '@/components/Toast';
 import JVerification from 'jverification-react-native';
 import Loading from '@/components/Loading';
@@ -28,7 +28,7 @@ const OneLogin = ({navigation, route}) => {
     showWindow: false,
     navReturnHidden: false,
     navHidden: true,
-    backgroundImage: 'bg.png',
+    backgroundImage: (SCREEN_HEIGHT > 800 ? 'bg1.png' : 'bg.png'),
     //logo
     // logoImage: 'umcsdk_mobile_logo',
     // logoConstraints: [0, -200, 60, 60],
@@ -156,7 +156,7 @@ const OneLogin = ({navigation, route}) => {
   };
 
   const customViewParams = [
-    {customViewName: 'jverify_bottom_view', customViewPoint: [0, 500, SCREEN_WIDTH, 150]},
+    {customViewName: 'jverify_bottom_view', customViewPoint: [0, SCREEN_HEIGHT/1.5, SCREEN_WIDTH, 150]},
   ];
   const customViewParamsAdnroid = [
     {customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 450, SCREEN_WIDTH, 150]},
