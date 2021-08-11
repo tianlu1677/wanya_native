@@ -3,7 +3,7 @@ import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
-import NodeItem from '@/components/Item/node-item';
+import BaseNode from '@/components/Item/base-node';
 
 const NodeIndex = ({type}) => {
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ const NodeIndex = ({type}) => {
                 .filter(v => v.category_id === categorie.id)
                 .map(node => (
                   <View key={node.id}>
-                    <NodeItem node={{...node}} key={node.id} type={type} />
+                    <BaseNode data={node} type={type} style={{paddingLeft: 0, paddingRight: 0}} />
                     <Text style={styles.separator} />
                   </View>
                 ))}
@@ -117,7 +117,7 @@ export const styles = StyleSheet.create({
   separator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
-    marginLeft: 60,
+    marginLeft: 49 + 10,
   },
   cancel: {
     paddingLeft: 5,

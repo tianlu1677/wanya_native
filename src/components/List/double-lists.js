@@ -20,8 +20,7 @@ import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
 import FastImageGif from '@/components/FastImageGif';
-import {createArticleAction, destroyArticleAction} from '@/api/article_api';
-import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
+import {cancelAction, createAction} from "@/api/action_api"
 
 const SingleItem = props => {
   const navigation = useNavigation();
@@ -48,17 +47,11 @@ const SingleItem = props => {
   const onPraise = async () => {
     switch (type) {
       case 'Article':
-        if (praiseForm.praise) {
-          await destroyArticleAction({id: data.id, type: 'praise'});
-        } else {
-          await createArticleAction({id: data.id, type: 'praise'});
-        }
-        break;
       case 'Topic':
         if (praiseForm.praise) {
-          await destroyTopicAction({id: data.id, type: 'praise'});
+          await cancelAction({target_id: data.id, target_type: type, type: 'praise'});
         } else {
-          await createTopicAction({id: data.id, type: 'praise'});
+          await createAction({target_id: data.id, target_type: type, type: 'praise'});
         }
         break;
     }

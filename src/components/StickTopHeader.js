@@ -8,11 +8,7 @@ const StickTopHeader = props => {
   return (
     <>
       {Platform.OS === 'ios' && (
-        <BlurView
-          style={{flex: 1}}
-          blurType="light"
-          blurAmount={40}
-        >
+        <BlurView style={{flex: 1}} blurType="light" blurAmount={40}>
           <TopHeader
             statusBar={{barStyle: 'light-content'}}
             LeftButton={props.showLeftButton ? () => <View /> : null}
@@ -24,18 +20,17 @@ const StickTopHeader = props => {
           />
         </BlurView>
       )}
-      {
-        Platform.OS !== 'ios' && <TopHeader
-          statusBar={{barStyle: 'light-content', translucent: false, backgroundColor: '#000'}}
+      {Platform.OS === 'android' && (
+        <TopHeader
+          statusBar={{barStyle: 'light-content', translucent: true, backgroundColor: '#000'}}
           headerStyles={{backgroundColor: 'rgba(1,1,1,0.8)'}}
+          leftButtonStyles={{marginTop: 20}}
           LeftButton={props.showLeftButton ? () => <View /> : null}
           Title={() => (
-            <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>
-              {props.title}
-            </Text>
+            <Text style={{zIndex: 1000,color: 'white', fontSize: 15, fontWeight: '600', marginTop: 25}}>{props.title}</Text>
           )}
         />
-      }
+      )}
     </>
   );
 };

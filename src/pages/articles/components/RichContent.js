@@ -6,10 +6,10 @@ import FastImg from '@/components/FastImg';
 import WebView from 'react-native-webview';
 
 const {width} = Dimensions.get('window');
+const imageWidth = width - 28;
 
 const RichContent = props => {
   const {content, baseColor, images_info} = props;
-  const imageWidth = Dimensions.get('window').width - 28;
   const richHtmlPStyle = {
     p: {
       fontSize: RFValue(15),
@@ -56,16 +56,13 @@ const RichContent = props => {
       return <View />;
     } else {
       const findImg = images_info.find(x => x.url === htmlAttribs.src);
+      const imageHeight = (imageWidth * findImg.height) / findImg.width;
       return (
-        <View style={{flex: 1}} key={htmlAttribs.src}>
+        <View style={{flex: 1, marginBottom: 12}} key={htmlAttribs.src}>
           <FastImg
             source={{uri: htmlAttribs.src}}
-            style={{
-              width: imageWidth,
-              height: (imageWidth * findImg.height) / findImg.width,
-              marginBottom: 12,
-            }}
-            resizeMode={'cover'}
+            style={{width: imageWidth, height: imageHeight}}
+            mode={htmlAttribs.src.includes('meirixinxue') ? 'cover' : 'center'}
             tintColor={'gray'}
           />
         </View>

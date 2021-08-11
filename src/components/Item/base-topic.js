@@ -1,44 +1,19 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
+import LocationBar from '@/components/LocationBar';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
+import {VWValue, RFValue} from '@/utils/response-fontsize';
+import {calculateImg} from '@/utils/scale';
+import {SCREEN_WIDTH} from '@/utils/navbar';
 import VideoPlayImg from '@/assets/images/video-play.png';
 import FastImageGif from '@/components/FastImageGif';
 import ExcellentImage from '@/assets/images/excellent.png';
 import BaseLongVideo from '@/components/Item/base-long-video';
-
-const calculateImg = (width, height) => {
-  let newWidth = 500;
-  let newHeight = 500;
-  let x = (width / height).toFixed(2);
-  let attr = {};
-  if (x > 0 && x <= 0.33) {
-    newHeight = 420;
-    newWidth = newHeight / 3;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 0.33 && x <= 1) {
-    newHeight = 420;
-    newWidth = newHeight * x;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 1 && x <= 2) {
-    newWidth = 480;
-    newHeight = (height * newWidth) / width;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 2 && x <= 2.89) {
-    newHeight = 240;
-    newWidth = newHeight * x;
-    attr = {width: newWidth, height: newHeight};
-  } else if (x > 2.89) {
-    newHeight = 240;
-    newWidth = newHeight * 2.89;
-    attr = {width: newWidth, height: newHeight};
-  }
-  return {...attr, x: x};
-};
 
 export const TopicImageContent = props => {
   const dispatch = useDispatch();
@@ -46,62 +21,68 @@ export const TopicImageContent = props => {
   const imgStyle = medias.length === 1 ? 'single' : 'multi';
   const imgAttr = calculateImg(single_cover.width, single_cover.height);
 
-  const onPreview = (index = 0) => {
-    const data = {
-      images: medias.map(v => {
-        return {url: v.split('?')[0]};
-      }),
-      visible: true,
-      index,
-    };
-    dispatch(dispatchPreviewImage(data));
-  };
-
   if (!single_cover.cover_url) {
     return <View />;
   }
 
+  const singleStyle = {width: VWValue(imgAttr.width), height: VWValue(imgAttr.height)};
+  const multiStyle = {
+    width: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
+    height: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
+    marginBottom: 3,
+  };
+
+  const onPreview = index => {
+    const images = medias.map(v => {
+      return {url: v.split('?')[0]};
+    });
+    const data = {index, visible: true, images};
+    dispatch(dispatchPreviewImage(data));
+  };
+
   return imgStyle === 'single' ? (
-    <Pressable
-      style={{width: imgAttr.width / 2.0}}
-      onPress={() => {
-        onPreview();
-      }}>
-      <FastImg
-        source={{uri: single_cover.cover_url}}
-        style={{height: imgAttr.height / 2.0, width: imgAttr.width / 2.0}}
-      />
+    <Pressable onPress={() => onPreview(0)} style={singleStyle}>
+      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} mode="cover" />
     </Pressable>
   ) : (
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    <View style={styles.imageMultiWrapper}>
       {medias.map((media, index) => (
-        <Pressable onPress={() => onPreview(index)} key={media}>
-          <FastImg key={media} source={{uri: media}} style={styles.imageMulti} />
+        <Pressable key={media} onPress={() => onPreview(index)}>
+          <FastImg
+            key={media}
+            source={{uri: media}}
+            style={{...multiStyle, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
+          />
         </Pressable>
       ))}
-    </ScrollView>
+    </View>
   );
 };
 
 export const TopicVideoContent = props => {
-  const {single_cover} = props.data;
-  const videoAttr = calculateImg(
-    single_cover.width ? single_cover.width : 100,
-    single_cover.height ? single_cover.height : 100
-  );
+  const navigation = useNavigation();
+
+  const {
+    data: {id, single_cover},
+  } = props;
+
+  const onGoDetail = () => {
+    navigation.push('TopicDetail', {topicId: id});
+  };
+
+  const videoAttr = calculateImg(single_cover.width || 100, single_cover.height || 100);
+  const videoAttrStyle = {width: VWValue(videoAttr.width), height: VWValue(videoAttr.height)};
 
   return (
-    <View style={{flex: 1, width: videoAttr.width / 2, height: videoAttr.height / 2}}>
+    <Pressable style={{flex: 1, ...videoAttrStyle}} onPress={onGoDetail}>
       <FastImageGif
         gif_url={single_cover.link_url}
-        source={{uri: single_cover.cover_url}}
-        style={{
-          ...styles.imageCover,
-          ...{width: videoAttr.width / 2, height: videoAttr.height / 2},
-        }}
+        source={{uri: `${single_cover.link_url}?imageView2/2/w/720/interlace/1/format/jpg/q/80`}}
+        style={{...styles.imageCover, ...videoAttrStyle}}
+        mode="cover"
       />
       <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
-    </View>
+    </Pressable>
   );
 };
 
@@ -122,7 +103,7 @@ export const TopicLinkContent = props => {
           <FastImg
             source={{uri: data.topic_link.cover_url}}
             mode={'cover'}
-            style={{width: 45, height: 45}}
+            style={{width: VWValue(45), height: VWValue(45)}}
           />
           {data.topic_link.outlink_type === 'music' && (
             <IconFont name="sanjiaoxing" size="12" style={styles.linkImage} />
@@ -137,7 +118,8 @@ export const TopicLinkContent = props => {
 };
 
 const BaseTopic = props => {
-  const {data} = props;
+  const {data, type} = props;
+  const {content_style} = data;
   const navigation = useNavigation();
   const goNodeDetail = () => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
@@ -147,60 +129,73 @@ const BaseTopic = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
-  return data.content_style === 'video' && data.is_long_video ? (
+  return content_style === 'video' && data.is_long_video ? (
     <BaseLongVideo data={props.data} />
   ) : (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
-      <Header data={data} type="topic" onRemove={props.onRemove} />
-      <View style={{marginTop: 13}}>
-        {data.content_style === 'img' && <TopicImageContent data={data} />}
-        {data.content_style === 'video' && <TopicVideoContent data={data} />}
-        {data.content_style === 'link' && <TopicLinkContent data={data} />}
-        {data.excellent && (
-          <FastImg
-            style={styles.excellentImage}
-            source={ExcellentImage}
-            resizeMode={'contain'}
-            resizeMethod={'resize'}
-          />
-        )}
-      </View>
+      <Header data={data} type="topic" typeHeader={type} onRemove={props.onRemove} />
       {data.plain_content ? (
-        <PlainContent
-          data={data}
-          numberOfLines={5}
-          style={{paddingTop: data.content_style === 'text' ? 0 : 13}}
-        />
-      ) : null}
-      <View style={[styles.infoViewWrap, {marginTop: data.plain_content ? 10 : 16}]}>
-        <Pressable style={styles.infoView} onPress={goNodeDetail}>
-          <IconFont name="node-solid" size={12} color={'#000'} />
-          <Text style={styles.nodeName}>{data.node_name}</Text>
-        </Pressable>
-      </View>
+        <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(13)}} />
+      ) : (
+        <View />
+      )}
+      {['img', 'video', 'link'].includes(content_style) ? (
+        <View style={{marginTop: data.plain_content ? RFValue(5) : RFValue(13)}}>
+          {content_style === 'img' && <TopicImageContent data={data} />}
+          {content_style === 'video' && <TopicVideoContent data={data} />}
+          {content_style === 'link' && <TopicLinkContent data={data} />}
+          {data.excellent && (
+            <FastImg
+              style={styles.excellentImage}
+              source={ExcellentImage}
+              resizeMode={'contain'}
+              resizeMethod={'resize'}
+            />
+          )}
+        </View>
+      ) : (
+        <View />
+      )}
+
+      {type === 'recommend-node' && (data.space || data.location) && (
+        <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
+          <LocationBar space={data.space} location={data.location} style={styles.infoView} />
+        </View>
+      )}
+
+      {type !== 'recommend-node' && data.node_name && (
+        <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
+          <Pressable style={styles.infoView} onPress={goNodeDetail}>
+            <IconFont name="node-solid" size={15} color={'#1B5C79'} />
+            <Text style={styles.nodeName}>{data.node_name}</Text>
+          </Pressable>
+        </View>
+      )}
+
       <Bottom data={data} type="topic" share={true} />
     </Pressable>
   );
 };
+
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
     paddingBottom: 0,
     backgroundColor: '#fff',
+    width: '100%'
   },
-  imageMulti: {
-    width: 167,
-    height: 167,
-    marginRight: 5,
-    borderRadius: 2,
+  imageMultiWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: -3,
   },
   imageCover: {
     borderRadius: 2,
     position: 'relative',
   },
   playImage: {
-    width: 30,
-    height: 30,
+    width: VWValue(30),
+    height: VWValue(30),
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -208,8 +203,8 @@ const styles = StyleSheet.create({
     marginLeft: -15,
   },
   excellentImage: {
-    width: 30,
-    height: 17,
+    width: VWValue(30),
+    height: VWValue(17),
     position: 'absolute',
     top: 8,
     left: 8,
@@ -227,10 +222,13 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 13,
     paddingHorizontal: 10,
+    marginLeft: 0,
   },
   nodeName: {
     fontSize: 11,
     marginLeft: 4,
+    color: '#1B5C79',
+    fontWeight: '300',
   },
   linkWrapper: {
     flex: 1,

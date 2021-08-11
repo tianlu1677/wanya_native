@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
@@ -24,11 +24,7 @@ const TopicList = props => {
     const res = await api({...params, page});
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     setHeaders(res.headers);
-    if (!params.name) {
-      setListData([]);
-    } else {
-      setListData(page === 1 ? data : [...listData, ...data]);
-    }
+    setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
   };
 
@@ -43,6 +39,7 @@ const TopicList = props => {
       onRefresh={loadData}
       headers={headers}
       renderItem={renderItem}
+      renderSeparator={() => <View style={{backgroundColor: '#fff', height: 5}} />}
       {...props}
       style={styles.wrapper}
     />

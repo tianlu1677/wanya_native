@@ -1,13 +1,15 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {View, Text, Platform, ScrollView, Pressable, StyleSheet} from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
 import {throttle} from 'lodash';
+import {TransFormType} from '@/utils';
 import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {AllNodeImg} from '@/utils/default-image';
 import {getFollowedNodePosts} from '@/api/home_api';
 import {ListEmpty as lstyles} from '@/styles/baseCommon';
@@ -71,13 +73,26 @@ const NodeListPost = () => {
     setListData([...data]);
   };
 
-  const RenderItem = React.memo(({item, index}) =>
-    item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    )
-  );
+  const RenderItem = React.memo(({item, index}) => {
+    const data = {
+      ...item.item,
+      published_at_text: `发布了${TransFormType(item.item)}`,
+      nodeInfo: item.node,
+    };
+
+    return useMemo(() => {
+      switch (item.item_type) {
+        case 'Topic':
+          return <BaseTopic data={data} onRemove={() => onRemove(index)} type="recommend-node" />;
+        case 'Article':
+          return <BaseArticle data={data} type="recommend-node" />;
+        case 'Theory':
+          return <BaseTheory data={data} onRemove={() => onRemove(index)} type="recommend-node" />;
+        default:
+          return <View />;
+      }
+    }, [item.id]);
+  });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
@@ -96,7 +111,7 @@ const NodeListPost = () => {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(1);
   }, []);
 
   return (
@@ -109,10 +124,11 @@ const NodeListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
+      renderSeparator={() => <View style={styles.speator} />}
       ListHeaderComponent={
         <>
           <NodeScrollView />
-          <View style={styles.separator} />
+          <View style={{backgroundColor: '#fafafa', height: 9}} />
         </>
       }
       renderEmpty={
@@ -171,9 +187,10 @@ const styles = StyleSheet.create({
     left: '50%',
     marginLeft: -17,
   },
-  separator: {
-    backgroundColor: '#FAFAFA',
-    height: 9,
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginHorizontal: 14,
   },
 });
 

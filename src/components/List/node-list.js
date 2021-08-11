@@ -2,15 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
-import NodeItem from '@/components/Item/node-item';
+import BaseNode from '@/components/Item/base-node';
 
 const NodeList = props => {
+  const {type} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item}) => {
-    return <NodeItem node={item} key={item.id} type="node-list" />;
+    return <BaseNode data={item} type={type} />;
   };
 
   const renderSeparator = () => {
@@ -39,47 +40,22 @@ const NodeList = props => {
       headers={headers}
       renderItem={renderItem}
       renderSeparator={renderSeparator}
-      style={styles.wrapper}
       enableRefresh={false}
-      {...props}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  follow: {
-    flexDirection: 'row',
-    paddingLeft: 14,
-    paddingRight: 14,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 14,
-    paddingBottom: 14,
-  },
-  nickname: {
-    fontSize: 14,
-    marginLeft: 10,
-  },
-  btn: {
-    marginLeft: 'auto',
-  },
   separator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
-    marginLeft: 60,
+    marginLeft: 14 + 49 + 10,
   },
 });
 
 NodeList.propTypes = {
   request: PropTypes.object.isRequired,
-  onPress: PropTypes.func,
-  ref: PropTypes.any,
+  type: PropTypes.string.isRequired,
 };
 
 export default NodeList;

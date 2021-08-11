@@ -7,9 +7,9 @@ import {
   JoinAccounts,
   PlayScore,
   JoinActivity,
-  GoBack,
   BottomModal,
   BlurView,
+  TopBack,
 } from '@/components/NodeComponents';
 import {getNodeDetail, getPosts, getRecentAccounts} from '@/api/node_api';
 import {getTopicList, getNodeTopicList} from '@/api/topic_api';
@@ -20,21 +20,24 @@ import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import {NAV_BAR_HEIGHT, SAFE_TOP} from '@/utils/navbar';
+import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import {nodeAction} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import FastImg from '@/components/FastImg';
-import {RFValue} from '@/utils/response-fontsize';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 import StickTopHeader from '@/components/StickTopHeader';
-import LocationBar from '@/components/LocationBar'
-import IconFont from '@/iconfont';
+import LocationBar from '@/components/LocationBar';
+import {dispatchShareItem} from '@/redux/actions';
+
+const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 566) / 750);
 
 const NodeDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const home = useSelector(state => state.home);
   const [nodeId] = useState(route.params.nodeId);
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const {nodeDetail} = useSelector(state => state.node);
   const [detail, setDetail] = useState(null);
   const [currentKey, setCurrentKey] = useState('publish');
   const [showModal, setShowModal] = useState(false);
@@ -55,13 +58,19 @@ const NodeDetail = ({navigation, route}) => {
   };
 
   const TopicListPage = () => {
-    return <HashtagList request={{api: getNodeTopicList, params: {id: detail.id}}} />;
+    return (
+      <HashtagList
+        request={{api: getNodeTopicList, params: {id: detail.id}}}
+        type="list"
+        dataKey="hashtags"
+      />
+    );
   };
 
   const loadData = async () => {
     const res = await getNodeDetail(nodeId);
     setDetail(res.data.node);
-    // console.log('res', res.data.node);
+    dispatch({type: action.UPDATE_NODE_DETAIL, value: res.data.node});
   };
 
   const onFollowNode = async () => {
@@ -78,7 +87,6 @@ const NodeDetail = ({navigation, route}) => {
         await followItem({followable_type: 'Node', followable_id: detail.id});
       }
     }
-
     loadData();
   };
 
@@ -104,9 +112,19 @@ const NodeDetail = ({navigation, route}) => {
     setShowModal(true);
   };
 
+  const handleOnShare = () => {
+    const shareContent = {item_type: 'Node', item_id: detail.id, visible: true};
+    dispatch(dispatchShareItem(shareContent));
+  };
+
+  useEffect(() => {
+    setDetail(nodeDetail);
+  }, [nodeDetail]);
+
   useEffect(() => {
     loadData();
     return () => {
+      dispatch({type: action.UPDATE_NODE_DETAIL, value: null});
       dispatch(nodeAction.dispatchUpdateNodes());
       dispatch(nodeAction.dispatchUpdateFollowNodes(currentAccount.id));
     };
@@ -114,25 +132,27 @@ const NodeDetail = ({navigation, route}) => {
 
   const Header = () => {
     return (
-      <View style={{position: 'relative', flex: 1}}>
-        <View>
+      <>
+        <View style={{height: BarHeight, backgroundColor: 'black'}} />
+        <TopBack top={BarHeight + RFValue(10)} handleShare={handleOnShare} />
+        <View style={styles.header}>
+          <View style={styles.headerOpacity} />
           <FastImg
             source={{uri: detail.backgroud_cover_url}}
             mode={'cover'}
-            style={styles.imageCover}
+            style={styles.headerCover}
           />
-          <View style={styles.imageCoverOpacity} />
-        </View>
-        <GoBack />
-        <View style={styles.header}>
           <View style={styles.nodeContent}>
             <View style={styles.nodeInfo}>
               <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
               <View style={styles.nodewrap}>
                 <Text style={styles.nodeName}>{detail.name}</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                <View
+                  style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
-                  {(detail.space || detail.location) && <Text style={{color: 'white', marginTop: 12}}> · </Text>}
+                  {(detail.space || detail.location) && (
+                    <Text style={{color: 'white', marginTop: 12}}> · </Text>
+                  )}
                   <LocationBar location={detail.location} space={detail.space} />
                 </View>
               </View>
@@ -144,14 +164,11 @@ const NodeDetail = ({navigation, route}) => {
             </Text>
             <PlayScore score={detail.play_score} onPress={onPlay} />
           </View>
-          <Pressable onPress={goJoinAccounts} style={styles.accountInfoWrap}>
-            <BlurView
-              style={styles.accountInfo}
-              blurType="light"
-              blurAmount={10}
-              reducedTransparencyFallbackColor="white">
+
+          <Pressable style={styles.accountsWrapper} onPress={goJoinAccounts}>
+            <BlurView style={styles.accountsMain} blurAmount={5}>
               <JoinAccounts accounts={detail.accounts} size={25} />
-              <Text style={styles.count}>
+              <Text style={styles.accountsCount}>
                 {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
               </Text>
               <JoinButton
@@ -162,17 +179,20 @@ const NodeDetail = ({navigation, route}) => {
             </BlurView>
           </Pressable>
         </View>
-      </View>
+      </>
     );
   };
 
   return detail ? (
     <View style={styles.wrapper}>
       <CollapsibleHeader
-        tabBarHeight={NAV_BAR_HEIGHT}
-        headerHeight={283}
+        tabBarHeight={BarHeight}
+        headerHeight={HEADER_HEIGHT + BarHeight}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
+        renderHeader={<Header />}
+        renderTopHeader={<StickTopHeader title={detail.name} />}
+        separator={true}
         tabData={[
           {
             key: 'publish',
@@ -195,9 +215,6 @@ const NodeDetail = ({navigation, route}) => {
             component: TopicListPage,
           },
         ]}
-        renderHeader={<Header />}
-        renderTopHeader={<StickTopHeader title={detail.name} />}
-        separator={true}
       />
 
       <BottomModal
@@ -213,35 +230,26 @@ const NodeDetail = ({navigation, route}) => {
   );
 };
 
+const positon = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
   },
   header: {
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: SAFE_TOP + 34,
-    height: 283,
+    height: HEADER_HEIGHT,
     position: 'relative',
+    paddingHorizontal: 14,
+    paddingTop: RFValue(33),
   },
-  imageCover: {
-    width: '100%',
-    height: 283,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: -1,
-  },
-  imageCoverOpacity: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 283,
+  headerOpacity: {
+    ...positon,
     backgroundColor: '#000',
-    opacity: 0.5,
+    opacity: 0.3,
+  },
+  headerCover: {
+    ...positon,
+    zIndex: -1,
   },
   nodeContent: {
     flexDirection: 'row',
@@ -251,27 +259,13 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
   },
   cover: {
-    width: 69,
-    height: 69,
+    width: VWValue(69),
+    height: VWValue(69),
     borderRadius: 5,
     overflow: 'hidden',
     marginRight: 16,
-    marginLeft: 1,
     borderWidth: 3,
     borderColor: '#ffff00',
-  },
-  spaceWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 4,
-  },
-  spaceText: {
-    color: 'white',
-    marginLeft: 2,
-    marginTop: 11,
-    fontSize: 11,
-    fontWeight: '400',
   },
   nodewrap: {
     alignItems: 'flex-start',
@@ -287,11 +281,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginTop: 11,
   },
-  nodeCreator: {
-    flexDirection: 'row',
-  },
   descWrap: {
-    marginTop: 20,
+    marginTop: RFValue(20),
     paddingRight: 9,
     flexDirection: 'row',
   },
@@ -324,6 +315,26 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 7,
     fontSize: 11,
+  },
+
+  accountsWrapper: {
+    position: 'absolute',
+    left: 14,
+    right: 14,
+    bottom: RFValue(22),
+  },
+  accountsMain: {
+    height: RFValue(45),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 2,
+  },
+  accountsCount: {
+    color: '#DBDBDB',
+    fontSize: 11,
+    marginRight: 'auto',
+    marginLeft: 7,
   },
 });
 

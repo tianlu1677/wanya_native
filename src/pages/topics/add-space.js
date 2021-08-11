@@ -1,15 +1,24 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Keyboard,
+  TouchableWithoutFeedback,
+  StatusBar,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {debounce} from 'lodash';
 import * as action from '@/redux/constants';
+import {BarHeight} from '@/utils/navbar';
 import IconFont from '@/iconfont';
 import SpaceList from '@/components/List/space-list';
 import LocationList from '@/components/List/location-list';
 import {Search} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import {getSpacesList} from '@/api/space_api';
 import {createLocations, getLocationsList} from '@/api/location_api';
 
@@ -42,7 +51,7 @@ const AddSpace = props => {
     return requestParams;
   };
 
-  const [request, setRequest] = useState(null);
+  const [request, setRequest] = useState(returnParams('space', ''));
 
   const dispatchData = data => {
     const {type} = props.route.params;
@@ -76,17 +85,21 @@ const AddSpace = props => {
     navigation.goBack();
   };
 
-  const SpaceListPage = () => {
-    return request.type === 'space' ? (
-      <SpaceList request={request} onPress={onPress} enableRefresh={false} type="add-space" />
-    ) : null;
-  };
+  const SpaceListPage = () => (
+    <SpaceList
+      request={request}
+      enableRefresh={false}
+      type={props.route.params.type === 'topic' ? 'add-space' : 'add-node'}
+    />
+  );
 
-  const LocationListPage = () => {
-    return request.type === 'location' ? (
-      <LocationList request={request} onPress={onPress} enableRefresh={false} type="add-location" />
-    ) : null;
-  };
+  const LocationListPage = () => (
+    <LocationList
+      request={request}
+      enableRefresh={false}
+      type={props.route.params.type === 'topic' ? 'add-location' : 'add-node'}
+    />
+  );
 
   const onChangeText = text => {
     setRequest(returnParams(currentKey, text));
@@ -94,8 +107,8 @@ const AddSpace = props => {
   };
 
   const onChangeKey = key => {
-    setCurrentKey(key);
     setRequest(returnParams(key, searchKey));
+    setCurrentKey(key);
   };
 
   const goChooseCity = () => {
@@ -109,6 +122,8 @@ const AddSpace = props => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wrapper}>
+        <View style={{height: BarHeight}} />
+        <StatusBar barStyle="dark-content" backgroundColor={'white'} />
         <Search
           inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
           height={RFValue(36)}
@@ -116,6 +131,7 @@ const AddSpace = props => {
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多场地位置"
           onChangeText={debounce(onChangeText, 500)}
+          cancel={true}
           onCancel={() => navigation.goBack()}
           prefix={
             <Pressable style={styles.proCity} onPress={goChooseCity}>
@@ -125,14 +141,13 @@ const AddSpace = props => {
           }
         />
         {request ? (
-          <TabViewList
-            center={false}
-            bottomLine={true}
-            lazy={true}
+          <TabView
             currentKey={currentKey}
-            onChange={onChangeKey}
             request={request}
-            size="small"
+            onChange={onChangeKey}
+            align="left"
+            bottomLine={false}
+            separator={true}
             tabData={[
               {
                 key: 'space',

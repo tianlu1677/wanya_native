@@ -1,12 +1,13 @@
 import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {
-  SafeAreaView,
+  StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
   View,
   TextInput,
   Text,
+  Pressable,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
@@ -14,12 +15,13 @@ import {createFeedback} from '@/api/feedback_api';
 import {Button} from 'react-native-elements';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import Toast from '@/components/Toast';
+import ChatWoot from '@/components/ChatWoot';
 
 const Feedback = ({navigation, route}) => {
   const [content, setContent] = useState('');
   const [contact, setContact] = useState('');
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
-
+  const [showWidget, toggleWidget] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -46,11 +48,12 @@ const Feedback = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
         }}>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: '#fff'}}>
           <TitleView>
             <Text style={{fontSize: 14}}>意见与反馈</Text>
           </TitleView>
@@ -106,6 +109,12 @@ const Feedback = ({navigation, route}) => {
           />
         </View>
       </TouchableWithoutFeedback>
+      <View>
+        <Pressable style={styles.chatButton} onPress={() => toggleWidget(true)}>
+          <Text style={styles.chatButtonText}>客服联系</Text>
+        </Pressable>
+        {<ChatWoot showWidget={showWidget} toggleWidget={toggleWidget} />}
+      </View>
     </View>
   );
 };
@@ -137,6 +146,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
   },
+
+  chatButton: {
+    position: 'absolute',
+    height: 80,
+    right: 10,
+    bottom: 100,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+    paddingRight: 8,
+    backgroundColor: '#1F93FF',
+    borderRadius: 40,
+
+    borderWidth: 1,
+    borderColor: '#fff',
+    justifyContent: 'center',
+  },
+  chatButtonText: {
+    color: 'white',
+  }
 });
 
 const TitleView = styled(Text)`
@@ -157,7 +186,7 @@ const ContentInput = styled(TextInput)`
   font-size: 15px;
   height: 174px;
   line-height: 16px;
-  paddingTop: 10px;
+  padding-top: 10px;
   text-align-vertical: top;
 `;
 
@@ -180,5 +209,6 @@ const TitleText = styled(Text)`
   color: white;
   font-weight: 600;
 `;
+
 
 export default Feedback;

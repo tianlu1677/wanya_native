@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {Platform, View, Text, Pressable, ScrollView, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -12,6 +12,7 @@ import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {getFollowedPosts} from '@/api/home_api';
 import {recommendAccounts} from '@/api/mine_api';
 import {followAccount} from '@/api/account_api';
@@ -33,7 +34,11 @@ export const FollowShareComponent = () => {
 
   return shareStatus ? (
     <Pressable style={lstyles.followShareWrap} onPress={onShare}>
-      <BlurView blurType="light" blurAmount={100} reducedTransparencyFallbackColor="white" style={{backgroundColor: '#F2F3F5', borderRadius: 10}}>
+      <BlurView
+        blurType="light"
+        blurAmount={100}
+        reducedTransparencyFallbackColor="white"
+        style={{backgroundColor: '#F2F3F5', borderRadius: 10}}>
         <View style={lstyles.followShare}>
           <FastImg style={lstyles.followShareImage} source={require('@/assets/images/share.png')} />
           <View>
@@ -129,11 +134,18 @@ const FollowListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    return item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    );
+    return useMemo(() => {
+      switch (item.item_type) {
+        case 'Topic':
+          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+        case 'Article':
+          return <BaseArticle data={item.item} />;
+        case 'Theory':
+          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+        default:
+          return <View />;
+      }
+    }, [item.id]);
   });
 
   const renderItemMemo = useCallback(
@@ -148,6 +160,7 @@ const FollowListPost = () => {
       ),
     [listData]
   );
+
   const onRefresh = (page = 1) => {
     loadData(page);
   };
@@ -177,12 +190,8 @@ const FollowListPost = () => {
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 10 : 20}
       ListHeaderComponent={FollowShareComponent()}
-      renderEmpty={
-        <View>
-          {FollowShareComponent()}
-          {RelatedRecommend()}
-        </View>
-      }
+      renderSeparator={() => <View style={styles.speator} />}
+      renderEmpty={RelatedRecommend()}
     />
   );
 };
@@ -236,6 +245,11 @@ const styles = StyleSheet.create({
   notfollow: {
     backgroundColor: '#000',
     color: '#fff',
+  },
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginHorizontal: 14,
   },
 });
 

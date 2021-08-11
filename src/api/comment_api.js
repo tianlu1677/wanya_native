@@ -1,24 +1,44 @@
 import request from './request';
 
-// 获取帖子的评论列表
-export const getTopicCommentList = async params => {
+//获取评论列表
+export const getCommentList = async params => {
   const res = await request({
-    url: `/api/v1/topics/${params.id}/comments`,
+    url: '/api/v1/comments',
     method: 'GET',
+    params: params,
   });
   return res;
 };
 
-// 获取文章的评论列表
-export const getArticleCommentList = async params => {
-  const res = await request({
-    url: `/api/v1/articles/${params.id}/comments`,
-    method: 'GET',
-    params,
-  });
-
-  return res;
-};
+// // 获取帖子的评论列表
+// export const getTopicCommentList = async params => {
+//   const res = await request({
+//     url: `/api/v1/topics/${params.id}/comments`,
+//     method: 'GET',
+//   });
+//   return res;
+// };
+//
+// // 获取文章的评论列表
+// export const getArticleCommentList = async params => {
+//   const res = await request({
+//     url: `/api/v1/articles/${params.id}/comments`,
+//     method: 'GET',
+//     params,
+//   });
+//
+//   return res;
+// };
+//
+// // 获取玩法的评论列表
+// export const getTheoryCommentList = async params => {
+//   const res = await request({
+//     url: `/api/v1/theories/${params.id}/comments`,
+//     method: 'GET',
+//     params,
+//   });
+//   return res;
+// };
 
 // 创建评论
 export const createComment = async (data = {}) => {

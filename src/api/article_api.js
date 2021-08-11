@@ -10,24 +10,24 @@ export const getArticle = async id => {
 };
 
 //文章点赞
-export const createArticleAction = async params => {
-  const res = await request({
-    url: `/api/v1/articles/${params.id}/create_actions`,
-    method: 'POST',
-    data: {type: params.type},
-  });
-  return res;
-};
-
-//取消点赞
-export const destroyArticleAction = async params => {
-  const res = await request({
-    url: `/api/v1/articles/${params.id}/destroy_actions`,
-    method: 'POST',
-    data: {type: params.type},
-  });
-  return res;
-};
+// export const createArticleAction = async params => {
+//   const res = await request({
+//     url: `/api/v1/articles/${params.id}/create_actions`,
+//     method: 'POST',
+//     data: {type: params.type},
+//   });
+//   return res;
+// };
+//
+// //取消点赞
+// export const destroyArticleAction = async params => {
+//   const res = await request({
+//     url: `/api/v1/articles/${params.id}/destroy_actions`,
+//     method: 'POST',
+//     data: {type: params.type},
+//   });
+//   return res;
+// };
 
 //文章列表
 export const getArticleList = async params => {

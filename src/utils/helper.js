@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import Clipboard from "@react-native-community/clipboard";
+import Clipboard from '@react-native-community/clipboard';
 
 import dayjs from 'dayjs';
 
@@ -8,7 +8,7 @@ export default class Helper {
     try {
       await AsyncStorage.setItem(name, value);
     } catch (e) {
-      return ''
+      return '';
     }
   }
 
@@ -16,11 +16,11 @@ export default class Helper {
     try {
       let value = await AsyncStorage.getItem(name);
       // console.log('store preve value', value)
-      value = (value === null || value === undefined) ? '' : value
+      value = value === null || value === undefined ? '' : value;
       // console.log('store value', value)
       return value;
     } catch (e) {
-      return ''
+      return '';
     }
   }
 
@@ -36,45 +36,59 @@ export default class Helper {
   }
 
   static async getAllKeys() {
-    const keys =  await AsyncStorage.getAllKeys()
-    return keys
+    const keys = await AsyncStorage.getAllKeys();
+    return keys;
   }
 
   static async multiSet(data = []) {
-    await AsyncStorage.multiSet(data)
+    await AsyncStorage.multiSet(data);
   }
 
   static async multiGet(data = []) {
-    const res = await AsyncStorage.multiGet(data)
-    return res
+    const res = await AsyncStorage.multiGet(data);
+    return res;
   }
 
   // 获取粘贴板信息
   static setClipboard(content) {
-    Clipboard.setString(content)
+    Clipboard.setString(content);
   }
+
   static async getClipboard() {
-    await Clipboard.getString()
+    await Clipboard.getString();
+  }
+
+  // 获取uuid
+  static generateUuid() {
+    var result, i, j;
+    result = '';
+    for (j = 0; j < 32; j++) {
+      if (j == 8 || j == 12 || j == 16 || j == 20) result = result + '-';
+      i = Math.floor(Math.random() * 16)
+        .toString(16)
+        .toLowerCase();
+      result = result + i;
+    }
+    return result;
   }
 
   static fromToNow(time) {
-    console.log('time', time)
-    return dayjs(time).locale('zh-cn').format()
+    console.log('time', time);
+    return dayjs(time).locale('zh-cn').format();
   }
 
   static isNotNullAndUndefined(obj, props = []) {
-    let bIsNullorUndefined =  obj === null || obj === undefined;
+    let bIsNullorUndefined = obj === null || obj === undefined;
     let curObj = null;
 
-    if(!bIsNullorUndefined) {
+    if (!bIsNullorUndefined) {
       curObj = obj;
-      if(props !== null) {
-        for(let idx=0; idx < props.length; idx++) {
+      if (props !== null) {
+        for (let idx = 0; idx < props.length; idx++) {
           bIsNullorUndefined = curObj[props[idx]] === null || curObj[props[idx]] === undefined;
-          curObj =  curObj[props[idx]]; // Set the curObj[props[idx]] to curObj so that it will recursive down the depth of the object
+          curObj = curObj[props[idx]]; // Set the curObj[props[idx]] to curObj so that it will recursive down the depth of the object
 
-          if(bIsNullorUndefined)
-            break;
+          if (bIsNullorUndefined) break;
         }
       }
     }
@@ -82,27 +96,23 @@ export default class Helper {
     return !bIsNullorUndefined;
   }
 
-  static carefullyGetValue(obj, props = [], defaultValue='') {
-    let bIsNullorUndefined =  obj === null || obj === undefined;
+  static carefullyGetValue(obj, props = [], defaultValue = '') {
+    let bIsNullorUndefined = obj === null || obj === undefined;
     let curObj = null;
 
-    if(!bIsNullorUndefined) {
+    if (!bIsNullorUndefined) {
       curObj = obj;
-      if(props !== null) {
-        for(let idx=0; idx < props.length; idx++) {
+      if (props !== null) {
+        for (let idx = 0; idx < props.length; idx++) {
           bIsNullorUndefined = curObj[props[idx]] === null || curObj[props[idx]] === undefined;
-          curObj =  curObj[props[idx]]; // Set the curObj[props[idx]] to curObj so that it will recursive down the depth of the object
+          curObj = curObj[props[idx]]; // Set the curObj[props[idx]] to curObj so that it will recursive down the depth of the object
 
-          if(bIsNullorUndefined)
-            break;
+          if (bIsNullorUndefined) break;
         }
       }
     }
 
-    if(bIsNullorUndefined)
-      return defaultValue;
-    else
-      return curObj;
+    if (bIsNullorUndefined) return defaultValue;
+    else return curObj;
   }
-
 }

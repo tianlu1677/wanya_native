@@ -27,12 +27,6 @@ const CollapsibleHeader = props => {
   useEffect(() => {
     scrollY.addListener(({value}) => {
       listOffset.current[currentKey] = value;
-      if(value > 80) {
-        // StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
-      } else {
-        // StatusBar.setBackgroundColor('black');
-      }
-      // console.log('x', value)
     });
     return () => {
       scrollY.removeAllListeners();
@@ -95,11 +89,11 @@ const CollapsibleHeader = props => {
     });
 
     return (
-      <View style={{backgroundColor: 'white'}}>
+      <View style={{backgroundColor: 'white', flex: 1}}>
         {/*<Animated.View style={{backgroundColor: 'yellow', opacity: opacity1, zIndex: -1, position: 'absolute', top: 0, left: 0, right: 0, height: 200 }} >*/}
         {/*  <Text style={{paddingTop: 40, textAlign: 'center', fontSize: 40}}>顽鸦你所相见</Text>*/}
         {/*</Animated.View>*/}
-        <View style={{flex: 1, height: tabBarHeight, backgroundColor: 'white'}} />
+        {/*<View style={{flex: 1, height: tabBarHeight, backgroundColor: 'white'}} />*/}
         <Animated.FlatList
           scrollToOverflowEnabled
           scrollEventThrottle={16}
@@ -109,6 +103,7 @@ const CollapsibleHeader = props => {
           })}
           onRefresh={false}
           bounces={true}
+          style={{flex: 1}}
           // refreshing={true}
           onMomentumScrollBegin={onMomentumScrollBegin}
           onScrollEndDrag={onScrollEndDrag}
@@ -154,13 +149,12 @@ const CollapsibleHeader = props => {
     return (
       <Animated.View style={viewStyles}>
         <TabList
-          data={navigationState.routes}
           current={props.currentKey}
+          align="center"
+          bottomLine={true}
+          separator={false}
           tabChange={tab => props.onKeyChange(tab.key)}
-          size={props.size}
-          lazy={true}
-          bottomLine={props.bottomLine}
-          {...innerProps}
+          data={navigationState.routes}
         />
       </Animated.View>
     );
@@ -168,8 +162,6 @@ const CollapsibleHeader = props => {
 
   const renderTabView = () => {
     const onIndexChange = i => {
-      // console.log('change...')
-      // StatusBar.setBackgroundColor('rgba(1,1,1,0.8)');
       const key = tabData[i].key;
       props.onKeyChange(key);
     };
@@ -180,10 +172,7 @@ const CollapsibleHeader = props => {
         navigationState={navigationState}
         renderScene={renderScene}
         renderTabBar={renderTabBarWithWrapper}
-        initialLayout={{
-          height: 0,
-          width: Dimensions.get('window').width,
-        }}
+        initialLayout={{height: 0, width: Dimensions.get('window').width}}
         lazy={true}
         style={{flex: 1, zIndex: -1, backgroundColor: '#fff'}}
       />
@@ -242,7 +231,7 @@ const localStyles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 0,
-    backgroundColor: '#000'
+    backgroundColor: '#000',
   },
 });
 

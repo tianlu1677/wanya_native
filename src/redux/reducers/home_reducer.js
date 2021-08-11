@@ -1,6 +1,7 @@
 import * as constants from '../constants';
 
 const defaultState = {
+  totalLabelList: [],
   channels: [],
   savetopic: {},
   previewImageData: {
@@ -10,20 +11,21 @@ const defaultState = {
   },
   shareContent: {
     visible: false,
-    title: '',
-    desc: '',
-    thumbImageUrl: '',
-    path: '',
+    item_id: '',
+    item_type: '',
   },
-  commentTopic: {content: ''},
+  commentContent: {content: ''},
   location: {chooseCity: ''},
   categoryList: [],
   shareStatus: true,
   shareNearbyStatus: true,
+  cityList: [], // 城市数据
 };
 
 export const homeReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case constants.TOTAL_LABEL_LIST:
+      return {...state, totalLabelList: action.value};
     case constants.SAVE_CHANNELS:
       return {
         ...state,
@@ -45,10 +47,10 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         shareContent: action.shareContent,
       };
-    case constants.SAVE_COMMENT_TOPIC:
+    case constants.SAVE_COMMENT_CONTENT:
       return {
         ...state,
-        commentTopic: action.value,
+        commentContent: action.value,
       };
     case constants.GET_LOCATION:
       return {
@@ -60,6 +62,11 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         categoryList: action.categories,
       };
+    case constants.UPDATE_TOTAL_LABEL_LIST:
+      return {
+        ...state,
+        totalLabelList: action.labelList,
+      };
     case constants.CHANGE_SHARE_STATUS:
       return {
         ...state,
@@ -69,6 +76,11 @@ export const homeReducer = (state = defaultState, action) => {
       return {
         ...state,
         shareNearbyStatus: action.value,
+      };
+    case constants.LOAD_ALL_CITY_SUCCESS:
+      return {
+        ...state,
+        cityList: action.value,
       };
     default:
       return state;

@@ -50,7 +50,7 @@ export const LoginBgImg =
   'http://file.meirixinxue.com/assets/201912081832P7b09f843850d2f29ff0f16deeaaadb55.jpg';
 
 export const SystemNoticeImg =
-  'http://file.meirixinxue.com/assets/2020/41ed2174-0ffb-46d5-addf-97e789d2348a.png';
+  'http://file.meirixinxue.com/assets/2021/e8894a4f-2aef-4706-b714-9e49b3addf68.png';
 export const CommentNoticeImg =
   'http://file.meirixinxue.com/assets/2020/7902785f-b0b6-42cc-a21d-4192ee52e512.jpg';
 export const PraiseNoticeImg =

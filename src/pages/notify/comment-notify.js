@@ -1,6 +1,5 @@
-import React, {Component, useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, Button, Pressable} from 'react-native';
-import {connect, useSelector} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {View, StatusBar} from 'react-native';
 import {getReplyComments} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
@@ -26,10 +25,6 @@ const CommentNotify = ({navigation}) => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    loadInfo();
-  }, []);
-
   const formatComment = comment => {
     let commentable = comment.commentable;
     let type = comment.commentable_type;
@@ -52,6 +47,15 @@ const CommentNotify = ({navigation}) => {
     if (type === 'Article') {
       return {...comment, item: {image_url: commentable.cover_url, has_video: false}};
     }
+    if (type === 'Theory' && commentable) {
+      return {
+        ...comment,
+        item: {
+          image_url: commentable.single_cover.cover_url,
+          has_video: commentable.single_cover.category === 'video',
+        },
+      };
+    }
 
     if (type === 'Topic') {
       image_url = commentable.video_content_thumb
@@ -66,21 +70,25 @@ const CommentNotify = ({navigation}) => {
   };
 
   const goInsideNotify = comment => {
-    // console.log('xxxxxxxx')
     if (comment.commentable_type === 'Topic' && comment.commentable) {
-      // goPage.goTopicDetailUrl(comment.commentable_id)
       navigation.navigate('TopicDetail', {topicId: comment.commentable_id});
       return;
     }
     if (comment.commentable_type === 'Article' && comment.commentable) {
-      // goPage.goArticleDetailUrl(comment.commentable_id)
       navigation.navigate('ArticleDetail', {articleId: comment.commentable_id});
+    }
+
+    if (comment.commentable_type === 'Theory' && comment.commentable) {
+      navigation.navigate('TheoryDetail', {theoryId: comment.commentable_id});
     }
   };
 
+  useEffect(() => {
+    loadInfo();
+  }, []);
+
   const renderItem = ({item}) => {
     let comment = item;
-    // console.log('comment', comment);
     return (
       <NotifyContent
         account={comment.account}
@@ -96,16 +104,19 @@ const CommentNotify = ({navigation}) => {
   };
 
   return (
-    <ScrollList
-      onRefresh={loadInfo}
-      headers={headers}
-      data={data}
-      loading={loading}
-      renderItem={renderItem}
-      enableRefresh={false}
-      renderSeparator={() => <View />}
-      initialNumToRender={10}
-    />
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <ScrollList
+        onRefresh={loadInfo}
+        headers={headers}
+        data={data}
+        loading={loading}
+        renderItem={renderItem}
+        enableRefresh={false}
+        renderSeparator={() => <View />}
+        initialNumToRender={10}
+      />
+    </View>
   );
 };
 

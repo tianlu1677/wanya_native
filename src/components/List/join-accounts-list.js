@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import {Avator, PlayScore} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
@@ -9,16 +9,14 @@ const JoinAccountsList = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
-  const adminAccount = account.account;
+  const adminAccount = account?.account;
 
   const renderItem = ({item}) => {
     return (
-      <Pressable onPress={() => goAccountDetail(item)}>
-        <View style={styles.follow}>
-          <Avator account={item} size={RFValue(40)} />
-          <Text style={styles.nickname}>{item.nickname}</Text>
-          <PlayScore score={item.play_score} textStyle={styles.textScore} />
-        </View>
+      <Pressable onPress={() => goAccountDetail(item)} style={styles.follow}>
+        <Avator account={item} size={RFValue(40)} />
+        <Text style={styles.nickname}>{item.nickname}</Text>
+        <PlayScore score={item.play_score} textStyle={styles.textScore} />
       </Pressable>
     );
   };
@@ -33,10 +31,12 @@ const JoinAccountsList = ({navigation, route}) => {
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    const {api, params} = route.params.request;
+    const {api, params, type} = route.params.request;
     const res = await api({...params, page});
-    const data = res.data.accounts;
-
+    let data = res.data.accounts;
+    if (type === 'activity') {
+      data = res.data.activity_enrollments.map(v => v.account);
+    }
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -48,30 +48,33 @@ const JoinAccountsList = ({navigation, route}) => {
   }, []);
 
   return (
-    <ScrollList
-      data={listData}
-      loading={loading}
-      onRefresh={loadData}
-      headers={headers}
-      renderItem={renderItem}
-      renderSeparator={renderSeparator}
-      enableRefresh={false}
-      ListHeaderComponent={
-        adminAccount && (
-          <>
-            <Text style={styles.title}>{account.title}</Text>
-            <Pressable onPress={() => goAccountDetail(adminAccount)}>
-              <View style={styles.follow}>
-                <Avator account={adminAccount} size={RFValue(40)} />
-                <Text style={styles.nickname}>{adminAccount.nickname}</Text>
-                <PlayScore score={adminAccount.play_score} textStyle={styles.textScore} />
-              </View>
-            </Pressable>
-            <Text style={styles.title}>已加入顽友</Text>
-          </>
-        )
-      }
-    />
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <ScrollList
+        data={listData}
+        loading={loading}
+        onRefresh={loadData}
+        headers={headers}
+        renderItem={renderItem}
+        renderSeparator={renderSeparator}
+        enableRefresh={false}
+        ListHeaderComponent={
+          adminAccount && (
+            <>
+              <Text style={styles.title}>{account.title}</Text>
+              <Pressable onPress={() => goAccountDetail(adminAccount)}>
+                <View style={styles.follow}>
+                  <Avator account={adminAccount} size={RFValue(40)} />
+                  <Text style={styles.nickname}>{adminAccount.nickname}</Text>
+                  <PlayScore score={adminAccount.play_score} textStyle={styles.textScore} />
+                </View>
+              </Pressable>
+              <Text style={styles.title}>已加入顽友</Text>
+            </>
+          )
+        }
+      />
+    </>
   );
 };
 
@@ -90,8 +93,8 @@ export const styles = StyleSheet.create({
   },
   follow: {
     flexDirection: 'row',
-    paddingLeft: RFValue(16),
-    paddingRight: RFValue(27),
+    paddingLeft: 14,
+    paddingRight: 27,
     paddingVertical: RFValue(14),
     alignItems: 'center',
     backgroundColor: '#fff',

@@ -5,6 +5,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {IsIos, STATUS_BAR_HEIGHT, NAV_BAR_HEIGHT} from '@/utils/navbar';
 import ExcellentImage from '@/assets/images/excellent.png';
+import {VWValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 
@@ -33,7 +34,7 @@ const TopHeaderView = props => {
                 if (!navigation.canGoBack() || isAtRoot) {
                   navigation.reset({
                     index: 0,
-                    routes: [{name: 'Recommend'}],
+                    routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
                   });
                 } else {
                   navigation.goBack();
@@ -55,7 +56,12 @@ const TopHeaderView = props => {
               )}
               {props.excellent && (
                 <View style={{justifyContent: 'center'}}>
-                  <FastImg source={ExcellentImage} style={{width: 30, height: 17}} />
+                  <FastImg
+                    source={ExcellentImage}
+                    style={{width: VWValue(30), height: VWValue(17)}}
+                    resizeMode={'contain'}
+                    resizeMethod={'resize'}
+                  />
                 </View>
               )}
             </TouchableOpacity>
@@ -65,7 +71,7 @@ const TopHeaderView = props => {
           <View style={styles.title}>
             {Title && typeof Title === 'string' ? (
               <Text numberOfLines={1} style={styles.titleText}>
-                {Title.length > 10 ? `${Title.substr(0,10)}...` : Title}
+                {Title.length > 10 ? `${Title.substr(0, 10)}...` : Title}
               </Text>
             ) : (
               <Title />

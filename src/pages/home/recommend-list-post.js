@@ -1,9 +1,11 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {Platform} from 'react-native';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import {View, Platform, StyleSheet} from 'react-native';
 import {throttle} from 'lodash';
+import {TransFormType} from '@/utils';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {getRecommendPosts, getRecommendTopPosts} from '@/api/home_api';
 
 const RecommendListPost = () => {
@@ -17,38 +19,35 @@ const RecommendListPost = () => {
     setListData([...data]);
   };
 
-  const RenderItem = React.memo(({item, index}) =>
-    item.item_type === 'Topic' ? (
-      <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-    ) : (
-      <BaseArticle data={item.item} />
-    )
-  );
+  const RenderItem = React.memo(({item, index}) => {
+    const data = {...item.item, published_at_text: `发布了${TransFormType(item.item)}`};
+    return useMemo(() => {
+      switch (item.item_type) {
+        case 'Topic':
+          return <BaseTopic data={data} onRemove={() => onRemove(index)} />;
+        case 'Article':
+          return <BaseArticle data={data} />;
+        case 'Theory':
+          return <BaseTheory data={data} onRemove={() => onRemove(index)} />;
+        default:
+          return <View />;
+      }
+    }, [item.id]);
+  });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
-  const onChangeListDataText = data => {
-    const changeData = data.map(v => {
-      const newItem = {...v.item, published_at_text: '发布了'};
-      const item = {...v, item: newItem};
-      return item;
-    });
-    return changeData;
-  };
-
   const loadData = async (page = 1) => {
+    let itemList = []
     if (page === 1) {
+      // 加载置顶
       setLoading(true);
+      itemList = (await getRecommendTopPosts()).data.posts;
+      setListData(itemList);
     }
-    // 加载置顶
-    let top_posts_res = await getRecommendTopPosts();
-    let topItemList = top_posts_res.data.posts;
     const res = await getRecommendPosts({page});
-    let itemList =
-      page === 1 ? [...topItemList, ...res.data.posts] : [...listData, ...res.data.posts];
-    itemList = itemList.concat(topItemList);
-    itemList = onChangeListDataText(itemList);
-    setListData(itemList);
+    // itemList = [...itemList, ...listData, ...res.data.posts]
+    setListData(listData => listData.concat(res.data.posts));
     setLoading(false);
     setHeaders(res.headers);
   };
@@ -63,19 +62,23 @@ const RecommendListPost = () => {
   };
 
   const onRefresh = (page = 1) => {
+    // console.log('page', page)
     if (page === 1 || !page) {
-      indexLoadData(pagination(headers).nextPage);
+      // console.log('a')
+      indexLoadData(pagination(headers).nextPage)
     } else {
-      loadData(page);
+      // console.log('b')
+      loadData(page)
     }
   };
 
   useEffect(() => {
-    loadData();
+    loadData(1);
   }, []);
 
   return (
     <ScrollList
+      keyExtractor={useCallback(item => `${item.id}${item.item_type}`, [])}
       data={listData}
       loading={loading}
       onRefresh={throttle(onRefresh, 300)}
@@ -84,8 +87,17 @@ const RecommendListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
+      renderSeparator={() => <View style={styles.speator} />}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginHorizontal: 14,
+  },
+});
 
 export default RecommendListPost;

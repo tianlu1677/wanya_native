@@ -1,13 +1,13 @@
-import React, {useLayoutEffect, useEffect, useState, useRef} from 'react';
-import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import {View, Text, ScrollView, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
 import Loading from '@/components/Loading';
-import NodeItem from '@/components/Item/node-item';
+import BaseNode from '@/components/Item/base-node';
 import {RFValue} from '@/utils/response-fontsize';
 import {styles} from '@/components/NodeIndex';
 
-const NodeIndex = ({navigation}) => {
+const NodeIndex = () => {
   const scrollRef = useRef(null);
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
@@ -17,6 +17,7 @@ const NodeIndex = ({navigation}) => {
   const [layoutList, setLayoutList] = useState(Array(categoryList.length).fill({y: -1}));
   const [active, setActive] = useState(1);
   const [allNodes, setAllNodes] = useState([]);
+
   const setLayout = (layout, index) => {
     const list = JSON.parse(JSON.stringify(layoutList));
     list[index] = layout;
@@ -51,52 +52,56 @@ const NodeIndex = ({navigation}) => {
     const allMineNodes = mineNodes.map(item => {
       return {...item, category_id: 0};
     });
-    // setAllNodes([...allMineNodes, ...nodes]);
     setAllNodes(allMineNodes.concat(nodes));
   }, [nodes, followNodes, checkNodes]);
 
   return allNodes.length > 0 ? (
-    <View style={styles.wrapper}>
-      <View style={styles.cateWrap}>
-        {categories.map((categorie, index) => (
-          <Pressable
-            key={index}
-            onPress={() => onChange(index)}
-            style={[styles.cateNameWrap, active === index && styles.cateNameActive]}>
-            <Text style={styles.cateName}>{categorie.name}</Text>
-            {active === index && <Text style={styles.active} />}
-          </Pressable>
-        ))}
-      </View>
-      <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
-        {categories.map((category, index) => (
-          <View
-            style={styles.nodeContent}
-            key={category.id}
-            onLayout={e => setLayout(e.nativeEvent.layout, index)}>
-            <Text style={styles.cateTitle}>{category.name}</Text>
-            <View style={styles.typeNodeWrap}>
-              {category.id === 0 &&
-                allNodes.filter(v => v.category_id === category.id).length === 0 && (
-                  <Text style={nstyles.noNodes}>还没有创建或加入任何圈子哦</Text>
-                )}
-              {allNodes
-                .filter(v => v.category_id === category.id)
-                .map((node, i) => (
-                  <View key={i}>
-                    <NodeItem
-                      node={{...node}}
-                      key={node.id}
-                      type={node.audit_status ? 'node-index-mine' : 'node-index'}
-                    />
-                    <Text style={styles.separator} />
-                  </View>
-                ))}
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <View style={styles.wrapper}>
+        <View style={styles.cateWrap}>
+          {categories.map((categorie, index) => (
+            <Pressable
+              key={index}
+              onPress={() => onChange(index)}
+              style={[styles.cateNameWrap, active === index && styles.cateNameActive]}>
+              <Text style={styles.cateName}>{categorie.name}</Text>
+              {active === index && <Text style={styles.active} />}
+            </Pressable>
+          ))}
+        </View>
+        <ScrollView ref={scrollRef} style={styles.nodeListWrap}>
+          {categories.map((category, index) => (
+            <View
+              style={styles.nodeContent}
+              key={category.id}
+              onLayout={e => setLayout(e.nativeEvent.layout, index)}>
+              <Text style={styles.cateTitle}>{category.name}</Text>
+              <View style={styles.typeNodeWrap}>
+                {category.id === 0 &&
+                  allNodes.filter(v => v.category_id === category.id).length === 0 && (
+                    <Text style={nstyles.noNodes}>还没有创建或加入任何圈子哦</Text>
+                  )}
+                {allNodes
+                  .filter(v => v.category_id === category.id)
+                  .map((node, i) => {
+                    return (
+                      <View key={i}>
+                        <BaseNode
+                          data={node}
+                          type={node.audit_status ? 'mine-node' : 'list'}
+                          style={{paddingLeft: 0, paddingRight: 16}}
+                        />
+                        <Text style={styles.separator} />
+                      </View>
+                    );
+                  })}
+              </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+          ))}
+        </ScrollView>
+      </View>
+    </>
   ) : (
     <Loading />
   );

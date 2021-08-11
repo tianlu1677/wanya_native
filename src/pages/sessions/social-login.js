@@ -1,5 +1,13 @@
 import React, {Component, useState, useLayoutEffect} from 'react';
-import {StyleSheet, StatusBar, Platform, View, Text, ImageBackground, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  StatusBar,
+  Platform,
+  View,
+  Text,
+  ImageBackground,
+  Pressable,
+} from 'react-native';
 import {Button} from 'react-native-elements';
 import styled from 'styled-components/native';
 import {useDispatch} from 'react-redux';
@@ -8,27 +16,23 @@ import * as WeChat from 'react-native-wechat-lib';
 import {appWechatSignIn, appAppleSignIn} from '@/api/sign_api';
 import {dispatchSetAuthToken, dispatchCurrentAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
-import {BOTTOM_HEIGHT, SCALE} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, SCALE, IsIos} from '@/utils/navbar';
 import {AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
 import Toast from '@/components/Toast';
 import IconFont from '@/iconfont';
+import PolicyModal from '@/components/PolicyModal';
+import {RFValue} from '@/utils/response-fontsize';
 
 const SocialLogin = ({navigation, route}) => {
   // const [inviteCode, setInviteCode] = useState('');
-  // const [isValidCode, setIsValidCode] = useState(false);
+  const [canShowAgree, setCanShowAgree] = useState(false);
   const dispatch = useDispatch();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, [navigation]);
 
   const phoneLogin = () => {
     navigation.navigate('PasswordLogin');
   };
   // 跳转逻辑
-  const verifyLoginStep = async(userInfoRes, loginType = 'wechatLogin') => {
+  const verifyLoginStep = async (userInfoRes, loginType = 'wechatLogin') => {
     if (userInfoRes.error) {
       Toast.showError(userInfoRes.error);
       console.log('error', userInfoRes.error);
@@ -41,13 +45,13 @@ const SocialLogin = ({navigation, route}) => {
     // 有手机且已验证码，跳转到首页
     if (accountInfo.had_phone && accountInfo.had_invited) {
       await Helper.setData('auth_token', accountInfo.token);
-      dispatch(dispatchSetAuthToken(accountInfo.token));
-      dispatch(dispatchCurrentAccount());
+      await dispatch(dispatchSetAuthToken(accountInfo.token));
+      await dispatch(dispatchCurrentAccount());
 
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Recommend'}],
-      });
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{name: 'Recommend'}],
+      // });
     }
     // 没有手机跳转到手机
     if (!accountInfo.had_phone) {
@@ -126,7 +130,7 @@ const SocialLogin = ({navigation, route}) => {
       if (error.code === appleAuth.Error.CANCELED) {
         Toast.showError('您取消了苹果登录');
       } else {
-        Toast.showError(`您的苹果登录失败, 请稍后重试。`);
+        Toast.showError('您的苹果登录失败, 请稍后重试。');
       }
     }
   };
@@ -149,11 +153,7 @@ const SocialLogin = ({navigation, route}) => {
   };
   return (
     <View style={{backgroundColor: 'black'}}>
-      <StatusBar
-        barStyle={'light-content'}
-        translucent
-        backgroundColor="transparent"
-      />
+      <StatusBar barStyle={'light-content'} translucent backgroundColor="transparent" />
       {/*<Pressable*/}
       {/*  style={{*/}
       {/*    position: 'absolute',*/}
@@ -185,8 +185,6 @@ const SocialLogin = ({navigation, route}) => {
             left: 0,
             right: 0,
           }}>
-
-
           <View style={styles.loginContainer}>
             <Pressable
               style={styles.loginButton}
@@ -204,13 +202,11 @@ const SocialLogin = ({navigation, route}) => {
                 phoneLogin();
               }}>
               <IconFont name={'shouji'} />
-              <Text style={styles.loginText}>
-                通过手机登录
-              </Text>
+              <Text style={styles.loginText}>通过手机登录</Text>
             </Pressable>
           </View>
-          {
-            Platform.OS === 'ios' && <View style={[styles.phoneLoginContainer]}>
+          {Platform.OS === 'ios' && (
+            <View style={[styles.phoneLoginContainer]}>
               <AppleButton
                 buttonStyle={AppleButton.Type.WHITE_OUTLINE}
                 buttonType={AppleButton.Type.SIGN_IN}
@@ -221,11 +217,21 @@ const SocialLogin = ({navigation, route}) => {
                 onPress={onAppleButtonPress}
               />
             </View>
-          }
-
+          )}
         </View>
 
         <View style={styles.privateText} allowFontScaling={false} adjustsFontSizeToFit={false}>
+          <Pressable
+            style={styles.ruleWrapper}
+            hitSlop={{left: 10, right: 10, top: 30}}
+            onPress={() => {if(!IsIos) { setCanShowAgree(!canShowAgree) } }}>
+            <View style={styles.checkbox}>
+            {
+              !canShowAgree && <IconFont name="yixuan" size={16} color="red" />
+            }
+            </View>
+          </Pressable>
+
           <Text style={styles.textContent}>我已阅读并同意</Text>
           <Pressable
             onPress={() => {
@@ -244,6 +250,8 @@ const SocialLogin = ({navigation, route}) => {
           </Pressable>
         </View>
       </ImageBackground>
+
+      {!IsIos && <PolicyModal canShowAgree={canShowAgree} canShowAgreeFunc={(status) => {setCanShowAgree(status) }} />}
     </View>
   );
 };
@@ -274,7 +282,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'white',
     borderRadius: 2,
-    marginTop: 10
+    marginTop: 10,
   },
 
   loginText: {
@@ -304,6 +312,22 @@ const styles = StyleSheet.create({
   textContent: {
     fontSize: 11,
     color: '#BDBDBD',
+  },
+  ruleWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: 'white',
+  },
+  checkbox: {
+    width: 15,
+    height: 15,
+    borderColor: 'white',
+    borderWidth: StyleSheet.hairlineWidth,
+    marginHorizontal: 15,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 3,
   },
 });
 

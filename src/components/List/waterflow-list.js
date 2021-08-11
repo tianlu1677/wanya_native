@@ -5,8 +5,6 @@ import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
-import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
-import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getRecommendTopPosts} from '@/api/home_api';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
@@ -48,22 +46,22 @@ const SingleItem = props => {
   };
 
   const onPraise = async () => {
-    switch (props.item_type) {
-      case 'Article':
-        if (praiseForm.praise) {
-          await destroyArticleAction({id: props.detail.id, type: 'praise'});
-        } else {
-          await createArticleAction({id: props.detail.id, type: 'praise'});
-        }
-        break;
-      case 'Topic':
-        if (praiseForm.praise) {
-          await destroyTopicAction({id: data.id, type: 'praise'});
-        } else {
-          await createTopicAction({id: data.id, type: 'type'});
-        }
-        break;
-    }
+    // switch (props.item_type) {
+    //   case 'Article':
+    //     if (praiseForm.praise) {
+    //       await destroyArticleAction({id: props.detail.id, type: 'praise'});
+    //     } else {
+    //       await createArticleAction({id: props.detail.id, type: 'praise'});
+    //     }
+    //     break;
+    //   case 'Topic':
+    //     if (praiseForm.praise) {
+    //       await destroyTopicAction({id: data.id, type: 'praise'});
+    //     } else {
+    //       await createTopicAction({id: data.id, type: 'type'});
+    //     }
+    //     break;
+    // }
     const praiseCount = praiseForm.praises_count + (praiseForm.praise === true ? -1 : 1);
     const params = {
       praise: !praiseForm.praise,

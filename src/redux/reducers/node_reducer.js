@@ -1,6 +1,7 @@
 import * as constants from '../constants';
 
 const defaultState = {
+  nodeDetail: null,
   nodes: [],
   homeNodes: [],
   followNodes: [],
@@ -10,6 +11,11 @@ const defaultState = {
 
 function nodeReducer(state = defaultState, action) {
   switch (action.type) {
+    case constants.UPDATE_NODE_DETAIL:
+      return (state = {
+        ...state,
+        nodeDetail: action.value,
+      });
     case constants.UPDATE_NODES:
       return (state = {
         ...state,

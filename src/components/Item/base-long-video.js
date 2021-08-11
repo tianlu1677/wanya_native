@@ -15,8 +15,12 @@ const BaseLongVideo = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
+  const isRenderBottom = data.node_name || data.praises_count || data.comments_count;
+
   return (
-    <Pressable style={styles.postSlide} onPress={goArticleDetail}>
+    <Pressable
+      style={[styles.postSlide, {paddingBottom: isRenderBottom ? 0 : 16}]}
+      onPress={goArticleDetail}>
       <Header data={data} type="article" onRemove={props.onRemove} />
       <View style={styles.content}>
         <Text style={styles.titleText} numberOfLines={2}>
@@ -28,20 +32,21 @@ const BaseLongVideo = props => {
           mode={'cover'}
         />
         <FastImg style={styles.playImage} source={VideoPlayImg} />
-        <View style={styles.bottom}>
-          <NoActionBottom data={data} />
-        </View>
+        {isRenderBottom ? (
+          <View style={styles.bottom}>
+            <NoActionBottom data={data} />
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );
 };
 
-const ImageHeight = parseInt((width * 420) / 750);
+const ImageHeight = Math.ceil((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
-    paddingBottom: 0,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
   content: {
     marginTop: RFValue(13),
@@ -49,6 +54,8 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 14,
     lineHeight: RFValue(21),
+    color: '#3c3c3c',
+    letterSpacing: 0.5,
     textAlign: 'justify',
   },
   playImage: {
@@ -66,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: RFValue(5),
   },
   bottom: {
-    height: RFValue(35),
+    paddingVertical: 12,
     justifyContent: 'center',
   },
 });

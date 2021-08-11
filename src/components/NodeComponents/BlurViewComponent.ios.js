@@ -9,8 +9,7 @@ const BlurViewComponent = props => {
       blurType={props.blurType || 'light'}
       blurAmount={props.blurAmount || 80}
       style={props.style}
-      reducedTransparencyFallbackColor={props.reducedTransparencyFallbackColor || 'white'}
-      >
+      reducedTransparencyFallbackColor={props.reducedTransparencyFallbackColor || 'white'}>
       {props.children}
     </BlurView>
   );

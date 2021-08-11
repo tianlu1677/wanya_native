@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {KeyboardAvoidingView, ActivityIndicator, ScrollView, Dimensions, Platform} from 'react-native';
+import {KeyboardAvoidingView, ActivityIndicator, Dimensions, Platform} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import * as action from '@/redux/constants';
@@ -10,8 +10,8 @@ import {createComment} from '@/api/comment_api';
 import {dispatchTopicDetail} from '@/redux/actions';
 import {getTopic} from '@/api/topic_api';
 import {dispatchShareItem} from '@/redux/actions';
-import TopHeaderView from "@/components/TopHeadView"
-import {IsIos, STATUS_BAR_HEIGHT} from "@/utils/navbar"
+import TopHeaderView from '@/components/TopHeadView';
+import {IsIos, STATUS_BAR_HEIGHT} from '@/utils/navbar';
 const TopicLinkDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentTopic = useSelector(state => state.topic.topicDetail);
@@ -27,7 +27,7 @@ const TopicLinkDetail = ({navigation, route}) => {
     setVisible(false);
     Toast.showLoading('发送中');
     await createComment(data);
-    dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+    dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
     Toast.hide();
     Toast.show('评论成功啦');
     loadData();
@@ -42,45 +42,39 @@ const TopicLinkDetail = ({navigation, route}) => {
   }, [currentTopic]);
 
   const onShare = () => {
-    let shareOptions = {
-      userName: 'gh_c2b50fe8e928',
-      path: '',
-      scene: 0,
-      title: currentTopic.topic_link?.title || currentTopic.topic_link.raw_link,
-      thumbImageUrl: currentTopic.topic_link.cover_url,
-      webpageUrl: currentTopic.topic_link.raw_link,
-      visible: true,
-      type: 'link'
-    };
-    dispatch(dispatchShareItem(shareOptions));
-  }
+    const shareContent = {item_type: 'Topic', item_id: currentTopic.id, visible: true};
+    dispatch(dispatchShareItem(shareContent));
+  };
 
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}
-    >
+      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
       <TopHeaderView
         Title={detail.topic_link.title}
         leftButtonColor={'black'}
         excellent={detail.excellent}
         statusBar={{
-          barStyle: 'dark-content',
+          barStyle: 'light-content',
           hidden: false,
         }}
       />
       {/*https://github.com/react-native-webview/react-native-webview/issues/22*/}
-       <WebView
-          originWhitelist={['http://', 'https://']}
-          source={{uri: detail.topic_link.raw_link}}
-          startInLoadingState={true}
-          scalesPageToFit={true}
-          renderLoading={() => <ActivityIndicator />}
-          scrollEnabled
-          style={{ height: Dimensions.get('window').height-70, width: Dimensions.get('window').width, flex: 1}}
-          autoManageStatusBarEnabled={false}
-        />
+      <WebView
+        originWhitelist={['http://', 'https://']}
+        source={{uri: detail.topic_link.raw_link}}
+        startInLoadingState={true}
+        scalesPageToFit={true}
+        renderLoading={() => <ActivityIndicator />}
+        scrollEnabled
+        style={{
+          height: Dimensions.get('window').height - 70,
+          width: Dimensions.get('window').width,
+          flex: 1,
+        }}
+        autoManageStatusBarEnabled={false}
+      />
 
       <ActionComment
         visible={visible}
@@ -89,7 +83,7 @@ const TopicLinkDetail = ({navigation, route}) => {
         type="Topic"
         changeVisible={value => setVisible(value)}
         onShare={() => {
-          onShare()
+          onShare();
         }}
       />
     </KeyboardAvoidingView>

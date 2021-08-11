@@ -2,6 +2,8 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, Pressable, Button, FlatList, ScrollView, View, Text} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import GetLocation from '@/components/GetLocation';
+import ShareUtil from '@/utils/umeng_share_util';
+import AnalyticsUtil from '@/utils/umeng_analytics_util';
 // import PushNotification from 'react-native-push-notification';
 import Helper from '@/utils/helper';
 import {
@@ -12,6 +14,7 @@ import {
   RESULTS,
   openSettings,
 } from 'react-native-permissions';
+import {useDispatch, useSelector} from 'react-redux';
 
 const LabIndex = props => {
   const navigation = props.navigation;
@@ -23,6 +26,19 @@ const LabIndex = props => {
     setDeviceToken(device_token);
   };
 
+  const [showWidget, toggleWidget] = useState(false);
+  const user = {
+    identifier: 'john@gmail.com',
+    name: 'John Samuel',
+    avatar_url: '',
+    email: 'john@gmail.com',
+    identifier_hash: '',
+  };
+  const customAttributes = {accountId: 1, pricingPlan: 'paid', status: 'active'};
+  const websiteToken = 'hpXWDG6EvLXDjQeEArdcgVVh';
+  const baseUrl = 'https://chatwood.vanyah.cn';
+  const locale = 'zh_CN';
+
   const getLocation = data => {
     console.log('data', data);
     // if(data.position && data.position.coords)
@@ -33,6 +49,82 @@ const LabIndex = props => {
     // PushNotification.checkPermissions(res => {
     //   setNotifyPermission(res);
     // });
+  };
+
+  const shareQQ = () => {
+    console.log('shareQQ,');
+    try {
+      ShareUtil.share(
+        'sssss',
+        'http://dev.umeng.com/images/tab2_1.png',
+        'http://www.umeng.com/',
+        'title',
+        0,
+        (code, message) => {
+          console.log('code', code, message);
+          // this.setState({result:message});
+        }
+      );
+    } catch (e) {
+      console.log('qq', e);
+    }
+  };
+
+  const shareQQZone = () => {
+    console.log('shareQQZone,');
+    try {
+      ShareUtil.share(
+        'sssss',
+        'http://dev.umeng.com/images/tab2_1.png',
+        'http://www.umeng.com/',
+        'title',
+        4,
+        (code, message) => {
+          console.log('code', code, message);
+          // this.setState({result:message});
+        }
+      );
+    } catch (e) {
+      console.log('eerr', e);
+    }
+  };
+
+  const shareWeibo = () => {
+    console.log('shareWeibo');
+    try {
+      ShareUtil.share(
+        'sssss',
+        'http://xinxuefile.meirixinxue.com/assets/2021/b94d2a89-54c5-47a7-8cfe-b70850ab538c.jpg',
+        'http://www.umeng.com/',
+        'title',
+        1,
+        (code, message) => {
+          console.log('code,', code, message);
+          // this.setState({result: message});
+        }
+      );
+    } catch (e) {
+      console.log('error shareWeibo', e);
+    }
+  };
+  const loginWeibo = () => {
+    console.log('shareweibo');
+    ShareUtil.auth(1, (code, result, message) => {
+      console.log('res', code, result, message);
+    });
+  };
+
+  const loginQQ = () => {
+    console.log('shareQQ');
+    ShareUtil.auth(0, (code, result, message) => {
+      console.log('res', code, result, message);
+    });
+  };
+
+  const clickAna = () => {
+    console.log('clickAna');
+    AnalyticsUtil.onEvent('test');
+    // AnalyticsUtil.onEventObject('test', {a: 1});
   };
 
   return (
@@ -70,6 +162,40 @@ const LabIndex = props => {
           <Pressable onPress={openSettings}>
             <Text style={styles.text}>去设置权限页面</Text>
           </Pressable>
+
+          <Pressable onPress={() => shareQQ()}>
+            <Text style={styles.text}>分享QQ</Text>
+          </Pressable>
+          <Pressable onPress={() => shareWeibo()}>
+            <Text style={styles.text}>分享微博</Text>
+          </Pressable>
+
+          <Pressable onPress={() => shareQQZone()}>
+            <Text style={styles.text}>分享QQ空间</Text>
+          </Pressable>
+
+          <Pressable onPress={() => loginQQ()}>
+            <Text style={styles.text}>QQ登录</Text>
+          </Pressable>
+          <Pressable onPress={() => loginWeibo()}>
+            <Text style={styles.text}>微博登录</Text>
+          </Pressable>
+
+          <Pressable onPress={() => clickAna()}>
+            <Text style={styles.text}>点击统计</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('OneLogin');
+            }}>
+            <Text style={styles.text}>去一键登录</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('LoginPhoneCode');
+            }}>
+            <Text style={styles.text}>跳转注册页面</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </View>
@@ -92,6 +218,32 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 10,
     backgroundColor: 'yellow',
+  },
+
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  button: {
+    height: 48,
+    marginTop: 32,
+    paddingTop: 8,
+    paddingBottom: 8,
+    backgroundColor: '#1F93FF',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#fff',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    paddingLeft: 10,
+    fontWeight: '600',
+    fontSize: 16,
+    paddingRight: 10,
   },
 });
 

@@ -1,4 +1,4 @@
-import * as action from '../constants/index';
+import * as action from '@/redux/constants/index';
 import {getNodeIndex, getFollowNodeIndex, getCheckNodes} from '@/api/node_api';
 
 // 全部圈子

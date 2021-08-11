@@ -1,6 +1,5 @@
-import React, {Component, useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, Pressable} from 'react-native';
-import {connect, useSelector} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {View, StatusBar} from 'react-native';
 import {getMentionAccountNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
@@ -9,10 +8,6 @@ const MentionNotify = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState({});
-
-  useEffect(() => {
-    loadInfo();
-  }, []);
 
   const loadInfo = async (page = 1) => {
     let params = {page: page, per_page: 20};
@@ -61,18 +56,24 @@ const MentionNotify = ({navigation}) => {
       if (comment.commentable_type === 'Article') {
         navigation.push('ArticleDetail', {articleId: comment.commentable_id});
       }
+      if (comment.commentable_type === 'Theory') {
+        navigation.push('TheoryDetail', {theoryId: comment.commentable_id});
+      }
     } else if (notify.topic) {
-      console.log('topic, topic');
       navigation.push('TopicDetail', {topicId: notify.topic.id});
     } else if (notify.article) {
-      console.log('article, article');
       navigation.push('ArticleDetail', {articleId: notify.article.id});
+    } else if (notify.theory) {
+      navigation.push('TheoryDetail', {theoryId: notify.theory.id});
     }
   };
 
+  useEffect(() => {
+    loadInfo();
+  }, []);
+
   const renderItem = ({item}) => {
     let notify = item;
-    // console.log('notify', notify)
     return (
       <NotifyContent
         account={notify.actor}
@@ -87,18 +88,18 @@ const MentionNotify = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <ScrollList
         onRefresh={loadInfo}
         headers={headers}
         data={data}
         loading={loading}
         renderItem={renderItem}
-        // height={1200}
         enableRefresh={false}
         renderSeparator={() => <View />}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

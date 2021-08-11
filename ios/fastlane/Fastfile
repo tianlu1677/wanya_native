@@ -33,4 +33,11 @@ platform :ios do
     fir_cli api_token: "f684f86f55c235e73a1dbe75a7ce365d",  changelog: "APP"
     # upload_to_testflight
   end
+
+  lane :deploy do
+    token = "f684f86f55c235e73a1dbe75a7ce365d"
+    ipa_path = "#{Dir.pwd.gsub('fastlane', '')}build/顽鸦.ipa"
+    puts "url => #{ipa_path}"
+    fir_cli api_token: token, specify_file_path: ipa_path
+  end
 end

@@ -1,12 +1,16 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, StatusBar, Pressable, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {dispatchTopicDetail} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {PlainContent} from '@/components/Item/single-list-item';
-import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
+import {
+  PublishAccount,
+  PublishRelated,
+  RelatedComponent,
+} from '@/components/Item/single-detail-item';
 
 const RenderLink = props => {
   const dispatch = useDispatch();
@@ -21,7 +25,9 @@ const RenderLink = props => {
 
   return (
     <>
+      <StatusBar barStyle={'light-content'} translucent={false} backgroundColor={'black'} />
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+      <RelatedComponent data={detail} />
       <Pressable onPress={onGoDetail}>
         <View style={styles.linkWrapper}>
           <View style={styles.linkImageWrap}>
@@ -44,7 +50,12 @@ const RenderLink = props => {
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
         </View>
       ) : null}
-      <PublishRelated data={detail} type="topic" space={props.detail.space} location={props.detail.location} />
+      <PublishRelated
+        data={detail}
+        type="topic"
+        space={props.detail.space}
+        location={props.detail.location}
+      />
     </>
   );
 };

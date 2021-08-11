@@ -21,7 +21,7 @@ const ActionSheet = props => {
   const actionSheetItems = [...actionItems, cancelItem];
 
   useEffect(() => {
-    if(props.showActionSheet !== showActionSheet) {
+    if (props.showActionSheet !== showActionSheet) {
       setShowActionSheet(props.showActionSheet);
     }
   }, [props.showActionSheet]);
@@ -36,21 +36,20 @@ const ActionSheet = props => {
 
   return (
     <>
-      {
-        showActionSheet && ActionSheetIOS.showActionSheetWithOptions(
+      {showActionSheet &&
+        ActionSheetIOS.showActionSheetWithOptions(
           {
-            options: actionSheetItems.map((x) => x.label),
+            options: actionSheetItems.map(x => x.label),
             // destructiveButtonIndex: actionSheetItems.length - 1,
             cancelButtonIndex: actionSheetItems.length - 1,
             // tintColor: 'red',
           },
           buttonIndex => {
-            onPressItem(actionSheetItems[buttonIndex])
+            onPressItem(actionSheetItems[buttonIndex]);
           }
-        )
-      }
+        )}
     </>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

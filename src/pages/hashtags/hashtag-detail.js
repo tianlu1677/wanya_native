@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {BarHeight} from '@/utils/navbar';
 import {getHashtagPosts} from '@/api/hashtag_api';
-import {GoBack, JoinActivity} from '@/components/NodeComponents';
+import {JoinActivity, TopBack} from '@/components/NodeComponents';
 import * as action from '@/redux/constants';
+import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
@@ -49,9 +50,22 @@ const HashtagDetail = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <CollapsibleHeader
-        headerHeight={HEADER_HEIGHT}
+        tabBarHeight={BarHeight}
+        headerHeight={HEADER_HEIGHT + BarHeight}
         currentKey={currentKey}
         onKeyChange={key => setCurrentKey(key)}
+        renderTopHeader={<StickTopHeader title={'#' + hashtag} />}
+        renderHeader={
+          <>
+            <View style={{height: BarHeight, backgroundColor: '#ff8d00'}} />
+            <TopBack top={BarHeight + RFValue(10)} />
+            <View style={styles.header}>
+              <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
+              <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
+              <Text style={styles.hashtagText}>#{hashtag}</Text>
+            </View>
+          </>
+        }
         tabData={[
           {
             key: 'published_order',
@@ -64,15 +78,6 @@ const HashtagDetail = ({navigation, route}) => {
             component: HotList,
           },
         ]}
-        renderTopHeader={<StickTopHeader title={'#' + hashtag} />}
-        renderHeader={
-          <View style={styles.header}>
-            <GoBack />
-            <FastImg source={{uri: bgLogo}} style={styles.imageCover} />
-            <FastImg source={{uri: rightLogo}} style={styles.rightCoverImage} />
-            <Text style={styles.hashtagText}>#{hashtag}</Text>
-          </View>
-        }
       />
       <JoinActivity type={'node'} text={'参与话题'} handleClick={joinNewTopic} />
     </View>
@@ -97,11 +102,11 @@ const styles = StyleSheet.create({
     width: 60,
     position: 'absolute',
     right: 0,
-    top: STATUS_BAR_HEIGHT + 5,
+    top: BarHeight + 5,
   },
   hashtagText: {
     position: 'absolute',
-    top: 53 + STATUS_BAR_HEIGHT,
+    top: RFValue(40),
     left: 0,
     right: 0,
     marginLeft: 15,

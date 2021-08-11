@@ -48,24 +48,16 @@ export const getCities = async () => {
   return res;
 };
 
-// export async function getCities(data = {}) {
-//   const res = await request({
-//     url: '/api/v1/general/cities',
-//     method: 'GET',
-//     data,
-//   });
-//   return res.data;
-// }
+// 发现页面场地列表
+export const getSpaces = async params => {
+  const res = await request({
+    url: '/api/v1/spaces',
+    method: 'GET',
+    params,
+  });
+  return res;
+};
 
-// //获取位置
-// export async function getLocation(params) {
-//   const res = await request({
-//     url: '/api/v1/map/location',
-//     method: 'GET',
-//     params,
-//   });
-//   return res.data;
-// }
 // 热门场地
 export async function getRecommend(params) {
   const res = await request({
@@ -102,28 +94,6 @@ export async function editSpaces(id, data = {}) {
     data,
   });
   return res.data;
-}
-
-// 城市名称
-// export async function getCities(data = {}) {
-//   const res = await request({
-//     url: '/api/v1/general/cities',
-//     method: 'GET',
-//     data,
-//   });
-//   return res.data;
-// }
-
-export async function getSpaces(params, paginate) {
-  const res = await request({
-    url: '/api/v1/spaces',
-    method: 'GET',
-    params: {
-      ...params,
-      ...paginate,
-    },
-  });
-  return res;
 }
 
 // 点亮的人

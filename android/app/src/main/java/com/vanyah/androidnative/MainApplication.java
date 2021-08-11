@@ -6,6 +6,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.rnim.rn.audio.ReactNativeAudioPackage;
+import com.rnim.rn.audio.ReactNativeAudioPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -19,13 +21,17 @@ import com.brentvatne.react.ReactVideoPackage;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.commonsdk.UMConfigure;
 
-import com.umeng.message.MsgConstant;
-import com.umeng.message.PushAgent;
-import com.umeng.message.UTrack;
-import com.umeng.message.UmengMessageHandler;
-import com.umeng.message.entity.UMessage;
-import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.IUmengRegisterCallback;
+import cn.jiguang.plugins.push.JPushModule;
+import com.microsoft.codepush.react.CodePush;
+
+
+// import com.umeng.message.MsgConstant;
+// import com.umeng.message.PushAgent;
+// import com.umeng.message.UTrack;
+// import com.umeng.message.UmengMessageHandler;
+// import com.umeng.message.entity.UMessage;
+// import com.umeng.message.UmengNotificationClickHandler;
+// import com.umeng.message.IUmengRegisterCallback;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -48,6 +54,8 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new DplusReactPackage()); // 增加这行
           packages.add(new ReactVideoPackage()); // 增加这行
 
+//           packages.add(new JPushPackage());
+
           return packages;
         }
 
@@ -68,10 +76,15 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
-    UMConfigure.setLogEnabled(true);
-    RNUMConfigure.init(this, "5fd0a85dbed37e4506c7b5a8", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "5fd0a85dbed37e4506c7b5a8");
+    JPushModule.registerActivityLifecycle(this);
+//    UMConfigure.setLogEnabled(true);
+    RNUMConfigure.init(this, "5fd0a85dbed37e4506c7b5a8", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
   }
 
+    {
+         PlatformConfig.setSinaWeibo("3691201000", "08b8e8ad55f0681b8ae109bbe8806652", "https://app.vanyah.cn/callback");
+         PlatformConfig.setQQZone("1111498808", "9J2y7keKBcjYZHDs");
+    }
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
    * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());

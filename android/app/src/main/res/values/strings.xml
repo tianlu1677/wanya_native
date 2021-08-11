@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">顽鸦</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey"></string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">cd6a571d-eba7-47f6-8492-71ae6eec4d74</string>
 </resources>

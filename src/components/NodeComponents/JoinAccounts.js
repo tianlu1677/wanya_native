@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import Avator from './Avator';
 
 const JoinAccounts = props => {
-  const sizeStyle = {width: props.size, height: props.size, borderRadius: Number(props.size / 2)};
+  const {size} = props;
+  const sizeStyle = {width: size, height: size, borderRadius: Number(size / 2)};
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, props.style]}>
       {props.accounts.map((item, index) => (
         <View style={styles.content} key={index}>
-          <Avator account={item} size={props.size} />
+          <Avator account={item} size={props.size} handleClick={() => {}} />
           {index === 3 && <Text style={[styles.opacity, styles.textCenter, sizeStyle]} />}
           {index === 3 && <Text style={[styles.textCenter, sizeStyle]}>...</Text>}
         </View>
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   },
   opacity: {
     backgroundColor: '#000',
-    opacity: 0.1,
+    opacity: 0.2,
   },
   textCenter: {
     position: 'absolute',

@@ -1,37 +1,29 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {ScrollView, Pressable, View, Text, StyleSheet, Dimensions} from 'react-native';
 import PropTypes from 'prop-types';
-import {RFValue} from '@/utils/response-fontsize';
-const deviceWidth = Dimensions.get('window').width;
+import {RFValue, VWValue} from '@/utils/response-fontsize';
+const DeviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [center] = useState(props.center === false ? false : true);
+  const scrollRef = useRef(null);
+  const defaultIndex = props.data.findIndex(v => v.key === props.current);
+  const {align, bottomLine, separator} = props;
+  const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
   const [layoutList, setLayoutList] = useState([]);
-  const [size] = useState(props.size || 'middle');
-  const [bottomLine] = useState(props.bottomLine ? true : false);
 
-  const scrollRef = useRef(null);
+  const onScroll = index => {
+    const {x, width} = layoutList[index];
+    const sx = x - DeviceWidth / 2 + width / 2;
+    scrollRef.current.scrollTo({x: sx, animated: true});
+  };
 
   const setIndex = (item, index) => {
     props.tabChange(item, index);
-
-    setCurrentIndex(index);
-    setContentWidth(0);
-    if (!scrollEnabled) {
-      return;
+    if (scrollEnabled) {
+      onScroll(index);
     }
-    let layout = layoutList[index];
-    let rx = deviceWidth / 2;
-    let sx = layout.x - rx + layout.width / 2;
-    scrollRef.current.scrollTo({x: sx, animated: true});
-    // if (sx < 0) {
-    //   sx = 0;
-    // }
-    // sx < contentWidth - deviceWidth && scrollRef.current.scrollTo({x: sx, animated: true});
-    // sx >= contentWidth - deviceWidth && scrollRef.current.scrollToEnd({animated: true});
   };
 
   const setLayout = (layout, index) => {
@@ -43,155 +35,100 @@ const TabList = props => {
   };
 
   useEffect(() => {
-    if (props.current) {
+    const isAllLayout =
+      layoutList.length === props.data.length && layoutList.every(item => item && item.width);
+    if (isAllLayout) {
       const index = props.data.findIndex(v => v.key === props.current);
       setCurrentIndex(index);
+      onScroll(index);
     }
-  }, []);
+  }, [props.current, layoutList]);
 
   useEffect(() => {
-    const index = props.data.findIndex(v => v.key === props.current);
-    const current = props.data.find(v => v.key === props.current);
-    setCurrentIndex(index);
-    setIndex(current, index);
-  }, [props.current]);
-
-  useEffect(() => {
-    if (contentWidth > deviceWidth) {
+    if (contentWidth > DeviceWidth) {
       setScrollEnabled(true);
     }
   }, [contentWidth]);
 
   return (
-    <View
-      style={[
-        tabBarStyle.tabWrap,
-        tabBarStyle[`tab${size}`],
-        bottomLine ? tabBarStyle.bottomLine : null,
-        {
-          alignItems: center ? 'center' : 'flex-start',
-        },
-      ]}>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        ref={scrollRef}
-        centerContent={center}
-        style={tabBarStyle[`tabScroll${size}`]}
-        scrollEnabled={scrollEnabled}>
-        {props.data.length > 0 &&
-          props.data.map((item, index) => {
-            return (
-              <Pressable
-                onPress={() => setIndex(item, index)}
-                onLayout={e => setLayout(e.nativeEvent.layout, index)}
-                key={item.key}
-                style={[tabBarStyle.tabItem]}>
-                <Text
-                  style={[
-                    tabBarStyle.textActive,
-                    tabBarStyle[`tabItemText${size}`],
-                    currentIndex === index && tabBarStyle[`textActive${size}`],
-                  ]}>
-                  {item.title}
-                </Text>
-                {currentIndex === index && (
-                  <View
-                    style={[
-                      tabBarStyle.tabLine,
-                      currentIndex === index && tabBarStyle[`lineActive${size}`],
-                    ]}
-                  />
-                )}
-              </Pressable>
-            );
-          })}
-      </ScrollView>
-    </View>
+    <>
+      <View style={[styles.tabWrap, styles[`tab${align}`], bottomLine && styles.bottomLine]}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          ref={scrollRef}
+          overScrollMode={'always'}
+          centerContent={false}
+          style={styles.tabScroll}
+          scrollEnabled={scrollEnabled}>
+          {props.data.length > 0 &&
+            props.data.map((item, index) => {
+              return (
+                <Pressable
+                  key={item.key}
+                  onPress={() => setIndex(item, index)}
+                  onLayout={e => setLayout(e.nativeEvent.layout, index)}
+                  style={styles.tabItem}>
+                  <Text
+                    style={[styles.tabItemText, currentIndex === index && styles.tabItemTextActive]}
+                    visit_key={`click_${item.title}`}
+                    visit_value={{name: item.title}}>
+                    {item.title}
+                  </Text>
+                  {currentIndex === index ? <View style={styles.tabLineActive} /> : null}
+                </Pressable>
+              );
+            })}
+        </ScrollView>
+      </View>
+      {separator && <View style={styles.separator} />}
+    </>
   );
 };
 
-// middle 45
-const tabBarStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   tabWrap: {
+    height: RFValue(33),
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    paddingRight: 5,
   },
-  tabbig: {
-    height: 50,
+  tabScroll: {
+    paddingLeft: 10,
+    textAlign: 'left',
+  },
+  tabItem: {
     alignItems: 'center',
-    backgroundColor: '#000',
+    justifyContent: 'center',
+    paddingHorizontal: VWValue(8),
+    position: 'relative',
   },
-  tabmiddle: {
-    height: 50,
+  tabItemText: {
+    fontSize: 15,
+    color: '#aaa',
+    backgroundColor: '#fff',
   },
-  tabsmall: {
-    height: RFValue(36),
+  tabItemTextActive: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: '500',
   },
-  tabScrollsmall: {
-    paddingLeft: RFValue(8),
+  tabLineActive: {
+    position: 'absolute',
+    bottom: 0,
+    width: RFValue(18),
+    height: RFValue(3),
+    borderRadius: 4,
+    backgroundColor: '#FF2242',
+  },
+  tableft: {
+    alignItems: 'flex-start',
+  },
+  tabcenter: {
+    alignItems: 'center',
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',
     borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  tabItem: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  tabItemTextbig: {
-    fontSize: 15,
-    color: '#7f7f81',
-  },
-  tabItemTextmiddle: {
-    fontSize: 14,
-    color: '#7f7f81',
-  },
-  tabItemTextsmall: {
-    fontSize: 15,
-    color: '#000',
-    fontWeight: '300',
-  },
-  textActive: {
-    fontWeight: '500',
-    color: '#000',
-  },
-  textActivebig: {
-    fontSize: 18,
-    color: '#fff',
-  },
-  textActivemiddle: {
-    fontSize: 16,
-    color: '#000',
-  },
-  textActivesmall: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  tabLine: {
-    position: 'absolute',
-    bottom: 8,
-    borderRadius: 4,
-    overflow: 'hidden',
-    backgroundColor: '#000',
-    height: 3,
-  },
-  lineActivebig: {
-    width: 22,
-    marginTop: 6,
-    backgroundColor: '#fff',
-  },
-  lineActivemiddle: {
-    width: 14,
-    marginTop: 5,
-  },
-  lineActivesmall: {
-    width: 18,
-    position: 'absolute',
-    bottom: 0,
   },
   separator: {
     borderBottomColor: '#FAFAFA',
@@ -200,12 +137,12 @@ const tabBarStyle = StyleSheet.create({
 });
 
 TabList.propTypes = {
-  data: PropTypes.array.isRequired, //tabList接收的数据
+  current: PropTypes.string.isRequired, // 默认高亮第几项key
+  align: PropTypes.string.isRequired, //对齐方式
+  bottomLine: PropTypes.bool.isRequired, //是否显示底部分界线
+  separator: PropTypes.bool.isRequired, //是否显示底部分界线
   tabChange: PropTypes.func.isRequired, //onChange 返回item
-  current: PropTypes.string, // 默认高亮第几项key
-  center: PropTypes.bool, // 是否居中显示
-  bottomLine: PropTypes.bool, //是否显示底部线
-  separator: PropTypes.bool, //是否显示底部分界线
+  data: PropTypes.array.isRequired, //tabList接收的数据
 };
 
 export default TabList;

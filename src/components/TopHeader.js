@@ -28,7 +28,7 @@ const TopHeader = props => {
         </View>
       )}
       <View style={[styles.header, props.headerStyles]}>
-        <View style={styles.leftButton}>
+        <View style={[styles.leftButton, props.leftButtonStyles]}>
           {LeftButton ? (
             <LeftButton />
           ) : (
@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusBar: {
-    height: IsIos ? STATUS_BAR_HEIGHT : 0,
+    height: IsIos ? STATUS_BAR_HEIGHT : 5,
   },
 });

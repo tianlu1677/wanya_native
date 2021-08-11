@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useLayoutEffect, useEffect} from 'react';
-import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Pressable, StyleSheet, StatusBar} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -26,9 +26,7 @@ const AddLink = ({navigation}) => {
   const onAnalysis = async () => {
     Toast.showLoading('正在解析中...');
     try {
-      // console.log('parseUrl', parseUrl)
       let res = await addTopicLink({raw_link: parseUrl});
-      // console.log('res', res);
       Toast.hide();
       if (res.error_info || res.error) {
         Toast.showError(res.error_info || '解析不到该网址，请重新输入');
@@ -54,7 +52,7 @@ const AddLink = ({navigation}) => {
     navigation.setOptions({
       headerTitle: '添加链接',
       headerRight: () => (
-        <Pressable onPress={onAnalysis}>
+        <Pressable onPress={onAnalysis} hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <Text style={[styles.cancel, {color: textValue ? '#000' : '#bdbdbd'}]}>确定</Text>
         </Pressable>
       ),
@@ -67,6 +65,7 @@ const AddLink = ({navigation}) => {
 
   return (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <Text style={styles.tips}>请复制链接后回到这里，添加链接后发布可直接查看详情</Text>
       <TextInput
         style={styles.inputContent}

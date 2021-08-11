@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, Keyboard, TouchableWithoutFeedback, View} from 'react-native';
-import {getHashtagList} from '@/api/hashtag_api';
+import {StyleSheet, Text, Keyboard, TouchableWithoutFeedback, View, StatusBar} from 'react-native';
+import {RFValue} from '@/utils/response-fontsize';
+import {BarHeight} from '@/utils/navbar';
 import HashtagList from '@/components/List/hash-tag-list';
 import {Search} from '@/components/NodeComponents';
-import {ProWrapper as pstyles} from '@/styles/baseCommon';
 import {searchApi} from '@/api/search_api';
-import {RFValue} from '@/utils/response-fontsize';
+import {getHashtagList} from '@/api/hashtag_api';
+
+import {ProWrapper as pstyles} from '@/styles/baseCommon';
 
 const AddHashTag = ({navigation}) => {
   const [searchKey, setSearchKey] = useState(null);
@@ -31,6 +33,8 @@ const AddHashTag = ({navigation}) => {
         Keyboard.dismiss();
       }}>
       <View style={styles.wrapper}>
+        <View style={{height: BarHeight}} />
+        <StatusBar barStyle="dark-content" backgroundColor={'white'} />
         <Search
           inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
           height={RFValue(36)}
@@ -38,14 +42,14 @@ const AddHashTag = ({navigation}) => {
           placeholderTextColor="#7F7F81"
           placeholder="搜索更多话题"
           onChangeText={text => setSearchKey(text)}
+          cancel={true}
           onCancel={() => navigation.goBack()}
         />
-
         {request && (
           <HashtagList
             request={request}
             enableRefresh={false}
-            type="add-hash-tag"
+            type="add-hashtag"
             dataKey={searchKey ? 'items' : 'hashtags'}
             ListHeaderComponent={
               <View style={pstyles.proWrapper}>

@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, Pressable, Platform} from 'react-native';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import {View, Text, Pressable, Platform, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import {throttle} from 'lodash';
@@ -10,16 +10,18 @@ import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
+import BaseTheory from '@/components/Item/base-theory';
 import {getNearbyPosts} from '@/api/home_api';
 import {getLocation} from './getLocation';
 import {useNavigation} from '@react-navigation/native';
 import {ListEmpty as lstyles, ShareWrapper as styles} from '@/styles/baseCommon';
-import ShareNearByImg from '@/assets/images/share-nearby.png'
+import ShareNearByImg from '@/assets/images/share-nearby.png';
 
 const NearByListPost = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {location} = useSelector(state => state.home);
+  const {shareNearbyStatus} = useSelector(state => state.home);
 
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
@@ -32,16 +34,26 @@ const NearByListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
-    return (
-      <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
-        {index === 0 && NearbyShareComponent()}
-        {item.item_type === 'Topic' ? (
-          <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
-        ) : (
-          <BaseArticle data={item.item} />
-        )}
-      </View>
-    );
+    return useMemo(() => {
+      return (
+        <View style={{marginBottom: index === listData.length - 1 ? 60 : 0}}>
+          {index === 0 && (
+            <NearbyShareComponent
+              shareNearbyStatus={shareNearbyStatus}
+              dispatch={dispatch}
+              navigation={navigation}
+            />
+          )}
+          {item.item_type === 'Topic' && (
+            <BaseTopic data={item.item} onRemove={() => onRemove(index)} />
+          )}
+          {item.item_type === 'Article' && <BaseArticle data={item.item} />}
+          {item.item_type === 'Theory' && (
+            <BaseTheory data={item.item} onRemove={() => onRemove(index)} />
+          )}
+        </View>
+      );
+    }, [item.id]);
   });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
@@ -94,6 +106,7 @@ const NearByListPost = () => {
       initialNumToRender={6}
       onEndReachedThreshold={0.25}
       windowSize={Platform.OS === 'ios' ? 8 : 20}
+      renderSeparator={() => <View style={nstyles.speator} />}
       renderEmpty={
         <Pressable style={lstyles.emptyWrap} onPress={() => navigation.navigate('InviteDetail')}>
           <View style={[lstyles.emptyTextWrap, {marginTop: RFValue(165)}]}>
@@ -117,10 +130,8 @@ const NearByListPost = () => {
   );
 };
 
-const NearbyShareComponent = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const {shareNearbyStatus} = useSelector(state => state.home);
+const NearbyShareComponent = props => {
+  const {shareNearbyStatus, dispatch, navigation} = props;
 
   const onShareClose = () => {
     dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: false});
@@ -137,10 +148,7 @@ const NearbyShareComponent = () => {
         blurAmount={100}
         reducedTransparencyFallbackColor="white"
         style={styles.followShare}>
-        <FastImg
-          style={styles.followShareImage}
-          source={ShareNearByImg}
-        />
+        <FastImg style={styles.followShareImage} source={ShareNearByImg} />
         <View>
           <Text style={styles.shareTitle}>获取更多附近信息</Text>
           <Text style={styles.shareText}>分享给身边好友，邀请小伙伴一起玩呀！</Text>
@@ -155,5 +163,13 @@ const NearbyShareComponent = () => {
     </Pressable>
   ) : null;
 };
+
+const nstyles = StyleSheet.create({
+  speator: {
+    backgroundColor: '#ebebeb',
+    height: StyleSheet.hairlineWidth,
+    marginHorizontal: 14,
+  },
+});
 
 export default NearByListPost;

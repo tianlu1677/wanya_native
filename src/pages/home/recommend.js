@@ -1,25 +1,26 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, {useState, useMemo, useEffect, useCallback} from 'react';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
-import {SAFE_TOP} from '@/utils/navbar';
-import FocusAwareStatusBar from '@/components/FocusAwareStatusBar';
-import {Search} from '@/components/NodeComponents';
+import {RFValue} from '@/utils/response-fontsize';
+import {RecommendSearch} from '@/components/NodeComponents';
 import MediasPicker from '@/components/MediasPicker';
-import {BadgeMessage} from '@/components/NodeComponents';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
-import {RFValue} from '@/utils/response-fontsize';
 import {getChannelPosts} from '@/api/home_api';
-import {recordDeviceInfo} from '@/api/settings_api';
+import {recordDeviceInfo, ahoyTrackEvents} from '@/api/settings_api';
+import {syncDeviceToken} from '@/api/app_device_api';
 import {getLocationInfo, loadLocation} from './getLocation';
 import deviceInfo from '@/utils/device_info';
+import {consumerWsUrl} from '@/utils/config';
+import {createConsumer} from '@rails/actioncable';
 import {
   dispatchFetchCategoryList,
+  dispatchFetchLabelList,
   dispatchBaseCurrentAccount,
   dispatchCurrentAccount,
   dispatchFetchUploadTopic,
@@ -33,12 +34,11 @@ import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
-  const [inputRef, setinputRef] = useState(null);
-  const [currentKey, setCurrentKey] = useState('recommend');
-
-  const currentAccount = useSelector(state => state.account.currentBaseInfo);
+  const defaultKey = props.route.params && props.route.params.activityKey;
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
+  const auth_token = useSelector(state => state.login.auth_token);
   const home = useSelector(state => state.home);
+  const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
   const MemoVideo = React.memo(() => {
     const {content} = uploadStatus;
@@ -52,6 +52,56 @@ const Recommend = props => {
     );
   });
 
+  const onlineChannel = useMemo(() => {
+    // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
+    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
+      {channel: 'OnlineChannel'},
+      {
+        // received(data) {},
+        initialized() {
+          // console.log('initialized');
+        },
+        connected() {
+          // console.log('connected');
+        },
+        disconnected() {
+          // console.log('disconnected');
+        },
+        rejected() {
+          console.log('rejected');
+        },
+        unsubscribe() {
+          // console.log('unsubscribe');
+        },
+        appear() {
+          // console.log('appear')
+          // this.perform('appear', {});
+        },
+      }
+    );
+  }, []);
+
+  // 同步用户是否在线
+  const appearOnline = () => {
+    setInterval(() => {
+      // console.log('appear');
+      onlineChannel.perform('appear');
+    }, 5000);
+  };
+
+  const onTouchStart = event => {
+    // console.log('event', event['_targetInst'])
+    // const memprops = event?._targetInst?.memoizedProps;
+    // if (memprops && memprops?.visit_key) {
+    //   const visit_key = memprops?.visit_key;
+    //   const visit_value = memprops?.visit_value;
+    //   ahoyTrackEvents({
+    //     name: visit_key,
+    //     properties: {...visit_value, page: 'recommend'},
+    //     page: 'recommend',
+    //   });
+    // }
+  };
   const CallBackVideo = useCallback(() => <MemoVideo />, []);
 
   const UploadTopic = () => {
@@ -77,6 +127,7 @@ const Recommend = props => {
     );
   };
 
+  // console.log(home.channels);
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
@@ -85,27 +136,48 @@ const Recommend = props => {
       component: () => {
         let component = null;
         if (item.display_style === 'single') {
-          component = <SingleList request={{api: getChannelPosts, params}} />;
+          component = (
+            <SingleList
+              request={{api: getChannelPosts, params}}
+              type="list"
+              style={{paddingBottom: RFValue(50)}}
+            />
+          );
         }
         if (item.display_style === 'double') {
-          component = <DoubleList request={{api: getChannelPosts, params}} />;
+          component = (
+            <DoubleList
+              request={{api: getChannelPosts, params}}
+              style={{paddingBottom: RFValue(50)}}
+            />
+          );
         }
         if (item.display_style === 'long_video') {
-          component = <LongVideoList request={{api: getChannelPosts, params}} />;
+          component = (
+            <LongVideoList
+              request={{api: getChannelPosts, params}}
+              type="wanpian"
+              style={{paddingBottom: RFValue(50)}}
+            />
+          );
         }
+
+        if (item.display_style === 'nearby') {
+          component = <NearbyListPage />;
+        }
+
         return component;
       },
     };
   });
 
-  const UnreadMessageCount = () => {
-    if (!currentAccount || currentAccount.new_message_count === 0) {
-      return 0;
-    }
-    return currentAccount.new_message_count;
-  };
+  const onChange = async (key, title) => {
+    ahoyTrackEvents({
+      name: `click_${key}`,
+      properties: {title: title, page: 'recommend'},
+      page: 'recommend',
+    });
 
-  const onChange = async key => {
     const {location} = home;
     if (key === 'nearby' && (!location.latitude || !location.longitude)) {
       getLocationInfo(false, result => {
@@ -126,66 +198,43 @@ const Recommend = props => {
   );
 
   useEffect(() => {
+    syncDeviceToken();
     recordDeviceInfo(deviceInfo);
+    appearOnline(); // 是否在线
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
+    dispatch(dispatchFetchLabelList());
+
     if (uploadStatus) {
       const upload = (file, cb) => props.uploadVideo(file, cb);
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
       dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
     }
-    loadLocation(dispatch);
+    setTimeout(() => {
+      // 如果在这里请求的话，必须要等待1s之后才可以
+      loadLocation(dispatch);
+    }, 1000);
   }, []);
-
-  // useEffect(() => {
-  //   console.log(home.location);
-  // }, [home.location]);
 
   return (
     <>
+      <StatusBar barStyle="light-content" backgroundColor={'white'} translucent={false} />
       <View style={{flex: 1, position: 'relative'}}>
-        <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
+        <RecommendSearch />
         {uploadStatus ? (
           <View style={[styles.uploadWrap]}>
             <UploadTopic />
             <CallBackVideo />
           </View>
         ) : null}
-        <FocusAwareStatusBar barStyle="light-content" translucent={false} />
-        <Search
-          getRef={refs => setinputRef(refs)}
-          style={{backgroundColor: '#000'}}
-          inputStyle={{borderRadius: RFValue(18), backgroundColor: '#fff'}}
-          height={RFValue(38)}
-          placeholderTextColor="#000"
-          placeholder="搜索帖子、文章、圈子等内容"
-          onFocus={() => {
-            inputRef.blur();
-            props.navigation.push('SearchIndex');
-          }}>
-          <Pressable
-            style={styles.message}
-            onPress={() => props.navigation.navigate('NotifyIndex')}>
-            <View style={styles.message_icon}>
-              <IconFont name="notice" color={'white'} size={20} />
-              <BadgeMessage
-                size={'small'}
-                value={UnreadMessageCount()}
-                containerStyle={{...styles.badgeContainer, left: UnreadMessageCount() > 9 ? 8 : 14}}
-              />
-            </View>
-          </Pressable>
-        </Search>
-
         {channels.length > 0 && (
-          <View style={styles.wrapper}>
-            <TabViewList
-              center={false}
-              bottomLine={true}
-              lazy={true}
+          <View style={styles.wrapper} onTouchStart={onTouchStart}>
+            <TabView
               currentKey={currentKey}
               onChange={onChange}
-              size="small"
+              align="left"
+              bottomLine={true}
+              separator={false}
               tabData={[
                 {
                   key: 'follow',
@@ -202,11 +251,6 @@ const Recommend = props => {
                   title: '圈子',
                   component: NodeListPage,
                 },
-                {
-                  key: 'nearby',
-                  title: '附近',
-                  component: NearbyListPage,
-                },
                 ...channels,
               ]}
             />
@@ -218,62 +262,10 @@ const Recommend = props => {
 };
 
 const styles = StyleSheet.create({
-  badgeContainer: {
-    position: 'absolute',
-    top: -5,
-  },
   wrapper: {
     flex: 1,
     position: 'relative',
     backgroundColor: 'white',
-  },
-  message: {
-    width: 50,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  nodeView: {
-    backgroundColor: '#fff',
-    paddingLeft: 14,
-    paddingTop: 12,
-    paddingBottom: 7,
-    marginBottom: 9,
-  },
-  nodeWrap: {
-    width: 56,
-    marginRight: 15,
-  },
-  nodeImg: {
-    width: 56,
-    height: 56,
-  },
-  nodeName: {
-    fontSize: 11,
-    marginTop: 5,
-    width: 60,
-    maxHeight: 18,
-    minHeight: 16,
-    height: 18,
-    lineHeight: 18,
-    textAlign: 'center',
-    fontWeight: '300',
-  },
-  nodeSelf: {
-    width: 34,
-    height: 18,
-    lineHeight: 18,
-    textAlign: 'center',
-    borderRadius: 9,
-    overflow: 'hidden',
-    backgroundColor: '#000',
-    opacity: 0.7,
-    color: '#FFFF00',
-    fontSize: 10,
-    position: 'absolute',
-    bottom: 0,
-    left: '50%',
-    marginLeft: -17,
   },
   uploadWrap: {
     width: 72,

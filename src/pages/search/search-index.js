@@ -1,106 +1,170 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import {debounce} from 'lodash';
+import SearchAllList from '@/pages/search/search-all/search-all-list';
+import TheoryList from '@/components/List/theory-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
 import NodeList from '@/components/List/node-list';
 import DoubleList from '@/components/List/double-list';
 import LongVideoList from '@/components/List/long-video-list';
+import MovementList from '@/components/List/movement-list';
 import SpaceList from '@/components/List/space-list';
+import ActivityList from '@/components/List/activity-list';
+import ShopStoreList from '@/components/List/shop-store-list';
+import ShopBrandList from '@/components/List/shop-brand-list';
 import HashtagList from '@/components/List/hash-tag-list';
+import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
-import TabViewList from '@/components/TabView';
+import TabView from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
-import {SAFE_TOP} from '@/utils/navbar';
+import {SAFE_TOP, BarHeight, IsIos} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
-import AccountsNormalList from '@/components/List/accounts-normal-list';
 
 const SearchIndex = ({navigation, route}) => {
-  const [currentKey, setCurrentKey] = useState('topic');
+  const [currentKey, setCurrentKey] = useState(route.params?.key || 'all');
   const [searchKey, setSearchKey] = useState(null);
   const [request, setRequest] = useState({
     api: searchApi,
     params: {name: searchKey, type: currentKey},
   });
 
+  const {type} = request.params;
+
+  const AllListPage = () =>
+    currentKey === 'all' ? <SearchAllList request={request} onChangeKey={onChangeKey} /> : <View />;
+
   const TopicListPage = () =>
-    request.params.type === 'topic' ? (
+    type === 'topic' ? (
       <TopicList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
+
+  const TheoryListPage = () =>
+    type === 'theory' ? (
+      <TheoryList request={request} enableRefresh={false} dataKey="items" />
+    ) : (
+      <View />
+    );
 
   const ArticleListPage = () =>
-    request.params.type === 'article' ? (
+    type === 'article' ? (
       <ArticleList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const NodeListPage = () =>
-    request.params.type === 'node' ? (
-      <NodeList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    type === 'node' ? <NodeList request={request} dataKey="items" type={'list'} /> : <View />;
 
   const ShortVideoPage = () =>
-    request.params.type === 'duanshipin' ? (
+    type === 'duanshipin' ? (
       <DoubleList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    ) : (
+      <View />
+    );
 
   const LongVideoPage = () =>
-    request.params.type === 'long_video' ? (
-      <LongVideoList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    type === 'long_video' ? (
+      <LongVideoList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const MovementPage = () =>
+    type === 'movement' ? (
+      <MovementList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
 
   const SpaceListPage = () =>
-    request.params.type === 'space' ? (
-      <SpaceList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    type === 'space' ? (
+      <SpaceList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ActivityListPage = () =>
+    type === 'activity' ? (
+      <ActivityList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ShopStoreListPage = () =>
+    type === 'shop_store' ? (
+      <ShopStoreList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ShopBrandListPage = () =>
+    type === 'shop_brand' ? (
+      <ShopBrandList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
 
   const HashtagListPage = () =>
-    request.params.type === 'hashtag' ? (
-      <HashtagList request={request} enableRefresh={false} dataKey="items" />
-    ) : null;
+    type === 'hashtag' ? (
+      <HashtagList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
 
   const AccountListPage = () =>
-    request.params.type === 'account' ? (
-      <AccountsNormalList
-        request={request}
-        enableRefresh={false}
-        dataKey="items"
-        itemType="normal"
-      />
-    ) : null;
+    type === 'account' ? (
+      <AccountsList request={request} dataKey="items" type="search" />
+    ) : (
+      <View />
+    );
 
   const onChangeText = text => {
-    setSearchKey(text);
     setRequest({api: searchApi, params: {name: text, type: currentKey}});
+    setSearchKey(text);
   };
 
   const onChangeKey = key => {
-    setCurrentKey(key);
     setRequest({api: searchApi, params: {name: searchKey, type: key}});
+    setCurrentKey(key);
   };
 
   return (
     <View style={styles.wrapper}>
-      <View style={{height: SAFE_TOP, backgroundColor: '#fff'}} />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
       <Search
-        inputStyle={{borderRadius: RFValue(19), backgroundColor: '#F2F3F5'}}
-        height={RFValue(38)}
-        cancelWidth={RFValue(50)}
+        inputStyle={{borderRadius: RFValue(18), backgroundColor: '#F2F3F5'}}
+        height={RFValue(36)}
         textColor="#000"
-        placeholderTextColor="#000"
-        placeholder="搜索帖子、文章、圈子等内容"
+        placeholderTextColor="#aaa"
+        placeholder="搜索顽法、帖子、文章、圈子等内容"
         autoFocus={true}
         onChangeText={debounce(onChangeText, 500)}
+        cancel={true}
+        cancelWidth={RFValue(50)}
         onCancel={() => navigation.goBack()}
       />
-
-      <TabViewList
-        bottomLine={true}
-        center={false}
+      <TabView
         currentKey={currentKey}
-        onChange={onChangeKey}
         request={request}
-        size="small"
+        onChange={onChangeKey}
+        align="left"
+        bottomLine={true}
+        separator={false}
         tabData={[
+          {
+            key: 'all',
+            title: '全部',
+            component: AllListPage,
+          },
+          {
+            key: 'theory',
+            title: '顽法',
+            component: TheoryListPage,
+          },
           {
             key: 'topic',
             title: '帖子',
@@ -127,9 +191,29 @@ const SearchIndex = ({navigation, route}) => {
             component: LongVideoPage,
           },
           {
+            key: 'movement',
+            title: '顽招',
+            component: MovementPage,
+          },
+          {
             key: 'space',
             title: '场地',
             component: SpaceListPage,
+          },
+          {
+            key: 'activity',
+            title: '活动',
+            component: ActivityListPage,
+          },
+          {
+            key: 'shop_store',
+            title: 'Van Store',
+            component: ShopStoreListPage,
+          },
+          {
+            key: 'shop_brand',
+            title: '品牌',
+            component: ShopBrandListPage,
           },
           {
             key: 'hashtag',

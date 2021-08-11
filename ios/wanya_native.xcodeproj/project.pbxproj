@@ -14,10 +14,11 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2DCD954D1E0B4F2C00145EB5 /* wanya_nativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wanya_nativeTests.m */; };
 		56FA6E3A7936808AE07A5A5D /* libPods-wanya_native.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9834DD02964AA7A776B84138 /* libPods-wanya_native.a */; };
+		6D10EA9525CE88FB00B420F8 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D10EA9425CE88FB00B420F8 /* File.swift */; };
 		6D12ABA7254B0B8900B94E18 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D12ABA6254B0B8900B94E18 /* AuthenticationServices.framework */; };
 		6D16FE1A2568230F00B31B84 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D16FE192568230E00B31B84 /* UserNotifications.framework */; };
 		6D44BB1F2500897F0001DB04 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6DAE6F6724F7C27700149152 /* UMPushModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6124F7C27500149152 /* UMPushModule.m */; };
+		6D4BA4B72691D5EE00A38B78 /* JVerificationResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6D4BA4B62691D5ED00A38B78 /* JVerificationResource.bundle */; };
 		6DAE6F6824F7C27700149152 /* UMAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */; };
 		6DAE6F6924F7C27700149152 /* RNUMConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DAE6F6424F7C27600149152 /* RNUMConfigure.m */; };
 		6DAE6F6F24F8024800149152 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F6E24F8024800149152 /* WebKit.framework */; };
@@ -27,6 +28,8 @@
 		6DAE6F7724F8027300149152 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7624F8027300149152 /* libc++.tbd */; };
 		6DAE6F7924F8027E00149152 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAE6F7824F8027D00149152 /* libz.tbd */; };
 		6DD198BE24E0F54900728256 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */; };
+		6DE78FBE25D03338000467D9 /* UMShareModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DE78FBC25D03338000467D9 /* UMShareModule.m */; };
+		6DE78FBF25D03338000467D9 /* UMShareModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DE78FBC25D03338000467D9 /* UMShareModule.m */; };
 		8C40103C406F0505CD70EF21 /* libPods-wanya_native-wanya_nativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043254F79EF21522414A986B /* libPods-wanya_native-wanya_nativeTests.a */; };
 		99301F3D8BA3C82148D60326 /* libPods-wanya_native-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13228FEB59A22B676FBD01BE /* libPods-wanya_native-tvOS.a */; };
 		EA2973BAC0F966CE4CFBE69B /* libPods-wanya_native-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20278696FBBA00BAD9E2F929 /* libPods-wanya_native-tvOSTests.a */; };
@@ -69,17 +72,18 @@
 		43C425A07FCA1E23243F8BC8 /* Pods-wanya_native.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native.release.xcconfig"; path = "Target Support Files/Pods-wanya_native/Pods-wanya_native.release.xcconfig"; sourceTree = "<group>"; };
 		519C93C2353D7BD3AF1899A5 /* Pods-wanya_native-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B8FCECC5A16D12132231AAB /* Pods-wanya_native-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOSTests/Pods-wanya_native-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6D10EA9325CE88FB00B420F8 /* wanya_native-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wanya_native-Bridging-Header.h"; sourceTree = "<group>"; };
+		6D10EA9425CE88FB00B420F8 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = ../File.swift; sourceTree = "<group>"; };
 		6D12ABA6254B0B8900B94E18 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		6D16FE192568230E00B31B84 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		6D23E3B2250B5584003E7609 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		6D4BA4B62691D5ED00A38B78 /* JVerificationResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JVerificationResource.bundle; sourceTree = "<group>"; };
 		6DAE6F5424F6A6A100149152 /* wanya_nativeRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeRelease.entitlements; path = wanya_native/wanya_nativeRelease.entitlements; sourceTree = "<group>"; };
 		6DAE6F5724F6C83400149152 /* wanya_nativeDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wanya_nativeDebug.entitlements; path = wanya_native/wanya_nativeDebug.entitlements; sourceTree = "<group>"; };
-		6DAE6F6124F7C27500149152 /* UMPushModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMPushModule.m; path = wanya_native/UMPushModule.m; sourceTree = "<group>"; };
 		6DAE6F6224F7C27500149152 /* RNUMConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNUMConfigure.h; path = wanya_native/RNUMConfigure.h; sourceTree = "<group>"; };
 		6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UMAnalyticsModule.m; path = wanya_native/UMAnalyticsModule.m; sourceTree = "<group>"; };
 		6DAE6F6424F7C27600149152 /* RNUMConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNUMConfigure.m; path = wanya_native/RNUMConfigure.m; sourceTree = "<group>"; };
 		6DAE6F6524F7C27600149152 /* UMAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMAnalyticsModule.h; path = wanya_native/UMAnalyticsModule.h; sourceTree = "<group>"; };
-		6DAE6F6624F7C27700149152 /* UMPushModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UMPushModule.h; path = wanya_native/UMPushModule.h; sourceTree = "<group>"; };
 		6DAE6F6E24F8024800149152 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6DAE6F7024F8025200149152 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		6DAE6F7224F8025A00149152 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -87,6 +91,8 @@
 		6DAE6F7624F8027300149152 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		6DAE6F7824F8027D00149152 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wanya_native/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6DE78FBC25D03338000467D9 /* UMShareModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMShareModule.m; sourceTree = "<group>"; };
+		6DE78FBD25D03338000467D9 /* UMShareModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMShareModule.h; sourceTree = "<group>"; };
 		9834DD02964AA7A776B84138 /* libPods-wanya_native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wanya_native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD6AD6AAF03AE427C5A77409 /* Pods-wanya_native-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-tvOS.release.xcconfig"; path = "Target Support Files/Pods-wanya_native-tvOS/Pods-wanya_native-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		BF6C8E6AADDB255D8300F8E9 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wanya_native-wanya_nativeTests.debug.xcconfig"; path = "Target Support Files/Pods-wanya_native-wanya_nativeTests/Pods-wanya_native-wanya_nativeTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -160,13 +166,13 @@
 		13B07FAE1A68108700A75B9A /* wanya_native */ = {
 			isa = PBXGroup;
 			children = (
+				6DE78FBD25D03338000467D9 /* UMShareModule.h */,
+				6DE78FBC25D03338000467D9 /* UMShareModule.m */,
 				6D23E3B2250B5584003E7609 /* Ionicons.ttf */,
 				6DAE6F6224F7C27500149152 /* RNUMConfigure.h */,
 				6DAE6F6424F7C27600149152 /* RNUMConfigure.m */,
 				6DAE6F6524F7C27600149152 /* UMAnalyticsModule.h */,
 				6DAE6F6324F7C27600149152 /* UMAnalyticsModule.m */,
-				6DAE6F6624F7C27700149152 /* UMPushModule.h */,
-				6DAE6F6124F7C27500149152 /* UMPushModule.m */,
 				6DAE6F5724F6C83400149152 /* wanya_nativeDebug.entitlements */,
 				6DAE6F5424F6A6A100149152 /* wanya_nativeRelease.entitlements */,
 				6DD198BD24E0F54900728256 /* LaunchScreen.storyboard */,
@@ -226,12 +232,15 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6D4BA4B62691D5ED00A38B78 /* JVerificationResource.bundle */,
+				6D10EA9425CE88FB00B420F8 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* wanya_native */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* wanya_nativeTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				692A98F6C782C6D2E694F7B2 /* Pods */,
+				6D10EA9325CE88FB00B420F8 /* wanya_native-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -346,7 +355,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = K7KF6RDWDW;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1230;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -394,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6D4BA4B72691D5EE00A38B78 /* JVerificationResource.bundle in Resources */,
 				6DD198BE24E0F54900728256 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,6 +523,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
+				"${PODS_ROOT}/UMShare/UMShare/UMSocialUI/UMSocialSDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -534,6 +545,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -609,6 +621,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
+				"${PODS_ROOT}/UMShare/UMShare/UMSocialUI/UMSocialSDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -630,6 +643,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -689,7 +703,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DAE6F6724F7C27700149152 /* UMPushModule.m in Sources */,
+				6D10EA9525CE88FB00B420F8 /* File.swift in Sources */,
+				6DE78FBE25D03338000467D9 /* UMShareModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				6DAE6F6924F7C27700149152 /* RNUMConfigure.m in Sources */,
 				6DAE6F6824F7C27700149152 /* UMAnalyticsModule.m in Sources */,
@@ -702,6 +717,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D44BB1F2500897F0001DB04 /* main.m in Sources */,
+				6DE78FBF25D03338000467D9 /* UMShareModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,6 +749,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BF6C8E6AADDB255D8300F8E9 /* Pods-wanya_native-wanya_nativeTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -756,6 +773,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 14C87D7A6900EBEFAE260BFF /* Pods-wanya_native-wanya_nativeTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = wanya_nativeTests/Info.plist;
@@ -776,10 +794,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6383D3CDA8FFC16B13CB2FE /* Pods-wanya_native.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = icons;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -789,7 +808,7 @@
 				INFOPLIST_FILE = wanya_native/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.12;
+				MARKETING_VERSION = 0.0.25;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -797,6 +816,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vanyah.ios;
 				PRODUCT_NAME = "顽鸦";
+				SWIFT_OBJC_BRIDGING_HEADER = "wanya_native-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -807,19 +827,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 43C425A07FCA1E23243F8BC8 /* Pods-wanya_native.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = icons;
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = "SI_FhBaTYA5BDT8HPCIGnCPKg-0RoX_jntTlR";
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wanya_native/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.12;
+				MARKETING_VERSION = 0.0.25;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -828,6 +849,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.vanyah.ios;
 				PRODUCT_NAME = "顽鸦";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "wanya_native-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

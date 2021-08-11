@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import {KeyboardAvoidingView} from 'react-native';
+import {View, Text, Platform, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchTopicDetail} from '@/redux/actions';
-import {STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
+import {IsIos, BOTTOM_HEIGHT, BarHeight} from '@/utils/navbar';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
@@ -21,21 +14,20 @@ import TopHeaderView from '@/components/TopHeadView';
 import {GoBack} from '@/components/NodeComponents';
 import CommentList from '@/components/List/comment-list';
 import {ActionComment} from '@/components/Item/single-detail-item';
-import {getTopic, deleteTopic, createTopicAction} from '@/api/topic_api';
-import {getTopicCommentList, createComment, deleteComment} from '@/api/comment_api';
+import {getTopic, deleteTopic} from '@/api/topic_api';
+import {createComment, deleteComment, getCommentList} from '@/api/comment_api';
 import RenderImage from './topic-detail-component/render-image';
 import RenderLongVideo from './topic-detail-component/render-long-video';
 import RenderVideo from './topic-detail-component/render-video';
 import RenderLink from './topic-detail-component/render-link';
 import RenderText from './topic-detail-component/render-text';
+import {createAction} from '@/api/action_api';
 
 const TopicDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const currentTopic = useSelector(state => state.topic.topicDetail);
-
   const [topicId] = useState(route.params.topicId);
-
   const [detail, setDetail] = useState();
   const [visible, setVisible] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
@@ -47,7 +39,7 @@ const TopicDetail = ({navigation, route}) => {
       Toast.show('该帖子已删除');
       navigation.goBack();
     } else {
-      createTopicAction({id: topicId, type: 'view'});
+      createAction({target_id: topicId, type: 'view', target_type: 'Topic'});
       dispatch(dispatchTopicDetail(res.data.topic));
     }
   };
@@ -57,7 +49,7 @@ const TopicDetail = ({navigation, route}) => {
       setVisible(false);
       Toast.showLoading('发送中');
       await createComment(data);
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
       Toast.hide();
       Toast.show('评论成功啦');
       loadData();
@@ -97,7 +89,7 @@ const TopicDetail = ({navigation, route}) => {
     loadData();
     return () => {
       dispatch(dispatchTopicDetail(null));
-      dispatch({type: action.SAVE_COMMENT_TOPIC, value: {}});
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
     };
   }, []);
 
@@ -109,20 +101,20 @@ const TopicDetail = ({navigation, route}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
+      keyboardVerticalOffset={IsIos ? -BOTTOM_HEIGHT : BarHeight}>
       {['video', 'img'].includes(detail.content_style) ? (
-        <>
-          {/*<StatusBar barStyle={'light-content'} />*/}
-          <GoBack color={'white'} report={{report_type: 'Topic', report_id: detail.id}} />
-        </>
+        <GoBack color={'white'} report={true} onReportClick={onReportClick} />
       ) : null}
-
       {['link', 'text'].includes(detail.content_style) ? (
         <>
           <TopHeaderView
             Title={'帖子详情'}
             leftButtonColor={'black'}
             excellent={detail.excellent}
+            statusBar={{
+              barStyle: 'dark-content',
+              hidden: false,
+            }}
             RightButton={() => (
               <Pressable
                 onPress={onReportClick}
@@ -132,17 +124,15 @@ const TopicDetail = ({navigation, route}) => {
               </Pressable>
             )}
           />
-          <StatusBar barStyle={'dark-content'} />
         </>
       ) : null}
-
       <CommentList
         type="Topic"
         detail={detail}
         enableLoadMore={false}
         changeVisible={value => setVisible(value)}
         deleteComment={deleteTopicComment}
-        request={{api: getTopicCommentList, params: {id: detail.id}}}
+        request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Topic'}}}
         ListHeaderComponent={
           <>
             <View style={{paddingBottom: RFValue(20)}}>

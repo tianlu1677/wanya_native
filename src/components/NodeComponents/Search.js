@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
+import {View, Text, StyleSheet, TextInput} from 'react-native';
 import PropTypes from 'prop-types';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
@@ -10,14 +10,10 @@ const Search = props => {
     <View style={[styles.wrapper, props.style]}>
       {props.prefix ? props.prefix : null}
       <View style={[styles.inputContent, props.inputStyle, {height: height}]}>
-        <IconFont
-          name="sousuo"
-          size={RFValue(14)}
-          color={placeholderTextColor}
-          style={styles.icon}
-        />
+        <IconFont name="sousuo" size={14} color={placeholderTextColor} style={styles.icon} />
         <TextInput
           ref={props.getRef}
+          multiline={false}
           style={[styles.textInput, {height: height}]}
           placeholder={props.placeholder}
           placeholderTextColor={placeholderTextColor}
@@ -30,7 +26,8 @@ const Search = props => {
           returnKeyType={'search'}
         />
       </View>
-      {props.children ? (
+
+      {/* {props.children ? (
         props.children
       ) : (
         <Pressable onPress={props.onCancel}>
@@ -38,6 +35,15 @@ const Search = props => {
             取消
           </Text>
         </Pressable>
+      )} */}
+
+      {props.cancel && (
+        <Text
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
+          style={[styles.cancel, {width: cancelWidth, height: height, lineHeight: height}]}
+          onPress={props.onCancel}>
+          取消
+        </Text>
       )}
     </View>
   );
@@ -53,34 +59,39 @@ Search.propTypes = {
   onChangeText: PropTypes.func,
   cancelWidth: PropTypes.number,
   getRef: PropTypes.func,
+  cancel: PropTypes.bool,
+  prefix: PropTypes.object,
+  suffix: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
     paddingTop: RFValue(6),
     paddingBottom: RFValue(6),
-    paddingLeft: RFValue(14),
+    paddingLeft: 14,
   },
   inputContent: {
     flex: 1,
     position: 'relative',
     overflow: 'hidden',
+    justifyContent: 'center',
   },
   icon: {
     zIndex: 2,
     position: 'absolute',
     top: '50%',
-    marginTop: RFValue(-7),
+    marginTop: -7,
     left: RFValue(13),
-    fontSize: 10,
   },
   textInput: {
     paddingLeft: RFValue(35),
     fontSize: 14,
     color: '#000',
-    fontWeight: '300',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   cancel: {
     textAlign: 'center',

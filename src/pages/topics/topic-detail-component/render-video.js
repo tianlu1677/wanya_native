@@ -1,23 +1,22 @@
 import React, {useRef, useCallback} from 'react';
-import {View, Text, StatusBar, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, StatusBar, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {SAFE_TOP, SCREEN_HEIGHT} from '@/utils/navbar';
-import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
-import {PlainContent} from '@/components/Item/single-list-item';
+import {SAFE_TOP} from '@/utils/navbar';
 import VideoPlayerContent from '@/components/react-native-video-player';
-
-const {width: screenWidth} = Dimensions.get('window');
+import {PlainContent} from '@/components/Item/single-list-item';
+import {
+  PublishAccount,
+  PublishRelated,
+  RelatedComponent,
+} from '@/components/Item/single-detail-item';
+import {scaleDetailVideo} from '@/utils/scale';
 
 const RenderVideo = props => {
   const videoRef = useRef(null);
   const currentAccount = useSelector(state => state.account.currentAccount);
   const {detail} = props;
-  const {width, height} = detail.media_video;
-  let videoHeight = height ? height * (screenWidth / width) : screenWidth;
-  if(videoHeight > SCREEN_HEIGHT) {
-    videoHeight = SCREEN_HEIGHT - 500
-  }
+  const {width, height} = scaleDetailVideo(detail.media_video.width, detail.media_video.height);
 
   useFocusEffect(
     useCallback(() => {
@@ -35,34 +34,33 @@ const RenderVideo = props => {
 
   return (
     <>
-      <StatusBar barStyle={'light-content'} backgroundColor={'black'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={'black'} translucent={false} />
+      <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
       <View style={{position: 'relative'}}>
-        <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
         {detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}
         <VideoPlayerContent
           ref={videoRef}
-          customStyles={{position: 'absolute', zIndex: 1, bottom: videoHeight}}
           video={{uri: detail.video_content_m3u8}}
-          videoWidth={screenWidth}
-          videoHeight={videoHeight}
+          videoWidth={width}
+          videoHeight={height}
           poster={`${detail.video_content_m3u8}?vframe/jpg/offset/0/rotate/auto`}
-          posterResizeMode={'contain'}
+          posterResizeMode="cover"
           hideControlsOnStart
           pauseOnPress
           muted={false}
-          resizeMode={'cover'}
+          resizeMode="cover"
           autoplay={true}
           loop
         />
       </View>
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+      <RelatedComponent data={detail} />
       {detail.plain_content ? (
         <View style={styles.content}>
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
         </View>
       ) : null}
-      <PublishRelated data={detail} type="topic"  space={detail.space}
-                      location={detail.location} />
+      <PublishRelated data={detail} type="topic" space={detail.space} location={detail.location} />
     </>
   );
 };
@@ -90,7 +88,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
     left: 40,
-    top: SAFE_TOP,
+    top: 0,
     zIndex: 1,
     marginTop: 9,
   },

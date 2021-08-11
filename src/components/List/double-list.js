@@ -8,34 +8,34 @@ import ScrollList, {pagination} from '@/components/ScrollList';
 import {Avator} from '@/components/NodeComponents';
 import {PlainContent} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
-import {createTopicAction, destroyTopicAction} from '@/api/topic_api';
-import {createArticleAction, destroyArticleAction} from '@/api/article_api';
 import {getRecommendTopPosts} from '@/api/home_api';
-
 import VideoPlayImg from '@/assets/images/video-play.png';
 import ExcellentImage from '@/assets/images/excellent.png';
 import TopImage from '@/assets/images/top.png';
-import FastImageGif from '@/components/FastImageGif';
+import {cancelAction, createAction} from '@/api/action_api';
 
 const {width} = Dimensions.get('window');
 const halfWidth = (width - 15) / 2; // 屏幕去掉两边后（5*2 中间5）的宽度
 
 const SingleItem = props => {
   const navigation = useNavigation();
-  const {data} = props;
+  const {
+    isTop,
+    data: {id, type, title, account, excellent, praise, praises_count, has_video, single_cover},
+  } = props;
 
   const [praiseForm, setPraiseForm] = useState({
-    praise: data.praise,
-    praises_count: data.praises_count,
+    praise: praise,
+    praises_count: praises_count,
   });
 
   const onGoDetail = v => {
     switch (props.item_type) {
       case 'Topic':
-        navigation.push('TopicDetail', {topicId: data.id});
+        navigation.push('TopicDetail', {topicId: id});
         break;
       case 'Article':
-        navigation.navigate('ArticleDetail', {articleId: data.id});
+        navigation.navigate('ArticleDetail', {articleId: id});
         break;
     }
   };
@@ -43,17 +43,11 @@ const SingleItem = props => {
   const onPraise = async () => {
     switch (props.item_type) {
       case 'Article':
-        if (praiseForm.praise) {
-          await destroyArticleAction({id: data.id, type: 'praise'});
-        } else {
-          await createArticleAction({id: data.id, type: 'praise'});
-        }
-        break;
       case 'Topic':
         if (praiseForm.praise) {
-          await destroyTopicAction({id: data.id, type: 'praise'});
+          await cancelAction({target_id: id, target_type: props.item_type, type: 'praise'});
         } else {
-          await createTopicAction({id: data.id, type: 'praise'});
+          await createAction({target_id: id, target_type: props.item_type, type: 'praise'});
         }
         break;
     }
@@ -62,28 +56,28 @@ const SingleItem = props => {
     setPraiseForm(params);
   };
 
+  const defaultWidth = single_cover.width || 100;
+  const defaultHeight = single_cover.height || 100;
+  const height = Math.ceil((defaultHeight * halfWidth) / defaultWidth);
+
   return (
-    <Pressable key={data.id} onPress={() => onGoDetail(data)} style={{backgroundColor: '#fff'}}>
-      {data.single_cover.cover_url && (
-        <FastImageGif
-          source={{uri: data.single_cover.cover_url}}
-          gif_url={data.single_cover.link_url}
-          style={{
-            height: (data.single_cover.height * halfWidth) / data.single_cover.width,
-            width: halfWidth,
-            backgroundColor: '#F1F1F1',
-          }}
+    <Pressable key={id} onPress={() => onGoDetail(props.data)} style={{backgroundColor: '#fff'}}>
+      {single_cover.cover_url && (
+        <FastImg
+          source={{uri: single_cover.cover_url}}
+          gif_url={single_cover.link_url}
+          style={{width: halfWidth, height}}
         />
       )}
-      {data.has_video && (
+      {has_video && (
         <FastImg resizeMethod={'resize'} style={styles.videoPlay} source={VideoPlayImg} />
       )}
-      {data.type === 'topic' && (
-        <PlainContent data={data} style={styles.multiLineText} numberOfLines={2} />
+      {type === 'topic' && (
+        <PlainContent data={props.data} style={styles.multiLineText} numberOfLines={2} />
       )}
-      {data.type === 'article' && <Text style={styles.multiLineText}>{data.title}</Text>}
+      {type === 'article' && <Text style={styles.multiLineText}>{title}</Text>}
 
-      {props.isTop && (
+      {isTop && (
         <FastImg
           source={TopImage}
           style={{width: 30, height: 17, position: 'absolute', top: 8, left: 8}}
@@ -92,7 +86,7 @@ const SingleItem = props => {
         />
       )}
 
-      {!props.isTop && data.excellent && (
+      {!isTop && excellent && (
         <FastImg
           source={ExcellentImage}
           style={styles.excellentImage}
@@ -102,14 +96,14 @@ const SingleItem = props => {
       )}
 
       <View style={styles.singleBottom}>
-        <Avator account={data.account} size={16} />
+        <Avator account={account} size={16} />
         <Pressable
           style={{marginRight: 'auto'}}
           onPress={() => {
-            navigation.push('AccountDetail', {accountId: data.account.id});
+            navigation.push('AccountDetail', {accountId: account.id});
           }}>
           <Text style={styles.singleName}>
-            {data.account.nickname && data.account.nickname.toString().substr(0, 16)}
+            {account.nickname && account.nickname.toString().substr(0, 16)}
           </Text>
         </Pressable>
         <Pressable
@@ -198,19 +192,16 @@ const DoubleList = props => {
   };
 
   const onRefresh = (page = 1) => {
-    if (props.type === 'recommend' && (page === 1 || !page)) {
-      indexLoadData(pagination(headers).nextPage);
-    } else {
-      loadData(page);
-    }
+    loadData(page);
+    // if (props.type === 'recommend' && (page === 1 || !page)) {
+    //   indexLoadData(pagination(headers).nextPage);
+    // } else {
+    //   loadData(page);
+    // }
   };
 
   useEffect(() => {
-    if (props.type === 'recommend') {
-      indexLoadData(1);
-    } else {
-      loadData();
-    }
+    loadData(1);
   }, []);
 
   return (

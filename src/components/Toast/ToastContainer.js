@@ -22,7 +22,7 @@ const position = {
 
 const duration = {
   LONG: 3500,
-  SHORT: 2000,
+  SHORT: 1500,
 };
 
 class ToastContainer extends Component {

@@ -11,9 +11,12 @@ import {
   ViewPropTypes,
   ActivityIndicator,
   NativeModules,
+  Pressable
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Video from 'react-native-video'; // eslint-disable-line
+import Video from 'react-native-video';
+import FastImg from '@/components/FastImg';
+import PlayVideoImg from '@/assets/images/video-play.png';
 
 const {VideoPlayerManager} = NativeModules;
 
@@ -39,15 +42,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   playButton: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    // width: 64,
+    // height: 64,
+    // borderRadius: 32,
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   playArrow: {
     color: 'white',
+    width: 40,
+    height: 40,
   },
   video:
     Platform.Version >= 24
@@ -184,6 +189,7 @@ export default class VideoPlayer extends Component {
   }
 
   onStartPress() {
+    console.log('onStartPress');
     if (this.props.onStart) {
       this.props.onStart();
     }
@@ -251,13 +257,25 @@ export default class VideoPlayer extends Component {
   };
 
   onPlayPress() {
-    if (this.props.onPlayPress) {
-      this.props.onPlayPress();
-    }
+    // console.log('onPlayPress');
+    // if (this.props.onPlayPress) {
+    //   this.props.onPlayPress(!this.state.isPlaying);
+    // }
+    //
+    // this.setState({
+    //   isPlaying: !this.state.isPlaying,
+    // });
 
-    this.setState({
-      isPlaying: !this.state.isPlaying,
-    });
+    this.setState(
+      {
+        isPlaying: !this.state.isPlaying,
+      },
+      () => {
+        if (this.props.onPlayPress) {
+          this.props.onPlayPress(this.state.isPlaying);
+        }
+      }
+    );
     this.showControls();
   }
 
@@ -422,11 +440,13 @@ export default class VideoPlayer extends Component {
   renderStartButton() {
     const {customStyles} = this.props;
     return (
-      <TouchableOpacity
+      <Pressable
         style={[styles.playButton, customStyles.playButton]}
+        hitSlop={{top: 30, bottom: 50, left: 30, right: 50}}
         onPress={this.onStartPress}>
-        <Icon style={[styles.playArrow, customStyles.playArrow]} name="play-arrow" size={42} />
-      </TouchableOpacity>
+        {/* <Icon style={[styles.playArrow, customStyles.playArrow]} name="play-arrow" size={42} /> */}
+        <FastImg source={PlayVideoImg} style={{...styles.playArrow, ...customStyles.playArrow}} />
+      </Pressable>
     );
   }
 

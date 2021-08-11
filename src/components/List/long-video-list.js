@@ -1,14 +1,16 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useMemo, useEffect, useCallback} from 'react';
 import {View, Pressable, Text, StyleSheet, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import ScrollList from '@/components/ScrollList';
+import BaseLongVideo from '@/components/Item/base-long-video';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
-import LinearGradient from 'react-native-linear-gradient';
 import {Bottom} from '@/components/Item/single-list-item';
 import {Avator} from '@/components/NodeComponents';
 import VideoPlayImg from '@/assets/images/video-play.png';
+
 const {width} = Dimensions.get('window');
 
 const LongVideoItem = props => {
@@ -60,7 +62,20 @@ const LongVideoList = props => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const RenderItem = React.memo(({item}) => <LongVideoItem data={item.item} />);
+  const {type} = props;
+
+  const RenderItem = React.memo(({item}) => {
+    return useMemo(() => {
+      switch (type) {
+        case 'wanpian':
+          return <LongVideoItem data={item.item} />;
+        case 'list':
+          return <BaseLongVideo data={item.item} />;
+        default:
+          return <View />;
+      }
+    }, [item.id]);
+  });
 
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
@@ -94,7 +109,7 @@ const LongVideoList = props => {
   );
 };
 
-const ImageHeight = parseInt((width * 420) / 750);
+const ImageHeight = Math.ceil((width * 420) / 750);
 
 const styles = StyleSheet.create({
   wrapper: {

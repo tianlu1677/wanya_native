@@ -1,8 +1,12 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {PlainContent} from '@/components/Item/single-list-item';
-import {PublishAccount, PublishRelated} from '@/components/Item/single-detail-item';
+import {
+  PublishAccount,
+  PublishRelated,
+  RelatedComponent,
+} from '@/components/Item/single-detail-item';
 
 const RenderText = props => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -10,7 +14,9 @@ const RenderText = props => {
 
   return (
     <>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'black'} translucent={false} />
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
+      <RelatedComponent data={detail} />
       {detail.plain_content ? (
         <View style={styles.content}>
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />

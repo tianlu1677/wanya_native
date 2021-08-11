@@ -1,38 +1,21 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  Linking,
-  StyleSheet,
-  View,
-  TextInput,
-  Pressable,
-  Text,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react';
+import {SafeAreaView, StatusBar, Linking, StyleSheet, View, Pressable, Text} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
-import {contentBlank} from '../../styles/commonStyles';
-import {Button, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Toast from '@/components/Toast';
 import CodePush from 'react-native-code-push';
 import checkHotUpdate from '@/utils/codepush';
 import {BaseApiUrl} from '@/utils/config';
 import {IsIos} from '@/utils/navbar';
-// import ListItem from '@/components/ListItem';
+import {WANYA_VERSION} from '@/utils/config';
+import {logoutCurrentAccount} from '@/redux/actions';
 
 const Settings = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
-
-  // const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({});
-  }, [navigation]);
-
-  const goPages = type => {
+  const goPages = async type => {
     switch (type) {
       case 'edit':
         navigation.navigate('AccountContent');
@@ -75,17 +58,16 @@ const Settings = ({navigation, route}) => {
         Linking.openURL(url);
         break;
       case 'logout':
-        // console.log('logout');
-        Helper.clearAllData();
+        await Helper.clearAllData();
+        await dispatch(logoutCurrentAccount());
         navigation.reset({
           index: 0,
           routes: [{name: 'SocialLogin'}],
         });
         break;
       default:
-        console.log('others');
+        break;
     }
-    console.log('type', type);
   };
 
   const ForwardRight = () => {
@@ -93,35 +75,25 @@ const Settings = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fafafa'}}>
-      <StatusBar barStyle="dark-content" />
-      <Text style={contentBlank} />
-      <ItemView
-        onPress={() => {
-          goPages('edit');
-        }}>
-        <ItemTitle>编辑个人资料</ItemTitle>
-        <ForwardRight />
-      </ItemView>
-
-      <Text style={contentBlank} />
+    <View style={{flex: 1, backgroundColor: '#fafafa'}}>
+      {/*<StatusBar barStyle="dark-content" backgroundColor={'white'} />*/}
       <View style={{backgroundColor: 'white'}}>
         <ItemView
-          style={[styles.topBorder1px]}
+          style={[styles.bottomBorder1px]}
           onPress={() => {
             goPages('about');
           }}>
           <ItemTitle>关于顽鸦</ItemTitle>
           <ForwardRight />
         </ItemView>
-        <ItemView
+        {/* <ItemView
           style={[styles.bottomBorder1px, styles.topBorder1px, styles.nestLine]}
           onPress={() => {
             goPages('feedback');
           }}>
           <ItemTitle>意见反馈</ItemTitle>
           <ForwardRight />
-        </ItemView>
+        </ItemView> */}
         <ItemView
           style={[styles.bottomBorder1px, styles.nestLine]}
           onPress={() => {
@@ -188,7 +160,8 @@ const Settings = ({navigation, route}) => {
           <ForwardRight />
         </ItemView>
       </View>
-    </SafeAreaView>
+      <Text style={styles.version}>current Version {WANYA_VERSION}</Text>
+    </View>
   );
 };
 
@@ -204,6 +177,12 @@ const styles = StyleSheet.create({
   nestLine: {
     marginLeft: 14,
     paddingLeft: 0,
+  },
+  version: {
+    marginTop: 50,
+    fontSize: 10,
+    textAlign: 'center',
+    color: '#aea9a9',
   },
 });
 

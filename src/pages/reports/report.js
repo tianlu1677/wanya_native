@@ -1,18 +1,8 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {
-  Pressable,
-  Platform,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  Button,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Pressable, Platform, ScrollView, StyleSheet, View, StatusBar, Text} from 'react-native';
+import {KeyboardAvoidingView} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {reportContent} from '@/api/secure_check';
-import SafeAreaPlus from '@/components/SafeAreaPlus';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 
@@ -65,6 +55,7 @@ const Report = ({navigation, route}) => {
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor={'white'} />
         <ScrollView keyboardDismissMode={'on-drag'} keyboardShouldPersistTaps="never">
           {messages.map((message, index) => {
             return (

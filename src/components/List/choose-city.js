@@ -1,12 +1,13 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getCities} from '@/api/space_api';
-import {Text, View, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {Text, View, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
 import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
+import {loadAllCityList} from '@/redux/actions';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -27,13 +28,18 @@ const hotCity = [
 
 const CitySelect = ({navigation}) => {
   const dispatch = useDispatch();
-  const home = useSelector(state => state.home);
-  const [cities, setCities] = useState(null);
+  const location = useSelector(state => state.home.location);
+  const cities = useSelector(state => state.home.cityList);
+  // const [cities, setCities] = useState(null);
   const [scrollRef, setScrollRef] = useState(null);
+  // const cities = home.cityList;
 
   const loadCities = async () => {
-    const res = await getCities();
-    setCities(res.data);
+    // console.log('home.cities', home)
+    // await dispatch(loadAllCityList());
+    if (cities.size === 0 || cities !== 'undefined') {
+      dispatch(loadAllCityList());
+    }
   };
 
   const scrollTop = () => {
@@ -43,11 +49,12 @@ const CitySelect = ({navigation}) => {
 
   const scrollToKey = (index, title) => {
     Toast.show(title);
-    scrollRef.scrollToIndex({index: index});
+    console.log(index);
+    scrollRef.scrollToIndex({index: parseInt(index)});
   };
 
   const chooseCity = city => {
-    dispatch({type: action.GET_LOCATION, value: {...home.location, chooseCity: city}});
+    dispatch({type: action.GET_LOCATION, value: {...location, chooseCity: city}});
     navigation.goBack();
   };
 
@@ -68,11 +75,24 @@ const CitySelect = ({navigation}) => {
 
   return cities ? (
     <View style={styles.wrapper}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <ScrollList
         getRref={refs => setScrollRef(refs)}
         enableLoadMore={false}
         enableRefresh={false}
-        data={cities}
+        data={cities || []}
+        settings={{
+          initialNumToRender: 10,
+          removeClippedSubviews: true,
+          onScrollToIndexFailed: info => {
+            // console.log('info', info)
+            scrollRef.scrollToEnd();
+            const wait = new Promise(resolve => setTimeout(resolve, 500));
+            wait.then(() => {
+              scrollRef.scrollToIndex({index: info.index, animated: true});
+            });
+          },
+        }}
         itemKey={'title'}
         renderItem={({item}) => {
           return (
@@ -97,7 +117,7 @@ const CitySelect = ({navigation}) => {
               <IconFont name="space-point" size={16} />
               <Text style={{fontWeight: '300', marginLeft: 10, marginRight: 10}}>当前定位城市</Text>
               <Text style={{fontSize: 14, fontWeight: '500'}}>
-                {home.location.positionCity || '未知'}
+                {location.positionCity || '未知'}
               </Text>
             </View>
             <View style={styles.hotCityWrap}>
@@ -111,7 +131,7 @@ const CitySelect = ({navigation}) => {
                         styles.hotCityName,
                         {
                           width: (windowWidth - 27 - 50) / 4,
-                          color: home.location.chooseCity === v ? '#6190E8' : '#000',
+                          color: location.chooseCity === v ? '#6190E8' : '#000',
                           marginRight: (index + 1) % 4 === 0 ? 0 : 9,
                         },
                       ]}>

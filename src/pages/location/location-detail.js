@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Platform, Linking} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Platform, Linking, StatusBar} from 'react-native';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import SingleList from '@/components/List/single-list';
@@ -41,6 +41,7 @@ const LocationDetail = ({route, navigation}) => {
       lat: detail.latitude,
       title: detail.name,
     };
+    console.log(destLocation);
     if (Platform.OS === 'ios') {
       MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
     } else {
@@ -64,25 +65,26 @@ const LocationDetail = ({route, navigation}) => {
     }
   };
 
+  const Header = () => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.name}>{detail.name}</Text>
+        <Text style={styles.address}>{detail.address}</Text>
+        <Pressable onPress={handleChange}>
+          <FastImg style={styles.image} mode={'cover'} source={{uri: detail.address_cover_url}} />
+        </Pressable>
+      </View>
+    );
+  };
+
   return detail ? (
     <View style={{flex: 1}}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.wrapper}>
         <SingleList
           request={{api: getLocationsPosts, params: {id: locationId}}}
           enableRefresh={false}
-          ListHeaderComponent={
-            <View style={styles.header}>
-              <Text style={styles.name}>{detail.name}</Text>
-              <Text style={styles.address}>{detail.address}</Text>
-              <Pressable onPress={handleChange}>
-                <FastImg
-                  style={styles.image}
-                  source={{uri: detail.address_cover_url}}
-                  // mode={'center'}
-                />
-              </Pressable>
-            </View>
-          }
+          ListHeaderComponent={<Header />}
         />
       </View>
       <ActionSheet

@@ -2,7 +2,9 @@ import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, View, TextInput, Image, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
-import FastImg from "@/components/FastImg"
+import FastImg from '@/components/FastImg';
+import {StatusBar} from 'react-native';
+import Helper from "@/utils/helper"
 
 const About = ({navigation, route}) => {
   useLayoutEffect(() => {
@@ -13,11 +15,21 @@ const About = ({navigation, route}) => {
     'http://file.meirixinxue.com/assets/2019/6840c9bd-73f0-497b-8239-ff9228935e9b.png';
   const qqnumber = '3354456216';
 
+  const loadToken = async () => {
+    const token = await Helper.getData('auth_token')
+    console.log('token', token)
+  }
+
+  useEffect(() => {
+    loadToken()
+  })
+
   return (
-    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View>
         <LogoWrapView>
-          <FastImg source={{uri: logo_url}} style={{height: 65, width: 65, borderRadius: 10}}/>
+          <FastImg source={{uri: logo_url}} style={{height: 65, width: 65, borderRadius: 10}} />
           <FastImg
             source={{
               uri:
@@ -40,7 +52,7 @@ const About = ({navigation, route}) => {
           <ContentText>共同探索这个不一样的世界</ContentText>
         </ContentView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -59,8 +71,8 @@ const LogoWrapView = styled(View)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 59px;  
-`
+  margin-top: 59px;
+`;
 
 const ContentView = styled(View)`
   margin: 27px 27px 0 27px;

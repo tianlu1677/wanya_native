@@ -2,13 +2,11 @@ import React from 'react';
 import Upload from 'react-native-background-upload';
 import Helper from '@/utils/helper';
 import SyanImagePicker from 'react-native-syan-image-picker';
-import {getUploadFileToken, saveToAsset} from '@/api/settings_api';
+import {getUploadFileToken, saveVideoToAsset, saveAudioToAsset} from '@/api/settings_api';
 import {BaseApiUrl} from '@/utils/config';
-import { uploadSystemInfo } from '@/api/settings_api';
-import * as action from '@/redux/constants';
+import {uploadSystemInfo} from '@/api/settings_api';
 import DeviceInfo from 'react-native-device-info';
 const baseUrl = BaseApiUrl;
-
 
 const deviceId = DeviceInfo.getSystemVersion();
 const systemName = DeviceInfo.getSystemName();
@@ -25,8 +23,8 @@ const MediasPicker = WrapperComponent => {
       SyanImagePicker.showImagePicker(options, callback);
     };
 
-    const uploadImage = async file => {
-      const token = await Helper.getData('auth_token');
+    const uploadImage = async (file, socialToken) => {
+      const token = socialToken || (await Helper.getData('auth_token'));
       const path = file.uri.replace('file://', '');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
@@ -57,12 +55,13 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
+            console.log('errr', err);
             reject(err);
           });
       });
     };
 
-    const uploadAvatar = async file => {
+    const uploadAvatar = async (file, socialToken) => {
       const token = await Helper.getData('auth_token');
       const path = file.uri.replace('file://', '');
       const uploadOptions = {
@@ -76,7 +75,7 @@ const MediasPicker = WrapperComponent => {
         field: file.keyParams ? file.keyParams : 'account[avatar]',
         headers: {
           'content-type': 'application/octet-stream',
-          token: token,
+          token: socialToken || token,
         },
         path: path,
       };
@@ -97,7 +96,7 @@ const MediasPicker = WrapperComponent => {
     };
 
     const videoPick = (option = {}, callback) => {
-      const options = {...option};
+      const options = {videoCount: 1, MaxSecond: 300, MinSecond: 1, ...option};
       SyanImagePicker.openVideoPicker(options, callback);
     };
 
@@ -147,10 +146,54 @@ const MediasPicker = WrapperComponent => {
                     video_m3u8: upload_res.key.replace('mp4', 'm3u8'),
                   },
                 };
-                saveToAsset(body).then(ret => {
+                saveVideoToAsset(body).then(ret => {
                   resolve(ret);
                 });
               }
+            });
+          })
+          .catch(err => {
+            console.log('error', err);
+            reject(err);
+          });
+      });
+    };
+
+    // 上传音频
+    const uploadAudio = async file => {
+      const res = await getUploadFileToken({ftype: 'aac'});
+      const path = file.uri.replace('file://', '');
+      let uploadOptions = {
+        url: res.qiniu_region,
+        path: path,
+        method: 'POST',
+        type: 'multipart',
+        field: 'file',
+        parameters: {token: res.token, key: res.file_key, name: 'file'},
+        maxRetries: 2,
+        headers: {'content-type': 'application/octet-stream'},
+        notification: {enabled: true},
+        useUtf8Charset: true,
+      };
+      uploadSystemInfo(JSON.stringify(uploadOptions));
+      uploadSystemInfo(`OS: ${systemName}, systemVersion: ${deviceId} => ${JSON.stringify(file)}`);
+      return new Promise((resolve, reject) => {
+        Upload.startUpload(uploadOptions)
+          .then(uploadId => {
+            Upload.addListener('completed', uploadId, data => {
+              uploadSystemInfo(JSON.stringify(data));
+              let upload_res = JSON.parse(data.responseBody);
+              if (upload_res.key && data.responseCode === 200) {
+                const body = {
+                  asset: {file_key: upload_res.key, fname: upload_res.key, category: 'audio'},
+                };
+                saveAudioToAsset(body).then(ret => {
+                  resolve(ret);
+                });
+              }
+            });
+            Upload.addListener('error', uploadId, data => {
+              reject(data.error);
             });
           })
           .catch(err => {
@@ -175,6 +218,7 @@ const MediasPicker = WrapperComponent => {
         uploadImage={uploadImage}
         videoPick={videoPick}
         uploadVideo={uploadVideo}
+        uploadAudio={uploadAudio}
         uploadAvatar={uploadAvatar}
         removeImage={removeImage}
         removeAllPhoto={removeAllPhoto}

@@ -192,7 +192,7 @@ const MineDetail = props => {
           <View style={{flex: 1}}>
             <FocusAwareStatusBar
               barStyle="light-content"
-              translucent={false}
+              translucent={true}
               backgroundColor={'#000'}
             />
             <View style={styles.setting}>

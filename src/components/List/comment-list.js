@@ -29,7 +29,7 @@ const CommentList = props => {
       content: '',
       target_comment_id: v.id,
     };
-    dispatch({type: action.SAVE_COMMENT_TOPIC, value: comment});
+    dispatch({type: action.SAVE_COMMENT_CONTENT, value: comment});
     props.changeVisible(true);
   };
 
@@ -64,7 +64,7 @@ const CommentList = props => {
         },
       ];
     }
-    if(Platform.OS === 'ios') {
+    if (Platform.OS === 'ios') {
       const cancelItem = {
         id: '#cancel',
         label: '取消',
@@ -74,14 +74,14 @@ const CommentList = props => {
       const actionSheetItems = [...options, cancelItem];
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          options: actionSheetItems.map((x) => x.label),
+          options: actionSheetItems.map(x => x.label),
           // destructiveButtonIndex: actionSheetItems.length - 1,
           cancelButtonIndex: actionSheetItems.length - 1,
         },
         buttonIndex => {
           actionSheetItems[buttonIndex].onPress();
         }
-      )
+      );
     } else {
       setActionItems(options);
       setShowActionSheet(true);
@@ -193,7 +193,7 @@ const CommentList = props => {
   const loadData = async (page = 1) => {
     setLoading(true);
     const {api, params} = props.request;
-    const res = await api({id: params.id, page});
+    const res = await api({item_id: params.item_id, item_type: params.item_type, page});
     const data = res.data.comments;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

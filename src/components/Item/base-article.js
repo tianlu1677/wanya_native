@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Header, NoActionBottom} from '@/components/Item/single-list-item';
 import FastImg from '@/components/FastImg';
 import {RFValue} from '@/utils/response-fontsize';
+import {SCREEN_WIDTH} from '@/utils/navbar';
 
 const BaseArticle = props => {
   const {data} = props;
@@ -13,21 +14,102 @@ const BaseArticle = props => {
     navigation.push('ArticleDetail', {articleId: data.id});
   };
 
+  const AvatarSmallPicContent = () => {
+    const imageStyle = {width: RFValue(105), height: RFValue(75)};
+    return (
+      <>
+        <Header data={data} type="article" onRemove={props.onRemove} />
+        <View style={[styles.content, {marginTop: 13}]}>
+          <View style={styles.titleInfo}>
+            <Text style={styles.titleText} numberOfLines={2}>
+              {data.title}
+            </Text>
+            <NoActionBottom data={data} />
+          </View>
+          <View style={[styles.imageCover, {marginLeft: 22}]}>
+            {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+            <FastImg source={{uri: data.cover_url}} style={imageStyle} mode={'cover'} />
+          </View>
+        </View>
+      </>
+    );
+  };
+
+  const BigPcContent = () => {
+    const width = SCREEN_WIDTH - 28;
+    const imageStyle = {width, height: (width * 386) / 690};
+    return (
+      <>
+        <Text style={styles.titleText} numberOfLines={2}>
+          {data.title}
+        </Text>
+        <View style={[styles.imageCover, {marginTop: RFValue(5)}]}>
+          {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+          <FastImg source={{uri: data.cover_url}} style={imageStyle} mode={'cover'} />
+        </View>
+        <NoActionBottom
+          data={data}
+          avator={data.account.nickname}
+          style={{height: RFValue(35), lineHeight: RFValue(35)}}
+        />
+      </>
+    );
+  };
+
+  const NormalSmallPicContent = () => {
+    const imageStyle = {width: RFValue(105), height: RFValue(75)};
+    return (
+      <>
+        <View style={styles.content}>
+          <View style={styles.titleInfo}>
+            <Text style={styles.titleText} numberOfLines={2}>
+              {data.title}
+            </Text>
+            <NoActionBottom data={data} avator={data.account.nickname} />
+          </View>
+          <View style={[styles.imageCover, {marginLeft: 22}]}>
+            {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+            <FastImg source={{uri: data.cover_url}} style={imageStyle} mode={'cover'} />
+          </View>
+        </View>
+      </>
+    );
+  };
+
+  const MultiSmallPic = () => {
+    const scale = 160 / 226;
+    const imageWidth = Math.floor((SCREEN_WIDTH - 28 - 6) / 3);
+    const imageStyle = {width: imageWidth, height: imageWidth * scale, marginBottom: 3};
+    return (
+      <>
+        <Text style={styles.titleText} numberOfLines={2}>
+          {data.title}
+        </Text>
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: RFValue(5)}}>
+          {data.images_info.map((media, index) => (
+            <FastImg
+              key={media.url}
+              source={{uri: media.url}}
+              style={{...imageStyle, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
+              mode="cover"
+            />
+          ))}
+        </View>
+        <NoActionBottom
+          data={data}
+          avator={data.account.nickname}
+          style={{height: RFValue(35), lineHeight: RFValue(35)}}
+        />
+      </>
+    );
+  };
+
   return (
     <Pressable style={styles.postSlide} onPress={goArticleDetail}>
-      <Header data={data} type="article" onRemove={props.onRemove} />
-      <View style={styles.content}>
-        {data.excellent && <Text style={styles.excellentLabel}>精选</Text>}
-        <View style={styles.titleInfo}>
-          <Text style={styles.titleText} numberOfLines={2}>
-            {data.title}
-          </Text>
-          <NoActionBottom data={data} />
-        </View>
-        <View style={styles.imageCover}>
-          <FastImg source={{uri: data.cover_url}} style={styles.image} mode={'cover'} />
-        </View>
-      </View>
+      {data.card_style === 'avatar_small_pic' ? <AvatarSmallPicContent /> : <View />}
+      {data.card_style === 'big_pc' ? <BigPcContent /> : <View />}
+      {data.card_style === 'normal_small_pic' ? <NormalSmallPicContent /> : <View />}
+      {data.card_style === 'multi_small_pic' ? <MultiSmallPic /> : <View />}
     </Pressable>
   );
 };
@@ -39,7 +121,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   content: {
-    marginTop: 13,
     marginBottom: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -51,18 +132,13 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 14,
-    lineHeight: 22,
+    lineHeight: RFValue(21),
+    color: '#3c3c3c',
+    letterSpacing: 0.5,
     textAlign: 'justify',
   },
   imageCover: {
-    width: RFValue(105),
-    height: RFValue(75),
-    marginLeft: RFValue(22),
     position: 'relative',
-  },
-  image: {
-    width: RFValue(105),
-    height: RFValue(75),
   },
   excellentLabel: {
     width: 30,

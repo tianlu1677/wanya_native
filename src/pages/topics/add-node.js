@@ -1,5 +1,5 @@
 import React, {useLayoutEffect} from 'react';
-import {Text, StyleSheet, Pressable} from 'react-native';
+import {Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import NodeIndexComponent from '@/components/NodeIndex';
 
 const NodeIndex = ({navigation}) => {
@@ -8,14 +8,21 @@ const NodeIndex = ({navigation}) => {
       headerTitle: '选择圈子',
       headerLeft: () => null,
       headerRight: () => (
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
           <Text style={styles.cancel}>取消</Text>
         </Pressable>
       ),
     });
   }, [navigation]);
 
-  return <NodeIndexComponent type="add-node" />;
+  return (
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <NodeIndexComponent type="add-node" />
+    </>
+  );
 };
 
 const styles = StyleSheet.create({

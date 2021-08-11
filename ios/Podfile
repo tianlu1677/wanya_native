@@ -64,10 +64,12 @@ target 'wanya_native' do
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])
 
-  pod 'UMCCommon', '~> 2.1.4'
-  pod 'UMCAnalytics'
-  pod 'UMCPush'
-  pod 'UMCSecurityPlugins'
+  pod 'UMCommon'
+  # pod 'UMCAnalytics'
+  pod 'UMDevice'
+  pod 'UMShare/UI'
+  pod 'UMShare/Social/ReducedQQ'
+  pod 'UMShare/Social/ReducedSina'
 
   # pod 'DoraemonKit/Core', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #必选
   # pod 'DoraemonKit/WithLogger', :git => "https://gitee.com/yixiangboy/DoraemonKit.git", :tag => '3.0.2', :configurations => ['Debug'] #可选
@@ -98,6 +100,8 @@ target 'wanya_native' do
   # pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit.podspec"
 
   # pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'RNAudio', :path => '../node_modules/react-native-audio'
 
   target 'wanya_nativeTests' do
     inherit! :complete

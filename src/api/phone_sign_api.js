@@ -18,6 +18,7 @@ export async function sendPhoneCode(data = {phone: '', secret: '', timestamp: ''
   return res.data;
 }
 
+// 绑定手机号, 弃用
 export async function verifyPhoneCode(data = {phone: '', phone_code: ''}) {
   const res = await request({
     url: '/api/v1/phones/verify_phone_code',
@@ -26,6 +27,17 @@ export async function verifyPhoneCode(data = {phone: '', phone_code: ''}) {
   });
   return res.data;
 }
+
+// 新版本绑定手机号
+export async function bindingPhone(data = {phone: '', phone_code: ''}) {
+  const res = await request({
+    url: '/api/v1/phones/binding_phone',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
 // 手机注册用户
 export async function phoneRegisterAccount(data = {phone: '', phone_code: '', password: ''}) {
   const res = await request({
@@ -35,7 +47,6 @@ export async function phoneRegisterAccount(data = {phone: '', phone_code: '', pa
   });
   return res.data;
 }
-
 
 export async function verifyInviteCode(data = {invite_code: ''}) {
   const res = await request({
@@ -50,6 +61,26 @@ export async function verifyInviteCode(data = {invite_code: ''}) {
 export async function phonePasswordLogin(data = {phone: '', phone_code: ''}) {
   const res = await request({
     url: '/api/v1/phones/phone_login',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
+//验证码登录
+export async function phoneCodeLogin(data = {phone: '', phone_code: ''}) {
+  const res = await request({
+    url: '/api/v1/phones/phone_login',
+    method: 'POST',
+    data: data,
+  });
+  return res.data;
+}
+
+// 一键登录获取手机号
+export async function jverifyPhone(data = {jverify_phone_token: ''}) {
+  const res = await request({
+    url: '/api/v1/phones/jverify_phone',
     method: 'POST',
     data: data,
   });

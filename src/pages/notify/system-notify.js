@@ -1,18 +1,15 @@
-import React, {Component, useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {connect, useSelector} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {View, StatusBar} from 'react-native';
 import {getSystemNotifies} from '@/api/account_api';
 import ScrollList from '@/components/ScrollList';
 import NotifyContent from './components/notify-content';
-
+import {
+  SystemNoticeImg,
+} from '@/utils/default-image';
 const SystemNotify = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState({});
-
-  useEffect(() => {
-    loadInfo();
-  }, []);
 
   const loadInfo = async (page = 1) => {
     let params = {page: page, per_page: 20};
@@ -31,7 +28,6 @@ const SystemNotify = ({navigation}) => {
   };
 
   const formatNotify = notify => {
-    console.log('noti', notify);
     let image_url = '';
     let has_video = false;
     let content = '';
@@ -47,9 +43,13 @@ const SystemNotify = ({navigation}) => {
       content = notify.article.title;
     } else if (notify.target_type === null) {
       content = 'nothing';
-    } else if (notify.target_type === 'CheckNode'){
-      image_url = notify.target_cover_url
-      has_video = false
+    } else if (notify.target_type === 'CheckNode') {
+      image_url = notify.target_cover_url;
+      has_video = false;
+    } else if (notify.target_type === 'Theory' && notify.theory) {
+      image_url = notify.theory.single_cover && notify.theory.single_cover.cover_url;
+      content = notify.theory.title;
+      has_video = notify.theory.single_cover.category === 'video';
     } else {
       content = '已删除';
     }
@@ -67,22 +67,23 @@ const SystemNotify = ({navigation}) => {
         navigation.push('ArticleDetail', {articleId: comment.commentable_id});
       }
     } else if (notify.topic) {
-      console.log('topic, topic');
       navigation.push('TopicDetail', {topicId: notify.topic.id});
     } else if (notify.article) {
-      console.log('article, article');
       navigation.push('ArticleDetail', {articleId: notify.article.id});
     } else if (notify.target_type == 'CheckNode') {
       navigation.push('CreateNodeResult', {nodeId: notify.target_id});
     }
   };
 
+  useEffect(() => {
+    loadInfo();
+  }, []);
+
   const renderItem = ({item}) => {
     let notify = item;
-    // console.log('notify', notify)
     return (
       <NotifyContent
-        account={{...notify.actor, nickname: ''}}
+        account={{nickname: '', id: '', avatar_url: SystemNoticeImg}}
         notify_type={notify.message}
         time={notify.created_at_text}
         item={notify.item}
@@ -96,18 +97,18 @@ const SystemNotify = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <ScrollList
         onRefresh={loadInfo}
         headers={headers}
         data={data}
         loading={loading}
         renderItem={renderItem}
-        // height={1200}
         enableRefresh={false}
         renderSeparator={() => <View />}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

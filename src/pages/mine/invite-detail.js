@@ -1,15 +1,5 @@
-import React, {Component, useState, useLayoutEffect, useEffect, useRef} from 'react';
-import {
-  Modal,
-  StyleSheet,
-  StatusBar,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Text,
-  Pressable,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StatusBar, View, ScrollView, TouchableOpacity, Text, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as WeChat from 'react-native-wechat-lib';
 import styled from 'styled-components/native';
@@ -22,6 +12,7 @@ import {Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import AddFriendImg from '@/assets/images/add-invite.png';
 import FastImg from '@/components/FastImg';
+import {dispatchShareItem} from '@/redux/actions';
 
 const InviteDetail = ({navigation, route}) => {
   const [inviteCode, setInviteCode] = useState('');
@@ -30,10 +21,6 @@ const InviteDetail = ({navigation, route}) => {
   const [shareUri, setShareUri] = useState('');
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({});
-  }, [navigation]);
 
   useEffect(() => {
     loadInitInfo();
@@ -45,7 +32,6 @@ const InviteDetail = ({navigation, route}) => {
     setShareUri(codeRes.shareimg_url);
 
     getAccountInviteList().then(res => {
-      console.log('res', res);
       setAccountList(res.invites);
     });
   };
@@ -85,10 +71,16 @@ const InviteDetail = ({navigation, route}) => {
       console.log('e', e);
     }
   };
+
+  const onShare = () => {
+    const shareContent = {item_type: 'Account', item_id: currentAccount.id, visible: true};
+    dispatch(dispatchShareItem(shareContent));
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <StatusBar barStyle={'dark-content'} />
-      <ScrollView >
+      <ScrollView>
         <CardView colors={['#4e4e4e', '#181818']}>
           <View style={{flexDirection: 'row', height: 20, lineHeight: 20}}>
             <Avator size={20} account={{avatar_url: currentAccount.avatar_url}} />
@@ -171,12 +163,10 @@ const InviteDetail = ({navigation, route}) => {
         <View style={{height: 100}} />
       </ScrollView>
       <Button
-        title="微信邀请"
+        title="邀请好友加入"
         titleStyle={{fontSize: 16, fontWeight: '500'}}
         buttonStyle={{height: 50, backgroundColor: 'black', borderRadius: 0}}
-        onPress={() => {
-          setShareModelVisible(true);
-        }}
+        onPress={onShare}
         containerStyle={{
           flex: 1,
           position: 'absolute',
@@ -188,51 +178,6 @@ const InviteDetail = ({navigation, route}) => {
           backgroundColor: 'black',
         }}
       />
-
-      <Modal
-        animationType=""
-        transparent={true}
-        statusBarTranslucent
-        visible={shareModelVisible}
-        onRequestClose={() => {
-          setShareModelVisible(false);
-        }}>
-        <ModelWrap
-          onPress={() => {
-            setShareModelVisible(false);
-          }}>
-          {/*<FastImg*/}
-          {/*  source={{uri: shareUri}} style={{width: useWindowDimensions().width, top: 100, position: 'absolute', height: 100, zIndex: 100}}*/}
-          {/*  onLoad={(e) => {console.log('.', e.nativeEvent.height)}}*/}
-          {/*/>*/}
-
-          <ShareCardView style={{marginBottom: BOTTOM_HEIGHT}}>
-            <Pressable
-              style={{display: 'flex', alignItems: 'center'}}
-              onPress={() => {
-                shareFriend();
-              }}>
-              <Image
-                source={require('../../assets/images/sharewchatfrient.png')}
-                style={{width: 28, height: 22}}
-                resizeMode={'contain'}
-              />
-              <ShareText>微信好友</ShareText>
-            </Pressable>
-            <TouchableOpacity
-              style={{display: 'flex', alignItems: 'center'}}
-              onPress={() => {
-                shareTimeline();
-              }}>
-              <Image
-                source={require('../../assets/images/sharewechattimeline.png')}
-                style={{width: 20, height: 20}}
-              />
-              <ShareText>分享朋友圈</ShareText>
-            </TouchableOpacity>
-          </ShareCardView>
-        </ModelWrap>
-      </Modal>
     </View>
   );
 };

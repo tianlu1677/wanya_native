@@ -31,7 +31,7 @@ public class DplusReactPackage implements ReactPackage {
         ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-
+        modules.add(new ShareModule(reactContext));
         modules.add(new AnalyticsModule(reactContext));
         return modules;
     }

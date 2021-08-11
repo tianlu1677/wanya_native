@@ -1,12 +1,12 @@
-import React, {Component, useEffect, useCallback, useLayoutEffect} from 'react';
-import {StyleSheet, View, Text, Image, Pressable, Button} from 'react-native';
-import {syncAccountInfo} from '@/api/mine_api';
-import styled from 'styled-components/native';
-import {BadgeMessage, Avator} from '@/components/NodeComponents';
-import {connect, useSelector, useDispatch} from 'react-redux';
-import SafeAreaPlus from '@/components/SafeAreaPlus';
-import {dispatchBaseCurrentAccount, dispatchCurrentAccount} from '@/redux/actions';
+import React, {useCallback} from 'react';
+import {StyleSheet, StatusBar, View, Text, Image, Pressable} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
+import JPush from 'jpush-react-native';
+import {syncAccountInfo} from '@/api/mine_api';
+import {BadgeMessage, Avator} from '@/components/NodeComponents';
+import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
+import {IsIos} from '@/utils/navbar';
 import {
   CommentNoticeImg,
   FollowNoticeImg,
@@ -14,12 +14,21 @@ import {
   SystemNoticeImg,
   MineMentionNoticeUserImg,
 } from '@/utils/default-image';
+var BadgeAndroid = require('react-native-android-badge');
 
 const NotifyIndex = ({navigation}) => {
-  const currentAccount = useSelector(state => state.account.currentAccount);
   const dispatch = useDispatch();
+  const {currentAccount} = useSelector(state => state.account);
+  const {currentBaseInfo} = useSelector(state => state.account);
+  const {
+    unread_insite_notifies_count,
+    unread_comments_notifies_count,
+    unread_follow_messages_count,
+    unread_system_messages_count,
+    unread_mentions_notifies_count,
+  } = currentAccount;
 
-  const goPageMethod = async (type = '', event) => {
+  const goPageMethod = async (type = '') => {
     if (!currentAccount.id) {
       return;
     }
@@ -60,121 +69,116 @@ const NotifyIndex = ({navigation}) => {
         navigation.navigate('MentionNotify');
         break;
       default:
-        console.log('default');
+        break;
     }
   };
 
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchCurrentAccount());
+      dispatch(dispatchBaseCurrentAccount());
+      JPush.setBadge({
+        badge: currentBaseInfo.total_unread_messages_count,
+        appBadge: currentBaseInfo.total_unread_messages_count,
+      });
+      if (!IsIos) {
+        BadgeAndroid.setBadge(currentBaseInfo.total_unread_messages_count);
+      }
     }, [])
   );
 
-  const unreadMessageCount = message_count => {
-    if (message_count <= 0) {
-      return '0';
-    } else if (message_count > 99) {
-      return '99+';
-    } else {
-      return message_count.toString();
-    }
-  };
-
-  const unread_inside_notifies_count = currentAccount.unread_insite_notifies_count;
-  const unread_comments_notifies_count = currentAccount.unread_comments_notifies_count;
-  const unread_follow_messages_count = currentAccount.unread_follow_messages_count;
-  const unread_system_messages_count = currentAccount.unread_system_messages_count;
-  const unread_mentions_notifies_count = currentAccount.unread_mentions_notifies_count;
-
   return (
     <View>
-      <WrapView style={{marginTop: -15}}>
-        <ItemView onPress={goPageMethod.bind(this, 'notify_praise')}>
-          <CoverWrapView>
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
+      <View style={styles.wrapView}>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_praise')}>
+          <View style={styles.coverWrapView}>
             <Image source={{uri: PraiseNoticeImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
-              value={unread_inside_notifies_count}
+              value={unread_insite_notifies_count}
               containerStyle={styles.badgeContainer}
             />
-          </CoverWrapView>
-
-          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
-            <NotifyContentTitle>赞和收藏</NotifyContentTitle>
-            <NotifyContentDesc>
+          </View>
+          <View style={styles.notifyContent}>
+            <Text style={styles.notifyContentTitle}>赞和收藏</Text>
+            <Text style={styles.notifyContentDesc}>
               🤘
-              {unread_inside_notifies_count > 0
-                ? `有${unread_inside_notifies_count}人赞了你`
+              {unread_insite_notifies_count > 0
+                ? `有${unread_insite_notifies_count}人赞了你`
                 : '查看赞和收藏'}
-            </NotifyContentDesc>
-          </NotifyContentView>
-        </ItemView>
+            </Text>
+          </View>
+        </Pressable>
+        <View style={styles.speator} />
 
-        <ItemView onPress={goPageMethod.bind(this, 'notify_comment')}>
-          <CoverWrapView>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_comment')}>
+          <View style={styles.coverWrapView}>
             <Image source={{uri: CommentNoticeImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
               value={unread_comments_notifies_count}
               containerStyle={styles.badgeContainer}
             />
-          </CoverWrapView>
-
-          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
-            <NotifyContentTitle>评论及回复</NotifyContentTitle>
-            <NotifyContentDesc>
+          </View>
+          <View style={styles.notifyContent}>
+            <Text style={styles.notifyContentTitle}>评论及回复</Text>
+            <Text style={styles.notifyContentDesc}>
               🤝
               {unread_comments_notifies_count > 0
                 ? `有${unread_comments_notifies_count}人评论了你`
                 : '查看评论及回复'}{' '}
-            </NotifyContentDesc>
-          </NotifyContentView>
-        </ItemView>
+            </Text>
+          </View>
+        </Pressable>
+        <View style={styles.speator} />
 
-        <ItemView onPress={goPageMethod.bind(this, 'mention_account_notice')}>
-          <CoverWrapView>
+        <Pressable
+          style={styles.itemView}
+          onPress={goPageMethod.bind(this, 'mention_account_notice')}>
+          <View style={styles.coverWrapView}>
             <Image source={{uri: MineMentionNoticeUserImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
               value={unread_mentions_notifies_count}
               containerStyle={styles.badgeContainer}
             />
-          </CoverWrapView>
-
-          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
-            <NotifyContentTitle>@我的</NotifyContentTitle>
-            <NotifyContentDesc>
+          </View>
+          <View style={styles.notifyContent}>
+            <Text style={styles.notifyContentTitle}>@我的</Text>
+            <Text style={styles.notifyContentDesc}>
               🤞
               {unread_mentions_notifies_count > 0
                 ? `有${unread_mentions_notifies_count}人@了你`
                 : '查看@我的消息'}{' '}
-            </NotifyContentDesc>
-          </NotifyContentView>
-        </ItemView>
+            </Text>
+          </View>
+        </Pressable>
+        <View style={styles.speator} />
 
-        <ItemView onPress={goPageMethod.bind(this, 'notify_follow')}>
-          <CoverWrapView>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_follow')}>
+          <View style={styles.coverWrapView}>
             <Image source={{uri: FollowNoticeImg}} style={{width: 45, height: 45}} />
             <BadgeMessage
               value={unread_follow_messages_count}
               containerStyle={styles.badgeContainer}
             />
-          </CoverWrapView>
-
-          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
-            <NotifyContentTitle>新增粉丝</NotifyContentTitle>
-            <NotifyContentDesc>
+          </View>
+          <View style={styles.notifyContent}>
+            <Text style={styles.notifyContentTitle}>新增粉丝</Text>
+            <Text style={styles.notifyContentDesc}>
               🤟
               {unread_follow_messages_count > 0
                 ? `有${unread_follow_messages_count}人关注了你`
                 : '查看新增粉丝'}{' '}
-            </NotifyContentDesc>
-          </NotifyContentView>
-        </ItemView>
+            </Text>
+          </View>
+        </Pressable>
+        <View style={styles.speator} />
 
-        <ItemView onPress={goPageMethod.bind(this, 'notify_system')}>
-          <CoverWrapView>
+        <Pressable style={styles.itemView} onPress={goPageMethod.bind(this, 'notify_system')}>
+          <View style={styles.coverWrapView}>
             <View>
               <Avator
                 size={45}
-                account={{avatar_url: SystemNoticeImg, settled_type: 'brand'}}
+                account={{avatar_url: SystemNoticeImg}}
                 handleClick={goPageMethod.bind(this, 'notify_system')}
               />
               <BadgeMessage
@@ -182,19 +186,18 @@ const NotifyIndex = ({navigation}) => {
                 containerStyle={styles.badgeContainer}
               />
             </View>
-          </CoverWrapView>
-
-          <NotifyContentView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
-            <NotifyContentTitle>顽鸦小助手</NotifyContentTitle>
-            <NotifyContentDesc style={{marginLeft: -3}}>
+          </View>
+          <View style={styles.notifyContent}>
+            <Text style={styles.notifyContentTitle}>系统通知</Text>
+            <Text style={styles.notifyContentDesc}>
               ⚡️
               {unread_system_messages_count > 0
                 ? `有${unread_system_messages_count}条新的消息`
                 : '查看消息通知'}{' '}
-            </NotifyContentDesc>
-          </NotifyContentView>
-        </ItemView>
-      </WrapView>
+            </Text>
+          </View>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -205,51 +208,39 @@ const styles = StyleSheet.create({
     right: -7,
     top: -3,
   },
+  wrapView: {
+    backgroundColor: '#fff',
+    paddingLeft: 14,
+  },
+  itemView: {
+    flexDirection: 'row',
+    paddingVertical: 17,
+  },
+  coverWrapView: {
+    marginRight: 12,
+  },
+  notifyContent: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  notifyContentTitle: {
+    height: 20,
+    lineHeight: 20,
+    fontSize: 16,
+    letterSpacing: 1,
+    fontWeight: '500',
+  },
+  notifyContentDesc: {
+    marginTop: 4,
+    color: '#BDBDBD',
+    letterSpacing: 1,
+    fontSize: 13,
+  },
+  speator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#ebebeb',
+    marginLeft: 45 + 12,
+  },
 });
-
-const WrapView = styled(View)`
-  padding-top: 25px;
-  background-color: white;
-  height: 100%;
-  padding-left: 15px;
-  display: flex;
-  flex-direction: column;
-`;
-const ItemView = styled(Pressable)`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  height: 80px;
-`;
-
-const CoverWrapView = styled(View)`
-  margin-right: 12px;
-`;
-
-const NotifyContentView = styled(View)`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: center;
-  padding-bottom: 18px;
-  border-bottom-width: 1px;
-  border-bottom-color: #ebebeb;
-`;
-
-const NotifyContentTitle = styled(Text)`
-  height: 20px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 1px;
-`;
-const NotifyContentDesc = styled(Text)`
-  margin-top: 3px;
-  height: 20px;
-  font-size: 13px;
-  color: rgba(189, 189, 189, 1);
-  line-height: 20px;
-  letter-spacing: 1px;
-`;
 
 export default NotifyIndex;

@@ -1,54 +1,51 @@
-import React, {Component, useState, useLayoutEffect, useEffect} from 'react';
-import {StyleSheet, View, Text, Pressable} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
 
-const LocationBar = ({space, location}) => {
+const LocationBar = ({space, location, style}) => {
   const navigation = useNavigation();
+
   const goSpaceDetail = () => {
     navigation.push('SpaceDetail', {spaceId: space.id});
   };
+
   const goLocationDetail = () => {
     navigation.push('LocationDetail', {locationId: location.id});
   };
 
-  useEffect(() => {}, []);
+  const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
+
   return (
     <>
       {space && (
-        <Pressable
-          style={styles.spaceWrapper}
-          onPress={goSpaceDetail}
-          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-          <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-          <Text style={styles.spaceText}>{space.name}</Text>
+        <Pressable style={[styles.wrapper, style]} onPress={goSpaceDetail} hitSlop={hitSlop}>
+          <IconFont name="space-point" size={11} color={'#1B5C79'} />
+          <Text style={styles.text}>{space.name}</Text>
         </Pressable>
       )}
       {location && (
-        <Pressable
-          style={styles.spaceWrapper}
-          onPress={goLocationDetail}
-          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}>
-          <IconFont name="space-point" size={11} color={'#9C9C9C'} />
-          <Text style={styles.spaceText}>{location.name.toString().substr(0, 13)}</Text>
+        <Pressable style={[styles.wrapper, style]} onPress={goLocationDetail} hitSlop={hitSlop}>
+          <IconFont name="space-point" size={11} color={'#1B5C79'} />
+          <Text style={styles.text}>{location.name.toString().substr(0, 13)}</Text>
         </Pressable>
       )}
     </>
   );
 };
 
-export default LocationBar;
-
 const styles = StyleSheet.create({
-  spaceWrapper: {
+  wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 6,
   },
-  spaceText: {
-    color: '#9C9C9C',
+  text: {
+    color: '#1B5C79',
     marginLeft: 4,
     fontSize: 11,
     fontWeight: '400',
   },
 });
+
+export default LocationBar;
