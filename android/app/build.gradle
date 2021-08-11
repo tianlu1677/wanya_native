@@ -140,7 +140,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10
+        versionCode 11
         versionName "0.0.25"
 
         manifestPlaceholders = [
