@@ -20,16 +20,22 @@ const BaseTheory = props => {
     single_cover: {cover_url, category},
   } = data;
 
+  const isRenderBottom = data.node_name || data.praises_count || data.comments_count;
+
   return (
-    <Pressable style={styles.postSlide} onPress={goArticleDetail}>
+    <Pressable
+      style={[styles.postSlide, {paddingBottom: isRenderBottom ? 0 : 16}]}
+      onPress={goArticleDetail}>
       <Header data={data} type="theory" onRemove={props.onRemove} />
       <View style={styles.content}>
         <Text style={styles.titleText}>{data.title}</Text>
         <FastImg source={{uri: cover_url}} style={styles.imageCover} mode={'cover'} />
         {category === 'video' && <FastImg style={styles.playImage} source={VideoPlayImg} />}
-        <View style={styles.bottom}>
-          <NoActionBottom data={data} />
-        </View>
+        {isRenderBottom ? (
+          <View style={styles.bottom}>
+            <NoActionBottom data={data} />
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );
@@ -39,8 +45,7 @@ const ImageHeight = Math.floor((width * 420) / 750);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
-    paddingBottom: 0,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
   content: {
     marginTop: RFValue(13),

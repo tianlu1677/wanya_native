@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StatusBar, Pressable, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, StatusBar, Pressable, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import {dispatchPreviewImage} from '@/redux/actions';
@@ -11,34 +11,19 @@ import {
   PublishRelated,
   RelatedComponent,
 } from '@/components/Item/single-detail-item';
-
-const {width: screenWidth} = Dimensions.get('window');
-let maxHeight = 100;
+import {scaleDetailImage} from '@/utils/scale';
 
 const RenderImage = props => {
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
-  const {detail} = props;
-  let media_images = detail.media_images || [];
-  media_images.map(img => {
-    const imgHeight = Math.floor((screenWidth / img.width) * img.height);
-    if (imgHeight > maxHeight) {
-      maxHeight = imgHeight;
-    }
-  });
+  const {account_id, media_images, excellent, plain_content, location, space} = props.detail;
+  const isSelf = currentAccount.id !== account_id;
 
-  media_images = media_images.map(img => {
-    const imgHeight = (screenWidth / img.width) * img.height;
-    if (imgHeight < maxHeight) {
-      return {...img, imgHeight: imgHeight, paddingTop: (maxHeight - imgHeight) / 2};
-    } else {
-      return {...img, imgHeight: imgHeight, paddingTop: 0};
-    }
-  });
+  const mediaImages = scaleDetailImage(media_images);
 
   const onPreview = index => {
     const data = {
-      images: media_images.map(v => {
+      images: mediaImages.map(v => {
         return {url: v.image_url.split('?')[0]};
       }),
       visible: true,
@@ -47,49 +32,49 @@ const RenderImage = props => {
     dispatch(dispatchPreviewImage(data));
   };
 
+  const heightImages = mediaImages.map(item => item.height);
+  const maxIndex = heightImages.findIndex(item => item === Math.max.apply(null, heightImages));
+  const maxHeight = heightImages[maxIndex];
+
+  const viewStyle = {width: mediaImages[0].width, height: maxHeight};
+
   return (
     <>
       <StatusBar barStyle={'light-content'} backgroundColor={'black'} translucent={false} />
-      <View style={{minHeight: maxHeight, width: screenWidth, position: 'relative'}}>
-        <View style={{height: SAFE_TOP, backgroundColor: 'black'}} />
-        {props.detail.excellent && <Text style={styles.excellentLabel}>精选</Text>}
+      <View style={{height: SAFE_TOP, backgroundColor: '#000'}} />
+      <View style={viewStyle}>
+        {excellent && <Text style={styles.excellentLabel}>精选</Text>}
         <Swiper
           index={0}
           loop={false}
-          activeDotColor={'yellow'}
-          dotColor={'white'}
+          activeDotColor="yellow"
+          dotColor="white"
           removeClippedSubviews={false}
           loadMinimal
-          style={{height: maxHeight, backgroundColor: 'black'}}
-          showsPagination={media_images.length > 0}>
-          {media_images.map((media, index) => (
-            <Pressable
-              onPress={() => onPreview(index)}
-              key={media.image_url}
-              style={{paddingTop: media.paddingTop, height: media.imgHeight}}>
-              <FastImg
-                key={media.image_url}
-                source={{uri: media.image_url}}
-                style={{width: screenWidth, height: media.imgHeight}}
-                mode={'contain'}
-              />
-            </Pressable>
-          ))}
+          style={{backgroundColor: '#000'}}
+          showsPagination={mediaImages.length > 0}>
+          {mediaImages.map((media, index) => {
+            const {width, height, image_url, mode} = media;
+            const paddingTop = (maxHeight - height) / 2;
+            return (
+              <Pressable key={image_url} onPress={() => onPreview(index)} style={{paddingTop}}>
+                <FastImg source={{uri: image_url}} style={{width, height}} mode={mode} />
+              </Pressable>
+            );
+          })}
         </Swiper>
       </View>
-      <PublishAccount
-        data={props.detail}
-        showFollow={currentAccount.id !== detail.account_id}
-        space={props.detail.space}
-        location={props.detail.location}
-      />
-      <RelatedComponent data={detail} />
-      {detail.plain_content ? (
+
+      <PublishAccount data={props.detail} showFollow={isSelf} space={space} location={location} />
+      <RelatedComponent data={props.detail} />
+
+      {plain_content ? (
         <View style={styles.content}>
-          <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
+          <PlainContent data={props.detail} style={styles.multiLineText} numberOfLines={0} />
         </View>
       ) : null}
-      <PublishRelated data={detail} type="topic" />
+
+      <PublishRelated data={props.detail} type="topic" />
     </>
   );
 };
@@ -117,7 +102,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
     left: 40,
-    top: SAFE_TOP,
     zIndex: 1,
     marginTop: 9,
   },

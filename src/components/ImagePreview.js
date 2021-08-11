@@ -1,11 +1,6 @@
 import React, {Component, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 import Modal from 'react-native-modal';
 import FastImg from '@/components/FastImg';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -19,7 +14,7 @@ const ImagePreview = () => {
   const HeaderContent = ({currentShowIndex}) => {
     let allSizeCount = previewImageData.images.length;
     return (
-      <View style={{position: 'absolute', zIndex: -1, width: '100%', top: 50}}>
+      <View style={{position: 'absolute', zIndex: 1, width: '100%', top: 50}}>
         <Pressable
           style={styles.pressableTop}
           onPress={() => {
@@ -79,7 +74,9 @@ const ImagePreview = () => {
             onOpen(false);
           }}
           renderImage={props => <FastImg {...props} />}
-          renderHeader={(currentShowIndex, allSize) => <HeaderContent currentShowIndex={currentShowIndex} allSize={allSize} />}
+          renderHeader={(currentShowIndex, allSize) => (
+            <HeaderContent currentShowIndex={currentShowIndex} allSize={allSize} />
+          )}
           index={previewImageData.index}
           imageUrls={previewImageData.images}
           enableSwipeDown
@@ -119,7 +116,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'row',
-  }
+  },
 });
 
 // const images = [

@@ -75,7 +75,6 @@ const ScrollList = props => {
       return;
     }
     setState(loadState.LOADING);
-    console.log('onEndReached ===============', pagin, refreshing);
     try {
       props.onRefresh(pagin.nextPage);
     } catch {
@@ -230,8 +229,8 @@ const ScrollList = props => {
       // }}
       // contentOffset={{y: props.loading ? -60 : 9, x: 0}}
       // contentInset={{top: 50}}
-      onEndReached={enableLoadMore ? throttle(onEndReached, 500) : null}
-      onEndReachedThreshold={0.2}
+      onEndReached={enableLoadMore ? throttle(onEndReached, 100) : null}
+      onEndReachedThreshold={0.3}
       // maxToRenderPerBatch={1} // 增量渲染最大数量
       // updateCellsBatchingPeriod={3000}
       ListFooterComponent={enableLoadMore ? renderFooter : null}
@@ -243,13 +242,14 @@ const ScrollList = props => {
       removeClippedSubviews={false}
       windowSize={6}
       progressViewOffset={1}
+      getItemLayout={props.getItemLayout}
       // debug
       {...props.settings}
       // onResponderRelease={onRelease}
-      onContentSizeChange={() => {
-        // console.log('finish...')
-        setFinishContent(true);
-      }}
+      // onContentSizeChange={() => {
+      //   // console.log('finish...')
+      //   setFinishContent(true);
+      // }}
       refreshControl={
         enableRefresh ? (
           <RefreshControl

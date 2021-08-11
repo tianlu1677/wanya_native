@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import FastImg from '@/components/FastImg';
@@ -6,14 +6,15 @@ import {BadgeMessage, Avator} from '@/components/NodeComponents';
 import {readSingleChatGroupMessage} from '@/api/chat_api';
 import {RFValue} from '@/utils/response-fontsize';
 import {EMOJIS_DATA, EMOJIS_ZH} from '@/plugins/react-native-easy-chat-ui';
-
+import Swipeout from '@/components/Swipeout';
+import * as RootNavigation from '@/navigator/root-navigation';
 const PATTERNS = {
   url: /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/i,
   phone: /[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,7}/,
   emoji: new RegExp('\\/\\{[a-zA-Z_]{1,14}\\}'),
 };
 
-const BaseChatGroup = ({navigation, chat_group}) => {
+const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => {
   const {currentAccount} = useSelector(state => state.account);
   const {
     uuid,
@@ -24,9 +25,9 @@ const BaseChatGroup = ({navigation, chat_group}) => {
   } = chat_group;
 
   const goChatDetail = () => {
-    navigation.navigate('ChatDetail', {uuid, targetAccount: send_message_account});
-    readSingleChatGroupMessage({uuid: uuid});
+    RootNavigation.push('ChatDetail', {uuid, targetAccount: send_message_account});
     unread_message[currentAccount.id] = 0;
+    readSingleChatGroupMessage({uuid: uuid});
   };
 
   const _matchContentString = (textContent, views) => {
@@ -87,33 +88,60 @@ const BaseChatGroup = ({navigation, chat_group}) => {
     return views;
   };
 
+  const changeOpen = (sectionID, rowId) => {
+    console.log('onOpen item', sectionID, rowId);
+    onOpen(sectionID);
+  };
   return (
-    <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
-      <View style={styles.coverWrapView}>
-        <Avator size={45} account={send_message_account} />
-        <BadgeMessage
-          value={unread_message[currentAccount.id]}
-          containerStyle={styles.badgeContainer}
-        />
-      </View>
-      <View style={styles.notifyContent}>
-        <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
-        {last_conversation ? (
-          <Text style={styles.notifyContentDesc} numberOfLines={1}>
-            {last_conversation.category === 'text' ? (
-              _getActualText(last_conversation.content)
-            ) : (
-              <Text style={styles.notifyContentText}>{last_conversation.payload.text}</Text>
-            )}
-          </Text>
-        ) : (
-          <Text style={styles.notifyContentDesc} />
-        )}
-      </View>
-      <View style={styles.messageContent}>
-        <Text style={styles.timeText}>{last_message_at_text}</Text>
-      </View>
-    </Pressable>
+    <Swipeout
+      right={[
+        {
+          text: '删除',
+          onPress: item => {
+            console.log(item)
+            deleteChatgroup({uuid: item.key});
+          },
+          key: chat_group.uuid,
+          backgroundColor: '#FF2242',
+          type: 'delete',
+
+          autoClose: false,
+        },
+      ]}
+      close={true}
+      rowID={chat_group.uuid}
+      sectionID={chat_group.uuid}
+      autoClose={true}
+      onOpen={changeOpen}
+      key={chat_group.uuid}
+      >
+      <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
+        <View style={styles.coverWrapView}>
+          <Avator size={45} account={send_message_account} />
+          <BadgeMessage
+            value={unread_message[currentAccount.id]}
+            containerStyle={styles.badgeContainer}
+          />
+        </View>
+        <View style={styles.notifyContent}>
+          <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
+          {last_conversation ? (
+            <Text style={styles.notifyContentDesc} numberOfLines={1}>
+              {last_conversation.category === 'text' ? (
+                _getActualText(last_conversation.content)
+              ) : (
+                <Text style={styles.notifyContentText}>{last_conversation.payload.text}</Text>
+              )}
+            </Text>
+          ) : (
+            <Text style={styles.notifyContentDesc} />
+          )}
+        </View>
+        <View style={styles.messageContent}>
+          <Text style={styles.timeText}>{last_message_at_text}</Text>
+        </View>
+      </Pressable>
+    </Swipeout>
   );
 };
 
@@ -128,6 +156,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: RFValue(12),
     backgroundColor: '#fff',
+    width: '100%',
+    height: 70
   },
   coverWrapView: {
     marginRight: 12,

@@ -4,6 +4,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
 import {throttle} from 'lodash';
+import {TransFormType} from '@/utils';
 import FastImg from '@/components/FastImg';
 import ScrollList from '@/components/ScrollList';
 import BaseTopic from '@/components/Item/base-topic';
@@ -73,14 +74,20 @@ const NodeListPost = () => {
   };
 
   const RenderItem = React.memo(({item, index}) => {
+    const data = {
+      ...item.item,
+      published_at_text: `发布了${TransFormType(item.item)}`,
+      nodeInfo: item.node,
+    };
+
     return useMemo(() => {
       switch (item.item_type) {
         case 'Topic':
-          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+          return <BaseTopic data={data} onRemove={() => onRemove(index)} type="recommend-node" />;
         case 'Article':
-          return <BaseArticle data={item.item} />;
+          return <BaseArticle data={data} type="recommend-node" />;
         case 'Theory':
-          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+          return <BaseTheory data={data} onRemove={() => onRemove(index)} type="recommend-node" />;
         default:
           return <View />;
       }
@@ -104,7 +111,7 @@ const NodeListPost = () => {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(1);
   }, []);
 
   return (

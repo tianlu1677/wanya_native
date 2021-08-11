@@ -56,7 +56,7 @@ const TopicLinkDetail = ({navigation, route}) => {
         leftButtonColor={'black'}
         excellent={detail.excellent}
         statusBar={{
-          barStyle: 'dark-content',
+          barStyle: 'light-content',
           hidden: false,
         }}
       />

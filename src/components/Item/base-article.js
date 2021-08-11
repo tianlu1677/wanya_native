@@ -87,13 +87,12 @@ const BaseArticle = props => {
         </Text>
         <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: RFValue(5)}}>
           {data.images_info.map((media, index) => (
-            <Pressable key={media.url}>
-              <FastImg
-                source={{uri: media.url}}
-                style={{...imageStyle, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
-                mode="cover"
-              />
-            </Pressable>
+            <FastImg
+              key={media.url}
+              source={{uri: media.url}}
+              style={{...imageStyle, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
+              mode="cover"
+            />
           ))}
         </View>
         <NoActionBottom

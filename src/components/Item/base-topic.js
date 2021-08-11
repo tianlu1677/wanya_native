@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
+import LocationBar from '@/components/LocationBar';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import {VWValue, RFValue} from '@/utils/response-fontsize';
@@ -24,25 +25,24 @@ export const TopicImageContent = props => {
     return <View />;
   }
 
-  const singleStyle = {
-    width: Math.ceil(VWValue(imgAttr.width) / 2),
-    height: Math.ceil((VWValue(imgAttr.width) * imgAttr.height) / imgAttr.width / 2),
+  const singleStyle = {width: VWValue(imgAttr.width), height: VWValue(imgAttr.height)};
+  const multiStyle = {
+    width: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
+    height: Math.floor((SCREEN_WIDTH - 28 - 6) / 3),
+    marginBottom: 3,
   };
 
   const onPreview = index => {
-    const data = {
-      index,
-      visible: true,
-      images: medias.map(v => {
-        return {url: v.split('?')[0]};
-      }),
-    };
+    const images = medias.map(v => {
+      return {url: v.split('?')[0]};
+    });
+    const data = {index, visible: true, images};
     dispatch(dispatchPreviewImage(data));
   };
 
   return imgStyle === 'single' ? (
     <Pressable onPress={() => onPreview(0)} style={singleStyle}>
-      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} />
+      <FastImg source={{uri: single_cover.cover_url}} style={singleStyle} mode="cover" />
     </Pressable>
   ) : (
     <View style={styles.imageMultiWrapper}>
@@ -51,7 +51,7 @@ export const TopicImageContent = props => {
           <FastImg
             key={media}
             source={{uri: media}}
-            style={{...styles.imageMulti, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
+            style={{...multiStyle, marginRight: (index + 1) % 3 === 0 ? 0 : 3}}
           />
         </Pressable>
       ))}
@@ -61,22 +61,17 @@ export const TopicImageContent = props => {
 
 export const TopicVideoContent = props => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const {data} = props;
-  const onGoDetail = () => {
-    // dispatch(dispatchTopicDetail(null));
-    navigation.push('TopicDetail', {topicId: data.id});
-  };
-  const {single_cover} = props.data;
-  const videoAttr = calculateImg(
-    single_cover.width ? single_cover.width : 100,
-    single_cover.height ? single_cover.height : 100
-  );
 
-  const videoAttrStyle = {
-    width: Math.ceil(VWValue(videoAttr.width) / 2),
-    height: Math.ceil((VWValue(videoAttr.width) * videoAttr.height) / videoAttr.width / 2),
+  const {
+    data: {id, single_cover},
+  } = props;
+
+  const onGoDetail = () => {
+    navigation.push('TopicDetail', {topicId: id});
   };
+
+  const videoAttr = calculateImg(single_cover.width || 100, single_cover.height || 100);
+  const videoAttrStyle = {width: VWValue(videoAttr.width), height: VWValue(videoAttr.height)};
 
   return (
     <Pressable style={{flex: 1, ...videoAttrStyle}} onPress={onGoDetail}>
@@ -84,6 +79,7 @@ export const TopicVideoContent = props => {
         gif_url={single_cover.link_url}
         source={{uri: `${single_cover.link_url}?imageView2/2/w/720/interlace/1/format/jpg/q/80`}}
         style={{...styles.imageCover, ...videoAttrStyle}}
+        mode="cover"
       />
       <Image resizeMethod={'resize'} style={styles.playImage} source={VideoPlayImg} />
     </Pressable>
@@ -122,14 +118,12 @@ export const TopicLinkContent = props => {
 };
 
 const BaseTopic = props => {
-  const {data} = props;
+  const {data, type} = props;
   const {content_style} = data;
   const navigation = useNavigation();
   const goNodeDetail = () => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
   };
-
-  // console.log('BaseTopic', props.data.id)
 
   const goTopicDetail = () => {
     navigation.push('TopicDetail', {topicId: data.id});
@@ -139,7 +133,7 @@ const BaseTopic = props => {
     <BaseLongVideo data={props.data} />
   ) : (
     <Pressable style={styles.postSlide} onPress={goTopicDetail}>
-      <Header data={data} type="topic" onRemove={props.onRemove} />
+      <Header data={data} type="topic" typeHeader={type} onRemove={props.onRemove} />
       {data.plain_content ? (
         <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(13)}} />
       ) : (
@@ -162,33 +156,38 @@ const BaseTopic = props => {
       ) : (
         <View />
       )}
-      <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
-        <Pressable style={styles.infoView} onPress={goNodeDetail}>
-          <IconFont name="node-solid" size={15} color={'#1B5C79'} />
-          <Text style={styles.nodeName}>{data.node_name}</Text>
-        </Pressable>
-      </View>
+
+      {type === 'recommend-node' && (data.space || data.location) && (
+        <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
+          <LocationBar space={data.space} location={data.location} style={styles.infoView} />
+        </View>
+      )}
+
+      {type !== 'recommend-node' && data.node_name && (
+        <View style={[styles.infoViewWrap, {marginTop: content_style === 'text' ? 11 : 16}]}>
+          <Pressable style={styles.infoView} onPress={goNodeDetail}>
+            <IconFont name="node-solid" size={15} color={'#1B5C79'} />
+            <Text style={styles.nodeName}>{data.node_name}</Text>
+          </Pressable>
+        </View>
+      )}
+
       <Bottom data={data} type="topic" share={true} />
     </Pressable>
   );
 };
 
-const imageMultiWidth = Math.floor((SCREEN_WIDTH - 28 - 6) / 3);
 const styles = StyleSheet.create({
   postSlide: {
     padding: 14,
     paddingBottom: 0,
     backgroundColor: '#fff',
+    width: '100%'
   },
   imageMultiWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-  },
-  imageMulti: {
-    width: imageMultiWidth,
-    height: imageMultiWidth,
-    marginBottom: 3,
-    borderRadius: 2,
+    marginBottom: -3,
   },
   imageCover: {
     borderRadius: 2,
@@ -223,6 +222,7 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 13,
     paddingHorizontal: 10,
+    marginLeft: 0,
   },
   nodeName: {
     fontSize: 11,

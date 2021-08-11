@@ -143,7 +143,7 @@ const AddSpace = props => {
         {request ? (
           <TabView
             currentKey={currentKey}
-            request={currentKey}
+            request={request}
             onChange={onChangeKey}
             align="left"
             bottomLine={false}

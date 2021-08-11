@@ -16,16 +16,46 @@ import {
   THEORY_DETAIL,
   LOGOUT_SUCCESS,
   LOAD_ALL_CITY_SUCCESS,
-  ACCOUNT_SAVE_TOKEN
+  ACCOUNT_SAVE_TOKEN,
+  UPDATE_SOCIAL_TOKEN,
+  UPDATE_SOCIAL_ACCOUNT,
+  UPDATE_TOTAL_LABEL_LIST,
 } from '../constants/index';
 import {getCategoryList} from '@/api/category_api';
-import {getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
+import {getLabelList} from '@/api/settings_api';
+import {getLoginBaseInfo, getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {createTopic} from '@/api/topic_api';
 import {getCities} from '@/api/space_api';
 import Helper from '@/utils/helper';
+import * as RootNavigation from '@/navigator/root-navigation';
 import * as node from './node_action';
 
 export const nodeAction = node;
+
+// 未完成认证用户
+export const dispatchUpdateSocialAccount = socialToken => async dispatch => {
+  const res = await getLoginBaseInfo({token: socialToken});
+  console.log('主动获取AccountInfo res: ', res);
+  dispatch({type: UPDATE_SOCIAL_TOKEN, socialToken: socialToken});
+  dispatch({type: UPDATE_SOCIAL_ACCOUNT, socialAccount: res.account});
+
+  const {had_phone, had_photo, had_gender, had_taglist, had_invited} = res.account;
+  if (!had_phone) {
+    RootNavigation.navigate('BindPhone');
+  } else if (!had_photo) {
+    RootNavigation.navigate('RegisterInfo');
+  } else if (!had_gender) {
+    RootNavigation.navigate('RegisterInfoGender');
+  } else if (!had_taglist) {
+    RootNavigation.navigate('RegisterInfoLabel');
+  } else if (!had_invited) {
+    RootNavigation.navigate('RegisterInfoInvite');
+  } else {
+    // 必须先设置token
+    await dispatch(dispatchSetAuthToken(socialToken));
+    RootNavigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+  }
+};
 
 // 当前用户
 export const dispatchCurrentAccount = () => async dispatch => {
@@ -83,8 +113,8 @@ export const dispatchEmptyCurrentAccount = account_id => {
 
 // 管理员登录
 export const dispatchSetAuthToken = (token = '') => async dispatch => {
+  await Helper.setData('auth_token', token);
   dispatchCurrentAccount();
-  Helper.setData('auth_token', token);
   dispatch({type: ADMIN_SIGN_SUCCESS, auth_token: token});
   dispatch({type: ACCOUNT_SAVE_TOKEN, userToken: token});
 };
@@ -134,6 +164,12 @@ export const dispatchFetchCategoryList = () => async dispatch => {
   dispatch({type: UPDATE_CATEGORY_LIST, categories: categories});
 };
 
+// 获取label的数据
+export const dispatchFetchLabelList = () => async dispatch => {
+  const res = await getLabelList();
+  dispatch({type: UPDATE_TOTAL_LABEL_LIST, labelList: res.data.label_list});
+};
+
 export const changeUploadStatus = value => {
   return {
     type: CHANGE_UPLOAD_STATUS,
@@ -168,13 +204,12 @@ export const updateTheoryVideo = (videoId, pause) => async dispatch => {
   });
 };
 
-
 // 提前加载city
 export const loadAllCityList = () => async dispatch => {
   const res = await getCities();
-  console.log('res', res.data)
+  console.log('res', res.data);
   await dispatch({
     type: LOAD_ALL_CITY_SUCCESS,
-    value: res.data
+    value: res.data,
   });
 };

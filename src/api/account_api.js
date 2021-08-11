@@ -34,9 +34,8 @@ export async function syncAccountInfo(data = {}) {
   const res = await request({
     url: '/api/v1/mine/accounts/' + data.id,
     method: 'PUT',
-    data: data,
+    data,
   });
-
   return res.data;
 }
 

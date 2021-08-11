@@ -211,7 +211,7 @@ continueUserActivity:(NSUserActivity *)userActivity
    */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:@"1111498808"/*设置QQ平台的appID*/  appSecret:@"9J2y7keKBcjYZHDs" redirectURL:@"http://mobile.umeng.com/social"];
   /* 设置新浪的appKey和appSecret */
-  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"3691201000"  appSecret:@"08b8e8ad55f0681b8ae109bbe8806652" redirectURL:@"https://app.meirixinxue.com/"];
+  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"3691201000"  appSecret:@"08b8e8ad55f0681b8ae109bbe8806652" redirectURL:@"https://app.vanyah.cn/callback"];
 }
 
 

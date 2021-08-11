@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {View, Text, TextInput, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
 import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
+import {debounce} from 'lodash';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
@@ -181,7 +182,7 @@ const NewTopic = props => {
   };
 
   const isValidateForm = () => {
-    //图片 视频 外链 文字 选1+node
+    //图片 视频 外链 文字 选1
     if (imageSource.length === 0 && videoSource.length === 0 && !content && !linkSource) {
       return false;
     } else {
@@ -224,11 +225,6 @@ const NewTopic = props => {
         Toast.show('图片正在上传中');
         return false;
       }
-    }
-
-    if (!savetopic.node) {
-      navigation.navigate('AddNode');
-      return false;
     }
 
     const data = getValidateForm();
@@ -287,7 +283,7 @@ const NewTopic = props => {
 
   const RightBtn = () => {
     return (
-      <Pressable onPress={onSubmit}>
+      <Pressable onPress={debounce(onSubmit, 1000)}>
         <Text style={[styles.finishBtn, {color: isValidateForm() ? '#000' : '#bdbdbd'}]}>发布</Text>
       </Pressable>
     );
@@ -352,7 +348,12 @@ const NewTopic = props => {
                 {v.id ? (
                   <>
                     <Pressable onPress={() => onPreview(index)}>
-                      <FastImg mode={'cover'} key={index} style={styles.media} source={{uri: v.url}} />
+                      <FastImg
+                        mode={'cover'}
+                        key={index}
+                        style={styles.media}
+                        source={{uri: v.url}}
+                      />
                     </Pressable>
                     <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
                       <FastImg
@@ -503,7 +504,7 @@ const NewTopic = props => {
               <Text style={styles.addText}>关联圈子</Text>
               {savetopic.node && savetopic.node.name ? (
                 <View style={styles.checkTextWrap}>
-                  <IconFont name="node-solid" size={15} color="#FFE30A" />
+                  <IconFont name="node-solid" size={15} color={'#1B5C79'} />
                   <Text style={styles.checkText}>{savetopic.node?.name}</Text>
                 </View>
               ) : null}
@@ -663,7 +664,7 @@ const styles = StyleSheet.create({
     height: RFValue(25),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F6F6F6',
+    backgroundColor: '#EFEFEF',
     borderRadius: 15,
     paddingHorizontal: RFValue(10),
     marginRight: 7,
@@ -671,7 +672,7 @@ const styles = StyleSheet.create({
   checkText: {
     fontSize: 11,
     marginLeft: 5,
-    color: '#3c3c3c',
+    color: '#1B5C79',
     fontWeight: '300',
   },
   finishBtn: {

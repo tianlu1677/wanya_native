@@ -45,3 +45,13 @@ export const readSingleChatGroupMessage = async data => {
   });
   return res;
 };
+
+// 删除一个阅读消息
+export const deleteChatGroup = async data => {
+  const res = await request({
+    url: '/api/v1/chat_groups/delete',
+    method: 'POST',
+    data,
+  });
+  return res;
+};

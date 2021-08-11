@@ -3,7 +3,7 @@ import {StyleSheet, Text, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import IconFont from '@/iconfont';
 
-const LocationBar = ({space, location}) => {
+const LocationBar = ({space, location, style}) => {
   const navigation = useNavigation();
 
   const goSpaceDetail = () => {
@@ -15,16 +15,17 @@ const LocationBar = ({space, location}) => {
   };
 
   const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
+
   return (
     <>
       {space && (
-        <Pressable style={styles.wrapper} onPress={goSpaceDetail} hitSlop={hitSlop}>
+        <Pressable style={[styles.wrapper, style]} onPress={goSpaceDetail} hitSlop={hitSlop}>
           <IconFont name="space-point" size={11} color={'#1B5C79'} />
           <Text style={styles.text}>{space.name}</Text>
         </Pressable>
       )}
       {location && (
-        <Pressable style={styles.wrapper} onPress={goLocationDetail} hitSlop={hitSlop}>
+        <Pressable style={[styles.wrapper, style]} onPress={goLocationDetail} hitSlop={hitSlop}>
           <IconFont name="space-point" size={11} color={'#1B5C79'} />
           <Text style={styles.text}>{location.name.toString().substr(0, 13)}</Text>
         </Pressable>

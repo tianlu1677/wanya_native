@@ -33,8 +33,8 @@ const PublishModal = props => {
   };
 
   const onTopic = () => {
-    onCancel();
     navigation.navigate('NewTopic');
+    onCancel();
   };
 
   return (
@@ -67,7 +67,7 @@ const MainTabScreen = props => {
   const RenderImage = (name, focused) => {
     switch (name) {
       case 'ChatGroups':
-        return <Text style={focused ? styles.tabActiveText : styles.tabText}>消息</Text>;
+        return <Text style={focused ? styles.tabActiveText : styles.tabText}>聊天</Text>;
       case 'Recommend':
         const style = {width: (500 * RFValue(27)) / 351, height: RFValue(27)};
         return focused ? (

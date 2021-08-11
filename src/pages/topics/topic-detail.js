@@ -4,7 +4,7 @@ import {View, Text, Platform, StyleSheet, Pressable} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import {dispatchTopicDetail} from '@/redux/actions';
-import {STATUS_BAR_HEIGHT, IsIos} from '@/utils/navbar';
+import {IsIos, BOTTOM_HEIGHT, BarHeight} from '@/utils/navbar';
 import Loading from '@/components/Loading';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
@@ -97,13 +97,11 @@ const TopicDetail = ({navigation, route}) => {
     setDetail(currentTopic);
   }, [currentTopic]);
 
-  // console.log('detail', detail);
-
   return detail ? (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1, backgroundColor: '#fff', position: 'relative'}}
-      keyboardVerticalOffset={IsIos ? 0 : STATUS_BAR_HEIGHT}>
+      keyboardVerticalOffset={IsIos ? -BOTTOM_HEIGHT : BarHeight}>
       {['video', 'img'].includes(detail.content_style) ? (
         <GoBack color={'white'} report={true} onReportClick={onReportClick} />
       ) : null}

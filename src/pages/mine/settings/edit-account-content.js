@@ -1,16 +1,13 @@
-import React, {Component, useRef, useState, useLayoutEffect, useEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   StyleSheet,
   TouchableWithoutFeedback,
-  SafeAreaView,
   Keyboard,
-  Platform,
   StatusBar,
   View,
   TextInput,
-  Text,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 // import {SafeAreaView} from 'react-native-safe-area-context';
 import {syncAccountInfo} from '@/api/mine_api';
 import {secureCheck} from '@/api/secure_check';
@@ -51,8 +48,6 @@ const EditAccountContent = ({navigation, route}) => {
 
     const res = await secureCheck('text', content);
     if (!res.status) {
-      // Taro.showToast({title: '您输入的内容有违法违规内容，请重新输入', icon: 'none' })
-      console.log('error', res);
       return;
     }
 
@@ -94,14 +89,13 @@ const EditAccountContent = ({navigation, route}) => {
           <TextInput
             caretHidden={false}
             selectionColor={'#ff193a'}
-            maxLength={40}
+            maxLength={60}
             multiline
             numberOfLines={10}
             onChangeText={text => {
               setContent(text);
             }}
-            // returnKeyType={'done'}
-            placeholder={'输入简介，30个字以内'}
+            placeholder={'输入简介，60个字以内'}
             placeholderTextColor={'#c2c2c2'}
             defaultValue={content}
             style={styles.multiLine}

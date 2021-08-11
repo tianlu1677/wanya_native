@@ -73,6 +73,8 @@ import Settings from '@/pages/mine/settings';
 import About from '@/pages/mine/settings/about';
 import AccountContent from '@/pages/mine/settings/account-content';
 import EditAccountContent from '@/pages/mine/settings/edit-account-content';
+import EditAccountLabel from '@/pages/mine/settings/edit-account-label';
+
 import Feedback from '@/pages/mine/settings/feedback';
 
 // 用户
@@ -108,12 +110,25 @@ import LabTabIndex from '@/pages/labs/tabindex';
 import LabStorageIndex from '@/pages/labs/storageindex';
 
 //登录页面
-import SocialLogin from '@/pages/sessions/social-login';
+import SocialLogin from '@/pages/sessions/one-login';
 import PhoneLogin from '@/pages/sessions/phone-login';
 import InviteLogin from '@/pages/sessions/invite-login';
 import PasswordLogin from '@/pages/sessions/password-login';
 import AdminPhoneLogin from '@/pages/login/AdminPhoneLogin';
 import InviteDetail from '@/pages/mine/invite-detail';
+
+import RegisterInfo from '@/pages/auth-login/register/register-info';
+import RegisterInfoGender from '@/pages/auth-login/register/register-info-gender';
+import RegisterInfoLabel from '@/pages/auth-login/register/register-info-label';
+import RegisterInfoInvite from '@/pages/auth-login/register/register-info-invite';
+
+import LoginPasswordCode from '@/pages/auth-login/login-password-code';
+import LoginPhoneCode from '@/pages/auth-login/login-phone-code';
+import LoginVerifyCode from '@/pages/auth-login/login-verify-code';
+import BindPhone from '@/pages/auth-login/bind-phone';
+
+// 一键登录页面
+import OneLogin from '@/pages/sessions/one-login';
 
 const searchRouter = [
   {name: 'SearchIndex', component: SearchIndex, options: {title: '搜索', headerShown: false}},
@@ -216,8 +231,9 @@ const shopBrandRouter = [
 
 const mineRouter = [
   {name: 'Settings', component: Settings, options: {title: '设置'}},
-  {name: 'AccountContent', component: AccountContent, options: {title: '编辑信息'}},
+  {name: 'AccountContent', component: AccountContent, options: {title: '编辑个人资料'}},
   {name: 'EditAccountContent', component: EditAccountContent, options: {title: '编辑信息'}},
+  {name: 'EditAccountLabel', component: EditAccountLabel, options: {title: ''}},
   {name: 'Feedback', component: Feedback, options: {title: '反馈'}},
   {name: 'About', component: About, options: {title: '关于顽鸦'}},
 ];
@@ -238,9 +254,9 @@ const commonRouter = [
   {name: 'RelatedAccounts', component: RelatedAccounts, options: {title: '相关推荐'}},
   {name: 'ChooseCity', component: ChooseCity, options: {title: '选择城市'}},
   {name: 'JoinAccountsList', component: JoinAccountsList, options: {title: '最近加入列表'}},
-  {name: 'WebView', component: WebView, options: {title: 'WebView'}},
   {name: 'SharePage', component: SharePage, options: {title: '分享'}},
   {name: 'Report', component: Report, options: {title: '投诉'}},
+  // {name: 'OneLogin', component: OneLogin, options: {title: '一键登录'}},
 ];
 
 const LabRouter = [
@@ -265,12 +281,23 @@ const chatRouter = [
 ];
 
 const authRouter = [
+  // {name: 'OneLogin', component: OneLogin, options: {headerShown: false}},
   {name: 'SocialLogin', component: SocialLogin, options: {headerShown: false}},
   {name: 'PhoneLogin', component: PhoneLogin},
   {name: 'PasswordLogin', component: PasswordLogin},
   {name: 'InviteLogin', component: InviteLogin, options: {title: '输入邀请码'}},
   {name: 'InviteDetail', component: InviteDetail, options: {title: '邀请码'}},
   {name: 'AdminPhoneLogin', component: AdminPhoneLogin},
+
+  {name: 'RegisterInfo', component: RegisterInfo},
+  {name: 'RegisterInfoGender', component: RegisterInfoGender},
+  {name: 'RegisterInfoLabel', component: RegisterInfoLabel},
+  {name: 'RegisterInfoInvite', component: RegisterInfoInvite},
+  {name: 'LoginPasswordCode', component: LoginPasswordCode},
+  {name: 'LoginPhoneCode', component: LoginPhoneCode},
+  {name: 'LoginVerifyCode', component: LoginVerifyCode},
+  {name: 'BindPhone', component: BindPhone},
+  {name: 'WebView', component: WebView}
 ];
 
 export const MainRouters = [

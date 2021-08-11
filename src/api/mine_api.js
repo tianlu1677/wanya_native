@@ -1,5 +1,15 @@
 import request from './request';
 
+// 获取当前用户基本信息
+export async function getLoginBaseInfo(params = {}) {
+  const res = await request({
+    url: '/api/v1/mine/accounts/login_base_info',
+    method: 'GET',
+    params: params,
+  });
+  return res.data;
+}
+
 // 获取当前用户信息
 export async function getCurrentAccount(params = {}) {
   const res = await request({
@@ -26,7 +36,6 @@ export async function syncAccountInfo(data = {}) {
     method: 'PUT',
     data: data,
   });
-
   return res.data;
 }
 

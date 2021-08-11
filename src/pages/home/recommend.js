@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, StatusBar, Pressable} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
@@ -20,6 +20,7 @@ import {consumerWsUrl} from '@/utils/config';
 import {createConsumer} from '@rails/actioncable';
 import {
   dispatchFetchCategoryList,
+  dispatchFetchLabelList,
   dispatchBaseCurrentAccount,
   dispatchCurrentAccount,
   dispatchFetchUploadTopic,
@@ -58,23 +59,23 @@ const Recommend = props => {
       {
         // received(data) {},
         initialized() {
-          console.log('initialized');
+          // console.log('initialized');
         },
         connected() {
-          console.log('connected');
+          // console.log('connected');
         },
         disconnected() {
-          console.log('disconnected');
+          // console.log('disconnected');
         },
         rejected() {
           console.log('rejected');
         },
         unsubscribe() {
-          console.log('unsubscribe');
+          // console.log('unsubscribe');
         },
         appear() {
           // console.log('appear')
-          this.perform('appear', {});
+          // this.perform('appear', {});
         },
       }
     );
@@ -126,6 +127,7 @@ const Recommend = props => {
     );
   };
 
+  // console.log(home.channels);
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
@@ -159,6 +161,11 @@ const Recommend = props => {
             />
           );
         }
+
+        if (item.display_style === 'nearby') {
+          component = <NearbyListPage />;
+        }
+
         return component;
       },
     };
@@ -196,6 +203,8 @@ const Recommend = props => {
     appearOnline(); // 是否在线
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
+    dispatch(dispatchFetchLabelList());
+
     if (uploadStatus) {
       const upload = (file, cb) => props.uploadVideo(file, cb);
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
@@ -241,11 +250,6 @@ const Recommend = props => {
                   key: 'nodes',
                   title: '圈子',
                   component: NodeListPage,
-                },
-                {
-                  key: 'nearby',
-                  title: '附近',
-                  component: NearbyListPage,
                 },
                 ...channels,
               ]}

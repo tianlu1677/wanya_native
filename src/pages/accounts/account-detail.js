@@ -73,6 +73,10 @@ const AccountDetail = ({navigation, route}) => {
     loadData();
   };
 
+  const editInfo = () => {
+    navigation.navigate('AccountContent');
+  };
+
   const createChat = async () => {
     const params = {receiver_id: account.id};
     const res = await getChatGroupsDetail(params);
@@ -182,30 +186,48 @@ const AccountDetail = ({navigation, route}) => {
                 <IconFont name={account.gender} size={13} style={styles.maleIcon} />
               )}
               <Text style={styles.introtag}>{account.age || '18'}岁</Text>
-              <Text style={styles.introtag}>{account.province || '未知街区'}</Text>
+              <Text style={styles.introtag}>{account.city.replace(',', ' ') || '未知街区'}</Text>
             </View>
-            <Text style={styles.introWrap} numberOfLines={3} onPress={() => setShowModal(true)}>
-              {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'}
+            <View style={styles.labelWrap}>
+              {account.label_list.map((label, index) => (
+                <>
+                  <Text style={styles.label}>{label}</Text>
+                  {account.label_list.length - 1 !== index && (
+                    <Text style={styles.labelLine}>|</Text>
+                  )}
+                </>
+              ))}
+            </View>
+            <Text style={styles.introWrap} onPress={() => setShowModal(true)}>
+              {/* {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'} */}
+              {account.intro || '这个人很懒，还没有填写简介'}
             </Text>
-            {!isSelf ? (
-              <View style={styles.headerBtnWrap}>
-                <Text
-                  style={[
-                    styles.headerBtn,
-                    account.followed ? styles.unfollowed : styles.followBtn,
-                  ]}
-                  onPress={onFollow}>
-                  {account.followed && account.following
-                    ? '互相关注'
-                    : account.followed
-                    ? '已关注'
-                    : '关注'}
+
+            <View style={styles.headerBtnWrap}>
+              {isSelf ? (
+                <Text style={[styles.headerBtn, styles.editBth]} onPress={editInfo}>
+                  编辑个人资料
                 </Text>
-                <Text style={[styles.headerBtn, styles.chatBtn]} onPress={createChat}>
-                  私聊
-                </Text>
-              </View>
-            ) : null}
+              ) : (
+                <>
+                  <Text
+                    style={[
+                      styles.headerBtn,
+                      account.followed ? styles.unfollowed : styles.followBtn,
+                    ]}
+                    onPress={onFollow}>
+                    {account.followed && account.following
+                      ? '互相关注'
+                      : account.followed
+                      ? '已关注'
+                      : '关注'}
+                  </Text>
+                  <Text style={[styles.headerBtn, styles.chatBtn]} onPress={createChat}>
+                    私聊
+                  </Text>
+                </>
+              )}
+            </View>
           </View>
         </View>
       </View>
@@ -268,9 +290,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
-  header: {
-    backgroundColor: 'pink',
-  },
+  header: {},
   topHeader: {
     height: TOP_HEADER,
     flexDirection: 'row',
@@ -352,6 +372,27 @@ const styles = StyleSheet.create({
   maleIcon: {
     marginRight: 9,
   },
+  labelWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: RFValue(10),
+    alignItems: 'center',
+    marginBottom: RFValue(-3),
+  },
+  label: {
+    fontSize: 12,
+    lineHeight: 14,
+    color: '#3d3d3d',
+    marginRight: 5,
+    marginTop: 8,
+    fontWeight: '300',
+  },
+  labelLine: {
+    height: 12,
+    marginRight: 5,
+    width: StyleSheet.hairlineWidth,
+    backgroundColor: '#3d3d3d',
+  },
   introtag: {
     height: RFValue(18),
     lineHeight: RFValue(18),
@@ -361,6 +402,8 @@ const styles = StyleSheet.create({
     color: '#3d3d3d',
     backgroundColor: '#EEF0F0',
     marginRight: 9,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   introWrap: {
     lineHeight: 20,
@@ -394,6 +437,12 @@ const styles = StyleSheet.create({
   },
   unfollowed: {
     flex: 1,
+    color: '#3d3d3d',
+    backgroundColor: '#fff',
+    borderColor: '#bdbdbd',
+  },
+  editBth: {
+    width: '100%',
     color: '#3d3d3d',
     backgroundColor: '#fff',
     borderColor: '#bdbdbd',

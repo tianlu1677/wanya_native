@@ -29,6 +29,8 @@ import * as action from '@/redux/constants';
 import {getChannels, getChannelPosts} from '@/api/home_api';
 import JPush from 'jpush-react-native';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
+import JVerification from 'jverification-react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 const queryString = require('query-string');
 const codePushOptions = {
@@ -60,18 +62,20 @@ class App extends Component {
       scale = 1.08;
     }
 
-    this.saveToken(); //保存token
-    this.getIndexTabData(); //获取首页频道信息
-    // console.log('scale', scale);
-
     this.loadSplashImg();
     this.loadSettings();
     this.checkPermission();
     this.loadNetworkInfo();
     this.jpush_notice();
+    this.initJverify();
+    await this.getIndexTabData(); //获取首页频道信息
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
+
+    // this.saveToken(); //保存token
+
+    // console.log('scale', scale);
 
     Text.defaultProps = Object.assign({}, Text.defaultProps, {
       allowFontScaling: false,
@@ -89,7 +93,7 @@ class App extends Component {
   loadSplashImg = () => {
     setTimeout(() => {
       RNBootSplash.hide({duration: 10});
-    }, 1000);
+    }, 500);
   };
 
   loadSettings = () => {
@@ -98,6 +102,20 @@ class App extends Component {
       Helper.setData('settings', JSON.stringify(res));
     });
   };
+
+  //初始化jverify
+  initJverify = () => {
+    const initParams = {
+      time: 5000,
+      appKey: '7cd75000d5932000b3d4ca59', //仅iOS
+      channel: 'release', //仅iOS
+      // advertisingId: 'advertisingId', //仅iOS
+      isProduction: true, //仅iOS
+    };
+    JVerification.init(initParams, result => {
+      console.log('JVerification init', result);
+    })
+  }
 
   checkPermission = () => {
     checkMultiple([PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]).then(statuses => {
@@ -218,20 +236,22 @@ class App extends Component {
   render() {
     return (
       <>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <Navigation />
-            <NetworkErrorModal
-              visible={this.state.netInfoErr}
-              handleCancel={() => {
-                this.setState({netInfoErr: false});
-              }}
-            />
-            <ImagePreview />
-            <ShareMultiModal />
-            <ModalPortal />
-          </PersistGate>
-        </Provider>
+        <RootSiblingParent>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <Navigation />
+              <NetworkErrorModal
+                visible={this.state.netInfoErr}
+                handleCancel={() => {
+                  this.setState({netInfoErr: false});
+                }}
+              />
+              <ImagePreview />
+              <ShareMultiModal />
+              <ModalPortal />
+            </PersistGate>
+          </Provider>
+        </RootSiblingParent>
       </>
     );
   }
