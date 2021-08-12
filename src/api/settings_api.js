@@ -1,5 +1,14 @@
 import request from './request';
 
+export const getVersionUpgrades = async data => {
+  const res = await request({
+    url: '/api/v1/version_upgrades',
+    method: 'GET',
+    data,
+  });
+  return res.data;
+};
+
 export const getLabelList = async () => {
   const res = await request({
     url: '/api/v1/settings/total_label_list',

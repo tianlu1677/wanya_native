@@ -31,6 +31,7 @@ import FollowListPage from './follow-list-post';
 import NodeListPage from './node-list-page';
 import RecommendListPage from './recommend-list-post';
 import NearbyListPage from './nearby-list-post';
+import DownLoadModal from './download-modal';
 
 const Recommend = props => {
   const dispatch = useDispatch();
@@ -57,26 +58,12 @@ const Recommend = props => {
     return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
       {channel: 'OnlineChannel'},
       {
-        // received(data) {},
-        initialized() {
-          // console.log('initialized');
-        },
-        connected() {
-          // console.log('connected');
-        },
-        disconnected() {
-          // console.log('disconnected');
-        },
-        rejected() {
-          console.log('rejected');
-        },
-        unsubscribe() {
-          // console.log('unsubscribe');
-        },
-        appear() {
-          // console.log('appear')
-          // this.perform('appear', {});
-        },
+        initialized() {},
+        connected() {},
+        disconnected() {},
+        rejected() {},
+        unsubscribe() {},
+        appear() {},
       }
     );
   }, []);
@@ -84,24 +71,10 @@ const Recommend = props => {
   // 同步用户是否在线
   const appearOnline = () => {
     setInterval(() => {
-      // console.log('appear');
       onlineChannel.perform('appear');
     }, 5000);
   };
 
-  const onTouchStart = event => {
-    // console.log('event', event['_targetInst'])
-    // const memprops = event?._targetInst?.memoizedProps;
-    // if (memprops && memprops?.visit_key) {
-    //   const visit_key = memprops?.visit_key;
-    //   const visit_value = memprops?.visit_value;
-    //   ahoyTrackEvents({
-    //     name: visit_key,
-    //     properties: {...visit_value, page: 'recommend'},
-    //     page: 'recommend',
-    //   });
-    // }
-  };
   const CallBackVideo = useCallback(() => <MemoVideo />, []);
 
   const UploadTopic = () => {
@@ -127,7 +100,6 @@ const Recommend = props => {
     );
   };
 
-  // console.log(home.channels);
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
@@ -214,11 +186,14 @@ const Recommend = props => {
       // 如果在这里请求的话，必须要等待1s之后才可以
       loadLocation(dispatch);
     }, 1000);
+
+    console.log(3232);
   }, []);
 
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor={'white'} translucent={false} />
+      <DownLoadModal />
       <View style={{flex: 1, position: 'relative'}}>
         <RecommendSearch />
         {uploadStatus ? (
@@ -228,7 +203,7 @@ const Recommend = props => {
           </View>
         ) : null}
         {channels.length > 0 && (
-          <View style={styles.wrapper} onTouchStart={onTouchStart}>
+          <View style={styles.wrapper}>
             <TabView
               currentKey={currentKey}
               onChange={onChange}
