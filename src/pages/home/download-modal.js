@@ -6,6 +6,8 @@ import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import {getVersionUpgrades} from '@/api/settings_api';
 import {WANYA_VERSION} from '@/utils/config';
+import Helper from '@/utils/helper';
+
 import DownLoadImg from '@/assets/images/download.png';
 import {Pressable} from 'react-native';
 const {width} = Dimensions.get('window');
@@ -13,8 +15,6 @@ const {width} = Dimensions.get('window');
 const DownLoadModal = () => {
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState({});
-
-  console.log(info);
 
   const handleUpdate = () => {
     if (info.category === 'ios') {
@@ -28,16 +28,35 @@ const DownLoadModal = () => {
   };
 
   const loadData = async () => {
-    const params = {platform: 'ios', version: '0.0.24'}; //WANYA_VERSION
+    const params = {platform: 'ios', version: WANYA_VERSION}; // 0.0.24
     const res = await getVersionUpgrades(params);
-    setInfo(res.title ? res : null);
-    setVisible(res.title ? true : false);
+
+    if (res.title) {
+      setInfo(res);
+      setVisible(true);
+      if (!res.force_update) {
+        const timestamp = 3 * 24 * 60 * 60 * 1000;
+        const overdueTime = new Date().getTime() + timestamp;
+        Helper.setData('OVERDUCETIME', overdueTime.toString());
+      }
+    }
   };
 
-  useEffect(() => {
+  const init = async () => {
+    const overdueTime = (await Helper.getData('OVERDUCETIME')) || 0;
+    const current = new Date().getTime();
+
+    if (Number(overdueTime) > current) {
+      return;
+    }
+
     setTimeout(() => {
       loadData();
     }, 3000);
+  };
+
+  useEffect(() => {
+    init();
   }, []);
 
   return (
@@ -54,9 +73,12 @@ const DownLoadModal = () => {
         <Text style={styles.btn} onPress={handleUpdate}>
           立即更新
         </Text>
-        <Pressable onPress={handleClose} style={styles.icon}>
-          <IconFont name="guanbi" size={20} />
-        </Pressable>
+
+        {info.force_update ? null : (
+          <Pressable onPress={handleClose} style={styles.icon}>
+            <IconFont name="guanbi" size={20} />
+          </Pressable>
+        )}
       </View>
     </Modal>
   );
