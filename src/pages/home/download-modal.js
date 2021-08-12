@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Linking} from 'react-native';
 import Modal from 'react-native-modal';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
@@ -14,7 +14,12 @@ const DownLoadModal = () => {
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState({});
 
+  console.log(info);
+
   const handleUpdate = () => {
+    if (info.category === 'ios') {
+      Linking.openURL(info.download_url);
+    }
     // 立即更新
   };
 
