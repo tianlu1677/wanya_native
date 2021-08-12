@@ -107,14 +107,15 @@ const RegisterInfoGender = () => {
         isVisible={visible}
         mode="date"
         locale="zh_CN"
-        date={birthday ? new Date(birthday) : new Date()}
+        date={birthday ? new Date(birthday) : new Date('2000-01-01')}
         onConfirm={setBirthdayData}
         onCancel={() => setVisible(false)}
         cancelTextIOS="取消"
         confirmTextIOS="确认"
         headerTextIOS="选择生日"
+        display="spinner"
         minimumDate={new Date('1960-01-01')}
-        maximumDate={new Date()}
+        maximumDate={new Date('2020-01-01')}
       />
     </Pressable>
   );

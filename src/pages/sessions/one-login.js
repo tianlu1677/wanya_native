@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import {jverifyPhone} from '@/api/phone_sign_api';
 import {dispatchUpdateSocialAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
-import {SCREEN_WIDTH} from '@/utils/navbar';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 import Toast from '@/components/Toast';
 import JVerification from 'jverification-react-native';
 import Loading from '@/components/Loading';
@@ -28,7 +28,7 @@ const OneLogin = ({navigation, route}) => {
     showWindow: false,
     navReturnHidden: false,
     navHidden: true,
-    backgroundImage: 'bg.png',
+    backgroundImage: (SCREEN_HEIGHT > 800 ? 'bg1.png' : 'bg.png'),
     //logo
     // logoImage: 'umcsdk_mobile_logo',
     // logoConstraints: [0, -200, 60, 60],
@@ -67,10 +67,10 @@ const OneLogin = ({navigation, route}) => {
     privacyWebNavReturnImage: 'close',
   };
   const customUIWithConfigAndroid = {
-    backgroundImage: 'bg', //背景图
+    backgroundImage: 'bg1', //背景图
 
-    statusBarHidden: true, //状态栏是否隐藏
-    statusBarMode: 'light', //状态栏模式 light,dark
+    statusBarHidden: false, //状态栏是否隐藏
+    statusBarMode: 'dark', //状态栏模式 light,dark
 
     navHidden: true, //导航栏是否隐藏
     navColor: -16777216, //导航栏颜色
@@ -95,13 +95,14 @@ const OneLogin = ({navigation, route}) => {
     // logoW: 100,                             //logo宽
     // logoH: 100,                              //logo高
 
-    numberSize: 20, //手机号码字体大小（单位:sp）
-    numberColor: 16777215, //手机号码字体颜色
+    numberSize: 22, //手机号码字体大小（单位:sp）
+    numberColor: -67333, //手机号码字体颜色
     //为保障显示效果，请同时设置x,y,w,h
-    // numberX: 50,                            //号码栏相对于屏幕左边x轴偏移
-    // numberY: 100,                           //号码栏相对于标题栏下边缘y偏移
-    // numberW: 250,                           //号码栏宽度
-    // numberH: 25,                            //号码栏高度
+    // 0, 40, 200, 18
+    numberX: 0,                            //号码栏相对于屏幕左边x轴偏移
+    numberY: 100,                           //号码栏相对于标题栏下边缘y偏移
+    numberW: 200,                           //号码栏宽度
+    numberH: 18,                            //号码栏高度
 
     sloganHidden: true, //slogan是否隐藏
     sloganTextSize: 16, //slogan字体大小
@@ -123,28 +124,28 @@ const OneLogin = ({navigation, route}) => {
     // 0, 80, 265, 45
     //0, 94, 290, 50
     loginBtnOffsetX: 18,                          //登录按钮相对于屏幕左边x轴偏移
-    loginBtnOffsetY: 145, //登录按钮相对于标题栏下边缘y偏移
+    loginBtnOffsetY: 125, //登录按钮相对于标题栏下边缘y偏移
     loginBtnWidth: 88, //登录按钮宽度
     loginBtnHeight: 15, //180/(1062/70),                          //登录按钮高度
 
     privacyOne: ['《用户协议》', `${BaseApiUrl}/home/user_agreement`], //隐私条款一（显示名称和url，请严格按照格式）
     privacyTwo: ['《隐私政策》', `${BaseApiUrl}/home/private_policy`], //隐私条款二（显示名称和url，请严格按照格式）
-    privacyColor: [0xff00f000, 0xff000000], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式）
+    privacyColor: [0xffbdbdbd, -67333], //隐私条款颜色 （显示名称和url的颜色，请严格按照格式） https://www.shuxuele.com/hexadecimal-decimal-colors.html
     privacyText: ['登录注册即表示已阅读并同意', '和', '、', ''], //隐私条款名称外的文字
-    privacyTextSize: 11, //隐私条款文字字体大小
+    privacyTextSize: 14, //隐私条款文字字体大小
     privacyTextGravityMode: 'center', //隐私条款文本对齐方式，目前仅支持 left、center
     privacyBookSymbolEnable: true, //隐私条款是否显示书名号，默认不显示
     //为保障显示效果，请同时设置x,y,w,h
     //privacyConstraints: [0, 325, 300, 70],
-    privacyOffsetX: 1,                                             //隐私条款相对于屏幕左边x轴偏移
-    privacyOffsetY: 0, //隐私条款相对于授权页面底部下边缘y偏移
-    privacyW: 260, //隐私条款宽度
-    privacyH: 150, //隐私条款高度
+    // privacyOffsetX: -1,                                             //隐私条款相对于屏幕左边x轴偏移
+    // privacyOffsetY: 0, //隐私条款相对于授权页面底部下边缘y偏移
+    privacyW: 200, //隐私条款宽度
+    privacyH: -5, //隐私条款高度
     privacyCheckboxHidden: false, //checkBox是否隐藏，默认不隐藏
     privacyCheckEnable: true, //checkBox默认状态 默认:NO
     privacyCheckedImage: 'checkbox_selected', //checkBox选中时图片
     privacyUncheckedImage: 'checkbox_unselected', //checkBox未选中时图片
-    privacyCheckboxSize: 12, //设置隐私条款checkbox尺寸 默认是10
+    privacyCheckboxSize: 13, //设置隐私条款checkbox尺寸 默认是10
     unAgreePrivacyHintToast: true,
 
     privacyWebNavColor: -16777216, //协议页导航栏背景颜色
@@ -155,10 +156,10 @@ const OneLogin = ({navigation, route}) => {
   };
 
   const customViewParams = [
-    {customViewName: 'jverify_bottom_view', customViewPoint: [0, 500, SCREEN_WIDTH, 150]},
+    {customViewName: 'jverify_bottom_view', customViewPoint: [0, SCREEN_HEIGHT/1.5, SCREEN_WIDTH, 150]},
   ];
   const customViewParamsAdnroid = [
-    {customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 500, SCREEN_WIDTH - 20, 130]},
+    {customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 450, SCREEN_WIDTH, 150]},
   ];
   // JVerification.preLogin();
   if (Platform.OS === 'android') {
@@ -310,18 +311,25 @@ const OneLogin = ({navigation, route}) => {
 
       {/*<Button*/}
       {/*  title="addLoginCustomConfig"*/}
-      {/*  style={{marginTop: 30}}*/}
+      {/*  style={{marginTop: 40}}*/}
       {/*  onPress={() => {*/}
       {/*    JVerification.clearPreLoginCache()*/}
       {/*    if (Platform.OS === 'android') {*/}
-      {/*      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParams);*/}
+      {/*      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParamsAdnroid);*/}
       {/*    } else {*/}
       {/*      JVerification.addLoginCustomConfig(customUIWithConfigiOS, customViewParams);*/}
       {/*    }*/}
       {/*  }}*/}
       {/*/>*/}
 
-      {/*<Button title="login" onPress={() => JVerification.login(false)} />*/}
+      {/*<Button title="login" onPress={() => {*/}
+      {/*  if (Platform.OS === 'android') {*/}
+      {/*    console.log('android');*/}
+      {/*    JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParamsAdnroid);*/}
+      {/*  }*/}
+      {/*  JVerification.login(false)*/}
+      {/*  }*/}
+      {/*} />*/}
 
       {/*<Button*/}
       {/*  title="自定义弹窗授权页"*/}

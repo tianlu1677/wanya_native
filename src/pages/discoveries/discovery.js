@@ -128,7 +128,7 @@ const DiscoveryIndex = props => {
       {coveryData.length > 0 ? (
         <TabView
           currentKey={currentKey}
-          request={() => {}}
+          request={{}}
           onChange={key => setCurrentKey(key)}
           align="left"
           bottomLine={true}

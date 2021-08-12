@@ -51,7 +51,7 @@
     "react-native-autolink": "^3.0.0",
     "react-native-background-timer": "^2.2.0",
     "react-native-background-upload": "^6.2.0",
-    "react-native-bootsplash": "^3.2.3",
+    "react-native-bootsplash": "3.2.4",
     "react-native-code-push": "^6.3.0",
     "react-native-device-info": "^5.6.1",
     "react-native-easy-chat-ui": "^0.4.14",

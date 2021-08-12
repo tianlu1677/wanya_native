@@ -42,8 +42,6 @@ const codePushOptions = {
 };
 // https://github.com/react-native-community/react-native-device-info#installation
 import ImagePreview from '@/components/ImagePreview';
-import {SCREEN_WIDTH} from "@/utils/navbar"
-import {BaseApiUrl} from "@/utils/config"
 
 class App extends Component {
   constructor(props) {
@@ -64,19 +62,20 @@ class App extends Component {
       scale = 1.08;
     }
 
-    // this.saveToken(); //保存token
-    this.getIndexTabData(); //获取首页频道信息
-    // console.log('scale', scale);
-    this.initJverify();
-
     this.loadSplashImg();
     this.loadSettings();
     this.checkPermission();
     this.loadNetworkInfo();
     this.jpush_notice();
+    this.initJverify();
+    await this.getIndexTabData(); //获取首页频道信息
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
+
+    // this.saveToken(); //保存token
+
+    // console.log('scale', scale);
 
     Text.defaultProps = Object.assign({}, Text.defaultProps, {
       allowFontScaling: false,
@@ -115,9 +114,6 @@ class App extends Component {
     };
     JVerification.init(initParams, result => {
       console.log('JVerification init', result);
-      if(result.code !== 8000) {
-        return;
-      }
     })
   }
 

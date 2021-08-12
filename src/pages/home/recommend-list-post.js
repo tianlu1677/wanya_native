@@ -38,16 +38,16 @@ const RecommendListPost = () => {
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
   const loadData = async (page = 1) => {
+    let itemList = []
     if (page === 1) {
+      // 加载置顶
       setLoading(true);
+      itemList = (await getRecommendTopPosts()).data.posts;
+      setListData(itemList);
     }
-    // 加载置顶
-    const topItemList = (await getRecommendTopPosts()).data.posts;
     const res = await getRecommendPosts({page});
-    let itemList =
-      page === 1 ? [...topItemList, ...res.data.posts] : [...listData, ...res.data.posts];
-    itemList = itemList.concat(topItemList);
-    setListData(itemList);
+    // itemList = [...itemList, ...listData, ...res.data.posts]
+    setListData(listData => listData.concat(res.data.posts));
     setLoading(false);
     setHeaders(res.headers);
   };
@@ -62,15 +62,18 @@ const RecommendListPost = () => {
   };
 
   const onRefresh = (page = 1) => {
+    // console.log('page', page)
     if (page === 1 || !page) {
-      indexLoadData(pagination(headers).nextPage);
+      // console.log('a')
+      indexLoadData(pagination(headers).nextPage)
     } else {
-      loadData(page);
+      // console.log('b')
+      loadData(page)
     }
   };
 
   useEffect(() => {
-    loadData();
+    loadData(1);
   }, []);
 
   return (

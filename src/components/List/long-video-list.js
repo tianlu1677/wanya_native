@@ -109,7 +109,7 @@ const LongVideoList = props => {
   );
 };
 
-const ImageHeight = parseInt((width * 420) / 750);
+const ImageHeight = Math.ceil((width * 420) / 750);
 
 const styles = StyleSheet.create({
   wrapper: {

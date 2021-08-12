@@ -19,9 +19,7 @@ const SingleList = props => {
     setListData([...data]);
   };
 
-  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, [
-    listData,
-  ]);
+  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, []);
 
   const Child = React.memo(({item, index}) => {
     const ItemComponent = () => {
@@ -80,45 +78,47 @@ const SingleList = props => {
   };
 
   //首页推荐
-  const indexLoadData = async (page = 1) => {
-    if (page === 1) {
-      setLoading(true);
-    }
-    let itemList = [];
-    // 加载首页置顶的
-    let top_posts_res = await getRecommendTopPosts();
-    itemList = top_posts_res.data.posts;
-    itemList = itemList.map(item => ({...item, is_top: true}));
-    const {api, params} = props.request;
-    const res = await api({...params, page});
-    const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
-    itemList = itemList.concat(data);
-    setListData(onChangeListDataText(itemList));
-    setHeaders(res.headers);
-    setLoading(false);
-  };
+  // const indexLoadData = async (page = 1) => {
+  //   if (page === 1) {
+  //     setLoading(true);
+  //   }
+  //   let itemList = [];
+  //   // 加载首页置顶的
+  //   let top_posts_res = await getRecommendTopPosts();
+  //   itemList = top_posts_res.data.posts;
+  //   itemList = itemList.map(item => ({...item, is_top: true}));
+  //   const {api, params} = props.request;
+  //   const res = await api({...params, page});
+  //   const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
+  //   itemList = itemList.concat(data);
+  //   setListData(onChangeListDataText(itemList));
+  //   setHeaders(res.headers);
+  //   setLoading(false);
+  // };
 
   const onRefresh = (page = 1) => {
-    if (props.type === 'recommend' && (page === 1 || !page)) {
-      indexLoadData(pagination(headers).nextPage);
-    } else {
-      loadData(page);
-    }
+    loadData(page);
+    // if (props.type === 'recommend' && (page === 1 || !page)) {
+    //   indexLoadData(pagination(headers).nextPage);
+    // } else {
+    //   loadData(page);
+    // }
   };
 
   useEffect(() => {
-    if (props.type === 'recommend') {
-      indexLoadData(1);
-    } else {
-      loadData();
-    }
+    loadData();
+    // if (props.type === 'recommend') {
+    //   indexLoadData(1);
+    // } else {
+    //   loadData();
+    // }
   }, []);
 
   return (
     <ScrollList
       data={listData}
       loading={loading}
-      onRefresh={throttle(onRefresh, 300)}
+      onRefresh={throttle(onRefresh, 100)}
       headers={headers}
       renderItem={renderItemMemo}
       renderSeparator={() => <View style={styles.speator} />}
@@ -129,7 +129,7 @@ const SingleList = props => {
       }}
       settings={{
         initialNumToRender: 6,
-        onEndReachedThreshold: 0.25,
+        onEndReachedThreshold: 0.3,
         windowSize: Platform.OS === 'ios' ? 8 : 20,
       }}
       {...props}
