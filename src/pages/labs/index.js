@@ -15,6 +15,7 @@ import {
   openSettings,
 } from 'react-native-permissions';
 import {useDispatch, useSelector} from 'react-redux';
+// import {XUpdate} from 'react-native-xupdate-new';
 
 const LabIndex = props => {
   const navigation = props.navigation;
