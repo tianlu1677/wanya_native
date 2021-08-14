@@ -89,37 +89,39 @@ const DownLoadModal = () => {
     };
   };
 
-  const checkUpdateDefault = () => {
-    const appInfo = {
-      Code: 0,
-      Msg: '',
-      UpdateStatus: 2,
-      VersionCode: 20,
-      VersionName: '1.0.2',
-      UploadTime: '2021-07-10 17:28:41',
-      ModifyContent:
-        ' 1、优化api接口。 \n 2、添加使用demo演示。 \n 3、新增自定义更新服务API接口。 4、优化更新提示界面。',
-      DownloadUrl: 'https://xuexiangjys.oss-cn-shanghai.aliyuncs.com/apk/xupdate_demo_1.0.2.apk',
-      ApkSize: 2048,
-      ApkMd5: 'E4B79A36EFB9F17DF7E3BB161F9BCFD8',
-    };
-    let args = new UpdateArgs();
-    args.supportBackgroundUpdate = true;
-
-    XUpdate.updateByInfo(args, {
-      hasUpdate: true,
-      versionCode: appInfo.VersionCode,
-      versionName: appInfo.VersionName,
-      updateContent: appInfo.ModifyContent,
-      downloadUrl: appInfo.DownloadUrl,
-      //选填
-      isIgnorable: false,
-      apkSize: appInfo.ApkSize,
-    });
-
-
-    // let args = new UpdateArgs(_updateUrl);
-    // XUpdate.update(args);
+  const checkUpdateDefault = async () => {
+    const params = {platform: 'android', version: WANYA_VERSION}; // 0.0.24
+    const res = await getVersionUpgrades(params);
+    if(!res.title) {
+      return
+    }
+    if (res.title) {
+      let cache_key = `OVERDUCETIME_${res.version_name}`;
+      if (!res.force_update) {
+        const last_check_time = await Helper.getData(cache_key);
+        if (last_check_time && parseInt(last_check_time) > (new Date().getTime())) {
+          console.log(cache_key, 'checked!');
+          return 'checked!';
+        }
+        const timestamp = 3 * 24 * 60 * 60 * 1000;
+        const overdueTime = new Date().getTime() + timestamp;
+        Helper.setData(cache_key, overdueTime.toString());
+      }
+      let args = new UpdateArgs();
+      args.supportBackgroundUpdate = true;
+      XUpdate.updateByInfo(args, {
+        hasUpdate: true,
+        isForce: res.force_update,
+        versionCode: res.version_code,
+        versionName: res.version_name,
+        updateContent: res.desc,
+        downloadUrl: res.download_url,
+        //选填
+        isIgnorable: false,
+        apkSize: res.apk_size,
+        apkMd5: ''
+      });
+    }
   }
 
   useEffect(() => {
