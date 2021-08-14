@@ -10,9 +10,10 @@ import Helper from '@/utils/helper';
 
 import DownLoadImg from '@/assets/images/download.png';
 import {Pressable} from 'react-native';
+
 const {width} = Dimensions.get('window');
 
-const DownLoadModal = () => {
+const DownloadModal = () => {
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState({});
 
@@ -20,7 +21,6 @@ const DownLoadModal = () => {
     if (info.category === 'ios') {
       Linking.openURL(info.download_url);
     }
-    // 立即更新
   };
 
   const handleClose = () => {
@@ -28,28 +28,33 @@ const DownLoadModal = () => {
   };
 
   const loadData = async () => {
-    const params = {platform: 'ios', version: WANYA_VERSION}; // 0.0.24
-    const res = await getVersionUpgrades(params);
+    try {
+      const params = {platform: 'ios', version: WANYA_VERSION}; // 0.0.24
+      const res = await getVersionUpgrades(params);
 
-    if (res.title) {
-      setInfo(res);
-      setVisible(true);
-      if (!res.force_update) {
-        const timestamp = 3 * 24 * 60 * 60 * 1000;
-        const overdueTime = new Date().getTime() + timestamp;
-        Helper.setData('OVERDUCETIME', overdueTime.toString());
+      if (res.title) {
+        setInfo(res);
+        if (!res.force_update) {
+          let cache_key = `OVERDUCETIME_${res.version_name}`;
+          const last_check_time = await Helper.getData(cache_key);
+          // eslint-disable-next-line radix
+          if (last_check_time && parseInt(last_check_time) > new Date().getTime()) {
+            console.log(cache_key, 'checked!');
+            return 'checked!';
+          }
+          const timestamp = 3 * 24 * 60 * 60 * 1000;
+          const overdueTime = new Date().getTime() + timestamp;
+          Helper.setData(cache_key, overdueTime.toString());
+        }
+
+        setVisible(true);
       }
+    } catch (e) {
+      console.log('ios error', e);
     }
   };
 
   const init = async () => {
-    const overdueTime = (await Helper.getData('OVERDUCETIME')) || 0;
-    const current = new Date().getTime();
-
-    if (Number(overdueTime) > current) {
-      return;
-    }
-
     setTimeout(() => {
       loadData();
     }, 3000);
@@ -128,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DownLoadModal;
+export default DownloadModal;
