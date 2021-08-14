@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Dimensions, Linking} from 'react-native';
+import {View, Text, Button, StyleSheet, Dimensions, Linking} from 'react-native';
 import Modal from 'react-native-modal';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
@@ -9,61 +9,46 @@ import {WANYA_VERSION} from '@/utils/config';
 import Helper from '@/utils/helper';
 import DownLoadImg from '@/assets/images/download.png';
 import {Pressable} from 'react-native';
+
 const {width} = Dimensions.get('window');
 import {XUpdate, InitArgs, UpdateArgs} from 'react-native-xupdate-new';
 
-const _updateUrl =
-  'https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json';
+const _updateUrl = 'https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_test.json';
 
-const _updateUrl2 =
-  'https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_forced.json';
+const _updateUrl2 = 'https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_forced.json';
 
-const _updateUrl3 =
-  'https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_custom.json';
+const _updateUrl3 = 'https://gitee.com/xuexiangjys/XUpdate/raw/master/jsonapi/update_custom.json';
 
 const DownLoadModal = () => {
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState({});
 
-  const handleUpdate = () => {
-    if (info.category === 'ios') {
-      Linking.openURL(info.download_url);
-    }
-    // 立即更新
-  };
 
-  const handleClose = () => {
-    setVisible(false);
-  };
+   const initXUpdate = () => {
+    let args = new InitArgs();
+    args.debug = true;
+    args.isPostJson = false;
+    args.timeout = 25000;
+    args.isWifiOnly = false;
+    args.isAutoMode = false;
+    args.supportSilentInstall = false;
+    args.enableRetry = false;
+    XUpdate.init(args)
+      .then(result => {
+        console.log('初始化成功', JSON.stringify(result))
+        // this.setState({
+        //   _message: '初始化成功:' + JSON.stringify(result),
+        // });
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
-
-  const loadData = async () => {
-    const params = {platform: 'android', version: '0.0.21'}; // 0.0.24
-    const res = await getVersionUpgrades(params);
-
-    if (res.title) {
-      setInfo(res);
-      setVisible(true);
-      if (!res.force_update) {
-        const timestamp = 3 * 24 * 60 * 60 * 1000;
-        const overdueTime = new Date().getTime() + timestamp;
-        Helper.setData('OVERDUCETIME', overdueTime.toString());
-      }
-    }
-  };
-
-  const init = async () => {
-    const overdueTime = (await Helper.getData('OVERDUCETIME')) || 0;
-    const current = new Date().getTime();
-
-    if (Number(overdueTime) > current) {
-      return;
-    }
-
-    setTimeout(() => {
-      loadData();
-    }, 3000);
-  };
+    //设置自定义解析
+    XUpdate.setCustomParser({parseJson: customParser});
+    //设置错误监听
+    XUpdate.addErrorListener(errorListener);
+  }
 
   const errorListener = (error) => {
     console.log(error);
@@ -71,40 +56,80 @@ const DownLoadModal = () => {
     if (error.code === 4000) {
       XUpdate.showRetryUpdateTip(
         'Github被墙无法继续下载，是否考虑切换蒲公英下载？',
-        'https://www.pgyer.com/flutter_learn',
+        'https://www.pgyer.com/flutter_learn'
       );
     }
-    // this.setState({
-    //   _message: '发送异常：' + JSON.stringify(error),
-    // });
+    console.log('发送异常：' + JSON.stringify(error))
+  }
+
+  const customParser = () => {
+    const appInfo = {
+      Code: 0,
+      Msg: '',
+      UpdateStatus: 2,
+      VersionCode: 20,
+      VersionName: '1.0.2',
+      UploadTime: '2021-07-10 17:28:41',
+      ModifyContent:
+        ' 1、优化api接口。 2、添加使用demo演示。 3、新增自定义更新服务API接口。 4、优化更新提示界面。',
+      DownloadUrl: 'https://xuexiangjys.oss-cn-shanghai.aliyuncs.com/apk/xupdate_demo_1.0.2.apk',
+      ApkSize: 2048,
+      ApkMd5: 'E4B79A36EFB9F17DF7E3BB161F9BCFD8',
+    };
+    return {
+      //必填
+      hasUpdate: appInfo.hasUpdate,
+      versionCode: appInfo.versionCode,
+      versionName: appInfo.versionName,
+      updateContent: appInfo.updateLog,
+      downloadUrl: appInfo.apkUrl,
+      //选填
+      isIgnorable: appInfo.isIgnorable,
+      apkSize: appInfo.apkSize,
+    };
   };
 
+  const checkUpdateDefault = () => {
+    const appInfo = {
+      Code: 0,
+      Msg: '',
+      UpdateStatus: 2,
+      VersionCode: 20,
+      VersionName: '1.0.2',
+      UploadTime: '2021-07-10 17:28:41',
+      ModifyContent:
+        ' 1、优化api接口。 \n 2、添加使用demo演示。 \n 3、新增自定义更新服务API接口。 4、优化更新提示界面。',
+      DownloadUrl: 'https://xuexiangjys.oss-cn-shanghai.aliyuncs.com/apk/xupdate_demo_1.0.2.apk',
+      ApkSize: 2048,
+      ApkMd5: 'E4B79A36EFB9F17DF7E3BB161F9BCFD8',
+    };
+    let args = new UpdateArgs();
+    args.supportBackgroundUpdate = true;
+
+    XUpdate.updateByInfo(args, {
+      hasUpdate: true,
+      versionCode: appInfo.VersionCode,
+      versionName: appInfo.VersionName,
+      updateContent: appInfo.ModifyContent,
+      downloadUrl: appInfo.DownloadUrl,
+      //选填
+      isIgnorable: false,
+      apkSize: appInfo.ApkSize,
+    });
+
+
+    // let args = new UpdateArgs(_updateUrl);
+    // XUpdate.update(args);
+  }
+
   useEffect(() => {
-    init();
+    // init();
+    initXUpdate();
+    checkUpdateDefault();
   }, []);
 
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      backdropColor="black"
-      backdropOpacity={0.4}
-      style={styles.modalView}>
-      <View style={styles.modalContent}>
-        <FastImg source={DownLoadImg} style={styles.image} />
-        <Text style={styles.title}>版本更新 V {info.version_name}</Text>
-        <Text style={styles.content}>{info.desc}</Text>
-        <Text style={styles.btn} onPress={handleUpdate}>
-          立即更新
-        </Text>
-
-        {info.force_update ? null : (
-          <Pressable onPress={handleClose} style={styles.icon}>
-            <IconFont name="guanbi" size={20} />
-          </Pressable>
-        )}
-      </View>
-    </Modal>
+    <View />
   );
 };
 
