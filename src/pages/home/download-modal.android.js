@@ -11,7 +11,7 @@ import {XUpdate, InitArgs, UpdateArgs} from 'react-native-xupdate-new';
 const DownLoadModal = () => {
   const initXUpdate = () => {
     let args = new InitArgs();
-    args.debug = true;
+    args.debug = false;
     args.isPostJson = false;
     args.timeout = 25000;
     args.isWifiOnly = false;
@@ -82,6 +82,9 @@ const DownLoadModal = () => {
   useEffect(() => {
     initXUpdate();
     checkUpdateDefault();
+    return () => {
+      XUpdate.removeErrorListener(errorListener);
+    };
   }, []);
 
   return <View />;
