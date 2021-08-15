@@ -1,19 +1,20 @@
-import React, {useState} from 'react';
-import {Text, StyleSheet, Pressable, Keyboard} from 'react-native';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
+import {Text, StyleSheet, Pressable} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchSetAuthToken} from '@/redux/actions';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import Toast from '@/components/Toast';
-import * as WeChat from 'react-native-wechat-lib';
 import {verifyInviteCode} from '@/api/phone_sign_api';
+import {getProsettings} from '@/api/settings_api';
 import CodeComponent from '../code-component';
 import cStyles from '../style';
 
 const AccountInfoInvite = ({navigation}) => {
   const dispatch = useDispatch();
   const {socialToken} = useSelector(state => state.login);
+  const [showSkip, setShowSkip] = useState(false);
   const [code, setCode] = useState('');
   const isCanClick = code.length === 6;
 
@@ -33,6 +34,34 @@ const AccountInfoInvite = ({navigation}) => {
     Clipboard.setString('ufuutech');
     Toast.showError('顽鸦客服微信已复制剪贴板');
   };
+
+  const handleSkip = async () => {
+    await dispatch(dispatchSetAuthToken(socialToken));
+    navigation.reset({index: 0, routes: [{name: 'Recommend'}]});
+  };
+
+  const loadSkip = async () => {
+    const res = await getProsettings();
+    setShowSkip(res.can_skip_invited === 'yes' ? true : false);
+  };
+
+  useEffect(() => {
+    loadSkip();
+  }, []);
+
+  useLayoutEffect(() => {
+    if (showSkip) {
+      const hitSlop = {top: 20, bottom: 20, left: 10, right: 10};
+
+      navigation.setOptions({
+        headerRight: () => (
+          <Text style={{color: '#BDBDBD'}} hitSlop={hitSlop} onPress={handleSkip}>
+            跳过
+          </Text>
+        ),
+      });
+    }
+  }, [navigation, showSkip]);
 
   return (
     <Pressable style={cStyles.wrapper} onPress={() => {}}>

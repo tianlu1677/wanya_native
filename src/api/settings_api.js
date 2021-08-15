@@ -1,5 +1,14 @@
 import request from './request';
 
+export const getProsettings = async data => {
+  const res = await request({
+    url: '/api/v1/settings/prosettings.json',
+    method: 'GET',
+    data,
+  });
+  return res.data;
+};
+
 export const getVersionUpgrades = async data => {
   const res = await request({
     url: '/api/v1/version_upgrades',
