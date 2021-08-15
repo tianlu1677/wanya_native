@@ -66,7 +66,7 @@ const DownloadModal = () => {
 
   return (
     <Modal
-      visible={visible}
+      isVisible={visible}
       transparent={true}
       backdropColor="black"
       backdropOpacity={0.4}
@@ -93,12 +93,14 @@ const imageWidth = width - RFValue(50 * 2) - RFValue(25 * 2) - RFValue(25 * 2);
 const styles = StyleSheet.create({
   modalView: {
     marginHorizontal: RFValue(50),
+    // flex: 1
   },
   modalContent: {
     paddingHorizontal: RFValue(40),
     paddingVertical: RFValue(25),
     backgroundColor: '#fff',
     alignItems: 'center',
+    borderRadius: 5
   },
   image: {
     width: imageWidth,
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: '600',
     fontSize: 16,
-    marginVertical: RFValue(20),
+    marginVertical: RFValue(30),
   },
   content: {
     fontSize: 14,
