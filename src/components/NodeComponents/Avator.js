@@ -34,7 +34,11 @@ const Avator = props => {
 
   return (
     <Pressable
-      style={[imagestyle, containerStyle, {position: 'relative', flexShrink: 0}]}
+      style={[
+        imagestyle,
+        containerStyle,
+        {position: 'relative', flexShrink: 0, backgroundColor: 'green'},
+      ]}
       onPress={goAccountDetail}>
       <FastImg style={imagestyle} source={{uri: account.avatar_url}} />
       {isShow && !!account.settled_type && account.settled_type !== 'single' && (

@@ -52,7 +52,13 @@ const TabList = props => {
 
   return (
     <>
-      <View style={[styles.tabWrap, styles[`tab${align}`], bottomLine && styles.bottomLine]}>
+      <View
+        style={[
+          styles.tabWrap,
+          props.tabStyle,
+          styles[`tab${align}`],
+          bottomLine && styles.bottomLine,
+        ]}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}

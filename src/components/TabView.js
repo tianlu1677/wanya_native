@@ -57,6 +57,7 @@ const TabViewIndex = props => {
             align={props.align}
             tabChange={tabChange}
             data={routes}
+            tabStyle={props.tabStyle}
           />
         )}
         navigationState={{index, routes}}

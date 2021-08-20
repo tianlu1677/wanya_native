@@ -76,7 +76,6 @@ const ChatGroups = ({navigation}) => {
 
   return (
     <View style={styles.wrapper}>
-      <RecommendSearch />
       <ScrollList
         keyExtractor={useCallback(item => `${item.uuid}`, [])}
         data={listData}
@@ -88,7 +87,7 @@ const ChatGroups = ({navigation}) => {
         getItemLayout={(data, index) => ({length: 71, offset: 71 * index, index})}
         settings={{
           initialNumToRender: 10,
-          windowSize: 10
+          windowSize: 10,
         }}
       />
     </View>

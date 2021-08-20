@@ -10,9 +10,12 @@ import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {BOTTOM_HEIGHT} from '@/utils/navbar';
 import {BottomModal, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
-import ChatGroups from '@/pages/chats/chat_groups';
+import Accounts from '@/pages/tabBar/accounts';
+import Community from '@/pages/tabBar/community';
+import ChatGroups from '@/pages/tabBar/chat-groups';
 import Recommend from '@/pages/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
+
 const indexImage = require('@/assets/tabimages/index-active.png');
 
 const {width} = Dimensions.get('window');
@@ -66,17 +69,21 @@ const MainTabScreen = props => {
 
   const RenderImage = (name, focused) => {
     switch (name) {
+      case 'Accounts':
+        return <Text style={focused ? styles.tabActiveText : styles.tabText}>顽友</Text>;
       case 'ChatGroups':
         return <Text style={focused ? styles.tabActiveText : styles.tabText}>聊天</Text>;
+      case 'Community':
+        return <Text style={focused ? styles.tabActiveText : styles.tabText}>社区</Text>;
+      case 'Discovery':
+        return <Text style={focused ? styles.tabActiveText : styles.tabText}>发现</Text>;
       case 'Recommend':
         const style = {width: (500 * RFValue(27)) / 351, height: RFValue(27)};
         return focused ? (
           <FastImg source={indexImage} style={style} />
         ) : (
-          <Text style={styles.tabText}>首页</Text>
+          <Text style={styles.tabText}>顽鸦</Text>
         );
-      case 'Discovery':
-        return <Text style={focused ? styles.tabActiveText : styles.tabText}>发现</Text>;
     }
   };
 
@@ -91,7 +98,7 @@ const MainTabScreen = props => {
     <>
       <PublishModal {...props} visible={visible} onCancel={() => setVisible(false)} />
       <Tab.Navigator
-        initialRouteName="Recommend"
+        initialRouteName="Accounts"
         screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
             return route.name === 'ChatGroups' ? (
@@ -119,7 +126,7 @@ const MainTabScreen = props => {
             ) : (
               <View style={{position: 'relative'}}>
                 {RenderImage(route.name, focused)}
-                {focused && route.name === 'Discovery' && (
+                {focused && route.name !== 'Recommend' && (
                   <View style={[styles.activeLine, {left: RFValue(40) / 2 - VWValue(12)}]} />
                 )}
               </View>
@@ -139,6 +146,7 @@ const MainTabScreen = props => {
             paddingRight: VWValue(34),
           },
         }}>
+        <Tab.Screen name="Accounts" component={Accounts} />
         <Tab.Screen name="ChatGroups" component={ChatGroups} />
         <Tab.Screen
           name="Recommend"
@@ -156,6 +164,7 @@ const MainTabScreen = props => {
             },
           })}
         />
+        <Tab.Screen name="Community" component={Community} />
         <Tab.Screen name="Discovery" component={Discovery} options={{title: '323232'}} />
       </Tab.Navigator>
     </>
