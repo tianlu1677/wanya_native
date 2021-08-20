@@ -118,10 +118,10 @@ target 'wanya_native' do
   # use_flipper!({ 'Flipper' => '0.101.0' })
   # 暂时指定版本
   # https://stackoverflow.com/questions/68264876/xcode-build-error-with-react-native-cxa-increment-exception-refcount
-  use_flipper!({'Flipper' => '0.92.0', 'Flipper-Folly' => '2.6.7'})
-  post_install do |installer|
-    flipper_post_install(installer)
-  end
+  # use_flipper!({'Flipper' => '0.92.0', 'Flipper-Folly' => '2.6.7'})
+  # post_install do |installer|
+  #   flipper_post_install(installer)
+  # end
 end
 
 target 'wanya_native-tvOS' do
