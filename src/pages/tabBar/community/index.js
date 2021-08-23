@@ -1,19 +1,22 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
+import {useSelector} from 'react-redux';
 import TabView from '@/components/TabView';
-import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
-import {BarHeight, IsIos} from '@/utils/navbar';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
-import MineNodeListPage from './node-list-page';
+import {RFValue} from '@/utils/response-fontsize';
+import MineNodeListPage from '@/pages/tabBar/community/mine-node-list';
 import NodeIndex from '@/pages/nodes/node-index';
-import NearbyNodesListPage from './nearby-nodes';
-import BrandImg from '@/assets/images/brand.png';
+import NearbyNodesListPage from '@/pages/tabBar/community/nearby-nodes';
+import CurrentAvator from '@/pages/tabBar/current-avator';
+import {Styles, BoothHeight} from '@/pages/tabBar/style';
 
 const Community = props => {
   const {navigation} = props;
+  const {home} = useSelector(state => state);
+  const [currentKey, setCurrentKey] = useState('square');
 
-  const [currentKey, setCurrentKey] = useState('mine');
+  const openAddress = home.location.latitude && home.location.longitude ? true : false;
+  const nodeTabTitle = openAddress ? home.location.positionCity : '本地';
 
   const onChange = key => {
     setCurrentKey(key);
@@ -26,14 +29,14 @@ const Community = props => {
   const SquareListPage = () => <NodeIndex showAll={true} />;
 
   return (
-    <View style={styles.wrapper}>
-      <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
-      <View style={styles.avatorWrap}>
-        <FastImg style={styles.avator} source={BrandImg} />
+    <View style={Styles.wrapper}>
+      <View style={{height: BoothHeight}} />
+      <View style={Styles.avatorWrap}>
+        <CurrentAvator />
       </View>
-      <Pressable style={styles.createWrap} onPress={handleCreateNode}>
+      <Pressable style={Styles.createWrap} onPress={handleCreateNode}>
         <IconFont name="plus" color="#000" size={14} />
-        <Text style={styles.createText}>创建</Text>
+        <Text style={Styles.createText}>创建</Text>
       </Pressable>
       <TabView
         currentKey={currentKey}
@@ -55,7 +58,7 @@ const Community = props => {
           },
           {
             key: 'city',
-            title: '北京',
+            title: nodeTabTitle,
             component: NearbyNodesListPage,
           },
         ]}
@@ -63,40 +66,5 @@ const Community = props => {
     </View>
   );
 };
-
-const positionStyle = {
-  height: RFValue(33),
-  position: 'absolute',
-  top: IsIos ? BarHeight : 0,
-  zIndex: 99,
-  flexDirection: 'row',
-  alignItems: 'center',
-};
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
-  header: {
-    flex: 1,
-  },
-  avatorWrap: {
-    ...positionStyle,
-    left: 14,
-  },
-  avator: {
-    width: 30,
-    height: 30,
-  },
-  createWrap: {
-    ...positionStyle,
-    right: 14,
-  },
-  createText: {
-    fontSize: 14,
-    color: '#2C2C2C',
-    marginLeft: 5,
-  },
-});
 
 export default Community;

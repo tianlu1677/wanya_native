@@ -14,11 +14,11 @@ import {AllNodeImg} from '@/utils/default-image';
 import {getFollowedNodePosts} from '@/api/home_api';
 import {ListEmpty as lstyles} from '@/styles/baseCommon';
 
-export const NodeScrollView = () => {
+const NodeScrollView = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
-  const {homeNodes} = useSelector(state => state.node);
+  const {homeNodes = []} = useSelector(state => state.node);
 
   useFocusEffect(
     useCallback(() => {
@@ -28,14 +28,16 @@ export const NodeScrollView = () => {
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.nodeView}>
-      <Pressable style={styles.nodeWrap} onPress={() => navigation.navigate('NodeIndex')}>
-        <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
-        <Text style={styles.nodeName} minimumFontScale={1} numberOfLines={1}>
-          全部圈子
-        </Text>
-      </Pressable>
-      {homeNodes &&
-        homeNodes.length > 0 &&
+      {homeNodes.length === 0 ? (
+        <Pressable style={styles.nodeWrap} onPress={() => navigation.navigate('NodeIndex')}>
+          <FastImg style={styles.nodeImg} source={{uri: AllNodeImg}} />
+          <Text style={styles.nodeName} minimumFontScale={1} numberOfLines={1}>
+            全部圈子
+          </Text>
+        </Pressable>
+      ) : null}
+
+      {homeNodes.length > 0 &&
         homeNodes.map(node => {
           return (
             <Pressable
@@ -61,7 +63,7 @@ export const NodeScrollView = () => {
   );
 };
 
-const NodeListPost = () => {
+const MineNodeList = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
@@ -194,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NodeListPost;
+export default MineNodeList;

@@ -4,15 +4,11 @@ import TabView from '@/components/TabView';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
 import {BarHeight, IsIos} from '@/utils/navbar';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
-// import MineNodeListPage from './node-list-page';
-import NodeIndex from '@/pages/nodes/node-index';
-// import NearbyNodesListPage from './nearby-nodes';
+import {RFValue} from '@/utils/response-fontsize';
 import ChatListPage from '@/pages/chats/chat_groups';
 import NotifyIndex from '@/pages/notify/notify-index';
 import MailListPage from './mail-list';
-
-import BrandImg from '@/assets/images/brand.png';
+import CurrentAvator from '@/pages/tabBar/current-avator';
 
 const ChatGroups = props => {
   const {navigation} = props;
@@ -27,11 +23,14 @@ const ChatGroups = props => {
     navigation.navigate('CreateNodeIntro');
   };
 
+  console.log(232323233232);
   return (
     <View style={styles.wrapper}>
-      <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
+      <View
+        style={{height: IsIos ? BarHeight + RFValue(6) : RFValue(6), backgroundColor: '#fff'}}
+      />
       <View style={styles.avatorWrap}>
-        <FastImg style={styles.avator} source={BrandImg} />
+        <CurrentAvator />
       </View>
       <Pressable style={styles.createWrap} onPress={handleCreateNode}>
         <IconFont name="plus" color="#000" size={14} />
@@ -84,10 +83,6 @@ const styles = StyleSheet.create({
   avatorWrap: {
     ...positionStyle,
     left: 14,
-  },
-  avator: {
-    width: 30,
-    height: 30,
   },
   createWrap: {
     ...positionStyle,

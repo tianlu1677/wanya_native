@@ -89,13 +89,13 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   active: {
-    width: 4,
-    height: 10,
+    width: 2,
+    height: 16,
     position: 'absolute',
     left: 0,
     top: '50%',
     marginTop: -5,
-    backgroundColor: '#ffff00',
+    backgroundColor: '#FF2242',
   },
   nodeListWrap: {
     paddingTop: 15,

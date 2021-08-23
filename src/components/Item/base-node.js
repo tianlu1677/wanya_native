@@ -12,6 +12,8 @@ import Toast from '@/components/Toast';
 // add-node  创建帖子圈子选择
 // mine-node 全部圈子 我创建
 // list      圈子列表
+// nearby      附近圈子列表
+
 const BaseNode = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -32,7 +34,7 @@ const BaseNode = props => {
   };
 
   const goNodeDetail = () => {
-    if (type === 'list') {
+    if (['list', 'nearby'].includes(type)) {
       navigation.push('NodeDetail', {nodeId: data.id});
     }
 
@@ -58,15 +60,13 @@ const BaseNode = props => {
         <View style={styles.dataNameWrap}>
           <Text style={styles.dataName}>{data.name}</Text>
           <Text style={styles.dataDesc}>
-            {data.topics_count}篇帖子 · {data.accounts_count}位{data.nickname || '圈友'}
+            {data.topics_count}篇帖子 · {data.accounts_count}位{data.nickname || '圈友'} · 距你20m
           </Text>
         </View>
 
-        {/* list */}
-        {type === 'list' && (
-          <View style={{marginRight: props.type === 'data-index' ? 20 : 0}}>
-            <JoinButton join={followed} text={followed ? '已加入' : '加入'} onPress={onFollow} />
-          </View>
+        {/* list || nearby */}
+        {['list', 'nearby'].includes(type) && (
+          <JoinButton join={followed} text={followed ? '已加入' : '加入'} onPress={onFollow} />
         )}
 
         {/* add-node */}
@@ -103,8 +103,6 @@ const styles = StyleSheet.create({
     width: 49,
     height: 49,
     borderRadius: 5,
-    borderWidth: 3,
-    borderColor: '#ffff00',
   },
   dataInfo: {
     flex: 1,

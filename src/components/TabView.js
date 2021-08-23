@@ -10,6 +10,7 @@ const initialLayout = {
 };
 
 const TabViewIndex = props => {
+  const [tab, setTab] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [scenes, setScenes] = useState([]);
   const [index, setIndex] = useState(0);
@@ -46,6 +47,11 @@ const TabViewIndex = props => {
     setIndex(i);
   }, [props.currentKey]);
 
+  useEffect(() => {
+    const data = props.tabData.map(v => ({key: v.key, title: v.title}));
+    setTab(data);
+  }, [props.tabData]);
+
   return (
     routes.length > 0 && (
       <TabView
@@ -56,7 +62,7 @@ const TabViewIndex = props => {
             separator={props.separator}
             align={props.align}
             tabChange={tabChange}
-            data={routes}
+            data={tab}
             tabStyle={props.tabStyle}
           />
         )}

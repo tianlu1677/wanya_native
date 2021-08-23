@@ -75,6 +75,7 @@ const MailList = props => {
           {TextData.map((text, index) => {
             return (
               <Text
+                key={index}
                 onPress={() => handleChange(index)}
                 style={[styles.followText, current === index ? styles.active : {}]}>
                 {text}
