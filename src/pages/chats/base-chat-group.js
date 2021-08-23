@@ -8,6 +8,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import {EMOJIS_DATA, EMOJIS_ZH} from '@/plugins/react-native-easy-chat-ui';
 import Swipeout from '@/components/Swipeout';
 import * as RootNavigation from '@/navigator/root-navigation';
+
 const PATTERNS = {
   url: /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/i,
   phone: /[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,7}/,
@@ -98,7 +99,7 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
         {
           text: '删除',
           onPress: item => {
-            console.log(item)
+            console.log(item);
             deleteChatgroup({uuid: item.key});
           },
           key: chat_group.uuid,
@@ -113,8 +114,7 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
       sectionID={chat_group.uuid}
       autoClose={true}
       onOpen={changeOpen}
-      key={chat_group.uuid}
-      >
+      key={chat_group.uuid}>
       <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
         <View style={styles.coverWrapView}>
           <Avator size={45} account={send_message_account} />
@@ -156,8 +156,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: RFValue(12),
     backgroundColor: '#fff',
-    width: '100%',
-    height: 70
   },
   coverWrapView: {
     marginRight: 12,
@@ -174,6 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 5,
+    fontSize: 12,
   },
   notifyContentText: {
     color: '#BDBDBD',

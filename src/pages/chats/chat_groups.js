@@ -89,6 +89,7 @@ const ChatGroups = ({navigation}) => {
           initialNumToRender: 10,
           windowSize: 10,
         }}
+        style={{backgroundColor: '#fff'}}
       />
     </View>
   );

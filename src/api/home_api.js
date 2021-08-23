@@ -107,6 +107,15 @@ export const getFollowedNodePosts = async (params = {}) => {
   return res;
 };
 
+// 向用户推荐关注的人
+export const getRecommendAccounts = async () => {
+  const res = await request({
+    url: '/api/v1/recommend/recommend_accounts',
+    method: 'GET',
+  });
+  return res;
+};
+
 // export async function createComment(data = {}) {
 //   const res = await request({
 //     url: `/api/v1/comments`,

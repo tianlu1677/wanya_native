@@ -1,29 +1,47 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
-import BrandImg from '@/assets/images/brand.png';
+import {getChatGroupsDetail} from '@/api/chat_api';
 
-const BaseRecommendAccount = () => {
+const BaseRecommendAccount = ({data}) => {
+  const navigation = useNavigation();
+  console.log('data', data);
+  const {id, nickname, intro, label_list, media} = data;
+
+  const handleCreateChat = async () => {
+    const params = {receiver_id: id};
+    const res = await getChatGroupsDetail(params);
+    const {uuid} = res.data.chat_group;
+    navigation.navigate('ChatDetail', {uuid, targetAccount: data});
+  };
+
   return (
     <View style={styles.wrap}>
-      <Avator size={45} account={{nickname: '气氛'}} style={{backgroundColor: 'pink'}} />
+      <Avator size={45} account={data} />
       <View style={styles.accountInfo}>
-        <Text style={styles.nickname}>芝麻开花</Text>
-        <View style={styles.labelWrap}>
-          <Text style={styles.label}>画手</Text>
-          <Text style={styles.labelLine}>|</Text>
-          <Text style={styles.label}>滑雪</Text>
-          <Text style={styles.labelLine}>|</Text>
-        </View>
-        <Text style={styles.intro}>探索与发现 记录与分享</Text>
+        <Text style={styles.nickname}>{nickname}</Text>
+        {label_list.length > 0 ? (
+          <View style={styles.labelWrap}>
+            {label_list.map((label, index) => (
+              <>
+                <Text style={styles.label}>{label}</Text>
+                {label_list.length - 1 !== index && <Text style={styles.labelLine}>|</Text>}
+              </>
+            ))}
+          </View>
+        ) : null}
+        <Text style={styles.intro}>{intro || '探索与发现 记录与分享'}</Text>
         <View style={styles.imageWrap}>
-          <FastImg source={BrandImg} style={styles.image} />
-          <FastImg source={BrandImg} style={styles.image} />
+          {media.map(item => (
+            <FastImg source={{uri: item.url}} style={styles.image} />
+          ))}
         </View>
 
-        <Text style={styles.btn}>打招呼</Text>
+        <Text style={styles.btn} onPress={handleCreateChat}>
+          打招呼
+        </Text>
       </View>
     </View>
   );

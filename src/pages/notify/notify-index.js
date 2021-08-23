@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   notifyContentTitle: {
     height: 20,
     lineHeight: 20,
-    fontSize: 16,
+    fontSize: 15,
     letterSpacing: 1,
     fontWeight: '500',
   },
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: '#BDBDBD',
     letterSpacing: 1,
-    fontSize: 13,
+    fontSize: 12,
   },
   speator: {
     height: StyleSheet.hairlineWidth,

@@ -1,59 +1,50 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet} from 'react-native';
 import ScrollList from '@/components/ScrollList';
-import BaseTopic from '@/components/Item/base-topic';
 import BaseRecommendAccount from '@/components/Item/base-recommend-account';
-import BaseTheory from '@/components/Item/base-theory';
-import {getRecommendTopPosts} from '@/api/home_api';
 import {RecommendSearch} from '@/components/NodeComponents';
+import {getRecommendAccounts} from '@/api/home_api';
 
-const TabBarAccounts = props => {
-  const [loading, setLoading] = useState(false);
+const TabBarAccounts = () => {
+  const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
-  const [listData, setListData] = useState([1, 2, 3, 4, 5, 6]);
+  const [listData, setListData] = useState([]);
 
-  const Child = React.memo(({item, index}) => {
-    return <BaseRecommendAccount />;
-  });
+  const RenderItem = ({item}) => {
+    return <BaseRecommendAccount data={item} />;
+  };
 
-  const renderItemMemo = useCallback(({item, index}) => <Child item={item} index={index} />, []);
-
-  const loadData = async (page = 1) => {
+  const loadData = async (page = 1, params) => {
     if (page === 1) {
       setLoading(true);
     }
-    const {api, params} = props.request;
-    const res = await api({...params, page});
-    const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
-    const transdata = page === 1 ? data : [...listData, ...data];
-    // setListData([])
+    const res = await getRecommendAccounts({page, ...params});
+    setListData(page === 1 ? res.data.accounts : [...listData, ...res.data.accounts]);
     setLoading(false);
     setHeaders(res.headers);
   };
 
   useEffect(() => {
-    // loadData();
+    loadData();
   }, []);
 
   return (
-    <View style={styles.wrapper}>
+    <>
       <RecommendSearch />
       <ScrollList
-        data={listData}
+        data={listData.slice(0, 2)}
         loading={loading}
         onRefresh={loadData}
         headers={headers}
-        renderItem={renderItemMemo}
+        renderItem={RenderItem}
         renderSeparator={() => <View style={styles.speator} />}
+        style={{backgroundColor: '#fff'}}
       />
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    // backgroundColor: '#fff',
-  },
   speator: {
     backgroundColor: '#EBEBEB',
     height: StyleSheet.hairlineWidth,

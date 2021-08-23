@@ -17,7 +17,7 @@ const positionStyle = {
 export const Styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
   },
   avatorWrap: {
     ...positionStyle,
