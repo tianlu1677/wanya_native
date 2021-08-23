@@ -98,7 +98,7 @@ const MainTabScreen = props => {
     <>
       <PublishModal {...props} visible={visible} onCancel={() => setVisible(false)} />
       <Tab.Navigator
-        initialRouteName="Accounts"
+        initialRouteName="Community"
         screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
             return route.name === 'ChatGroups' ? (
@@ -165,7 +165,7 @@ const MainTabScreen = props => {
           })}
         />
         <Tab.Screen name="Community" component={Community} />
-        <Tab.Screen name="Discovery" component={Discovery} options={{title: '323232'}} />
+        <Tab.Screen name="Discovery" component={Discovery} />
       </Tab.Navigator>
     </>
   );

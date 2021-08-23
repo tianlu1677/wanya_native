@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 import {RFValue} from '@/utils/response-fontsize';
 
-const JoinStyles = StyleSheet.create({
+const JStyles = StyleSheet.create({
   btn: {
     width: RFValue(54),
     height: RFValue(27),
@@ -25,12 +25,11 @@ const JoinStyles = StyleSheet.create({
 });
 
 export const JoinBtn = props => {
+  const {join, joinedStyle, joinStyle} = props;
+
   return (
     <Text
-      style={[
-        JoinStyles.btn,
-        props.join ? props.joinedStyle || JoinStyles.joined : props.joineStyle || JoinStyles.join,
-      ]}
+      style={[JStyles.btn, join ? joinedStyle || JStyles.joined : joinStyle || JStyles.join]}
       onPress={props.onPress}>
       {props.text}
     </Text>

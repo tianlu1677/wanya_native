@@ -37,6 +37,9 @@ const TabList = props => {
   useEffect(() => {
     const isAllLayout =
       layoutList.length === props.data.length && layoutList.every(item => item && item.width);
+
+    console.log(isAllLayout);
+
     if (isAllLayout) {
       const index = props.data.findIndex(v => v.key === props.current);
       setCurrentIndex(index);

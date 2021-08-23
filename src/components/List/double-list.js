@@ -193,11 +193,6 @@ const DoubleList = props => {
 
   const onRefresh = (page = 1) => {
     loadData(page);
-    // if (props.type === 'recommend' && (page === 1 || !page)) {
-    //   indexLoadData(pagination(headers).nextPage);
-    // } else {
-    //   loadData(page);
-    // }
   };
 
   useEffect(() => {

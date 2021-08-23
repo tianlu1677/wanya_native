@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Pressable} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import TabView from '@/components/TabView';
 import IconFont from '@/iconfont';
+import {dispatchFetchCategoryList} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
 import MineNodeListPage from '@/pages/tabBar/community/mine-node-list';
 import NodeIndex from '@/pages/nodes/node-index';
@@ -12,12 +13,11 @@ import {Styles, BoothHeight} from '@/pages/tabBar/style';
 
 const Community = props => {
   const {navigation} = props;
+  const dispatch = useDispatch();
   const {home} = useSelector(state => state);
   const [currentKey, setCurrentKey] = useState('square');
 
   const openAddress = home.location.latitude && home.location.longitude ? true : false;
-  console.log('openAddress', openAddress, home.location);
-
   const nodeTabTitle = openAddress ? home.location.positionCity : '本地';
 
   const onChange = key => {
@@ -29,6 +29,10 @@ const Community = props => {
   };
 
   const SquareListPage = () => <NodeIndex showAll={true} />;
+
+  useEffect(() => {
+    dispatch(dispatchFetchCategoryList());
+  }, []);
 
   return (
     <View style={Styles.wrapper}>

@@ -22,8 +22,6 @@ const BaseNode = props => {
   const {data, type} = props;
   const [followed, setFollowed] = useState(data.followed);
 
-  console.log(data);
-
   const onFollow = async () => {
     const params = {followable_type: 'Node', followable_id: data.id};
     const res = followed ? await unfollowItem(params) : await followItem(params);
@@ -62,7 +60,8 @@ const BaseNode = props => {
         <View style={styles.dataNameWrap}>
           <Text style={styles.dataName}>{data.name}</Text>
           <Text style={styles.dataDesc}>
-            {data.topics_count}篇帖子 · {data.accounts_count}位{data.nickname || '圈友'} · 距你20m
+            {data.topics_count}篇帖子 · {data.accounts_count}位{data.nickname || '圈友'}
+            {type === 'nearby' && data.distance > 0 ? ` · 距你${data.distance}m` : ''}
           </Text>
         </View>
 
