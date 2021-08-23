@@ -22,6 +22,8 @@ const BaseNode = props => {
   const {data, type} = props;
   const [followed, setFollowed] = useState(data.followed);
 
+  console.log(data);
+
   const onFollow = async () => {
     const params = {followable_type: 'Node', followable_id: data.id};
     const res = followed ? await unfollowItem(params) : await followItem(params);

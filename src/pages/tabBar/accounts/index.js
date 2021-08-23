@@ -11,7 +11,7 @@ const TabBarAccounts = () => {
   const [listData, setListData] = useState([]);
 
   const RenderItem = ({item}) => {
-    return <BaseRecommendAccount data={item} />;
+    return <BaseRecommendAccount data={item} key={item.id} />;
   };
 
   const loadData = async (page = 1, params) => {

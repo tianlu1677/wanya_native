@@ -16,6 +16,8 @@ const Community = props => {
   const [currentKey, setCurrentKey] = useState('square');
 
   const openAddress = home.location.latitude && home.location.longitude ? true : false;
+  console.log('openAddress', openAddress, home.location);
+
   const nodeTabTitle = openAddress ? home.location.positionCity : '本地';
 
   const onChange = key => {

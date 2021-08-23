@@ -7,7 +7,6 @@ import {getChatGroupsDetail} from '@/api/chat_api';
 
 const BaseRecommendAccount = ({data}) => {
   const navigation = useNavigation();
-  console.log('data', data);
   const {id, nickname, intro, label_list, media} = data;
 
   const handleCreateChat = async () => {

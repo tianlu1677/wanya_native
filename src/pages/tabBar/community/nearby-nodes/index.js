@@ -61,6 +61,8 @@ const NearbyNodes = () => {
   };
 
   const RenderItem = ({item}) => {
+    console.log('item node', item);
+
     return <BaseNode data={item} type="nearby" />;
   };
 
