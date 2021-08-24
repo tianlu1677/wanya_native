@@ -23,20 +23,20 @@ const DrawerContent = ({navigation}) => {
     navigation.navigate('Feedback');
   };
 
-  const onNotifyIndex = () => {
-    navigation.navigate('NotifyIndex');
-  };
+  // const onNotifyIndex = () => {
+  //   navigation.navigate('NotifyIndex');
+  // };
 
   const onSettings = () => {
     navigation.navigate('Settings');
   };
 
-  const UnreadMessageCount = () => {
-    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
-      return 0;
-    }
-    return currentBaseInfo.new_message_count;
-  };
+  // const UnreadMessageCount = () => {
+  //   if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
+  //     return 0;
+  //   }
+  //   return currentBaseInfo.new_message_count;
+  // };
 
   return (
     <View style={styles.wrapper}>
@@ -62,18 +62,18 @@ const DrawerContent = ({navigation}) => {
           <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
         </View>
       </Pressable>
-      <Pressable style={styles.drawerItem} onPress={onNotifyIndex}>
-        <IconFont name="tongzhi" size={RFValue(18)} color={'#000'} />
-        <Text style={styles.drawerText}>互动通知</Text>
-        <View style={{marginLeft: 'auto', flexDirection: 'row', alignItems: 'center'}}>
-          <BadgeMessage
-            size={'middle'}
-            value={UnreadMessageCount()}
-            containerStyle={[{right: 5}]}
-          />
-          <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />
-        </View>
-      </Pressable>
+      {/*<Pressable style={styles.drawerItem} onPress={onNotifyIndex}>*/}
+      {/*  <IconFont name="tongzhi" size={RFValue(18)} color={'#000'} />*/}
+      {/*  <Text style={styles.drawerText}>互动通知</Text>*/}
+      {/*  <View style={{marginLeft: 'auto', flexDirection: 'row', alignItems: 'center'}}>*/}
+      {/*    <BadgeMessage*/}
+      {/*      size={'middle'}*/}
+      {/*      value={UnreadMessageCount()}*/}
+      {/*      containerStyle={[{right: 5}]}*/}
+      {/*    />*/}
+      {/*    <IconFont name="arrow-right" size={12} color={'#C2C2C2'} />*/}
+      {/*  </View>*/}
+      {/*</Pressable>*/}
       <Pressable style={styles.drawerItem} onPress={onFeedback}>
         <IconFont name="fankui" size={RFValue(18)} color={'#000'} />
         <Text style={styles.drawerText}>反馈</Text>
