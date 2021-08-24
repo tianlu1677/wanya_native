@@ -67,7 +67,12 @@ const BaseNode = props => {
 
         {/* list || nearby */}
         {['list', 'nearby'].includes(type) && (
-          <JoinButton join={followed} text={followed ? '已加入' : '加入'} onPress={onFollow} />
+          <JoinButton
+            join={followed}
+            text={followed ? '已加入' : '加入'}
+            onPress={onFollow}
+            borderRadius
+          />
         )}
 
         {/* add-node */}
@@ -83,10 +88,14 @@ const BaseNode = props => {
         {/* mine-node */}
         {type === 'mine-node' && (
           <Pressable onPress={goNodeResult}>
-            {data.audit_status === 'new' && <JoinButton join={true} text="未审核" />}
-            {data.audit_status === 'auditing' && <JoinButton join={true} text="审核中" />}
-            {data.audit_status === 'failed' && <JoinButton join={true} text="未通过" />}
-            {data.audit_status === 'success' && <JoinButton join={true} text="管理" />}
+            {data.audit_status === 'new' && <JoinButton join={true} text="未审核" borderRadius />}
+            {data.audit_status === 'auditing' && (
+              <JoinButton join={true} text="审核中" borderRadius />
+            )}
+            {data.audit_status === 'failed' && (
+              <JoinButton join={true} text="未通过" borderRadius />
+            )}
+            {data.audit_status === 'success' && <JoinButton join={true} text="管理" borderRadius />}
           </Pressable>
         )}
       </View>

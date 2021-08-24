@@ -1,5 +1,4 @@
 import {Platform, PermissionsAndroid} from 'react-native';
-import {Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import * as action from '@/redux/constants';
 import {check, openSettings, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -42,10 +41,7 @@ export const getLocationInfo = async handleClick => {
 
   if (answer === false) {
     console.log('没权限');
-    Alert.alert('授权后才能设置场地位置', '', [
-      {text: '取消'},
-      {text: '去设置', onPress: async () => await openSettings()},
-    ]);
+    await openSettings();
   }
 
   if (Platform.OS === 'ios') {

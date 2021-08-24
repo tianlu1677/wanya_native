@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Pressable, StatusBar, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StatusBar, StyleSheet, AppState} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import ScrollList from '@/components/ScrollList';
@@ -46,23 +46,15 @@ const RenderEmpty = () => {
 };
 
 const NearbyNodes = () => {
-  const {
-    home: {location},
-  } = useSelector(state => state);
-
-  const openAddress = location.latitude && location.longitude ? true : false;
+  const dispatch = useDispatch();
+  const {home} = useSelector(state => state);
+  const openAddress = home.location.latitude && home.location.longitude ? true : false;
 
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderSeparator = () => {
-    return <Text style={styles.separator} />;
-  };
-
   const RenderItem = ({item}) => {
-    console.log('item node', item);
-
     return <BaseNode data={item} type="nearby" />;
   };
 
@@ -71,16 +63,32 @@ const NearbyNodes = () => {
       setLoading(true);
     }
     const res = await getNodeIndex({page, ...params});
-
     setListData(page === 1 ? res.data.nodes : [...listData, ...res.data.nodes]);
     setLoading(false);
     setHeaders(res.headers);
   };
 
+  const handleAppStateChange = nextAppState => {
+    if (nextAppState === 'active') {
+      loadLocation(dispatch);
+    }
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', handleAppStateChange);
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, []);
+
+  const onRefresh = page => {
+    const {latitude, longitude} = home.location;
+    loadData(page, {latitude, longitude, type: 'nearby'});
+  };
+
   useEffect(() => {
     if (openAddress) {
-      const {latitude, longitude} = location;
-      loadData(1, {latitude, longitude, type: 'nearby'});
+      onRefresh(1);
     }
   }, [openAddress]);
 
@@ -91,10 +99,10 @@ const NearbyNodes = () => {
         <ScrollList
           data={listData}
           loading={loading}
-          onRefresh={loadData}
+          onRefresh={onRefresh}
           headers={headers}
           renderItem={RenderItem}
-          renderSeparator={renderSeparator}
+          renderSeparator={() => <Text style={styles.separator} />}
           enableRefresh={false}
           renderEmpty={<RenderEmpty />}
         />

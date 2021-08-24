@@ -4,6 +4,7 @@ import ScrollList from '@/components/ScrollList';
 import BaseRecommendAccount from '@/components/Item/base-recommend-account';
 import {RecommendSearch} from '@/components/NodeComponents';
 import {getRecommendAccounts} from '@/api/home_api';
+import {Cstyles} from '@/pages/tabBar/style';
 
 const TabBarAccounts = () => {
   const [loading, setLoading] = useState(true);
@@ -29,7 +30,7 @@ const TabBarAccounts = () => {
   }, []);
 
   return (
-    <>
+    <View style={Cstyles.wrapper}>
       <RecommendSearch />
       <ScrollList
         data={listData.slice(0, 2)}
@@ -40,7 +41,7 @@ const TabBarAccounts = () => {
         renderSeparator={() => <View style={styles.speator} />}
         style={{backgroundColor: '#fff'}}
       />
-    </>
+    </View>
   );
 };
 

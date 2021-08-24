@@ -38,7 +38,7 @@ const RecommendListPost = () => {
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
   const loadData = async (page = 1) => {
-    let itemList = []
+    let itemList = [];
     if (page === 1) {
       // 加载置顶
       setLoading(true);
@@ -65,10 +65,10 @@ const RecommendListPost = () => {
     // console.log('page', page)
     if (page === 1 || !page) {
       // console.log('a')
-      indexLoadData(pagination(headers).nextPage)
+      indexLoadData(pagination(headers).nextPage);
     } else {
       // console.log('b')
-      loadData(page)
+      loadData(page);
     }
   };
 

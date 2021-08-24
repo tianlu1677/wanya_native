@@ -7,10 +7,8 @@ import {RFValue} from '@/utils/response-fontsize';
 import {getVersionUpgrades} from '@/api/settings_api';
 import {WANYA_VERSION} from '@/utils/config';
 import Helper from '@/utils/helper';
-
 import DownLoadImg from '@/assets/images/download.png';
 import {Pressable} from 'react-native';
-
 const {width} = Dimensions.get('window');
 
 const DownloadModal = () => {
@@ -100,7 +98,7 @@ const styles = StyleSheet.create({
     paddingVertical: RFValue(25),
     backgroundColor: '#fff',
     alignItems: 'center',
-    borderRadius: 5
+    borderRadius: 5,
   },
   image: {
     width: imageWidth,

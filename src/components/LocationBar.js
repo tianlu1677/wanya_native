@@ -18,18 +18,18 @@ const LocationBar = ({space, location, style}) => {
 
   return (
     <>
-      {space && (
+      {space ? (
         <Pressable style={[styles.wrapper, style]} onPress={goSpaceDetail} hitSlop={hitSlop}>
           <IconFont name="space-point" size={11} color={'#1B5C79'} />
           <Text style={styles.text}>{space.name}</Text>
         </Pressable>
-      )}
-      {location && (
+      ) : null}
+      {location ? (
         <Pressable style={[styles.wrapper, style]} onPress={goLocationDetail} hitSlop={hitSlop}>
           <IconFont name="space-point" size={11} color={'#1B5C79'} />
           <Text style={styles.text}>{location.name.toString().substr(0, 13)}</Text>
         </Pressable>
-      )}
+      ) : null}
     </>
   );
 };
