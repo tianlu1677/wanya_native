@@ -88,10 +88,11 @@ const MainTabScreen = props => {
   };
 
   const UnreadMessageCount = () => {
-    if (!currentBaseInfo || currentBaseInfo.unread_chat_messages_count === 0) {
+    if (!currentBaseInfo) {
       return 0;
     }
-    return currentBaseInfo.unread_chat_messages_count;
+
+    return currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count;
   };
 
   return (
