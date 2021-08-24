@@ -42,7 +42,7 @@ const NodeIndex = props => {
 
   useEffect(() => {
     if (layoutList.length === categories.length) {
-      const allTrue = layoutList.every(item => item.y >= 0);
+      const allTrue = layoutList.every(item => parseInt(item.y) >= 0);
       if (allTrue && !showAll) {
         scrollRef.current.scrollTo({y: layoutList[1].y, animated: true});
       }

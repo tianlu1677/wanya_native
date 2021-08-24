@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Pressable} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import TabView from '@/components/TabView';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
@@ -8,17 +9,35 @@ import ChatListPage from '@/pages/chats/chat_groups';
 import NotifyIndex from '@/pages/notify/notify-index';
 import CurrentAvator from '@/pages/tabBar/current-avator';
 import {Styles, BoothHeight} from '@/pages/tabBar/style';
+import {getInviteCode} from '@/api/account_api';
+import {dispatchShareItem} from '@/redux/actions';
 
 const ChatGroups = props => {
   const {navigation} = props;
+  const dispatch = useDispatch();
+  const currentAccount = useSelector(state => state.account.currentAccount);
   const [currentKey, setCurrentKey] = useState('mail');
 
   const onChange = key => {
     setCurrentKey(key);
   };
+  const handleShare = () => {
+    // console.log('share....');
+    const shareContent = {
+      item_type: 'Account',
+      item_id: currentAccount.id,
+      visible: true,
+      title: '邀请好友来顽',
+    };
+    dispatch(dispatchShareItem(shareContent));
+  };
 
-  const handleCreateNode = () => {
-    navigation.navigate('CreateNodeIntro');
+  useEffect(() => {
+    loadInitInfo();
+  }, []);
+
+  const loadInitInfo = async () => {
+    const codeRes = await getInviteCode();
   };
 
   return (
@@ -27,7 +46,7 @@ const ChatGroups = props => {
       <View style={Styles.avatorWrap}>
         <CurrentAvator />
       </View>
-      <Pressable style={Styles.createWrap} onPress={handleCreateNode}>
+      <Pressable style={Styles.createWrap} onPress={handleShare}>
         <IconFont name="plus" color="#000" size={14} />
       </Pressable>
       <TabView

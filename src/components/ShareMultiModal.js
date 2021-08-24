@@ -153,7 +153,7 @@ const ShareMultiModal = () => {
       modalTitle={
         <ModalTitle
           hasTitleBar={false}
-          title="分享到"
+          title={ shareContent.title ||  "分享到"}
           style={{backgroundColor: '#F8F8F8'}}
           textStyle={{fontSize: 13, fontWeight: '400', color: '#9C9C9C'}}
         />
