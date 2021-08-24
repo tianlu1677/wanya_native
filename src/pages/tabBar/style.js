@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {BarHeight, IsIos} from '@/utils/navbar';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
+import {RFValue} from '@/utils/response-fontsize';
 
 export const TopHeight = RFValue(5);
 export const BoothHeight = IsIos ? BarHeight + TopHeight : TopHeight;
@@ -14,7 +14,7 @@ const positionStyle = {
   alignItems: 'center',
 };
 
-export const Styles = StyleSheet.create({
+export const Cstyles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fafafa',

@@ -1,12 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Button, StyleSheet, Dimensions, Linking} from 'react-native';
-import {RFValue} from '@/utils/response-fontsize';
+import React, {useEffect} from 'react';
+import {View} from 'react-native';
+import {XUpdate, InitArgs, UpdateArgs} from 'react-native-xupdate-new';
 import {getVersionUpgrades} from '@/api/settings_api';
 import {WANYA_VERSION} from '@/utils/config';
 import Helper from '@/utils/helper';
-
-const {width} = Dimensions.get('window');
-import {XUpdate, InitArgs, UpdateArgs} from 'react-native-xupdate-new';
 
 const DownLoadModal = () => {
   const initXUpdate = () => {

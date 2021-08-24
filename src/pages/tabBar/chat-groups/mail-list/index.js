@@ -3,8 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import ScrollList, {pagination} from '@/components/ScrollList';
 import BaseMail from '@/components/Item/base-mail';
-import {BarHeight, IsIos} from '@/utils/navbar';
-import {RFValue} from '@/utils/response-fontsize';
 import {getAccountFollowEeach, getAccountFollowings, getAccountFollowers} from '@/api/account_api';
 
 const TextData = [

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Pressable, StatusBar, StyleSheet, AppState} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -69,9 +69,7 @@ const NearbyNodes = () => {
   };
 
   const handleAppStateChange = nextAppState => {
-    console.log(nextAppState === 'active');
     if (nextAppState === 'active') {
-      // console.log(3232);
       loadLocation(dispatch);
     }
   };
@@ -83,10 +81,14 @@ const NearbyNodes = () => {
     };
   }, []);
 
+  const onRefresh = page => {
+    const {latitude, longitude} = home.location;
+    loadData(page, {latitude, longitude, type: 'nearby'});
+  };
+
   useEffect(() => {
     if (openAddress) {
-      const {latitude, longitude} = home.location;
-      loadData(1, {latitude, longitude, type: 'nearby'});
+      onRefresh(1);
     }
   }, [openAddress]);
 
@@ -97,7 +99,7 @@ const NearbyNodes = () => {
         <ScrollList
           data={listData}
           loading={loading}
-          onRefresh={loadData}
+          onRefresh={onRefresh}
           headers={headers}
           renderItem={RenderItem}
           renderSeparator={() => <Text style={styles.separator} />}

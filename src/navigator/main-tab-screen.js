@@ -13,7 +13,7 @@ import {draftTheory} from '@/api/theory_api';
 import Accounts from '@/pages/tabBar/accounts';
 import Community from '@/pages/tabBar/community';
 import ChatGroups from '@/pages/tabBar/chat-groups';
-import Recommend from '@/pages/home/recommend';
+import Recommend from '@/pages/tabBar/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
 
 const indexImage = require('@/assets/tabimages/index-active.png');

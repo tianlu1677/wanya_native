@@ -1,7 +1,6 @@
-import React, {useState, useMemo, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, StatusBar} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
@@ -12,32 +11,19 @@ import TabView from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {getChannelPosts} from '@/api/home_api';
-import {recordDeviceInfo, ahoyTrackEvents} from '@/api/settings_api';
-import {syncDeviceToken} from '@/api/app_device_api';
-import {getLocationInfo, loadLocation} from './getLocation';
-import deviceInfo from '@/utils/device_info';
-import {consumerWsUrl} from '@/utils/config';
-import {createConsumer} from '@rails/actioncable';
-import {
-  dispatchFetchCategoryList,
-  dispatchFetchLabelList,
-  dispatchBaseCurrentAccount,
-  dispatchCurrentAccount,
-  dispatchFetchUploadTopic,
-  changeUploadStatus,
-} from '@/redux/actions';
+import {ahoyTrackEvents} from '@/api/settings_api';
+import {getLocationInfo, loadLocation} from '@/utils/get-location';
+import {dispatchFetchUploadTopic, changeUploadStatus} from '@/redux/actions';
 import LongVideoList from '@/components/List/long-video-list';
-import FollowListPage from './follow-list-post';
-import NodeListPage from './node-list-page';
-import RecommendListPage from './recommend-list-post';
-import NearbyListPage from './nearby-list-post';
-import DownLoadModal from './download-modal';
+import FollowListPage from '@/pages/tabBar/home/follow-list-post';
+import RecommendListPage from '@/pages/tabBar/home/recommend-list-post';
+import NodeListPage from '@/pages/tabBar/home/node-list-page';
+import NearbyListPage from '@/pages/tabBar/home/nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
   const defaultKey = props.route.params && props.route.params.activityKey;
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
-  const auth_token = useSelector(state => state.login.auth_token);
   const home = useSelector(state => state.home);
   const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
@@ -52,28 +38,6 @@ const Recommend = props => {
       />
     );
   });
-
-  const onlineChannel = useMemo(() => {
-    // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
-    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
-      {channel: 'OnlineChannel'},
-      {
-        initialized() {},
-        connected() {},
-        disconnected() {},
-        rejected() {},
-        unsubscribe() {},
-        appear() {},
-      }
-    );
-  }, []);
-
-  // 同步用户是否在线
-  const appearOnline = () => {
-    setInterval(() => {
-      onlineChannel.perform('appear');
-    }, 5000);
-  };
 
   const CallBackVideo = useCallback(() => <MemoVideo />, []);
 
@@ -163,74 +127,57 @@ const Recommend = props => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(dispatchBaseCurrentAccount());
-    }, [])
-  );
-
   useEffect(() => {
-    syncDeviceToken();
-    recordDeviceInfo(deviceInfo);
-    appearOnline(); // 是否在线
-    dispatch(dispatchCurrentAccount());
-    dispatch(dispatchFetchCategoryList());
-    dispatch(dispatchFetchLabelList());
-
     if (uploadStatus) {
       const upload = (file, cb) => props.uploadVideo(file, cb);
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
       dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
     }
+
     setTimeout(() => {
-      // 如果在这里请求的话，必须要等待1s之后才可以
       loadLocation(dispatch);
     }, 1000);
   }, []);
 
   return (
-    <>
-      <StatusBar barStyle="light-content" backgroundColor={'white'} translucent={false} />
-      <DownLoadModal />
-      <View style={{flex: 1, position: 'relative'}}>
-        <RecommendSearch />
-        {uploadStatus ? (
-          <View style={[styles.uploadWrap]}>
-            <UploadTopic />
-            <CallBackVideo />
-          </View>
-        ) : null}
-        {channels.length > 0 && (
-          <View style={styles.wrapper}>
-            <TabView
-              currentKey={currentKey}
-              onChange={onChange}
-              align="left"
-              bottomLine={true}
-              separator={false}
-              tabData={[
-                {
-                  key: 'follow',
-                  title: '关注',
-                  component: FollowListPage,
-                },
-                {
-                  key: 'recommend',
-                  title: '推荐',
-                  component: RecommendListPage,
-                },
-                {
-                  key: 'nodes',
-                  title: '圈子',
-                  component: NodeListPage,
-                },
-                ...channels,
-              ]}
-            />
-          </View>
-        )}
-      </View>
-    </>
+    <View style={{flex: 1, position: 'relative'}}>
+      <RecommendSearch />
+      {uploadStatus ? (
+        <View style={[styles.uploadWrap]}>
+          <UploadTopic />
+          <CallBackVideo />
+        </View>
+      ) : null}
+      {channels.length > 0 && (
+        <View style={styles.wrapper}>
+          <TabView
+            currentKey={currentKey}
+            onChange={onChange}
+            align="left"
+            bottomLine={true}
+            separator={false}
+            tabData={[
+              {
+                key: 'follow',
+                title: '关注',
+                component: FollowListPage,
+              },
+              {
+                key: 'recommend',
+                title: '推荐',
+                component: RecommendListPage,
+              },
+              {
+                key: 'nodes',
+                title: '圈子',
+                component: NodeListPage,
+              },
+              ...channels,
+            ]}
+          />
+        </View>
+      )}
+    </View>
   );
 };
 

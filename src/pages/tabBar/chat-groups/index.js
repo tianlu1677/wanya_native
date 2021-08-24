@@ -8,12 +8,11 @@ import MailListPage from '@/pages/tabBar/chat-groups/mail-list';
 import ChatListPage from '@/pages/chats/chat_groups';
 import NotifyIndex from '@/pages/notify/notify-index';
 import CurrentAvator from '@/pages/tabBar/current-avator';
-import {Styles, BoothHeight} from '@/pages/tabBar/style';
+import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
 import {getInviteCode} from '@/api/account_api';
 import {dispatchShareItem} from '@/redux/actions';
 
 const ChatGroups = props => {
-  const {navigation} = props;
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentAccount);
   const [currentKey, setCurrentKey] = useState('mail');
@@ -21,8 +20,8 @@ const ChatGroups = props => {
   const onChange = key => {
     setCurrentKey(key);
   };
+
   const handleShare = () => {
-    // console.log('share....');
     const shareContent = {
       item_type: 'Account',
       item_id: currentAccount.id,
@@ -32,21 +31,21 @@ const ChatGroups = props => {
     dispatch(dispatchShareItem(shareContent));
   };
 
+  const loadInitInfo = async () => {
+    await getInviteCode();
+  };
+
   useEffect(() => {
     loadInitInfo();
   }, []);
 
-  const loadInitInfo = async () => {
-    const codeRes = await getInviteCode();
-  };
-
   return (
-    <View style={Styles.wrapper}>
+    <View style={Cstyles.wrapper}>
       <View style={{height: BoothHeight, backgroundColor: '#fff'}} />
-      <View style={Styles.avatorWrap}>
+      <View style={Cstyles.avatorWrap}>
         <CurrentAvator />
       </View>
-      <Pressable style={Styles.createWrap} onPress={handleShare}>
+      <Pressable style={Cstyles.createWrap} onPress={handleShare}>
         <IconFont name="plus" color="#000" size={14} />
       </Pressable>
       <TabView

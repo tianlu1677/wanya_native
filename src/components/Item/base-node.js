@@ -71,7 +71,7 @@ const BaseNode = props => {
             join={followed}
             text={followed ? '已加入' : '加入'}
             onPress={onFollow}
-            style={{borderRadius: 14}}
+            borderRadius
           />
         )}
 
@@ -88,18 +88,14 @@ const BaseNode = props => {
         {/* mine-node */}
         {type === 'mine-node' && (
           <Pressable onPress={goNodeResult}>
-            {data.audit_status === 'new' && (
-              <JoinButton join={true} text="未审核" style={{borderRadius: 14}} />
-            )}
+            {data.audit_status === 'new' && <JoinButton join={true} text="未审核" borderRadius />}
             {data.audit_status === 'auditing' && (
-              <JoinButton join={true} text="审核中" style={{borderRadius: 14}} />
+              <JoinButton join={true} text="审核中" borderRadius />
             )}
             {data.audit_status === 'failed' && (
-              <JoinButton join={true} text="未通过" style={{borderRadius: 14}} />
+              <JoinButton join={true} text="未通过" borderRadius />
             )}
-            {data.audit_status === 'success' && (
-              <JoinButton join={true} text="管理" style={{borderRadius: 14}} />
-            )}
+            {data.audit_status === 'success' && <JoinButton join={true} text="管理" borderRadius />}
           </Pressable>
         )}
       </View>
