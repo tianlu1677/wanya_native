@@ -58,6 +58,7 @@ const TabList = props => {
     }
   }, [contentWidth]);
 
+  console.log(typeof data[0].title === 'string');
   return (
     <>
       <View
@@ -66,9 +67,9 @@ const TabList = props => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           ref={scrollRef}
-          overScrollMode={'always'}
+          overScrollMode="always"
           centerContent={false}
-          style={styles.tabScroll}
+          style={[styles.tabScroll]}
           scrollEnabled={scrollEnabled}>
           {data.length > 0 &&
             data.map((item, index) => {
@@ -78,12 +79,20 @@ const TabList = props => {
                   onPress={() => setIndex(item, index)}
                   onLayout={e => setLayout(e.nativeEvent.layout, index)}
                   style={styles.tabItem}>
-                  <Text
-                    style={[styles.tabItemText, currentIndex === index && styles.tabItemTextActive]}
-                    visit_key={`click_${item.title}`}
-                    visit_value={{name: item.title}}>
-                    {item.title}
-                  </Text>
+                  {typeof item.title === 'string' ? (
+                    <Text
+                      style={[
+                        styles.tabItemText,
+                        currentIndex === index && styles.tabItemTextActive,
+                      ]}
+                      visit_key={`click_${item.title}`}
+                      visit_value={{name: item.title}}>
+                      {item.title}
+                    </Text>
+                  ) : (
+                    item.title
+                  )}
+
                   {currentIndex === index ? <View style={styles.tabLineActive} /> : null}
                 </Pressable>
               );
@@ -134,6 +143,7 @@ const styles = StyleSheet.create({
   },
   tabcenter: {
     alignItems: 'center',
+    textAlign: 'center',
   },
   bottomLine: {
     borderBottomColor: '#EBEBEB',

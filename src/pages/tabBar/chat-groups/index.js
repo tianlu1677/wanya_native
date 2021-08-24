@@ -1,16 +1,41 @@
 import React, {useState, useEffect} from 'react';
-import {View, Pressable} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import TabView from '@/components/TabView';
 import IconFont from '@/iconfont';
-import {RFValue} from '@/utils/response-fontsize';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 import MailListPage from '@/pages/tabBar/chat-groups/mail-list';
 import ChatListPage from '@/pages/chats/chat_groups';
 import NotifyIndex from '@/pages/notify/notify-index';
 import CurrentAvator from '@/pages/tabBar/current-avator';
+import {BadgeMessage} from '@/components/NodeComponents';
 import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
 import {getInviteCode} from '@/api/account_api';
 import {dispatchShareItem} from '@/redux/actions';
+
+const Message = () => {
+  const UnreadMessageCount = () => {
+    return 23;
+  };
+
+  return (
+    <BadgeMessage
+      size={'middle'}
+      value={UnreadMessageCount()}
+      containerStyle={[
+        styles.badge,
+        {
+          right:
+            UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
+              ? -VWValue(-4)
+              : UnreadMessageCount() > 99
+              ? -VWValue(4) * 1.75
+              : -VWValue(10) * 1.45,
+        },
+      ]}
+    />
+  );
+};
 
 const ChatGroups = props => {
   const dispatch = useDispatch();
@@ -58,17 +83,41 @@ const ChatGroups = props => {
         tabData={[
           {
             key: 'mail',
-            title: '通讯录',
+            title: (
+              <View style={{position: 'relative'}}>
+                <Text
+                  style={[styles.tabItemText, currentKey === 'mail' && styles.tabItemTextActive]}>
+                  通讯录
+                </Text>
+                <Message />
+              </View>
+            ),
             component: MailListPage,
           },
           {
             key: 'chat',
-            title: '聊天',
+            title: (
+              <View style={{position: 'relative'}}>
+                <Text
+                  style={[styles.tabItemText, currentKey === 'chat' && styles.tabItemTextActive]}>
+                  聊天
+                </Text>
+                <Message />
+              </View>
+            ),
             component: ChatListPage,
           },
           {
             key: 'notify',
-            title: '互动',
+            title: (
+              <View style={{position: 'relative'}}>
+                <Text
+                  style={[styles.tabItemText, currentKey === 'notify' && styles.tabItemTextActive]}>
+                  互动
+                </Text>
+                <Message />
+              </View>
+            ),
             component: NotifyIndex,
           },
         ]}
@@ -76,5 +125,24 @@ const ChatGroups = props => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  tabItemText: {
+    fontSize: 15,
+    color: '#aaa',
+    backgroundColor: '#fff',
+    marginHorizontal: 8,
+  },
+  tabItemTextActive: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: '500',
+  },
+  badge: {
+    position: 'absolute',
+    top: -10,
+    zIndex: 1,
+  },
+});
 
 export default ChatGroups;
