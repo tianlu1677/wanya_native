@@ -81,7 +81,7 @@ const RecommendListPost = () => {
       keyExtractor={useCallback(item => `${item.id}${item.item_type}`, [])}
       data={listData}
       loading={loading}
-      onRefresh={throttle(onRefresh, 300)}
+      onRefresh={throttle(onRefresh, 0)}
       headers={headers}
       renderItem={renderItemMemo}
       initialNumToRender={6}

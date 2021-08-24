@@ -144,11 +144,11 @@ const Recommend = props => {
   });
 
   const onChange = async (key, title) => {
-    ahoyTrackEvents({
-      name: `click_${key}`,
-      properties: {title: title, page: 'recommend'},
-      page: 'recommend',
-    });
+    // ahoyTrackEvents({
+    //   name: `click_${key}`,
+    //   properties: {title: title, page: 'recommend'},
+    //   page: 'recommend',
+    // });
 
     const {location} = home;
     if (key === 'nearby' && (!location.latitude || !location.longitude)) {
