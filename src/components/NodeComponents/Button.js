@@ -25,11 +25,11 @@ const JStyles = StyleSheet.create({
 });
 
 export const JoinBtn = props => {
-  const {join, joinedStyle, joinStyle} = props;
+  const {join, style, joinedStyle, joinStyle} = props;
 
   return (
     <Text
-      style={[JStyles.btn, join ? joinedStyle || JStyles.joined : joinStyle || JStyles.join]}
+      style={[JStyles.btn, style, join ? joinedStyle || JStyles.joined : joinStyle || JStyles.join]}
       onPress={props.onPress}>
       {props.text}
     </Text>

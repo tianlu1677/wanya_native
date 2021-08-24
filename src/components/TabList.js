@@ -6,8 +6,8 @@ const DeviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
   const scrollRef = useRef(null);
-  const defaultIndex = props.data.findIndex(v => v.key === props.current);
-  const {align, bottomLine, separator} = props;
+  const {data, current, align, bottomLine, separator, tabChange, tabStyle} = props;
+  const defaultIndex = data.findIndex(v => v.key === current);
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [contentWidth, setContentWidth] = useState(0);
@@ -20,7 +20,7 @@ const TabList = props => {
   };
 
   const setIndex = (item, index) => {
-    props.tabChange(item, index);
+    tabChange(item, index);
     if (scrollEnabled) {
       onScroll(index);
     }
@@ -35,17 +35,22 @@ const TabList = props => {
   };
 
   useEffect(() => {
-    const isAllLayout =
-      layoutList.length === props.data.length && layoutList.every(item => item && item.width);
+    if (layoutList.length === 0) {
+      setLayoutList(new Array(data.length).fill({}));
+    }
+  }, [data]);
 
-    console.log(isAllLayout);
-
-    if (isAllLayout) {
-      const index = props.data.findIndex(v => v.key === props.current);
+  useEffect(() => {
+    if (data.length !== layoutList.length) {
+      return;
+    }
+    const allRender = layoutList.every(item => item.x >= 0);
+    if (allRender) {
+      const index = data.findIndex(v => v.key === current);
       setCurrentIndex(index);
       onScroll(index);
     }
-  }, [props.current, layoutList]);
+  }, [current, layoutList]);
 
   useEffect(() => {
     if (contentWidth > DeviceWidth) {
@@ -56,12 +61,7 @@ const TabList = props => {
   return (
     <>
       <View
-        style={[
-          styles.tabWrap,
-          props.tabStyle,
-          styles[`tab${align}`],
-          bottomLine && styles.bottomLine,
-        ]}>
+        style={[styles.tabWrap, tabStyle, styles[`tab${align}`], bottomLine && styles.bottomLine]}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -70,8 +70,8 @@ const TabList = props => {
           centerContent={false}
           style={styles.tabScroll}
           scrollEnabled={scrollEnabled}>
-          {props.data.length > 0 &&
-            props.data.map((item, index) => {
+          {data.length > 0 &&
+            data.map((item, index) => {
               return (
                 <Pressable
                   key={item.key}
