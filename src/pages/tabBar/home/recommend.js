@@ -11,7 +11,6 @@ import TabView from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {getChannelPosts} from '@/api/home_api';
-import {ahoyTrackEvents} from '@/api/settings_api';
 import {getLocationInfo, loadLocation} from '@/utils/get-location';
 import {dispatchFetchUploadTopic, changeUploadStatus} from '@/redux/actions';
 import LongVideoList from '@/components/List/long-video-list';
@@ -108,12 +107,6 @@ const Recommend = props => {
   });
 
   const onChange = async (key, title) => {
-    // ahoyTrackEvents({
-    //   name: `click_${key}`,
-    //   properties: {title: title, page: 'recommend'},
-    //   page: 'recommend',
-    // });
-
     const {location} = home;
     if (key === 'nearby' && (!location.latitude || !location.longitude)) {
       getLocationInfo(false, result => {
