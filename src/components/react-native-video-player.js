@@ -11,7 +11,7 @@ import {
   ViewPropTypes,
   ActivityIndicator,
   NativeModules,
-  Pressable
+  Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video';
@@ -174,7 +174,6 @@ export default class VideoPlayer extends Component {
   }
 
   componentWillUnmount() {
-    // console.log('xxx', 'xxxx')
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout);
       this.controlsTimeout = null;
@@ -189,7 +188,6 @@ export default class VideoPlayer extends Component {
   }
 
   onStartPress() {
-    console.log('onStartPress');
     if (this.props.onStart) {
       this.props.onStart();
     }
@@ -257,7 +255,6 @@ export default class VideoPlayer extends Component {
   };
 
   onPlayPress() {
-    // console.log('onPlayPress');
     // if (this.props.onPlayPress) {
     //   this.props.onPlayPress(!this.state.isPlaying);
     // }
@@ -640,7 +637,6 @@ export default class VideoPlayer extends Component {
   }
 
   render() {
-    // console.log('xxxxxxxxxxxxx')
     return (
       <View onLayout={this.onLayout} style={this.props.customStyles.wrapper}>
         {this.renderContent()}

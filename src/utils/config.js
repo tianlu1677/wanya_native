@@ -24,6 +24,5 @@ export const ANDROID_LOCATION_KEY = '648f6e4ce8f5b83b30e2eabcac060eee';
 export const consumerWsUrl = auth_token => {
   const wsURL = BaseApiUrl.replace('https://', 'wss://');
   const wssUrl = `${wsURL}/cable?auth_token=${auth_token}`;
-  // console.log('wssUrl', wssUrl);
   return wssUrl;
 };

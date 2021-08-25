@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
-import {Header, Bottom, PlainContent} from '@/components/Item/single-list-item';
+import {Header, Bottom, PlainContent, CommentBottom} from '@/components/Item/single-list-item';
 import LocationBar from '@/components/LocationBar';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
@@ -118,7 +118,7 @@ export const TopicLinkContent = props => {
 };
 
 const BaseTopic = props => {
-  const {data, type} = props;
+  const {data, type, bottom} = props;
   const {content_style} = data;
   const navigation = useNavigation();
   const goNodeDetail = () => {
@@ -172,7 +172,11 @@ const BaseTopic = props => {
         </View>
       )}
 
-      <Bottom data={data} type="topic" share={true} />
+      {bottom === 'comment' ? (
+        <CommentBottom data={data} type="topic" />
+      ) : (
+        <Bottom data={data} type="topic" share={true} />
+      )}
     </Pressable>
   );
 };
@@ -182,7 +186,7 @@ const styles = StyleSheet.create({
     padding: 14,
     paddingBottom: 0,
     backgroundColor: '#fff',
-    width: '100%'
+    width: '100%',
   },
   imageMultiWrapper: {
     flexDirection: 'row',

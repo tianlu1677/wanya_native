@@ -25,8 +25,6 @@ const ActionSheetAndroid = props => {
   }, [props.showActionSheet]);
 
   const onPressItem = actionItem => {
-    // console.log('xxxxxxxxxxx');
-
     actionItem.onPress();
     setShowActionSheet(false);
     if (props.changeModal) {
@@ -34,7 +32,6 @@ const ActionSheetAndroid = props => {
     }
   };
 
-  // console.log('showActionSheet1', props)
   return (
     <Modal
       onBackdropPress={() => onPressItem(cancelItem)}

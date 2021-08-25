@@ -20,7 +20,7 @@ const StepMediaPicker = WrapperComponent => {
 
     const uploadImage = async (file, params, cb) => {
       const token = await Helper.getData('auth_token');
-      console.log('file', file)
+      console.log('file', file);
       const options = {
         ...config,
         url: `${baseUrl}/api/v1/assets`,
@@ -35,7 +35,7 @@ const StepMediaPicker = WrapperComponent => {
         headers: {'content-type': 'application/octet-stream', token: token},
       };
 
-      console.log('options', options)
+      console.log('options', options);
       return new Promise(async (resolve, reject) => {
         Upload.startUpload(options)
           .then(uploadId => {
@@ -50,7 +50,7 @@ const StepMediaPicker = WrapperComponent => {
             });
           })
           .catch(err => {
-            console.log('erro', err)
+            console.log('erro', err);
             reject(err);
           });
       });
