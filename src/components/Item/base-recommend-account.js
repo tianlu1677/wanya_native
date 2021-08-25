@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
@@ -16,10 +16,14 @@ const BaseRecommendAccount = ({data}) => {
     navigation.navigate('ChatDetail', {uuid, targetAccount: data});
   };
 
+  const goAccountDetail = () => {
+    navigation.navigate('AccountDetail', {accountId: id});
+  }
+
   return (
     <View style={styles.wrap}>
       <Avator size={45} account={data} />
-      <View style={styles.accountInfo}>
+      <Pressable style={styles.accountInfo} onPress={goAccountDetail}>
         <Text style={styles.nickname}>{nickname}</Text>
         {label_list.length > 0 ? (
           <View style={styles.labelWrap}>
@@ -41,7 +45,7 @@ const BaseRecommendAccount = ({data}) => {
         <Text style={styles.btn} onPress={handleCreateChat}>
           打招呼
         </Text>
-      </View>
+      </Pressable>
     </View>
   );
 };

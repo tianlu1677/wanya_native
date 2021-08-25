@@ -160,11 +160,7 @@ const Recommend = props => {
                 title: '推荐',
                 component: RecommendListPage,
               },
-              {
-                key: 'nodes',
-                title: '圈子',
-                component: NodeListPage,
-              },
+
               ...channels,
             ]}
           />

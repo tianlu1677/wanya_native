@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {View, Text, Pressable, KeyboardAvoidingView, Platform, Keyboard} from 'react-native';
+import {View, Text, Pressable, StatusBar, KeyboardAvoidingView, Platform, Keyboard} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {createConsumer} from '@rails/actioncable';
 import {useSelector, useDispatch} from 'react-redux';
@@ -25,6 +25,7 @@ import DownLoadModal from '@/pages/tabBar/download-modal';
 import {syncDeviceToken} from '@/api/app_device_api';
 import {recordDeviceInfo} from '@/api/settings_api';
 import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
+import SafeAreaPlus from "@/components/SafeAreaPlus"
 
 const Community = props => {
   const {navigation} = props;
@@ -91,13 +92,12 @@ const Community = props => {
   }, []);
 
   return (
-    <KeyboardAvoidingView
-      style={{flex: 1}}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={IsIos ? -BarHeight + RFValue(40) : RFValue(40)}>
-      <Pressable style={{flex: 1}}>
+    <View
+      style={{flex: 1, backgroundColor: 'red'}}
+      >
+      <View style={{flex: 1}}>
         <View style={Cstyles.wrapper}>
-          <View style={{height: BoothHeight}} />
+          <View style={{height: BoothHeight, backgroundColor: 'white'}} />
           <View style={Cstyles.avatorWrap}>
             <CurrentAvator />
           </View>
@@ -133,8 +133,8 @@ const Community = props => {
           <DownLoadModal />
           <CommentInput />
         </View>
-      </Pressable>
-    </KeyboardAvoidingView>
+      </View>
+    </View>
   );
 };
 
