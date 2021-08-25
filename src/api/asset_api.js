@@ -50,12 +50,10 @@ export async function getShareUrl(data = {item_id: '', item_type: ''}) {
 
 // 获取到已分享过的详细信息
 export async function getShareContent(data = {item_type: '', item_id: ''}) {
-  console.log('item_type', data);
   const res = await request({
     url: '/api/v1/share_pages/share',
     method: 'GET',
     data: data,
   });
-  // console.log('res', res);
   return res.data.share_content;
 }

@@ -75,8 +75,6 @@ class App extends Component {
 
     // this.saveToken(); //保存token
 
-    // console.log('scale', scale);
-
     Text.defaultProps = Object.assign({}, Text.defaultProps, {
       allowFontScaling: false,
       adjustsFontSizeToFit: true,

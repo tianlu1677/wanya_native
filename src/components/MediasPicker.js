@@ -55,7 +55,6 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
-            console.log('errr', err);
             reject(err);
           });
       });
@@ -153,7 +152,6 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
-            console.log('error', err);
             reject(err);
           });
       });
@@ -197,7 +195,6 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
-            console.log('error', err);
             reject(err);
           });
       });

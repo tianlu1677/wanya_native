@@ -16,7 +16,6 @@ const FastImgGif = props => {
   const resizeMode = modeList[props.mode || 'cover'];
 
   const onGif = event => {
-    // console.log('xxx', props.gif_url)
     if (props.gif_url) {
       if (source.uri !== props.gif_url) {
         setSource({uri: props.gif_url});

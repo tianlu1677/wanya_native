@@ -216,8 +216,6 @@ const CollapsibleHeader = props => {
       extrapolate: 'clamp',
     });
 
-    // console.log('opacity', titleHeight);
-    // console.log('opacity', opacity);
     return (
       <Animated.View style={[localStyles.header, {opacity: opacity, height: titleHeight}]}>
         {props.renderTopHeader}

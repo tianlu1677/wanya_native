@@ -58,7 +58,6 @@ const TabList = props => {
     }
   }, [contentWidth]);
 
-  console.log(typeof data[0].title === 'string');
   return (
     <>
       <View
