@@ -13,22 +13,19 @@ import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
 import {getInviteCode} from '@/api/account_api';
 import {dispatchShareItem} from '@/redux/actions';
 
-const Message = () => {
-  const UnreadMessageCount = () => {
-    return 23;
-  };
+const Message = ({count = 0}) => {
 
   return (
     <BadgeMessage
       size={'middle'}
-      value={UnreadMessageCount()}
+      value={count}
       containerStyle={[
         styles.badge,
         {
           right:
-            UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
+            count >= 1 && count < 10
               ? -VWValue(-4)
-              : UnreadMessageCount() > 99
+              : count > 99
               ? -VWValue(4) * 1.75
               : -VWValue(10) * 1.45,
         },
@@ -39,9 +36,8 @@ const Message = () => {
 
 const ChatGroups = props => {
   const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentAccount);
   const [currentKey, setCurrentKey] = useState('mail');
-
+  const {currentBaseInfo, currentAccount} = useSelector(state => state.account);
   const onChange = key => {
     setCurrentKey(key);
   };
@@ -102,7 +98,7 @@ const ChatGroups = props => {
                   style={[styles.tabItemText, currentKey === 'chat' && styles.tabItemTextActive]}>
                   聊天
                 </Text>
-                <Message />
+                <Message count={currentBaseInfo.unread_chat_messages_count} />
               </View>
             ),
             component: ChatListPage,
@@ -115,7 +111,7 @@ const ChatGroups = props => {
                   style={[styles.tabItemText, currentKey === 'notify' && styles.tabItemTextActive]}>
                   互动
                 </Text>
-                <Message />
+                <Message count={currentBaseInfo.new_message_count} />
               </View>
             ),
             component: NotifyIndex,

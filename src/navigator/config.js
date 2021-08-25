@@ -134,9 +134,13 @@ const searchRouter = [
 ];
 
 const topicRouter = [
-  {name: 'TopicDetail', component: TopicDetail, options: {headerShown: false}},
-  {name: 'TopicLinkDetail', component: TopicLinkDetail, options: {headerShown: false}},
-  {name: 'AddNode', component: AddNode},
+  {name: 'TopicDetail', component: TopicDetail, options: {headerShown: false, title: '帖子详情页'}},
+  {
+    name: 'TopicLinkDetail',
+    component: TopicLinkDetail,
+    options: {headerShown: false, title: '外链帖子展示页'},
+  },
+  {name: 'AddNode', component: AddNode, options: {title: '添加圈子页面'}},
   {name: 'AddRelated', component: AddRelated, options: {headerShown: false, herderColor: '#fff'}},
   {name: 'AddLink', component: AddLink},
   {name: 'AddHashTag', component: AddHashTag, options: {headerShown: false, herderColor: '#fff'}},
@@ -293,8 +297,8 @@ const authRouter = [
   {name: 'LoginPasswordCode', component: LoginPasswordCode},
   {name: 'LoginPhoneCode', component: LoginPhoneCode},
   {name: 'LoginVerifyCode', component: LoginVerifyCode},
-  {name: 'BindPhone', component: BindPhone},
-  {name: 'WebView', component: WebView},
+  {name: 'BindPhone', component: BindPhone, options: {title: '绑定手机页面'}},
+  {name: 'WebView', component: WebView, options: {title: 'webview'}},
 ];
 
 export const MainRouters = [

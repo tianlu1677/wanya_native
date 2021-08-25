@@ -1,4 +1,5 @@
 import request from './request';
+import {getDeviceInfo} from "@/utils/device_info"
 
 export const getProsettings = async data => {
   const res = await request({
@@ -110,6 +111,17 @@ export async function ahoyTrackEvents(params) {
     url: '/api/v1/records/track_events',
     method: 'POST',
     data: params,
+  });
+  return res.data;
+}
+
+// 记录用户的统计数据
+export async function agentTrackEvents(params) {
+  const device_info = await getDeviceInfo();
+  const res = await request({
+    url: '/api/v1/visit_logs',
+    method: 'POST',
+    data: {...device_info, ...params},
   });
   return res.data;
 }

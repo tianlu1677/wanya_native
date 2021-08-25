@@ -55,6 +55,7 @@ const Community = props => {
 
   const init = () => {
     syncDeviceToken();
+    console.log('deviceInfo', deviceInfo)
     recordDeviceInfo(deviceInfo);
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());

@@ -15,5 +15,14 @@ export function reset(name, params) {
   navigationRef.current?.reset(name, params);
 }
 
+export function getCurrentPage() {
+  return {
+    name: navigationRef.current.getCurrentRoute().name,
+    params: navigationRef.current.getCurrentRoute().params,
+    title: navigationRef.current.getCurrentOptions().title
+  }
+}
+
+
 // https://reactnavigation.org/docs/navigating-without-navigation-prop
 // RootNavigation.js

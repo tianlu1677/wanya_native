@@ -3,6 +3,8 @@ import {Animated, Platform, StatusBar, Dimensions, StyleSheet, View, Text} from 
 import {TabView} from 'react-native-tab-view';
 import TabList from '@/components/TabList';
 import {NAV_BAR_HEIGHT, IsIos, UNSAFE_TOP} from '@/utils/navbar';
+import * as RootNavigation from '@/navigator/root-navigation';
+import Helper from '@/utils/helper';
 
 const tabBarHeight = 45; // tabbar middle高度
 const titleHeight = IsIos ? NAV_BAR_HEIGHT + UNSAFE_TOP : NAV_BAR_HEIGHT; // 标题高度
@@ -137,6 +139,19 @@ const CollapsibleHeader = props => {
       extrapolateRight: 'clamp',
     });
 
+    const tabChange = item => {
+      // console.log('tabchange,', item);
+      props.onKeyChange(item.key, item.title);
+      const data = RootNavigation.getCurrentPage();
+      const recordData = {
+        event: `tab_${item.key}_${data.name}`,
+        name: `tab_${item.title}_${data.title || data.name}`,
+        project_name: 'tab点击',
+        meta: data,
+      };
+      Helper.recordVisit(recordData);
+    };
+
     const viewStyles = {
       top: 0,
       zIndex: 1,
@@ -153,7 +168,7 @@ const CollapsibleHeader = props => {
           align="center"
           bottomLine={true}
           separator={false}
-          tabChange={tab => props.onKeyChange(tab.key)}
+          tabChange={tab => tabChange(tab)}
           data={navigationState.routes}
         />
       </Animated.View>
