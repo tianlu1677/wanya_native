@@ -109,12 +109,13 @@ const DiscoveryIndex = props => {
 
   const loadData = async () => {
     const res = await getAppCardList();
-    setCurrentKey(res.data.list[0].category_name);
+    setCurrentKey(res.data.list[0].category_key);
     setCoveryData(res.data.list);
   };
 
   const RenderCaCategory = () => {
-    const current = coveryData.find(item => item.category_name === currentKey);
+    const current = coveryData.find(item => item.category_key === currentKey);
+    console.log('coveryData', coveryData)
     return <CategoryComponent {...props} category={current} currentKey={currentKey} />;
   };
 
@@ -135,7 +136,7 @@ const DiscoveryIndex = props => {
           separator={false}
           tabData={coveryData.map(category => {
             return {
-              key: category.category_name,
+              key: category.category_key,
               title: category.category_name,
               component: RenderCaCategory,
             };
