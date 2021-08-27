@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {View, Text, Pressable, StatusBar, KeyboardAvoidingView, Platform, Keyboard} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {createConsumer} from '@rails/actioncable';
 import {useSelector, useDispatch} from 'react-redux';
-import * as action from '@/redux/constants';
 import TabView from '@/components/TabView';
 import IconFont from '@/iconfont';
 import {
@@ -15,8 +14,6 @@ import {
 import {RFValue} from '@/utils/response-fontsize';
 import deviceInfo from '@/utils/device_info';
 import {consumerWsUrl} from '@/utils/config';
-import {IsIos, BOTTOM_HEIGHT, BarHeight} from '@/utils/navbar';
-import CommentInput from '@/components/comment-input';
 import MineNodeListPage from '@/pages/tabBar/community/mine-node-list';
 import NodeIndex from '@/pages/nodes/node-index';
 import NearbyNodesListPage from '@/pages/tabBar/community/nearby-nodes';
@@ -25,7 +22,6 @@ import DownLoadModal from '@/pages/tabBar/download-modal';
 import {syncDeviceToken} from '@/api/app_device_api';
 import {recordDeviceInfo} from '@/api/settings_api';
 import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
-import SafeAreaPlus from "@/components/SafeAreaPlus"
 
 const Community = props => {
   const {navigation} = props;
@@ -43,7 +39,6 @@ const Community = props => {
 
   const onChange = key => {
     setCurrentKey(key);
-    dispatch({type: action.CHANGE_COMMENT_VISIBLE, value: false});
   };
 
   const handleCreateNode = () => {
@@ -60,7 +55,7 @@ const Community = props => {
 
   const init = () => {
     syncDeviceToken();
-    console.log('deviceInfo', deviceInfo)
+    console.log('deviceInfo', deviceInfo);
     recordDeviceInfo(deviceInfo);
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
@@ -81,20 +76,10 @@ const Community = props => {
 
   useEffect(() => {
     init();
-
-    Keyboard.addListener('keyboardDidHide', () => {
-      dispatch({type: action.CHANGE_COMMENT_VISIBLE, value: false});
-    });
-
-    return () => {
-      Keyboard.removeListener('keyboardDidHide');
-    };
   }, []);
 
   return (
-    <View
-      style={{flex: 1, backgroundColor: 'red'}}
-      >
+    <View style={{flex: 1, backgroundColor: 'red'}}>
       <View style={{flex: 1}}>
         <View style={Cstyles.wrapper}>
           <View style={{height: BoothHeight, backgroundColor: 'white'}} />
@@ -131,7 +116,6 @@ const Community = props => {
             ]}
           />
           <DownLoadModal />
-          <CommentInput />
         </View>
       </View>
     </View>

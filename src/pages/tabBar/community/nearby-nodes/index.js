@@ -68,6 +68,11 @@ const NearbyNodes = () => {
     setHeaders(res.headers);
   };
 
+  const onRefresh = page => {
+    const {latitude, longitude} = home.location;
+    loadData(page, {latitude, longitude, type: 'nearby'});
+  };
+
   const handleAppStateChange = nextAppState => {
     if (nextAppState === 'active') {
       loadLocation(dispatch);
@@ -80,11 +85,6 @@ const NearbyNodes = () => {
       AppState.removeEventListener('change', handleAppStateChange);
     };
   }, []);
-
-  const onRefresh = page => {
-    const {latitude, longitude} = home.location;
-    loadData(page, {latitude, longitude, type: 'nearby'});
-  };
 
   useEffect(() => {
     if (openAddress) {

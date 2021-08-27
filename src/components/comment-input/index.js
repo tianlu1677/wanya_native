@@ -1,18 +1,41 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Platform,
+  Pressable,
+  KeyboardAvoidingView,
+} from 'react-native';
+import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import {createComment} from '@/api/comment_api';
 
-const CommentInput = () => {
+const CommentInput = ({navigation}) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const {commentContent, commentVisible} = useSelector(state => state.home);
   const isCanComment = value ? true : false;
 
+  // const getValueLength = str => {
+  //   if (!str) {
+  //     return 0;
+  //   }
+  //   return str.replace(/\s+/g, '').length;
+  // };
+
   const onChangeText = text => {
-    // 输入
+    // if (getValueLength(text) >= getValueLength(value)) {
+    //   if (text.substr(-1) === '@') {
+    //     navigation.push('AddMentionAccount', {type: 'comment'});
+    //     const saveComments = {...commentContent, content: text.substr(0, text.length - 1)};
+    //     dispatch({type: action.SAVE_COMMENT_CONTENT, value: saveComments});
+    //   }
+    // }
+
     setValue(text);
   };
 
@@ -42,23 +65,41 @@ const CommentInput = () => {
     }
   };
 
-  return commentVisible ? (
-    <View style={styles.wrapper}>
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        style={styles.input}
-        placeholder="写点评论吧"
-        autoFocus
-        selectionColor="#ff193a"
-      />
-      <Text
-        style={[styles.sendBtn, {color: isCanComment ? '#000' : '#bdbdbd'}]}
-        onPress={isCanComment ? handlePublishComment : null}>
-        发送
-      </Text>
-    </View>
-  ) : null;
+  const onBackdropPress = () => {
+    dispatch({type: action.CHANGE_COMMENT_VISIBLE, value: false});
+  };
+
+  return (
+    <Modal
+      visible={commentVisible}
+      transparent={true}
+      onBackdropPress={onBackdropPress}
+      onModalHide={onBackdropPress}
+      style={{margin: 0}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <View style={styles.content}>
+          <Pressable style={styles.content} onPress={onBackdropPress} />
+          <View style={styles.wrapper}>
+            <TextInput
+              value={value}
+              onChangeText={onChangeText}
+              style={styles.input}
+              placeholder="写点评论吧"
+              autoFocus
+              selectionColor="#ff193a"
+            />
+            <Text
+              style={[styles.sendBtn, {color: isCanComment ? '#000' : '#bdbdbd'}]}
+              onPress={isCanComment ? handlePublishComment : null}>
+              发送
+            </Text>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </Modal>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -67,8 +108,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 15,
     alignItems: 'center',
-    backgroundColor: '#fff',
-    zIndex: 1,
+    backgroundColor: '#fafafa',
+    borderTopColor: '#ebebeb',
+    borderTopWidth: 1,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
   input: {
     flex: 1,

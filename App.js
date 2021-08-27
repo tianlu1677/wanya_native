@@ -31,6 +31,8 @@ import JPush from 'jpush-react-native';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 import JVerification from 'jverification-react-native';
 import {RootSiblingParent} from 'react-native-root-siblings';
+import CommentInput from '@/components/comment-input';
+
 import PostHog from 'posthog-react-native'
 const queryString = require('query-string');
 const codePushOptions = {
@@ -42,7 +44,6 @@ const codePushOptions = {
 };
 // https://github.com/react-native-community/react-native-device-info#installation
 import ImagePreview from '@/components/ImagePreview';
-import {BasePosthogKey} from "@/utils/config"
 
 class App extends Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class App extends Component {
     this.initJverify();
     this.posthogStatis();
     await this.getIndexTabData(); //获取首页频道信息
+    // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
 
@@ -295,6 +297,8 @@ class App extends Component {
               <ImagePreview />
               <ShareMultiModal />
               <ModalPortal />
+
+              <CommentInput navigation={RootNavigation} />
             </PersistGate>
           </Provider>
         </RootSiblingParent>

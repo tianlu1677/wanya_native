@@ -24,11 +24,11 @@ const RecommendListPost = () => {
     return useMemo(() => {
       switch (item.item_type) {
         case 'Topic':
-          return <BaseTopic data={data} onRemove={() => onRemove(index)} />;
+          return <BaseTopic data={data} onRemove={() => onRemove(index)} bottom="comment" />;
         case 'Article':
           return <BaseArticle data={data} />;
         case 'Theory':
-          return <BaseTheory data={data} onRemove={() => onRemove(index)} />;
+          return <BaseTheory data={data} onRemove={() => onRemove(index)} bottom="comment" />;
         default:
           return <View />;
       }

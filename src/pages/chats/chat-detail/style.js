@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     backgroundColor: '#000',
-    borderRadius: 2,
+    borderRadius: 12,
     overflow: 'hidden',
   },
   avatarStyle: {
