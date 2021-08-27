@@ -17,6 +17,7 @@ const CategoryComponent = props => {
   const {
     navigation,
     currentKey,
+    category,
     category: {movement, space, activity, shop_store, shop_brand},
   } = props;
 
@@ -37,7 +38,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {movement.count > 0 ? `${movement.count}个` : '还没有'}
-            {currentKey}技巧
+            {category.category_name}技巧
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -51,7 +52,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {space.count > 0 ? `${space.count}个` : '还没有'}
-            {currentKey}场地
+            {category.category_name}场地
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -65,7 +66,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {activity.count > 0 ? `${activity.count}个` : '还没有'}
-            {currentKey}活动
+            {category.category_name}活动
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -79,7 +80,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {shop_store.count > 0 ? `${shop_store.count}个` : '还没有'}
-            {currentKey}店
+            {category.category_name}店
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -93,7 +94,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {shop_brand.count > 0 ? `${shop_brand.count}个` : '还没有'}
-            {currentKey}品牌
+            {category.category_name}品牌
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
