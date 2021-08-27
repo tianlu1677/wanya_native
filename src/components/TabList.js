@@ -6,7 +6,7 @@ const DeviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
   const scrollRef = useRef(null);
-  const {data, current, align, bottomLine, separator, tabChange, tabStyle} = props;
+  const {data, current, align, bottomLine, separator, tabChange, tabStyle, tabScrollStyle} = props;
   const defaultIndex = data.findIndex(v => v.key === current);
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -68,7 +68,7 @@ const TabList = props => {
           ref={scrollRef}
           overScrollMode="always"
           centerContent={false}
-          style={[styles.tabScroll]}
+          style={[styles.tabScroll, tabScrollStyle]}
           scrollEnabled={scrollEnabled}>
           {data.length > 0 &&
             data.map((item, index) => {

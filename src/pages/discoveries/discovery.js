@@ -115,7 +115,7 @@ const DiscoveryIndex = props => {
 
   const RenderCaCategory = () => {
     const current = coveryData.find(item => item.category_key === currentKey);
-    console.log('coveryData', coveryData)
+    console.log('coveryData', coveryData);
     return <CategoryComponent {...props} category={current} currentKey={currentKey} />;
   };
 

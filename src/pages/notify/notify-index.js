@@ -210,36 +210,33 @@ const styles = StyleSheet.create({
   },
   wrapView: {
     backgroundColor: '#fff',
-    paddingLeft: 14,
   },
   itemView: {
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     flexDirection: 'row',
-    paddingVertical: 17,
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   coverWrapView: {
     marginRight: 12,
   },
   notifyContent: {
     flex: 1,
-    justifyContent: 'center',
   },
   notifyContentTitle: {
-    height: 20,
-    lineHeight: 20,
     fontSize: 15,
-    letterSpacing: 1,
     fontWeight: '500',
   },
   notifyContentDesc: {
-    marginTop: 4,
     color: '#BDBDBD',
-    letterSpacing: 1,
     fontSize: 12,
+    marginTop: 5,
   },
   speator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#ebebeb',
-    marginLeft: 45 + 12,
+    marginLeft: 14 + 45 + 12,
   },
 });
 

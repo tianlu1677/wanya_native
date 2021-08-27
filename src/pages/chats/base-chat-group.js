@@ -152,9 +152,10 @@ const styles = StyleSheet.create({
     top: -3,
   },
   itemView: {
-    flexDirection: 'row',
     paddingHorizontal: 14,
-    paddingVertical: RFValue(12),
+    paddingVertical: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
   },
   coverWrapView: {
@@ -162,11 +163,9 @@ const styles = StyleSheet.create({
   },
   notifyContent: {
     flex: 1,
-    justifyContent: 'center',
   },
   notifyContentTitle: {
     fontSize: 15,
-    letterSpacing: 1,
   },
   notifyContentDesc: {
     flexDirection: 'row',
@@ -176,8 +175,8 @@ const styles = StyleSheet.create({
   },
   notifyContentText: {
     color: '#BDBDBD',
-    letterSpacing: 1,
-    fontSize: 13,
+    fontSize: 12,
+    marginTop: 5,
   },
   timeText: {
     fontSize: 11,

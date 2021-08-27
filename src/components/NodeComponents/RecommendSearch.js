@@ -6,17 +6,19 @@ import {RFValue} from '@/utils/response-fontsize';
 import Search from './Search';
 import CurrentAvator from '@/pages/tabBar/current-avator';
 
-const RecommendSearch = () => {
+const RecommendSearch = props => {
   const navigation = useNavigation();
+  const {border} = props;
+
   const [inputRef, setinputRef] = useState(null);
 
   return (
-    <>
+    <View style={[border && styles.searchWrapper]}>
       <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
       <StatusBar barStyle="dark-content" translucent={false} />
       <Search
         getRef={refs => setinputRef(refs)}
-        style={{backgroundColor: '#fff', paddingRight: 14, paddingBottom: 0}}
+        style={{backgroundColor: '#fff', paddingRight: 14}}
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#f2f3f5'}}
         height={RFValue(36)}
         placeholderTextColor="#aaa"
@@ -32,11 +34,15 @@ const RecommendSearch = () => {
           </View>
         }
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  searchWrapper: {
+    borderBottomColor: '#EBEBEB',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
   avatorWrap: {
     position: 'relative',
     zIndex: 2,

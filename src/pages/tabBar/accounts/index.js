@@ -31,7 +31,7 @@ const TabBarAccounts = () => {
 
   return (
     <View style={Cstyles.wrapper}>
-      <RecommendSearch />
+      <RecommendSearch border={true} />
       <ScrollList
         data={listData.slice(0, 2)}
         loading={loading}

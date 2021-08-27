@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import TabView from '@/components/TabView';
@@ -10,34 +10,20 @@ import NotifyIndex from '@/pages/notify/notify-index';
 import CurrentAvator from '@/pages/tabBar/current-avator';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
-import {getInviteCode} from '@/api/account_api';
 import {dispatchShareItem} from '@/redux/actions';
 
 const Message = ({count = 0}) => {
+  const right =
+    count >= 1 && count < 10 ? -VWValue(9) : count > 99 ? -VWValue(12) * 1.75 : -VWValue(11) * 1.45;
 
-  return (
-    <BadgeMessage
-      size={'middle'}
-      value={count}
-      containerStyle={[
-        styles.badge,
-        {
-          right:
-            count >= 1 && count < 10
-              ? -VWValue(-4)
-              : count > 99
-              ? -VWValue(4) * 1.75
-              : -VWValue(10) * 1.45,
-        },
-      ]}
-    />
-  );
+  return <BadgeMessage size={'middle'} value={count} containerStyle={[styles.badge, {right}]} />;
 };
 
 const ChatGroups = props => {
   const dispatch = useDispatch();
   const [currentKey, setCurrentKey] = useState('mail');
   const {currentBaseInfo, currentAccount} = useSelector(state => state.account);
+
   const onChange = key => {
     setCurrentKey(key);
   };
@@ -52,14 +38,6 @@ const ChatGroups = props => {
     dispatch(dispatchShareItem(shareContent));
   };
 
-  const loadInitInfo = async () => {
-    await getInviteCode();
-  };
-
-  useEffect(() => {
-    loadInitInfo();
-  }, []);
-
   return (
     <View style={Cstyles.wrapper}>
       <View style={{height: BoothHeight, backgroundColor: '#fff'}} />
@@ -67,7 +45,7 @@ const ChatGroups = props => {
         <CurrentAvator />
       </View>
       <Pressable style={Cstyles.createWrap} onPress={handleShare}>
-        <IconFont name="plus" color="#000" size={14} />
+        <IconFont name="jiahaoyuan" size={20} />
       </Pressable>
       <TabView
         currentKey={currentKey}
@@ -76,17 +54,14 @@ const ChatGroups = props => {
         bottomLine={true}
         separator={false}
         tabStyle={{height: RFValue(33) + 10, paddingBottom: 10}}
+        tabScrollStyle={{paddingHorizontal: 15}}
         tabData={[
           {
             key: 'mail',
             title: (
-              <View style={{position: 'relative'}}>
-                <Text
-                  style={[styles.tabItemText, currentKey === 'mail' && styles.tabItemTextActive]}>
-                  通讯录
-                </Text>
-                <Message />
-              </View>
+              <Text style={[styles.tabItemText, currentKey === 'mail' && styles.tabItemTextActive]}>
+                通讯录
+              </Text>
             ),
             component: MailListPage,
           },
@@ -124,20 +99,20 @@ const ChatGroups = props => {
 
 const styles = StyleSheet.create({
   tabItemText: {
-    fontSize: 15,
-    color: '#aaa',
+    fontSize: 16,
+    color: '#93a2a9',
     backgroundColor: '#fff',
     marginHorizontal: 8,
   },
   tabItemTextActive: {
     fontSize: 16,
     color: '#000',
-    fontWeight: '500',
+    fontWeight: '600',
   },
   badge: {
     position: 'absolute',
-    top: -10,
-    zIndex: 1,
+    top: -8,
+    zIndex: 99999,
   },
 });
 

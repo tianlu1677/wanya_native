@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Dimensions, View, Text} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
-import Helper from "@/utils/helper";
+import Helper from '@/utils/helper';
 import * as RootNavigation from '@/navigator/root-navigation';
 import PropTypes from 'prop-types';
 import TabList from './TabList';
@@ -24,10 +24,14 @@ const TabViewIndex = props => {
   };
 
   const tabChange = item => {
-    console.log('tabchange,', item);
     props.onChange(item.key, item.title);
-    const data = RootNavigation.getCurrentPage()
-    Helper.recordVisit({event: `tab_${item.key}_${data.name}`, name: `${item.title}_${data.name}`, project_name: 'tab点击', meta: data})
+    const data = RootNavigation.getCurrentPage();
+    Helper.recordVisit({
+      event: `tab_${item.key}_${data.name}`,
+      name: `${item.title}_${data.name}`,
+      project_name: 'tab点击',
+      meta: data,
+    });
   };
 
   const initScene = () => {
@@ -69,6 +73,7 @@ const TabViewIndex = props => {
             tabChange={tabChange}
             data={tab}
             tabStyle={props.tabStyle}
+            tabScrollStyle={props.tabScrollStyle}
           />
         )}
         navigationState={{index, routes}}

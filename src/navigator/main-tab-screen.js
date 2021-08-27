@@ -15,11 +15,12 @@ import Community from '@/pages/tabBar/community';
 import ChatGroups from '@/pages/tabBar/chat-groups';
 import Recommend from '@/pages/tabBar/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
-
 const indexImage = require('@/assets/tabimages/index-active.png');
 
 const {width} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
+
+const space = Math.ceil((width - RFValue(40) * 5) / 6);
 
 const PublishModal = props => {
   const {navigation, visible, onCancel} = props;
@@ -139,12 +140,10 @@ const MainTabScreen = props => {
           showLabel: false,
           tabStyle: {height: RFValue(40)},
           style: {
-            backgroundColor: 'white',
             borderTopWidth: StyleSheet.hairlineWidth,
             borderTopColor: '#EBEBEB',
             height: RFValue(40),
-            paddingLeft: VWValue(34),
-            paddingRight: VWValue(34),
+            paddingHorizontal: Math.ceil(space),
           },
         }}>
         <Tab.Screen name="Accounts" component={Accounts} />
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     width: RFValue(40),
     textAlign: 'center',
     fontSize: 15,
-    color: '#aaa',
+    color: '#93a2a9',
     fontWeight: '500',
   },
   tabActiveText: {

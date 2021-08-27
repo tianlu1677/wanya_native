@@ -3,6 +3,7 @@ import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
+import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getChatGroupsDetail} from '@/api/chat_api';
 
 const BaseRecommendAccount = ({data}) => {
@@ -18,11 +19,11 @@ const BaseRecommendAccount = ({data}) => {
 
   const goAccountDetail = () => {
     navigation.navigate('AccountDetail', {accountId: id});
-  }
+  };
 
   return (
     <View style={styles.wrap}>
-      <Avator size={45} account={data} />
+      <Avator size={VWValue(45)} account={data} />
       <Pressable style={styles.accountInfo} onPress={goAccountDetail}>
         <Text style={styles.nickname}>{nickname}</Text>
         {label_list.length > 0 ? (
@@ -35,12 +36,16 @@ const BaseRecommendAccount = ({data}) => {
             ))}
           </View>
         ) : null}
+
         <Text style={styles.intro}>{intro || '探索与发现 记录与分享'}</Text>
-        <View style={styles.imageWrap}>
-          {media.map(item => (
-            <FastImg source={{uri: item.url}} style={styles.image} />
-          ))}
-        </View>
+
+        {media.length > 0 ? (
+          <View style={styles.imageWrap}>
+            {media.map(item => (
+              <FastImg source={{uri: item.url}} style={styles.image} />
+            ))}
+          </View>
+        ) : null}
 
         <Text style={styles.btn} onPress={handleCreateChat}>
           打招呼
@@ -53,7 +58,8 @@ const BaseRecommendAccount = ({data}) => {
 const styles = StyleSheet.create({
   wrap: {
     paddingHorizontal: 14,
-    paddingVertical: 14,
+    paddingTop: RFValue(14),
+    paddingBottom: RFValue(11),
     flexDirection: 'row',
     backgroundColor: '#fff',
   },
@@ -63,6 +69,7 @@ const styles = StyleSheet.create({
   },
   nickname: {
     fontSize: 15,
+    marginTop: 3,
   },
   labelWrap: {
     flexDirection: 'row',

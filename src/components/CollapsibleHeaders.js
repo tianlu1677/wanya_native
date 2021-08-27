@@ -140,7 +140,6 @@ const CollapsibleHeader = props => {
     });
 
     const tabChange = item => {
-      // console.log('tabchange,', item);
       props.onKeyChange(item.key, item.title);
       const data = RootNavigation.getCurrentPage();
       const recordData = {
