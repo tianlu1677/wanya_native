@@ -31,7 +31,7 @@ import JPush from 'jpush-react-native';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 import JVerification from 'jverification-react-native';
 import {RootSiblingParent} from 'react-native-root-siblings';
-
+import PostHog from 'posthog-react-native'
 const queryString = require('query-string');
 const codePushOptions = {
   // 设置检查更新的频率
@@ -42,6 +42,7 @@ const codePushOptions = {
 };
 // https://github.com/react-native-community/react-native-device-info#installation
 import ImagePreview from '@/components/ImagePreview';
+import {BasePosthogKey} from "@/utils/config"
 
 class App extends Component {
   constructor(props) {
@@ -68,8 +69,8 @@ class App extends Component {
     this.loadNetworkInfo();
     this.jpush_notice();
     this.initJverify();
+    this.posthogStatis();
     await this.getIndexTabData(); //获取首页频道信息
-    // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
 
@@ -230,6 +231,53 @@ class App extends Component {
     store.dispatch({type: action.CHANGE_SHARE_STATUS, value: true});
     store.dispatch({type: action.CHANGE_SHARE_NEARBY_STATUS, value: true});
   };
+
+  // 统计
+  posthogStatis = async () => {
+    await PostHog.setup(BasePosthogKey, {
+      // PostHog API host (https://app.posthog.com by default)
+      host: 'https://posthog.vanyah.cn',
+
+      // Record certain application events automatically! (false by default)
+      captureApplicationLifecycleEvents: true,
+
+      // Capture deep links as part of the screen call. (false by default)
+      captureDeepLinks: true,
+
+      // Record screen views automatically! (false by default)
+      recordScreenViews: true,
+
+      // Max delay before flushing the queue (30 seconds by default)
+      flushInterval: 30,
+
+      // Maximum number of events to keep in queue before flushing (20 by default)
+      flushAt: 20,
+
+      // Used only for Android
+      android: {
+        // Enable or disable collection of ANDROID_ID (true by default)
+        collectDeviceId: true,
+      },
+
+      // Used only for iOS
+      iOS: {
+        // Automatically capture in-app purchases from the App Store (false by default)
+        captureInAppPurchases: false,
+
+        // Capture push notifications (false by default)
+        capturePushNotifications: true,
+
+        // The maximum number of items to queue before starting to drop old ones. (1000 by default)
+        maxQueueSize: 100,
+
+        // Record bluetooth information. (false by default)
+        shouldUseBluetooth: false,
+
+        // Use location services. Will ask for permissions. (false by default)
+        shouldUseLocationServices: false
+      }
+    })
+  }
 
   render() {
     return (

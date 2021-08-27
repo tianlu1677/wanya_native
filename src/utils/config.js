@@ -17,6 +17,10 @@ const BaseProSentryAndroidURL = 'http://a15165bfa1514bcfbfc94e2ad5b9b956@sentry.
 const BaseProSentryURL = Platform.OS === 'ios' ? BaseProSentryIOSURL : BaseProSentryAndroidURL;
 export const BaseSentryURL = __DEV__ ? BaseDevSentryURL : BaseProSentryURL;
 
+// 统计的key
+const BASE_DEV_POSTHOG_KEY = 'phc_7oa7WciZKsaihLOfxD9TfxUnp3naK6E3YOkp277Ogx4';
+const BASE_PRO_POSTHOG_KEY = 'phc_7oa7WciZKsaihLOfxD9TfxUnp3naK6E3YOkp277Ogx4';
+export const BasePosthogKey = __DEV__ ? BASE_DEV_POSTHOG_KEY : BASE_PRO_POSTHOG_KEY;
 // 高德定位的key
 export const IOS_LOCATION_KEY = '6da6626cf6588fb6e3052deff1e8d4e9';
 export const ANDROID_LOCATION_KEY = '648f6e4ce8f5b83b30e2eabcac060eee';
