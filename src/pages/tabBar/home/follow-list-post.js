@@ -68,11 +68,11 @@ const FollowListPost = () => {
     return useMemo(() => {
       switch (item.item_type) {
         case 'Topic':
-          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} bottom="comment" />;
         case 'Article':
           return <BaseArticle data={item.item} />;
         case 'Theory':
-          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} bottom="comment" />;
         default:
           return <View />;
       }

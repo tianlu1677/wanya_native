@@ -41,7 +41,7 @@ const BaseRecommendAccount = ({data}) => {
 
         {media.length > 0 ? (
           <View style={styles.imageWrap}>
-            {media.map(item => (
+            {media.slice(0, 4).map(item => (
               <FastImg source={{uri: item.url}} style={styles.image} />
             ))}
           </View>
