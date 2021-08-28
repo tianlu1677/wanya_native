@@ -1,10 +1,13 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getChatGroupsDetail} from '@/api/chat_api';
+const {width} = Dimensions.get('window');
+
+const imageWidth = (width - 14 * 2 - VWValue(45) - 12 - 4 * 4) / 5;
 
 const BaseRecommendAccount = ({data}) => {
   const navigation = useNavigation();
@@ -41,8 +44,8 @@ const BaseRecommendAccount = ({data}) => {
 
         {media.length > 0 ? (
           <View style={styles.imageWrap}>
-            {media.slice(0, 4).map(item => (
-              <FastImg source={{uri: item.url}} style={styles.image} />
+            {media.slice(0, 5).map(item => (
+              <FastImg source={{uri: item.url}} style={styles.image} mode="cover" />
             ))}
           </View>
         ) : null}
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
   },
   nickname: {
     fontSize: 15,
-    marginTop: 3,
+    marginTop: 5,
   },
   labelWrap: {
     flexDirection: 'row',
@@ -100,8 +103,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   image: {
-    width: 56,
-    height: 56,
+    width: imageWidth,
+    height: imageWidth,
     marginRight: 4,
   },
   btn: {

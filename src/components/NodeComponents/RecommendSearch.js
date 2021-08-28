@@ -8,7 +8,7 @@ import CurrentAvator from '@/pages/tabBar/current-avator';
 
 const RecommendSearch = props => {
   const navigation = useNavigation();
-  const {border} = props;
+  const {border, style} = props;
 
   const [inputRef, setinputRef] = useState(null);
 
@@ -18,7 +18,7 @@ const RecommendSearch = props => {
       <StatusBar barStyle="dark-content" translucent={false} />
       <Search
         getRef={refs => setinputRef(refs)}
-        style={{backgroundColor: '#fff', paddingRight: 14}}
+        style={{...style, backgroundColor: '#fff', paddingRight: 14}}
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#f2f3f5'}}
         height={RFValue(36)}
         placeholderTextColor="#aaa"

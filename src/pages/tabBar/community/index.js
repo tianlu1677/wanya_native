@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {createConsumer} from '@rails/actioncable';
 import {useSelector, useDispatch} from 'react-redux';
@@ -100,17 +100,35 @@ const Community = props => {
             tabData={[
               {
                 key: 'mine',
-                title: '我的',
+                title: (
+                  <Text
+                    style={[styles.tabItemText, currentKey === 'mine' && styles.tabItemTextActive]}>
+                    我的
+                  </Text>
+                ),
                 component: MineNodeListPage,
               },
               {
                 key: 'square',
-                title: '广场',
+                title: (
+                  <Text
+                    style={[
+                      styles.tabItemText,
+                      currentKey === 'square' && styles.tabItemTextActive,
+                    ]}>
+                    广场
+                  </Text>
+                ),
                 component: SquareListPage,
               },
               {
                 key: 'city',
-                title: nodeTabTitle,
+                title: (
+                  <Text
+                    style={[styles.tabItemText, currentKey === 'city' && styles.tabItemTextActive]}>
+                    {nodeTabTitle}
+                  </Text>
+                ),
                 component: NearbyNodesListPage,
               },
             ]}
@@ -121,5 +139,18 @@ const Community = props => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  tabItemText: {
+    fontSize: 16,
+    color: '#93a2a9',
+    backgroundColor: '#fff',
+  },
+  tabItemTextActive: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: '600',
+  },
+});
 
 export default Community;

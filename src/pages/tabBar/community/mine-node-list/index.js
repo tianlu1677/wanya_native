@@ -85,11 +85,25 @@ const MineNodeList = () => {
     return useMemo(() => {
       switch (item.item_type) {
         case 'Topic':
-          return <BaseTopic data={data} onRemove={() => onRemove(index)} bottom="comment" />;
+          return (
+            <BaseTopic
+              data={data}
+              onRemove={() => onRemove(index)}
+              bottom="comment"
+              type="recommend-node"
+            />
+          );
         case 'Article':
-          return <BaseArticle data={data} bottom="comment" />;
+          return <BaseArticle data={data} bottom="comment" type="recommend-node" />;
         case 'Theory':
-          return <BaseTheory data={data} onRemove={() => onRemove(index)} bottom="comment" />;
+          return (
+            <BaseTheory
+              data={data}
+              onRemove={() => onRemove(index)}
+              bottom="comment"
+              type="recommend-node"
+            />
+          );
         default:
           return <View />;
       }

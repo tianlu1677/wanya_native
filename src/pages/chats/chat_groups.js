@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   speator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#ebebeb',
-    marginLeft: 45 + 12,
+    marginLeft: 14 + 45 + 12,
   },
 });
 

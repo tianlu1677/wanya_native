@@ -11,7 +11,7 @@ export const JoinBtn = props => {
         JStyles.btn,
         style,
         join ? joinedStyle || JStyles.joined : joinStyle || JStyles.join,
-        {borderRadius: borderRadius ? 14 : 1},
+        {borderRadius: borderRadius ? 16 : 1},
       ]}
       onPress={props.onPress}>
       {props.text}

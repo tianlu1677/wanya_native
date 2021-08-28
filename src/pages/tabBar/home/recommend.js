@@ -134,7 +134,7 @@ const Recommend = props => {
 
   return (
     <View style={{flex: 1, position: 'relative'}}>
-      <RecommendSearch />
+      <RecommendSearch style={{paddingBottom: 0}} />
       {uploadStatus ? (
         <View style={[styles.uploadWrap]}>
           <UploadTopic />
@@ -160,7 +160,6 @@ const Recommend = props => {
                 title: '推荐',
                 component: RecommendListPage,
               },
-
               ...channels,
             ]}
           />

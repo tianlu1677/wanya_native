@@ -20,7 +20,7 @@ const indexImage = require('@/assets/tabimages/index-active.png');
 const {width} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
-const space = Math.ceil((width - RFValue(40) * 5) / 6);
+const space = Math.ceil((width - RFValue(40) * 5) / 6) + 12;
 
 const PublishModal = props => {
   const {navigation, visible, onCancel} = props;
@@ -79,7 +79,7 @@ const MainTabScreen = props => {
       case 'Discovery':
         return <Text style={focused ? styles.tabActiveText : styles.tabText}>发现</Text>;
       case 'Recommend':
-        const style = {width: (500 * RFValue(27)) / 351, height: RFValue(27)};
+        const style = {width: (500 * RFValue(24)) / 351, height: RFValue(24)};
         return focused ? (
           <FastImg source={indexImage} style={style} />
         ) : (

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -67,7 +67,14 @@ const CommentInput = ({navigation}) => {
 
   const onBackdropPress = () => {
     dispatch({type: action.CHANGE_COMMENT_VISIBLE, value: false});
+    dispatch({type: action.SAVE_COMMENT_CONTENT, value: {content: ''}});
   };
+
+  useEffect(() => {
+    if (commentVisible) {
+      setValue('');
+    }
+  }, [commentVisible]);
 
   return (
     <Modal

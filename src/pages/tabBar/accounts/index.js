@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import BaseRecommendAccount from '@/components/Item/base-recommend-account';
 import {RecommendSearch} from '@/components/NodeComponents';
+import {VWValue} from '@/utils/response-fontsize';
 import {getRecommendAccounts} from '@/api/home_api';
 import {Cstyles} from '@/pages/tabBar/style';
 
@@ -11,8 +12,8 @@ const TabBarAccounts = () => {
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const RenderItem = ({item}) => {
-    return <BaseRecommendAccount data={item} key={item.id} />;
+  const RenderItem = ({item, index}) => {
+    return <BaseRecommendAccount dat23a={item} key={index} />;
   };
 
   const loadData = async (page = 1, params) => {
@@ -47,9 +48,12 @@ const TabBarAccounts = () => {
 
 const styles = StyleSheet.create({
   speator: {
-    backgroundColor: '#EBEBEB',
-    height: StyleSheet.hairlineWidth,
-    marginLeft: 66,
+    // backgroundColor: '#EBEBEB',
+    backgroundColor: '#f00',
+    height: 9,
+    // height: StyleSheet.hairlineWidth,
+    // marginLeft: 66,
+    marginLeft: 14 + VWValue(45) + 12,
   },
 });
 

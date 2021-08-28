@@ -116,7 +116,6 @@ const DiscoveryIndex = props => {
 
   const RenderCaCategory = () => {
     const current = coveryData.find(item => item.category_key === currentKey);
-    console.log('coveryData', coveryData);
     return <CategoryComponent {...props} category={current} currentKey={currentKey} />;
   };
 
@@ -126,7 +125,7 @@ const DiscoveryIndex = props => {
 
   return (
     <View style={styles.wrapper}>
-      <RecommendSearch />
+      <RecommendSearch style={{paddingBottom: 0}} />
       {coveryData.length > 0 ? (
         <TabView
           currentKey={currentKey}

@@ -33,7 +33,7 @@ import JVerification from 'jverification-react-native';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import CommentInput from '@/components/comment-input';
 
-import PostHog from 'posthog-react-native'
+import PostHog from 'posthog-react-native';
 const queryString = require('query-string');
 const codePushOptions = {
   // 设置检查更新的频率
@@ -276,10 +276,10 @@ class App extends Component {
         shouldUseBluetooth: false,
 
         // Use location services. Will ask for permissions. (false by default)
-        shouldUseLocationServices: false
-      }
-    })
-  }
+        shouldUseLocationServices: false,
+      },
+    });
+  };
 
   render() {
     return (
