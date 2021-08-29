@@ -27,8 +27,10 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
 
   const goChatDetail = () => {
     RootNavigation.push('ChatDetail', {uuid, targetAccount: send_message_account});
-    unread_message[currentAccount.id] = 0;
-    readSingleChatGroupMessage({uuid: uuid});
+    setTimeout(() => {
+      unread_message[currentAccount.id] = 0;
+      readSingleChatGroupMessage({uuid: uuid});
+    }, 500);
   };
 
   const _matchContentString = (textContent, views) => {

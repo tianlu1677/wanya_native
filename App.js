@@ -27,6 +27,7 @@ import {init, Geolocation} from 'react-native-amap-geolocation';
 import * as RootNavigation from '@/navigator/root-navigation';
 import * as action from '@/redux/constants';
 import {getChannels, getChannelPosts} from '@/api/home_api';
+import { BasePosthogKey} from "@/utils/config"
 import JPush from 'jpush-react-native';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 import JVerification from 'jverification-react-native';

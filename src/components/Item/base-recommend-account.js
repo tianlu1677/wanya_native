@@ -48,7 +48,7 @@ const BaseRecommendAccount = ({data}) => {
               <FastImg source={{uri: item.url}} style={styles.image} mode="cover" />
             ))}
           </View>
-        ) : null}
+        ) : <View/>}
 
         <Text style={styles.btn} onPress={handleCreateChat}>
           打招呼
