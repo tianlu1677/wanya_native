@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector, useDispatch} from 'react-redux';
@@ -81,7 +81,7 @@ const MainTabScreen = props => {
       case 'Recommend':
         const style = {width: (500 * RFValue(24)) / 351, height: RFValue(24)};
         return focused ? (
-          <FastImg source={indexImage} style={style} />
+          <Image source={indexImage} style={style} />
         ) : (
           <Text style={styles.tabText}>顽鸦</Text>
         );
@@ -138,12 +138,14 @@ const MainTabScreen = props => {
         tabBarOptions={{
           safeAreaInsets: {...insets, bottom: insets.bottom + BOTTOM_HEIGHT},
           showLabel: false,
-          // tabStyle: {height: RFValue(40)},
+          tabStyle: {height: RFValue(45)},
           style: {
             borderTopWidth: StyleSheet.hairlineWidth,
             borderTopColor: '#EBEBEB',
-            // height: RFValue(40),
-            paddingHorizontal: Math.ceil(space),
+            height: RFValue(45),
+            paddingLeft: 30,
+            paddingRight: 30
+            // paddingHorizontal: Math.ceil(space),
           },
         }}>
         <Tab.Screen name="Accounts" component={Accounts} />

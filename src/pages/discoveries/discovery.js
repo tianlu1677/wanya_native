@@ -26,7 +26,7 @@ const CategoryComponent = props => {
       type: action.GET_LOCATION,
       value: {...location, chooseCity: location.positionCity || '全国'},
     });
-    navigation.navigate(name, {category: currentKey});
+    navigation.navigate(name, {category: category.category_name});
   };
 
   return (

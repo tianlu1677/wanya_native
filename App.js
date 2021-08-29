@@ -65,6 +65,18 @@ class App extends Component {
       scale = 1.08;
     }
 
+    Text.defaultProps = Object.assign({}, Text.defaultProps, {
+      allowFontScaling: false,
+      adjustsFontSizeToFit: true,
+      minimumFontScale: scale,
+    });
+    Text.defaultProps.sytle = {color: 'black'};
+    TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
+      defaultProps: false,
+      allowFontScaling: false,
+      textBreakStrategy: 'simple',
+    });
+
     this.loadSplashImg();
     this.loadSettings();
     this.checkPermission();
@@ -79,17 +91,7 @@ class App extends Component {
 
     // this.saveToken(); //保存token
 
-    Text.defaultProps = Object.assign({}, Text.defaultProps, {
-      allowFontScaling: false,
-      adjustsFontSizeToFit: true,
-      minimumFontScale: scale,
-    });
-    Text.defaultProps.sytle = {color: 'black'};
-    TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
-      defaultProps: false,
-      allowFontScaling: false,
-      textBreakStrategy: 'simple',
-    });
+
   }
 
   loadSplashImg = () => {

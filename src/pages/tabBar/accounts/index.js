@@ -49,8 +49,10 @@ const TabBarAccounts = () => {
 const styles = StyleSheet.create({
   speator: {
     // backgroundColor: '#EBEBEB',
-    backgroundColor: '#f00',
-    height: 9,
+    // backgroundColor: '#f00',
+    height: 1,
+    // color: 'red',
+    // borderColor: 'red',
     // height: StyleSheet.hairlineWidth,
     // marginLeft: 66,
     marginLeft: 14 + VWValue(45) + 12,

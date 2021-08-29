@@ -116,7 +116,7 @@ const bstyles = StyleSheet.create({
     // paddingBottom: 18,
     // paddingTop: 15,
     alignItems: 'center',
-    height: 50,
+    height: 70,
   },
   commentText: {
     flex: 1,

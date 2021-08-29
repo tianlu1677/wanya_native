@@ -79,63 +79,66 @@ const Community = props => {
   }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: 'red'}}>
-      <View style={{flex: 1}}>
-        <View style={Cstyles.wrapper}>
-          <View style={{height: BoothHeight, backgroundColor: 'white'}} />
-          <View style={Cstyles.avatorWrap}>
-            <CurrentAvator />
-          </View>
-          <Pressable style={Cstyles.createWrap} onPress={handleCreateNode}>
-            <IconFont name="plus" color="#000" size={14} />
-            <Text style={Cstyles.createText}>创建</Text>
-          </Pressable>
-          <TabView
-            currentKey={currentKey}
-            onChange={onChange}
-            align="center"
-            bottomLine={true}
-            separator={false}
-            tabStyle={{height: RFValue(33) + 10, paddingBottom: 10}}
-            tabData={[
-              {
-                key: 'mine',
-                title: (
-                  <Text
-                    style={[styles.tabItemText, currentKey === 'mine' && styles.tabItemTextActive]}>
-                    我的
-                  </Text>
-                ),
-                component: MineNodeListPage,
-              },
-              {
-                key: 'square',
-                title: (
-                  <Text
-                    style={[
-                      styles.tabItemText,
-                      currentKey === 'square' && styles.tabItemTextActive,
-                    ]}>
-                    广场
-                  </Text>
-                ),
-                component: SquareListPage,
-              },
-              {
-                key: 'city',
-                title: (
-                  <Text
-                    style={[styles.tabItemText, currentKey === 'city' && styles.tabItemTextActive]}>
-                    {nodeTabTitle}
-                  </Text>
-                ),
-                component: NearbyNodesListPage,
-              },
-            ]}
-          />
-          <DownLoadModal />
-        </View>
+    <View style={Cstyles.wrapper}>
+      <View style={{height: BoothHeight, backgroundColor: 'white'}} />
+      <View style={Cstyles.avatorWrap}>
+        <CurrentAvator />
       </View>
+      <Pressable style={Cstyles.createWrap} onPress={handleCreateNode}>
+        <IconFont name="plus" color="#000" size={14} />
+        <Text style={Cstyles.createText}>创建</Text>
+      </Pressable>
+      <TabView
+        currentKey={currentKey}
+        onChange={onChange}
+        align="center"
+        bottomLine={true}
+        separator={false}
+        tabStyle={{height: RFValue(33) + 10, paddingBottom: 10}}
+        tabScrollStyle={{paddingHorizontal: 15}}
+        tabData={[
+          {
+            key: 'mine',
+            title: (
+              <View style={{position: 'relative'}}>
+                <Text
+                  style={[styles.tabItemText, currentKey === 'mine' && styles.tabItemTextActive]}>
+                  我的
+                </Text>
+              </View>
+            ),
+            component: MineNodeListPage,
+          },
+          {
+            key: 'square',
+            title: (
+              <View style={{position: 'relative'}}>
+              <Text
+                style={[
+                  styles.tabItemText,
+                  currentKey === 'square' && styles.tabItemTextActive,
+                ]}>
+                广场
+              </Text>
+              </View>
+            ),
+            component: SquareListPage,
+          },
+          {
+            key: 'city',
+            title: (
+              <View style={{position: 'relative'}}>
+              <Text
+                style={[styles.tabItemText, currentKey === 'city' && styles.tabItemTextActive]}>
+                {nodeTabTitle}
+              </Text>
+              </View>
+            ),
+            component: NearbyNodesListPage,
+          },
+        ]}
+      />
+      <DownLoadModal />
     </View>
   );
 };
@@ -145,6 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#93a2a9',
     backgroundColor: '#fff',
+    marginHorizontal: 8,
   },
   tabItemTextActive: {
     fontSize: 16,

@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
   },
   messageContent: {
     flexDirection: 'row',
+    marginBottom: 20
   },
   subEmojiStyle: {
     width: 18,
