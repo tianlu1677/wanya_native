@@ -48,7 +48,9 @@ const BaseRecommendAccount = ({data}) => {
               <FastImg source={{uri: item.url}} style={styles.image} mode="cover" />
             ))}
           </View>
-        ) : <View/>}
+        ) : (
+          <View />
+        )}
 
         <Text style={styles.btn} onPress={handleCreateChat}>
           打招呼
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
   wrap: {
     paddingHorizontal: 14,
     paddingTop: RFValue(14),
-    // paddingBottom: RFValue(11),
+    paddingBottom: RFValue(11),
     flexDirection: 'row',
     backgroundColor: '#fff',
   },
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
   imageWrap: {
     flexDirection: 'row',
     marginTop: 10,
-    paddingBottom: RFValue(11)
+    // paddingBottom: RFValue(11),
   },
   image: {
     width: imageWidth,

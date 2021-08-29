@@ -34,7 +34,7 @@ const TabBarAccounts = () => {
     <View style={Cstyles.wrapper}>
       <RecommendSearch border={true} />
       <ScrollList
-        data={listData.slice(0, 2)}
+        data={listData}
         loading={loading}
         onRefresh={loadData}
         headers={headers}
@@ -48,13 +48,8 @@ const TabBarAccounts = () => {
 
 const styles = StyleSheet.create({
   speator: {
-    // backgroundColor: '#EBEBEB',
-    // backgroundColor: '#f00',
+    backgroundColor: '#EBEBEB',
     height: 1,
-    // color: 'red',
-    // borderColor: 'red',
-    // height: StyleSheet.hairlineWidth,
-    // marginLeft: 66,
     marginLeft: 14 + VWValue(45) + 12,
   },
 });
