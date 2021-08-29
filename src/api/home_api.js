@@ -108,10 +108,11 @@ export const getFollowedNodePosts = async (params = {}) => {
 };
 
 // 向用户推荐关注的人
-export const getRecommendAccounts = async () => {
+export const getRecommendAccounts = async params => {
   const res = await request({
     url: '/api/v1/recommend/recommend_accounts',
     method: 'GET',
+    params,
   });
   return res;
 };

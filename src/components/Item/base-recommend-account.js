@@ -42,11 +42,10 @@ const BaseRecommendAccount = ({data}) => {
 
         <Text style={styles.intro}>{intro || '探索与发现 记录与分享'}</Text>
 
-        {/*<Text>{JSON.stringify(media)}</Text>*/}
         {media.length > 0 ? (
           <View style={styles.imageWrap}>
-            {media.slice(0, 5).map(item => (
-              <FastImg source={{uri: item.url}} style={styles.image} mode="cover" />
+            {media.slice(0, 5).map((item, index) => (
+              <FastImg source={{uri: item.url}} key={index} style={styles.image} mode="cover" />
             ))}
           </View>
         ) : (
@@ -104,7 +103,6 @@ const styles = StyleSheet.create({
   imageWrap: {
     flexDirection: 'row',
     marginTop: 10,
-    // paddingBottom: RFValue(11),
   },
   image: {
     width: imageWidth,
