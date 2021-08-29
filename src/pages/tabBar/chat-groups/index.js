@@ -21,7 +21,7 @@ const Message = ({count = 0}) => {
 
 const ChatGroups = props => {
   const dispatch = useDispatch();
-  const [currentKey, setCurrentKey] = useState('mail');
+  const [currentKey, setCurrentKey] = useState('chat');
   const {currentBaseInfo, currentAccount} = useSelector(state => state.account);
 
   const onChange = key => {
