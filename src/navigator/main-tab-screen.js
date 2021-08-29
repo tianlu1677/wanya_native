@@ -100,7 +100,7 @@ const MainTabScreen = props => {
     <>
       <PublishModal {...props} visible={visible} onCancel={() => setVisible(false)} />
       <Tab.Navigator
-        initialRouteName="Community"
+        initialRouteName="Recommend"
         screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
             return route.name === 'ChatGroups' ? (
