@@ -1,26 +1,16 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import {createConsumer} from '@rails/actioncable';
 import {useSelector, useDispatch} from 'react-redux';
 import TabView from '@/components/TabView';
 import IconFont from '@/iconfont';
-import {
-  dispatchFetchCategoryList,
-  dispatchFetchLabelList,
-  dispatchBaseCurrentAccount,
-  dispatchCurrentAccount,
-} from '@/redux/actions';
+import {dispatchBaseCurrentAccount} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
-import deviceInfo from '@/utils/device_info';
-import {consumerWsUrl} from '@/utils/config';
 import MineNodeListPage from '@/pages/tabBar/community/mine-node-list';
 import NodeIndex from '@/pages/nodes/node-index';
 import NearbyNodesListPage from '@/pages/tabBar/community/nearby-nodes';
 import CurrentAvator from '@/pages/tabBar/current-avator';
 import DownLoadModal from '@/pages/tabBar/download-modal';
-import {syncDeviceToken} from '@/api/app_device_api';
-import {recordDeviceInfo} from '@/api/settings_api';
 import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
 
 const Community = props => {
@@ -29,7 +19,6 @@ const Community = props => {
 
   const {
     home: {location},
-    login: {auth_token},
   } = useSelector(state => state);
 
   const [currentKey, setCurrentKey] = useState('square');
@@ -47,36 +36,11 @@ const Community = props => {
 
   const SquareListPage = () => <NodeIndex showAll={true} />;
 
-  const onlineChannel = useMemo(() => {
-    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create({
-      channel: 'OnlineChannel',
-    });
-  }, []);
-
-  const init = () => {
-    syncDeviceToken();
-    console.log('deviceInfo', deviceInfo);
-    recordDeviceInfo(deviceInfo);
-    dispatch(dispatchCurrentAccount());
-    dispatch(dispatchFetchCategoryList());
-    dispatch(dispatchFetchLabelList());
-    dispatch(dispatchFetchCategoryList());
-
-    // 同步用户是否在线
-    setInterval(() => {
-      onlineChannel.perform('appear');
-    }, 5000);
-  };
-
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
-
-  useEffect(() => {
-    init();
-  }, []);
 
   return (
     <View style={Cstyles.wrapper}>
@@ -113,13 +77,10 @@ const Community = props => {
             key: 'square',
             title: (
               <View style={{position: 'relative'}}>
-              <Text
-                style={[
-                  styles.tabItemText,
-                  currentKey === 'square' && styles.tabItemTextActive,
-                ]}>
-                广场
-              </Text>
+                <Text
+                  style={[styles.tabItemText, currentKey === 'square' && styles.tabItemTextActive]}>
+                  广场
+                </Text>
               </View>
             ),
             component: SquareListPage,
@@ -128,10 +89,10 @@ const Community = props => {
             key: 'city',
             title: (
               <View style={{position: 'relative'}}>
-              <Text
-                style={[styles.tabItemText, currentKey === 'city' && styles.tabItemTextActive]}>
-                {nodeTabTitle}
-              </Text>
+                <Text
+                  style={[styles.tabItemText, currentKey === 'city' && styles.tabItemTextActive]}>
+                  {nodeTabTitle}
+                </Text>
               </View>
             ),
             component: NearbyNodesListPage,
