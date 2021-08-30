@@ -20,8 +20,6 @@ const indexImage = require('@/assets/tabimages/index-active.png');
 const {width} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
-const space = Math.ceil((width - RFValue(40) * 5) / 6) + 12;
-
 const PublishModal = props => {
   const {navigation, visible, onCancel} = props;
   const imgStyle = {width: '100%', height: ((width - 60) * 260) / 1260};
@@ -122,14 +120,14 @@ const MainTabScreen = props => {
                 />
                 {RenderImage(route.name, focused)}
                 {focused && (
-                  <View style={[styles.activeLine, {left: RFValue(40) / 2 - VWValue(12)}]} />
+                  <View style={[styles.activeLine, {left: RFValue(50) / 2 - VWValue(12)}]} />
                 )}
               </View>
             ) : (
               <View style={{position: 'relative'}}>
                 {RenderImage(route.name, focused)}
                 {focused && route.name !== 'Recommend' && (
-                  <View style={[styles.activeLine, {left: RFValue(40) / 2 - VWValue(12)}]} />
+                  <View style={[styles.activeLine, {left: RFValue(50) / 2 - VWValue(12)}]} />
                 )}
               </View>
             );
@@ -143,9 +141,6 @@ const MainTabScreen = props => {
             borderTopWidth: StyleSheet.hairlineWidth,
             borderTopColor: '#EBEBEB',
             height: RFValue(45),
-            paddingLeft: 30,
-            paddingRight: 30
-            // paddingHorizontal: Math.ceil(space),
           },
         }}>
         <Tab.Screen name="Accounts" component={Accounts} />
@@ -195,14 +190,14 @@ const styles = StyleSheet.create({
     paddingBottom: RFValue(30),
   },
   tabText: {
-    width: RFValue(40),
+    width: RFValue(50),
     textAlign: 'center',
     fontSize: 15,
     color: '#93a2a9',
     fontWeight: '500',
   },
   tabActiveText: {
-    width: RFValue(40),
+    width: RFValue(50),
     textAlign: 'center',
     fontSize: 16,
     color: '#000',
