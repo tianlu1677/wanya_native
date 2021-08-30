@@ -8,6 +8,7 @@ import {JoinButton} from '@/components/NodeComponents';
 import {followItem, unfollowItem} from '@/api/mine_api';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
+import {ScaleDistance} from '@/src/utils';
 
 // add-node  创建帖子圈子选择
 // mine-node 全部圈子 我创建
@@ -61,7 +62,7 @@ const BaseNode = props => {
           <Text style={styles.dataName}>{data.name}</Text>
           <Text style={styles.dataDesc}>
             {data.topics_count}篇帖子 · {data.accounts_count}位{data.nickname || '圈友'}
-            {type === 'nearby' && data.distance > 0 ? ` · 距你${data.distance}m` : ''}
+            {type === 'nearby' && data.distance > 0 ? ` · 距你${ScaleDistance(data.distance)}` : ''}
           </Text>
         </View>
 

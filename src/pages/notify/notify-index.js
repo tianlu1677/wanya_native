@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, StatusBar, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import JPush from 'jpush-react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import {BadgeMessage, Avator} from '@/components/NodeComponents';
@@ -14,10 +14,12 @@ import {
   SystemNoticeImg,
   MineMentionNoticeUserImg,
 } from '@/utils/default-image';
-var BadgeAndroid = require('react-native-android-badge');
 
-const NotifyIndex = ({navigation}) => {
+const BadgeAndroid = require('react-native-android-badge');
+
+const NotifyIndex = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {currentAccount} = useSelector(state => state.account);
   const {currentBaseInfo} = useSelector(state => state.account);
   const {

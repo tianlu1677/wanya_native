@@ -11,3 +11,7 @@ export const TransFormType = item => {
       return '';
   }
 };
+
+export const ScaleDistance = (distance = '') => {
+  return distance ? (distance > 1000 ? `${(distance / 1000).toFixed(1)}km` : `${distance}m`) : '';
+};

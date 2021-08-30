@@ -92,7 +92,6 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
   };
 
   const changeOpen = (sectionID, rowId) => {
-    console.log('onOpen item', sectionID, rowId);
     onOpen(sectionID);
   };
   return (
@@ -101,7 +100,6 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
         {
           text: '删除',
           onPress: item => {
-            console.log(item);
             deleteChatgroup({uuid: item.key});
           },
           key: chat_group.uuid,
@@ -119,7 +117,7 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
       key={chat_group.uuid}>
       <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
         <View style={styles.coverWrapView}>
-          <Avator size={45} account={send_message_account} />
+          <Avator size={45} account={send_message_account} handleClick={goChatDetail} />
           <BadgeMessage
             value={unread_message[currentAccount.id]}
             containerStyle={styles.badgeContainer}
@@ -187,7 +185,7 @@ const styles = StyleSheet.create({
   },
   messageContent: {
     flexDirection: 'row',
-    marginBottom: 20
+    marginBottom: 20,
   },
   subEmojiStyle: {
     width: 18,

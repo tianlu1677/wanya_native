@@ -147,12 +147,15 @@ const MineDetail = props => {
   };
 
   useLayoutEffect(() => {
+    console.log('useLayoutEffect');
     props.navigation.setOptions({});
     loadData();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
+      console.log('focues');
+
       setuseFocus(true);
       setCurrentKey('publish');
       dispatch(dispatchBaseCurrentAccount());

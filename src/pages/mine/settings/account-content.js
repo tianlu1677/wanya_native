@@ -184,8 +184,7 @@ const AccountContent = props => {
               {label: '男', value: 'man'},
               {label: '女', value: 'woman'},
               {label: '保密', value: 'other'},
-            ]}
-          >
+            ]}>
             <Text style={{width: 300, textAlign: 'right'}}>{currentAccount.gender_text}</Text>
           </RNPickerSelect>
         </View>

@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
+import {ScaleDistance} from '@/src/utils';
 
 const BaseShopstore = props => {
   const navigation = useNavigation();
@@ -33,11 +34,7 @@ const BaseShopstore = props => {
             {store_type === 'website' && '网店'}
           </Text>
           <Text style={styles.distance}>
-            {store_type === 'entity' && distance > 0
-              ? distance > 1000
-                ? `${(distance / 1000).toFixed(1)}km`
-                : `${distance}m`
-              : ''}
+            {store_type === 'entity' && distance > 0 ? ScaleDistance(distance) : ''}
           </Text>
         </View>
         <View style={styles.tagWrapper}>

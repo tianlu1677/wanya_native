@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -129,9 +130,11 @@ const AccountDetail = ({navigation, route}) => {
     setAccount(res.data.account);
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   const Header = () => {
     const defaultImage = account.background_img_url || AccountDetailBgImg;

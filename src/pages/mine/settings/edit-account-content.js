@@ -8,7 +8,6 @@ import {
   TextInput,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-// import {SafeAreaView} from 'react-native-safe-area-context';
 import {syncAccountInfo} from '@/api/mine_api';
 import {secureCheck} from '@/api/secure_check';
 import {Button} from 'react-native-elements';
@@ -18,6 +17,7 @@ const EditAccountContent = ({navigation, route}) => {
   const [editKey, setEditKey] = useState('');
   const [content, setContent] = useState('');
   const currentAccount = useSelector(state => state.account.currentAccount);
+
   useLayoutEffect(() => {}, [navigation]);
 
   useEffect(() => {
@@ -47,6 +47,7 @@ const EditAccountContent = ({navigation, route}) => {
     }
 
     const res = await secureCheck('text', content);
+
     if (!res.status) {
       return;
     }
@@ -59,7 +60,7 @@ const EditAccountContent = ({navigation, route}) => {
       data = {...data, intro: content};
     }
 
-    syncAccountInfo({account: data});
+    await syncAccountInfo({account: data});
     navigation.goBack();
   };
 
@@ -101,15 +102,13 @@ const EditAccountContent = ({navigation, route}) => {
             style={styles.multiLine}
           />
         )}
-        {/*{editKey === 'province' && <TextInput></TextInput>}*/}
+
         <Button
           containerStyle={styles.publicBtnContainer}
           buttonStyle={{...styles.saveButton, backgroundColor: validForm() ? 'black' : '#F8F8F8'}}
           titleStyle={validForm() ? styles.validTitle : styles.novalidTitle}
           title="确定"
-          onPress={() => {
-            saveContent();
-          }}
+          onPress={saveContent}
         />
       </View>
     </TouchableWithoutFeedback>
