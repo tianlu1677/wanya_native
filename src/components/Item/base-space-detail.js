@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
-import {ScaleDistance} from '@/src/utils';
+import {ScaleDistance} from '@/utils';
 
 const BaseSpceDetail = props => {
   const navigation = useNavigation();

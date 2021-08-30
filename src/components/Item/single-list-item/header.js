@@ -8,7 +8,7 @@ import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
 import LocationBar from '@/components/LocationBar';
 import {VWValue} from '@/utils/response-fontsize';
-import {ScaleDistance} from '@/src/utils';
+import {ScaleDistance} from '@/utils';
 import {deleteTopic} from '@/api/topic_api';
 import {deleteTheory} from '@/api/theory_api';
 import ActionSheet from '@/components/ActionSheet';
