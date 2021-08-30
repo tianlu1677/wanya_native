@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EBEBEB',
     height: StyleSheet.hairlineWidth,
     marginLeft: 14 + VWValue(45) + 12,
+    marginRight: 14,
   },
 });
 

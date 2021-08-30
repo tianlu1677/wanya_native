@@ -80,11 +80,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    marginTop: 9,
+    marginTop: 10,
   },
   label: {
     fontSize: 12,
-    lineHeight: 14,
     color: '#3d3d3d',
     fontWeight: '300',
   },
@@ -96,9 +95,8 @@ const styles = StyleSheet.create({
   },
   intro: {
     fontSize: 12,
-    lineHeight: 20,
     color: '#3d3d3d',
-    marginTop: 5,
+    marginTop: 10,
   },
   imageWrap: {
     flexDirection: 'row',
