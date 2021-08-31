@@ -26,7 +26,8 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
   } = chat_group;
 
   const goChatDetail = () => {
-    RootNavigation.push('ChatDetail', {uuid, targetAccount: send_message_account});
+    // console.log('targetAccount', send_message_account)
+    RootNavigation.push('ChatDetail', {uuid, targetAccountId: send_message_account.id, targetAccountNickname: send_message_account.nickname});
     setTimeout(() => {
       unread_message[currentAccount.id] = 0;
       readSingleChatGroupMessage({uuid: uuid});

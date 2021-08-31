@@ -51,7 +51,7 @@ let timer = null;
 const ChartDetail = props => {
   const dispatch = useDispatch();
   const {navigation, route, imagePick, videoPick, uploadVideo, uploadAudio} = props;
-  const {uuid, targetAccount} = route.params;
+  const {uuid, targetAccountId, targetAccountNickname} = route.params;
   const {
     account: {currentAccount},
     login: {auth_token},
@@ -402,13 +402,13 @@ const ChartDetail = props => {
     {
       id: 1,
       label: '个人主页',
-      onPress: () => navigation.navigate('AccountDetail', {accountId: targetAccount.id}),
+      onPress: () => navigation.navigate('AccountDetail', {accountId: targetAccountId}),
     },
     {
       id: 2,
       label: '举报',
       onPress: async () => {
-        navigation.navigate('Report', {report_type: 'Account', report_type_id: targetAccount.id});
+        navigation.navigate('Report', {report_type: 'Account', report_type_id: targetAccountId});
       },
     },
   ];
@@ -428,7 +428,7 @@ const ChartDetail = props => {
   };
 
   const loadAccount = async () => {
-    const ret = await getAccount(targetAccount.id);
+    const ret = await getAccount(targetAccountId);
     setTargetAccountDetail(ret.data.account);
   };
 
@@ -449,7 +449,7 @@ const ChartDetail = props => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: targetAccount.nickname,
+      title: targetAccountNickname,
       headerStyle: {
         borderBottomWidth: 0,
         borderBottomColor: '#EBEBEB',
