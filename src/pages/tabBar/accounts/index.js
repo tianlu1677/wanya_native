@@ -6,6 +6,7 @@ import {RecommendSearch} from '@/components/NodeComponents';
 import {VWValue} from '@/utils/response-fontsize';
 import {getRecommendAccounts} from '@/api/home_api';
 import {Cstyles} from '@/pages/tabBar/style';
+import { uniqBy } from 'lodash'
 
 const TabBarAccounts = () => {
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,12 @@ const TabBarAccounts = () => {
       setLoading(true);
     }
     const res = await getRecommendAccounts({page, ...params});
-    setListData(page === 1 ? res.data.accounts : [...listData, ...res.data.accounts]);
+    if(page === 1) {
+      setListData(res.data.accounts)
+    } else {
+      let newaccounts = uniqBy(listData.concat(res.data.accounts), 'id')
+      setListData(newaccounts)
+    }
     setLoading(false);
     setHeaders(res.headers);
   };
@@ -41,6 +47,10 @@ const TabBarAccounts = () => {
         renderItem={RenderItem}
         renderSeparator={() => <View style={styles.speator} />}
         style={{backgroundColor: '#fff'}}
+        keyExtractor={(item, index) => `account${item.id}`}
+        settings={{
+          initialNumToRender: 15
+        }}
       />
     </View>
   );

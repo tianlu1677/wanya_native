@@ -264,4 +264,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BaseTopic;
+export default React.memo(BaseTopic);

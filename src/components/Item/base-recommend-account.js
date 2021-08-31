@@ -5,6 +5,7 @@ import {Avator} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getChatGroupsDetail} from '@/api/chat_api';
+
 const {width} = Dimensions.get('window');
 
 const imageWidth = (width - 14 * 2 - VWValue(45) - 12 - 4 * 4) / 5;
@@ -24,6 +25,7 @@ const BaseRecommendAccount = ({data}) => {
     navigation.navigate('AccountDetail', {accountId: id});
   };
 
+  // console.log('readdd', id)
   return (
     <View style={styles.wrap}>
       <Avator size={VWValue(45)} account={data} />
@@ -124,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BaseRecommendAccount;
+export default React.memo(BaseRecommendAccount);
