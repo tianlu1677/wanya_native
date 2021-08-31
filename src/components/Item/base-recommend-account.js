@@ -17,7 +17,7 @@ const BaseRecommendAccount = ({data}) => {
     const params = {receiver_id: id};
     const res = await getChatGroupsDetail(params);
     const {uuid} = res.data.chat_group;
-    navigation.navigate('ChatDetail', {uuid, targetAccount: data});
+    navigation.navigate('ChatDetail', {uuid, targetAccountId: data.id, targetAccountNickname: data.nickname});
   };
 
   const goAccountDetail = () => {
