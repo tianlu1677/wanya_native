@@ -18,25 +18,31 @@ const BaseRecommendAccount = ({data}) => {
     const params = {receiver_id: id};
     const res = await getChatGroupsDetail(params);
     const {uuid} = res.data.chat_group;
-    navigation.navigate('ChatDetail', {uuid, targetAccountId: data.id, targetAccountNickname: data.nickname});
+    navigation.navigate('ChatDetail', {
+      uuid,
+      targetAccountId: data.id,
+      targetAccountNickname: data.nickname,
+    });
   };
 
   const goAccountDetail = () => {
     navigation.navigate('AccountDetail', {accountId: id});
   };
 
-  // console.log('readdd', id)
+  const lablelList = label_list.slice(0, 5);
+  const mediaList = media.slice(0, 5);
+
   return (
     <View style={styles.wrap}>
       <Avator size={VWValue(45)} account={data} />
       <Pressable style={styles.accountInfo} onPress={goAccountDetail}>
         <Text style={styles.nickname}>{nickname}</Text>
-        {label_list.length > 0 ? (
+        {lablelList.length > 0 ? (
           <View style={styles.labelWrap}>
-            {label_list.slice(0, 3).map((label, index) => (
-              <View key={`recommend-account-label-${label}`} style={{ flexDirection: 'row' }}>
+            {lablelList.map((label, index) => (
+              <View key={`recommend-account-label-${label}`} style={{flexDirection: 'row'}}>
                 <Text style={styles.label}>{label}</Text>
-                {label_list.length - 1 !== index && <Text style={styles.labelLine}>|</Text>}
+                {lablelList.length - 1 !== index && <Text style={styles.labelLine}>|</Text>}
               </View>
             ))}
           </View>
@@ -44,10 +50,15 @@ const BaseRecommendAccount = ({data}) => {
 
         <Text style={styles.intro}>{intro || '探索与发现 记录与分享'}</Text>
 
-        {media.length > 0 ? (
+        {mediaList.length > 0 ? (
           <View style={styles.imageWrap}>
-            {media.slice(0, 5).map((item, index) => (
-              <FastImg source={{uri: item.url}} key={`recommend-account-media-${item.id}`} style={styles.image} mode="cover" />
+            {mediaList.map(item => (
+              <FastImg
+                source={{uri: item.url}}
+                key={`recommend-account-media-${item.id}`}
+                style={styles.image}
+                mode="cover"
+              />
             ))}
           </View>
         ) : (
