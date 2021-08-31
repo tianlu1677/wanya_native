@@ -31,7 +31,7 @@ const BaseRecommendAccount = ({data}) => {
         <Text style={styles.nickname}>{nickname}</Text>
         {label_list.length > 0 ? (
           <View style={styles.labelWrap}>
-            {label_list.map((label, index) => (
+            {label_list.slice(0, 3).map((label, index) => (
               <>
                 <Text style={styles.label}>{label}</Text>
                 {label_list.length - 1 !== index && <Text style={styles.labelLine}>|</Text>}

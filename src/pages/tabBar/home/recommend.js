@@ -1,10 +1,14 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {createConsumer} from '@rails/actioncable';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
+import deviceInfo from '@/utils/device_info';
+import {consumerWsUrl} from '@/utils/config';
 import {RecommendSearch} from '@/components/NodeComponents';
 import MediasPicker from '@/components/MediasPicker';
 import TabView from '@/components/TabView';
@@ -12,18 +16,33 @@ import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {getChannelPosts} from '@/api/home_api';
 import {getLocationInfo, loadLocation} from '@/utils/get-location';
-import {dispatchFetchUploadTopic, changeUploadStatus} from '@/redux/actions';
 import LongVideoList from '@/components/List/long-video-list';
 import FollowListPage from '@/pages/tabBar/home/follow-list-post';
 import RecommendListPage from '@/pages/tabBar/home/recommend-list-post';
 import NodeListPage from '@/pages/tabBar/home/node-list-page';
 import NearbyListPage from '@/pages/tabBar/home/nearby-list-post';
+import {syncDeviceToken} from '@/api/app_device_api';
+import {recordDeviceInfo} from '@/api/settings_api';
+
+import {
+  dispatchFetchUploadTopic,
+  changeUploadStatus,
+  dispatchFetchCategoryList,
+  dispatchFetchLabelList,
+  dispatchBaseCurrentAccount,
+  dispatchCurrentAccount,
+} from '@/redux/actions';
 
 const Recommend = props => {
   const dispatch = useDispatch();
   const defaultKey = props.route.params && props.route.params.activityKey;
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
   const home = useSelector(state => state.home);
+
+  const {
+    login: {auth_token},
+  } = useSelector(state => state);
+
   const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
   const MemoVideo = React.memo(() => {
@@ -120,7 +139,28 @@ const Recommend = props => {
     }
   };
 
+  const onlineChannel = useMemo(() => {
+    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create({
+      channel: 'OnlineChannel',
+    });
+  }, []);
+
+  const init = () => {
+    syncDeviceToken();
+    recordDeviceInfo(deviceInfo);
+    dispatch(dispatchCurrentAccount());
+    dispatch(dispatchFetchCategoryList());
+    dispatch(dispatchFetchLabelList());
+    dispatch(dispatchFetchCategoryList());
+
+    // 同步用户是否在线
+    setInterval(() => {
+      onlineChannel.perform('appear');
+    }, 5000);
+  };
+
   useEffect(() => {
+    init();
     if (uploadStatus) {
       const upload = (file, cb) => props.uploadVideo(file, cb);
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
@@ -131,6 +171,12 @@ const Recommend = props => {
       loadLocation(dispatch);
     }, 1000);
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(dispatchBaseCurrentAccount());
+    }, [])
+  );
 
   return (
     <View style={{flex: 1, position: 'relative'}}>
