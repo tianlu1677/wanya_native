@@ -25,6 +25,7 @@ import {consumerWsUrl} from '@/utils/config';
 import Helper from '@/utils/helper';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {
+  deleteChatGroup,
   getChatGroupsConversations,
   getChatGroupsSendMessage,
   readSingleChatGroupMessage,
@@ -409,6 +410,14 @@ const ChartDetail = props => {
       label: '举报',
       onPress: async () => {
         navigation.navigate('Report', {report_type: 'Account', report_type_id: targetAccountId});
+      },
+    },
+    {
+      id: 3,
+      label: '删除',
+      onPress: async () => {
+        deleteChatGroup({uuid: uuid});
+        navigation.goBack();
       },
     },
   ];

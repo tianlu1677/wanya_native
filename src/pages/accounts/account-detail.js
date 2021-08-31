@@ -189,12 +189,12 @@ const AccountDetail = ({navigation, route}) => {
                 <IconFont name={account.gender} size={13} style={styles.maleIcon} />
               )}
               <Text style={styles.introtag}>{account.age || '18'}岁</Text>
-              <Text style={styles.introtag}>{account.city.replace(',', ' ') || '未知街区'}</Text>
+              <Text style={styles.introtag}>{account.city && account.city.replace(',', ' ') || '未知街区'}</Text>
             </View>
             <View style={styles.labelWrap}>
               {account.label_list.map((label, index) => (
                 <>
-                  <Text style={styles.label}>{label}</Text>
+                  <Text style={styles.label} key={label}>{label}</Text>
                   {account.label_list.length - 1 !== index && (
                     <Text style={styles.labelLine}>|</Text>
                   )}

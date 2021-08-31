@@ -26,8 +26,8 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
   } = chat_group;
 
   const goChatDetail = () => {
-    // console.log('targetAccount', send_message_account)
-    RootNavigation.push('ChatDetail', {uuid, targetAccountId: send_message_account.id, targetAccountNickname: send_message_account.nickname});
+    // console.log('targetAccount', 'xxx')
+    RootNavigation.navigate('ChatDetail', {uuid, targetAccountId: send_message_account.id, targetAccountNickname: send_message_account.nickname});
     setTimeout(() => {
       unread_message[currentAccount.id] = 0;
       readSingleChatGroupMessage({uuid: uuid});
@@ -93,56 +93,59 @@ const BaseChatGroup = ({chat_group, deleteChatgroup, currentOpenId, onOpen}) => 
   };
 
   const changeOpen = (sectionID, rowId) => {
+    console.log('xxxx')
     onOpen(sectionID);
   };
   return (
-    <Swipeout
-      right={[
-        {
-          text: '删除',
-          onPress: item => {
-            deleteChatgroup({uuid: item.key});
-          },
-          key: chat_group.uuid,
-          backgroundColor: '#FF2242',
-          type: 'delete',
+    <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
+      <View style={styles.coverWrapView}>
+        <Avator size={45} account={send_message_account} handleClick={goChatDetail} />
+        <BadgeMessage
+          value={unread_message[currentAccount.id]}
+          containerStyle={styles.badgeContainer}
+        />
+      </View>
+      <View style={styles.notifyContent}>
+        <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
+        {last_conversation ? (
+          <Text style={styles.notifyContentDesc} numberOfLines={1}>
+            {last_conversation.category === 'text' ? (
+              _getActualText(last_conversation.content)
+            ) : (
+              <Text style={styles.notifyContentText}>{last_conversation.payload.text}</Text>
+            )}
+          </Text>
+        ) : (
+          <Text style={styles.notifyContentDesc} />
+        )}
+      </View>
+      <View style={styles.messageContent}>
+        <Text style={styles.timeText}>{last_message_at_text}</Text>
+      </View>
+    </Pressable>
 
-          autoClose: false,
-        },
-      ]}
-      close={true}
-      rowID={chat_group.uuid}
-      sectionID={chat_group.uuid}
-      autoClose={true}
-      onOpen={changeOpen}
-      key={chat_group.uuid}>
-      <Pressable style={styles.itemView} key={chat_group.uuid} onPress={goChatDetail}>
-        <View style={styles.coverWrapView}>
-          <Avator size={45} account={send_message_account} handleClick={goChatDetail} />
-          <BadgeMessage
-            value={unread_message[currentAccount.id]}
-            containerStyle={styles.badgeContainer}
-          />
-        </View>
-        <View style={styles.notifyContent}>
-          <Text style={styles.notifyContentTitle}>{send_message_account.nickname}</Text>
-          {last_conversation ? (
-            <Text style={styles.notifyContentDesc} numberOfLines={1}>
-              {last_conversation.category === 'text' ? (
-                _getActualText(last_conversation.content)
-              ) : (
-                <Text style={styles.notifyContentText}>{last_conversation.payload.text}</Text>
-              )}
-            </Text>
-          ) : (
-            <Text style={styles.notifyContentDesc} />
-          )}
-        </View>
-        <View style={styles.messageContent}>
-          <Text style={styles.timeText}>{last_message_at_text}</Text>
-        </View>
-      </Pressable>
-    </Swipeout>
+    // <Swipeout
+    //   right={[
+    //     {
+    //       text: '删除',
+    //       onPress: item => {
+    //         deleteChatgroup({uuid: item.key});
+    //       },
+    //       key: chat_group.uuid,
+    //       backgroundColor: '#FF2242',
+    //       type: 'delete',
+    //       autoClose: false,
+    //     },
+    //   ]}
+    //   close={true}
+    //   rowID={chat_group.uuid}
+    //   sectionID={chat_group.uuid}
+    //   autoClose={true}
+    //   sensitivity={5}
+    //   onOpen={changeOpen}
+    //   key={chat_group.uuid}>
+
+    // </Swipeout>
   );
 };
 
@@ -194,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BaseChatGroup;
+export default (BaseChatGroup);
