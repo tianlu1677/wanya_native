@@ -32,10 +32,10 @@ const BaseRecommendAccount = ({data}) => {
         {label_list.length > 0 ? (
           <View style={styles.labelWrap}>
             {label_list.slice(0, 3).map((label, index) => (
-              <>
+              <View key={`recommend-account-label-${label}`} style={{ flexDirection: 'row' }}>
                 <Text style={styles.label}>{label}</Text>
                 {label_list.length - 1 !== index && <Text style={styles.labelLine}>|</Text>}
-              </>
+              </View>
             ))}
           </View>
         ) : null}
@@ -45,7 +45,7 @@ const BaseRecommendAccount = ({data}) => {
         {media.length > 0 ? (
           <View style={styles.imageWrap}>
             {media.slice(0, 5).map((item, index) => (
-              <FastImg source={{uri: item.url}} key={index} style={styles.image} mode="cover" />
+              <FastImg source={{uri: item.url}} key={`recommend-account-media-${item.id}`} style={styles.image} mode="cover" />
             ))}
           </View>
         ) : (

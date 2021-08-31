@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     paddingTop: RFValue(6),
     paddingBottom: RFValue(6),
     paddingLeft: 14,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
   },
   inputContent: {
     flex: 1,
