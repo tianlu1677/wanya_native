@@ -140,8 +140,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "0.0.26"
+        versionCode 13
+        versionName "0.0.27"
 
         manifestPlaceholders = [
               JPUSH_PKGNAME: applicationId,
@@ -241,21 +241,22 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.2.1"
     implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
+    //implementation 'com.posthog.android:posthog:1.+'
 
 //     compile project(':push')
 
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
-      exclude group:'com.facebook.fbjni'
-    }
+    //debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
+      //exclude group:'com.facebook.fbjni'
+    //}
 
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
+    //debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+    //    exclude group:'com.facebook.flipper'
+     //   exclude group:'com.squareup.okhttp3', module:'okhttp'
+    //}
 
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-    }
+    //debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
+    //    exclude group:'com.facebook.flipper'
+    //}
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
