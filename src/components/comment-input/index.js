@@ -13,8 +13,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
 import {createComment} from '@/api/comment_api';
-
-const CommentInput = ({navigation}) => {
+import * as RootNavigation from '@/navigator/root-navigation';
+const CommentInput = ({}) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const {commentContent, commentVisible} = useSelector(state => state.home);

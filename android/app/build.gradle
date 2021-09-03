@@ -236,11 +236,13 @@ dependencies {
     implementation project(':lottie-react-native')
 
     compile project(':react-native-video')
-    implementation "androidx.appcompat:appcompat:1.0.0"
+    //implementation "androidx.appcompat:appcompat:1.1.0"
 
     implementation "com.squareup.okhttp3:okhttp:4.2.1"
     implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
+    implementation "androidx.multidex:multidex:2.0.0"
+    implementation 'androidx.appcompat:appcompat:1.3.0'
     //implementation 'com.posthog.android:posthog:1.+'
 
 //     compile project(':push')
