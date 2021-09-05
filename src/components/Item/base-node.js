@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
@@ -53,6 +53,10 @@ const BaseNode = props => {
       }
     }
   };
+
+  useEffect(() => {
+    setFollowed(data.followed)
+  }, [data.followed])
 
   return (
     <Pressable style={[styles.dataItem, props.style]} onPress={goNodeDetail}>
