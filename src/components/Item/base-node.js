@@ -55,8 +55,8 @@ const BaseNode = props => {
   };
 
   useEffect(() => {
-    setFollowed(data.followed);
-  }, [data.followed]);
+    setFollowed(data.followed)
+  }, [data.followed])
 
   return (
     <Pressable style={[styles.dataItem, props.style]} onPress={goNodeDetail}>

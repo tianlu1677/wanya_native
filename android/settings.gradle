@@ -23,5 +23,5 @@ project(':jpush-react-native').projectDir = new File(rootProject.projectDir, '..
 include ':jcore-react-native'
 project(':jcore-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/jcore-react-native/android')
 
-include ':posthog-react-native'
-project(':posthog-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/posthog-react-native/android')
+//include ':posthog-react-native'
+//project(':posthog-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/posthog-react-native/android')

@@ -7,7 +7,7 @@ import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
-import {BOTTOM_HEIGHT} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, IsIos} from '@/utils/navbar';
 import {BottomModal, BadgeMessage} from '@/components/NodeComponents';
 import {draftTheory} from '@/api/theory_api';
 import Accounts from '@/pages/tabBar/accounts';
@@ -77,9 +77,11 @@ const MainTabScreen = props => {
       case 'Discovery':
         return <Text style={focused ? styles.tabActiveText : styles.tabText}>发现</Text>;
       case 'Recommend':
-        const style = {width: (500 * RFValue(24)) / 351, height: RFValue(24)};
+        const style = {width: (500 * (24)) / 351, height: (24)};
         return focused ? (
-          <Image source={indexImage} style={style} />
+          <View style={style}>
+            <Image source={indexImage} style={style} mode="cover" />
+          </View>
         ) : (
           <Text style={styles.tabText}>顽鸦</Text>
         );
@@ -101,20 +103,20 @@ const MainTabScreen = props => {
         initialRouteName="Recommend"
         screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
+            const rightDis = (UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
+                          ? -VWValue(9)
+                          : UnreadMessageCount() > 99
+                          ? -VWValue(12) * 1.75
+                          : -VWValue(11) * 1.45)
             return route.name === 'ChatGroups' ? (
-              <View style={{position: 'relative'}}>
+              <View style={{}}>
                 <BadgeMessage
                   size={'tab'}
                   value={UnreadMessageCount()}
                   containerStyle={[
                     styles.badge,
                     {
-                      right:
-                        UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
-                          ? -VWValue(9)
-                          : UnreadMessageCount() > 99
-                          ? -VWValue(12) * 1.75
-                          : -VWValue(11) * 1.45,
+                      right: IsIos ? rightDis : rightDis+6
                     },
                   ]}
                 />

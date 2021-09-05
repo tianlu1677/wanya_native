@@ -151,7 +151,6 @@ const Recommend = props => {
     dispatch(dispatchCurrentAccount());
     dispatch(dispatchFetchCategoryList());
     dispatch(dispatchFetchLabelList());
-    dispatch(dispatchFetchCategoryList());
 
     // 同步用户是否在线
     setInterval(() => {
