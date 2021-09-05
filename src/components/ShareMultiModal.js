@@ -140,7 +140,7 @@ const ShareMultiModal = () => {
 
   return (
     <BottomModal
-      height={IsIos ? 0.37 : 0.45}
+      height={IsIos ? 0.37 : 0.40}
       width={1}
       rounded
       useNativeDriver={true}

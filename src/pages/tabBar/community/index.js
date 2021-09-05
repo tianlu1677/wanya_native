@@ -4,7 +4,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import TabView from '@/components/TabView';
 import IconFont from '@/iconfont';
-import {dispatchBaseCurrentAccount} from '@/redux/actions';
+import {dispatchBaseCurrentAccount, dispatchFetchCategoryList} from '@/redux/actions';
 import {RFValue} from '@/utils/response-fontsize';
 import MineNodeListPage from '@/pages/tabBar/community/mine-node-list';
 import NodeIndex from '@/pages/nodes/node-index';
@@ -39,6 +39,7 @@ const Community = props => {
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchBaseCurrentAccount());
+      dispatch(dispatchFetchCategoryList());
     }, [])
   );
 

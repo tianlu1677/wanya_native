@@ -12,13 +12,16 @@ import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import Toast from '@/components/Toast';
+import {IsIos, STATUS_BAR_HEIGHT, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {createComment} from '@/api/comment_api';
 import * as RootNavigation from '@/navigator/root-navigation';
-const CommentInput = ({}) => {
+const CommentInput = (props) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const {commentContent, commentVisible} = useSelector(state => state.home);
   const isCanComment = value ? true : false;
+
+  // this.inputRef = null
 
   // const getValueLength = str => {
   //   if (!str) {
@@ -82,7 +85,13 @@ const CommentInput = ({}) => {
       transparent={true}
       onBackdropPress={onBackdropPress}
       onModalHide={onBackdropPress}
-      style={{margin: 0}}>
+      avoidKeyboard={true}
+      onShow={() => {
+        setTimeout(() => {
+           this.inputRef.focus();
+        }, 100)
+      }}
+      style={{margin: 0, flex: 1}}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
@@ -90,6 +99,7 @@ const CommentInput = ({}) => {
           <Pressable style={styles.content} onPress={onBackdropPress} />
           <View style={styles.wrapper}>
             <TextInput
+              ref={ref => (this.inputRef = ref)}
               value={value}
               onChangeText={onChangeText}
               style={styles.input}

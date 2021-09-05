@@ -15,7 +15,7 @@ const RecommendSearch = props => {
   return (
     <View style={[border && styles.searchWrapper]}>
       <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
-      <StatusBar barStyle="dark-content" translucent={false} />
+      <StatusBar barStyle="dark-content" translucent={false} backgroundColor="white" />
       <Search
         getRef={refs => setinputRef(refs)}
         style={{...style, backgroundColor: '#fff', paddingRight: 14}}

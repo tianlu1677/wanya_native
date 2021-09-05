@@ -1,7 +1,8 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {nodeAction} from '@/redux/actions';
+import {useFocusEffect} from '@react-navigation/native';
+import {nodeAction, dispatchFetchCategoryList} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import BaseNode from '@/components/Item/base-node';
 import {RFValue} from '@/utils/response-fontsize';
