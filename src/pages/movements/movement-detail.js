@@ -117,20 +117,20 @@ const MovementDetail = ({navigation, route}) => {
 
             {detail.intro ? (
               <Text style={styles.intro} numberOfLines={3} onPress={() => setShowModal(true)}>
-                {detail.intro.replace(/(\r\n|\n|\r)/gm, '')}
+                {detail.intro.toString().replace(/(\r\n|\n|\r)/gm, '')}
                 发布顽法
               </Text>
             ) : null}
 
             <View style={styles.createWrap}>
-              <Text style={[styles.createbtn, styles.primarybtn]} onPress={publishTheory}>
-                发布顽法
-              </Text>
               <Text style={[styles.createbtn, styles.normalbtn]} onPress={publishLesson}>
                 发布教学
               </Text>
               <Text style={[styles.createbtn, styles.normalbtn]} onPress={publishPractice}>
                 发布练习
+              </Text>
+              <Text style={[styles.createbtn, styles.primarybtn]} onPress={publishTheory}>
+                发布顽法
               </Text>
             </View>
           </View>
