@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Pressable, StatusBar} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import Loading from '@/components/Loading';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -20,6 +22,8 @@ import SingleList from '@/components/List/single-list';
 const COVER_HEIGHT = Math.ceil((SCREEN_WIDTH * 264) / 750);
 
 const MovementDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const {savetopic} = useSelector(state => state.home);
   const {movementId} = route.params;
   const [headerHeight, setHeaderHeight] = useState(300);
   const [detail, setDetail] = useState(null);
@@ -32,10 +36,16 @@ const MovementDetail = ({navigation, route}) => {
   };
 
   const publishLesson = () => {
-    navigation.navigate('NewTopic', {movementId});
+    const value = {...savetopic, movement_ids: [detail], tag_list: ['教学']};
+    dispatch({type: action.SAVE_NEW_TOPIC, value});
+    navigation.navigate('NewTopic');
   };
 
-  const publishPractice = () => {};
+  const publishPractice = () => {
+    const value = {...savetopic, movement_ids: [detail], tag_list: ['练习']};
+    dispatch({type: action.SAVE_NEW_TOPIC, value});
+    navigation.navigate('NewTopic');
+  };
 
   const TheoryListPage = () => {
     const query = `q[item_type_eq]=Theory&q[item_of_Theory_type_movements_id_eq]=${movementId}`;

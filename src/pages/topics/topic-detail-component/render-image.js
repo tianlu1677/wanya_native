@@ -70,7 +70,7 @@ const RenderImage = props => {
 
       {plain_content ? (
         <View style={styles.content}>
-          <PlainContent data={props.detail} style={styles.multiLineText} numberOfLines={0} />
+          <PlainContent data={props.detail} style={styles.multiLineText} />
         </View>
       ) : null}
 
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
   content: {
     padding: 15,
     paddingRight: 24,
-    paddingBottom: 10,
+    // paddingBottom: 10,
+    paddingBottom: 0,
   },
   multiLineText: {
     fontSize: 14,

@@ -30,7 +30,7 @@ const NewTopic = props => {
   const videoRef = useRef('');
   const {currentAccount} = useSelector(state => state.account);
   const {savetopic, location} = useSelector(state => state.home);
-  const {movement_ids, shop_store_ids, shop_brand_ids} = savetopic;
+  const {movement_ids, shop_store_ids, shop_brand_ids, tag_list} = savetopic;
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
   const [linkSource, setLinkSource] = useState(null);
@@ -209,9 +209,15 @@ const NewTopic = props => {
       movement_ids: (movement_ids || []).map(v => v.id).join(),
       shop_store_ids: (shop_store_ids || []).map(v => v.id).join(),
       shop_brand_ids: (shop_brand_ids || []).map(v => v.id).join(),
+      tag_list: tag_list ? tag_list : [],
     };
+
+    console.log('data');
+
     return data;
   };
+
+  console.log(getValidateForm());
 
   const onSubmit = async () => {
     if (!isValidateForm()) {
