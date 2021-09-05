@@ -164,7 +164,7 @@ const CollapsibleHeader = props => {
       <Animated.View style={viewStyles}>
         <TabList
           current={props.currentKey}
-          align="center"
+          align={props.align || 'center'}
           bottomLine={true}
           separator={false}
           tabChange={tab => tabChange(tab)}

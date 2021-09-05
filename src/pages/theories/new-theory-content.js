@@ -102,8 +102,8 @@ const TheoryStepContent = props => {
         }
         Toast.showLoading('正在发布中...');
         const res = await publishTheory(theory.id, theory);
-        Toast.showError('发布成功');
         Toast.hide();
+        Toast.showError('发布成功');
         props.navigation.reset({
           index: 0,
           routes: [{name: 'TheoryDetail', params: {theoryId: res.theory.id}}],

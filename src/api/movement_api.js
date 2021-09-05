@@ -49,8 +49,10 @@ export const getMovementJoinAccounts = async params => {
 
 // 顽招帖子
 export const getMovementsPosts = async params => {
+  const {id} = params;
+  delete params.id;
   const res = await request({
-    url: `/api/v1/movements/${params.id}/posts`,
+    url: `/api/v1/movements/${id}/posts`,
     method: 'GET',
     params,
   });
@@ -95,3 +97,13 @@ export async function getMovementJoinCategory() {
   });
   return res.data;
 }
+
+// 顽招详情分类帖子
+export const getPosts = async (params, apiPath) => {
+  const res = await request({
+    url: `/api/v1/posts?${apiPath}`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};

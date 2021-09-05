@@ -16,7 +16,6 @@ const CategoryComponent = props => {
 
   const {
     navigation,
-    currentKey,
     category,
     category: {movement, space, activity, shop_store, shop_brand},
   } = props;
@@ -33,8 +32,8 @@ const CategoryComponent = props => {
     <View style={styles.content}>
       {/* movement */}
       <Pressable style={styles.slideItem} onPress={() => goPageMethod('Movement')}>
-        <FastImg source={require('@/assets/discovery/movement.png')} style={styles.slideImage} />
-        <FastImg source={require('@/assets/discovery/movement_text.png')} style={styles.text} />
+        <FastImg source={require('@/assets/discovery/lesson.png')} style={styles.slideImage} />
+        <FastImg source={require('@/assets/discovery/lesson_text.png')} style={styles.text} />
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {movement.count > 0 ? `${movement.count}个` : '还没有'}

@@ -68,8 +68,8 @@ const SingleList = props => {
     if (page === 1) {
       setLoading(true);
     }
-    const {api, params} = props.request;
-    const res = await api({...params, page});
+    const {api, params, apiPath} = props.request;
+    const res = await api({...params, page}, apiPath);
     const data = props.dataKey ? res.data[props.dataKey] : res.data.posts;
     const transdata = page === 1 ? data : [...listData, ...data];
     setListData(onChangeListDataText(transdata));

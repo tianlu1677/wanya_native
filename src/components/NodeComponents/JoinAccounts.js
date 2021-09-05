@@ -9,7 +9,7 @@ const JoinAccounts = props => {
   return (
     <View style={[styles.wrapper, props.style]}>
       {props.accounts.map((item, index) => (
-        <View style={styles.content} key={index}>
+        <View style={{marginLeft: index === 0 ? 0 : -3}} key={index}>
           <Avator account={item} size={props.size} handleClick={() => {}} />
           {index === 3 && <Text style={[styles.opacity, styles.textCenter, sizeStyle]} />}
           {index === 3 && <Text style={[styles.textCenter, sizeStyle]}>...</Text>}
@@ -22,10 +22,6 @@ const JoinAccounts = props => {
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
-  },
-  content: {
-    position: 'relative',
-    marginLeft: -3,
   },
   opacity: {
     backgroundColor: '#000',

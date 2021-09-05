@@ -8,20 +8,22 @@ import {RFValue} from '@/utils/response-fontsize';
 import {createTheory} from '@/api/theory_api';
 
 const NewTheory = props => {
-  const {navigation} = props;
+  const {navigation, route} = props;
   const [textValue, setTextValue] = useState(null);
 
   useLayoutEffect(() => {
     const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
-
     const onSubmit = async () => {
       if (!textValue) {
         Toast.show('顽法名称不能为空哦~');
         return false;
       }
-      const params = {theory: {title: textValue}};
+      const params = route.params.movementId
+        ? {theory: {title: textValue}, movement_ids: route.params.movementId}
+        : {theory: {title: textValue}};
+
       const res = await createTheory(params);
-      navigation.navigate('NewTheoryContent', {id: res.theory.id});
+      navigation.navigate('NewTheoryContent', {id: res.theory.id, ...route.params});
     };
 
     const goBack = () => {

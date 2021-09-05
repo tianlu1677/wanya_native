@@ -16,6 +16,8 @@ const TheoryList = props => {
     setLoading(true);
     const {api, params} = props.request;
     const res = await api({...params, page});
+    console.log(res);
+
     const data = props.dataKey ? res.data[props.dataKey] : res.data.theory;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

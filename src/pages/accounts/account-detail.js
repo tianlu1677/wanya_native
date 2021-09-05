@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
-import {dispatchPreviewImage} from '@/redux/actions';
+import {useSelector} from 'react-redux';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import StickTopHeader from '@/components/StickTopHeader';
 import SingleList from '@/components/List/single-list';
@@ -13,7 +12,7 @@ import Toast from '@/components/Toast';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
-import {Avator, BottomModal, TopBack} from '@/components/NodeComponents';
+import {BottomModal, TopBack} from '@/components/NodeComponents';
 import {
   getAccount,
   getAccountPosts,
@@ -29,7 +28,7 @@ import {AccountDetailBgImg} from '@/utils/default-image';
 import PersonalImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
 
-const TOP_HEADER = RFValue(110) + BarHeight;
+const COVER_HEIGHT = Math.ceil((SCREEN_WIDTH * 264) / 750);
 
 const filterScore = value => {
   if (value >= 10000) {
@@ -41,7 +40,6 @@ const filterScore = value => {
 };
 
 const AccountDetail = ({navigation, route}) => {
-  const dispatch = useDispatch();
   const accountId = route.params.accountId;
   const {currentAccount} = useSelector(state => state.account);
   const [headerHeight, setHeaderHeight] = useState(380);
@@ -64,11 +62,6 @@ const AccountDetail = ({navigation, route}) => {
     navigation.push('FollowerAccounts', {accountId: account.id});
   };
 
-  const onPreview = () => {
-    const data = {index: 0, visible: true, images: [{url: account.avatar_url}]};
-    dispatch(dispatchPreviewImage(data));
-  };
-
   const onFollow = async () => {
     account.followed ? await unfollowAccount(accountId) : await followAccount(accountId);
     loadData();
@@ -82,7 +75,11 @@ const AccountDetail = ({navigation, route}) => {
     const params = {receiver_id: account.id};
     const res = await getChatGroupsDetail(params);
     const {uuid} = res.data.chat_group;
-    navigation.navigate('ChatDetail', {uuid, targetAccountId: account.id, targetAccountNickname: account.nickname});
+    navigation.navigate('ChatDetail', {
+      uuid,
+      targetAccountId: account.id,
+      targetAccountNickname: account.nickname,
+    });
   };
 
   const actionItems = [
@@ -142,19 +139,14 @@ const AccountDetail = ({navigation, route}) => {
       <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
         <TopBack top={BarHeight} onReportClick={() => setShowActionSheet(true)} />
         <View style={styles.header}>
-          <View style={styles.topHeader}>
-            <View style={styles.coverOpacity} />
-            <FastImg source={{uri: defaultImage}} mode={'cover'} style={styles.imageCover} />
-            <View style={styles.topHeaderContent}>
-              <Avator
-                size={RFValue(50)}
-                account={account}
-                isShowSettledIcon={false}
-                handleClick={onPreview}
-              />
+          <View style={styles.coverImageOpacity} />
+          <FastImg source={{uri: defaultImage}} mode="cover" style={styles.coverImage} />
+          <View style={styles.contentHeader}>
+            <View style={styles.avatorContent}>
+              <FastImg source={{uri: account.avatar_url}} style={styles.avator} mode="cover" />
               <View style={styles.countWrap}>
                 <View style={styles.countContent}>
-                  <Text style={styles.countNum}>{account.get_praises_count}</Text>
+                  <Text style={styles.countNum}>{filterScore(account.get_praises_count)}</Text>
                   <Text style={styles.countText}>获赞</Text>
                 </View>
                 <Pressable style={styles.countContent} onPress={onPlay}>
@@ -171,11 +163,9 @@ const AccountDetail = ({navigation, route}) => {
                 </Pressable>
               </View>
             </View>
-          </View>
-          <View style={styles.bottomHeader}>
             <Text style={styles.nickname}>{account.nickname}</Text>
             <Text style={styles.uid}>顽鸦号: {account.uid}</Text>
-            {['personal', 'brand'].includes(account.settled_type) && (
+            {['personal', 'brand'].includes(account.settled_type) ? (
               <View style={styles.settledWrap}>
                 <FastImg
                   style={styles.settledIcon}
@@ -183,18 +173,22 @@ const AccountDetail = ({navigation, route}) => {
                 />
                 <Text style={styles.settledText}>顽鸦认证：{account.settled_name}</Text>
               </View>
-            )}
+            ) : null}
             <View style={styles.infoWrap}>
-              {account.gender && (
+              {account.gender ? (
                 <IconFont name={account.gender} size={13} style={styles.maleIcon} />
-              )}
+              ) : null}
               <Text style={styles.introtag}>{account.age || '18'}岁</Text>
-              <Text style={styles.introtag}>{account.city && account.city.replace(',', ' ') || '未知街区'}</Text>
+              <Text style={styles.introtag}>
+                {(account.city && account.city.replace(',', ' ')) || '未知街区'}
+              </Text>
             </View>
             <View style={styles.labelWrap}>
               {account.label_list.map((label, index) => (
                 <>
-                  <Text style={styles.label} key={label}>{label}</Text>
+                  <Text style={styles.label} key={label}>
+                    {label}
+                  </Text>
                   {account.label_list.length - 1 !== index && (
                     <Text style={styles.labelLine}>|</Text>
                   )}
@@ -202,10 +196,8 @@ const AccountDetail = ({navigation, route}) => {
               ))}
             </View>
             <Text style={styles.introWrap} onPress={() => setShowModal(true)}>
-              {/* {account.intro.replace(/(\r\n|\n|\r)/gm, '') || '这个人很懒，还没有填写简介'} */}
               {account.intro || '这个人很懒，还没有填写简介'}
             </Text>
-
             <View style={styles.headerBtnWrap}>
               {isSelf ? (
                 <Text style={[styles.headerBtn, styles.editBth]} onPress={editInfo}>
@@ -244,6 +236,7 @@ const AccountDetail = ({navigation, route}) => {
         tabBarHeight={BarHeight}
         headerHeight={headerHeight}
         currentKey={currentKey}
+        align="left"
         onKeyChange={key => setCurrentKey(key)}
         renderTopHeader={<StickTopHeader title={account.nickname} />}
         renderHeader={<Header />}
@@ -274,7 +267,7 @@ const AccountDetail = ({navigation, route}) => {
         visible={showModal}
         cancleClick={() => setShowModal(false)}
         title="简介"
-        content={account.intro}
+        content={account.intro || '这个人很懒，还没有填写简介'}
       />
       <ActionSheet
         actionItems={actionItems}
@@ -287,51 +280,58 @@ const AccountDetail = ({navigation, route}) => {
   );
 };
 
-const position = {width: SCREEN_WIDTH, position: 'absolute'};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'relative',
   },
-  header: {},
-  topHeader: {
-    height: TOP_HEADER,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingHorizontal: 18,
+  coverImage: {
+    height: COVER_HEIGHT,
+    width: SCREEN_WIDTH,
   },
-  imageCover: {
-    height: TOP_HEADER,
-    zIndex: -1,
-    ...position,
-  },
-  coverOpacity: {
-    height: TOP_HEADER,
-    ...position,
+  coverImageOpacity: {
+    height: COVER_HEIGHT - 10,
+    width: SCREEN_WIDTH,
+    position: 'absolute',
+    zIndex: 1,
     backgroundColor: '#000',
-    opacity: 0.4,
+    opacity: 0.3,
   },
-  topHeaderContent: {
+  contentHeader: {
+    paddingHorizontal: VWValue(18),
+    marginTop: -10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    backgroundColor: '#fff',
+    zIndex: 2,
+  },
+  avatorContent: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: RFValue(20),
+    alignItems: 'flex-end',
+    marginTop: RFValue(-28),
+  },
+  avator: {
+    width: RFValue(80),
+    height: RFValue(80),
+    borderRadius: RFValue(40),
+    borderColor: '#fff',
+    borderWidth: 3,
+    marginLeft: -3,
   },
   countWrap: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginLeft: VWValue(55),
+    marginLeft: VWValue(20),
+    marginBottom: 12,
   },
   countNum: {
     fontSize: RFValue(16),
     fontWeight: '600',
-    color: '#fff',
   },
   countText: {
     fontSize: RFValue(10),
-    fontWeight: '400',
-    color: '#fff',
+    color: '#3D3D3D',
     marginTop: RFValue(5),
   },
   bottomHeader: {
@@ -344,12 +344,13 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   nickname: {
-    fontSize: VWValue(16),
+    fontSize: 20,
     fontWeight: '600',
+    marginTop: RFValue(13),
   },
   uid: {
     fontSize: 10,
-    color: '#3d3d3d',
+    color: '#3D3D3D',
     fontWeight: '300',
     marginTop: RFValue(5),
   },
@@ -415,9 +416,16 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginTop: RFValue(10),
   },
-  headerBtnWrap: {
+  _headerBtnWrap: {
     flexDirection: 'row',
     marginTop: RFValue(12),
+    marginBottom: 5,
+  },
+  get headerBtnWrap() {
+    return this._headerBtnWrap;
+  },
+  set headerBtnWrap(value) {
+    this._headerBtnWrap = value;
   },
   headerBtn: {
     height: RFValue(35),
@@ -427,10 +435,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '500',
     backgroundColor: '#000',
-    borderRadius: 2,
     overflow: 'hidden',
     borderWidth: StyleSheet.hairlineWidth,
     borderStyle: 'solid',
+    borderRadius: 22,
   },
   followBtn: {
     flex: 1,
@@ -449,6 +457,7 @@ const styles = StyleSheet.create({
     color: '#3d3d3d',
     backgroundColor: '#fff',
     borderColor: '#bdbdbd',
+    borderRadius: 22,
   },
   chatBtn: {
     width: VWValue(110),
