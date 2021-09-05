@@ -88,8 +88,9 @@ const CommentInput = (props) => {
       avoidKeyboard={true}
       onShow={() => {
         setTimeout(() => {
-           this.inputRef.focus();
-        }, 100)
+          this.inputRef.blur();
+          this.inputRef.focus();
+        }, 200)
       }}
       style={{margin: 0, flex: 1}}>
       <KeyboardAvoidingView
