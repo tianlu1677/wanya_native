@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
   },
   coverImageOpacity: {
-    height: COVER_HEIGHT - 10,
+    height: COVER_HEIGHT,
     width: SCREEN_WIDTH,
     position: 'absolute',
     zIndex: 1,
@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     backgroundColor: '#fff',
+    zIndex: 2,
   },
   titleWrap: {
     flexDirection: 'row',
