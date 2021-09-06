@@ -99,8 +99,14 @@ const MovementDetail = ({navigation, route}) => {
             <View style={styles.titleWrap}>
               <Text style={styles.title}>{detail.category_name}</Text>
               <Pressable style={styles.btnWrap} onPress={handleJoined}>
-                <IconFont name={detail.joined ? 'chose-success' : 'plus'} size={12} color="#000" />
-                <Text style={styles.btnText}>{detail.joined ? '已Get' : 'Get'}</Text>
+                <IconFont
+                  size={12}
+                  name={detail.joined ? 'chose-success' : 'plus'}
+                  color={detail.joined ? '#BDBDBD' : '#2C2C2C'}
+                />
+                <Text style={[styles.btnText, {color: detail.joined ? '#BDBDBD' : '#2C2C2C'}]}>
+                  {detail.joined ? '已Get' : 'Get'}
+                </Text>
               </Pressable>
             </View>
             <Text style={styles.level}>
@@ -123,14 +129,14 @@ const MovementDetail = ({navigation, route}) => {
             ) : null}
 
             <View style={styles.createWrap}>
+              <Text style={[styles.createbtn, styles.primarybtn]} onPress={publishTheory}>
+                发布顽法
+              </Text>
               <Text style={[styles.createbtn, styles.normalbtn]} onPress={publishLesson}>
                 发布教学
               </Text>
               <Text style={[styles.createbtn, styles.normalbtn]} onPress={publishPractice}>
                 发布练习
-              </Text>
-              <Text style={[styles.createbtn, styles.primarybtn]} onPress={publishTheory}>
-                发布顽法
               </Text>
             </View>
           </View>
@@ -270,7 +276,7 @@ const styles = StyleSheet.create({
   },
   normalbtn: {
     color: '#3D3D3D',
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#BDBDBD',
   },
 });

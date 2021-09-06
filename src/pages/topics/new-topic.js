@@ -212,12 +212,8 @@ const NewTopic = props => {
       tag_list: tag_list ? tag_list : [],
     };
 
-    console.log('data');
-
     return data;
   };
-
-  console.log(getValidateForm());
 
   const onSubmit = async () => {
     if (!isValidateForm()) {
@@ -480,7 +476,7 @@ const NewTopic = props => {
             value={content}
             selectionColor={'#ff193a'}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row'}}>
             <Pressable
               style={styles.addTextNameWrap}
               onPress={() => navigation.navigate('AddHashTag')}
