@@ -97,7 +97,7 @@ const MovementDetail = ({navigation, route}) => {
           <FastImg source={{uri: detail.cover_url}} mode="cover" style={styles.coverImage} />
           <View style={styles.contentHeader}>
             <View style={styles.titleWrap}>
-              <Text style={styles.title}>{detail.category_name}</Text>
+              <Text style={styles.title}>{detail.name}</Text>
               <Pressable style={styles.btnWrap} onPress={handleJoined}>
                 <IconFont
                   size={12}

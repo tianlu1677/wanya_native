@@ -85,17 +85,20 @@ const CommentInput = (props) => {
       transparent={true}
       onBackdropPress={onBackdropPress}
       onModalHide={onBackdropPress}
-      avoidKeyboard={true}
       onShow={() => {
+        if(Platform.OS === 'ios') {
+          return
+        }
         setTimeout(() => {
           this.inputRef.blur();
           this.inputRef.focus();
         }, 200)
       }}
-      style={{margin: 0, flex: 1}}>
+      style={{margin: 0}}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+        style={{flex: 1, margin: 0}}
+        >
         <View style={styles.content}>
           <Pressable style={styles.content} onPress={onBackdropPress} />
           <View style={styles.wrapper}>
