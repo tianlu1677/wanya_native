@@ -28,7 +28,7 @@ const MovementDetail = ({navigation, route}) => {
   const [headerHeight, setHeaderHeight] = useState(300);
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
-  const [currentKey, setCurrentKey] = useState('theory');
+  const [currentKey, setCurrentKey] = useState('lesson');
   const [showModal, setShowModal] = useState(false);
 
   const publishTheory = () => {
@@ -113,7 +113,9 @@ const MovementDetail = ({navigation, route}) => {
               {detail.category_name} / {detail.level_text}
             </Text>
             <Pressable onPress={goJoinAccounts} style={styles.accountInfoWrap}>
-              <JoinAccounts accounts={joinAccounts} size={25} />
+              {joinAccounts.length > 0 ? (
+                <JoinAccounts accounts={joinAccounts} size={25} style={{marginRight: 7}} />
+              ) : null}
               <Text style={styles.count}>
                 {detail.join_accounts_count
                   ? `${detail.join_accounts_count}个板友已get`
@@ -237,7 +239,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginTop: RFValue(10),
   },
-
   accountInfoWrap: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -246,7 +247,6 @@ const styles = StyleSheet.create({
   count: {
     color: '#3D3D3D',
     fontSize: 11,
-    marginLeft: 7,
   },
   intro: {
     fontSize: 13,
