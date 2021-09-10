@@ -5,7 +5,9 @@ import {RFValue} from '@/utils/response-fontsize';
 import {getAccountBaseInfo} from '@/api/account_api';
 
 export const PlainContent = props => {
-  const {data} = props;
+  const {
+    data: {hashtag_content_json = [], plain_content},
+  } = props;
   const navigation = useNavigation();
 
   const goHashTagDetail = name => {
@@ -18,9 +20,9 @@ export const PlainContent = props => {
   };
 
   return (
-    <Text numberOfLines={props.numberOfLines} style={[cstyles.plainWrap, props.style]}>
-      {data.hashtag_content_json ? (
-        data.hashtag_content_json.map((v, index) => {
+    <Text numberOfLines={props.numberOfLines} style={[cstyles.plainText, props.style]}>
+      {hashtag_content_json.length > 0 ? (
+        hashtag_content_json.map((v, index) => {
           return (
             <Text key={index}>
               {v.is_hashtag && (
@@ -33,23 +35,23 @@ export const PlainContent = props => {
                   {v.content}&nbsp;
                 </Text>
               )}
-              {!v.is_hashtag && !v.is_mention && <Text space="nbsp">{v.content} </Text>}
+              {!v.is_hashtag && !v.is_mention && <Text>{v.content}&nbsp;</Text>}
             </Text>
           );
         })
       ) : (
-        <Text>{data.plain_content}</Text>
+        <Text>{plain_content}</Text>
       )}
     </Text>
   );
 };
 
 const cstyles = StyleSheet.create({
-  plainWrap: {
+  plainText: {
     fontSize: 14,
     lineHeight: RFValue(21),
     color: '#3c3c3c',
-    letterSpacing: 0.5,
+    letterSpacing: 1,
     textAlign: 'justify',
   },
   hashtagText: {

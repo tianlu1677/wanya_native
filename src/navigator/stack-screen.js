@@ -34,8 +34,8 @@ export const MainStackScreen = props => {
       screenOptions={() => ({
         headerStyle: {backgroundColor: 'white', shadowOpacity: 0},
         headerBackTitleVisible: false,
-        headerLeftContainerStyle: {paddingLeft: 14},
-        headerRightContainerStyle: {paddingRight: 14},
+        headerLeftContainerStyle: {paddingHorizontal: 14},
+        headerRightContainerStyle: {paddingHorizontal: 14},
         headerTitleStyle: {fontWeight: '500', fontSize: 16},
         headerLeft: () => <HeaderLeft {...props} image={BackBlack} />,
       })}>
