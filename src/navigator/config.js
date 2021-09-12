@@ -42,6 +42,11 @@ import CreateNodeInfo from '@/pages/nodes/create-node-info';
 import CreateNodeType from '@/pages/nodes/create-node-type';
 import CreateNodeResult from '@/pages/nodes/create-node-result';
 
+// goods
+import CreateGoodsLink from '@/pages/goods/create-goods-link';
+import CreateGoodsInfo from '@/pages/goods/create-goods-info';
+import CreateGoodsType from '@/pages/goods/create-goods-type';
+
 // 场地
 import Space from '@/pages/spaces/space';
 import SpaceDetail from '@/pages/spaces/space-detail';
@@ -232,6 +237,12 @@ const shopBrandRouter = [
   {name: 'ShopBrandDetail', component: ShopBrandDetail, options: {headerShown: false}},
 ];
 
+const goodsRouter = [
+  {name: 'CreateGoodsLink', component: CreateGoodsLink, options: {title: '添加顽物'}},
+  {name: 'CreateGoodsInfo', component: CreateGoodsInfo},
+  {name: 'CreateGoodsType', component: CreateGoodsType},
+];
+
 const mineRouter = [
   {name: 'Settings', component: Settings, options: {title: '设置'}},
   {name: 'AccountContent', component: AccountContent, options: {title: '编辑个人资料'}},
@@ -321,6 +332,7 @@ export const MainRouters = [
   ...LabRouter,
   ...authRouter,
   ...chatRouter,
+  ...goodsRouter,
 ];
 
 export const AuthRouters = authRouter;

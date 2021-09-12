@@ -20,6 +20,7 @@ import {
   Avator,
   BottomModal,
   TopBack,
+  JoinActivity,
 } from '@/components/NodeComponents';
 import {
   getShopBrandDetail,
@@ -34,79 +35,6 @@ import PersonImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
 
 const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 485) / 750);
-
-const ShopBrandDetail = props => {
-  const {shopBrandId} = props.route.params;
-  const [currentKey, setCurrentKey] = useState('post');
-  const [detail, setDetail] = useState(null);
-  const [joinAccounts, setJoinAccounts] = useState([]);
-
-  const PostListPage = () => {
-    const params = {api: getShopBrandPosts, params: {id: shopBrandId}};
-    return <SingleList request={params} enableRefresh={false} />;
-  };
-
-  const TopicListPage = () => {
-    const params = {api: getShopBrandTopics, params: {id: shopBrandId}};
-    return <TopicList request={params} enableRefresh={false} />;
-  };
-
-  const ArticleListPage = () => {
-    const params = {api: getShopBrandArticles, params: {id: shopBrandId}};
-    return <ArticleList request={params} enableRefresh={false} />;
-  };
-
-  const loadData = async () => {
-    const res = await getShopBrandDetail(shopBrandId);
-    const ret = await getShopBrandJoinAccounts({id: shopBrandId, sort: 'publish_order'});
-    setJoinAccounts(ret.data.accounts.slice(0, 4));
-    setDetail(res.data.shop_brand);
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  return detail ? (
-    <View style={styles.wrapper}>
-      <CollapsibleHeader
-        tabBarHeitabBarHeightght={BarHeight}
-        headerHeight={HEADER_HEIGHT + BarHeight}
-        currentKey={currentKey}
-        onKeyChange={key => setCurrentKey(key)}
-        separator={true}
-        renderTopHeader={<StickTopHeader title={detail.name} />}
-        renderHeader={
-          <RenderHeader
-            detail={detail}
-            joinAccounts={joinAccounts}
-            loadData={loadData}
-            {...props}
-          />
-        }
-        tabData={[
-          {
-            key: 'post',
-            title: '动态',
-            component: PostListPage,
-          },
-          {
-            key: 'topic',
-            title: '帖子',
-            component: TopicListPage,
-          },
-          {
-            key: 'article',
-            title: '文章',
-            component: ArticleListPage,
-          },
-        ]}
-      />
-    </View>
-  ) : (
-    <Loading />
-  );
-};
 
 const RenderHeader = props => {
   const dispatch = useDispatch();
@@ -205,6 +133,85 @@ const RenderHeader = props => {
         content={`简介：${detail.intro}`}
       />
     </>
+  );
+};
+
+const ShopBrandDetail = props => {
+  const {navigation} = props;
+  const {shopBrandId} = props.route.params;
+  const [currentKey, setCurrentKey] = useState('post');
+  const [detail, setDetail] = useState(null);
+  const [joinAccounts, setJoinAccounts] = useState([]);
+
+  const createGoods = () => {
+    navigation.navigate('CreateGoodsLink');
+  };
+
+  const PostListPage = () => {
+    const params = {api: getShopBrandPosts, params: {id: shopBrandId}};
+    return <SingleList request={params} enableRefresh={false} />;
+  };
+
+  const TopicListPage = () => {
+    const params = {api: getShopBrandTopics, params: {id: shopBrandId}};
+    return <TopicList request={params} enableRefresh={false} />;
+  };
+
+  const ArticleListPage = () => {
+    const params = {api: getShopBrandArticles, params: {id: shopBrandId}};
+    return <ArticleList request={params} enableRefresh={false} />;
+  };
+
+  const loadData = async () => {
+    const res = await getShopBrandDetail(shopBrandId);
+    const ret = await getShopBrandJoinAccounts({id: shopBrandId, sort: 'publish_order'});
+    setJoinAccounts(ret.data.accounts.slice(0, 4));
+    setDetail(res.data.shop_brand);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  return detail ? (
+    <View style={styles.wrapper}>
+      <CollapsibleHeader
+        tabBarHeitabBarHeightght={BarHeight}
+        headerHeight={HEADER_HEIGHT + BarHeight}
+        currentKey={currentKey}
+        onKeyChange={key => setCurrentKey(key)}
+        separator={true}
+        renderTopHeader={<StickTopHeader title={detail.name} />}
+        renderHeader={
+          <RenderHeader
+            detail={detail}
+            joinAccounts={joinAccounts}
+            loadData={loadData}
+            {...props}
+          />
+        }
+        tabData={[
+          {
+            key: 'post',
+            title: '动态',
+            component: PostListPage,
+          },
+          {
+            key: 'topic',
+            title: '帖子',
+            component: TopicListPage,
+          },
+          {
+            key: 'article',
+            title: '文章',
+            component: ArticleListPage,
+          },
+        ]}
+      />
+      <JoinActivity type="node" text="添加顽物" handleClick={createGoods} />
+    </View>
+  ) : (
+    <Loading />
   );
 };
 
