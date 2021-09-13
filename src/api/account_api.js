@@ -20,6 +20,15 @@ export async function buildAccount(params = {code: ''}) {
   return res.data;
 }
 
+// 注销用户信息
+export async function blockedAccount(data = {}) {
+  const res = await request({
+    url: '/api/v1/mine/accounts/blocked',
+    method: 'POST',
+  });
+  return res.data;
+}
+
 // 获取当前用户信息
 export async function getCurrentAccount() {
   const res = await request({

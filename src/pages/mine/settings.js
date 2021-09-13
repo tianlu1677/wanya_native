@@ -1,5 +1,14 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, Linking, StyleSheet, View, Pressable, Text} from 'react-native';
+import {
+  SafeAreaView,
+  StatusBar,
+  Alert,
+  Linking,
+  StyleSheet,
+  View,
+  Pressable,
+  Text,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 import Helper from '@/utils/helper';
@@ -10,6 +19,7 @@ import {BaseApiUrl} from '@/utils/config';
 import {IsIos} from '@/utils/navbar';
 import {WANYA_VERSION} from '@/utils/config';
 import {logoutCurrentAccount} from '@/redux/actions';
+import {blockedAccount } from '@/api/account_api'
 
 const Settings = ({navigation, route}) => {
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -65,9 +75,47 @@ const Settings = ({navigation, route}) => {
           routes: [{name: 'SocialLogin'}],
         });
         break;
+      case 'cancel_account':
+        Alert.alert(
+          `您确定要注销您的账号 ${currentAccount.nickname} 吗?`,
+          '一旦您注销账号，则此账号的相关数据则会删除',
+          [
+            {
+              text: '确定',
+              onPress: () => {
+                Alert.alert(`您要注销的用户用户名是: ${currentAccount.nickname}`, '', [
+                  {
+                    text: '确定',
+                    onPress: () => cancelAccount(),
+                  },
+                  {
+                    text: '取消注销',
+                    onPress: () => '',
+                  },
+                ]);
+              },
+              style: 'cancel',
+            },
+            {
+              cancelable: true,
+              text: '取消',
+              onPress: () => {},
+            },
+          ]
+        );
       default:
         break;
     }
+  };
+
+  const cancelAccount = async () => {
+    // await Helper.clearAllData();
+    // await dispatch(logoutCurrentAccount());
+    await blockedAccount({id: currentAccount.id});
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{name: 'SocialLogin'}],
+    // });
   };
 
   const ForwardRight = () => {
@@ -159,6 +207,18 @@ const Settings = ({navigation, route}) => {
           <ItemTitle>退出</ItemTitle>
           <ForwardRight />
         </ItemView>
+
+        {
+          !IsIos &&  <ItemView
+            style={[styles.bottomBorder1px, styles.nestLine]}
+            onPress={() => {
+              goPages('cancel_account');
+            }}>
+            <ItemTitle>注销</ItemTitle>
+            <ForwardRight />
+          </ItemView>
+        }
+
       </View>
       <Text style={styles.version}>current Version {WANYA_VERSION}</Text>
     </View>
