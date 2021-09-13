@@ -160,7 +160,7 @@ const CreateNodeType = props => {
           {visible && (
             <CategoryDrawer
               currentId={createNode.category?.id || null}
-              onChooseValue={onChooseValue}
+              onSubmit={onChooseValue}
               onCancel={() => setVisible(false)}
             />
           )}

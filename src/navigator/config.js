@@ -15,7 +15,7 @@ const forVerticalIOS = {
 import SearchIndex from '@/pages/search/search-index';
 
 // Topic
-import NewTopic from '@/pages/topics/new-topic';
+import NewTopic from '@/pages/topics/new-topic/index';
 import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
@@ -42,10 +42,11 @@ import CreateNodeInfo from '@/pages/nodes/create-node-info';
 import CreateNodeType from '@/pages/nodes/create-node-type';
 import CreateNodeResult from '@/pages/nodes/create-node-result';
 
-// goods
-import CreateGoodsLink from '@/pages/goods/create-goods-link';
-import CreateGoodsInfo from '@/pages/goods/create-goods-info';
-import CreateGoodsType from '@/pages/goods/create-goods-type';
+// Product
+import ProductDetail from '@/pages/products/product-detail';
+import CreateProductLink from '@/pages/products/create-product-link';
+import CreateProductInfo from '@/pages/products/create-product-info';
+import CreateProductType from '@/pages/products/create-product-type';
 
 // 场地
 import Space from '@/pages/spaces/space';
@@ -237,10 +238,11 @@ const shopBrandRouter = [
   {name: 'ShopBrandDetail', component: ShopBrandDetail, options: {headerShown: false}},
 ];
 
-const goodsRouter = [
-  {name: 'CreateGoodsLink', component: CreateGoodsLink, options: {title: '添加顽物'}},
-  {name: 'CreateGoodsInfo', component: CreateGoodsInfo},
-  {name: 'CreateGoodsType', component: CreateGoodsType},
+const productRouter = [
+  {name: 'ProductDetail', component: ProductDetail, options: {title: '添加顽物'}},
+  {name: 'CreateProductLink', component: CreateProductLink, options: {title: '添加顽物'}},
+  {name: 'CreateProductInfo', component: CreateProductInfo, options: {title: '添加顽物'}},
+  {name: 'CreateProductType', component: CreateProductType, options: {title: '选择领域及品类'}},
 ];
 
 const mineRouter = [
@@ -332,7 +334,7 @@ export const MainRouters = [
   ...LabRouter,
   ...authRouter,
   ...chatRouter,
-  ...goodsRouter,
+  ...productRouter,
 ];
 
 export const AuthRouters = authRouter;

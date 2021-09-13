@@ -9,6 +9,7 @@ import topicReducer from './topic_reducer';
 import nodeReducer from './node_reducer';
 import spaceReducer from './space_reducer';
 import theoryReducer from './theory_reducer';
+import productReducer from './product_reducer';
 
 // import counterReducer from './counterReducer';
 
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   node: nodeReducer,
   space: spaceReducer,
   theory: theoryReducer,
+  product: productReducer,
 });
 // Exports
 export default rootReducer;

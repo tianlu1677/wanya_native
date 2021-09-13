@@ -1,18 +1,19 @@
 import React from 'react';
 import {View, Text, Pressable, StyleSheet, ScrollView} from 'react-native';
+import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 
 const CategoryDrawer = props => {
-  const {currentId, onChooseValue} = props;
+  const {currentId, onSubmit, onCancel} = props;
   const categories = useSelector(state => state.home.categoryList);
 
   return (
     <View style={[dstyles.position, dstyles.drawerWrap]}>
-      <Pressable style={[dstyles.position, dstyles.drawerOpacity]} onPress={props.onCancel} />
+      <Pressable style={[dstyles.position, dstyles.drawerOpacity]} onPress={onCancel} />
       <ScrollView style={dstyles.content}>
         {categories.map(item => (
-          <Pressable key={item.id} style={dstyles.item} onPress={() => onChooseValue(item)}>
+          <Pressable key={item.id} style={dstyles.item} onPress={() => onSubmit(item)}>
             <Text style={dstyles.itemtext}>{item.name}</Text>
             {currentId === item.id && <IconFont name={'yixuan'} size={16} color={'#000'} />}
           </Pressable>
@@ -20,6 +21,12 @@ const CategoryDrawer = props => {
       </ScrollView>
     </View>
   );
+};
+
+CategoryDrawer.propTypes = {
+  currentId: PropTypes.string.required || PropTypes.string.number,
+  onSubmit: PropTypes.func.required,
+  onCancel: PropTypes.func.required,
 };
 
 const dstyles = StyleSheet.create({
@@ -36,13 +43,13 @@ const dstyles = StyleSheet.create({
   drawerOpacity: {
     backgroundColor: '#000',
     opacity: 0.3,
-    elevation: 4
+    elevation: 4,
   },
   content: {
     backgroundColor: '#fff',
     width: '44%',
     zIndex: 1000,
-    elevation: 4
+    elevation: 4,
   },
   item: {
     height: 45,

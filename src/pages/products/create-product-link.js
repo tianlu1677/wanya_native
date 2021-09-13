@@ -4,7 +4,7 @@ import {Keyboard, KeyboardAvoidingView} from 'react-native';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 
-const CreateGoodsLink = props => {
+const CreateProductLink = props => {
   const {navigation} = props;
   const [value, setValue] = useState('');
 
@@ -15,7 +15,7 @@ const CreateGoodsLink = props => {
   };
 
   const handleClick = () => {
-    navigation.navigate('CreateGoodsInfo');
+    navigation.navigate('CreateProductInfo');
   };
 
   useLayoutEffect(() => {
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateGoodsLink;
+export default CreateProductLink;

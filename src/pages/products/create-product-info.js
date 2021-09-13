@@ -10,14 +10,14 @@ const {width} = Dimensions.get('window');
 const mediaWidth = Math.floor((width - (30 * 2 + 10 * 3)) / 4);
 console.log('mediaWidth', mediaWidth);
 
-const CreateGoodsLink = props => {
+const CreateProductLink = props => {
   const {navigation} = props;
   const [value, setValue] = useState('');
 
   const isClick = () => (1 ? true : false);
 
   const goStepClick = () => {
-    navigation.navigate('CreateGoodsType');
+    navigation.navigate('CreateProductType');
   };
 
   useLayoutEffect(() => {
@@ -137,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateGoodsLink;
+export default CreateProductLink;

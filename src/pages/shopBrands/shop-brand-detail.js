@@ -12,6 +12,9 @@ import {RFValue} from '@/utils/response-fontsize';
 import {SCREEN_WIDTH, BarHeight} from '@/utils/navbar';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
+import GoodList from '@/components/List/good-list';
+import {getProductsPost} from '@/api/product_api';
+
 import ArticleList from '@/components/List/article-list';
 import {
   BlurView,
@@ -144,7 +147,13 @@ const ShopBrandDetail = props => {
   const [joinAccounts, setJoinAccounts] = useState([]);
 
   const createGoods = () => {
-    navigation.navigate('CreateGoodsLink');
+    // navigation.navigate('CreateProductLink');
+    navigation.navigate('CreateProductType');
+  };
+
+  const GoodListPage = () => {
+    const queryUrl = `q[shop_brand_id_eq]=${detail.id}`;
+    return <GoodList request={{api: getProductsPost, params: {queryUrl}}} />;
   };
 
   const PostListPage = () => {
@@ -169,6 +178,7 @@ const ShopBrandDetail = props => {
     setDetail(res.data.shop_brand);
   };
 
+  console.log('detail', detail);
   useEffect(() => {
     loadData();
   }, []);
@@ -191,6 +201,11 @@ const ShopBrandDetail = props => {
           />
         }
         tabData={[
+          {
+            key: 'good',
+            title: '顽物',
+            component: GoodListPage,
+          },
           {
             key: 'post',
             title: '动态',
