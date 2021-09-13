@@ -1,109 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Pressable} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {StyleSheet, View} from 'react-native';
 import {RFValue} from '@/utils/response-fontsize';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
+import ProductList from '@/components/List/product-list';
 import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
 import {RecommendSearch} from '@/components/NodeComponents';
 import TabView from '@/components/TabView';
 import {getAppCardList} from '@/api/discovery_api';
+import {getProductsPost} from '@/api/product_api';
+import Category from './category';
 
-const CategoryComponent = props => {
-  const dispatch = useDispatch();
-  const {location} = useSelector(state => state.home);
-
-  const {
-    navigation,
-    category,
-    category: {movement, space, activity, shop_store, shop_brand},
-  } = props;
-
-  const goPageMethod = name => {
-    dispatch({
-      type: action.GET_LOCATION,
-      value: {...location, chooseCity: location.positionCity || '全国'},
-    });
-    navigation.navigate(name, {category: category.category_name});
-  };
-
-  return (
-    <View style={styles.content}>
-      {/* movement */}
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Movement')}>
-        <FastImg source={require('@/assets/discovery/lesson.png')} style={styles.slideImage} />
-        <FastImg source={require('@/assets/discovery/lesson_text.png')} style={styles.text} />
-        <View style={styles.itemRight}>
-          <Text style={styles.itemText}>
-            {movement.count > 0 ? `${movement.count}个` : '还没有'}
-            {category.category_name}技巧
-          </Text>
-          <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
-        </View>
-      </Pressable>
-      <View style={styles.separator} />
-
-      {/* space */}
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Space')}>
-        <FastImg source={require('@/assets/discovery/space.png')} style={styles.slideImage} />
-        <FastImg source={require('@/assets/discovery/space_text.png')} style={styles.text} />
-        <View style={styles.itemRight}>
-          <Text style={styles.itemText}>
-            {space.count > 0 ? `${space.count}个` : '还没有'}
-            {category.category_name}场地
-          </Text>
-          <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
-        </View>
-      </Pressable>
-      <View style={styles.separator} />
-
-      {/*  activity */}
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Activity')}>
-        <FastImg source={require('@/assets/discovery/activity.png')} style={styles.slideImage} />
-        <FastImg source={require('@/assets/discovery/activity_text.png')} style={styles.text} />
-        <View style={styles.itemRight}>
-          <Text style={styles.itemText}>
-            {activity.count > 0 ? `${activity.count}个` : '还没有'}
-            {category.category_name}活动
-          </Text>
-          <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
-        </View>
-      </Pressable>
-      <View style={styles.separator} />
-
-      {/*  shop_store */}
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopStore')}>
-        <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
-        <FastImg source={require('@/assets/discovery/shop_store_text.png')} style={styles.store} />
-        <View style={styles.itemRight}>
-          <Text style={styles.itemText}>
-            {shop_store.count > 0 ? `${shop_store.count}个` : '还没有'}
-            {category.category_name}店
-          </Text>
-          <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
-        </View>
-      </Pressable>
-      <View style={styles.separator} />
-
-      {/* shop_brand */}
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopBrand')}>
-        <FastImg source={require('@/assets/discovery/shop_brand.png')} style={styles.slideImage} />
-        <FastImg source={require('@/assets/discovery/shop_brand_text.png')} style={styles.text} />
-        <View style={styles.itemRight}>
-          <Text style={styles.itemText}>
-            {shop_brand.count > 0 ? `${shop_brand.count}个` : '还没有'}
-            {category.category_name}品牌
-          </Text>
-          <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
-        </View>
-      </Pressable>
-      <View style={styles.separator} />
-    </View>
-  );
-};
-
-const DiscoveryIndex = props => {
+const Discovery = props => {
   const [currentKey, setCurrentKey] = useState(null);
   const [coveryData, setCoveryData] = useState([]);
 
@@ -114,8 +23,14 @@ const DiscoveryIndex = props => {
   };
 
   const RenderCaCategory = () => {
+    const queryUrl = `q[shop_brand_id_eq]=${1}`;
     const current = coveryData.find(item => item.category_key === currentKey);
-    return <CategoryComponent {...props} category={current} currentKey={currentKey} />;
+    return (
+      <ProductList
+        request={{api: getProductsPost, params: {queryUrl}}}
+        ListHeaderComponent={<Category {...props} category={current} currentKey={currentKey} />}
+      />
+    );
   };
 
   useEffect(() => {
@@ -193,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DiscoveryIndex;
+export default Discovery;

@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import BaseProduct from '@/components/Item/base-product';
 
-const GoodList = props => {
+const ProductList = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -39,8 +39,9 @@ const GoodList = props => {
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={() => null}
+      {...props}
     />
   );
 };
 
-export default GoodList;
+export default ProductList;

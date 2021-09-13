@@ -12,7 +12,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import {SCREEN_WIDTH, BarHeight} from '@/utils/navbar';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
-import GoodList from '@/components/List/good-list';
+import ProductList from '@/components/List/product-list';
 import {getProductsPost} from '@/api/product_api';
 
 import ArticleList from '@/components/List/article-list';
@@ -153,7 +153,7 @@ const ShopBrandDetail = props => {
 
   const GoodListPage = () => {
     const queryUrl = `q[shop_brand_id_eq]=${detail.id}`;
-    return <GoodList request={{api: getProductsPost, params: {queryUrl}}} />;
+    return <ProductList request={{api: getProductsPost, params: {queryUrl}}} />;
   };
 
   const PostListPage = () => {

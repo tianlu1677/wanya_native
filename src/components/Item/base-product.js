@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: VWValue(12),
     paddingBottom: 20,
+    backgroundColor: '#fff',
   },
   image: {
     width: imageWidth,
