@@ -7,6 +7,7 @@ export const getCommentList = async params => {
     method: 'GET',
     params: params,
   });
+  console.log('res23232', res);
   return res;
 };
 
@@ -42,11 +43,13 @@ export const getCommentList = async params => {
 
 // 创建评论
 export const createComment = async (data = {}) => {
+  console.log('params', data);
   const res = await request({
     url: '/api/v1/comments',
     method: 'POST',
     data,
   });
+  console.log('res22222', res);
   return res;
 };
 

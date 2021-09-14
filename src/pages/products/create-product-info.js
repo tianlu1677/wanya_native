@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Pressable, StyleSheet, TextInput, Dimensions} from 'react-native';
-import {Keyboard, KeyboardAvoidingView} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
@@ -12,8 +12,12 @@ console.log('mediaWidth', mediaWidth);
 
 const CreateProductLink = props => {
   const {navigation} = props;
+  const {createProduct} = useSelector(state => state.product);
+  const {detail} = createProduct;
+
   const [value, setValue] = useState('');
 
+  console.log('createProduct', createProduct);
   const isClick = () => (1 ? true : false);
 
   const goStepClick = () => {
@@ -29,32 +33,45 @@ const CreateProductLink = props => {
     <View style={styles.wrapper}>
       <Text style={styles.title}>商品链接</Text>
       <TextInput
+        editable={false}
         style={styles.content}
         selectionColor="#ff193a"
-        editable={false}
-        value={'早秋新品SSURPLUS早秋新品SSURPLUS早早秋新品早秋新品早秋新品'}
+        value={detail.item_url}
       />
       <Text style={styles.title}>商品名称</Text>
       <TextInput
+        editable={false}
         style={styles.content}
         selectionColor="#ff193a"
-        editable={false}
-        value={'早秋新品SSURPLUS早秋新品SSURPLUS早早秋新品早秋新品早秋新品'}
+        value={detail.title}
       />
       <Text style={styles.title}>商品价格</Text>
-      <TextInput style={styles.content} selectionColor="#ff193a" editable={false} value={'¥ 198'} />
+      <TextInput
+        editable={false}
+        style={styles.content}
+        selectionColor="#ff193a"
+        value={`¥ ${detail.reserve_price}`}
+      />
       <Text style={styles.title}>商品图片</Text>
       <View style={styles.imageContent}>
-        {[1, 2, 3, 4, 5, 6].map((item, index) => (
+        {detail.small_images.string.map((item, index) => (
           <View
             key={index}
             style={[styles.imageWrap, {marginRight: (index + 1) % 4 === 0 ? 0 : 10}]}>
+            <FastImg style={styles.image} source={{uri: item}} mode="cover" />
             <FastImg style={styles.image} source={require('@/assets/images/add-photo.png')} />
+
             <Pressable style={styles.mediaCloseWrap}>
               <FastImg style={styles.closeIcon} source={require('@/assets/images/close.png')} />
             </Pressable>
           </View>
         ))}
+        <View style={[styles.imageWrap]}>
+          <FastImg style={styles.image} source={require('@/assets/images/add-photo.png')} />
+          <Pressable style={styles.mediaCloseWrap}>
+            <FastImg style={styles.closeIcon} source={require('@/assets/images/close.png')} />
+          </Pressable>
+        </View>
       </View>
       <Text
         style={[styles.surebtn, isClick() ? styles.canClick : styles.disabled]}

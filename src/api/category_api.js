@@ -10,6 +10,15 @@ export const getCategoryList = async (params = {}) => {
   return res.data.categories;
 };
 
+// 圈子分类 类型
+export async function getCategoryId(id) {
+  const res = await request({
+    url: `/api/v1/categories/${id}`,
+    method: 'GET',
+  });
+  return res.data.category;
+}
+
 // 多级筛选数据
 export const getCategoryProfile = async id => {
   const res = await request({
@@ -35,14 +44,6 @@ export const getCategoryProfile = async id => {
 //   });
 //   return res.data.categories;
 // }
-
-export async function getCategory(id) {
-  const res = await request({
-    url: `/api/v1/categories/${id}`,
-    method: 'GET',
-  });
-  return res.data;
-}
 
 export async function getCategoryTopics(id, queryUrl, params) {
   const res = await request({

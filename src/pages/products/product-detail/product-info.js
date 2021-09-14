@@ -49,17 +49,16 @@ const ProductInfo = props => {
         </View>
         <Text style={styles.name}>{name}</Text>
       </View>
-      <View style={[styles.slideView, styles.shopBrandWrap]}>
-        <FastImg source={{uri: shop_brand.cover_url}} style={styles.brandImage} />
-        <View style={styles.brandInfo}>
-          <Text style={styles.brandName}>{shop_brand.name}</Text>
-          <Text style={styles.branddiscuss}>{FilterScore(shop_brand.play_score)} 收藏</Text>
+      {shop_brand ? (
+        <View style={[styles.slideView, styles.shopBrandWrap]}>
+          <FastImg source={{uri: shop_brand.cover_url}} style={styles.brandImage} />
+          <View style={styles.brandInfo}>
+            <Text style={styles.brandName}>{shop_brand.name}</Text>
+            <Text style={styles.branddiscuss}>{FilterScore(shop_brand.play_score)} 收藏</Text>
+          </View>
+          <Text style={styles.discuss}>查看品牌</Text>
         </View>
-        <Text style={styles.discuss}>查看品牌</Text>
-      </View>
-      <View style={styles.slideView}>
-        <Text style={styles.discuss}>查看品牌</Text>
-      </View>
+      ) : null}
     </View>
   );
 };

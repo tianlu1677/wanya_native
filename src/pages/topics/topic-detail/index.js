@@ -53,15 +53,16 @@ const TopicDetail = ({navigation, route}) => {
   const [actionItems, setActionItems] = useState([]);
 
   const isSelf = detail && detail.account_id === currentAccount.id;
-  const isRenderHeader =
-    detail && isVideo && ['img', 'text', 'link'].includes(detail.content_style);
   const isVideo = detail && detail.content_style === 'video' && !detail.is_long_video;
+  const isRenderHeader =
+    detail && (['img', 'text', 'link'].includes(detail.content_style) || isVideo);
   const isLongVideo = detail && detail.content_style === 'video' && detail.is_long_video;
   const longVideoDetail = detail && {
     ...detail,
     node: detail.node ? {...detail.node, topics_count: 0} : null,
   };
 
+  console.log('detail', isRenderHeader);
   const HeaderHeight = IsIos ? -BOTTOM_HEIGHT : BarHeight;
   const TopHeight = IsIos ? headerHeight - BOTTOM_HEIGHT : STATUS_BAR_HEIGHT + 55;
   const Offset = isRenderHeader ? HeaderHeight : TopHeight;
@@ -101,10 +102,7 @@ const TopicDetail = ({navigation, route}) => {
   };
 
   const onFollow = async () => {
-    const res = followed
-      ? await unfollowAccount(detail.account_id)
-      : await followAccount(detail.account_id);
-    console.log('res', res);
+    followed ? await unfollowAccount(detail.account_id) : await followAccount(detail.account_id);
     setFollowed(!followed);
   };
 
@@ -133,22 +131,33 @@ const TopicDetail = ({navigation, route}) => {
     setFollowed(topicDetail ? topicDetail.account.followed : false);
   }, [topicDetail]);
 
-  console.log('de', detail);
   useLayoutEffect(() => {
-    if (!isRenderHeader && !detail) {
+    if (!isRenderHeader || !detail) {
       return;
     }
-    const HeaderLeft = () => (
-      <Pressable>
-        <IconFont name="home-recommend" color="#000" size={15} />
-      </Pressable>
-    );
+
+    const HeaderLeft = () => {
+      const canBack = navigation.canGoBack();
+      const handleBack = () => {
+        if (canBack) {
+          navigation.goBack();
+        } else {
+          const params = {activityKey: 'follow'};
+          navigation.reset({index: 0, routes: [{name: 'Recommend', params}]});
+        }
+      };
+      return (
+        <Pressable onPress={handleBack}>
+          <IconFont name={canBack ? 'arrow-left' : 'home-recommend'} color="#000" size={15} />
+        </Pressable>
+      );
+    };
 
     if (detail.content_style === 'link') {
       navigation.setOptions({
         headerShown: true,
         title: '帖子详情',
-        HeaderLeft: <HeaderLeft />,
+        headerLeft: () => <HeaderLeft />,
         headerRight: () => (
           <Pressable onPress={onReportClick}>
             <IconFont name="gengduo" color="#000" size={20} />
@@ -160,6 +169,7 @@ const TopicDetail = ({navigation, route}) => {
         headerShown: true,
         headerTitleAlign: 'left',
         headerTitleContainerStyle: {marginLeft: -30},
+        headerLeft: () => <HeaderLeft />,
         headerTitle: props => <HeaderTitle {...props} detail={detail} showFollow={false} />,
         headerRight: () => (
           <Text style={styles.attion} onPress={onFollow}>

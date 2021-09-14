@@ -26,8 +26,6 @@ const Category = props => {
     category: {movement, space, activity, shop_store, shop_brand},
   } = props;
 
-  console.log(props);
-
   const goPageMethod = name => {
     const value = {...location, chooseCity: location.positionCity || '全国'};
     dispatch({type: action.GET_LOCATION, value});

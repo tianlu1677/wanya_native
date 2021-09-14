@@ -1,34 +1,23 @@
 import React from 'react';
-import {View, Text, StatusBar, Pressable, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {useDispatch} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import {dispatchPreviewImage} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
-import {SAFE_TOP} from '@/utils/navbar';
 import {PlainContent} from '@/components/Item/single-list-item';
-import {
-  PublishAccount,
-  PublishRelated,
-  RelatedComponent,
-} from '@/components/Item/single-detail-item';
+import {PublishRelated, RelatedComponent} from '@/components/Item/single-detail-item';
 import {scaleDetailImage} from '@/utils/scale';
 
 const RenderImage = props => {
   const dispatch = useDispatch();
-  const currentAccount = useSelector(state => state.account.currentAccount);
-  const {account_id, media_images, excellent, plain_content, location, space} = props.detail;
-  const isSelf = currentAccount.id !== account_id;
-
+  const {media_images, excellent, plain_content} = props.detail;
   const mediaImages = scaleDetailImage(media_images);
 
   const onPreview = index => {
-    const data = {
-      images: mediaImages.map(v => {
-        return {url: v.image_url.split('?')[0]};
-      }),
-      visible: true,
-      index,
-    };
+    const images = mediaImages.map(v => {
+      return {url: v.image_url.split('?')[0]};
+    });
+    const data = {images, visible: true, index};
     dispatch(dispatchPreviewImage(data));
   };
 
@@ -45,7 +34,7 @@ const RenderImage = props => {
         <Swiper
           index={0}
           loop={false}
-          activeDotColor="yellow"
+          activeDotColor="#ff2242"
           dotColor="white"
           removeClippedSubviews={false}
           loadMinimal
@@ -79,10 +68,7 @@ const RenderImage = props => {
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 14,
-    // paddingRight: 24,
-    // paddingBottom: 10,
     paddingBottom: 0,
-    // backgroundColor: 'pink',
     marginTop: 15,
   },
   multiLineText: {

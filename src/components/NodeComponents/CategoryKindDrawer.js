@@ -1,23 +1,32 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Pressable, StyleSheet, ScrollView} from 'react-native';
 import PropTypes from 'prop-types';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import IconFont from '@/iconfont';
 
-const CategoryDrawer = props => {
-  const {currentId, onSubmit, onCancel} = props;
+import {dispatchFetchCategoryId} from '@/redux/actions';
 
-  const categories = useSelector(state => state.home.categoryList);
-  const {createProduct} = useSelector(state => state.product);
+const CategoryDrawer = props => {
+  const dispatch = useDispatch();
+  const {categoryId, current, onSubmit, onCancel} = props;
+  const categoryDetail = useSelector(state => state.home.categoryId);
+  const typeList = categoryDetail?.category_brand_type_list || [];
+  console.log('categoryDetail', categoryDetail);
+
+  useEffect(() => {
+    if (categoryId) {
+      dispatch(dispatchFetchCategoryId(categoryId));
+    }
+  }, [categoryId]);
 
   return (
     <View style={[dstyles.position, dstyles.drawerWrap]}>
       <Pressable style={[dstyles.position, dstyles.drawerOpacity]} onPress={onCancel} />
       <ScrollView style={dstyles.content}>
-        {categories.map(item => (
+        {typeList.map(item => (
           <Pressable key={item.id} style={dstyles.item} onPress={() => onSubmit(item)}>
-            <Text style={dstyles.itemtext}>{item.name}</Text>
-            {currentId === item.id && <IconFont name={'yixuan'} size={16} color={'#000'} />}
+            <Text style={dstyles.itemtext}>{item}</Text>
+            {current === item && <IconFont name={'yixuan'} size={16} color={'#000'} />}
           </Pressable>
         ))}
       </ScrollView>

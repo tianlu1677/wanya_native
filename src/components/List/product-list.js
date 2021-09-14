@@ -21,6 +21,7 @@ const ProductList = props => {
     console.log('res', res);
     const data = res.data.products;
     setHeaders(res.headers);
+    // setListData([{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}]);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
   };
@@ -39,6 +40,7 @@ const ProductList = props => {
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={() => null}
+      style={{flex: 1, backgroundColor: 'pink'}}
       {...props}
     />
   );

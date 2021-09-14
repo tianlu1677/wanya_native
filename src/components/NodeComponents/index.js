@@ -30,6 +30,7 @@ export const CustomizeHeader = CustomizeHeaderNode;
 export const BottomModal = BottomModalNode;
 export const BlurView = BlurViewNode;
 export const CategoryDrawer = CategoryDrawerNode;
+export {default as CategoryKindDrawer} from './CategoryKindDrawer';
 export const RecommendSearch = RecommendSearchNode;
 export const SelectListHeader = SelectListHeaderNode;
 export const TopBack = TopBackNode;

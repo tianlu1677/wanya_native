@@ -6,7 +6,8 @@ import {debounce} from 'lodash';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import PersonImg from '@/assets/images/personal.png';
-import {CategoryDrawer} from '@/components/NodeComponents';
+import {CategoryDrawer, CategoryKindDrawer} from '@/components/NodeComponents';
+
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 
@@ -17,6 +18,7 @@ console.log('mediaWidth', mediaWidth);
 const CreateProductType = props => {
   // const state = useSelector(state => state);
   const {createProduct} = useSelector(state => state.product);
+  const {detail, category, brandType} = createProduct;
   const goodId = createProduct.id || null;
 
   const isCanClick = 1 ? true : false;
@@ -25,6 +27,8 @@ const CreateProductType = props => {
   const {navigation} = props;
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const [typeVisible, setTypeVisible] = useState(false);
+  const [brandVisible, setBrandVisible] = useState(false);
 
   const isClick = () => (1 ? true : false);
 
@@ -32,10 +36,17 @@ const CreateProductType = props => {
     setVisible(true);
   };
 
-  const onChooseValue = value => {
-    console.log('va;ue', value);
+  const handleCategorySubmit = data => {
+    console.log(data);
+    const value = {...createProduct, category: data};
+    dispatch({type: action.CREATE_PRODUCT, value});
     setVisible(false);
-    dispatch({type: action.CREATE_PRODUCT, value: {...createProduct, category: value}});
+  };
+
+  const handleTypeSubmit = data => {
+    const item = {...createProduct, brandType: data};
+    dispatch({type: action.CREATE_PRODUCT, value: item});
+    setTypeVisible(false);
   };
 
   const onCreateClick = async () => {
@@ -84,23 +95,15 @@ const CreateProductType = props => {
     <View style={styles.wrapper}>
       <Text style={styles.title}>商品领域</Text>
       <Pressable style={styles.slideView} onPress={onChooseType}>
-        <Text
-          style={[
-            styles.slidetext,
-            {color: createProduct.category && !goodId ? '#000' : '#bdbdbd'},
-          ]}>
-          {createProduct.category?.name || '请选择商品所属领域（必填）'}
+        <Text style={[styles.slidetext, {color: category && !goodId ? '#000' : '#bdbdbd'}]}>
+          {category?.name || '请选择商品所属领域（必填）'}
         </Text>
         <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
       </Pressable>
 
-      <Pressable style={styles.slideView} onPress={onChooseType}>
-        <Text
-          style={[
-            styles.slidetext,
-            {color: createProduct.category && !goodId ? '#000' : '#bdbdbd'},
-          ]}>
-          {createProduct.category?.name || '请选择商品所属品类（必填）'}
+      <Pressable style={styles.slideView} onPress={() => setTypeVisible(true)}>
+        <Text style={[styles.slidetext, {color: brandType && !goodId ? '#000' : '#bdbdbd'}]}>
+          {brandType || '请选择商品所属品类（必填）'}
         </Text>
         <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
       </Pressable>
@@ -128,9 +131,18 @@ const CreateProductType = props => {
 
       {visible && (
         <CategoryDrawer
-          currentId={null}
-          onSubmit={onChooseValue}
+          currentId={category?.id || null}
+          onSubmit={handleCategorySubmit}
           onCancel={() => setVisible(false)}
+        />
+      )}
+
+      {typeVisible && (
+        <CategoryKindDrawer
+          current={brandType || null}
+          categoryId={category?.id || null}
+          onSubmit={handleTypeSubmit}
+          onCancel={() => setTypeVisible(false)}
         />
       )}
     </View>

@@ -1,11 +1,15 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Pressable, StyleSheet, TextInput, Platform} from 'react-native';
 import {Keyboard, KeyboardAvoidingView} from 'react-native';
+import {useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
+import {getProductsItemDetail} from '@/api/product_api';
 
 const CreateProductLink = props => {
   const {navigation} = props;
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
 
   const isCanClick = value ? true : false;
@@ -14,7 +18,10 @@ const CreateProductLink = props => {
     setValue(text);
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    const params = {type: 'taobao', url: value};
+    const res = await getProductsItemDetail(params);
+    dispatch({type: action.CREATE_PRODUCT, value: {detail: res.data}});
     navigation.navigate('CreateProductInfo');
   };
 

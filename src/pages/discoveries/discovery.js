@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import {RFValue} from '@/utils/response-fontsize';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
@@ -8,9 +8,11 @@ import IconFont from '@/iconfont';
 import Loading from '@/components/Loading';
 import {RecommendSearch} from '@/components/NodeComponents';
 import TabView from '@/components/TabView';
+import Collapsible from './collapsible';
 import {getAppCardList} from '@/api/discovery_api';
 import {getProductsPost} from '@/api/product_api';
 import Category from './category';
+import TabList from '@/components/TabList';
 
 const Discovery = props => {
   const [currentKey, setCurrentKey] = useState(null);
@@ -37,23 +39,36 @@ const Discovery = props => {
     loadData();
   }, []);
 
+  const StickTopHeader = () => {
+    const options = {align: 'left', bottomLine: true, separator: false};
+
+    const tabChange = item => {
+      // onKeyChange(item.key, item.title);
+    };
+
+    const routes = [
+      {key: '32', title: '服饰'},
+      {key: '321', title: '服饰'},
+    ];
+    return <TabList {...options} current={'32'} tabChange={tabChange} data={routes} />;
+  };
+
   return (
     <View style={styles.wrapper}>
       <RecommendSearch style={{paddingBottom: 0}} />
       {coveryData.length > 0 ? (
-        <TabView
+        <Collapsible
+          coveryData={coveryData}
           currentKey={currentKey}
-          request={{}}
-          onChange={key => setCurrentKey(key)}
-          align="left"
-          bottomLine={true}
-          separator={false}
+          onKeyChange={key => setCurrentKey(key)}
+          renderTopHeader={<StickTopHeader />}
           tabData={coveryData.map(category => {
-            return {
+            const options = {
               key: category.category_key,
               title: category.category_name,
               component: RenderCaCategory,
             };
+            return options;
           })}
         />
       ) : (

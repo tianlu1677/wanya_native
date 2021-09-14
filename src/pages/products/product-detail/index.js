@@ -5,6 +5,7 @@ import CommentList from '@/components/List/comment-list';
 import {deleteComment, getCommentList} from '@/api/comment_api';
 import {getProducts} from '@/api/product_api';
 import ProductInfo from './product-info';
+import ProductComment from './product-comment';
 import ProductFooter from './product-footer';
 
 const ProductDetail = props => {
@@ -29,7 +30,7 @@ const ProductDetail = props => {
 
   return detail ? (
     <>
-      <CommentList
+      {/* <CommentList
         type="Topic"
         detail={detail}
         enableLoadMore={false}
@@ -38,13 +39,13 @@ const ProductDetail = props => {
         request={{api: getCommentList, params: {item_id: detail.id, item_type: 'Product'}}}
         ListHeaderComponent={
           <>
-            <ProductInfo detail={detail} />
-            <View>
-              <Text>顽物讨论</Text>
-            </View>
+            <ProductInfo detail={detail} {...props} />
+            <ProductComment detail={detail} {...props} />
           </>
         }
-      />
+      /> */}
+      <ProductInfo detail={detail} {...props} />
+      <ProductComment detail={detail} {...props} />
       <ProductFooter detail={detail} {...props} />
     </>
   ) : (

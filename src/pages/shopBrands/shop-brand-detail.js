@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
 import Loading from '@/components/Loading';
@@ -14,8 +15,8 @@ import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ProductList from '@/components/List/product-list';
 import {getProductsPost} from '@/api/product_api';
-
 import ArticleList from '@/components/List/article-list';
+
 import {
   BlurView,
   JoinAccounts,
@@ -140,15 +141,22 @@ const RenderHeader = props => {
 };
 
 const ShopBrandDetail = props => {
+  const dispatch = useDispatch();
   const {navigation} = props;
   const {shopBrandId} = props.route.params;
-  const [currentKey, setCurrentKey] = useState('post');
+  const [currentKey, setCurrentKey] = useState('product');
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
 
   const createGoods = () => {
     // navigation.navigate('CreateProductLink');
     navigation.navigate('CreateProductType');
+  };
+
+  const createTopic = () => {
+    const topics = {shop_brand_ids: [detail]};
+    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
+    navigation.navigate('NewTopic');
   };
 
   const GoodListPage = () => {
@@ -202,7 +210,7 @@ const ShopBrandDetail = props => {
         }
         tabData={[
           {
-            key: 'good',
+            key: 'product',
             title: '顽物',
             component: GoodListPage,
           },
@@ -223,7 +231,11 @@ const ShopBrandDetail = props => {
           },
         ]}
       />
-      <JoinActivity type="node" text="添加顽物" handleClick={createGoods} />
+      {currentKey === 'product' ? (
+        <JoinActivity type="node" text="添加顽物" handleClick={createGoods} />
+      ) : (
+        <JoinActivity type="node" text="发布动态" handleClick={createTopic} />
+      )}
     </View>
   ) : (
     <Loading />
