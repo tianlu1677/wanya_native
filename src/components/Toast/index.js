@@ -29,7 +29,7 @@ class Toast extends Component {
     });
   }
 
-  static showLoading(message, options = {}) {
+  static showLoading(message = '', options = {}) {
     this.show(String(message), {
       containerStyle: {
         minWidth: '30%',

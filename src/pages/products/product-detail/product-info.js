@@ -14,28 +14,29 @@ const ProductInfo = props => {
   const dispatch = useDispatch();
 
   const {
-    detail: {assets, price, category_name, hot_score, name, shop_brand},
+    detail: {images_list, price, category_name, hot_score, name, shop_brand},
   } = props;
 
   const onPreview = index => {
-    const data = {index, images: assets, visible: true};
+    const data = {index, images: images_list, visible: true};
     dispatch(dispatchPreviewImage(data));
   };
 
   return (
-    <View>
+    <>
       <View style={{...imageStyle}}>
         <Swiper
           index={0}
           loop={false}
-          activeDotColor="yellow"
+          activeDotColor="#ff2242"
           dotColor="white"
           removeClippedSubviews={false}
           loadMinimal
-          showsPagination={assets.length > 0}>
-          {assets.map((media, index) => (
-            <Pressable key={media.url} onPress={() => onPreview(index)}>
-              <FastImg source={{uri: media.url}} style={{...imageStyle}} />
+          showsPagination={images_list.length > 0}
+          paginationStyle={{bottom: 15}}>
+          {images_list.map((media, index) => (
+            <Pressable key={media} onPress={() => onPreview(index)}>
+              <FastImg source={{uri: media}} style={{...imageStyle}} />
             </Pressable>
           ))}
         </Swiper>
@@ -59,7 +60,7 @@ const ProductInfo = props => {
           <Text style={styles.discuss}>查看品牌</Text>
         </View>
       ) : null}
-    </View>
+    </>
   );
 };
 

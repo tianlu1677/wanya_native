@@ -10,8 +10,6 @@ const ProductComment = props => {
   const loadData = async () => {
     const params = {item_id: detail.id, item_type: 'Product'};
     const res = await getCommentList(params);
-    console.log('333333', res.data.comments);
-    // setDetail(res.data.product);
   };
 
   const onOpenComment = () => {

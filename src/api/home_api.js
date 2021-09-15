@@ -30,6 +30,7 @@ export const getRecommendPosts = async (params = {}) => {
 
 // 关注帖子
 export const getFollowedPosts = async (params = {}) => {
+  console.log('params', params);
   const res = request({
     url: '/api/v1/recommend/followed_posts',
     method: 'GET',

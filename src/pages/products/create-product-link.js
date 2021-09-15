@@ -1,36 +1,58 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import {View, Text, Pressable, StyleSheet, TextInput, Platform} from 'react-native';
 import {Keyboard, KeyboardAvoidingView} from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 import {useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
+import {Toast} from '@/components';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 import {getProductsItemDetail} from '@/api/product_api';
 
+const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
 const CreateProductLink = props => {
-  const {navigation} = props;
   const dispatch = useDispatch();
+  const {navigation} = props;
   const [value, setValue] = useState('');
 
-  const isCanClick = value ? true : false;
+  const onChangeText = text => setValue(text);
 
-  const onChangeText = text => {
-    setValue(text);
+  const onAnalysis = async (data = value) => {
+    const params = {type: 'taobao', url: data};
+    try {
+      Toast.showLoading();
+      const res = await getProductsItemDetail(params);
+      Toast.hide();
+      if (res.data.error) {
+        Toast.showError(res.data.error);
+      } else {
+        dispatch({type: action.CREATE_PRODUCT, value: {detail: res.data}});
+        navigation.navigate('CreateProductInfo');
+      }
+    } catch {
+      Toast.hide();
+    }
   };
 
   const handleClick = async () => {
-    const params = {type: 'taobao', url: value};
-    const res = await getProductsItemDetail(params);
-    dispatch({type: action.CREATE_PRODUCT, value: {detail: res.data}});
-    navigation.navigate('CreateProductInfo');
+    if (value) {
+      onAnalysis();
+    } else {
+      const res = await Clipboard.getString();
+      if (res) {
+        setValue(res);
+        onAnalysis(res);
+      } else {
+        Toast.showError('请输入淘宝链接地址');
+      }
+    }
   };
 
   useLayoutEffect(() => {
-    const hitSlop = {top: 10, bottom: 10, left: 5, right: 5};
     navigation.setOptions({
       headerTitle: '添加顽物',
       headerLeft: () => (
-        <Pressable hitSlop={hitSlop}>
+        <Pressable hitSlop={hitSlop} onPress={navigation.goBack}>
           <IconFont name="close" size={14} />
         </Pressable>
       ),
@@ -45,16 +67,16 @@ const CreateProductLink = props => {
         <View style={styles.container}>
           <Text style={styles.title}>商品链接</Text>
           <TextInput
-            style={styles.textInput}
             value={value}
+            style={styles.textInput}
+            autoFocus={true}
+            clearButtonMode="always"
             selectionColor="#ff193a"
             placeholderTextColor="#bdbdbd"
             placeholder="复制淘宝平台商品链接"
             onChangeText={text => onChangeText(text)}
           />
-          <Text
-            style={[styles.btn, value ? styles.active : styles.normal]}
-            onPress={isCanClick ? handleClick : null}>
+          <Text style={[styles.btn, value ? styles.active : styles.normal]} onPress={handleClick}>
             黏贴并解析商品信息
           </Text>
           <View style={{flex: 1}} />
@@ -76,9 +98,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  content: {
-    flex: 1,
   },
   container: {
     flex: 1,

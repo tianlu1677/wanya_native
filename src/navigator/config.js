@@ -240,7 +240,7 @@ const shopBrandRouter = [
 ];
 
 const productRouter = [
-  {name: 'ProductDetail', component: ProductDetail, options: {title: '添加顽物'}},
+  {name: 'ProductDetail', component: ProductDetail, options: {title: '顽物详情'}},
   {name: 'ProductCommentList', component: ProductCommentList, options: {title: '全部评论'}},
   {name: 'CreateProductLink', component: CreateProductLink, options: {title: '添加顽物'}},
   {name: 'CreateProductInfo', component: CreateProductInfo, options: {title: '添加顽物'}},

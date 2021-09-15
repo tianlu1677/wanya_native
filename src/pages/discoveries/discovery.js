@@ -10,7 +10,7 @@ import {RecommendSearch} from '@/components/NodeComponents';
 import TabView from '@/components/TabView';
 import Collapsible from './collapsible';
 import {getAppCardList} from '@/api/discovery_api';
-import {getProductsPost} from '@/api/product_api';
+import {getProductsList} from '@/api/product_api';
 import Category from './category';
 import TabList from '@/components/TabList';
 
@@ -29,7 +29,7 @@ const Discovery = props => {
     const current = coveryData.find(item => item.category_key === currentKey);
     return (
       <ProductList
-        request={{api: getProductsPost, params: {queryUrl}}}
+        request={{api: getProductsList, params: {queryUrl}}}
         ListHeaderComponent={<Category {...props} category={current} currentKey={currentKey} />}
       />
     );

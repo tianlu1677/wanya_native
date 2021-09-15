@@ -11,7 +11,7 @@ export const getCategoryList = async (params = {}) => {
 };
 
 // 圈子分类 类型
-export async function getCategoryId(id) {
+export async function getCategoryDetail(id) {
   const res = await request({
     url: `/api/v1/categories/${id}`,
     method: 'GET',

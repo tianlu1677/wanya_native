@@ -62,7 +62,6 @@ const TopicDetail = ({navigation, route}) => {
     node: detail.node ? {...detail.node, topics_count: 0} : null,
   };
 
-  console.log('detail', isRenderHeader);
   const HeaderHeight = IsIos ? -BOTTOM_HEIGHT : BarHeight;
   const TopHeight = IsIos ? headerHeight - BOTTOM_HEIGHT : STATUS_BAR_HEIGHT + 55;
   const Offset = isRenderHeader ? HeaderHeight : TopHeight;

@@ -11,7 +11,6 @@ import {
   ShareView,
   TOPIC_DETAIL_SUCCESS,
   UPDATE_CATEGORY_LIST,
-  UPDATE_CATEGORY_ID,
   CHANGE_UPLOAD_STATUS,
   THEORY_VIDEO_STATE,
   THEORY_DETAIL,
@@ -22,7 +21,7 @@ import {
   UPDATE_SOCIAL_ACCOUNT,
   UPDATE_TOTAL_LABEL_LIST,
 } from '../constants/index';
-import {getCategoryList, getCategoryId} from '@/api/category_api';
+import {getCategoryList} from '@/api/category_api';
 import {getLabelList} from '@/api/settings_api';
 import {getLoginBaseInfo, getCurrentAccount, getCurrentAccountBaseInfo} from '@/api/mine_api';
 import {createTopic} from '@/api/topic_api';
@@ -163,12 +162,6 @@ export const dispatchTopicDetail = (topic = {}) => async dispatch => {
 export const dispatchFetchCategoryList = () => async dispatch => {
   const categories = await getCategoryList();
   dispatch({type: UPDATE_CATEGORY_LIST, categories: categories});
-};
-
-// 获取categories分类的数据
-export const dispatchFetchCategoryId = id => async dispatch => {
-  const categories = await getCategoryId(id);
-  dispatch({type: UPDATE_CATEGORY_ID, categoryId: categories});
 };
 
 // 获取label的数据

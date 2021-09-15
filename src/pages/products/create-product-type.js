@@ -1,148 +1,170 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {View, Text, Pressable, StyleSheet, TextInput, Dimensions} from 'react-native';
-import {Keyboard, KeyboardAvoidingView} from 'react-native';
-import IconFont from '@/iconfont';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {debounce} from 'lodash';
-import FastImg from '@/components/FastImg';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
-import PersonImg from '@/assets/images/personal.png';
-import {CategoryDrawer, CategoryKindDrawer} from '@/components/NodeComponents';
-
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
-
-const {width} = Dimensions.get('window');
-const mediaWidth = Math.floor((width - (30 * 2 + 10 * 3)) / 4);
-console.log('mediaWidth', mediaWidth);
+import IconFont from '@/iconfont';
+import {Toast} from '@/components';
+import {RFValue} from '@/utils/response-fontsize';
+import {getCategoryDetail} from '@/api/category_api';
+import {getShopBrands} from '@/api/shop_brand_api';
+import {createProducts} from '@/api/product_api';
+import OpenDrawer from './open-drawer';
 
 const CreateProductType = props => {
-  // const state = useSelector(state => state);
-  const {createProduct} = useSelector(state => state.product);
-  const {detail, category, brandType} = createProduct;
-  const goodId = createProduct.id || null;
-
-  const isCanClick = 1 ? true : false;
-
-  console.log('cd', createProduct);
   const {navigation} = props;
   const dispatch = useDispatch();
+  const {
+    home: {categoryList},
+    product: {createProduct},
+  } = useSelector(state => state);
+  const {detail, category, brandType, brand} = createProduct;
   const [visible, setVisible] = useState(false);
   const [typeVisible, setTypeVisible] = useState(false);
   const [brandVisible, setBrandVisible] = useState(false);
+  const [typeData, setTypeData] = useState([]);
+  const [brandData, setBrandData] = useState([]);
+  const isCanClick = category && brandType ? true : false;
 
-  const isClick = () => (1 ? true : false);
+  console.log('createProduct', createProduct);
 
-  const onChooseType = () => {
+  const handleChooseCategory = () => {
     setVisible(true);
   };
 
-  const handleCategorySubmit = data => {
-    console.log(data);
-    const value = {...createProduct, category: data};
+  const handleChooseType = () => {
+    category ? setTypeVisible(true) : Toast.showError('请先选择商品领域');
+  };
+
+  const handleChooseBrand = () => {
+    setBrandVisible(true);
+  };
+
+  const handleCategorySubmit = async data => {
+    const value = {...createProduct, category: data, brandType: null};
     dispatch({type: action.CREATE_PRODUCT, value});
     setVisible(false);
+    const res = await getCategoryDetail(data.id);
+    const type_list = res.category_brand_type_list.map((item, index) => {
+      return {id: index, name: item};
+    });
+    setTypeData(type_list);
   };
 
   const handleTypeSubmit = data => {
-    const item = {...createProduct, brandType: data};
-    dispatch({type: action.CREATE_PRODUCT, value: item});
+    const value = {...createProduct, brandType: data};
+    dispatch({type: action.CREATE_PRODUCT, value});
     setTypeVisible(false);
   };
 
-  const onCreateClick = async () => {
-    // Toast.showLoading();
-    // try {
-    //   const {cover} = createNode;
-    //   let cover_id = cover.cover_id || null;
-    //   if (cover.uri) {
-    //     const result = await props.uploadImage({uploadType: 'multipart', ...cover});
-    //     cover_id = result.asset.id;
-    //   }
-    //   const params = {...getValidateForm(), cover_id};
-    //   let res = null;
-    //   if (nodeId) {
-    //     res = await editCheckNodes({check_node: params}, nodeId);
-    //   } else {
-    //     res = await createCheckNodes({check_node: params});
-    //   }
-    //   if (res.error) {
-    //     res.error.map(detail => {
-    //       Toast.showError(detail.name);
-    //     });
-    //   } else {
-    //     await submitCheckNodes(res.check_node.id);
-    //     Toast.hide();
-    //     props.navigation.reset({
-    //       index: 0,
-    //       routes: [
-    //         {
-    //           name: 'CreateNodeResult',
-    //           params: {nodeId: res.check_node.id, prevPage: 'create-node-type'},
-    //         },
-    //       ],
-    //     });
-    //   }
-    // } catch (error) {
-    //   Toast.hide();
-    // }
+  const handleBrandSubmit = data => {
+    const value = {...createProduct, brand: data};
+    dispatch({type: action.CREATE_PRODUCT, value});
+    setBrandVisible(false);
   };
 
-  const goStepClick = () => {
-    navigation.navigate('CreateProductType');
+  const onCreateClick = async () => {
+    if (!isCanClick) {
+      return;
+    }
+    const params = {
+      product: {
+        name: detail.cat_name,
+        desc: detail.title,
+        price: detail.reserve_price,
+        category_id: category.id,
+        shop_brand_type: brandType.name,
+        shop_brand_id: brand?.id || '',
+        images_list: detail.small_images.string,
+        item_url: detail.item_url,
+        item_uid: detail.num_iid,
+        item_category: 'taobao',
+      },
+    };
+
+    try {
+      Toast.showLoading();
+      const res = await createProducts(params);
+      const value = {product: {...res.data.product, assets: res.data.product.images_list}};
+      console.log('value', value);
+      dispatch({type: action.SAVE_NEW_TOPIC, value});
+      navigation.navigate('NewTopic');
+      setTimeout(() => {
+        dispatch({type: action.CREATE_PRODUCT, value: {}});
+      }, 2000);
+      Toast.hide();
+    } catch (err) {
+      Toast.hide();
+    }
   };
+
+  const loadBrand = async () => {
+    const res = await getShopBrands({page: 1, per_page: 999});
+    setBrandData(res.data.shop_brands);
+  };
+
+  useEffect(() => {
+    loadBrand();
+  }, []);
+
+  const Color = state => (state ? '#000' : '#bdbdbd');
 
   return (
     <View style={styles.wrapper}>
       <Text style={styles.title}>商品领域</Text>
-      <Pressable style={styles.slideView} onPress={onChooseType}>
-        <Text style={[styles.slidetext, {color: category && !goodId ? '#000' : '#bdbdbd'}]}>
+      <Pressable style={styles.slideView} onPress={handleChooseCategory}>
+        <Text style={[styles.slidetext, {color: Color(category)}]}>
           {category?.name || '请选择商品所属领域（必填）'}
         </Text>
-        <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
+        <IconFont name="arrow-right" size={10} color="#bdbdbd" />
       </Pressable>
 
-      <Pressable style={styles.slideView} onPress={() => setTypeVisible(true)}>
-        <Text style={[styles.slidetext, {color: brandType && !goodId ? '#000' : '#bdbdbd'}]}>
-          {brandType || '请选择商品所属品类（必填）'}
+      <Pressable style={styles.slideView} onPress={handleChooseType}>
+        <Text style={[styles.slidetext, {color: Color(brandType)}]}>
+          {brandType?.name || '请选择商品所属品类（必填）'}
         </Text>
-        <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
+        <IconFont name="arrow-right" size={10} color="#bdbdbd" />
       </Pressable>
 
-      <Pressable style={styles.slideView} onPress={onChooseType}>
-        <Text
-          style={[
-            styles.slidetext,
-            {color: createProduct.category && !goodId ? '#000' : '#bdbdbd'},
-          ]}>
-          {createProduct.category?.name || '请选择商品关联品牌（必填）'}
+      <Pressable style={styles.slideView} onPress={handleChooseBrand}>
+        <Text style={[styles.slidetext, {color: Color(brand)}]}>
+          {brand?.name || '请选择商品关联品牌（选填）'}
         </Text>
-        <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
+        <IconFont name="arrow-right" size={10} color="#bdbdbd" />
       </Pressable>
 
       <Pressable style={styles.surebtnWrap}>
         <Text
-          style={[styles.surebtn, createProduct.category ? styles.canClick : styles.disabled]}
-          // onPress={createNode.category ? debounce(onCreateClick, 800) : () => {}}>
-          onPress={isCanClick ? debounce(onCreateClick, 800) : () => {}}>
-          {/* {goodId ? '确认修改' : '确认创建'} */}
+          style={[styles.surebtn, isCanClick ? styles.canClick : styles.disabled]}
+          onPress={debounce(onCreateClick, 800)}>
           下一步
         </Text>
       </Pressable>
 
       {visible && (
-        <CategoryDrawer
-          currentId={category?.id || null}
+        <OpenDrawer
+          current={category?.id || null}
+          data={categoryList}
           onSubmit={handleCategorySubmit}
           onCancel={() => setVisible(false)}
         />
       )}
 
       {typeVisible && (
-        <CategoryKindDrawer
-          current={brandType || null}
-          categoryId={category?.id || null}
+        <OpenDrawer
+          current={brandType?.id || null}
+          data={typeData}
           onSubmit={handleTypeSubmit}
           onCancel={() => setTypeVisible(false)}
+        />
+      )}
+
+      {brandVisible && (
+        <OpenDrawer
+          current={brand?.id || null}
+          data={brandData}
+          onSubmit={handleBrandSubmit}
+          onCancel={() => setBrandVisible(false)}
         />
       )}
     </View>
@@ -185,7 +207,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '300',
   },
-
   surebtn: {
     height: RFValue(50),
     lineHeight: RFValue(50),

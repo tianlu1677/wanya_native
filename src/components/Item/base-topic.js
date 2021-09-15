@@ -118,7 +118,7 @@ export const TopicLinkContent = props => {
 };
 
 const BaseTopic = props => {
-  const {data, type, bottom} = props;
+  const {data, type, bottom, style} = props;
   const {content_style} = data;
   const navigation = useNavigation();
   const goNodeDetail = () => {
@@ -132,7 +132,7 @@ const BaseTopic = props => {
   return content_style === 'video' && data.is_long_video ? (
     <BaseLongVideo data={props.data} />
   ) : (
-    <Pressable style={styles.postSlide} onPress={goTopicDetail}>
+    <Pressable style={[styles.postSlide, style]} onPress={goTopicDetail}>
       <Header data={data} type="topic" typeHeader={type} onRemove={props.onRemove} />
       {data.plain_content ? (
         <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(13)}} />

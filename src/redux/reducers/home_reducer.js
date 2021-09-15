@@ -65,8 +65,6 @@ export const homeReducer = (state = defaultState, action) => {
         ...state,
         categoryList: action.categories,
       };
-    case constants.UPDATE_CATEGORY_ID:
-      return {...state, categoryId: action.categoryId};
     case constants.UPDATE_TOTAL_LABEL_LIST:
       return {
         ...state,

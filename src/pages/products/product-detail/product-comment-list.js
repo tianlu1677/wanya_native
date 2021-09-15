@@ -124,7 +124,7 @@ const ProductCommentList = props => {
   }, [props.detail]);
 
   return (
-    <View>
+    <View style={styles.wrapper}>
       <ScrollList
         data={listData}
         loading={loading}
@@ -166,6 +166,9 @@ const ProductCommentList = props => {
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
   separator: {
     borderBottomColor: '#ebebeb',
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -180,6 +183,10 @@ const styles = StyleSheet.create({
     borderTopColor: '#ebebeb',
     borderTopWidth: StyleSheet.hairlineWidth,
     backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   text: {
     flex: 1,

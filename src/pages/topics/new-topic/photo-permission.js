@@ -1,7 +1,30 @@
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity, View, Platform} from 'react-native';
 import {BottomModal, ModalContent} from 'react-native-modals';
 import {openSettings} from 'react-native-permissions';
+import {PERMISSIONS} from 'react-native-permissions';
+import {check, request, RESULTS} from 'react-native-permissions';
+
+export const imagePermission =
+  Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
+
+export const checkPermission = async cb => {
+  const status = await check(imagePermission);
+
+  if (status === RESULTS.GRANTED) {
+    return true;
+  }
+
+  if (status === RESULTS.DENIED) {
+    await request(imagePermission);
+    return true;
+  }
+
+  if (status === RESULTS.BLOCKED) {
+    await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+    return false;
+  }
+};
 
 const PermissionModal = props => {
   const goToSettings = () => {

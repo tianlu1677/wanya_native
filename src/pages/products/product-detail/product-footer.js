@@ -25,7 +25,9 @@ const ProductFooter = props => {
     setStar(!star);
   };
 
-  const handleComment = () => {};
+  const handleComment = () => {
+    navigation.navigate('ProductCommentList', {productId: detail.id});
+  };
 
   const handleShare = () => {
     const topics = {product: detail};
@@ -71,6 +73,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 14,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   iconView: {
     alignItems: 'center',
