@@ -10,17 +10,22 @@ export const createProducts = async data => {
   return res;
 };
 
-export const getProductsList = async params => {
-  const res = await request({url: '/api/v1/products', method: 'GET', params});
+export const getProducts = async (params, apiPath) => {
+  const res = await request({url: `/api/v1/products?${apiPath}`, method: 'GET', params});
   return res;
 };
 
-export const getProducts = async id => {
+export const getProductsDetail = async id => {
   const res = await request({url: `/api/v1/products/${id}`, method: 'GET'});
   return res;
 };
 
 export const getProductsPost = async id => {
-  const res = await request({url: `/api/v1/products/post`, method: 'GET'});
+  const res = await request({url: '/api/v1/products/post', method: 'GET'});
+  return res;
+};
+
+export const getProductsList = async (params, apiPath) => {
+  const res = await request({url: `/api/v1/posts?${apiPath}`, method: 'GET', params});
   return res;
 };

@@ -14,12 +14,17 @@ const ProductInfo = props => {
   const dispatch = useDispatch();
 
   const {
+    navigation,
     detail: {images_list, price, category_name, hot_score, name, shop_brand},
   } = props;
 
   const onPreview = index => {
     const data = {index, images: images_list, visible: true};
     dispatch(dispatchPreviewImage(data));
+  };
+
+  const goBrandDetail = () => {
+    navigation.navigate('ShopBrandDetail', {shopBrandId: shop_brand.id});
   };
 
   return (
@@ -51,14 +56,14 @@ const ProductInfo = props => {
         <Text style={styles.name}>{name}</Text>
       </View>
       {shop_brand ? (
-        <View style={[styles.slideView, styles.shopBrandWrap]}>
+        <Pressable style={[styles.slideView, styles.shopBrandWrap]} onPress={goBrandDetail}>
           <FastImg source={{uri: shop_brand.cover_url}} style={styles.brandImage} />
           <View style={styles.brandInfo}>
             <Text style={styles.brandName}>{shop_brand.name}</Text>
             <Text style={styles.branddiscuss}>{FilterScore(shop_brand.play_score)} 收藏</Text>
           </View>
           <Text style={styles.discuss}>查看品牌</Text>
-        </View>
+        </Pressable>
       ) : null}
     </>
   );

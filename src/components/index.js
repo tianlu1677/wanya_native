@@ -3,3 +3,4 @@ export {default as Toast} from './Toast';
 export {default as ActionSheet} from './ActionSheet';
 export {default as LocationBar} from './LocationBar';
 export {default as FastImg} from './FastImg';
+export {default as ScrollList} from './ScrollList';

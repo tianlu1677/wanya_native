@@ -85,13 +85,14 @@ const CreateProductType = props => {
     try {
       Toast.showLoading();
       const res = await createProducts(params);
-      const value = {product: {...res.data.product, assets: res.data.product.images_list}};
+      const value = {product: {...res.data.product}};
       console.log('value', value);
+      console.log('res', res);
       dispatch({type: action.SAVE_NEW_TOPIC, value});
       navigation.navigate('NewTopic');
-      setTimeout(() => {
-        dispatch({type: action.CREATE_PRODUCT, value: {}});
-      }, 2000);
+      // setTimeout(() => {
+      //   dispatch({type: action.CREATE_PRODUCT, value: {}});
+      // }, 2000);
       Toast.hide();
     } catch (err) {
       Toast.hide();
@@ -119,6 +120,7 @@ const CreateProductType = props => {
         <IconFont name="arrow-right" size={10} color="#bdbdbd" />
       </Pressable>
 
+      <Text style={styles.title}>商品品类</Text>
       <Pressable style={styles.slideView} onPress={handleChooseType}>
         <Text style={[styles.slidetext, {color: Color(brandType)}]}>
           {brandType?.name || '请选择商品所属品类（必填）'}
@@ -126,6 +128,7 @@ const CreateProductType = props => {
         <IconFont name="arrow-right" size={10} color="#bdbdbd" />
       </Pressable>
 
+      <Text style={styles.title}>关联品牌</Text>
       <Pressable style={styles.slideView} onPress={handleChooseBrand}>
         <Text style={[styles.slidetext, {color: Color(brand)}]}>
           {brand?.name || '请选择商品关联品牌（选填）'}

@@ -6,19 +6,17 @@ import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {ActionSheet} from '@/components';
 import {Avator} from '@/components/NodeComponents';
-import {praiseComment, unpraiseComment} from '@/api/comment_api';
+import {praiseComment, deleteComment, unpraiseComment} from '@/api/comment_api';
 import {getAccountBaseInfo} from '@/api/account_api';
 
 const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
-
 const BaseComment = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {currentAccount} = useSelector(state => state.account);
   const [actionItems, setActionItems] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
-
-  const {index, handlePraise, handleReply, deleteComment, topicId, commentable_type, data} = props;
+  const {type, index, handlePraise, handleReply, loadData, topicId, commentable_type, data} = props;
 
   const {
     id,
@@ -61,11 +59,20 @@ const BaseComment = props => {
     handleReply();
   };
 
+  const handleDelete = async () => {
+    await deleteComment(id);
+    loadData();
+  };
+
   const choseAction = () => {
+    if (type === 'product-detail') {
+      props.handleClickReply();
+      return;
+    }
     const options = isCurrentSelf
       ? [
           {id: 1, label: '回复', onPress: () => choseReplyComment()},
-          {id: 2, label: '删除', onPress: async () => deleteComment(id)},
+          {id: 2, label: '删除', onPress: async () => handleDelete(id)},
         ]
       : [{id: 1, label: '回复', onPress: () => choseReplyComment()}];
 

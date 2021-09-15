@@ -14,7 +14,7 @@ import {SCREEN_WIDTH, BarHeight} from '@/utils/navbar';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ProductList from '@/components/List/product-list';
-import {getProductsList} from '@/api/product_api';
+import {getProducts} from '@/api/product_api';
 import ArticleList from '@/components/List/article-list';
 
 import {
@@ -151,7 +151,6 @@ const ShopBrandDetail = props => {
   const createGoods = () => {
     dispatch({type: action.CREATE_PRODUCT, value: {}});
     navigation.navigate('CreateProductLink');
-    // navigation.navigate('CreateProductType');
   };
 
   const createTopic = () => {
@@ -160,9 +159,9 @@ const ShopBrandDetail = props => {
     navigation.navigate('NewTopic');
   };
 
-  const GoodListPage = () => {
-    const queryUrl = `q[shop_brand_id_eq]=${detail.id}`;
-    return <ProductList request={{api: getProductsList, params: {queryUrl}}} />;
+  const ProductListPage = () => {
+    const apiPath = `q[shop_brand_id_eq]=${detail.id}`;
+    return <ProductList request={{api: getProducts, params: {}, apiPath}} />;
   };
 
   const PostListPage = () => {
@@ -212,7 +211,7 @@ const ShopBrandDetail = props => {
           {
             key: 'product',
             title: '顽物',
-            component: GoodListPage,
+            component: ProductListPage,
           },
           {
             key: 'post',

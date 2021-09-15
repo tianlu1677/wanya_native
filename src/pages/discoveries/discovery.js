@@ -10,7 +10,7 @@ import {RecommendSearch} from '@/components/NodeComponents';
 import TabView from '@/components/TabView';
 import Collapsible from './collapsible';
 import {getAppCardList} from '@/api/discovery_api';
-import {getProductsList} from '@/api/product_api';
+import {getProducts} from '@/api/product_api';
 import Category from './category';
 import TabList from '@/components/TabList';
 
@@ -25,11 +25,12 @@ const Discovery = props => {
   };
 
   const RenderCaCategory = () => {
-    const queryUrl = `q[shop_brand_id_eq]=${1}`;
+    const apiPath = `q[category_id_eq]=${13}&q[category_brand_type_cont]=鞋`;
     const current = coveryData.find(item => item.category_key === currentKey);
+
     return (
       <ProductList
-        request={{api: getProductsList, params: {queryUrl}}}
+        request={{api: getProducts, params: {}, apiPath}}
         ListHeaderComponent={<Category {...props} category={current} currentKey={currentKey} />}
       />
     );

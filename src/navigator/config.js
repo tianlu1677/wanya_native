@@ -45,6 +45,7 @@ import CreateNodeResult from '@/pages/nodes/create-node-result';
 // Product
 import ProductDetail from '@/pages/products/product-detail';
 import ProductCommentList from '@/pages/products/product-detail/product-comment-list';
+import ProductPostList from '@/pages/products/product-detail/product-post-list';
 import CreateProductLink from '@/pages/products/create-product-link';
 import CreateProductInfo from '@/pages/products/create-product-info';
 import CreateProductType from '@/pages/products/create-product-type';
@@ -242,6 +243,7 @@ const shopBrandRouter = [
 const productRouter = [
   {name: 'ProductDetail', component: ProductDetail, options: {title: '顽物详情'}},
   {name: 'ProductCommentList', component: ProductCommentList, options: {title: '全部评论'}},
+  {name: 'ProductPostList', component: ProductPostList, options: {title: '全部帖子'}},
   {name: 'CreateProductLink', component: CreateProductLink, options: {title: '添加顽物'}},
   {name: 'CreateProductInfo', component: CreateProductInfo, options: {title: '添加顽物'}},
   {name: 'CreateProductType', component: CreateProductType, options: {title: '选择领域及品类'}},

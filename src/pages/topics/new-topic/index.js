@@ -211,8 +211,11 @@ const NewTopic = props => {
       movement_ids: (movement_ids || []).map(v => v.id).join(),
       shop_store_ids: (shop_store_ids || []).map(v => v.id).join(),
       shop_brand_ids: (shop_brand_ids || []).map(v => v.id).join(),
+      product_ids: product?.id || '',
       tag_list: tag_list ? tag_list : [],
     };
+
+    console.log('data', data);
 
     return data;
   };

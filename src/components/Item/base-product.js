@@ -32,7 +32,6 @@ const BaseProduct = props => {
         <Text style={styles.price}>{price}</Text>
         <Text style={styles.num}>热度 {FilterScore(hot_score)}</Text>
       </View>
-      {/* <Text>323232</Text> */}
     </Pressable>
   );
 };
@@ -40,11 +39,9 @@ const BaseProduct = props => {
 const styles = StyleSheet.create({
   wrapper: {
     width,
-    height: 200,
     marginHorizontal: 10,
     marginBottom: 10,
-    paddingHorizontal: VWValue(12),
-    paddingBottom: 20,
+    padding: VWValue(12),
     backgroundColor: '#fff',
   },
   image: {

@@ -26,7 +26,7 @@ const TopicAddContent = props => {
           <IconFont name="arrow-right" size={10} color="#c2c2c2" />
         </Pressable>
         <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddRelated')}>
-          <Text style={styles.addText}>关联顽招/Van Store/品牌等</Text>
+          <Text style={styles.addText}>关联顽招/Van Store/品牌/顽物等</Text>
           <IconFont name="arrow-right" size={10} color="#c2c2c2" />
         </Pressable>
       </View>
@@ -70,7 +70,7 @@ const TopicAddContent = props => {
       {product ? (
         <View style={styles.relatedWrapper}>
           <View style={styles.related}>
-            <FastImg style={styles.relatedImage} source={{uri: product.assets[0].url}} />
+            <FastImg style={styles.relatedImage} source={{uri: product.images_list[0]}} />
             <View style={styles.relatedInfo}>
               <Text style={styles.relatedName}>{product.name}</Text>
               <Text style={styles.relatedText}>{product.category_name}</Text>

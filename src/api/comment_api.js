@@ -7,7 +7,6 @@ export const getCommentList = async params => {
     method: 'GET',
     params: params,
   });
-  console.log('res23232', res);
   return res;
 };
 

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
 import ScrollList from '@/components/ScrollList';
 import BaseProduct from '@/components/Item/base-product';
 
@@ -16,19 +15,17 @@ const ProductList = props => {
     if (page === 1) {
       setLoading(true);
     }
-    const {api, params} = props.request;
-    const res = await api({...params, page});
-    console.log('res', res);
+    const {api, params, apiPath} = props.request;
+    const res = await api({...params, page}, apiPath);
     const data = res.data.products;
     setHeaders(res.headers);
-    // setListData([{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}]);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
   };
 
   useEffect(() => {
     loadData();
-  }, [props.detail]);
+  }, [props.request]);
 
   return (
     <ScrollList
@@ -40,7 +37,7 @@ const ProductList = props => {
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={() => null}
-      style={{flex: 1, backgroundColor: 'pink'}}
+      settings={{style: {flex: 1, paddingTop: 10, backgroundColor: '#f2f3f5'}}}
       {...props}
     />
   );

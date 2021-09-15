@@ -1,14 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Platform, KeyboardAvoidingView} from 'react-native';
+import {useHeaderHeight} from '@react-navigation/stack';
 import {useSelector, useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
-import ScrollList from '@/components/ScrollList';
+import {ScrollList, Toast} from '@/components';
 import BaseComment from '@/components/Item/base-comment';
-import {getCommentList, createComment, deleteComment} from '@/api/comment_api';
-import {Toast} from '@/components';
+import {IsIos, STATUS_BAR_HEIGHT} from '@/utils/navbar';
+import {getCommentList, createComment} from '@/api/comment_api';
+
+const behavior = Platform.OS === 'ios' ? 'padding' : 'height';
 
 const ProductCommentList = props => {
   const dispatch = useDispatch();
+  const headerHeight = useHeaderHeight();
+  const Offset = IsIos ? headerHeight : STATUS_BAR_HEIGHT + 55;
   const {route, navigation} = props;
   const productId = route.params.productId;
   const comment = useSelector(state => state.home.commentContent);
@@ -20,19 +25,9 @@ const ProductCommentList = props => {
   const [value, setValue] = useState('');
   const [visible, setVisible] = useState(false);
 
-  console.log('comment', comment);
-
-  const getValueLength = str => {
-    console.log('sre', str);
-    if (!str) {
-      return 0;
-    }
-    return str.replace(/\s+/g, '').length;
-  };
+  const getValueLength = str => (str ? str.replace(/\s+/g, '').length : 0);
 
   const onChangeValue = text => {
-    console.log('asd', value);
-    // 输入
     if (getValueLength(text) >= getValueLength(value)) {
       if (text.substr(-1) === '@') {
         navigation.push('AddMentionAccount', {type: 'comment'});
@@ -43,13 +38,10 @@ const ProductCommentList = props => {
     setValue(text);
   };
 
-  const onCreateComment = () => {
-    setVisible(true);
-  };
+  const onCreateComment = () => setVisible(true);
 
   const publishComment = async () => {
     setVisible(false);
-
     const data = {...comment, content: value};
     const params = {
       placeholder: '写点评论吧',
@@ -64,18 +56,17 @@ const ProductCommentList = props => {
     };
 
     try {
-      //   Toast.showLoading('发送中');
-      const res = await createComment(params);
-      console.log('res', res);
-      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
+      Toast.showLoading('发送中');
+      await createComment(params);
       Toast.hide();
+      dispatch({type: action.SAVE_COMMENT_CONTENT, value: {}});
       Toast.show('评论成功啦');
+      setValue('');
     } catch {
       Toast.hide();
     }
 
     loadData();
-    console.log('params', params);
   };
 
   const handlePraise = (item, index) => {
@@ -83,29 +74,19 @@ const ProductCommentList = props => {
     setListData([...listData]);
   };
 
-  const deleteCurrentComment = async id => {
-    await deleteComment(id);
-    loadData();
-  };
+  const handleReply = () => setVisible(true);
 
-  const handleReply = () => {
-    setVisible(true);
-  };
-
-  const renderItem = ({item, index}) => {
-    console.log(item);
-    return (
-      <BaseComment
-        data={item}
-        index={index}
-        handlePraise={handlePraise}
-        deleteComment={deleteCurrentComment}
-        handleReply={handleReply}
-        topicId={productId}
-        commentable_type="Product"
-      />
-    );
-  };
+  const renderItem = ({item, index}) => (
+    <BaseComment
+      index={index}
+      data={item}
+      handlePraise={handlePraise}
+      handleReply={handleReply}
+      loadData={loadData}
+      topicId={productId}
+      commentable_type="Product"
+    />
+  );
 
   const loadData = async (page = 1) => {
     if (page === 1) {
@@ -124,7 +105,10 @@ const ProductCommentList = props => {
   }, [props.detail]);
 
   return (
-    <View style={styles.wrapper}>
+    <KeyboardAvoidingView
+      behavior={behavior}
+      keyboardVerticalOffset={Offset}
+      style={styles.wrapper}>
       <ScrollList
         data={listData}
         loading={loading}
@@ -161,13 +145,15 @@ const ProductCommentList = props => {
           </Text>
         </View>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    position: 'relative',
+    backgroundColor: '#fff',
   },
   separator: {
     borderBottomColor: '#ebebeb',
@@ -183,10 +169,6 @@ const styles = StyleSheet.create({
     borderTopColor: '#ebebeb',
     borderTopWidth: StyleSheet.hairlineWidth,
     backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
   },
   text: {
     flex: 1,

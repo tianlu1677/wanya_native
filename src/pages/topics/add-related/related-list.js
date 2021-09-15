@@ -16,7 +16,12 @@ const BaseMovement = props => {
   } = props;
 
   const handleClick = () => {
-    const params = {shop_store_ids: [], shop_brand_ids: [], movement_ids: [props.data]};
+    const params = {
+      shop_store_ids: [],
+      shop_brand_ids: [],
+      movement_ids: [props.data],
+      product: null,
+    };
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     navigation.goBack();
   };
@@ -40,7 +45,12 @@ const BaseShopStore = props => {
   } = props;
 
   const handleClick = () => {
-    const params = {movement_ids: [], shop_brand_ids: [], shop_store_ids: [props.data]};
+    const params = {
+      movement_ids: [],
+      shop_brand_ids: [],
+      shop_store_ids: [props.data],
+      product: null,
+    };
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     navigation.goBack();
   };
@@ -64,7 +74,12 @@ const BaseShopBrand = props => {
   } = props;
 
   const handleClick = () => {
-    const params = {movement_ids: [], shop_store_ids: [], shop_brand_ids: [props.data]};
+    const params = {
+      movement_ids: [],
+      shop_store_ids: [],
+      shop_brand_ids: [props.data],
+      product: null,
+    };
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     navigation.goBack();
   };
