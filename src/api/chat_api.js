@@ -55,3 +55,12 @@ export const deleteChatGroup = async data => {
   });
   return res;
 };
+
+export const getValidChat = async params => {
+  const res = await request({
+    url: '/api/v1/chat_groups/valid',
+    method: 'GET',
+    params,
+  });
+  return res;
+};

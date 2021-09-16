@@ -88,7 +88,7 @@ const ProductDetail = props => {
               </Text>
             </View>
             {comments.map((item, index) => (
-              <>
+              <View key={item.id}>
                 <BaseComment
                   index={index}
                   data={item}
@@ -101,7 +101,7 @@ const ProductDetail = props => {
                   type="product-detail"
                 />
                 {comments.length - 1 !== index && <View style={styles.separator} />}
-              </>
+              </View>
             ))}
           </View>
         ) : null}

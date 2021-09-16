@@ -70,7 +70,10 @@ const TopicAddContent = props => {
       {product ? (
         <View style={styles.relatedWrapper}>
           <View style={styles.related}>
-            <FastImg style={styles.relatedImage} source={{uri: product.images_list[0]}} />
+            <FastImg
+              style={styles.relatedImage}
+              source={{uri: product.cover_url ? product.cover_url : product.images_list[0]}}
+            />
             <View style={styles.relatedInfo}>
               <Text style={styles.relatedName}>{product.name}</Text>
               <Text style={styles.relatedText}>{product.category_name}</Text>

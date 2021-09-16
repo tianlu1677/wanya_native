@@ -29,13 +29,12 @@ import {
   getChatGroupsConversations,
   getChatGroupsSendMessage,
   readSingleChatGroupMessage,
+  getValidChat,
 } from '@/api/chat_api';
 import VideoModal from './video-modal';
 import {translate, checkShowRule} from '../meta';
-
 const AddPhoto = require('@/assets/images/chat-photo.png');
 const AddVideo = require('@/assets/images/chat-video.png');
-
 import styles from './style';
 
 const isIos = Platform.OS === 'ios';
@@ -75,7 +74,6 @@ const ChartDetail = props => {
   const [whoosh, setWhoosh] = useState(null);
 
   const chatChannel = useMemo(() => {
-    // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
     return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
       {channel: 'ChatChannel', room: `${uuid}`},
       {
@@ -142,11 +140,19 @@ const ChartDetail = props => {
       await getChatGroupsSendMessage(paramsData);
       Toast.hide();
     } catch (e) {
-      // console.log('error', e);
       Toast.hide();
     }
   };
+
+  const validateChat = () => getValidChat({target_account_id: targetAccountId});
+
   const sendMessage = async (type, content, isInverted) => {
+    const res = await validateChat();
+    if (res.data.message) {
+      Toast.showError(res.data.message);
+      return;
+    }
+
     if (type === 'text') {
       const params = {uuid, conversation: {category: type, content}};
       chatGroupSendMessage(params);
@@ -199,9 +205,7 @@ const ChartDetail = props => {
         rationale
       );
       setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
-    } catch (e) {
-      // console.log(e);
-    }
+    } catch (e) {}
   };
 
   const random = () => {
@@ -245,36 +249,20 @@ const ChartDetail = props => {
   };
 
   const _pause = async () => {
-    try {
-      await AudioRecorder.pauseRecording(); // Android 由于API问题无法使用此方法
-    } catch (e) {
-      // console.log(e);
-    }
+    await AudioRecorder.pauseRecording(); // Android 由于API问题无法使用此方法
   };
 
   const _resume = async () => {
-    try {
-      await AudioRecorder.resumeRecording(); // Android 由于API问题无法使用此方法
-    } catch (e) {
-      // console.log(e);
-    }
+    await AudioRecorder.resumeRecording(); // Android 由于API问题无法使用此方法
   };
 
   const _record = async () => {
-    try {
-      await AudioRecorder.startRecording();
-    } catch (error) {
-      // console.log(error);
-    }
+    await AudioRecorder.startRecording();
   };
 
   const _stop = async () => {
-    try {
-      await AudioRecorder.stopRecording();
-      timer && clearInterval(timer);
-    } catch (error) {
-      // console.log(error);
-    }
+    await AudioRecorder.stopRecording();
+    timer && clearInterval(timer);
   };
 
   const playSound = (url, index) => {
@@ -310,9 +298,14 @@ const ChartDetail = props => {
     }
   };
 
-  const onMediaPicker = index => {
-    props.removeAllPhoto();
+  const onMediaPicker = async index => {
+    const ret = await validateChat();
+    if (ret.data.message) {
+      Toast.showError(ret.data.message);
+      return;
+    }
 
+    props.removeAllPhoto();
     if (index === 0) {
       const options = {imageCount: 9, isCamera: false};
       imagePick(options, async (err, res) => {

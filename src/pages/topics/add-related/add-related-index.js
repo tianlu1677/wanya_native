@@ -9,6 +9,7 @@ import {RFValue} from '@/utils/response-fontsize';
 import TabView from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
 import RelatedList from '@/pages/topics/add-related/related-list';
+import ProductSingleList from '@/components/List/product-single-list';
 
 const AddRelatedIndex = props => {
   const navigation = useNavigation();
@@ -41,6 +42,17 @@ const AddRelatedIndex = props => {
 
   const ShopBrandListPage = () => {
     return <RelatedList request={request} type="shop_brand" />;
+  };
+
+  const ProductListPage = () => {
+    return (
+      <ProductSingleList
+        request={request}
+        enableRefresh={false}
+        dataKey="items"
+        type="add-product"
+      />
+    );
   };
 
   const onChangeText = text => {
@@ -91,6 +103,11 @@ const AddRelatedIndex = props => {
                 key: 'shop_brand',
                 title: '品牌',
                 component: ShopBrandListPage,
+              },
+              {
+                key: 'product',
+                title: '顽物',
+                component: ProductListPage,
               },
             ]}
           />

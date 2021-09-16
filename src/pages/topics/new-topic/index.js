@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {View, Text, TextInput, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
 import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
-import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {debounce} from 'lodash';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -19,9 +18,8 @@ import GetLocation from '@/components/GetLocation';
 import FastImg from '@/components/FastImg';
 import {getLocation} from '@/api/space_api';
 import {loadLocation} from '@/utils/get-location';
-
 import TopicAddContent from './topic-add-content';
-import PermissionModal from './photo-permission';
+import PermissionModal, {checkPermission} from './photo-permission';
 
 const {width: windowWidth} = Dimensions.get('window');
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -71,35 +69,13 @@ const NewTopic = props => {
     }
   };
 
-  const checkPermission = async () => {
-    const imagePermission =
-      Platform.OS === 'ios' ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.CAMERA;
-    const status = await check(imagePermission);
-    if (status === RESULTS.GRANTED) {
-      return true;
-    }
-
-    if (status === RESULTS.DENIED) {
-      request(imagePermission).then(result => {
-        console.log('result', result);
-      });
-      return true;
-    }
-
-    if (status === RESULTS.BLOCKED) {
-      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
-        console.log('result', result);
-      });
-      setPermissionModal(true);
-      return false;
-    }
-  };
-
   const onImagePicker = async () => {
     const hasPermission = await checkPermission();
     if (!hasPermission) {
+      setPermissionModal(true);
       return;
     }
+
     props.removeAllPhoto();
     const options = {imageCount: 9 - imageSource.length, isCamera: false};
     props.imagePick(options, async (err, res) => {
@@ -125,7 +101,7 @@ const NewTopic = props => {
       return;
     }
     props.removeAllPhoto();
-    const systemVersion = parseInt(DeviceInfo.getSystemVersion());
+    const systemVersion = parseFloat(DeviceInfo.getSystemVersion());
     const videoSelectType =
       Platform.OS === 'ios' && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
 
@@ -214,8 +190,6 @@ const NewTopic = props => {
       product_ids: product?.id || '',
       tag_list: tag_list ? tag_list : [],
     };
-
-    console.log('data', data);
 
     return data;
   };
@@ -332,7 +306,6 @@ const NewTopic = props => {
     });
   }, [navigation, imageSource, videoSource, savetopic, linkSource]);
 
-  console.log('savetopic', savetopic);
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />

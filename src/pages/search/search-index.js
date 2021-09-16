@@ -13,12 +13,13 @@ import SpaceList from '@/components/List/space-list';
 import ActivityList from '@/components/List/activity-list';
 import ShopStoreList from '@/components/List/shop-store-list';
 import ShopBrandList from '@/components/List/shop-brand-list';
+import ProductSingleList from '@/components/List/product-single-list';
 import HashtagList from '@/components/List/hash-tag-list';
 import AccountsList from '@/components/List/accounts-list';
 import {Search} from '@/components/NodeComponents';
 import TabView from '@/components/TabView';
 import {searchApi} from '@/api/search_api';
-import {SAFE_TOP, BarHeight, IsIos} from '@/utils/navbar';
+import {BarHeight, IsIos} from '@/utils/navbar';
 import {RFValue} from '@/utils/response-fontsize';
 
 const SearchIndex = ({navigation, route}) => {
@@ -103,6 +104,18 @@ const SearchIndex = ({navigation, route}) => {
   const ShopBrandListPage = () =>
     type === 'shop_brand' ? (
       <ShopBrandList request={request} enableRefresh={false} dataKey="items" type="list" />
+    ) : (
+      <View />
+    );
+
+  const ProductListPage = () =>
+    type === 'product' ? (
+      <ProductSingleList
+        request={request}
+        enableRefresh={false}
+        dataKey="items"
+        type="search-product"
+      />
     ) : (
       <View />
     );
@@ -214,6 +227,11 @@ const SearchIndex = ({navigation, route}) => {
             key: 'shop_brand',
             title: '品牌',
             component: ShopBrandListPage,
+          },
+          {
+            key: 'product',
+            title: '顽物',
+            component: ProductListPage,
           },
           {
             key: 'hashtag',

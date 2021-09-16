@@ -26,8 +26,6 @@ const CreateProductType = props => {
   const [brandData, setBrandData] = useState([]);
   const isCanClick = category && brandType ? true : false;
 
-  console.log('createProduct', createProduct);
-
   const handleChooseCategory = () => {
     setVisible(true);
   };

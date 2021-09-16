@@ -40,7 +40,7 @@ const BaseRecommendAccount = ({data}) => {
         {lablelList.length > 0 ? (
           <View style={styles.labelWrap}>
             {lablelList.map((label, index) => (
-              <View key={`recommend-account-label-${label}`} style={{flexDirection: 'row'}}>
+              <View key={`${label}-${index}`} style={{flexDirection: 'row'}}>
                 <Text style={styles.label}>{label}</Text>
                 {lablelList.length - 1 !== index && <Text style={styles.labelLine}>|</Text>}
               </View>

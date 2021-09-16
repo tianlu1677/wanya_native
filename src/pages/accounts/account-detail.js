@@ -20,7 +20,7 @@ import {
   unfollowAccount,
   getAccountArticles,
 } from '@/api/account_api';
-import {getChatGroupsDetail} from '@/api/chat_api';
+import {getChatGroupsDetail, getValidChat} from '@/api/chat_api';
 import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import {reportContent} from '@/api/secure_check';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
@@ -72,6 +72,12 @@ const AccountDetail = ({navigation, route}) => {
   };
 
   const createChat = async () => {
+    const ret = await getValidChat({target_account_id: account.id});
+    if (ret.data.message) {
+      Toast.showError(ret.data.message);
+      return;
+    }
+
     const params = {receiver_id: account.id};
     const res = await getChatGroupsDetail(params);
     const {uuid} = res.data.chat_group;
@@ -186,11 +192,13 @@ const AccountDetail = ({navigation, route}) => {
             <View style={styles.labelWrap}>
               {account.label_list.map((label, index) => (
                 <>
-                  <Text style={styles.label} key={label}>
+                  <Text style={styles.label} key={`${label}-text`}>
                     {label}
                   </Text>
                   {account.label_list.length - 1 !== index && (
-                    <Text style={styles.labelLine}>|</Text>
+                    <Text style={styles.labelLine} key={`${label}-line`}>
+                      |
+                    </Text>
                   )}
                 </>
               ))}
