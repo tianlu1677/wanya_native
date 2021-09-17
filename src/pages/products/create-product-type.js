@@ -71,7 +71,7 @@ const CreateProductType = props => {
         desc: detail.title,
         price: detail.reserve_price,
         category_id: category.id,
-        shop_brand_type: brandType.name,
+        category_brand_type: brandType.name,
         shop_brand_id: brand?.id || '',
         images_list: detail.small_images.string,
         item_url: detail.item_url,
@@ -80,6 +80,7 @@ const CreateProductType = props => {
       },
     };
 
+    console.log('params', params);
     try {
       Toast.showLoading();
       const res = await createProducts(params);

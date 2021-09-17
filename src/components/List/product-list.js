@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import ScrollList from '@/components/ScrollList';
-import BaseProduct, {SearchBaseProduct} from '@/components/Item/base-product';
+import BaseProduct from '@/components/Item/base-product';
 
 const ProductList = props => {
-  const {request, type, dataKey} = props;
+  const {request, dataKey} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item, index}) => {
-    return type === 'list' ? (
-      <SearchBaseProduct index={index} data={item} />
-    ) : (
-      <BaseProduct index={index} data={item} />
-    );
+    return <BaseProduct index={index} data={item} />;
   };
 
   const loadData = async (page = 1) => {
@@ -22,6 +18,7 @@ const ProductList = props => {
     }
     const {api, params, apiPath} = request;
     const res = await api({...params, page}, apiPath);
+    console.log('res', res);
     const data = dataKey ? res.data[dataKey] : res.data.products;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

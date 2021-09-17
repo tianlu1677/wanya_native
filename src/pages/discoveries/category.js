@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {useNavigation, useRoute} from '@react-navigation/native';
+
 import {RFValue} from '@/utils/response-fontsize';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
@@ -18,13 +20,10 @@ const width = Math.floor((SCREEN_WIDTH - VWValue(30 * 5)) / 5);
 
 const Category = props => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {location} = useSelector(state => state.home);
 
-  const {
-    navigation,
-    category,
-    category: {movement, space, activity, shop_store, shop_brand},
-  } = props;
+  const {category} = props;
 
   const goPageMethod = name => {
     const value = {...location, chooseCity: location.positionCity || '全国'};
@@ -49,13 +48,13 @@ const Category = props => {
         <Text style={styles.title}>顽士多</Text>
       </Pressable>
 
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopStore')}>
-        <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopBrand')}>
+        <FastImg source={require('@/assets/discovery/shop_brand.png')} style={styles.slideImage} />
         <Text style={styles.title}>品牌</Text>
       </Pressable>
 
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopBrand')}>
-        <FastImg source={require('@/assets/discovery/shop_brand.png')} style={styles.slideImage} />
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopStore')}>
+        <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
         <Text style={styles.title}>活动</Text>
       </Pressable>
     </View>

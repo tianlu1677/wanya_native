@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, Animated, View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import ProductList from '@/components/List/product-list';
@@ -12,11 +12,7 @@ import {getProducts} from '@/api/product_api';
 import Category from './category';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const ShowHeight = 200;
-
 export const RenderCaCategory = props => {
-  const scrollY = useRef(new Animated.Value(0)).current;
-
   const {route} = props;
   const {discoveryData} = useSelector(state => state.home);
   const current = discoveryData.find(item => String(item.category_id) === route.key);
@@ -62,7 +58,6 @@ const Discovery = () => {
   const [currentKey, setCurrentKey] = useState(null);
   const [tabData, setTabData] = useState([]);
   const [coveryData, setCoveryData] = useState([]);
-  const scrollY = useRef(new Animated.Value(0)).current;
 
   const loadData = async () => {
     const res = await getAppCardList();
@@ -83,16 +78,17 @@ const Discovery = () => {
   return (
     <View style={styles.wrapper}>
       <RecommendSearch style={{paddingBottom: 0}} />
+
       {coveryData.length > 0 ? (
-        <Collapsible
-          coveryData={coveryData}
+        <TabView
           currentKey={currentKey}
-          onKeyChange={key => setCurrentKey(key)}
+          align="left"
+          bottomLine={true}
+          separator={true}
+          onChange={key => setCurrentKey(key)}
           tabData={tabData}
         />
-      ) : (
-        <Loading />
-      )}
+      ) : null}
     </View>
   );
 };
@@ -101,19 +97,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fafafa',
-  },
-  topHeader: {
-    width: '100%',
-    position: 'absolute',
-    top: 100,
-    backgroundColor: 'pink',
-  },
-  tabListWrapper: {
-    width: '100%',
-    position: 'absolute',
-    top: 100,
-    zIndex: 1,
-    backgroundColor: 'pink',
   },
 });
 

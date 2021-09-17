@@ -1,44 +1,126 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, StyleSheet, View} from 'react-native';
+import {Animated, ScrollView, StyleSheet, View, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
+import {useDispatch, useSelector} from 'react-redux';
 import TabList from '@/components/TabList';
 import {SCREEN_WIDTH} from '@/utils/navbar';
+import Category from './category';
+import ProductList from '@/components/List/product-list';
+import {getProducts} from '@/api/product_api';
+import TabViews from '@/components/TabView';
 
 const tabBarHeight = 45; // tabbar middle高度
-const ShowHeight = 200; // tabbar middle高度
+const ShowHeight = 100; // tabbar middle高度
 
 const options = {align: 'left', bottomLine: true, separator: false};
 
-const Collapsible = props => {
-  const {tabData, currentKey, coveryData, onKeyChange} = props;
-  const index = tabData.findIndex(v => v.key === currentKey);
-  const {category_brand_type_list} = coveryData[index];
-  const scrollY = useRef(new Animated.Value(0)).current;
-  const [offset, setOffset] = useState(0);
+export const RenderCaCategory = props => {
+  const {route} = props;
+  const {discoveryData} = useSelector(state => state.home);
+  const current = discoveryData.find(item => String(item.category_id) === route.key);
+  const [currentKey, setCurrentKey] = useState('');
+  const [request, setRequest] = useState({});
 
-  console.log('offset', offset);
+  const ProductListPage = () => {
+    return <ProductList request={request} />;
+  };
+
+  const onChangeKey = key => {
+    setCurrentKey(key);
+  };
+
+  useEffect(() => {
+    const defaultType = current.category_brand_type_list[0];
+    const defaultKey = `${route.key}${defaultType}`;
+    const apiPath = `q[category_id_eq]=${route.key}&q[category_brand_type_cont]=${defaultType}`;
+    setRequest({api: getProducts, params: {}, apiPath});
+    setCurrentKey(defaultKey);
+  }, [route.key]);
+
+  console.log('currentKeysssss', currentKey);
+
+  // return <Text style={{paddingTop: 100, backgroundColor: 'pink'}}>323232332323</Text>;
+
+  return currentKey ? (
+    <View style={{paddingTop: tabBarHeight, height: 900}}>
+      <TabViews
+        currentKey={currentKey}
+        request={request}
+        onChange={onChangeKey}
+        align="left"
+        bottomLine={true}
+        separator={false}
+        tabData={current.category_brand_type_list.map(item => {
+          return {key: `${route.key}${item}`, title: item, component: ProductListPage};
+        })}
+      />
+    </View>
+  ) : null;
+};
+
+const Collapsible = props => {
+  const {tabData, currentKey, onKeyChange} = props;
+  const index = tabData.findIndex(v => v.key === currentKey);
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const routes = tabData.map(v => {
     return {key: v.key, title: v.title};
   });
 
-  const typesRoutes = category_brand_type_list.map((item, i) => {
-    return {key: String(i), title: item};
-  });
+  const ProductListPage = () => {
+    const apiPath = 'q[category_id_eq]=13&q[category_brand_type_cont]=服饰';
+    const request = {api: getProducts, params: {}, apiPath};
+    return <ProductList request={request} />;
+  };
 
   const RenderScene = ({route}) => {
     const currentIndex = tabData.findIndex(v => v.key === route.key);
-    const renderItem = tabData[currentIndex].component;
     const data = [{key: String(currentIndex)}];
+    console.log({key: currentKey});
+    const apiPath = 'q[category_id_eq]=13&q[category_brand_type_cont]=服饰';
+    const request = {api: getProducts, params: {}, apiPath};
+
+    // return <RenderCaCategory route={route} />;
+    // return (
+    //   <TabViews
+    //     currentKey={currentKey}
+    //     request={request}
+    //     onChange={onChangeKey}
+    //     align="left"
+    //     bottomLine={true}
+    //     separator={false}
+    //     tabData={current.category_brand_type_list.map(item => {
+    //       return {key: `${route.key}${item}`, title: item, component: ProductListPage};
+    //     })}
+    //   />
+    // );
 
     return (
       <View style={styles.listWrapper}>
-        <Animated.FlatList
+        <Animated.View
+          onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+            useNativeDriver: true,
+          })}>
+          <RenderCaCategory route={{key: currentKey, index}} />
+        </Animated.View>
+        {/* <TabViews
+          currentKey={currentKey}
+          request={request}
+          // onChange={onChangeKey}
+          onChange={() => {}}
+          align="left"
+          bottomLine={true}
+          separator={false}
+          tabData={current.category_brand_type_list.map(item => {
+            return {key: `${route.key}${item}`, title: item, component: ProductListPage};
+          })}
+        /> */}
+        {/* <Animated.FlatList
           onRefresh={false}
           bounces={true}
           useNativeDriver={true}
           contentContainerStyle={{paddingTop: tabBarHeight}}
-          renderItem={renderItem}
+          renderItem={ProductListPage}
           data={data}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -47,7 +129,8 @@ const Collapsible = props => {
           onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
             useNativeDriver: true,
           })}
-        />
+          ListHeaderComponent={<Category category={current} />}
+        /> */}
       </View>
     );
   };
@@ -60,47 +143,18 @@ const Collapsible = props => {
     });
 
     const tabChange = item => {
-      console.log('item', item);
       onKeyChange(item.key, item.title);
     };
 
-    const data = offset > ShowHeight ? typesRoutes : routes;
-    const current =
-      offset > ShowHeight
-        ? data.map(item => item.key).includes(currentKey)
-          ? currentKey
-          : typesRoutes[0].key
-        : currentKey;
-
-    console.log('currentKey', current, data);
     return (
       <Animated.View style={[styles.tabListWrapper, {transform: [{translateY}]}]}>
-        <TabList {...options} current={current} tabChange={tabChange} data={data} />
-        {/* {offset > tabBarHeight ? (
-          <TabList {...options} current={currentKey} tabChange={tabChange} data={typesRoutes} />
-        ) : (
-          <TabList {...options} current={currentKey} tabChange={tabChange} data={routes} />
-        )} */}
+        <TabList {...options} current={currentKey} tabChange={tabChange} data={routes} />
       </Animated.View>
     );
   };
 
-  const StickTopHeader = () => {
-    const tabChange = item => {
-      console.log('item11111', item);
-
-      // onKeyChange(item.key, item.title);
-    };
-
-    const data = category_brand_type_list.map((item, i) => {
-      return {key: String(i), title: item};
-    });
-
-    const currentType = data[0].key;
-    console.log('types data', data);
-
-    return <TabList {...options} current={currentType} tabChange={tabChange} data={data} />;
-  };
+  const {discoveryData} = useSelector(state => state.home);
+  const current = discoveryData.find(item => String(item.category_id) === currentKey);
 
   const RenderTabView = () => {
     const onIndexChange = i => {
@@ -129,31 +183,23 @@ const Collapsible = props => {
 
     return (
       <Animated.View style={[styles.topHeader, {opacity: opacity}]}>
-        <StickTopHeader />
+        <Text>StickTopHeader</Text>
       </Animated.View>
     );
   };
 
-  useEffect(() => {
-    scrollY.addListener(({value}) => {
-      setOffset(value);
-    });
-    return () => {
-      scrollY.removeAllListeners();
-    };
-  }, [scrollY]);
-
   return (
-    <View style={{flex: 1}}>
+    <ScrollView style={{flex: 1}}>
       {RenderTopHeader()}
       {RenderTabView()}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   topHeader: {
     width: '100%',
+    height: 50,
     position: 'absolute',
     top: 0,
   },
