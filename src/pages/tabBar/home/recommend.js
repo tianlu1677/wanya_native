@@ -46,15 +46,19 @@ const Recommend = props => {
   const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
   const MemoVideo = React.memo(() => {
-    const {content} = uploadStatus;
-    return (
-      <Video
-        style={styles.video}
-        source={{uri: content.video.uri}}
-        paused={true}
-        resizeMode="cover"
-      />
-    );
+    if(uploadStatus) {
+      const {content} = uploadStatus;
+      return (
+        <Video
+          style={styles.video}
+          source={{uri: content.video.uri}}
+          paused={true}
+          resizeMode="cover"
+        />
+      );
+    } else {
+      return <View/>
+    }
   });
 
   const CallBackVideo = useCallback(() => <MemoVideo />, []);
