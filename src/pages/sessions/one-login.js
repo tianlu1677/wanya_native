@@ -142,7 +142,7 @@ const OneLogin = ({navigation, route}) => {
     privacyW: 200, //隐私条款宽度
     privacyH: -5, //隐私条款高度
     privacyCheckboxHidden: false, //checkBox是否隐藏，默认不隐藏
-    privacyCheckEnable: true, //checkBox默认状态 默认:NO
+    privacyCheckEnable: false, //checkBox默认状态 默认:NO
     privacyCheckedImage: 'checkbox_selected', //checkBox选中时图片
     privacyUncheckedImage: 'checkbox_unselected', //checkBox未选中时图片
     privacyCheckboxSize: 13, //设置隐私条款checkbox尺寸 默认是10
