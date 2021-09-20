@@ -106,8 +106,9 @@ const TabList = props => {
 const styles = StyleSheet.create({
   tabWrap: {
     height: RFValue(33),
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     paddingRight: 5,
+    // backgroundColor: 'pink',
   },
   tabScroll: {
     paddingLeft: 10,

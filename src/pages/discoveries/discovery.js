@@ -81,8 +81,25 @@ const Discovery = () => {
   }, []);
 
   return (
-    <View style={styles.wrapper}>
+    <>
       <RecommendSearch style={{paddingBottom: 0}} />
+      {/* <Collapsible
+          coveryData={coveryData}
+          currentKey={currentKey}
+          onKeyChange={key => setCurrentKey(key)}
+          renderTopHeader={<StickTopHeader />}
+          tabData={coveryData.map(category => {
+            const options = {
+              key: category.category_key,
+              title: category.category_name,
+              // component: <RenderCaCategory category={category} coveryData={coveryData} />,
+              // component: (category, coveryData) => <Text>323232</Text>,
+              component: <RenderCaCategory category={category} coveryData={coveryData} />,
+            };
+            return options;
+          })}
+        /> */}
+
       {coveryData.length > 0 ? (
         <Collapsible
           coveryData={coveryData}
@@ -93,7 +110,7 @@ const Discovery = () => {
       ) : (
         <Loading />
       )}
-    </View>
+    </>
   );
 };
 
