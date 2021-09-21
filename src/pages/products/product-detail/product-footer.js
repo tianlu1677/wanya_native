@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Linking, StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
@@ -35,7 +35,18 @@ const ProductFooter = props => {
     navigation.navigate('NewTopic');
   };
 
-  const handleBuy = () => {};
+  const handleBuy = () => {
+    console.log('detail.', detail.scheme_url)
+    console.log('detail.', detail.item_url)
+    Linking.canOpenURL('taobao://').then((supported) => {
+      if(!supported) {
+        Linking.openURL(detail.item_url);
+      } else {
+        // Linking.openURL('taobao://detail.tmall.com/item.htm?id=639078857092')
+        Linking.openURL(detail.scheme_url);
+      }
+    })
+  };
 
   const starIcon = star ? 'star-solid' : 'star';
   const Color = state => (state ? '#000' : '#bdbdbd');
