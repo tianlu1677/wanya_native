@@ -46,7 +46,7 @@ const Recommend = props => {
   const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
   const MemoVideo = React.memo(() => {
-    if(uploadStatus) {
+    if (uploadStatus) {
       const {content} = uploadStatus;
       return (
         <Video
@@ -57,7 +57,7 @@ const Recommend = props => {
         />
       );
     } else {
-      return <View/>
+      return <View />;
     }
   });
 
@@ -183,7 +183,7 @@ const Recommend = props => {
 
   return (
     <View style={{flex: 1, position: 'relative'}}>
-      <RecommendSearch style={{paddingBottom: 0}} />
+      <RecommendSearch style={{paddingBottom: 0}} {...props} />
       {uploadStatus ? (
         <View style={[styles.uploadWrap]}>
           <UploadTopic />

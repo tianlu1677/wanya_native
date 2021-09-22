@@ -6,9 +6,9 @@ import {RecommendSearch} from '@/components/NodeComponents';
 import {VWValue} from '@/utils/response-fontsize';
 import {getRecommendAccounts} from '@/api/home_api';
 import {Cstyles} from '@/pages/tabBar/style';
-import { uniqBy } from 'lodash'
+import {uniqBy} from 'lodash';
 
-const TabBarAccounts = () => {
+const TabBarAccounts = props => {
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -22,11 +22,11 @@ const TabBarAccounts = () => {
       setLoading(true);
     }
     const res = await getRecommendAccounts({page, ...params});
-    if(page === 1) {
-      setListData(res.data.accounts)
+    if (page === 1) {
+      setListData(res.data.accounts);
     } else {
-      let newaccounts = uniqBy(listData.concat(res.data.accounts), 'id')
-      setListData(newaccounts)
+      let newaccounts = uniqBy(listData.concat(res.data.accounts), 'id');
+      setListData(newaccounts);
     }
     setLoading(false);
     setHeaders(res.headers);
@@ -38,7 +38,7 @@ const TabBarAccounts = () => {
 
   return (
     <View style={Cstyles.wrapper}>
-      <RecommendSearch border={true} />
+      <RecommendSearch border={true} {...props} />
       <ScrollList
         data={listData}
         loading={loading}
@@ -49,7 +49,7 @@ const TabBarAccounts = () => {
         style={{backgroundColor: '#fff'}}
         keyExtractor={(item, index) => `account${item.id}`}
         settings={{
-          initialNumToRender: 15
+          initialNumToRender: 15,
         }}
       />
     </View>

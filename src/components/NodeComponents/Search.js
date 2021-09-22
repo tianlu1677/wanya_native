@@ -10,6 +10,7 @@ const Search = props => {
   return (
     <View style={[styles.wrapper, props.style]}>
       {props.prefix ? props.prefix : null}
+
       <View style={[styles.inputContent, props.inputStyle, {height: height}]}>
         <IconFont name="sousuo" size={14} color={placeholderTextColor} style={styles.icon} />
         <TextInput
@@ -36,6 +37,8 @@ const Search = props => {
           取消
         </Text>
       )}
+
+      {props.suffix ? props.suffix : null}
     </View>
   );
 };
@@ -50,7 +53,7 @@ Search.propTypes = {
   onChangeText: PropTypes.func,
   cancelWidth: PropTypes.number,
   getRef: PropTypes.func,
-  cancel: PropTypes.bool,
+  cancel: PropTypes.object,
   prefix: PropTypes.object,
   suffix: PropTypes.object,
 };

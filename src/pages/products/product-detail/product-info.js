@@ -34,7 +34,7 @@ const ProductInfo = props => {
           index={0}
           loop={false}
           activeDotColor="#ff2242"
-          dotColor="white"
+          dotColor="#f2f2f2"
           removeClippedSubviews={false}
           loadMinimal
           showsPagination={images_list.length > 0}

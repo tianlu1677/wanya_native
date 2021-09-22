@@ -36,16 +36,16 @@ const ProductFooter = props => {
   };
 
   const handleBuy = () => {
-    console.log('detail.', detail.scheme_url)
-    console.log('detail.', detail.item_url)
-    Linking.canOpenURL('taobao://').then((supported) => {
-      if(!supported) {
+    console.log('detail.', detail.scheme_url);
+    console.log('detail.', detail.item_url);
+    Linking.canOpenURL('taobao://').then(supported => {
+      if (!supported) {
         Linking.openURL(detail.item_url);
       } else {
         // Linking.openURL('taobao://s.click.taobao.com/t?e=m%3D2%26s%3DLQyTOECB43Zw4vFB6t2Z2ueEDrYVVa64Dne87AjQPk9yINtkUhsv0A0WaciqXZwUMo80ymJwxZ9ZfhJtYr1z1erKcbtvADZv8VRyRBbjGT6y53J343eyg6kBJJBSepFlUyNpxLfgKr0jWpzpm6nEC6J2WUXmXWyaEvOC1%2F2sqDJcfm37xb4PJSslmCVJhmkX8izjid29L7CiZ%2BQMlGz6FQ%3D%3D&union_lens=lensId%3AOPT%401631803865%400b5c30ab_7e9e_17bef16f956_950d%4001')
         Linking.openURL(detail.scheme_url);
       }
-    })
+    });
   };
 
   const starIcon = star ? 'star-solid' : 'star';
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   btnWrap: {
     flexDirection: 'row',
-    borderRadius: 17,
+    borderRadius: 20,
     overflow: 'hidden',
     marginLeft: 'auto',
   },
@@ -115,10 +115,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   shareBtn: {
-    backgroundColor: '#FF2242',
+    backgroundColor: '#000',
   },
   buyBtn: {
-    backgroundColor: '#000',
+    backgroundColor: '#FF2242',
   },
 });
 

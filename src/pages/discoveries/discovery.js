@@ -57,7 +57,7 @@ export const RenderCaCategory = props => {
   ) : null;
 };
 
-const Discovery = () => {
+const Discovery = props => {
   const dispatch = useDispatch();
   const [currentKey, setCurrentKey] = useState(null);
   const [tabData, setTabData] = useState([]);
@@ -82,7 +82,7 @@ const Discovery = () => {
 
   return (
     <>
-      <RecommendSearch style={{paddingBottom: 0}} />
+      <RecommendSearch style={{paddingBottom: 0}} {...props} />
       {/* <Collapsible
           coveryData={coveryData}
           currentKey={currentKey}

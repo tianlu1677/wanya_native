@@ -41,12 +41,14 @@ const styles = StyleSheet.create({
     width,
     marginHorizontal: 10,
     marginBottom: 10,
-    padding: VWValue(12),
+    // padding: VWValue(12),
+    paddingVertical: VWValue(12),
     backgroundColor: '#fff',
+    // backgroundColor: 'pink',
   },
   image: {
-    width: imageWidth,
-    height: imageWidth,
+    width: width,
+    height: width,
   },
   title: {
     fontSize: 14,
@@ -55,11 +57,13 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     lineHeight: 20,
     marginTop: 20,
+    paddingHorizontal: VWValue(12),
   },
   goodInfo: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     marginTop: 15,
+    paddingHorizontal: VWValue(12),
   },
   symbol: {
     color: '#2F2F2F',
