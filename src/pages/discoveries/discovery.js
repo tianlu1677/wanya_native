@@ -82,7 +82,7 @@ const Discovery = props => {
 
   return (
     <>
-      <RecommendSearch style={{paddingBottom: 0}} {...props} />
+      <RecommendSearch style={{paddingBottom: 0, paddingLeft: 14}} {...props} page="discovery" />
       {/* <Collapsible
           coveryData={coveryData}
           currentKey={currentKey}

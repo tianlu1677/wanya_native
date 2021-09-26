@@ -7,12 +7,14 @@ import Search from './Search';
 import CurrentAvator from '@/pages/tabBar/current-avator';
 
 const RecommendSearch = props => {
-  const {border, style, navigation} = props;
+  const {border, style, navigation, page} = props;
   const [inputRef, setinputRef] = useState(null);
 
   const onCreateProduct = () => {
     navigation.navigate('CreateProductLink');
   };
+
+  const isShowCreateProduct = ['accounts', 'discovery'].includes(page);
 
   return (
     <View style={[border && styles.searchWrapper]}>
@@ -20,11 +22,11 @@ const RecommendSearch = props => {
       <StatusBar barStyle="dark-content" translucent={false} backgroundColor="white" />
       <Search
         getRef={refs => setinputRef(refs)}
-        style={{...style, backgroundColor: '#fff'}}
+        style={{...style}}
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#f2f3f5'}}
         height={RFValue(36)}
         placeholderTextColor="#aaa"
-        placeholder="搜索顽法、帖子、文章、圈子等内容"
+        placeholder="搜索顽法、帖子、圈子等内容"
         onFocus={() => {
           inputRef.blur();
           navigation.push('SearchIndex');
@@ -36,10 +38,12 @@ const RecommendSearch = props => {
           </View>
         }
         suffix={
-          <Pressable style={styles.productWrap} onPress={onCreateProduct}>
-            <IconFont size={14} name="plus" color="#000" />
-            <Text style={styles.title}>顽物</Text>
-          </Pressable>
+          isShowCreateProduct ? (
+            <Pressable style={styles.productWrap} onPress={onCreateProduct}>
+              <IconFont size={14} name="plus" color="#000" />
+              <Text style={styles.title}>顽物</Text>
+            </Pressable>
+          ) : null
         }
       />
     </View>

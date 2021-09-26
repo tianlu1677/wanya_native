@@ -19,7 +19,10 @@ const ProductInfo = props => {
   } = props;
 
   const onPreview = index => {
-    const data = {index, images: images_list, visible: true};
+    const images = images_list.map(item => {
+      return {url: item};
+    });
+    const data = {index, images, visible: true};
     dispatch(dispatchPreviewImage(data));
   };
 

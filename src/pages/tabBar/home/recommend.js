@@ -183,7 +183,11 @@ const Recommend = props => {
 
   return (
     <View style={{flex: 1, position: 'relative'}}>
-      <RecommendSearch style={{paddingBottom: 0}} {...props} />
+      <RecommendSearch
+        {...props}
+        style={{paddingBottom: 0, paddingHorizontal: 14}}
+        page="recommend"
+      />
       {uploadStatus ? (
         <View style={[styles.uploadWrap]}>
           <UploadTopic />
