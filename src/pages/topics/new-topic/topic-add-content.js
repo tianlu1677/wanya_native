@@ -33,51 +33,55 @@ const TopicAddContent = props => {
 
       {movement_ids?.length > 0 ? (
         <View style={styles.relatedWrapper}>
-          <View style={styles.related}>
-            <FastImg style={styles.relatedImage} source={RelatedImage} />
-            <View style={styles.relatedInfo}>
-              <Text style={styles.relatedName}>{movement_ids[0].name.trim()}</Text>
-              <Text style={styles.relatedText}>{movement_ids[0].desc_tip}</Text>
-            </View>
+          <FastImg style={styles.relatedImage} source={RelatedImage} />
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {movement_ids[0].name.trim()}
+            </Text>
+            <Text style={styles.relatedText}>{movement_ids[0].desc_tip}</Text>
           </View>
         </View>
       ) : null}
 
       {shop_store_ids?.length > 0 ? (
         <View style={styles.relatedWrapper}>
-          <View style={styles.related}>
-            <FastImg style={styles.relatedImage} source={{uri: shop_store_ids[0].cover_url}} />
-            <View style={styles.relatedInfo}>
-              <Text style={styles.relatedName}>{shop_store_ids[0].name.trim()}</Text>
-              <Text style={styles.relatedText}>{shop_store_ids[0].desc_tip}</Text>
-            </View>
+          <FastImg style={styles.relatedImage} source={{uri: shop_store_ids[0].cover_url}} />
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {shop_store_ids[0].name.trim()}
+            </Text>
+            <Text style={styles.relatedText}>{shop_store_ids[0].desc_tip}</Text>
           </View>
         </View>
       ) : null}
 
       {shop_brand_ids?.length > 0 ? (
         <View style={styles.relatedWrapper}>
-          <View style={styles.related}>
-            <FastImg style={styles.relatedImage} source={{uri: shop_brand_ids[0].cover_url}} />
-            <View style={styles.relatedInfo}>
-              <Text style={styles.relatedName}>{shop_brand_ids[0].name.trim()}</Text>
-              <Text style={styles.relatedText}>{shop_brand_ids[0].desc_tip}</Text>
-            </View>
+          <FastImg style={styles.relatedImage} source={{uri: shop_brand_ids[0].cover_url}} />
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {shop_brand_ids[0].name.trim()}
+            </Text>
+            <Text style={styles.relatedText}>{shop_brand_ids[0].desc_tip}</Text>
           </View>
         </View>
       ) : null}
 
       {product ? (
         <View style={styles.relatedWrapper}>
-          <View style={styles.related}>
-            <FastImg
-              style={styles.relatedImage}
-              source={{uri: product.cover_url ? product.cover_url : product.images_list[0]}}
-            />
-            <View style={styles.relatedInfo}>
-              <Text style={styles.relatedName}>{product.name}</Text>
-              <Text style={styles.relatedText}>{product.category_name}</Text>
-            </View>
+          <FastImg
+            style={styles.relatedImage}
+            source={{uri: product.cover_url ? product.cover_url : product.images_list[0]}}
+          />
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {product.name}
+            </Text>
+            <Text style={styles.relatedText}>
+              {product.category_name}
+              {product.category_brand_type ? ' · ' : ''}
+              {product.category_brand_type ? product.category_brand_type.split(',').join('/') : ''}
+            </Text>
           </View>
         </View>
       ) : null}
@@ -120,15 +124,12 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   relatedWrapper: {
-    height: RFValue(55),
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: RFValue(10),
     backgroundColor: '#000',
     borderRadius: 9,
-    justifyContent: 'center',
-    paddingLeft: RFValue(10),
-    marginTop: RFValue(13),
-  },
-  related: {
-    flexDirection: 'row',
   },
   relatedImage: {
     width: RFValue(33),
@@ -137,11 +138,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   relatedInfo: {
-    justifyContent: 'center',
+    flex: 1,
   },
   relatedName: {
     color: '#fff',
-    fontSize: RFValue(14),
+    fontSize: 14,
     fontWeight: '500',
   },
   relatedText: {

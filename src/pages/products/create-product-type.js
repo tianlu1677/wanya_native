@@ -67,8 +67,8 @@ const CreateProductType = props => {
     }
     const params = {
       product: {
-        name: detail.cat_name,
-        desc: detail.title,
+        name: detail.title,
+        desc: detail.desc,
         price: detail.reserve_price,
         category_id: category.id,
         category_brand_type: brandType.name,

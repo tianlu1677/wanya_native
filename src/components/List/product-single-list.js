@@ -34,10 +34,13 @@ export const BaseSingleProduct = props => {
   return (
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <FastImg style={styles.image} source={{uri: data.cover_url}} />
-      <View>
-        <Text style={styles.name}>{data.name}</Text>
+      <View style={styles.infoWrap}>
+        <Text style={styles.name} numberOfLines={1}>
+          {data.name}
+        </Text>
         <Text style={styles.text}>
-          {data.category_name} ·{' '}
+          {data.category_name}
+          {data.category_brand_type ? ' · ' : ''}
           {data.category_brand_type ? data.category_brand_type.split(',').join('/') : ''}
         </Text>
       </View>
@@ -91,8 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: RFValue(55),
-    padding: RFValue(11),
+    padding: RFValue(10),
     marginHorizontal: 14,
     backgroundColor: '#000',
     borderRadius: 9,
@@ -103,6 +105,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 6,
   },
+  infoWrap: {
+    flex: 1,
+  },
   name: {
     color: '#fff',
     fontSize: 14,
@@ -110,7 +115,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#bdbdbd',
-    fontSize: 10,
+    fontSize: RFValue(10),
     fontWeight: '300',
     marginTop: 4,
   },

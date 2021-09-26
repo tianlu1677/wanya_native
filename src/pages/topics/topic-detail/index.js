@@ -1,5 +1,13 @@
 import React, {useEffect, useState, useLayoutEffect} from 'react';
-import {View, Text, Platform, StyleSheet, Pressable, KeyboardAvoidingView} from 'react-native';
+import {
+  View,
+  Text,
+  Platform,
+  StyleSheet,
+  StatusBar,
+  Pressable,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {useHeaderHeight} from '@react-navigation/stack';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
@@ -182,6 +190,7 @@ const TopicDetail = ({navigation, route}) => {
   return detail ? (
     <KeyboardAvoidingView behavior={behavior} style={styles.wrap} keyboardVerticalOffset={Offset}>
       {isLongVideo && <GoBack color="#000" report={true} onReportClick={onReportClick} />}
+      <StatusBar barStyle="dark-content" />
       <CommentList
         type="Topic"
         detail={detail}

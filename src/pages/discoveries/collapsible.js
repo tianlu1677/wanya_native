@@ -7,6 +7,7 @@ import {SCREEN_WIDTH} from '@/utils/navbar';
 import ProductList from '@/components/List/product-list';
 import {getProducts} from '@/api/product_api';
 import TabViews from '@/components/TabView';
+import Category from './category';
 
 const tabBarHeight = 45; // tabbar middle高度
 const ShowHeight = 100; // tabbar middle高度
@@ -106,11 +107,14 @@ const Collapsible = props => {
   console.log('scrollY', scrollY);
 
   const RenderScene = () => (
-    <RenderCaCategory
-      route={{key: currentKey, index}}
-      ListHeaderComponent={RenderTabBar}
-      scrollY={scrollY}
-    />
+    <>
+      <Category />
+      <RenderCaCategory
+        route={{key: currentKey, index}}
+        ListHeaderComponent={RenderTabBar}
+        scrollY={scrollY}
+      />
+    </>
   );
 
   return (

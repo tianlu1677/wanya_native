@@ -7,7 +7,6 @@ import {SCREEN_WIDTH} from '@/utils/navbar';
 import {VWValue} from '@/utils/response-fontsize';
 
 const width = Math.floor((SCREEN_WIDTH - 30) / 2);
-const imageWidth = width - VWValue(12 * 2);
 
 const BaseProduct = props => {
   const navigation = useNavigation();
@@ -30,7 +29,7 @@ const BaseProduct = props => {
       <View style={styles.goodInfo}>
         <Text style={styles.symbol}>¥</Text>
         <Text style={styles.price}>{price}</Text>
-        <Text style={styles.num}>热度 {FilterScore(hot_score)}</Text>
+        {hot_score ? <Text style={styles.num}>热度 {FilterScore(hot_score)}</Text> : null}
       </View>
     </Pressable>
   );
@@ -41,10 +40,10 @@ const styles = StyleSheet.create({
     width,
     marginHorizontal: 10,
     marginBottom: 10,
-    // padding: VWValue(12),
-    paddingVertical: VWValue(12),
+    paddingBottom: 17,
     backgroundColor: '#fff',
-    // backgroundColor: 'pink',
+    borderRadius: 5,
+    overflow: 'hidden',
   },
   image: {
     width: width,
@@ -56,14 +55,14 @@ const styles = StyleSheet.create({
     color: '#2F2F2F',
     textAlign: 'justify',
     lineHeight: 20,
-    marginTop: 20,
+    marginTop: 10,
     paddingHorizontal: VWValue(12),
   },
   goodInfo: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginTop: 15,
     paddingHorizontal: VWValue(12),
+    marginTop: VWValue(10),
   },
   symbol: {
     color: '#2F2F2F',
