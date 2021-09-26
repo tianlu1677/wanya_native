@@ -1,4 +1,4 @@
-import Taro from "@tarojs/taro";
+import Taro from '@tarojs/taro';
 
 export const HTTP_STATUS = {
   SUCCESS: 200,
@@ -12,14 +12,14 @@ export const HTTP_STATUS = {
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504,
-  NO_PERMISSION: 410
-}
+  NO_PERMISSION: 410,
+};
 
 export const REFRESH_STATUS = {
   NORMAL: 0,
   REFRESHING: 1,
-  NO_MORE_DATA: 2
-}
+  NO_MORE_DATA: 2,
+};
 
 /*获取当前页url*/
 export const getCurrentPageUrl = () => {
@@ -38,9 +38,9 @@ function showError(message, show = true) {
   return Promise.reject(message);
 }
 
-const customInterceptor = function(chain) {
+const customInterceptor = function (chain) {
   const requestParams = chain.requestParams;
-  const { showToast } = requestParams;
+  const {showToast} = requestParams;
   return chain
     .proceed(requestParams)
     .catch(res => {
@@ -48,29 +48,28 @@ const customInterceptor = function(chain) {
       return showError(res.error, showToast);
     })
     .then(res => {
-      // console.log('res', res)
       // 只要请求成功，不管返回什么状态码，都走这个回调
       if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
-        return showError("请求资源不存在", showToast);
+        return showError('请求资源不存在', showToast);
       } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
-        return showError("服务端出现了问题", showToast);
+        return showError('服务端出现了问题', showToast);
       } else if (res.statusCode === HTTP_STATUS.NO_PERMISSION) {
-          return showError(res.data.msg, showToast);
+        return showError(res.data.msg, showToast);
       } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
-        Taro.clearStorageSync('token')
-        Taro.clearStorageSync('account_id')
-        Taro.clearStorageSync('account_nickname')
+        Taro.clearStorageSync('token');
+        Taro.clearStorageSync('account_id');
+        Taro.clearStorageSync('account_nickname');
         let path = getCurrentPageUrl();
-        if (path !== "/pages/login/login") {
+        if (path !== '/pages/login/login') {
           Taro.navigateTo({
-            url: "/pages/login/login"
+            url: '/pages/login/login',
           });
-          return
+          return;
         }
-        return showError("正在登录中", showToast);
+        return showError('正在登录中', showToast);
       } else if (res.statusCode >= 400) {
         let errorMsg = res.data && res.data.message;
-        errorMsg = errorMsg || res.error
+        errorMsg = errorMsg || res.error;
         return showError(errorMsg, showToast);
       } else {
         return res;

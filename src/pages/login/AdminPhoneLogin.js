@@ -22,11 +22,7 @@ class AdminPhoneLogin extends Component {
   }
 
   handleSubmit = async values => {
-    // console.log('values', values)
-    // console.log(await React.$Store.getData('auth_token'))
-
     phoneSignIn({phone: values.phone, password: values.password}).then(async res => {
-      console.log('res', res);
       if (res.status === 200) {
         await Helper.setData('auth_token', res.token);
         await Helper.setData('account_id', res.id.toString());

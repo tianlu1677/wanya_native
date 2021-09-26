@@ -12,4 +12,5 @@ export const Type = {
   longTopic: 'long_topic_content',
   article: 'article_content',
   topic: 'topic_content',
+  product: 'product_content',
 };

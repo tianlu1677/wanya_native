@@ -23,7 +23,6 @@ const CreateProductLink = props => {
       Toast.showLoading();
       const res = await getProductsItemDetail(params);
       Toast.hide();
-      console.log('res', res.data);
 
       if (res.data.error) {
         Toast.showError(res.data.error);

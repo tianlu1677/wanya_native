@@ -46,7 +46,6 @@ const Report = ({navigation, route}) => {
       report_type_id: report_type_id,
     };
     const res = await reportContent(data);
-    console.log('res', res);
     Toast.showError('反馈成功');
     setTimeout(() => {
       navigation.goBack();

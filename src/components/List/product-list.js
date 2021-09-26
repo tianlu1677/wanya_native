@@ -18,7 +18,6 @@ const ProductList = props => {
     }
     const {api, params, apiPath} = request;
     const res = await api({...params, page}, apiPath);
-    console.log('res', res);
     const data = dataKey ? res.data[dataKey] : res.data.products;
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);

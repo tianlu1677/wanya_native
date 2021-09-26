@@ -6,6 +6,7 @@ import BaseSpace from '@/components/Item/base-space';
 import BaseActivity from '@/components/Item/base-activity';
 import BaseShopStore from '@/components/Item/base-shop-store';
 import BaseShopBrand from '@/components/Item/base-shop-brand';
+import {BaseSingleProduct} from '@/components/List/product-single-list';
 import BaseHashtag from '@/components/Item/base-hashtag';
 import BaseAccount from '@/components/Item/base-account';
 import BaseTheory from '@/components/Item/base-theory';
@@ -53,10 +54,17 @@ const ShopStore = props => (
 
 const ShopBrand = props => <BaseShopBrand data={props.item} key={props.item.id} type="list" />;
 
+const Product = props => (
+  <View key={props.item.id}>
+    <BaseSingleProduct data={props.item} type="list" />
+    {props.meta.total_count >= 3 && <Text style={styles.productSeparator} />}
+  </View>
+);
+
 const Hashtag = props => (
   <View key={props.item.name}>
     <BaseHashtag data={props.item} type="list" />
-    {props.meta.total_count >= 3 && <Text style={styles.separator} />}
+    {props.meta.total_count >= 3 && <View style={styles.separator} />}
   </View>
 );
 
@@ -116,6 +124,8 @@ const AllItem = props => {
               return <ShopStore item={item} key={index} meta={data.meta} />;
             case Type.shopBrand:
               return <ShopBrand item={item} key={index} meta={data.meta} />;
+            case Type.product:
+              return <Product item={item} key={index} meta={data.meta} />;
             case Type.hashtag:
               return <Hashtag item={item} key={index} meta={data.meta} />;
             case Type.account:
@@ -186,6 +196,10 @@ const styles = StyleSheet.create({
   shopBrandseparator: {
     backgroundColor: '#ebebeb',
     height: StyleSheet.hairlineWidth,
+    marginHorizontal: 14,
+  },
+  productSeparator: {
+    height: 9,
     marginHorizontal: 14,
   },
   separator: {

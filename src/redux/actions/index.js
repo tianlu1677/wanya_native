@@ -207,7 +207,6 @@ export const updateTheoryVideo = (videoId, pause) => async dispatch => {
 // 提前加载city
 export const loadAllCityList = () => async dispatch => {
   const res = await getCities();
-  console.log('res', res.data);
   await dispatch({
     type: LOAD_ALL_CITY_SUCCESS,
     value: res.data,

@@ -14,15 +14,13 @@ import ShareUtil from '@/utils/umeng_share_util';
 import {SignInWithAppleButton} from '@/components/AppleLogin';
 import {store} from '@/redux/stores/store';
 import {IsIos, SCREEN_WIDTH} from '@/utils/navbar';
-import Helper from "@/utils/helper"
+import Helper from '@/utils/helper';
 
 const JveryfyBottomViewAndroid = ({}) => {
-
   //{"accessToken": "2D07206AFCBD395D8C6E13572734266E", "city": "海淀", "expiration": null, "gender": "男", "iconurl": "https://thirdqq.qlogo.cn/g?b=oidb&k=37YbkEGP192zF3YTbvzR4A&s=100&t=1556440734", "name": "狂奔的蜗牛", "openid": "2F942F4D00671AE32030DE17B870EBCA", "province": "北京", "uid": "2F942F4D00671AE32030DE17B870EBCA"}
   // const qqLogin = async () => {
   //   try {
   //     ShareUtil.auth(0, async (code, result, message) => {
-  //       console.log('res', code, result, message);
   //       if (code === 200) {
   //         let gender = result.gender === '男' ? 'man' : 'woman';
   //         let signData = {
@@ -87,7 +85,6 @@ const JveryfyBottomViewAndroid = ({}) => {
   //       ...res.account,
   //       provider: 'wechat',
   //     }
-  //     console.log('res', res);
   //     afterLoginSuccess(res, signData);
   //   } catch (e) {
   //     console.error(e);
@@ -128,7 +125,6 @@ const JveryfyBottomViewAndroid = ({}) => {
     }
   };
 
-
   return (
     <View style={styles.container}>
       <Pressable
@@ -137,8 +133,7 @@ const JveryfyBottomViewAndroid = ({}) => {
           JVerification.dismissLoginPage();
           RootNavigation.navigate('LoginPhoneCode');
         }}
-        hitSlop={{top: 10, bottom: 20, left: 10, right: 10}}
-      >
+        hitSlop={{top: 10, bottom: 20, left: 10, right: 10}}>
         <Text style={styles.otherLogin}>其他号码登录</Text>
       </Pressable>
       <View style={styles.thirdLoginWrap}>

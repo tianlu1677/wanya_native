@@ -18,7 +18,6 @@ const LocationDetail = ({route, navigation}) => {
   const loadData = async () => {
     const res = await getLocationDetail(locationId);
     setDetail(res.location);
-    // console.log('res', res);
     navigation.setOptions({title: '位置'});
   };
 

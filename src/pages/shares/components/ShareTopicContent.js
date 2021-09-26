@@ -51,7 +51,6 @@ const ShareTopicContent = props => {
 
   useEffect(() => {
     prosettings().then(res => {
-      // console.log('res',res)
       setQrcodeUrl(res.share_page_qrcode_img_url);
     });
   }, []);

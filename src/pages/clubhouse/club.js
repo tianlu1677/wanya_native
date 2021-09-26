@@ -87,7 +87,6 @@ const ClubIndex = ({route, navigation}) => {
   //   console.log(_engine.joinChannelWithUserAccount)
   //   try {
   //     const res = await _engine.joinChannelWithUserAccount(token, channelId, null, 1000000005);
-  //     console.log('res', res);
   //   } catch (e) {
   //     console.log('_joinChannel error', JSON.stringify(e));
   //   }

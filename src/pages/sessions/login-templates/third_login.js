@@ -1,5 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, Platform, View, Alert, Pressable, Image, TouchableHighlight} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Platform,
+  View,
+  Alert,
+  Pressable,
+  Image,
+  TouchableHighlight,
+} from 'react-native';
 import FastImg from '@/components/FastImg';
 import JVerification from 'jverification-react-native';
 
@@ -12,9 +21,8 @@ import ShareUtil from '@/utils/umeng_share_util';
 import {SignInWithAppleButton} from '@/components/AppleLogin';
 import {store} from '@/redux/stores/store';
 import {IsIos, SCREEN_WIDTH} from '@/utils/navbar';
-import Helper from "@/utils/helper"
-import {BaseApiUrl} from "@/utils/config"
-
+import Helper from '@/utils/helper';
+import {BaseApiUrl} from '@/utils/config';
 
 const customUIWithConfigAndroid = {
   backgroundImage: 'bg1', //背景图
@@ -49,10 +57,10 @@ const customUIWithConfigAndroid = {
   numberColor: -67333, //手机号码字体颜色
   //为保障显示效果，请同时设置x,y,w,h
   // 0, 40, 200, 18
-  numberX: 0,                            //号码栏相对于屏幕左边x轴偏移
-  numberY: 100,                           //号码栏相对于标题栏下边缘y偏移
-  numberW: 200,                           //号码栏宽度
-  numberH: 18,                            //号码栏高度
+  numberX: 0, //号码栏相对于屏幕左边x轴偏移
+  numberY: 100, //号码栏相对于标题栏下边缘y偏移
+  numberW: 200, //号码栏宽度
+  numberH: 18, //号码栏高度
 
   sloganHidden: true, //slogan是否隐藏
   sloganTextSize: 16, //slogan字体大小
@@ -73,7 +81,7 @@ const customUIWithConfigAndroid = {
   //为保障显示效果，请同时设置x,y,w,h
   // 0, 80, 265, 45
   //0, 94, 290, 50
-  loginBtnOffsetX: 18,                          //登录按钮相对于屏幕左边x轴偏移
+  loginBtnOffsetX: 18, //登录按钮相对于屏幕左边x轴偏移
   loginBtnOffsetY: 125, //登录按钮相对于标题栏下边缘y偏移
   loginBtnWidth: 88, //登录按钮宽度
   loginBtnHeight: 15, //180/(1062/70),                          //登录按钮高度
@@ -105,29 +113,30 @@ const customUIWithConfigAndroid = {
   privacyWebNavReturnImage: 'close', //协议页导航栏返回按钮图片
 };
 
-
 const ThirdLogin = ({}) => {
-
   const showLogin = () => {
     if (Platform.OS === 'android') {
       console.log('android');
-      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, [{customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 450, SCREEN_WIDTH, 150]}]);
+      JVerification.addLoginCustomConfig(customUIWithConfigAndroid, [
+        {
+          customViewName: 'jverify_bottom_view_android',
+          customViewPoint: [0, 450, SCREEN_WIDTH, 150],
+        },
+      ]);
       JVerification.login(true);
     }
-  }
+  };
 
   const hideLogin = () => {
     if (Platform.OS === 'android') {
       JVerification.dismissLoginPage();
     }
-  }
+  };
 
-  //{"accessToken": "2D07206AFCBD395D8C6E13572734266E", "city": "海淀", "expiration": null, "gender": "男", "iconurl": "https://thirdqq.qlogo.cn/g?b=oidb&k=37YbkEGP192zF3YTbvzR4A&s=100&t=1556440734", "name": "狂奔的蜗牛", "openid": "2F942F4D00671AE32030DE17B870EBCA", "province": "北京", "uid": "2F942F4D00671AE32030DE17B870EBCA"}
   const qqLogin = async () => {
-    hideLogin()
+    hideLogin();
     try {
       ShareUtil.auth(0, async (code, result, message) => {
-        console.log('res', code, result, message);
         if (code === 200 || code === 0) {
           let gender = result.gender === '男' ? 'man' : 'woman';
           let signData = {
@@ -144,18 +153,18 @@ const ThirdLogin = ({}) => {
           afterLoginSuccess(res, signData);
         } else {
           Toast.showError('获取QQ信息失败，请稍后再试');
-          showLogin()
+          showLogin();
         }
       });
     } catch (e) {
-      showLogin()
+      showLogin();
       console.error(e);
     }
   };
 
   // {"accessToken": "2.00okeQaCAAunBE6c79b21cd0chvo4D", "city": "8", "expiration": null, "gender": "男", "iconurl": "https://tva1.sinaimg.cn/crop.0.0.180.180.180/8d279d76jw1e8qgp5bmzyj2050050aa8.jpg?KID=imgbed,tva&Expires=1625466852&ssig=ttOGekAaG9", "name": "风前无止境", "province": "50", "refreshToken": "2.00okeQaCAAunBEfa3e742d05kRjUfE", "uid": "2368183670", "unionid": "2368183670"}
   const weiboLogin = async () => {
-    hideLogin()
+    hideLogin();
     console.log('weibologin');
     try {
       ShareUtil.auth(1, async (code, result, message) => {
@@ -176,33 +185,30 @@ const ThirdLogin = ({}) => {
           afterLoginSuccess(res, signData);
         } else {
           Toast.showError('获取微博信息失败，请稍后再试');
-          showLogin()
+          showLogin();
         }
       });
     } catch (e) {
       console.error(e);
-      showLogin()
+      showLogin();
     }
   };
 
   const wechatLogin = async () => {
-    hideLogin()
+    hideLogin();
     try {
       const codeRes = await WeChat.sendAuthRequest('snsapi_userinfo');
       let data = {
         code: codeRes.code,
         app_id: codeRes.appid || 'wx17b69998e914b8f0',
       };
-      console.log('codeRes', codeRes)
       const res = await appWechatSignIn(data);
       const signData = {
         ...res.account,
         provider: 'wechat',
-      }
-      console.log('res', res);
+      };
       afterLoginSuccess(res, signData);
     } catch (e) {
-      console.error(e);
       showLogin();
     }
   };

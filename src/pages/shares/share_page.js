@@ -243,7 +243,6 @@ const SharePageModal = props => {
         } else {
           console.log('savePhoto shareUri', thumb_url);
           CameraRoll.save(thumb_url, {type: 'photo'}).then(res => {
-            console.log('res', res);
             Toast.showError('已存储到相册');
           });
         }
