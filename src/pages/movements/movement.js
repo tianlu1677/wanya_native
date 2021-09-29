@@ -10,9 +10,10 @@ import {getCategoryProfile} from '@/api/category_api';
 
 const Movement = props => {
   const {navigation} = props;
-  const {category} = props.route.params;
+  let {category, categoryId} = props.route.params;
   const {categoryList} = useSelector(state => state.home);
-  const categoryId = categoryList.find(item => item.name === category).id;
+  categoryId = categoryId ? categoryId : categoryList.find(item => item.name === category).id;
+  const categoryName = categoryList.find(item => item.id.toString() === categoryId)?.name
   const [detail, setDetail] = useState(null);
   const [request, setRequest] = useState(null);
 
@@ -32,7 +33,7 @@ const Movement = props => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `${category}顽招`,
+      title: `${categoryName}顽招`,
       headerRight: () => (
         <Pressable
           onPress={() => navigation.push('SearchIndex', {key: 'movement'})}

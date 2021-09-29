@@ -104,11 +104,11 @@ const Collapsible = props => {
     <TabList {...options} current={currentKey} tabChange={tabChange} data={routes} />
   );
 
-  console.log('scrollY', scrollY);
+  console.log('scrollYxxx', );
 
   const RenderScene = () => (
     <>
-      <Category />
+      <Category category={{name: routes.find(item => item.key.toString() === currentKey)?.title, id: currentKey}} />
       <RenderCaCategory
         route={{key: currentKey, index}}
         ListHeaderComponent={RenderTabBar}

@@ -28,7 +28,8 @@ const Category = props => {
   const goPageMethod = name => {
     const value = {...location, chooseCity: location.positionCity || '全国'};
     dispatch({type: action.GET_LOCATION, value});
-    navigation.navigate(name, {category: category.category_name});
+
+    navigation.navigate(name, {categoryId: category.id, category: category.name});
   };
 
   return (

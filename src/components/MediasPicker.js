@@ -18,14 +18,17 @@ const MediasPicker = WrapperComponent => {
         imageCount: 1,
         isCamera: true,
         isRecordSelected: true,
+        isCrop: false,
+        compress: false,
         ...option,
       };
       SyanImagePicker.showImagePicker(options, callback);
     };
 
     const uploadImage = async (file, socialToken) => {
+      console.log('updload file', file);
       const token = socialToken || (await Helper.getData('auth_token'));
-      const path = file.uri.replace('file://', '');
+      const path = 'file://' + file.uri;
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
@@ -61,6 +64,7 @@ const MediasPicker = WrapperComponent => {
     };
 
     const uploadAvatar = async (file, socialToken) => {
+      console.log('uploadAvatar', file);
       const token = await Helper.getData('auth_token');
       const path = file.uri.replace('file://', '');
       const uploadOptions = {

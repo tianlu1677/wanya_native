@@ -245,7 +245,7 @@ const OneLogin = ({navigation, route}) => {
   };
 
   useFocusEffect(() => {
-    console.log('fouce');
+    // console.log('fouce');
     // debounce(a, 300)
     checkJverify();
     return () => {

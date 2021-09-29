@@ -186,7 +186,7 @@ const AccountDetail = ({navigation, route}) => {
               ) : null}
               <Text style={styles.introtag}>{account.age || '18'}岁</Text>
               <Text style={styles.introtag}>
-                {(account.city && account.city.replace(',', ' ')) || '未知街区'}
+                {(account.city && account.city.toString().replace(',', ' ')) || '未知街区'}
               </Text>
             </View>
             <View style={styles.labelWrap}>

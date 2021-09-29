@@ -14,7 +14,7 @@ const RecommendSearch = props => {
     navigation.navigate('CreateProductLink');
   };
 
-  const isShowCreateProduct = ['accounts', 'discovery'].includes(page);
+  const isShowCreateProduct = ['discovery'].includes(page);
 
   return (
     <View style={[border && styles.searchWrapper]}>

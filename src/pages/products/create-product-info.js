@@ -37,13 +37,16 @@ const CreateProductLink = props => {
     const options = {imageCount: 9 - imageSource.length, isCamera: false};
     imagePick(options, async (err, res) => {
       if (err) {
+        console.log('err', err)
         return;
       }
       const allImage = [...imageSource, ...res];
       setImageSource([...allImage]);
       for (let [index, file] of new Map(allImage.map((item, i) => [i, item]))) {
         if (file.uri) {
+          console.log('file', file)
           const result = await uploadImage({uploadType: 'multipart', ...file});
+          console.log('result', result)
           allImage[index] = result.asset.url;
           setImageSource([...allImage]);
         }

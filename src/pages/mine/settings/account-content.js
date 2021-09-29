@@ -210,8 +210,8 @@ const AccountContent = props => {
       <Pressable style={styles.itemWrap} onPress={() => goPages('label')}>
         <Text style={styles.itemTitle}>身份标签</Text>
         <View style={[styles.itemContent, styles.labelWrapper]}>
-          {currentAccount.label_list.map(label => (
-            <Text style={styles.label} key={label}>
+          {currentAccount.label_list.map((label, index) => (
+            <Text style={styles.label} key={`shenfe-${label}-${index}`}>
               {label}
             </Text>
           ))}
