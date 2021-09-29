@@ -6,7 +6,18 @@ const DeviceWidth = Dimensions.get('window').width;
 
 const TabList = props => {
   const scrollRef = useRef(null);
-  const {data, current, align, bottomLine, separator, tabChange, tabStyle, tabScrollStyle} = props;
+  const {
+    data,
+    current,
+    align,
+    bottomLine,
+    separator,
+    tabChange,
+    tabStyle,
+    tabScrollStyle,
+    showTabLineActive = true,
+  } = props;
+
   const defaultIndex = data.findIndex(v => v.key === current);
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -92,7 +103,11 @@ const TabList = props => {
                     item.title
                   )}
 
-                  {currentIndex === index ? <View style={styles.tabLineActive} /> : null}
+                  {showTabLineActive ? (
+                    currentIndex === index ? (
+                      <View style={styles.tabLineActive} />
+                    ) : null
+                  ) : null}
                 </Pressable>
               );
             })}

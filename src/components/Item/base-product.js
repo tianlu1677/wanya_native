@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   wrapper: {
     width,
     marginHorizontal: 10,
-    marginBottom: 10,
+    marginVertical: 10,
     paddingBottom: 17,
     backgroundColor: '#fff',
     borderRadius: 5,

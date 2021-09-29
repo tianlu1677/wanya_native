@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, Animated, View, Text} from 'react-native';
+import {StyleSheet, Animated, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import ProductList from '@/components/List/product-list';
@@ -11,8 +11,6 @@ import {getAppCardList} from '@/api/discovery_api';
 import {getProducts} from '@/api/product_api';
 import Category from './category';
 import {ScrollView} from 'react-native-gesture-handler';
-
-const ShowHeight = 200;
 
 export const RenderCaCategory = props => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -62,7 +60,6 @@ const Discovery = props => {
   const [currentKey, setCurrentKey] = useState(null);
   const [tabData, setTabData] = useState([]);
   const [coveryData, setCoveryData] = useState([]);
-  const scrollY = useRef(new Animated.Value(0)).current;
 
   const loadData = async () => {
     const res = await getAppCardList();
@@ -81,25 +78,8 @@ const Discovery = props => {
   }, []);
 
   return (
-    <>
+    <View style={{flex: 1}}>
       <RecommendSearch style={{paddingBottom: 0, paddingLeft: 14}} {...props} page="discovery" />
-      {/* <Collapsible
-          coveryData={coveryData}
-          currentKey={currentKey}
-          onKeyChange={key => setCurrentKey(key)}
-          renderTopHeader={<StickTopHeader />}
-          tabData={coveryData.map(category => {
-            const options = {
-              key: category.category_key,
-              title: category.category_name,
-              // component: <RenderCaCategory category={category} coveryData={coveryData} />,
-              // component: (category, coveryData) => <Text>323232</Text>,
-              component: <RenderCaCategory category={category} coveryData={coveryData} />,
-            };
-            return options;
-          })}
-        /> */}
-
       {coveryData.length > 0 ? (
         <Collapsible
           coveryData={coveryData}
@@ -110,7 +90,7 @@ const Discovery = props => {
       ) : (
         <Loading />
       )}
-    </>
+    </View>
   );
 };
 
