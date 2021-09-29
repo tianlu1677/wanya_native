@@ -75,14 +75,14 @@ class App extends Component {
       allowFontScaling: false,
       textBreakStrategy: 'simple',
     });
-
+    await this.getIndexTabData(); //获取首页频道信息
     this.loadSplashImg();
     this.loadSettings();
     this.checkPermission();
     this.loadNetworkInfo();
     this.jpush_notice();
     this.initJverify();
-    await this.getIndexTabData(); //获取首页频道信息
+
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
