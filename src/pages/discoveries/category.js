@@ -1,20 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation, useRoute} from '@react-navigation/native';
-
-import {RFValue} from '@/utils/response-fontsize';
+import {useNavigation} from '@react-navigation/native';
 import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
 import {SCREEN_WIDTH} from '@/utils/navbar';
 import {VWValue} from '@/utils/response-fontsize';
-import ProductList from '@/components/List/product-list';
-
-import IconFont from '@/iconfont';
-import Loading from '@/components/Loading';
-import {RecommendSearch} from '@/components/NodeComponents';
-import TabView from '@/components/TabView';
-import {getAppCardList} from '@/api/discovery_api';
 
 const width = Math.floor((SCREEN_WIDTH - VWValue(30 * 5)) / 5);
 
@@ -83,7 +74,7 @@ const styles = StyleSheet.create({
     height: width,
   },
   title: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
     marginTop: 10,
   },

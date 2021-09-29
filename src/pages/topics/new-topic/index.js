@@ -209,6 +209,7 @@ const NewTopic = props => {
     }
 
     const data = getValidateForm();
+    console.log(data);
     if (videoSource.length > 0) {
       // 视频上传
       navigation.reset({

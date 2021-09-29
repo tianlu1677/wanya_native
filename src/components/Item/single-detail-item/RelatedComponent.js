@@ -7,7 +7,7 @@ import {RFValue} from '@/utils/response-fontsize';
 const RelatedComponent = props => {
   const navigation = useNavigation();
   const {
-    data: {shop_brands, shop_stores, movements},
+    data: {shop_brands, shop_stores, movements, product},
   } = props;
 
   const handleMovementDetail = () => {
@@ -64,6 +64,26 @@ const RelatedComponent = props => {
             </View>
           </View>
         </Pressable>
+      ) : null}
+
+      {/* product */}
+      {product ? (
+        <View style={styles.relatedWrapper}>
+          <FastImg
+            style={styles.relatedImage}
+            source={{uri: product.cover_url ? product.cover_url : product.images_list[0]}}
+          />
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {product.name}
+            </Text>
+            <Text style={styles.relatedText}>
+              {product.category_name}
+              {product.category_brand_type ? ' · ' : ''}
+              {product.category_brand_type ? product.category_brand_type.split(',').join('/') : ''}
+            </Text>
+          </View>
+        </View>
       ) : null}
     </>
   );

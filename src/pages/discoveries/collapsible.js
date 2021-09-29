@@ -39,7 +39,7 @@ export const RenderCaCategory = props => {
     <ProductList
       request={request}
       ListHeaderComponent={
-        <View style={{backgroundColor: 'pink'}}>
+        <>
           <Category />
           {isChild ? (
             <TabList
@@ -69,7 +69,7 @@ export const RenderCaCategory = props => {
               }}
             />
           ) : null}
-        </View>
+        </>
       }
     />
   );
@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
   tabItemText: {
     fontSize: 13,
     color: '#aaaaaa',
-    // backgroundColor: 'pink',
     marginHorizontal: 4,
   },
   tabItemTextActive: {

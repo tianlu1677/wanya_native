@@ -92,11 +92,8 @@ const styles = StyleSheet.create({
   formImage: {
     width: 55,
     height: 55,
-    borderWidth: 3,
-    borderColor: '#ffff00',
     marginLeft: 'auto',
     borderRadius: 5,
-    overflow: 'hidden',
   },
 });
 

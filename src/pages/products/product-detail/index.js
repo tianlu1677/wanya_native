@@ -65,48 +65,55 @@ const ProductDetail = props => {
   return detail ? (
     <View style={styles.wrapper}>
       <ScrollView style={styles.scrollWrapper}>
-        <ProductInfo detail={detail} {...props} />
+        <View style={styles.scrollContent}>
+          <ProductInfo detail={detail} {...props} />
 
-        {posts.length > 0 ? (
-          <View style={styles.slideView}>
-            <View style={styles.titleWrap}>
-              <Text style={styles.title}>晒顽物</Text>
-              <Text style={styles.discuss} onPress={onOpenPost}>
-                查看全部
-              </Text>
-            </View>
-            {posts.map((item, index) => (
-              <BaseTopic data={item.item} key={index} style={{paddingHorizontal: 0}} />
-            ))}
-          </View>
-        ) : null}
-
-        {comments.length > 0 ? (
-          <View style={styles.slideView}>
-            <View style={styles.titleWrap}>
-              <Text style={styles.title}>顽物讨论</Text>
-              <Text style={styles.discuss} onPress={onOpenComment}>
-                全部讨论
-              </Text>
-            </View>
-            {comments.map((item, index) => (
-              <View key={item.id}>
-                <BaseComment
-                  index={index}
-                  data={item}
-                  handlePraise={handlePraise}
-                  loadData={loadComments}
-                  handleClickReply={handleClickReply}
-                  topicId={productId}
-                  commentable_type="Product"
-                  style={{paddingHorizontal: 0}}
-                  type="product-detail"
-                />
-                {comments.length - 1 !== index && <View style={styles.separator} />}
+          {posts.length > 0 ? (
+            <View style={styles.slideView}>
+              <View style={styles.titleWrap}>
+                <Text style={styles.title}>晒顽物</Text>
+                <Text style={styles.discuss} onPress={onOpenPost}>
+                  查看全部
+                </Text>
               </View>
-            ))}
-          </View>
-        ) : null}
+              {posts.map((item, index) => (
+                <BaseTopic
+                  data={item.item}
+                  key={index}
+                  style={{paddingHorizontal: 0}}
+                  bottom={false}
+                />
+              ))}
+            </View>
+          ) : null}
+
+          {comments.length > 0 ? (
+            <View style={styles.slideView}>
+              <View style={styles.titleWrap}>
+                <Text style={styles.title}>顽物讨论</Text>
+                <Text style={styles.discuss} onPress={onOpenComment}>
+                  全部讨论
+                </Text>
+              </View>
+              {comments.map((item, index) => (
+                <View key={item.id}>
+                  <BaseComment
+                    index={index}
+                    data={item}
+                    handlePraise={handlePraise}
+                    loadData={loadComments}
+                    handleClickReply={handleClickReply}
+                    topicId={productId}
+                    commentable_type="Product"
+                    style={{paddingHorizontal: 0}}
+                    type="product-detail"
+                  />
+                  {comments.length - 1 !== index && <View style={styles.separator} />}
+                </View>
+              ))}
+            </View>
+          ) : null}
+        </View>
       </ScrollView>
 
       <ProductFooter detail={detail} {...props} />
@@ -121,8 +128,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollWrapper: {
-    marginBottom: RFValue(60) + 10,
-    paddingBottom: RFValue(60) + 10,
+    marginBottom: RFValue(60),
+  },
+  scrollContent: {
+    marginBottom: 40,
   },
   slideView: {
     padding: 14,
@@ -135,6 +144,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 10,
+  },
+  title: {
+    fontSize: 15,
   },
   productInfo: {
     flexDirection: 'row',

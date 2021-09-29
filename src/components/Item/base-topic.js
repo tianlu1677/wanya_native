@@ -118,7 +118,7 @@ export const TopicLinkContent = props => {
 };
 
 const BaseTopic = props => {
-  const {data, type, bottom, style} = props;
+  const {data, type, bottom = true, style} = props;
   const {content_style} = data;
   const navigation = useNavigation();
   const goNodeDetail = () => {
@@ -172,11 +172,13 @@ const BaseTopic = props => {
         </View>
       )}
 
-      {bottom === 'comment' ? (
-        <CommentBottom data={data} type="topic" />
-      ) : (
-        <Bottom data={data} type="topic" share={true} />
-      )}
+      {bottom ? (
+        bottom === 'comment' ? (
+          <CommentBottom data={data} type="topic" />
+        ) : (
+          <Bottom data={data} type="topic" share={true} />
+        )
+      ) : null}
     </Pressable>
   );
 };

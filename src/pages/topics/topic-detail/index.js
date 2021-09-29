@@ -178,15 +178,19 @@ const TopicDetail = ({navigation, route}) => {
         headerTitleContainerStyle: {marginLeft: -30},
         headerLeft: () => <HeaderLeft />,
         headerTitle: props => <HeaderTitle {...props} detail={detail} showFollow={false} />,
-        headerRight: () => (
-          <Text style={styles.attion} onPress={onFollow}>
-            {followed ? '已关注' : '关注'}
-          </Text>
-        ),
+        headerRight: () =>
+          isSelf ? null : (
+            <Text
+              style={[styles.attion, {color: followed ? '#bdbdbd' : '#FF2242'}]}
+              onPress={onFollow}>
+              {followed ? '已关注' : '关注'}
+            </Text>
+          ),
       });
     }
   }, [navigation, detail, followed]);
 
+  console.log(detail);
   return detail ? (
     <KeyboardAvoidingView behavior={behavior} style={styles.wrap} keyboardVerticalOffset={Offset}>
       {isLongVideo && <GoBack color="#000" report={true} onReportClick={onReportClick} />}

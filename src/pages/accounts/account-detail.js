@@ -143,7 +143,7 @@ const AccountDetail = ({navigation, route}) => {
     const defaultImage = account.background_img_url || AccountDetailBgImg;
     return (
       <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
-        <TopBack top={BarHeight} onReportClick={() => setShowActionSheet(true)} />
+        <TopBack top={BarHeight + RFValue(10)} onReportClick={() => setShowActionSheet(true)} />
         <View style={styles.header}>
           <View style={styles.coverImageOpacity} />
           <FastImg source={{uri: defaultImage}} mode="cover" style={styles.coverImage} />

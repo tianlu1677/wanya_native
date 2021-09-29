@@ -15,7 +15,7 @@ const ProductInfo = props => {
 
   const {
     navigation,
-    detail: {images_list, price, category_name, hot_score, name, shop_brand},
+    detail: {images_list, price, category_name, category_brand_type, hot_score, name, shop_brand},
   } = props;
 
   const onPreview = index => {
@@ -54,6 +54,8 @@ const ProductInfo = props => {
           <Text style={styles.symbol}>¥</Text>
           <Text style={styles.price}>{price}</Text>
           <Text style={styles.tags}>{category_name}</Text>
+          <Text style={styles.tags}>{category_brand_type}</Text>
+
           {hot_score ? <Text style={styles.discuss}>热度 {FilterScore(hot_score)}</Text> : null}
         </View>
         <Text style={styles.name}>{name}</Text>

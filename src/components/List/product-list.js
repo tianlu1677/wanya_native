@@ -38,7 +38,7 @@ const ProductList = props => {
       renderItem={renderItem}
       enableRefresh={false}
       renderSeparator={() => null}
-      settings={{style: {flex: 1, backgroundColor: '#f2f3f5'}}}
+      settings={{style: {}}}
       {...props}
     />
   );
