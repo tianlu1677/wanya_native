@@ -9,7 +9,7 @@ import {getProductsDetail} from '@/api/product_api';
 import {getPosts} from '@/api/movement_api';
 import ProductInfo from './product-info';
 import ProductFooter from './product-footer';
-import IconFont from "@/iconfont"
+import IconFont from '@/iconfont';
 
 const ProductDetail = props => {
   const {route, navigation} = props;
@@ -55,7 +55,6 @@ const ProductDetail = props => {
     setDetail(res.data.product);
     loadComments(productId);
     loadPosts(productId);
-
   };
 
   useEffect(() => {
@@ -147,6 +146,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
+    fontWeight: '500',
   },
   productInfo: {
     flexDirection: 'row',

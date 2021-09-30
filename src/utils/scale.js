@@ -78,7 +78,8 @@ export const scaleDetailImage = images => {
         ...image,
         width: screenWidth,
         height,
-        mode: index === minIndex ? 'cover' : 'contain',
+        // mode: index === minIndex ? 'cover' : 'contain',
+        mode: index === minIndex ? 'cover' : 'center',
       };
     } else {
       const height = Math.ceil((screenWidth * image.height) / image.width);
@@ -86,7 +87,8 @@ export const scaleDetailImage = images => {
         ...image,
         width: screenWidth,
         height,
-        mode: index === minIndex ? 'cover' : 'contain',
+        // mode: index === minIndex ? 'cover' : 'contain',
+        mode: index === minIndex ? 'cover' : 'center',
       };
     }
   });

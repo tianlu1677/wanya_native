@@ -40,9 +40,10 @@ export const RenderCaCategory = props => {
       request={request}
       ListHeaderComponent={
         <>
-          <Category />
+          <Category category={current} />
           {isChild ? (
             <TabList
+              align="left"
               separator={false}
               bottomLine={false}
               showTabLineActive={false}

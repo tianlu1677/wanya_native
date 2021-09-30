@@ -26,6 +26,7 @@ const CreateProductLink = props => {
 
       if (res.data.error) {
         Toast.showError(res.data.error);
+        dispatch({type: action.CREATE_PRODUCT, value: {}});
       } else {
         dispatch({type: action.CREATE_PRODUCT, value: {detail: res.data}});
         navigation.navigate('CreateProductInfo');

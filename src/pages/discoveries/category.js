@@ -13,14 +13,12 @@ const Category = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {location} = useSelector(state => state.home);
-
   const {category} = props;
 
   const goPageMethod = name => {
     const value = {...location, chooseCity: location.positionCity || '全国'};
     dispatch({type: action.GET_LOCATION, value});
-
-    navigation.navigate(name, {categoryId: category.id, category: category.name});
+    navigation.navigate(name, {categoryId: category.category_id, category: category.category_name});
   };
 
   return (

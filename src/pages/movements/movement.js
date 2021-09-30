@@ -10,10 +10,7 @@ import {getCategoryProfile} from '@/api/category_api';
 
 const Movement = props => {
   const {navigation} = props;
-  let {category, categoryId} = props.route.params;
-  const {categoryList} = useSelector(state => state.home);
-  categoryId = categoryId ? categoryId : categoryList.find(item => item.name === category).id;
-  const categoryName = categoryList.find(item => item.id.toString() === categoryId)?.name
+  const {category, categoryId} = props.route.params;
   const [detail, setDetail] = useState(null);
   const [request, setRequest] = useState(null);
 
@@ -33,7 +30,7 @@ const Movement = props => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `${categoryName}顽招`,
+      title: `${category}顽招`,
       headerRight: () => (
         <Pressable
           onPress={() => navigation.push('SearchIndex', {key: 'movement'})}
@@ -47,7 +44,6 @@ const Movement = props => {
   return detail ? (
     <View style={styles.wrapper}>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
-      {/*<StatusBar barStyle="dark-content" />*/}
       <SelectListHeader data={detail} getParams={getParams} />
       {request && <MovementList request={request} type="list" style={{marginTop: 9}} />}
     </View>

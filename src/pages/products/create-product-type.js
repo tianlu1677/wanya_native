@@ -105,6 +105,11 @@ const CreateProductType = props => {
 
   useEffect(() => {
     loadBrand();
+
+    return () => {
+      const value = {...createProduct, category: null, brandType: null, brand: null};
+      dispatch({type: action.CREATE_PRODUCT, value});
+    };
   }, []);
 
   const Color = state => (state ? '#000' : '#bdbdbd');

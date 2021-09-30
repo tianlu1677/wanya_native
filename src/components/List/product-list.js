@@ -9,7 +9,7 @@ const ProductList = props => {
   const [listData, setListData] = useState([]);
 
   const renderItem = ({item, index}) => {
-    return <BaseProduct index={index} data={item} />;
+    return <BaseProduct index={index} data={item} listData={listData} />;
   };
 
   const loadData = async (page = 1) => {

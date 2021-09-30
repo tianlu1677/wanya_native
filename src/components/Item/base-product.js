@@ -13,6 +13,7 @@ const BaseProduct = props => {
 
   const {
     index,
+    listData,
     data: {id, cover_url, name, price, hot_score},
   } = props;
 
@@ -22,10 +23,18 @@ const BaseProduct = props => {
 
   return (
     <Pressable
-      style={[styles.wrapper, {marginRight: (index + 1) % 2 === 0 ? 10 : 0}]}
+      style={[
+        styles.wrapper,
+        {
+          marginRight: (index + 1) % 2 === 0 ? 10 : 0,
+          marginBottom: listData.length - 1 === index ? 40 : 0,
+        },
+      ]}
       onPress={handleGodetail}>
       <FastImg source={{uri: cover_url}} style={styles.image} />
-      <Text style={styles.title}>{name}</Text>
+      <Text style={styles.title} numberOfLines={2}>
+        {name}
+      </Text>
       <View style={styles.goodInfo}>
         <Text style={styles.symbol}>¥</Text>
         <Text style={styles.price}>{price}</Text>
