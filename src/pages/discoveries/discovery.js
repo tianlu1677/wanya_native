@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, Animated, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as action from '@/redux/constants';
 import ProductList from '@/components/List/product-list';
@@ -13,8 +13,6 @@ import Category from './category';
 import {ScrollView} from 'react-native-gesture-handler';
 
 export const RenderCaCategory = props => {
-  const scrollY = useRef(new Animated.Value(0)).current;
-
   const {route} = props;
   const {discoveryData} = useSelector(state => state.home);
   const current = discoveryData.find(item => String(item.category_id) === route.key);

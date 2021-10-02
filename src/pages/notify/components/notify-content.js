@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity, Pressable} from 'react-native';
 import styled from 'styled-components/native';
+import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 
 const NotifyContent = ({
@@ -13,8 +14,14 @@ const NotifyContent = ({
   descStyle,
   handleClickRight,
 }) => {
+  const navigation = useNavigation();
+
   const clickRight = () => {
     handleClickRight && handleClickRight();
+  };
+
+  const handleAccountDetail = () => {
+    navigation.push('AccountDetail', {accountId: account.id});
   };
 
   return (
@@ -23,7 +30,9 @@ const NotifyContent = ({
       <View style={styles.descInfo}>
         <View style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
           <Text>
-            {account.nickname && <AccountNameTitle>{account.nickname} </AccountNameTitle>}
+            {account.nickname && (
+              <AccountNameTitle onPress={handleAccountDetail}>{account.nickname} </AccountNameTitle>
+            )}
             {notify_type && <AccountActionDesc style={descStyle}>{notify_type}</AccountActionDesc>}
           </Text>
         </View>

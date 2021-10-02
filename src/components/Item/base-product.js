@@ -22,25 +22,21 @@ const BaseProduct = props => {
   };
 
   return (
-    <Pressable
-      style={[
-        styles.wrapper,
-        {
-          marginRight: (index + 1) % 2 === 0 ? 10 : 0,
-          marginBottom: listData.length - 1 === index ? 40 : 0,
-        },
-      ]}
-      onPress={handleGodetail}>
-      <FastImg source={{uri: cover_url}} style={styles.image} />
-      <Text style={styles.title} numberOfLines={2}>
-        {name}
-      </Text>
-      <View style={styles.goodInfo}>
-        <Text style={styles.symbol}>¥</Text>
-        <Text style={styles.price}>{price}</Text>
-        {hot_score ? <Text style={styles.num}>热度 {FilterScore(hot_score)}</Text> : null}
-      </View>
-    </Pressable>
+    <View style={{marginBottom: listData.length - 1 === index ? 40 : 0}}>
+      <Pressable
+        style={[styles.wrapper, {marginRight: (index + 1) % 2 === 0 ? 10 : 0}]}
+        onPress={handleGodetail}>
+        <FastImg source={{uri: cover_url}} style={styles.image} />
+        <Text style={styles.title} numberOfLines={2}>
+          {name}
+        </Text>
+        <View style={styles.goodInfo}>
+          <Text style={styles.symbol}>¥</Text>
+          <Text style={styles.price}>{price}</Text>
+          {hot_score ? <Text style={styles.num}>热度 {FilterScore(hot_score)}</Text> : null}
+        </View>
+      </Pressable>
+    </View>
   );
 };
 
@@ -64,6 +60,7 @@ const styles = StyleSheet.create({
     color: '#2F2F2F',
     textAlign: 'justify',
     lineHeight: 20,
+    minHeight: 40,
     marginTop: 10,
     paddingHorizontal: VWValue(12),
   },
