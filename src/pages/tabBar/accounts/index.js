@@ -38,12 +38,7 @@ const TabBarAccounts = props => {
 
   return (
     <View style={Cstyles.wrapper}>
-      <RecommendSearch
-        {...props}
-        border={true}
-        style={{paddingBottom: 0, paddingHorizontal: 14}}
-        page="accounts"
-      />
+      <RecommendSearch {...props} border={true} style={{paddingHorizontal: 14}} page="accounts" />
       <ScrollList
         data={listData}
         loading={loading}

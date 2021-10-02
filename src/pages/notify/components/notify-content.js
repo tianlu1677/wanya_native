@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity, Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import {Avator} from '@/components/NodeComponents';
@@ -17,11 +17,10 @@ const NotifyContent = ({
     handleClickRight && handleClickRight();
   };
 
-  // console.log('item', item)
   return (
-    <CardView style={{borderBottomWidth: StyleSheet.hairlineWidth}}>
+    <Pressable style={styles.wrapper} onPress={showRight ? clickRight : null}>
       <Avator size={40} account={account} />
-      <CardDescView>
+      <View style={styles.descInfo}>
         <View style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
           <Text>
             {account.nickname && <AccountNameTitle>{account.nickname} </AccountNameTitle>}
@@ -30,13 +29,10 @@ const NotifyContent = ({
         </View>
         {time && <ActionTime>{time}</ActionTime>}
         {notify_content.length > 0 && <ContentText numberOfLines={2}>{notify_content}</ContentText>}
-      </CardDescView>
+      </View>
 
       {showRight === true && (
-        <RightWrapView
-          onPress={() => {
-            clickRight();
-          }}>
+        <RightWrapView>
           {!!item.image_url && item.has_video === true && (
             <>
               <Image
@@ -62,7 +58,7 @@ const NotifyContent = ({
           )}
         </RightWrapView>
       )}
-    </CardView>
+    </Pressable>
   );
 };
 
@@ -80,24 +76,22 @@ NotifyContent.defaultProps = {
   item: {image_url: '', has_video: '', content: ''},
 };
 
-const CardView = styled(View)`
-  margin-left: 14px;
-  padding: 15px 15px 15px 0;
-  border-bottom-width: 1px;
-  border-bottom-color: #ebebeb;
-  min-height: 90px;
-  letter-spacing: 1px;
-  display: flex;
-  flex-direction: row;
-`;
+const styles = StyleSheet.create({
+  wrapper: {
+    paddingRight: 15,
+    minHeight: 90,
+    flexDirection: 'row',
+    paddingVertical: 15,
+    marginHorizontal: 15,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ebebeb',
+  },
+  descInfo: {
+    marginLeft: 14,
+    fontSize: 13,
+  },
+});
 
-const CardDescView = styled(View)`
-  margin-left: 10px;
-  font-size: 14px;
-  font-weight: 400;
-  width: 65%;
-  margin-top: 2px;
-`;
 const AccountNameTitle = styled(Text)`
   padding-right: 6px;
   font-size: 14px;

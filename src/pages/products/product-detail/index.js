@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {Loading} from '@/components';
 import {RFValue} from '@/utils/response-fontsize';
@@ -9,7 +9,6 @@ import {getProductsDetail} from '@/api/product_api';
 import {getPosts} from '@/api/movement_api';
 import ProductInfo from './product-info';
 import ProductFooter from './product-footer';
-import IconFont from '@/iconfont';
 
 const ProductDetail = props => {
   const {route, navigation} = props;

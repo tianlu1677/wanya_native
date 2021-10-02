@@ -24,6 +24,12 @@ const RelatedComponent = props => {
     navigation.navigate('ShopBrandDetail', {shopBrandId: shop_brands[0].id});
   };
 
+  console.log(product);
+
+  const handleProductDetail = () => {
+    navigation.navigate('ProductDetail', {productId: product.id});
+  };
+
   return (
     <>
       {/* movements */}
@@ -64,7 +70,7 @@ const RelatedComponent = props => {
 
       {/* product */}
       {product ? (
-        <View style={styles.relatedWrapper}>
+        <Pressable style={styles.relatedWrapper} onPress={handleProductDetail}>
           <FastImg
             style={styles.relatedImage}
             source={{uri: product.cover_url ? product.cover_url : product.images_list[0]}}
@@ -79,7 +85,7 @@ const RelatedComponent = props => {
               {product.category_brand_type ? product.category_brand_type.split(',').join('/') : ''}
             </Text>
           </View>
-        </View>
+        </Pressable>
       ) : null}
     </>
   );
