@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import {useSelector} from 'react-redux';
@@ -9,7 +9,6 @@ import ProductList from '@/components/List/product-list';
 import Category from './category';
 import {getProducts} from '@/api/product_api';
 
-const defaultKey = 'recommend';
 const options = {align: 'left', bottomLine: true, separator: false};
 
 export const RenderCaCategory = props => {
@@ -17,7 +16,7 @@ export const RenderCaCategory = props => {
   const {discoveryData} = useSelector(state => state.home);
   const current = discoveryData.find(item => String(item.category_id) === route.key);
   const routes = [
-    {title: '推荐', key: 'recommend'},
+    {key: `${current.category_name}recommend`, title: '推荐'},
     ...current.category_brand_type_list.map(item => {
       return {
         key: item,
@@ -26,14 +25,14 @@ export const RenderCaCategory = props => {
     }),
   ];
 
-  const [currentKey, setCurrentKey] = useState(defaultKey);
-  const isChild = routes.map(item => item.key).includes(current.category_brand_type_list[1]);
+  const [currentKey, setCurrentKey] = useState(routes[0].key);
+  const isChild = routes.map(item => item.key).includes(currentKey);
 
   const request = {
     api: getProducts,
     params: {},
     apiPath:
-      currentKey === defaultKey
+      currentKey === `${current.category_name}recommend`
         ? `q[category_id_eq]=${route.key}&q[recommend_eq]=true`
         : `q[category_id_eq]=${route.key}&q[category_brand_type_cont]=${currentKey}`,
   };
@@ -41,6 +40,10 @@ export const RenderCaCategory = props => {
   const tabChange = item => {
     setCurrentKey(item.key);
   };
+
+  useEffect(() => {
+    setCurrentKey(routes[0].key);
+  }, [route]);
 
   return (
     <ProductList

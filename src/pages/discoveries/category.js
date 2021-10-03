@@ -33,8 +33,8 @@ const Category = props => {
         <Text style={styles.title}>场地</Text>
       </Pressable>
 
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Activity')}>
-        <FastImg source={require('@/assets/discovery/activity.png')} style={styles.slideImage} />
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopStore')}>
+        <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
         <Text style={styles.title}>顽士多</Text>
       </Pressable>
 
@@ -43,8 +43,8 @@ const Category = props => {
         <Text style={styles.title}>品牌</Text>
       </Pressable>
 
-      <Pressable style={styles.slideItem} onPress={() => goPageMethod('ShopStore')}>
-        <FastImg source={require('@/assets/discovery/shop_store.png')} style={styles.slideImage} />
+      <Pressable style={styles.slideItem} onPress={() => goPageMethod('Activity')}>
+        <FastImg source={require('@/assets/discovery/activity.png')} style={styles.slideImage} />
         <Text style={styles.title}>活动</Text>
       </Pressable>
     </View>

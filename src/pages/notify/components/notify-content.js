@@ -55,12 +55,10 @@ const NotifyContent = ({
             </>
           )}
           {!!item.image_url && item.has_video === false && (
-            <View>
-              <Image
-                source={{uri: item.image_url}}
-                style={{width: 60, height: 60, borderRadius: 2}}
-              />
-            </View>
+            <Image
+              source={{uri: item.image_url}}
+              style={{width: 60, height: 60, borderRadius: 2}}
+            />
           )}
           {!!item.content && item.content !== 'nothing' && !item.image_url && (
             <RightText numberOfLines={3}>{item.content}</RightText>
@@ -127,7 +125,7 @@ const ContentText = styled(Text)`
   margin-top: 7px;
 `;
 
-const RightWrapView = styled(TouchableOpacity)`
+const RightWrapView = styled(View)`
   position: absolute;
   top: 14px;
   right: 14px;
