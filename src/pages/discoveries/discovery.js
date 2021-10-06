@@ -25,14 +25,14 @@ export const RenderCaCategory = props => {
 
   const onChangeKey = key => {
     setCurrentKey(key);
+    const defaultType = current.category_brand_type_list[0];
+    // const defaultKey = `${route.key}${defaultType}`;
+    const apiPath = `q[category_id_eq]=${route.key}&q[category_brand_type_cont]=${defaultType}`;
+    setRequest({api: getProducts, params: {}, apiPath});
   };
 
   useEffect(() => {
-    const defaultType = current.category_brand_type_list[0];
-    const defaultKey = `${route.key}${defaultType}`;
-    const apiPath = `q[category_id_eq]=${route.key}&q[category_brand_type_cont]=${defaultType}`;
-    setRequest({api: getProducts, params: {}, apiPath});
-    setCurrentKey(defaultKey);
+    // setCurrentKey(defaultKey);
   }, [route.key]);
 
   return currentKey ? (

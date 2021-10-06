@@ -1,9 +1,9 @@
-import React, {Component, useState, useEffect, useLayoutEffect} from 'react';
+import React, {Component, useState, useEffect, useLayoutEffect, useCallback} from 'react';
 import {StyleSheet, AlertIOS, Button, StatusBar, Platform, View, ImageBackground} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {jverifyPhone} from '@/api/phone_sign_api';
-import {dispatchUpdateSocialAccount} from '@/redux/actions';
+import {dispatchCurrentAccount, dispatchUpdateSocialAccount} from '@/redux/actions';
 import {BaseApiUrl} from '@/utils/config';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 import Toast from '@/components/Toast';
@@ -243,23 +243,16 @@ const OneLogin = ({navigation, route}) => {
       goToPhone();
     }
   };
+  //
+  // useFocusEffect(() => {
+  //   checkJverify();
+  // }, []);
 
   useFocusEffect(() => {
-    // console.log('fouce');
-    // debounce(a, 300)
-    checkJverify();
-    return () => {
-      // JVerification.dismissLoginPage();
-      // console.log('remove ', this.listener)
-      //
-      // JVerification.removeListener(result => {
-      //   console.log('remove LoginListener:' + JSON.stringify(result));
-      // })
-      //
-      // this.listener && this.listener.remove();
-      // setCurrentState('');
-    };
-  }, []);
+      checkJverify()
+    }
+  );
+
   return (
     <View style={{backgroundColor: 'black', width: '100%', height: '100%'}}>
       <StatusBar barStyle={'light-content'} translucent />
