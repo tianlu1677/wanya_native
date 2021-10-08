@@ -28,7 +28,7 @@ const SearchAllList = props => {
       case Type.activity:
         return <AllItem {...Props} title="活动" onPress={() => onPress('activity')} />;
       case Type.shopStore:
-        return <AllItem {...Props} title="Van Store" onPress={() => onPress('shopStore')} />;
+        return <AllItem {...Props} title="顽士多" onPress={() => onPress('shopStore')} />;
       case Type.product:
         return <AllItem {...Props} title="品牌" onPress={() => onPress('product')} />;
       case Type.shopBrand:

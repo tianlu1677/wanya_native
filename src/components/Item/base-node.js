@@ -55,15 +55,17 @@ const BaseNode = props => {
   };
 
   useEffect(() => {
-    setFollowed(data.followed)
-  }, [data.followed])
+    setFollowed(data.followed);
+  }, [data.followed]);
 
   return (
     <Pressable style={[styles.dataItem, props.style]} onPress={goNodeDetail}>
       <FastImg style={styles.dataImg} source={{uri: data.cover_url}} />
       <View style={styles.dataInfo}>
         <View style={styles.dataNameWrap}>
-          <Text style={styles.dataName}>{data.name}</Text>
+          <Text style={styles.dataName} numberOfLines={1}>
+            {data.name}
+          </Text>
           <Text style={styles.dataDesc}>
             {data.topics_count}篇帖子 · {data.accounts_count}位{data.nickname || '圈友'}
             {type === 'nearby' && data.distance > 0 ? ` · 距你${ScaleDistance(data.distance)}` : ''}

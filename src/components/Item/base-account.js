@@ -83,7 +83,7 @@ const BaseAccount = props => {
 
   return (
     <Pressable style={styles.wrapper} onPress={goDetail}>
-      <Avator account={data} size={40} />
+      <Avator account={data} size={40} handleClick={goDetail} />
 
       {/* center */}
       {['list', 'related', 'add-node', 'comment', 'normal', 'search'].includes(type) && (

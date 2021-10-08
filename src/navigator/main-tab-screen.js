@@ -77,7 +77,7 @@ const MainTabScreen = props => {
       case 'Discovery':
         return <Text style={focused ? styles.tabActiveText : styles.tabText}>发现</Text>;
       case 'Recommend':
-        const style = {width: (500 * (24)) / 351, height: (24)};
+        const style = {width: (500 * 24) / 351, height: 24};
         return focused ? (
           <View style={style}>
             <Image source={indexImage} style={style} mode="cover" />
@@ -103,11 +103,12 @@ const MainTabScreen = props => {
         initialRouteName="Recommend"
         screenOptions={({route, navigation}) => ({
           tabBarIcon: ({focused}) => {
-            const rightDis = (UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
-                          ? -VWValue(9)
-                          : UnreadMessageCount() > 99
-                          ? -VWValue(12) * 1.75
-                          : -VWValue(11) * 1.45)
+            const rightDis =
+              UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
+                ? -VWValue(9)
+                : UnreadMessageCount() > 99
+                ? -VWValue(12) * 1.75
+                : -VWValue(11) * 1.45;
             return route.name === 'ChatGroups' ? (
               <View style={{}}>
                 <BadgeMessage
@@ -116,7 +117,7 @@ const MainTabScreen = props => {
                   containerStyle={[
                     styles.badge,
                     {
-                      right: IsIos ? rightDis : rightDis+6
+                      right: IsIos ? rightDis : rightDis + 6,
                     },
                   ]}
                 />

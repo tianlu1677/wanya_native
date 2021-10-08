@@ -24,51 +24,57 @@ const RelatedComponent = props => {
     navigation.navigate('ShopBrandDetail', {shopBrandId: shop_brands[0].id});
   };
 
-  console.log(product);
-
   const handleProductDetail = () => {
     navigation.navigate('ProductDetail', {productId: product.id});
   };
 
   return (
     <>
-      {/* movements */}
       {movements?.length > 0 ? (
         <Pressable style={styles.relatedWrapper} onPress={handleMovementDetail}>
           <FastImg
             style={styles.relatedImage}
             source={require('@/assets/images/topic-related.png')}
           />
-          <View style={{justifyContent: 'center'}}>
-            <Text style={styles.relatedName}>{movements[0].name.trim()}</Text>
-            <Text style={styles.relatedText}>{movements[0].desc_tip}</Text>
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {movements[0].name.trim()}
+            </Text>
+            <Text style={styles.relatedText} numberOfLines={1}>
+              {movements[0].desc_tip}
+            </Text>
           </View>
         </Pressable>
       ) : null}
 
-      {/* shop_stores */}
       {shop_stores?.length > 0 ? (
         <Pressable style={styles.relatedWrapper} onPress={handleStoreDetail}>
           <FastImg style={styles.relatedImage} source={{uri: shop_stores[0].cover_url}} />
-          <View style={{justifyContent: 'center'}}>
-            <Text style={styles.relatedName}>{shop_stores[0].name}</Text>
-            <Text style={styles.relatedText}>{shop_stores[0].desc_tip}</Text>
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {shop_stores[0].name}
+            </Text>
+            <Text style={styles.relatedText} numberOfLines={1}>
+              {shop_stores[0].desc_tip}
+            </Text>
           </View>
         </Pressable>
       ) : null}
 
-      {/* shop_brands */}
       {shop_brands?.length > 0 ? (
         <Pressable style={styles.relatedWrapper} onPress={handleBrandDetail}>
           <FastImg style={styles.relatedImage} source={{uri: shop_brands[0].cover_url}} />
-          <View style={{justifyContent: 'center'}}>
-            <Text style={styles.relatedName}>{shop_brands[0].name}</Text>
-            <Text style={styles.relatedText}>{shop_brands[0].desc_tip}</Text>
+          <View style={styles.relatedInfo}>
+            <Text style={styles.relatedName} numberOfLines={1}>
+              {shop_brands[0].name}
+            </Text>
+            <Text style={styles.relatedText} numberOfLines={1}>
+              {shop_brands[0].desc_tip}
+            </Text>
           </View>
         </Pressable>
       ) : null}
 
-      {/* product */}
       {product ? (
         <Pressable style={styles.relatedWrapper} onPress={handleProductDetail}>
           <FastImg
@@ -79,7 +85,7 @@ const RelatedComponent = props => {
             <Text style={styles.relatedName} numberOfLines={1}>
               {product.name}
             </Text>
-            <Text style={styles.relatedText}>
+            <Text style={styles.relatedText} numberOfLines={1}>
               {product.category_name}
               {product.category_brand_type ? ' · ' : ''}
               {product.category_brand_type ? product.category_brand_type.split(',').join('/') : ''}

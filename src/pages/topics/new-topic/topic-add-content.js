@@ -26,7 +26,7 @@ const TopicAddContent = props => {
           <IconFont name="arrow-right" size={10} color="#c2c2c2" />
         </Pressable>
         <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddRelated')}>
-          <Text style={styles.addText}>关联顽招/Van Store/品牌/顽物等</Text>
+          <Text style={styles.addText}>关联顽招/顽士多/品牌/顽物等</Text>
           <IconFont name="arrow-right" size={10} color="#c2c2c2" />
         </Pressable>
       </View>
@@ -38,7 +38,9 @@ const TopicAddContent = props => {
             <Text style={styles.relatedName} numberOfLines={1}>
               {movement_ids[0].name.trim()}
             </Text>
-            <Text style={styles.relatedText}>{movement_ids[0].desc_tip}</Text>
+            <Text style={styles.relatedText} numberOfLines={1}>
+              {movement_ids[0].desc_tip}
+            </Text>
           </View>
         </View>
       ) : null}
@@ -50,7 +52,9 @@ const TopicAddContent = props => {
             <Text style={styles.relatedName} numberOfLines={1}>
               {shop_store_ids[0].name.trim()}
             </Text>
-            <Text style={styles.relatedText}>{shop_store_ids[0].desc_tip}</Text>
+            <Text style={styles.relatedText} numberOfLines={1}>
+              {shop_store_ids[0].desc_tip}
+            </Text>
           </View>
         </View>
       ) : null}
@@ -62,7 +66,9 @@ const TopicAddContent = props => {
             <Text style={styles.relatedName} numberOfLines={1}>
               {shop_brand_ids[0].name.trim()}
             </Text>
-            <Text style={styles.relatedText}>{shop_brand_ids[0].desc_tip}</Text>
+            <Text style={styles.relatedText} numberOfLines={1}>
+              {shop_brand_ids[0].desc_tip}
+            </Text>
           </View>
         </View>
       ) : null}
@@ -77,7 +83,7 @@ const TopicAddContent = props => {
             <Text style={styles.relatedName} numberOfLines={1}>
               {product.name}
             </Text>
-            <Text style={styles.relatedText}>
+            <Text style={styles.relatedText} numberOfLines={1}>
               {product.category_name}
               {product.category_brand_type ? ' · ' : ''}
               {product.category_brand_type ? product.category_brand_type.split(',').join('/') : ''}

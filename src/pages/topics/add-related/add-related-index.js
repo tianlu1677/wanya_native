@@ -75,7 +75,7 @@ const AddRelatedIndex = props => {
           height={RFValue(36)}
           cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"
-          placeholder="搜索顽招/Van Store/品牌"
+          placeholder="搜索顽招/顽士多/品牌"
           onChangeText={debounce(onChangeText, 500)}
           cancel={true}
           onCancel={() => navigation.goBack()}
@@ -96,7 +96,7 @@ const AddRelatedIndex = props => {
               },
               {
                 key: 'shop_store',
-                title: 'Van Store',
+                title: '顽士多',
                 component: ShopStoreListPage,
               },
               {

@@ -47,7 +47,7 @@ const ShopStore = props => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `${category}Van Store`,
+      title: `${category}顽士多`,
       headerRight: () => (
         <Pressable
           onPress={() => navigation.push('SearchIndex', {key: 'shop_store'})}
@@ -86,7 +86,7 @@ const ShopStore = props => {
             isPosition && isCurrentCity ? (
               <ScrollView>
                 <View style={styles.header}>
-                  <Text style={styles.title}>附近Van Store</Text>
+                  <Text style={styles.title}>附近顽士多</Text>
                   {CityComponent}
                 </View>
                 {listdata.length > 0 ? (
@@ -109,11 +109,11 @@ const ShopStore = props => {
               <Text style={styles.title}>
                 {isPosition
                   ? isCurrentCity
-                    ? '其他城市热门Van Store'
-                    : '热门Van Store'
+                    ? '其他城市热门顽士多'
+                    : '热门顽士多'
                   : chooseCity === '全国'
-                  ? '全部Van Store'
-                  : '其他城市热门Van Store'}
+                  ? '全部顽士多'
+                  : '其他城市热门顽士多'}
               </Text>
               {!(isPosition && isCurrentCity) ? CityComponent : <View />}
             </View>

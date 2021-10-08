@@ -30,7 +30,9 @@ const BaseMovement = props => {
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
         <Text style={styles.name}>{name.trim()}</Text>
-        <Text style={styles.intro}>{desc_tip}</Text>
+        <Text style={styles.intro} numberOfLines={1}>
+          {desc_tip}
+        </Text>
       </View>
     </Pressable>
   );
@@ -59,7 +61,9 @@ const BaseShopStore = props => {
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.intro}>{desc_tip}</Text>
+        <Text style={styles.intro} numberOfLines={1}>
+          {desc_tip}
+        </Text>
       </View>
     </Pressable>
   );
@@ -88,7 +92,9 @@ const BaseShopBrand = props => {
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.intro}>{desc_tip}</Text>
+        <Text style={styles.intro} numberOfLines={1}>
+          {desc_tip}
+        </Text>
       </View>
     </Pressable>
   );

@@ -220,7 +220,7 @@ const SearchIndex = ({navigation, route}) => {
           },
           {
             key: 'shop_store',
-            title: 'Van Store',
+            title: '顽士多',
             component: ShopStoreListPage,
           },
           {

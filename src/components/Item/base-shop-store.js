@@ -22,7 +22,7 @@ const BaseShopstore = props => {
 
   return (
     <Pressable style={styles.wrapper} onPress={goDetail}>
-      <FastImg source={{uri: cover_url}} style={styles.image} />
+      <FastImg source={{uri: cover_url}} style={styles.image} mode="cover" />
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{name}</Text>
         <View style={styles.addressWrapper}>
