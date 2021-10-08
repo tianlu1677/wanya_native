@@ -1,7 +1,7 @@
 import request from './request';
 
 export const getProductsItemDetail = async params => {
-  const res = await request({url: '/api/v1/products/item_detail', method: 'GET', params});
+  const res = await request({url: '/api/v1/products/item_detail', method: 'POST', params});
   return res;
 };
 
