@@ -73,9 +73,13 @@ const AccountDetail = ({navigation, route}) => {
 
   const createChat = async () => {
     const ret = await getValidChat({target_account_id: account.id});
-    if (ret.data.message) {
+    if (!ret.data.status) {
       Toast.showError(ret.data.message);
       return;
+    }
+
+    if (ret.data.message) {
+      Toast.showError(ret.data.message);
     }
 
     const params = {receiver_id: account.id};
