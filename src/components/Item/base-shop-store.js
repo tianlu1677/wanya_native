@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 104,
-    height: 75,
+    height: 104,
   },
   infoWrapper: {
     flex: 1,

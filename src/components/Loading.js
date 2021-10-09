@@ -18,13 +18,18 @@ const Loading = props => {
     'FadingCircleAlt',
   ];
   const type = Math.random(allTypes.length - 1).toFixed(1) * 10;
+
   return (
     <View style={[styles.loading, props.style]}>
       {/*<ActivityIndicator size={'small'} />*/}
-      <Spinner style={{}} isVisible={true} size={props.size || 35} type={props.type || 'Bounce'} color={'#BDBDBD'} />
-      {
-        props.text !== 'none' && <Text style={styles.text}>{props.text || '加载中...' }</Text>
-      }
+      <Spinner
+        style={{}}
+        isVisible={true}
+        size={props.size || 35}
+        type={props.type || 'Bounce'}
+        color={'#BDBDBD'}
+      />
+      {props.text !== 'none' && <Text style={styles.text}>{props.text || '加载中...'}</Text>}
     </View>
   );
 };
@@ -39,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 999,
+    zIndex: 99999,
   },
 
   text: {
