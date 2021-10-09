@@ -42,7 +42,7 @@ class Toast extends Component {
         letterSpacing: 1,
       },
       mask: true,
-      duration: 60000,
+      duration: 40000,
       loading: true,
       position: this.position.CENTER,
       ...options,

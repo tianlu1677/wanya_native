@@ -117,8 +117,9 @@ const MineNodeList = () => {
   };
 
   const loadData = async (page = 1, params) => {
+    setLoading(true);
     if (page === 1) {
-      setLoading(true);
+
     }
     const res = await getFollowedNodePosts({page, ...params});
     setListData(page === 1 ? res.data.posts : [...listData, ...res.data.posts]);
