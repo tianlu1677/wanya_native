@@ -18,8 +18,9 @@ const AccountsList = props => {
 
   const loadData = async (page = 1) => {
     if (page === 1) {
-      setLoading(true);
+      // setLoading(true);
     }
+    setLoading(true);
     const {api, params, right_text} = props.request;
     let data = [];
     const res = await api({...params, page});

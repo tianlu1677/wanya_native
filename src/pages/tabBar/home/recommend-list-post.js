@@ -39,9 +39,9 @@ const RecommendListPost = () => {
 
   const loadData = async (page = 1) => {
     let itemList = [];
+    setLoading(true);
     if (page === 1) {
       // 加载置顶
-      setLoading(true);
       itemList = (await getRecommendTopPosts()).data.posts;
       setListData(itemList);
     }
@@ -53,6 +53,7 @@ const RecommendListPost = () => {
   };
 
   const indexLoadData = async (page = 1) => {
+    setLoading(true);
     let itemList = [];
     const res = await getRecommendPosts({page});
     itemList = itemList.concat(res.data.posts);

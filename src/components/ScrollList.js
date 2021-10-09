@@ -84,7 +84,7 @@ const ScrollList = props => {
 
   const renderFooter = () => {
     let footer = null;
-    if (pagin && pagin.hasMore && props.loading) {
+    if (pagin && parseInt(pagin.page) > 1 && props.loading) {
       footer = (
         <View
           style={{
@@ -94,6 +94,7 @@ const ScrollList = props => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
+
           <ActivityIndicator
             size={'small'}
             animating={true}
@@ -233,7 +234,7 @@ const ScrollList = props => {
       onEndReachedThreshold={0.3}
       // maxToRenderPerBatch={1} // 增量渲染最大数量
       // updateCellsBatchingPeriod={3000}
-      ListFooterComponent={enableLoadMore ? renderFooter : null}
+      ListFooterComponent={renderFooter}
       ListHeaderComponent={props.ListHeaderComponent || null}
       ListEmptyComponent={renderEmpty}
       numColumns={props.numColumns || 1}

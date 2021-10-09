@@ -14,8 +14,9 @@ const ProductList = props => {
 
   const loadData = async (page = 1) => {
     if (page === 1) {
-      setLoading(true);
+
     }
+    setLoading(true);
     const {api, params, apiPath} = request;
     const res = await api({...params, page}, apiPath);
     const data = dataKey ? res.data[dataKey] : res.data.products;
