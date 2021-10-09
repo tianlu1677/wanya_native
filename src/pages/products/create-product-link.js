@@ -18,7 +18,8 @@ const CreateProductLink = props => {
   const onChangeText = text => setValue(text);
 
   const onAnalysis = async (data = value) => {
-    const params = {type: 'taobao', url: data};
+    const params = {type: 'taobao', url: data.toString()};
+    // console.log('params', params)
     try {
       Toast.showLoading();
       const res = await getProductsItemDetail(params);
