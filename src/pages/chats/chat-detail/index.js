@@ -147,7 +147,7 @@ const ChartDetail = props => {
   const validateChat = () => getValidChat({target_account_id: targetAccountId, chat_group_uuid: uuid});
 
   const sendMessage = async (type, content, isInverted) => {
-    Toast.showLoading('发送中...', {duration: 1000});
+    // Toast.showLoading('发送中...', {duration: 1000});
     const res = await validateChat();
     if (res.data.message) {
       Toast.hide();
