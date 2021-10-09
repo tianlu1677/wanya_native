@@ -78,9 +78,9 @@ const AccountDetail = ({navigation, route}) => {
       return;
     }
 
-    if (ret.data.message) {
-      Toast.showError(ret.data.message);
-    }
+    // if (ret.data.message) {
+    //   Toast.showError(ret.data.message);
+    // }
 
     const params = {receiver_id: account.id};
     const res = await getChatGroupsDetail(params);
