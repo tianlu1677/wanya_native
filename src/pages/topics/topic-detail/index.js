@@ -70,8 +70,8 @@ const TopicDetail = ({navigation, route}) => {
     node: detail.node ? {...detail.node, topics_count: 0} : null,
   };
 
-  const HeaderHeight = IsIos ? -BOTTOM_HEIGHT : BarHeight;
-  const TopHeight = IsIos ? headerHeight - BOTTOM_HEIGHT : STATUS_BAR_HEIGHT + 55;
+  const HeaderHeight = IsIos ? headerHeight - BOTTOM_HEIGHT : STATUS_BAR_HEIGHT + 55;
+  const TopHeight = IsIos ? -BOTTOM_HEIGHT : BarHeight;
   const Offset = isRenderHeader ? HeaderHeight : TopHeight;
 
   const deleteTopicComment = async id => {
@@ -190,7 +190,6 @@ const TopicDetail = ({navigation, route}) => {
     }
   }, [navigation, detail, followed]);
 
-  console.log(detail);
   return detail ? (
     <KeyboardAvoidingView behavior={behavior} style={styles.wrap} keyboardVerticalOffset={Offset}>
       {isLongVideo && <GoBack color="#000" report={true} onReportClick={onReportClick} />}

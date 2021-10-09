@@ -142,19 +142,21 @@ const NodeDetail = ({navigation, route}) => {
             mode={'cover'}
             style={styles.headerCover}
           />
-          <View style={styles.nodeContent}>
-            <View style={styles.nodeInfo}>
-              <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
-              <View style={styles.nodewrap}>
-                <Text style={styles.nodeName}>{detail.name}</Text>
-                <View style={styles.nodeView}>
-                  <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
-                  {(detail.space || detail.location) && <Text style={{color: 'white'}}> · </Text>}
-                  <LocationBar location={detail.location} space={detail.space} />
-                </View>
+          {/* <View style={styles.nodeContent}> */}
+          <View style={styles.nodeInfo}>
+            <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
+            <View style={styles.nodewrap}>
+              <Text style={styles.nodeName} numberOfLines={1}>
+                {detail.name}
+              </Text>
+              <View style={styles.nodeView}>
+                <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
+                {(detail.space || detail.location) && <Text style={{color: 'white'}}> · </Text>}
+                <LocationBar location={detail.location} space={detail.space} />
               </View>
             </View>
           </View>
+          {/* </View> */}
           <View style={styles.descWrap}>
             <Text style={styles.nodeDesc} numberOfLines={2} onPress={onShowIntro}>
               {detail.desc}
@@ -248,9 +250,6 @@ const styles = StyleSheet.create({
     ...positon,
     zIndex: -1,
   },
-  nodeContent: {
-    flexDirection: 'row',
-  },
   nodeInfo: {
     flexDirection: 'row',
     marginRight: 'auto',
@@ -265,6 +264,7 @@ const styles = StyleSheet.create({
     borderColor: '#ffff00',
   },
   nodewrap: {
+    flex: 1,
     alignItems: 'flex-start',
   },
   nodeName: {
