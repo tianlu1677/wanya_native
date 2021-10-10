@@ -12,7 +12,7 @@ import {createProducts} from '@/api/product_api';
 import OpenDrawer from './open-drawer';
 
 const CreateProductType = props => {
-  const {navigation} = props;
+  const {navigation, route} = props;
   const dispatch = useDispatch();
   const {
     home: {categoryList},
@@ -80,18 +80,12 @@ const CreateProductType = props => {
       },
     };
 
-    console.log('params', params);
     try {
       Toast.showLoading();
       const res = await createProducts(params);
       const value = {product: {...res.data.product}};
-      console.log('value', value);
-      console.log('res', res);
       dispatch({type: action.SAVE_NEW_TOPIC, value});
-      navigation.navigate('NewTopic');
-      // setTimeout(() => {
-      //   dispatch({type: action.CREATE_PRODUCT, value: {}});
-      // }, 2000);
+      navigation.navigate('NewTopic', {pageKey: route.params.pageKey});
       Toast.hide();
     } catch (err) {
       Toast.hide();

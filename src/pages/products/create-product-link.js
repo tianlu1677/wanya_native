@@ -1,5 +1,5 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {View, Text, Pressable, StyleSheet, TextInput, Platform} from 'react-native';
+import {View, Text, Pressable, StyleSheet, TextInput, Platform, StatusBar} from 'react-native';
 import {Keyboard, KeyboardAvoidingView} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import {useDispatch} from 'react-redux';
@@ -12,14 +12,13 @@ import {getProductsItemDetail} from '@/api/product_api';
 const hitSlop = {top: 10, bottom: 10, left: 10, right: 10};
 const CreateProductLink = props => {
   const dispatch = useDispatch();
-  const {navigation} = props;
+  const {navigation, route} = props;
   const [value, setValue] = useState('');
 
   const onChangeText = text => setValue(text);
 
   const onAnalysis = async (data = value) => {
     const params = {type: 'taobao', url: data.toString()};
-    // console.log('params', params)
     try {
       Toast.showLoading();
       const res = await getProductsItemDetail(params);
@@ -30,7 +29,7 @@ const CreateProductLink = props => {
         dispatch({type: action.CREATE_PRODUCT, value: {}});
       } else {
         dispatch({type: action.CREATE_PRODUCT, value: {detail: res.data}});
-        navigation.navigate('CreateProductInfo');
+        navigation.navigate('CreateProductInfo', {pageKey: route.params.pageKey});
       }
     } catch {
       Toast.hide();
@@ -42,6 +41,7 @@ const CreateProductLink = props => {
       onAnalysis();
     } else {
       const res = await Clipboard.getString();
+
       if (res) {
         setValue(res);
         onAnalysis(res);
@@ -66,6 +66,7 @@ const CreateProductLink = props => {
     <KeyboardAvoidingView
       style={styles.wrapper}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <StatusBar barStyle="dark-content" />
       <Pressable style={styles.wrapper} onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <Text style={styles.title}>商品链接</Text>

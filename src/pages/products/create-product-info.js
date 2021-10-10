@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet, TextInput, ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import MediasPicker from '@/components/MediasPicker';
 import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
@@ -13,12 +14,17 @@ const LoadingImg = require('@/assets/images/loading.gif');
 const mediaWidth = Math.floor((SCREEN_WIDTH - (30 * 2 + 10 * 3)) / 4);
 
 const CreateProductLink = props => {
-  const {navigation, removeAllPhoto, imagePick, uploadImage} = props;
+  const dispatch = useDispatch();
+  const {route, navigation, removeAllPhoto, imagePick, uploadImage} = props;
   const {
     createProduct: {detail = {}},
   } = useSelector(state => state.product);
+
+  const {small_images, pict_url, item_url, title, reserve_price} = detail;
+  const [imageSource, setImageSource] = useState(
+    small_images ? small_images.string : pict_url ? [pict_url] : []
+  );
   const [permissionModal, setPermissionModal] = useState(false);
-  const [imageSource, setImageSource] = useState(detail ? detail.small_images.string : []);
 
   const isCanClick = () => (imageSource.length > 0 ? true : false);
 
@@ -37,16 +43,13 @@ const CreateProductLink = props => {
     const options = {imageCount: 9 - imageSource.length, isCamera: false};
     imagePick(options, async (err, res) => {
       if (err) {
-        console.log('err', err)
         return;
       }
       const allImage = [...imageSource, ...res];
       setImageSource([...allImage]);
       for (let [index, file] of new Map(allImage.map((item, i) => [i, item]))) {
         if (file.uri) {
-          console.log('file', file)
           const result = await uploadImage({uploadType: 'multipart', ...file});
-          console.log('result', result)
           allImage[index] = result.asset.url;
           setImageSource([...allImage]);
         }
@@ -54,34 +57,30 @@ const CreateProductLink = props => {
     });
   };
 
+  console.log(detail);
+
   const goStepClick = () => {
-    navigation.navigate('CreateProductType');
+    console.log(imageSource, route);
+
+    dispatch({
+      type: action.CREATE_PRODUCT,
+      value: {detail: {...detail, small_images: {string: imageSource}}},
+    });
+
+    navigation.navigate('CreateProductType', {pageKey: route.params.pageKey});
   };
+
+  const inputOptions = {editable: false, selectionColor: '#ff193a'};
 
   return (
     <View style={styles.wrapper}>
       <ScrollView style={styles.scrollWrapper}>
         <Text style={styles.title}>商品链接</Text>
-        <TextInput
-          editable={false}
-          style={styles.content}
-          selectionColor="#ff193a"
-          value={detail.item_url}
-        />
+        <TextInput {...inputOptions} style={styles.content} value={item_url} />
         <Text style={styles.title}>商品名称</Text>
-        <TextInput
-          editable={false}
-          style={styles.content}
-          selectionColor="#ff193a"
-          value={detail.title}
-        />
+        <TextInput {...inputOptions} style={styles.content} value={title} />
         <Text style={styles.title}>商品价格</Text>
-        <TextInput
-          editable={false}
-          style={styles.content}
-          selectionColor="#ff193a"
-          value={`¥ ${detail.reserve_price}`}
-        />
+        <TextInput {...inputOptions} style={styles.content} value={`¥ ${reserve_price}`} />
         <Text style={styles.title}>商品图片</Text>
         <View style={styles.imageContent}>
           {[...imageSource].map((item, index) => {

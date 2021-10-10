@@ -25,9 +25,9 @@ const {width: windowWidth} = Dimensions.get('window');
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
 
 const NewTopic = props => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const videoRef = useRef('');
+  const {navigation, route} = props;
   const {currentAccount} = useSelector(state => state.account);
   const {savetopic, location} = useSelector(state => state.home);
   const {movement_ids, shop_store_ids, shop_brand_ids, tag_list, product} = savetopic;
@@ -253,9 +253,26 @@ const NewTopic = props => {
   };
 
   const LeftBtn = () => {
+    const handleClose = () => {
+      if (route.params && route.params.pageKey) {
+        const {pageKey} = route.params;
+        if (pageKey.includes('Discovery')) {
+          navigation.navigate('Discovery');
+        }
+
+        if (pageKey.includes('ShopBrandDetail')) {
+          navigation.navigate('ShopBrandDetail', {
+            shopBrandId: pageKey.split('ShopBrandDetail')[1],
+          });
+        }
+      } else {
+        navigation.goBack();
+      }
+    };
+
     return (
       <Pressable
-        onPress={() => navigation.goBack()}
+        onPress={handleClose}
         style={{paddingLeft: 5}}
         hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
         <IconFont name={'close'} size={14} />

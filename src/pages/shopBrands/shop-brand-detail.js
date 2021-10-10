@@ -42,7 +42,7 @@ const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 485) / 750);
 
 const RenderHeader = props => {
   const dispatch = useDispatch();
-  const {detail, joinAccounts, loadData} = props;
+  const {navigation, detail, joinAccounts, loadData} = props;
   const [joined, setJoined] = useState(detail.joined);
   const [showModal, setShowModal] = useState(false);
 
@@ -66,7 +66,7 @@ const RenderHeader = props => {
   };
 
   const goJoinAccounts = () => {
-    props.navigation.navigate('JoinAccountsList', {
+    navigation.navigate('JoinAccountsList', {
       title: detail.name,
       request: {api: getShopBrandJoinAccounts, params: {id: detail.id}},
     });
@@ -142,21 +142,21 @@ const RenderHeader = props => {
 
 const ShopBrandDetail = props => {
   const dispatch = useDispatch();
-  const {navigation} = props;
-  const {shopBrandId} = props.route.params;
+  const {navigation, route} = props;
+  const {shopBrandId} = route.params;
   const [currentKey, setCurrentKey] = useState('product');
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
 
   const createGoods = () => {
     dispatch({type: action.CREATE_PRODUCT, value: {}});
-    navigation.navigate('CreateProductLink');
+    navigation.navigate('CreateProductLink', {pageKey: route.key});
   };
 
   const createTopic = () => {
     const topics = {shop_brand_ids: [detail]};
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.navigate('NewTopic');
+    navigation.navigate('NewTopic', {pageKey: `ShopBrandDetail${shopBrandId}`});
   };
 
   const ProductListPage = () => {

@@ -166,7 +166,7 @@ const NodeDetail = ({navigation, route}) => {
 
           <Pressable style={styles.accountsWrapper} onPress={goJoinAccounts}>
             <BlurView style={styles.accountsMain} blurAmount={5}>
-              <JoinAccounts accounts={detail.accounts} size={25} />
+              <JoinAccounts accounts={detail.accounts} size={25} onPress={goJoinAccounts} />
               <Text style={styles.accountsCount}>
                 {detail.accounts_count ? `${detail.accounts_count}位板友已加入` : '还没有板友加入'}
               </Text>

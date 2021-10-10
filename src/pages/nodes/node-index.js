@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {nodeAction} from '@/redux/actions';
@@ -61,12 +61,14 @@ const NodeIndex = props => {
     const allMineNodes = mineNodes.map(item => {
       return {...item, category_id: 0};
     });
-    setAllNodes(allMineNodes.concat(nodes));
+    setTimeout(() => {
+      setAllNodes(allMineNodes.concat(nodes));
+    }, 300);
   }, [nodes, followNodes, checkNodes]);
 
   return (
     <View style={{flex: 1}}>
-      {allNodes.length > 0 && categories.length > 0 ? (
+      {[...allNodes].length > 0 && [...categories].length > 0 ? (
         <View style={{flex: 1}}>
           <StatusBar barStyle="dark-content" backgroundColor={'white'} />
           <View style={styles.wrapper}>

@@ -32,12 +32,10 @@ const ProductFooter = props => {
   const handleShare = () => {
     const topics = {product: detail};
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.navigate('NewTopic');
+    navigation.navigate('NewTopic', {pageKey: 'Discovery'});
   };
 
   const handleBuy = () => {
-    console.log('detail.', detail.scheme_url);
-    console.log('detail.', detail.item_url);
     Linking.canOpenURL('taobao://').then(supported => {
       if (!supported) {
         Linking.openURL(detail.item_url);
