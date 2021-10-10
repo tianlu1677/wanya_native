@@ -57,11 +57,7 @@ const CreateProductLink = props => {
     });
   };
 
-  console.log(detail);
-
   const goStepClick = () => {
-    console.log(imageSource, route);
-
     dispatch({
       type: action.CREATE_PRODUCT,
       value: {detail: {...detail, small_images: {string: imageSource}}},

@@ -11,7 +11,7 @@ const RecommendSearch = props => {
   const [inputRef, setinputRef] = useState(null);
 
   const onCreateProduct = () => {
-    navigation.navigate('CreateProductLink');
+    navigation.navigate('CreateProductLink', {pageKey: 'Discovery'});
   };
 
   const isShowCreateProduct = ['discovery'].includes(page);
