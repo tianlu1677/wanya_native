@@ -56,6 +56,7 @@ const TabList = props => {
       return;
     }
     const allRender = layoutList.every(item => item.x >= 0);
+
     if (allRender) {
       const index = data.findIndex(v => v.key === current);
       setCurrentIndex(index);
