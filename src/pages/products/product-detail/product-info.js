@@ -55,7 +55,6 @@ const ProductInfo = props => {
           <Text style={styles.price}>{price}</Text>
           <Text style={styles.tags}>{category_name}</Text>
           <Text style={styles.tags}>{category_brand_type}</Text>
-
           {hot_score ? <Text style={styles.discuss}>热度 {FilterScore(hot_score)}</Text> : null}
         </View>
         <Text style={styles.name}>{name}</Text>
@@ -65,7 +64,10 @@ const ProductInfo = props => {
           <FastImg source={{uri: shop_brand.cover_url}} style={styles.brandImage} />
           <View style={styles.brandInfo}>
             <Text style={styles.brandName}>{shop_brand.name}</Text>
-            <Text style={styles.branddiscuss}>{FilterScore(shop_brand.play_score)} 收藏</Text>
+            <Text style={styles.branddiscuss}>
+              {shop_brand.join_accounts_count ? FilterScore(shop_brand.join_accounts_count) : 0}{' '}
+              收藏
+            </Text>
           </View>
           <Text style={styles.discuss}>查看品牌</Text>
         </Pressable>

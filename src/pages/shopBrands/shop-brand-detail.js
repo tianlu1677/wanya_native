@@ -72,6 +72,8 @@ const RenderHeader = props => {
     });
   };
 
+  const handleGet = () => {};
+
   return (
     <>
       <View style={{height: BarHeight, backgroundColor: 'black'}} />
@@ -109,10 +111,10 @@ const RenderHeader = props => {
               </View>
             </View>
           ) : (
-            <View style={styles.headerAccount}>
+            <Pressable style={styles.headerAccount} onPress={handleGet}>
               <IconFont name="question" size={16} color={'#fff'} />
               <Text style={styles.noAccount}>未认领</Text>
-            </View>
+            </Pressable>
           )}
         </View>
         <Text style={styles.intro} numberOfLines={2} onPress={() => setShowModal(true)}>
