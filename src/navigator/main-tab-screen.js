@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, Image, Pressable, Vibration, StyleSheet, Dimensions} from 'react-native';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector, useDispatch} from 'react-redux';
@@ -15,6 +17,7 @@ import Community from '@/pages/tabBar/community';
 import ChatGroups from '@/pages/tabBar/chat-groups';
 import Recommend from '@/pages/tabBar/home/recommend';
 import Discovery from '@/pages/discoveries/discovery';
+
 const indexImage = require('@/assets/tabimages/index-active.png');
 
 const {width} = Dimensions.get('window');
@@ -96,6 +99,15 @@ const MainTabScreen = props => {
     return currentBaseInfo.new_message_count + currentBaseInfo.unread_chat_messages_count;
   };
 
+  const impactLight = () => {
+    const options = {
+      enableVibrateFallback: true,
+      ignoreAndroidSystemSettings: false,
+    };
+
+    ReactNativeHapticFeedback.trigger('impactLight', options);
+  };
+
   return (
     <>
       <PublishModal {...props} visible={visible} onCancel={() => setVisible(false)} />
@@ -145,9 +157,28 @@ const MainTabScreen = props => {
             borderTopColor: '#EBEBEB',
             height: RFValue(40),
           },
+          onPress: () => {
+            impactLight();
+          },
         }}>
-        <Tab.Screen name="Accounts" component={Accounts} />
-        <Tab.Screen name="ChatGroups" component={ChatGroups} />
+        <Tab.Screen
+          name="Accounts"
+          component={Accounts}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              impactLight();
+            },
+          })}
+        />
+        <Tab.Screen
+          name="ChatGroups"
+          component={ChatGroups}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              impactLight();
+            },
+          })}
+        />
         <Tab.Screen
           name="Recommend"
           component={Recommend}
@@ -155,6 +186,8 @@ const MainTabScreen = props => {
           initialParams={props.route.params}
           listeners={({navigation}) => ({
             tabPress: async e => {
+              impactLight();
+              // console.log('xxxx');
               if (navigation.isFocused()) {
                 e.preventDefault();
                 setVisible(true);
@@ -164,8 +197,24 @@ const MainTabScreen = props => {
             },
           })}
         />
-        <Tab.Screen name="Community" component={Community} />
-        <Tab.Screen name="Discovery" component={Discovery} />
+        <Tab.Screen
+          name="Community"
+          component={Community}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              impactLight();
+            },
+          })}
+        />
+        <Tab.Screen
+          name="Discovery"
+          component={Discovery}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              impactLight();
+            },
+          })}
+        />
       </Tab.Navigator>
     </>
   );
