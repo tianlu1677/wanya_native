@@ -6,6 +6,7 @@ import {getUploadFileToken, saveVideoToAsset, saveAudioToAsset} from '@/api/sett
 import {BaseApiUrl} from '@/utils/config';
 import {uploadSystemInfo} from '@/api/settings_api';
 import DeviceInfo from 'react-native-device-info';
+import {IsIos} from "@/utils/navbar"
 const baseUrl = BaseApiUrl;
 
 const deviceId = DeviceInfo.getSystemVersion();
@@ -28,7 +29,7 @@ const MediasPicker = WrapperComponent => {
     const uploadImage = async (file, socialToken) => {
       console.log('updload file', file);
       const token = socialToken || (await Helper.getData('auth_token'));
-      const path = 'file://' + file.uri;
+      const path = IsIos ? ('file://' + file.uri) : file.uri.replace('file://', '');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',

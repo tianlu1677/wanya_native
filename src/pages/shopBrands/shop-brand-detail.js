@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 11,
     lineHeight: 18,
-    marginTop: RFValue(16),
+    marginTop: 15,
     width: '80%',
   },
   accountsWrapper: {
