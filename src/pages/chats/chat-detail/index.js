@@ -338,6 +338,7 @@ const ChartDetail = props => {
           if (err) {
             return;
           }
+          // console.log('res', res)
           Toast.showLoading('发送中...');
           try {
             const ret = await uploadVideo(res[0], () => {});

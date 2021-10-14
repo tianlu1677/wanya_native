@@ -6,7 +6,7 @@ import {getUploadFileToken, saveVideoToAsset, saveAudioToAsset} from '@/api/sett
 import {BaseApiUrl} from '@/utils/config';
 import {uploadSystemInfo} from '@/api/settings_api';
 import DeviceInfo from 'react-native-device-info';
-import {IsIos} from "@/utils/navbar"
+import {IsIos} from '@/utils/navbar';
 const baseUrl = BaseApiUrl;
 
 const deviceId = DeviceInfo.getSystemVersion();
@@ -29,7 +29,7 @@ const MediasPicker = WrapperComponent => {
     const uploadImage = async (file, socialToken) => {
       console.log('updload file', file);
       const token = socialToken || (await Helper.getData('auth_token'));
-      const path = IsIos ? ('file://' + file.uri) : file.uri.replace('file://', '');
+      const path = IsIos ? 'file://' + file.uri : file.uri.replace('file://', '');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/assets`,
         method: 'POST',
@@ -106,13 +106,14 @@ const MediasPicker = WrapperComponent => {
 
     const uploadVideo = async (file, cb) => {
       const res = await getUploadFileToken({ftype: 'mp4'});
-      const path = file.uri.replace('file://', '');
+      const path = IsIos ? 'file://' + file.uri : file.uri.replace('file://', '');
       let uploadOptions = {
         url: res.qiniu_region,
         path: path,
         method: 'POST',
         type: 'multipart',
         field: 'file',
+        // customUploadId: Math.random(),
         parameters: {
           token: res.token,
           key: res.file_key,
@@ -133,9 +134,11 @@ const MediasPicker = WrapperComponent => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {
             Upload.addListener('progress', uploadId, data => {
+              // console.log('progress', data);
               cb(parseInt(data.progress));
             });
             Upload.addListener('error', uploadId, data => {
+              // console.log('error', data);
               reject(data.error);
             });
             Upload.addListener('completed', uploadId, data => {
@@ -157,6 +160,7 @@ const MediasPicker = WrapperComponent => {
             });
           })
           .catch(err => {
+            console.log('upload err', err);
             reject(err);
           });
       });
@@ -165,7 +169,8 @@ const MediasPicker = WrapperComponent => {
     // 上传音频
     const uploadAudio = async file => {
       const res = await getUploadFileToken({ftype: 'aac'});
-      const path = file.uri.replace('file://', '');
+      // const path = file.uri.replace('file://', '');
+      const path = IsIos ? 'file://' + file.uri : file.uri.replace('file://', '');
       let uploadOptions = {
         url: res.qiniu_region,
         path: path,

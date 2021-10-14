@@ -164,6 +164,7 @@ const Recommend = props => {
 
   useEffect(() => {
     init();
+    // console.log('uploadStatus', uploadStatus)
     if (uploadStatus) {
       const upload = (file, cb) => props.uploadVideo(file, cb);
       dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));

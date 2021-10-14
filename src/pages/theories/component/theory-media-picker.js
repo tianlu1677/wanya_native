@@ -5,7 +5,7 @@ import SyanImagePicker from 'react-native-syan-image-picker';
 import {BaseApiUrl} from '@/utils/config';
 import Helper from '@/utils/helper';
 import {getUploadFileToken, saveVideoToAsset, uploadSystemInfo} from '@/api/settings_api';
-
+import {IsIos} from "@/utils/navbar"
 const baseUrl = BaseApiUrl;
 const config = {method: 'POST', type: 'multipart', field: 'file'};
 const deviceId = DeviceInfo.getSystemVersion();
@@ -21,6 +21,7 @@ const StepMediaPicker = WrapperComponent => {
     const uploadImage = async (file, params, cb) => {
       const token = await Helper.getData('auth_token');
       console.log('file', file);
+      const path = IsIos ? ('file://' + file.uri) : file.uri.replace('file://', '');
       const options = {
         ...config,
         url: `${baseUrl}/api/v1/assets`,
@@ -31,7 +32,8 @@ const StepMediaPicker = WrapperComponent => {
           category: 'image',
           ...params,
         },
-        path: file.uri.replace('file://', ''),
+        // path: file.uri.replace('file://', ''),
+        path: path,
         headers: {'content-type': 'application/octet-stream', token: token},
       };
 
@@ -63,10 +65,11 @@ const StepMediaPicker = WrapperComponent => {
 
     const uploadVideo = async (file, params, cb) => {
       const res = await getUploadFileToken({ftype: 'mp4'});
+      const path = IsIos ? ('file://' + file.uri) : file.uri.replace('file://', '');
       let options = {
         ...config,
         url: res.qiniu_region,
-        path: file.uri.replace('file://', ''),
+        path: path,
         parameters: {token: res.token, key: res.file_key, name: 'file'},
         notification: {enabled: true},
         useUtf8Charset: true,

@@ -18,7 +18,7 @@ const NewTheory = props => {
         Toast.show('顽法名称不能为空哦~');
         return false;
       }
-      const params = route.params.movementId
+      const params = route.params?.movementId
         ? {theory: {title: textValue}, movement_ids: route.params.movementId}
         : {theory: {title: textValue}};
 
