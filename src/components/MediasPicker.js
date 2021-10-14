@@ -65,9 +65,11 @@ const MediasPicker = WrapperComponent => {
     };
 
     const uploadAvatar = async (file, socialToken) => {
-      console.log('uploadAvatar', file);
+
       const token = await Helper.getData('auth_token');
-      const path = file.uri.replace('file://', '');
+      // const path = file.uri.replace('file://', '');
+
+      const path = IsIos ? 'file://' + file.uri : file.uri.replace('file://', '');
       const uploadOptions = {
         url: `${baseUrl}/api/v1/mine/accounts/${file.account_id}`,
         method: 'POST',
@@ -83,6 +85,8 @@ const MediasPicker = WrapperComponent => {
         },
         path: path,
       };
+
+      console.log('uploadAvatar', uploadOptions);
       return new Promise((resolve, reject) => {
         Upload.startUpload(uploadOptions)
           .then(uploadId => {

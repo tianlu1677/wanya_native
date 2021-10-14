@@ -244,10 +244,6 @@ const OneLogin = ({navigation, route}) => {
       goToPhone();
     }
   };
-  //
-  // useFocusEffect(() => {
-  //   checkJverify();
-  // }, []);
 
   useFocusEffect(() => {
     JVerification.preLogin(5000, result => {
