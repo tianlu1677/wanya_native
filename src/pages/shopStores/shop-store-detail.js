@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, StatusBar, Platform, Linking} from 'react-native';
+import {View, Text, StyleSheet, StatusBar, Platform, Linking, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -14,8 +14,14 @@ import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 import SingleList from '@/components/List/single-list';
 import TopicList from '@/components/List/topic-list';
 import ArticleList from '@/components/List/article-list';
-import {JoinAccounts, JoinButton, TopBack, BottomModal} from '@/components/NodeComponents';
-import {RFValue} from '@/utils/response-fontsize';
+import {
+  JoinAccounts,
+  JoinButton,
+  TopBack,
+  BottomModal,
+  Avator,
+  ModalInfo,
+} from '@/components/NodeComponents';
 import {
   getShopStoreDetail,
   getShopStoreJoinAccounts,
@@ -25,7 +31,9 @@ import {
   getShopStoreTopics,
   getShopStoreArticles,
 } from '@/api/shop_store_api';
-import {Pressable} from 'react-native';
+import {RFValue} from '@/utils/response-fontsize';
+import PersonImg from '@/assets/images/personal.png';
+import BrandImg from '@/assets/images/brand.png';
 
 const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 230) / 750);
 const TOP_HEADER_HEIGHT =
@@ -33,12 +41,12 @@ const TOP_HEADER_HEIGHT =
 
 const RenderHeader = props => {
   const dispatch = useDispatch();
-
   const {detail, joinAccounts, loadData} = props;
   const [joined, setJoined] = useState(detail.joined);
   const [showModal, setShowModal] = useState(false);
   const [itemList, setItemList] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleJoin = async () => {
     joined ? await getShopStoreExit(detail.id) : await getShopStoreJoined(detail.id);
@@ -83,6 +91,8 @@ const RenderHeader = props => {
     }
   };
 
+  const handleGet = value => setVisible(value);
+
   return (
     <>
       <View style={{height: BarHeight, backgroundColor: 'black'}} />
@@ -96,6 +106,30 @@ const RenderHeader = props => {
         <Pressable onPress={() => onPreview('cover_url')}>
           <FastImg source={{uri: detail.cover_url}} style={styles.cover_url} />
         </Pressable>
+
+        {!detail.account ? (
+          <View style={styles.headerAccount}>
+            <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
+            <View style={styles.accountContent}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.accountName}>{detail.account.nickname}</Text>
+                {detail.account.settled_type === 'personal' && (
+                  <FastImg style={styles.settledIcon} source={PersonImg} />
+                )}
+                {detail.account.settled_type === 'brand' && (
+                  <FastImg style={styles.settledIcon} source={BrandImg} />
+                )}
+              </View>
+              <Text style={styles.accountText}>已认领</Text>
+            </View>
+          </View>
+        ) : (
+          <Pressable style={[styles.headerAccount, {top: 35}]} onPress={() => handleGet(true)}>
+            <IconFont name="question" size={16} color={'#fff'} />
+            <Text style={styles.noAccount}>未认领</Text>
+          </Pressable>
+        )}
+
         <View style={styles.nameContent}>
           <Text style={styles.name}>{detail.name}</Text>
           <Text style={styles.count}>
@@ -178,6 +212,12 @@ const RenderHeader = props => {
         changeModal={() => {
           setShowActionSheet(false);
         }}
+      />
+
+      <ModalInfo
+        visible={visible}
+        content="认领表示该店铺属于本人/机构所有，认领前需联系顽鸦小助手进行账号认证，认领后可获得编辑品牌信息等权益。"
+        handleCancel={() => handleGet(false)}
       />
     </>
   );
@@ -337,6 +377,67 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#FF8D00',
     borderRadius: 2,
+    marginLeft: 7,
+  },
+  headerAccount: {
+    height: RFValue(30),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 'auto',
+    position: 'absolute',
+    right: 14,
+    top: 25,
+  },
+  accountContent: {
+    justifyContent: 'center',
+    marginLeft: 5,
+  },
+  accountName: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '500',
+  },
+  accountText: {
+    color: '#fff',
+    fontSize: 8,
+    fontWeight: '300',
+    marginTop: RFValue(4),
+  },
+  settledIcon: {
+    width: RFValue(8),
+    height: RFValue(8),
+    marginLeft: 3,
+  },
+  noAccount: {
+    fontSize: 11,
+    color: '#fff',
+    marginLeft: 5,
+  },
+  intro: {
+    color: '#fff',
+    fontSize: 11,
+    lineHeight: 18,
+    marginTop: RFValue(16),
+    width: '80%',
+  },
+  accountsWrapper: {
+    position: 'absolute',
+    left: 14,
+    right: 14,
+    bottom: RFValue(22),
+  },
+  accountsMain: {
+    height: RFValue(45),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 2,
+  },
+  accountsCount: {
+    color: '#DBDBDB',
+    fontSize: 11,
+    marginRight: 'auto',
     marginLeft: 7,
   },
 });
