@@ -26,7 +26,7 @@ const RecommendSearch = props => {
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#f2f3f5'}}
         height={RFValue(36)}
         placeholderTextColor="#aaa"
-        placeholder="搜索顽法、帖子、圈子等内容"
+        placeholder="搜索顽法、帖子、圈子"
         onFocus={() => {
           inputRef.blur();
           navigation.push('SearchIndex');
