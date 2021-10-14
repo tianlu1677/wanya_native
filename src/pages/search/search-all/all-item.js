@@ -52,7 +52,11 @@ const ShopStore = props => (
   </View>
 );
 
-const ShopBrand = props => <BaseShopBrand data={props.item} key={props.item.id} type="list" />;
+const ShopBrand = props => (
+  <View key={props.item.id}>
+    <BaseShopBrand data={props.item} type="list" />
+  </View>
+)
 
 const Product = props => (
   <View key={props.item.id}>

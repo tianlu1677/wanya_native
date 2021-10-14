@@ -211,11 +211,8 @@ const NewTopic = props => {
     const data = getValidateForm();
     console.log(data);
     if (videoSource.length > 0) {
+      Toast.showLoading('正在发布中...', {duration: 3000});
       // 视频上传
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
-      });
       const params = {
         content: {
           video: {...videoSource[0]},
@@ -223,7 +220,17 @@ const NewTopic = props => {
         },
         upload: (file, cb) => props.uploadVideo(file, cb),
       };
+
+      // console.log('params', params)
       dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
+      // 等待200ms再跳转，避免首页还没有拿到redux里面的值
+      setTimeout(() => {
+        Toast.hide();
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
+        });
+      }, 200)
     } else {
       //other
       Toast.showLoading('正在发布中...');

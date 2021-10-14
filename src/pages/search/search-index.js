@@ -153,7 +153,7 @@ const SearchIndex = ({navigation, route}) => {
         height={RFValue(36)}
         textColor="#000"
         placeholderTextColor="#aaa"
-        placeholder="搜索顽法、帖子、文章、圈子等内容"
+        placeholder="搜索顽法、帖子、文章、圈子"
         autoFocus={true}
         onChangeText={debounce(onChangeText, 500)}
         cancel={true}
