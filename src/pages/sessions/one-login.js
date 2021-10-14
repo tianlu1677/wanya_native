@@ -176,7 +176,7 @@ const OneLogin = ({navigation, route}) => {
   });
 
   const jump = async result => {
-    const badCode = [2005, 6001, 6003, -994, -996, -997];
+    const badCode = [2005, 6001, 6003, 6004, -994, -996, -997];
     const code = result.code;
     if (code === 6000) {
       // Toast.showError('请勾选同意协议');
@@ -193,7 +193,7 @@ const OneLogin = ({navigation, route}) => {
     } else if (code === 6004) {
       tgophonetimeout = setTimeout(() => {
         goToPhone();
-      }, 45000);
+      }, 30000);
       toPhoneListen.push(tgophonetimeout);
     } else if (code === 6002) {
       this.listener && this.listener.remove();
@@ -230,10 +230,11 @@ const OneLogin = ({navigation, route}) => {
       JVerification.checkLoginEnable(result => {
         console.log('checkLoginEnable:' + JSON.stringify(result));
         if (result.enable) {
-          console.log('start page');
+          // JVerification.clearPreLoginCache()
           setTimeout(() => {
-            JVerification.login(true);
-          }, 500);
+            console.log('start page');
+            JVerification.login(false);
+          }, 800);
         } else {
           goToPhone('reset');
         }
@@ -249,9 +250,15 @@ const OneLogin = ({navigation, route}) => {
   // }, []);
 
   useFocusEffect(() => {
-      checkJverify()
-    }
-  );
+    JVerification.preLogin(5000, result => {
+      console.log('preLogin:' + JSON.stringify(result));
+    })
+    // console.log('fouce')
+    checkJverify();
+    return () => {
+      // JVerification.dismissLoginPage();
+    };
+  }, []);
 
   return (
     <View style={{backgroundColor: 'black', width: '100%', height: '100%'}}>
