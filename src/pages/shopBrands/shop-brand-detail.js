@@ -25,6 +25,7 @@ import {
   BottomModal,
   TopBack,
   JoinActivity,
+  ModalInfo,
 } from '@/components/NodeComponents';
 import {
   getShopBrandDetail,
@@ -45,6 +46,7 @@ const RenderHeader = props => {
   const {navigation, detail, joinAccounts, loadData} = props;
   const [joined, setJoined] = useState(detail.joined);
   const [showModal, setShowModal] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleJoin = async () => {
     joined ? await getShopBrandExit(detail.id) : await getShopBrandJoined(detail.id);
@@ -72,7 +74,7 @@ const RenderHeader = props => {
     });
   };
 
-  const handleGet = () => {};
+  const handleGet = value => setVisible(value);
 
   return (
     <>
@@ -111,7 +113,7 @@ const RenderHeader = props => {
               </View>
             </View>
           ) : (
-            <Pressable style={styles.headerAccount} onPress={handleGet}>
+            <Pressable style={styles.headerAccount} onPress={() => handleGet(true)}>
               <IconFont name="question" size={16} color={'#fff'} />
               <Text style={styles.noAccount}>未认领</Text>
             </Pressable>
@@ -137,6 +139,12 @@ const RenderHeader = props => {
         cancleClick={() => setShowModal(false)}
         title={'简介'}
         content={`简介：${detail.intro}`}
+      />
+
+      <ModalInfo
+        visible={visible}
+        content="认领表示该品牌属于本人/机构所有，认领前需联系顽鸦小助手进行账号认证，认领后可获得编辑品牌信息等权益。"
+        handleCancel={() => handleGet(false)}
       />
     </>
   );

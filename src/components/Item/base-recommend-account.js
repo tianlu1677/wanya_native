@@ -3,6 +3,7 @@ import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avator} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
+import IconFont from '@/iconfont';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getChatGroupsDetail} from '@/api/chat_api';
 
@@ -12,7 +13,7 @@ const imageWidth = (width - 14 * 2 - VWValue(45) - 12 - 4 * 4) / 5;
 
 const BaseRecommendAccount = ({data}) => {
   const navigation = useNavigation();
-  const {id, nickname, intro, label_list, media} = data;
+  const {id, online, nickname, gender, age, province, intro, label_list, media} = data;
 
   const handleCreateChat = async () => {
     const params = {receiver_id: id};
@@ -29,26 +30,46 @@ const BaseRecommendAccount = ({data}) => {
     navigation.navigate('AccountDetail', {accountId: id});
   };
 
-  const lablelList = label_list.slice(0, 5);
+  const lablelList = label_list.slice(0, 3);
   const mediaList = media.slice(0, 5);
+
+  const genderStyle = {backgroundColor: gender === 'man' ? '#b7f8ff' : '#fed9e6'};
+  const genderTextColor = {color: gender === 'man' ? '#25c6d8' : '#ff6383'};
 
   return (
     <View style={styles.wrap}>
-      <Avator size={VWValue(45)} account={data} />
+      <View style={styles.avatorWrap}>
+        <Avator size={VWValue(45)} account={data} />
+        {!online ? <IconFont name={gender} size={10} style={styles.online} /> : null}
+      </View>
       <Pressable style={styles.accountInfo} onPress={goAccountDetail}>
-        <Text style={styles.nickname}>{nickname}</Text>
+        <View style={styles.accountWrap}>
+          <Text style={styles.nickname}>{nickname}</Text>
+          <View style={[styles.gender, genderStyle]}>
+            {gender ? <IconFont name={gender} size={9} style={{marginRight: 2}} /> : null}
+            <Text style={[genderTextColor, {fontSize: 9}]}>{age}</Text>
+          </View>
+          {province ? (
+            <View style={styles.province}>
+              <IconFont name="space-point" size={9} color="#35cbbb" />
+              <Text style={{color: '#35cbbb', fontSize: 9, marginLeft: 2}}>{province}</Text>
+            </View>
+          ) : null}
+        </View>
         {lablelList.length > 0 ? (
           <View style={styles.labelWrap}>
             {lablelList.map((label, index) => (
-              <View key={`${label}-${index}`} style={{flexDirection: 'row'}}>
+              <View key={`${label}-${index}`} style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.label}>{label}</Text>
-                {lablelList.length - 1 !== index && <Text style={styles.labelLine}>|</Text>}
+                {lablelList.length - 1 !== index && <Text style={styles.labelLine} />}
               </View>
             ))}
           </View>
         ) : null}
 
-        <Text style={styles.intro}>{intro || '探索与发现 记录与分享'}</Text>
+        <Text style={styles.intro} numberOfLines={1}>
+          {intro || '探索与发现 记录与分享'}
+        </Text>
 
         {mediaList.length > 0 ? (
           <View style={styles.imageWrap}>
@@ -81,13 +102,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
   },
+  avatorWrap: {
+    position: 'relative',
+    width: VWValue(45),
+    height: VWValue(45),
+  },
+  online: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+  },
   accountInfo: {
     flex: 1,
     marginLeft: 12,
   },
+  accountWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
   nickname: {
     fontSize: 15,
-    marginTop: 5,
+    marginRight: 5,
+  },
+  gender: {
+    height: 15,
+    paddingHorizontal: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 6,
+  },
+  province: {
+    height: 15,
+    paddingHorizontal: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#c9fff9',
+    borderRadius: 6,
+    marginLeft: 5,
   },
   labelWrap: {
     flexDirection: 'row',

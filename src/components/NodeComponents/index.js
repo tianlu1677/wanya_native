@@ -33,3 +33,4 @@ export const CategoryDrawer = CategoryDrawerNode;
 export const RecommendSearch = RecommendSearchNode;
 export const SelectListHeader = SelectListHeaderNode;
 export const TopBack = TopBackNode;
+export {default as ModalInfo} from './ModalInfo';
