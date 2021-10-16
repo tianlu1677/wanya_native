@@ -8,8 +8,7 @@ import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getChatGroupsDetail} from '@/api/chat_api';
 
 const {width} = Dimensions.get('window');
-
-const imageWidth = (width - 14 * 2 - VWValue(45) - 12 - 4 * 4) / 5;
+const imageWidth = (width - 14 * 2 - VWValue(45) - 12 - 4 * 2) / 3;
 
 const BaseRecommendAccount = ({data}) => {
   const navigation = useNavigation();
@@ -31,7 +30,7 @@ const BaseRecommendAccount = ({data}) => {
   };
 
   const lablelList = label_list.slice(0, 3);
-  const mediaList = media.slice(0, 5);
+  const mediaList = media.slice(0, 2);
 
   const genderStyle = {backgroundColor: gender === 'man' ? '#b7f8ff' : '#fed9e6'};
   const genderTextColor = {color: gender === 'man' ? '#25c6d8' : '#ff6383'};
@@ -40,13 +39,13 @@ const BaseRecommendAccount = ({data}) => {
     <View style={styles.wrap}>
       <View style={styles.avatorWrap}>
         <Avator size={VWValue(45)} account={data} />
-        {!online ? <IconFont name={gender} size={10} style={styles.online} /> : null}
+        {!online ? <IconFont name="zaixian" size={12} style={styles.online} /> : null}
       </View>
       <Pressable style={styles.accountInfo} onPress={goAccountDetail}>
         <View style={styles.accountWrap}>
           <Text style={styles.nickname}>{nickname}</Text>
           <View style={[styles.gender, genderStyle]}>
-            {gender ? <IconFont name={gender} size={9} style={{marginRight: 2}} /> : null}
+            {gender ? <IconFont name={`${gender}-icon`} size={9} style={{marginRight: 2}} /> : null}
             <Text style={[genderTextColor, {fontSize: 9}]}>{age}</Text>
           </View>
           {province ? (
@@ -56,6 +55,7 @@ const BaseRecommendAccount = ({data}) => {
             </View>
           ) : null}
         </View>
+
         {lablelList.length > 0 ? (
           <View style={styles.labelWrap}>
             {lablelList.map((label, index) => (
@@ -73,11 +73,11 @@ const BaseRecommendAccount = ({data}) => {
 
         {mediaList.length > 0 ? (
           <View style={styles.imageWrap}>
-            {mediaList.map(item => (
+            {mediaList.map((item, index) => (
               <FastImg
                 source={{uri: item.url}}
-                key={`recommend-account-media-${item.id}`}
-                style={styles.image}
+                key={`recommend-media-${item.id}`}
+                style={{...styles.image, marginRight: index === 2 ? 0 : 4}}
                 mode="cover"
               />
             ))}
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   wrap: {
     paddingHorizontal: 14,
     paddingTop: RFValue(14),
-    paddingBottom: RFValue(11),
+    paddingBottom: RFValue(15),
     flexDirection: 'row',
     backgroundColor: '#fff',
   },
@@ -150,18 +150,17 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    color: '#3d3d3d',
-    fontWeight: '300',
+    color: '#aaa',
   },
   labelLine: {
-    width: StyleSheet.hairlineWidth,
+    width: 1,
     height: 12,
     marginHorizontal: 5,
-    backgroundColor: '#3d3d3d',
+    backgroundColor: '#aaa',
   },
   intro: {
     fontSize: 12,
-    color: '#3d3d3d',
+    color: '#aaa',
     marginTop: 10,
   },
   imageWrap: {
@@ -171,7 +170,6 @@ const styles = StyleSheet.create({
   image: {
     width: imageWidth,
     height: imageWidth,
-    marginRight: 4,
   },
   btn: {
     width: 54,
