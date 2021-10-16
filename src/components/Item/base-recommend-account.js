@@ -39,7 +39,7 @@ const BaseRecommendAccount = ({data}) => {
     <View style={styles.wrap}>
       <View style={styles.avatorWrap}>
         <Avator size={VWValue(45)} account={data} />
-        {!online ? <IconFont name="zaixian" size={12} style={styles.online} /> : null}
+        {online ? <IconFont name="zaixian" size={12} style={styles.online} /> : null}
       </View>
       <Pressable style={styles.accountInfo} onPress={goAccountDetail}>
         <View style={styles.accountWrap}>
