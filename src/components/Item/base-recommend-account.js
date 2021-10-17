@@ -8,7 +8,7 @@ import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getChatGroupsDetail} from '@/api/chat_api';
 
 const {width} = Dimensions.get('window');
-const imageWidth = (width - 14 * 2 - VWValue(45) - 12 - 4 * 2) / 3;
+const imageWidth = (width - 14 * 2 - VWValue(55) - 12 - 4 * 2) / 3;
 
 const BaseRecommendAccount = ({data}) => {
   const navigation = useNavigation();
@@ -30,7 +30,7 @@ const BaseRecommendAccount = ({data}) => {
   };
 
   const lablelList = label_list.slice(0, 3);
-  const mediaList = media.slice(0, 2);
+  const mediaList = media.slice(0, 3);
 
   const genderStyle = {backgroundColor: gender === 'man' ? '#b7f8ff' : '#fed9e6'};
   const genderTextColor = {color: gender === 'man' ? '#25c6d8' : '#ff6383'};
@@ -38,12 +38,14 @@ const BaseRecommendAccount = ({data}) => {
   return (
     <View style={styles.wrap}>
       <View style={styles.avatorWrap}>
-        <Avator size={VWValue(45)} account={data} />
+        <Avator size={VWValue(55)} account={data} />
         {online ? <IconFont name="zaixian" size={12} style={styles.online} /> : null}
       </View>
       <Pressable style={styles.accountInfo} onPress={goAccountDetail}>
         <View style={styles.accountWrap}>
-          <Text style={styles.nickname}>{nickname}</Text>
+          <Text style={styles.nickname}>
+            {nickname.length > 7 ? `${nickname.substr(0, 7)}...` : nickname}
+          </Text>
           <View style={[styles.gender, genderStyle]}>
             {gender ? <IconFont name={`${gender}-icon`} size={9} style={{marginRight: 2}} /> : null}
             <Text style={[genderTextColor, {fontSize: 9}]}>{age}</Text>
@@ -104,8 +106,8 @@ const styles = StyleSheet.create({
   },
   avatorWrap: {
     position: 'relative',
-    width: VWValue(45),
-    height: VWValue(45),
+    width: VWValue(55),
+    height: VWValue(55),
   },
   online: {
     position: 'absolute',
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 5,
+    marginRight: 60,
   },
   nickname: {
     fontSize: 15,
@@ -165,7 +168,7 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: VWValue(12),
   },
   image: {
     width: imageWidth,

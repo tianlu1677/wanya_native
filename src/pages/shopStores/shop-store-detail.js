@@ -107,7 +107,7 @@ const RenderHeader = props => {
           <FastImg source={{uri: detail.cover_url}} style={styles.cover_url} />
         </Pressable>
 
-        {!detail.account ? (
+        {detail.account ? (
           <View style={styles.headerAccount}>
             <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
             <View style={styles.accountContent}>
@@ -131,7 +131,9 @@ const RenderHeader = props => {
         )}
 
         <View style={styles.nameContent}>
-          <Text style={styles.name}>{detail.name}</Text>
+          <Text style={styles.name} numberOfLines={1}>
+            {detail.name}
+          </Text>
           <Text style={styles.count}>
             {detail.publish_topics_count + detail.publish_articles_count}
             篇帖子 · {detail.join_accounts_count}位顽友收藏
@@ -321,6 +323,7 @@ const styles = StyleSheet.create({
   nameContent: {
     justifyContent: 'space-between',
     marginLeft: 12,
+    flex: 1,
   },
   name: {
     fontSize: RFValue(16),
