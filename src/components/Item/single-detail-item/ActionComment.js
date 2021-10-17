@@ -7,6 +7,7 @@ import {IsIos, BOTTOM_HEIGHT} from '@/utils/navbar';
 import {dispatchTopicDetail, dispatchArticleDetail, dispatchShareItem} from '@/redux/actions';
 import {createAction, cancelAction} from '@/api/action_api';
 import * as action from '@/redux/constants';
+import Helper from "@/utils/helper"
 
 const ActionComment = props => {
   const navigation = useNavigation();
@@ -90,6 +91,7 @@ const ActionComment = props => {
               type: 'praise',
             });
           } else {
+            Helper.impactLight();
             await createAction({
               target_id: props.detail.id,
               target_type: props.type,

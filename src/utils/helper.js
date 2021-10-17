@@ -3,6 +3,7 @@ import Clipboard from '@react-native-community/clipboard';
 
 import dayjs from 'dayjs';
 import {agentTrackEvents} from '@/api/settings_api';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 export default class Helper {
   static async setData(name, value) {
@@ -56,6 +57,15 @@ export default class Helper {
     const res = await AsyncStorage.multiGet(data);
     return res;
   }
+
+  static impactLight = () => {
+    const options = {
+      enableVibrateFallback: true,
+      ignoreAndroidSystemSettings: false,
+    };
+
+    ReactNativeHapticFeedback.trigger('impactLight', options);
+  };
 
   // 获取粘贴板信息
   static setClipboard(content) {

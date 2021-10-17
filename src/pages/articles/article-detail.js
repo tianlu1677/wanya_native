@@ -60,6 +60,7 @@ const ArticleDetail = ({navigation, route}) => {
 
   const loadData = async () => {
     const res = await getArticle(articleId);
+    console.log('res', res)
     setDetail(res.data.article);
     createAction({target_id: articleId, type: 'view', target_type: 'Article'});
     dispatch(dispatchArticleDetail(res.data.article));

@@ -7,6 +7,7 @@ import {dispatchShareItem} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import {cancelAction, createAction} from '@/api/action_api';
+import Helper from "@/utils/helper"
 
 const hitSlop = {left: 10, right: 10, top: 10, bottom: 10};
 
@@ -44,7 +45,8 @@ const CommentBottom = props => {
     const count = praiseCount + (praise === true ? -1 : 1);
     if (!praise) {
       setAn(zoomOut);
-      Vibration.vibrate();
+      // Vibration.vibrate();
+      Helper.impactLight();
     } else {
       setAn('');
     }

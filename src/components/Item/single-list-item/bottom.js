@@ -6,6 +6,7 @@ import IconFont from '@/iconfont';
 import Toast from '@/components/Toast';
 import {dispatchShareItem} from '@/redux/actions';
 import {cancelAction, createAction} from '@/api/action_api';
+import Helper from "@/utils/helper"
 
 export const Bottom = props => {
   const {data} = props;
@@ -34,7 +35,8 @@ export const Bottom = props => {
     const count = praiseCount + (praise === true ? -1 : 1);
     if (!praise) {
       setAn(zoomOut);
-      Vibration.vibrate();
+      Helper.impactLight();
+      // Vibration.vibrate();
     } else {
       setAn('');
     }

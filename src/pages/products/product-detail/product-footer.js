@@ -5,6 +5,7 @@ import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {createAction, cancelAction} from '@/api/action_api';
+import Helper from '@/utils/helper';
 
 const ProductFooter = props => {
   const dispatch = useDispatch();
@@ -16,6 +17,9 @@ const ProductFooter = props => {
   const handleLike = async () => {
     const params = {target_id: detail.id, target_type: 'Product', type: 'praise'};
     praise ? await cancelAction(params) : await createAction(params);
+    if (!praise) {
+      Helper.impactLight();
+    }
     setPraise(!praise);
   };
 
