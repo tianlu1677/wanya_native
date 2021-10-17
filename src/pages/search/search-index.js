@@ -135,8 +135,8 @@ const SearchIndex = ({navigation, route}) => {
     );
 
   const onChangeText = text => {
-    setRequest({api: searchApi, params: {name: text, type: currentKey}});
     setSearchKey(text);
+    setRequest({api: searchApi, params: {name: text, type: currentKey}});
   };
 
   const onChangeKey = key => {
