@@ -40,6 +40,9 @@ const ShopBrandList = props => {
       numColumns={3}
       columnWrapperStyle={{paddingHorizontal: 14}}
       style={styles.wrapper}
+      settings={{
+        showsVerticalScrollIndicator: false,
+      }}
     />
   );
 };

@@ -139,7 +139,7 @@ export const Header = props => {
               <Text style={hstyles.timeText}>{published_at_text}</Text>
               <LocationBar space={space} location={location} />
               {distance && distance > 0 && (
-                <Text style={hstyles.spaceText}>· ${ScaleDistance(distance)}</Text>
+                <Text style={hstyles.spaceText}>· {ScaleDistance(distance)}</Text>
               )}
             </View>
           </Pressable>

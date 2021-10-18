@@ -130,7 +130,6 @@ const NearByListPost = () => {
 
   const loadData = async (page = 1, params) => {
     if (page === 1) {
-
     }
     setLoading(true);
     const res = await getNearbyPosts({page, ...params});
