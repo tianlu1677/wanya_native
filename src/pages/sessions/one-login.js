@@ -1,5 +1,14 @@
 import React, {Component, useState, useEffect, useLayoutEffect, useCallback} from 'react';
-import {StyleSheet, AlertIOS, Button, StatusBar, Platform, View, ImageBackground} from 'react-native';
+import {
+  StyleSheet,
+  AlertIOS,
+  Button,
+  StatusBar,
+  Platform,
+  Pressable,
+  View,
+  ImageBackground,
+} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {jverifyPhone} from '@/api/phone_sign_api';
@@ -13,13 +22,12 @@ import {debounce, throttle} from 'lodash';
 
 let tgophonetimeout = '';
 
-let toPhoneListen = []
+let toPhoneListen = [];
 
 const OneLogin = ({navigation, route}) => {
   const dispatch = useDispatch();
 
-
-
+  this.loginCode = 0;
   //一键登录页面自定义配置，需要在调用login之前设置
   const customUIWithConfigiOS = {
     logoHidden: true,
@@ -28,7 +36,7 @@ const OneLogin = ({navigation, route}) => {
     showWindow: false,
     navReturnHidden: false,
     navHidden: true,
-    backgroundImage: (SCREEN_HEIGHT > 800 ? 'bg1.png' : 'bg.png'),
+    backgroundImage: SCREEN_HEIGHT > 800 ? 'bg1.png' : 'bg.png',
     //logo
     // logoImage: 'umcsdk_mobile_logo',
     // logoConstraints: [0, -200, 60, 60],
@@ -99,10 +107,10 @@ const OneLogin = ({navigation, route}) => {
     numberColor: -67333, //手机号码字体颜色
     //为保障显示效果，请同时设置x,y,w,h
     // 0, 40, 200, 18
-    numberX: 0,                            //号码栏相对于屏幕左边x轴偏移
-    numberY: 100,                           //号码栏相对于标题栏下边缘y偏移
-    numberW: 200,                           //号码栏宽度
-    numberH: 18,                            //号码栏高度
+    numberX: 0, //号码栏相对于屏幕左边x轴偏移
+    numberY: 100, //号码栏相对于标题栏下边缘y偏移
+    numberW: 200, //号码栏宽度
+    numberH: 18, //号码栏高度
 
     sloganHidden: true, //slogan是否隐藏
     sloganTextSize: 16, //slogan字体大小
@@ -123,7 +131,7 @@ const OneLogin = ({navigation, route}) => {
     //为保障显示效果，请同时设置x,y,w,h
     // 0, 80, 265, 45
     //0, 94, 290, 50
-    loginBtnOffsetX: 18,                          //登录按钮相对于屏幕左边x轴偏移
+    loginBtnOffsetX: 18, //登录按钮相对于屏幕左边x轴偏移
     loginBtnOffsetY: 125, //登录按钮相对于标题栏下边缘y偏移
     loginBtnWidth: 88, //登录按钮宽度
     loginBtnHeight: 15, //180/(1062/70),                          //登录按钮高度
@@ -156,7 +164,10 @@ const OneLogin = ({navigation, route}) => {
   };
 
   const customViewParams = [
-    {customViewName: 'jverify_bottom_view', customViewPoint: [0, SCREEN_HEIGHT/1.5, SCREEN_WIDTH, 150]},
+    {
+      customViewName: 'jverify_bottom_view',
+      customViewPoint: [0, SCREEN_HEIGHT / 1.5, SCREEN_WIDTH, 150],
+    },
   ];
   const customViewParamsAdnroid = [
     {customViewName: 'jverify_bottom_view_android', customViewPoint: [0, 450, SCREEN_WIDTH, 150]},
@@ -171,8 +182,9 @@ const OneLogin = ({navigation, route}) => {
 
   this.listener = JVerification.addLoginEventListener(async result => {
     console.log('LoginListener:' + JSON.stringify(result));
+    this.loginCode = result.code;
+    throttle_phone.cancel();
     jump(result);
-    // }, 800);
   });
 
   const jump = async result => {
@@ -204,13 +216,14 @@ const OneLogin = ({navigation, route}) => {
       Toast.hide();
     } else if (code === 2) {
       // console.log('tgophonetimeout', toPhoneListen);
-      toPhoneListen.forEach((t) => t && clearTimeout(t));
+      toPhoneListen.forEach(t => t && clearTimeout(t));
     } else if (code >= 2000 && code <= 2016) {
       goToPhone();
     }
   };
 
   const goToPhone = (type = 'nav') => {
+    console.log('go phone by ', type);
     JVerification.dismissLoginPage();
     if (type === 'nav') {
       navigation.navigate('LoginPhoneCode');
@@ -219,13 +232,21 @@ const OneLogin = ({navigation, route}) => {
     }
   };
 
+  const throttle_phone = throttle(
+    () => {
+      console.log('checking...');
+      if (this.loginCode === 0) {
+        goToPhone('nav');
+      }
+    },
+    8000,
+    {leading: false, trailing: true}
+  );
+
   const checkJverify = () => {
     if (Platform.OS === 'android') {
-      console.log('android');
       JVerification.addLoginCustomConfig(customUIWithConfigAndroid, customViewParamsAdnroid);
     }
-
-    console.log('loadding...')
     try {
       JVerification.checkLoginEnable(result => {
         console.log('checkLoginEnable:' + JSON.stringify(result));
@@ -234,7 +255,8 @@ const OneLogin = ({navigation, route}) => {
           setTimeout(() => {
             console.log('start page');
             JVerification.login(false);
-          }, 800);
+            throttle_phone();
+          }, 1200);
         } else {
           goToPhone('reset');
         }
@@ -244,17 +266,11 @@ const OneLogin = ({navigation, route}) => {
       goToPhone();
     }
   };
-
+  // 这里不要加 [] ，需要每次请求此页面
   useFocusEffect(() => {
-    JVerification.preLogin(5000, result => {
-      console.log('preLogin:' + JSON.stringify(result));
-    })
-    // console.log('fouce')
     checkJverify();
-    return () => {
-      // JVerification.dismissLoginPage();
-    };
-  }, []);
+    return () => {};
+  });
 
   return (
     <View style={{backgroundColor: 'black', width: '100%', height: '100%'}}>

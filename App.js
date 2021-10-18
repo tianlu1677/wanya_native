@@ -54,6 +54,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    this.initJverify();
     await init({
       ios: '6da6626cf6588fb6e3052deff1e8d4e9',
       android: '648f6e4ce8f5b83b30e2eabcac060eee',
@@ -81,8 +82,6 @@ class App extends Component {
     this.checkPermission();
     this.loadNetworkInfo();
     this.jpush_notice();
-    this.initJverify();
-
     // this.loginAdmin();
     // CodePush.disallowRestart(); // 禁止重启
     // checkHotUpdate(CodePush); // 开始检查更新
