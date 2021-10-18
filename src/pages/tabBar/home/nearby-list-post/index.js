@@ -158,7 +158,8 @@ const NearByListPost = () => {
 
   useEffect(() => {
     if (openAddress) {
-      loadData(1);
+      const {latitude, longitude} = location;
+      loadData(1, {latitude, longitude});
     }
   }, [openAddress]);
 
