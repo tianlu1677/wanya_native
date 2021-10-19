@@ -25,7 +25,7 @@ const AccountContent = props => {
   const {navigation, uploadAvatar} = props;
   const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [cityVisible, setCityVisible] = useState(false);
-  const defaultCity = (currentAccount.city && currentAccount.city.split(',')) || [];
+  const defaultCity = [currentAccount.province.toString(), currentAccount.city.toString()] || [];
   const defaultBirthday = currentAccount.birthday ? new Date(currentAccount.birthday) : new Date();
 
   const onImagePicker = type => {
@@ -79,7 +79,8 @@ const AccountContent = props => {
 
   const onCityPickerConfirm = async (names, codes) => {
     onCityPickerCancel();
-    await syncAccountInfo({id: currentAccount.id, city: names.join(',')});
+    console.log('name', names)
+    await syncAccountInfo({id: currentAccount.id, province: names[0], city: names[1]});
     dispatch(dispatchCurrentAccount());
   };
 
@@ -202,7 +203,7 @@ const AccountContent = props => {
 
       <Pressable style={styles.itemWrap} onPress={() => goPages('city')}>
         <Text style={styles.itemTitle}>所在地</Text>
-        <Text style={styles.itemContent}>{currentAccount.city.replace(',', ' ')}</Text>
+        <Text style={styles.itemContent}>{currentAccount.province} {currentAccount.city}</Text>
         <ForwardRight />
       </Pressable>
 
