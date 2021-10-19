@@ -25,7 +25,7 @@ const RenderLink = props => {
 
   return (
     <>
-      <StatusBar barStyle={'light-content'} translucent={false} backgroundColor={'black'} />
+      <StatusBar barStyle={'dark-content'} translucent={false} backgroundColor={'black'} />
       <PublishAccount data={detail} showFollow={currentAccount.id !== detail.account_id} />
       <RelatedComponent data={detail} />
       <Pressable onPress={onGoDetail}>
