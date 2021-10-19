@@ -11,12 +11,15 @@ import CurrentAvator from '@/pages/tabBar/current-avator';
 import {BadgeMessage} from '@/components/NodeComponents';
 import {Cstyles, BoothHeight} from '@/pages/tabBar/style';
 import {dispatchShareItem} from '@/redux/actions';
+import {IsIos} from '@/utils/navbar';
 
 const Message = ({count = 0}) => {
-  const right =
+  let right =
     count >= 1 && count < 10 ? -VWValue(9) : count > 99 ? -VWValue(12) * 1.75 : -VWValue(11) * 1.45;
-
-  return <BadgeMessage size={'middle'} value={count} containerStyle={[styles.badge, {right}]} />;
+  right = IsIos ? right : right / 2.0;
+  return (
+    <BadgeMessage size={'middle'} value={count} containerStyle={[styles.badge, {right: right}]} />
+  );
 };
 
 const ChatGroups = props => {

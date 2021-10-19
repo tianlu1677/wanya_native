@@ -86,7 +86,7 @@ const TabViewIndex = props => {
         swipeEnabled={props.swipeEnabled || true}
         renderLazyPlaceholder={() => (
           <View style={{flex: 1}}>
-            <Text>Loading</Text>
+            <Text style={{textAlign: 'center'}}>Loading</Text>
           </View>
         )}
         // lazyPreloadDistance={props.lazyPreloadDistance || 10}
