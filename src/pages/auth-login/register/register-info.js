@@ -8,10 +8,11 @@ import {
   Platform,
   StatusBar,
   Keyboard,
+  Dimensions,
 } from 'react-native';
 import {check, request, RESULTS, PERMISSIONS} from 'react-native-permissions';
 import {useSelector, useDispatch} from 'react-redux';
-import {dispatchUpdateSocialAccount} from '@/redux/actions';
+import {dispatchCurrentAccount, dispatchUpdateSocialAccount} from '@/redux/actions';
 import * as action from '@/redux/constants';
 import MediasPicker from '@/components/MediasPicker';
 import IconFont from '@/iconfont';
@@ -20,6 +21,9 @@ import {RFValue, VWValue} from '@/utils/response-fontsize';
 import {getLabelList} from '@/api/settings_api';
 import {syncAccountInfo} from '@/api/account_api';
 import cStyles from '../style';
+import Toast from '@/components/Toast';
+import {openSettings} from 'react-native-permissions';
+const {width: screenW} = Dimensions.get('window');
 
 const RegisterInfo = props => {
   const dispatch = useDispatch();
@@ -46,7 +50,7 @@ const RegisterInfo = props => {
     }
 
     if (status === RESULTS.BLOCKED) {
-      request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+      request(imagePermission).then(result => {
         console.log('result', result);
       });
       // setPermissionModal(true);
@@ -69,17 +73,35 @@ const RegisterInfo = props => {
   const onImagePicker = async () => {
     const hasPermission = await checkPermission();
     if (!hasPermission) {
+      Toast.showError('请授权手机相机以及存储空间权限，方便更新手机头像');
+      setTimeout(() => {
+        openSettings().catch(() => console.warn('cannot open settings'));
+      }, 1000);
       return;
     }
-
+    Toast.showError('上传中...');
     removeAllPhoto();
-    imagePick({imageCount: 1}, async (err, res) => {
+
+    const options = {
+      imageCount: 1,
+      isCrop: true,
+      CropW: screenW * 1,
+      CropH: screenW,
+      isCamera: true,
+    };
+    imagePick(options, async (err, res) => {
       if (err) {
+        if (err !== '取消') {
+          Toast.showError(JSON.stringify(err));
+        }
         return;
       }
       setImageSource(res[0]);
       updateAvatar(res[0]);
+      Toast.showError('已完成', {duration: 500});
+      Toast.hide();
     });
+    Toast.hide();
   };
 
   const handleNextClick = async () => {
@@ -118,7 +140,11 @@ const RegisterInfo = props => {
       <Text style={cStyles.infoText}>完善个人信息，让大家更好地认识你</Text>
       {imageSource ? (
         <Pressable onPress={onImagePicker}>
-          <FastImg source={{uri: imageSource.uri}} style={styles.avator} mode="cover" />
+          <FastImg
+            source={{uri: imageSource.uri || imageSource.url}}
+            style={styles.avator}
+            mode="cover"
+          />
         </Pressable>
       ) : (
         <Pressable style={[styles.avator, styles.avatorWrap]} onPress={onImagePicker}>

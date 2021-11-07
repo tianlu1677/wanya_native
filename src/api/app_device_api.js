@@ -4,6 +4,9 @@ import {Platform} from 'react-native';
 
 // 保存用户的devicetoken列表
 export async function syncDeviceToken(data = {platform: '', register_token: ''}) {
+  if(__DEV__) {
+    return 'on dev!'
+  }
   const register_token = await Helper.getData('registerId');
   if (!register_token) {
     return 'no register_token';

@@ -35,7 +35,7 @@ export const nodeAction = node;
 // 未完成认证用户
 export const dispatchUpdateSocialAccount = socialToken => async dispatch => {
   const res = await getLoginBaseInfo({token: socialToken});
-  console.log('主动获取AccountInfo res: ', res);
+  // console.log('主动获取AccountInfo res: ', res);
   dispatch({type: UPDATE_SOCIAL_TOKEN, socialToken: socialToken});
   dispatch({type: UPDATE_SOCIAL_ACCOUNT, socialAccount: res.account});
 
