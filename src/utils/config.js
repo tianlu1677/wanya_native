@@ -14,7 +14,7 @@ export const WANYA_VERSION = '0.0.33';
 // sentry 错误收集
 export const BaseDevSentryURL = 'https://4a1adfee8b7e49dc91f3a0de7dfcde82@sentry.meirixinxue.com/5';
 const BaseProSentryIOSURL = 'https://51fe408bc69c413989f6c84304eb13db@sentry.meirixinxue.com/6';
-const BaseProSentryAndroidURL = 'http://a15165bfa1514bcfbfc94e2ad5b9b956@sentry.meirixinxue.com/7';
+const BaseProSentryAndroidURL = 'https://a15165bfa1514bcfbfc94e2ad5b9b956@sentry.meirixinxue.com/7';
 const BaseProSentryURL = Platform.OS === 'ios' ? BaseProSentryIOSURL : BaseProSentryAndroidURL;
 export const BaseSentryURL = __DEV__ ? BaseDevSentryURL : BaseProSentryURL;
 
