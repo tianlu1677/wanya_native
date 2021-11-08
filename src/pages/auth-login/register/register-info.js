@@ -23,6 +23,7 @@ import {syncAccountInfo} from '@/api/account_api';
 import cStyles from '../style';
 import Toast from '@/components/Toast';
 import {openSettings} from 'react-native-permissions';
+
 const {width: screenW} = Dimensions.get('window');
 
 const RegisterInfo = props => {
@@ -71,15 +72,17 @@ const RegisterInfo = props => {
   };
 
   const onImagePicker = async () => {
-    const hasPermission = await checkPermission();
-    if (!hasPermission) {
-      Toast.showError('请授权手机相机以及存储空间权限，方便更新手机头像');
-      setTimeout(() => {
-        openSettings().catch(() => console.warn('cannot open settings'));
-      }, 1000);
-      return;
+    if (Platform.OS === 'android') {
+      const hasPermission = await checkPermission();
+      if (!hasPermission) {
+        Toast.showError('请授权手机相机以及存储空间权限，方便更新手机头像');
+        setTimeout(() => {
+          openSettings().catch(() => console.warn('cannot open settings'));
+        }, 1000);
+        return;
+      }
     }
-    Toast.showError('上传中...');
+
     removeAllPhoto();
 
     const options = {
