@@ -1,262 +1,272 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
 import Loading from '@/components/Loading';
-import {PlayScore, Avator, JoinActivity, BottomModal, TopBack} from '@/components/NodeComponents';
-import Toast from '@/components/Toast';
-import IconFont from '@/iconfont';
-import {RFValue} from '@/utils/response-fontsize';
-import {dispatchPreviewImage} from '@/redux/actions';
-import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
-import * as action from '@/redux/constants';
 import FastImg from '@/components/FastImg';
-import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import SingleList from '@/components/List/single-list';
-import DoubleList from '@/components/List/double-list';
-import StickTopHeader from '@/components/StickTopHeader';
-import {dispatchShareItem} from '@/redux/actions';
+import IconFont from '@/iconfont';
+import {
+  PlayScore,
+  RateScore,
+  Avator,
+  JoinAccounts,
+  JoinActivity,
+  BottomModal,
+  TopBack,
+} from '@/components/NodeComponents';
+import {RFValue} from '@/utils/response-fontsize';
+
+import {getSpaceDetail, getSpacePosts} from '@/api/space_api';
+
+import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
 
 const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 550) / 750);
 
+const coverImageHeight = (SCREEN_WIDTH * 390) / 690;
 const SpaceDetail = ({navigation, route}) => {
-  const home = useSelector(state => state.home);
-  const {spaceDetail} = useSelector(state => state.space);
-  const dispatch = useDispatch();
-  const [spaceId] = useState(route.params.spaceId);
+  const {spaceId} = route.params;
   const [detail, setDetail] = useState(null);
-  const [currentKey, setCurrentKey] = useState('lasted');
-  const [showModal, setShowModal] = useState(false);
 
   const loadData = async () => {
     const res = await getSpaceDetail(spaceId);
     setDetail(res.data.space);
-    dispatch({type: action.UPDATE_SPACE_DETAIL, value: res.data.space});
-    navigation.setOptions({
-      title: res.data.space.name,
-    });
   };
 
-  const LastedList = () => (
-    <SingleList
-      request={{api: getSpacePosts, params: {id: route.params.spaceId, type: 'published_order'}}}
-    />
-  );
-
-  const HotList = () => (
-    <DoubleList
-      request={{api: getSpacePosts, params: {id: route.params.spaceId, type: 'hot_order'}}}
-    />
-  );
-
-  const goAccountDetail = () => {
-    navigation.navigate('AccountDetail', {accountId: detail.account.id});
-  };
-
-  const onPlay = () => {
-    Toast.show('顽力值代表你的影响力 \n顽力值越多收获就越多', {duration: 1000});
-  };
-
-  const onPreview = () => {
-    const data = {
-      index: 0,
-      visible: true,
-      images: detail.medias.map(v => {
-        return {url: v};
-      }),
-    };
-    dispatch(dispatchPreviewImage(data));
-  };
-
-  const joinNewTopic = () => {
-    const topics = {...home.savetopic, space: {id: detail.id, name: detail.name}};
-    dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
-    navigation.navigate('NewTopic');
-  };
-
-  const handleOnShare = () => {
-    const shareContent = {item_type: 'Space', item_id: detail.id, visible: true};
-    dispatch(dispatchShareItem(shareContent));
-  };
-
-  useEffect(() => {
-    setDetail(spaceDetail);
-  }, [spaceDetail]);
+  console.log(detail);
 
   useEffect(() => {
     loadData();
-    return () => {
-      dispatch({type: action.UPDATE_SPACE_DETAIL, value: null});
-    };
   }, []);
-
-  const RenderHeader = () => {
-    return (
-      <>
-        <View style={{height: BarHeight, backgroundColor: 'black'}} />
-        <TopBack top={BarHeight + RFValue(12)} handleShare={handleOnShare} />
-        <Pressable style={styles.header} onPress={onPreview}>
-          <FastImg source={{uri: detail.cover_url}} style={styles.imageCover} />
-          <View style={styles.coverOpacity} />
-          <View style={styles.info}>
-            <View>
-              <Text style={[styles.name, {fontSize: detail.name.length > 10 ? 16 : 25}]}>
-                {detail.name}
-              </Text>
-              <Text style={styles.intro} onPress={() => setShowModal(true)}>
-                {detail.intro
-                  ? detail.intro.length > 20
-                    ? `${detail.intro.substring(0, 20)}...`
-                    : detail.intro
-                  : '暂无简介'}{' '}
-                | {detail.medias.length}张图片
-              </Text>
-            </View>
-            <Pressable style={styles.creatorWrap} onPress={goAccountDetail}>
-              <Avator account={detail.account} size={30} handleClick={goAccountDetail} />
-            </Pressable>
-          </View>
-          <View style={styles.address}>
-            <IconFont name="space-point" size={15} color={'#fff'} />
-            <Text style={styles.addressText}>{detail.address}</Text>
-          </View>
-          <View style={styles.descWrap}>
-            <View style={styles.tagsWrap}>
-              {detail.tag_list.map((v, index) => (
-                <Text key={index} style={styles.tags}>
-                  {v}
-                </Text>
-              ))}
-            </View>
-            <View style={{marginLeft: 35}}>
-              <PlayScore score={detail.play_score} onPress={onPlay} />
-            </View>
-          </View>
-        </Pressable>
-      </>
-    );
-  };
 
   return detail ? (
     <View style={styles.wrapper}>
-      <CollapsibleHeader
-        tabBarHeight={BarHeight}
-        headerHeight={HEADER_HEIGHT + BarHeight}
-        currentKey={currentKey}
-        onKeyChange={key => setCurrentKey(key)}
-        renderTopHeader={<StickTopHeader title={detail.name} />}
-        renderHeader={<RenderHeader />}
-        tabData={[
-          {
-            key: 'lasted',
-            title: '最新',
-            component: LastedList,
-          },
-          {
-            key: 'hot',
-            title: '热门',
-            component: HotList,
-          },
-        ]}
-      />
-
-      <BottomModal
-        visible={showModal}
-        cancleClick={() => setShowModal(false)}
-        title={detail.name}
-        content={detail.intro}
-      />
-      <JoinActivity type={'node'} text={'立即打卡'} handleClick={joinNewTopic} />
+      <View style={styles.image}>
+        <FastImg source={{uri: detail.cover_url}} style={styles.coverImage} />
+        <View style={styles.scoreOpacity}>
+          <PlayScore score={detail.play_score} imageStyle={{width: 12, height: 13}} text="顽力" />
+        </View>
+      </View>
+      <Text style={styles.name}>{detail.name}</Text>
+      <View style={styles.info}>
+        <RateScore score={2.5} size={14} />
+        <Text style={styles.infoCount}>{detail.publish_rate_topics_count}条评价</Text>
+        <Text style={styles.infoCount}>{detail.publish_topics_count}条动态</Text>
+      </View>
+      <View style={styles.info}>
+        <Avator account={detail.account} size={20} />
+        <Text style={styles.accountText}>{detail.account.nickname} 创建</Text>
+      </View>
+      {detail.tag_list.length > 0 ? (
+        <View style={[styles.info, styles.tagsInfo]}>
+          {detail.tag_list.map((tag, index) => (
+            <Text style={styles.tag} key={index}>
+              {tag}
+            </Text>
+          ))}
+        </View>
+      ) : null}
+      <View style={[styles.info, styles.addressInfo]}>
+        <Text style={styles.addressText}>{detail.address}</Text>
+        <View style={styles.addressRight}>
+          <View style={styles.addressIconWrap}>
+            <IconFont name="ditu" size={16} />
+            <Text style={styles.addressIconText}>地图</Text>
+          </View>
+          <View style={styles.addressIconWrap}>
+            <IconFont name="dianhua" size={16} />
+            <Text style={styles.addressIconText}>电话</Text>
+          </View>
+        </View>
+      </View>
+      <View style={[styles.info, styles.joinAccountsInfo]}>
+        {/* {detail.recent_join_accounts.length > 0 ? (
+          <JoinAccounts accounts={detail.recent_join_accounts} size={16} style={{marginRight: 4}} />
+        ) : null}
+        <Text style={styles.accountText}>{detail.join_accounts_count}个顽友已收藏</Text> */}
+      </View>
+      <View style={[styles.intro]}>
+        <View style={styles.introTitleInfo}>
+          <Text style={styles.introTitle}>简介</Text>
+          <Text style={styles.introTips}>查看全部</Text>
+        </View>
+        <View style={styles.introImageInfo}>
+          {detail.medias.map((item, index) => {
+            return (
+              <View style={styles.introImageWrapper}>
+                <FastImg source={{uri: detail.cover_url}} style={styles.introImage} />
+                {index === detail.medias.length - 1 ? (
+                  <Text style={styles.introImageOpacity}>{detail.medias.length}张图片</Text>
+                ) : null}
+              </View>
+            );
+          })}
+          <Text style={styles.introText} numberOfLines={2}>
+            {detail.intro}
+          </Text>
+        </View>
+      </View>
+      <View style={[styles.intro]}>
+        <View style={styles.introTitleInfo}>
+          <Text style={styles.introTitle}>评价</Text>
+          <Text style={styles.introTips}>查看全部</Text>
+        </View>
+      </View>
+      <View style={[styles.btnWrap]}>
+        <View style={[styles.btn, styles.punchBtn]}>
+          <IconFont name="takephoto" size={22} color="white" />
+          <Text style={styles.btnText}>去打卡</Text>
+        </View>
+        <View style={[styles.btn, styles.commentBtn]}>
+          <IconFont name="ditu" size={22} color="white" />
+          <Text style={styles.btnText}>写评价</Text>
+        </View>
+      </View>
     </View>
   ) : (
     <Loading />
   );
 };
 
-const position = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
+const opacity = {
+  paddingVertical: 5,
+  paddingHorizontal: 10,
+  position: 'absolute',
+  bottom: 14,
+  right: 14,
+  borderRadius: 15,
+  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  overflow: 'hidden',
+  color: '#fff',
+  fontSize: 11,
+};
+
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingHorizontal: 14,
   },
-  header: {
-    height: HEADER_HEIGHT,
-    paddingTop: RFValue(40),
-    paddingLeft: 14,
-    paddingRight: 24,
-    position: 'relative',
+  coverImage: {
+    width: SCREEN_WIDTH - 28,
+    height: ((SCREEN_WIDTH - 28) * 390) / 690,
   },
-  imageCover: {
-    zIndex: -1,
-    ...position,
+  scoreOpacity: {
+    ...opacity,
   },
-  coverOpacity: {
-    ...position,
-    backgroundColor: '#000',
-    opacity: 0.4,
+  name: {
+    fontSize: 22,
+    fontWeight: '600',
+    marginTop: 14,
   },
   info: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    marginTop: RFValue(10),
   },
-  name: {
-    fontSize: 25,
-    color: '#fff',
-    fontWeight: '500',
+  infoCount: {
+    marginLeft: 9,
+    fontSize: 13,
   },
-  intro: {
-    fontSize: 11,
-    color: '#fff',
-    marginTop: RFValue(8),
-  },
-  creatorWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  creator: {
+  accountText: {
+    fontSize: 12,
     marginLeft: 5,
   },
-  creatorName: {
-    color: '#fff',
-    fontSize: 11,
+  tagsInfo: {
+    marginBottom: -10,
   },
-  creatorDesc: {
-    color: '#fff',
-    fontSize: 8,
-    marginTop: 5,
+  tag: {
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    fontSize: 10,
+    color: '#FF6633',
+    backgroundColor: '#FFF2E7',
+    borderRadius: 3,
+    marginRight: 7,
+    marginBottom: 7,
   },
-  address: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: RFValue(25),
+  addressInfo: {
+    justifyContent: 'space-between',
   },
   addressText: {
-    color: '#fff',
     fontSize: 13,
-    marginLeft: 8,
   },
-  descWrap: {
+  addressRight: {
+    marginLeft: 'auto',
+    flexDirection: 'row',
+  },
+  addressIconWrap: {
+    alignItems: 'center',
+    marginLeft: 30,
+  },
+  addressIconText: {
+    color: '#8B8B8B',
+    fontSize: 10,
+    marginTop: 3,
+  },
+  intro: {},
+  introTitleInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: RFValue(30),
+    alignItems: 'center',
   },
-  tagsWrap: {
+  introTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  introTips: {
+    color: '#AAAAAA',
+    fontSize: 12,
+  },
+  introImageInfo: {
+    marginTop: 16,
+  },
+  introImageWrapper: {
+    position: 'relative',
+  },
+  introImage: {
+    width: 108,
+    height: 108,
+    marginRight: 3,
+  },
+  introImageOpacity: {
+    ...opacity,
+    left: 16,
+    top: 42,
+    width: 75,
+    height: 23,
+    borderRadius: 13,
+  },
+  introText: {
+    lineHeight: RFValue(14),
+    marginTop: RFValue(12),
+  },
+  btnWrap: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  tags: {
-    height: 21,
-    lineHeight: 21,
-    fontSize: 11,
-    textAlign: 'center',
-    backgroundColor: '#fff',
-    opacity: 0.5,
-    paddingLeft: 11,
-    paddingRight: 11,
-    marginRight: 8,
-    marginBottom: 8,
+  btn: {
+    width: (SCREEN_WIDTH - 70) / 2,
+    height: RFValue(40),
+    borderRadius: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+    marginLeft: 13,
+  },
+  punchBtn: {
+    backgroundColor: '#000',
+  },
+  commentBtn: {
+    backgroundColor: '#FF2242',
+    marginLeft: 20,
   },
 });
 

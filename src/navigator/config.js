@@ -192,7 +192,7 @@ const nodeRouter = [
 
 const spaceRouter = [
   {name: 'Space', component: Space},
-  {name: 'SpaceDetail', component: SpaceDetail, options: {title: '', headerShown: false}},
+  {name: 'SpaceDetail', component: SpaceDetail, options: {title: '场地详情'}},
 ];
 
 const theoryRouter = [

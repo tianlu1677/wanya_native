@@ -34,3 +34,4 @@ export const RecommendSearch = RecommendSearchNode;
 export const SelectListHeader = SelectListHeaderNode;
 export const TopBack = TopBackNode;
 export {default as ModalInfo} from './ModalInfo';
+export {default as RateScore} from './RateScore';
