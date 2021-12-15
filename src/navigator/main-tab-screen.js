@@ -42,18 +42,26 @@ const PublishModal = props => {
     onCancel();
   };
 
+  const onRate = () => {
+    navigation.navigate('NewRate');
+    onCancel();
+  };
+
   return (
     <BottomModal
       visible={visible}
       cancleClick={onCancel}
       overlayOpacity={0.2}
-      modalStyle={{height: 270 + BOTTOM_HEIGHT}}
+      modalStyle={{height: 370 + BOTTOM_HEIGHT}}
       contentWrapStyle={styles.contentModal}>
       <Pressable style={imgStyle} onPress={onTopic}>
-        <FastImg source={require('@/assets/images/add-topic.png')} style={imgStyle} />
+        <FastImg source={require('@/assets/create/topic.png')} style={imgStyle} />
       </Pressable>
       <Pressable style={{...imgStyle, marginTop: RFValue(15)}} onPress={onTheory}>
-        <FastImg source={require('@/assets/images/add-theory.png')} style={imgStyle} />
+        <FastImg source={require('@/assets/create/theory.png')} style={imgStyle} />
+      </Pressable>
+      <Pressable style={{...imgStyle, marginTop: RFValue(15)}} onPress={onRate}>
+        <FastImg source={require('@/assets/create/rate.png')} style={imgStyle} />
       </Pressable>
       <Pressable onPress={onCancel} hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
         <IconFont name="close" size={18} color="#fff" style={styles.closeModal} />
@@ -238,7 +246,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   closeModal: {
-    marginTop: RFValue(25),
+    marginTop: RFValue(15),
     paddingBottom: RFValue(30),
   },
   tabText: {

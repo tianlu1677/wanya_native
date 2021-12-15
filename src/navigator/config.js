@@ -25,6 +25,9 @@ import AddLink from '@/pages/topics/add-link';
 import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
+// 评价
+import NewRate from '@/pages/raties/new-rate/index';
+
 // 文章
 import ArticleDetail from '@/pages/articles/article-detail';
 
@@ -158,12 +161,10 @@ const topicRouter = [
     component: AddMentionAccount,
     options: {headerShown: false, herderColor: '#fff'},
   },
-  {
-    name: 'NewTopic',
-    component: NewTopic,
-    options: {...forVerticalIOS},
-  },
+  {name: 'NewTopic', component: NewTopic, options: {...forVerticalIOS}},
 ];
+
+const rateRouter = [{name: 'NewRate', component: NewRate, options: {...forVerticalIOS}}];
 
 const articleRouter = [{name: 'ArticleDetail', component: ArticleDetail, options: {title: ''}}];
 
@@ -321,6 +322,7 @@ const authRouter = [
 export const MainRouters = [
   ...searchRouter,
   ...topicRouter,
+  ...rateRouter,
   ...articleRouter,
   ...theoryRouter,
   ...nodeRouter,
