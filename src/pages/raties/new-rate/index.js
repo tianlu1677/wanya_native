@@ -1,46 +1,39 @@
-import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {View, Text, TextInput, StyleSheet, Pressable, Dimensions, StatusBar} from 'react-native';
-import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
+import {View, Text, TextInput, StyleSheet, Pressable} from 'react-native';
+import {ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {debounce} from 'lodash';
 import {useSelector, useDispatch} from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
-import ImagePicker from 'react-native-image-picker';
-import Video from 'react-native-video';
 import * as action from '@/redux/constants';
-import {dispatchPreviewImage, changeUploadStatus} from '@/redux/actions';
+import {changeUploadStatus} from '@/redux/actions';
 import IconFont from '@/iconfont';
+import Toast from '@/components/Toast';
+import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
-import Toast from '@/components/Toast';
-import GetLocation from '@/components/GetLocation';
-import FastImg from '@/components/FastImg';
-import {getLocation} from '@/api/space_api';
-import {loadLocation} from '@/utils/get-location';
-import PermissionModal, {checkPermission} from '@/utils/setting/photo-permission';
-import PublishRateScore from './publish-rate-score';
 
-const addVideoImage = require('@/assets/images/add-video.png');
-const addPhotoImage = require('@/assets/images/add-photo.png');
-const closeImage = require('@/assets/images/close.png');
-const loadingImage = require('@/assets/images/loading.gif');
-
-const {width: windowWidth} = Dimensions.get('window');
-const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
+import PublishRateScore from './component/publish-rate-score';
+import UploadMedia from './component/upload-media';
 
 const NewTopic = props => {
   const dispatch = useDispatch();
-  const videoRef = useRef('');
-  const {navigation, route} = props;
-  const {currentAccount} = useSelector(state => state.account);
-  const {savetopic, location} = useSelector(state => state.home);
+  const {navigation, uploadVideo, removeAllPhoto} = props;
+  const {
+    home: {savetopic},
+  } = useSelector(state => state);
   const {movement_ids, shop_store_ids, shop_brand_ids, tag_list, product} = savetopic;
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
-  const [linkSource, setLinkSource] = useState(null);
-  const [permissionModal, setPermissionModal] = useState(false); // 显示权限页面
   const [content, setContent] = useState(savetopic.plan_content);
-  const [tagWidth, setTagWidth] = useState(1);
+  const [score, setScore] = useState(0);
+
+  const handleGoHashTag = () => {
+    navigation.navigate('AddHashTag');
+  };
+
+  const handleGoAccount = () => {
+    navigation.navigate('AddMentionAccount', {type: 'add-node'});
+  };
 
   const onChangeContent = text => {
     setContent(text);
@@ -48,125 +41,14 @@ const NewTopic = props => {
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
   };
 
-  const getCurrentLocation = async res => {
-    if (res === false) {
-      // 拒绝权限
-      dispatch({type: action.GET_LOCATION, value: {}});
-      return;
-    }
-
-    if (location) {
-      // loction 缓存
-      navigation.navigate('AddSpace', {type: 'topic'});
-      return;
-    }
-
-    // 获取到权限信息
-    if (res.position && res.position.coords) {
-      const {latitude, longitude} = res.position.coords;
-      const {city} = (await getLocation({latitude, longitude})).data;
-      dispatch({
-        type: action.GET_LOCATION,
-        value: {...location, ...res.position.coords, positionCity: city, chooseCity: city},
-      });
-      navigation.navigate('AddSpace', {type: 'topic'});
-    }
-  };
-
-  const onImagePicker = async () => {
-    const hasPermission = await checkPermission();
-    if (!hasPermission) {
-      setPermissionModal(true);
-      return;
-    }
-
-    props.removeAllPhoto();
-    const options = {imageCount: 9 - imageSource.length, isCamera: false};
-    props.imagePick(options, async (err, res) => {
-      if (err) {
-        return;
-      }
-      const allImage = [...imageSource, ...res];
-      setImageSource([...allImage]);
-      for (let [index, file] of new Map(allImage.map((item, i) => [i, item]))) {
-        if (!file.id) {
-          const result = await props.uploadImage({uploadType: 'multipart', ...file});
-          allImage[index] = result.asset;
-          setImageSource([...allImage]);
-        }
-      }
-    });
-  };
-
-  //TODO 限制描述
-  const onVideoPicker = async () => {
-    const hasPermission = await checkPermission();
-    if (!hasPermission) {
-      return;
-    }
-    props.removeAllPhoto();
-    const systemVersion = parseFloat(DeviceInfo.getSystemVersion());
-    const videoSelectType =
-      Platform.OS === 'ios' && systemVersion < 14 ? 'imagePicker' : 'syanPicker';
-
-    if (videoSelectType === 'syanPicker') {
-      props.videoPick(
-        {
-          MaxSecond: 300,
-          MinSecond: 1,
-          recordVideoSecond: 60,
-          videoCount: 1,
-          allowTakeVideo: false,
-        },
-        async (err, res) => {
-          if (err) {
-            return;
-          }
-          setVideoSource(res);
-        }
-      );
-    }
-
-    // react-native-image-picker
-    if (videoSelectType === 'imagePicker') {
-      ImagePicker.launchImageLibrary(
-        {
-          mediaType: 'video',
-          videoQuality: 'low',
-        },
-        async response => {
-          if (response.didCancel) {
-            return;
-          }
-          console.log({uri: response.origURL});
-          setVideoSource([{uri: response.origURL}]);
-        }
-      );
-    }
-  };
-
-  const deleteMedia = index => {
-    props.removeImage(index);
-    const image = imageSource.filter((v, i) => i !== index);
-    const video = videoSource.filter((v, i) => i !== index);
-    setImageSource([...image]);
-    setVideoSource(video);
-  };
-
   const isValidateForm = () => {
-    //图片 视频 外链 文字 选1
-    if (imageSource.length === 0 && videoSource.length === 0 && !content && !linkSource) {
-      return false;
-    } else {
-      return true;
-    }
+    return content && score > 0 ? true : false;
   };
 
   const getValidateForm = () => {
     const data = {
       type: 'single',
       medias: imageSource.map(v => v.url),
-      topic_link_id: linkSource ? linkSource.id : '',
       plain_content: savetopic.plan_content
         ? savetopic.plan_content.trim()
         : imageSource.length > 0
@@ -190,7 +72,7 @@ const NewTopic = props => {
 
   const onSubmit = async () => {
     if (!isValidateForm()) {
-      Toast.show('图片/视频/外链不能为空哦~');
+      Toast.show('评分/内容不能为空哦~');
       return false;
     }
 
@@ -203,19 +85,14 @@ const NewTopic = props => {
     }
 
     const data = getValidateForm();
-    console.log(data);
-    if (videoSource.length > 0) {
-      Toast.showLoading('正在发布中...', {duration: 3000});
-      // 视频上传
-      const params = {
-        content: {
-          video: {...videoSource[0]},
-          content: {...data},
-        },
-        upload: (file, cb) => props.uploadVideo(file, cb),
-      };
 
-      // console.log('params', params)
+    if (videoSource.length > 0) {
+      // 先上传视频再发布
+      Toast.showLoading('正在发布中...', {duration: 3000});
+      const params = {
+        content: {video: {...videoSource[0]}, content: {...data}},
+        upload: (file, cb) => uploadVideo(file, cb),
+      };
       dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
       // 等待200ms再跳转，避免首页还没有拿到redux里面的值
       setTimeout(() => {
@@ -226,214 +103,110 @@ const NewTopic = props => {
         });
       }, 200);
     } else {
-      //other
-      Toast.showLoading('正在发布中...');
-      // const waitTime = ms => new Promise(resolve => setTimeout(resolve, ms));
       try {
         const res = await createTopic(data);
-        // await waitTime(1500);
         Toast.hide();
-        props.navigation.reset({
-          index: 0,
-          routes: [{name: 'TopicDetail', params: {topicId: res.id}}],
-        });
+        navigation.reset({index: 0, routes: [{name: 'TopicDetail', params: {topicId: res.id}}]});
         dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
       } catch (err) {
         Toast.hide();
-        console.log(err);
       }
     }
   };
 
-  const onPreview = (index = 0) => {
-    const images = imageSource.map(v => {
-      return {url: v.url};
-    });
-    const data = {images, visible: true, index};
-    dispatch(dispatchPreviewImage(data));
-  };
-
-  const LeftBtn = () => {
-    const handleClose = () => {
-      if (route.params && route.params.pageKey) {
-        const {pageKey} = route.params;
-        if (pageKey.includes('Discovery')) {
-          navigation.navigate('Discovery');
-        }
-
-        if (pageKey.includes('ShopBrandDetail')) {
-          navigation.navigate('ShopBrandDetail', {
-            shopBrandId: pageKey.split('ShopBrandDetail')[1],
-          });
-        }
-      } else {
-        navigation.goBack();
-      }
-    };
-
-    return (
-      <Pressable
-        onPress={handleClose}
-        style={{paddingLeft: 5}}
-        hitSlop={{top: 10, bottom: 10, left: 5, right: 5}}>
-        <IconFont name={'close'} size={14} />
-      </Pressable>
-    );
-  };
-
-  const RightBtn = () => {
-    return (
-      <Pressable onPress={debounce(onSubmit, 1000)}>
-        <Text style={[styles.finishBtn, {color: isValidateForm() ? '#000' : '#bdbdbd'}]}>发布</Text>
-      </Pressable>
-    );
-  };
-
   useEffect(() => {
-    setContent(savetopic.plan_content);
-    setLinkSource(savetopic.linkContent);
-  }, [savetopic]);
-
-  useEffect(() => {
-    if (!location) {
-      setTimeout(() => {
-        // 如果在effect里面，必须等待500ms
-        loadLocation(dispatch);
-      }, 500);
-    }
-
     return () => {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
-      props.removeAllPhoto();
+      removeAllPhoto();
     };
   }, []);
 
   useEffect(() => {
-    if (location && location.createLocation) {
-      dispatch({
-        type: action.SAVE_NEW_TOPIC,
-        value: {...savetopic, location: location.createLocation},
-      });
-    }
-  }, [location]);
+    setContent(savetopic.plan_content);
+  }, [savetopic]);
 
   useLayoutEffect(() => {
+    const hitSlop = {top: 10, bottom: 10, left: 5, right: 5};
+
+    const LeftBtn = () => {
+      const handleClose = () => navigation.goBack();
+      return (
+        <Pressable onPress={handleClose} style={{padding: 5}} hitSlop={hitSlop}>
+          <IconFont name="close" size={14} />
+        </Pressable>
+      );
+    };
+
+    const RightBtn = () => {
+      const style = {color: isValidateForm() ? '#000' : '#bdbdbd'};
+      return (
+        <Pressable onPress={debounce(onSubmit, 1000)} hitSlop={hitSlop}>
+          <Text style={[styles.finishBtn, style]}>发布</Text>
+        </Pressable>
+      );
+    };
+
     navigation.setOptions({
-      headerTitle: product ? '晒顽物' : null,
+      headerTitle: '评价',
       headerLeft: () => <LeftBtn />,
       headerRight: () => <RightBtn />,
     });
-  }, [navigation, imageSource, videoSource, savetopic, linkSource]);
-
-  const ImageComponent = () => {
-    const image = imageSource.length;
-    const video = videoSource.length;
-    const nthThree = image % 3 === 0;
-
-    return (
-      <View style={styles.mediaCon}>
-        {image === 0 && video === 0 && (
-          <Pressable onPress={onVideoPicker}>
-            <FastImg style={styles.mediaWrap} source={addVideoImage} />
-          </Pressable>
-        )}
-
-        {video === 0 && image !== 9 && (
-          <Pressable
-            onPress={onImagePicker}
-            style={[styles.mediaWrap, {marginRight: image > 0 && nthThree ? 0 : 10}]}>
-            <FastImg style={styles.media} source={addPhotoImage} />
-          </Pressable>
-        )}
-
-        {imageSource.map((v, index) => (
-          <View
-            style={[styles.mediaWrap, {marginRight: (index + 1) % 4 === 0 ? 0 : 10}]}
-            key={index}>
-            {v.id ? (
-              <>
-                <Pressable onPress={() => onPreview(index)}>
-                  <FastImg mode="cover" key={index} style={styles.media} source={{uri: v.url}} />
-                </Pressable>
-                <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-                  <FastImg style={styles.mediaClose} source={closeImage} />
-                </Pressable>
-              </>
-            ) : (
-              <FastImg key={index} style={styles.media} source={loadingImage} />
-            )}
-          </View>
-        ))}
-
-        {videoSource.map((v, index) => (
-          <Pressable style={[styles.mediaWrap, {backgroundColor: '#000'}]} key={index}>
-            <Pressable
-              style={styles.media}
-              onPress={() => {
-                videoRef.current.presentFullscreenPlayer();
-              }}>
-              <Video
-                style={styles.media}
-                ref={videoRef}
-                source={{uri: v.uri}}
-                posterResizeMode={'center'}
-                controls={false}
-                muted={false}
-                reportBandwidth
-                ignoreSilentSwitch="ignore"
-                repeat
-                onFullscreenPlayerDidDismiss={() => {
-                  videoRef.current.seek(0);
-                }}
-              />
-            </Pressable>
-            <Pressable onPress={() => deleteMedia(index)} style={styles.mediaCloseWrap}>
-              <FastImg style={styles.mediaClose} source={closeImage} />
-            </Pressable>
-          </Pressable>
-        ))}
-      </View>
-    );
-  };
+  }, [navigation, imageSource, videoSource, savetopic]);
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+    <ScrollView style={styles.pageWrapper}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.wrapper}>
-          <PermissionModal
-            visible={permissionModal}
-            cancleClick={() => setPermissionModal(false)}
-          />
-          <PublishRateScore />
-          <ImageComponent />
+          <View style={styles.relatedWrapper}>
+            <FastImg
+              style={styles.relatedImage}
+              source={require('@/assets/images/add-video.png')}
+            />
+            <View style={styles.relatedInfo}>
+              <Text style={styles.relatedName} numberOfLines={1}>
+                {/* {movement_ids[0].name.trim()} */}
+                32323
+              </Text>
+              <Text style={styles.relatedText} numberOfLines={1}>
+                {/* {movement_ids[0].desc_tip} */}
+                32323
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.rateWrapper}>
+            <Text style={styles.rateText}>场地评价</Text>
+            <PublishRateScore score={score} setScore={setScore} />
+          </View>
+
           <TextInput
             style={styles.content}
             multiline
             textAlignVertical="top"
-            placeholder={
-              currentAccount.publish_topics_count > 0
-                ? '记录与分享'
-                : '快开始写下你的写下评价将对其他人提供重要参考，至少10字第一篇帖子吧~'
-            }
-            onChangeText={onChangeContent}
+            selectionColor="#ff193a"
+            placeholder="写下评价将对其他人提供重要参考，至少10字"
             value={content}
-            selectionColor={'#ff193a'}
+            onChangeText={onChangeContent}
           />
-          <View style={{flexDirection: 'row'}}>
-            <Pressable
-              style={styles.addTextNameWrap}
-              onPress={() => navigation.navigate('AddHashTag')}
-              onLayout={e => setTagWidth(e.nativeEvent.layout.width)}>
-              <IconFont name={'hashtag'} size={14} color="#000" />
+
+          <View style={styles.labelWrapper}>
+            <Pressable style={styles.addTextNameWrap} onPress={handleGoHashTag}>
+              <IconFont name="hashtag" size={14} color="#000" />
               <Text style={styles.addTextName}>话题</Text>
             </Pressable>
-            <Pressable
-              style={styles.addTextNameWrap}
-              onPress={() => navigation.navigate('AddMentionAccount', {type: 'add-node'})}>
-              <IconFont name={'at'} size={16} color="#000" />
+            <Pressable style={styles.addTextNameWrap} onPress={handleGoAccount}>
+              <IconFont name="at" size={16} color="#000" />
               <Text style={styles.addTextName}>顽友</Text>
             </Pressable>
           </View>
+
+          <UploadMedia
+            {...props}
+            imageSource={imageSource}
+            videoSource={videoSource}
+            setImageSource={setImageSource}
+            setVideoSource={setVideoSource}
+          />
         </View>
       </TouchableWithoutFeedback>
     </ScrollView>
@@ -441,67 +214,35 @@ const NewTopic = props => {
 };
 
 const styles = StyleSheet.create({
+  pageWrapper: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   wrapper: {
+    flex: 1,
     paddingHorizontal: 30,
     backgroundColor: '#fff',
-    flex: 1,
     paddingTop: 20,
   },
-  mediaCon: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  mediaWrap: {
-    position: 'relative',
-    width: mediaSize,
-    height: mediaSize,
-    marginRight: 10,
-    marginBottom: 10,
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
-  media: {
-    width: mediaSize,
-    height: mediaSize,
-    borderRadius: 6,
-  },
-  mediaCloseWrap: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    paddingLeft: 10,
-    paddingBottom: 10,
-    textAlign: 'right',
-  },
-  mediaClose: {
-    width: 15,
-    height: 15,
-  },
-  progress: {
+  rateWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000',
+    marginTop: RFValue(22),
   },
-  proNum: {
-    color: '#fff',
-    fontSize: 21,
+  rateText: {
     fontWeight: '500',
-  },
-  proPercent: {
-    color: '#fff',
-    fontSize: 10,
-    marginTop: 8,
-    marginLeft: 2,
+    marginRight: 10,
   },
   content: {
-    fontSize: RFValue(14),
-    lineHeight: RFValue(20),
-    marginBottom: RFValue(20),
-    marginTop: RFValue(6),
-    textAlign: 'justify',
     minHeight: RFValue(180),
+    lineHeight: 20,
+    marginTop: 10,
+    textAlign: 'justify',
     letterSpacing: 1,
+  },
+  labelWrapper: {
+    flexDirection: 'row',
+    marginBottom: RFValue(22),
   },
   addTextNameWrap: {
     paddingHorizontal: VWValue(10),
@@ -525,32 +266,32 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#BDBDBD',
   },
-  linkWrapper: {
+  relatedWrapper: {
     flex: 1,
-    backgroundColor: '#F2F3F5',
-    display: 'flex',
     flexDirection: 'row',
-    padding: 8,
     alignItems: 'center',
+    padding: RFValue(10),
+    backgroundColor: '#000',
+    borderRadius: 9,
   },
-  linkImageWrap: {
-    position: 'relative',
+  relatedImage: {
+    width: RFValue(33),
+    height: RFValue(33),
+    marginRight: 8,
+    borderRadius: 6,
   },
-  linkImage: {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    marginTop: -6,
-    marginLeft: -6,
-  },
-  linkText: {
-    fontSize: 13,
-    lineHeight: 20,
-    marginVertical: 3,
-    color: '#3F3F3F',
-    marginLeft: 10,
-    textAlign: 'justify',
+  relatedInfo: {
     flex: 1,
+  },
+  relatedName: {
+    color: '#fff',
+    fontWeight: '500',
+  },
+  relatedText: {
+    color: '#bdbdbd',
+    fontSize: RFValue(10),
+    fontWeight: '300',
+    marginTop: 4,
   },
 });
 

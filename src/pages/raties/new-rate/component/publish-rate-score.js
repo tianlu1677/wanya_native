@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, Pressable} from 'react-native';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
 
-const PublishDateScore = () => {
+const PublishDateScore = props => {
+  const {score, setScore} = props;
   const allScore = Array(5).fill(null);
-  const [score, setScore] = useState(0);
 
   const handleStar = index => {
     setScore(index + 1);
