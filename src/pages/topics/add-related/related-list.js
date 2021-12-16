@@ -7,6 +7,25 @@ import * as action from '@/redux/constants';
 import ScrollList from '@/components/ScrollList';
 import {RFValue} from '@/utils/response-fontsize';
 
+const BaseSpace = props => {
+  console.log(props);
+  const {
+    data: {name, desc_tip},
+  } = props;
+
+  return (
+    <Pressable style={styles.wrapper}>
+      <View style={styles.info}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.intro} numberOfLines={1}>
+          {/* {desc_tip}
+        3232 */}
+        </Text>
+      </View>
+    </Pressable>
+  );
+};
+
 const BaseMovement = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -108,6 +127,8 @@ const RelatedList = props => {
 
   const renderItem = ({item}) => {
     switch (type) {
+      case 'space':
+        return <BaseSpace data={item} />;
       case 'movement':
         return <BaseMovement data={item} />;
       case 'shop_store':
@@ -125,6 +146,8 @@ const RelatedList = props => {
     const res = await api({...params, page, per_page: 50});
     setHeaders(res.headers);
     setListData(page === 1 ? res.data.items : [...listData, ...res.data.items]);
+    console.log(res.data);
+
     setLoading(false);
   };
 

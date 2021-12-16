@@ -32,6 +32,10 @@ const AddRelatedIndex = props => {
     params: {name: searchKey, type: currentKey, random: 1},
   });
 
+  const SpaceListPage = () => {
+    return <RelatedList request={request} type="space" />;
+  };
+
   const MovementListPage = () => {
     return <RelatedList request={request} type="movement" />;
   };
@@ -89,6 +93,11 @@ const AddRelatedIndex = props => {
             bottomLine={false}
             separator={true}
             tabData={[
+              {
+                key: 'space',
+                title: '场地',
+                component: SpaceListPage,
+              },
               {
                 key: 'movement',
                 title: '顽招',
