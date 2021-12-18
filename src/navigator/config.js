@@ -79,6 +79,8 @@ import MovementDetail from '@/pages/movements/movement-detail';
 // ShopStore
 import ShopStore from '@/pages/shopStores/shop-store';
 import ShopStoreDetail from '@/pages/shopStores/shop-store-detail';
+import ShopStoreRateList from '@/pages/shopStores/shop-store-rate-list';
+import ShopStorePostList from '@/pages/shopStores/shop-store-post-list';
 
 // ShopBarnd
 import ShopBrand from '@/pages/shopBrands/shop-brand';
@@ -245,6 +247,8 @@ const movementRouter = [
 const shopStoreRouter = [
   {name: 'ShopStore', component: ShopStore},
   {name: 'ShopStoreDetail', component: ShopStoreDetail, options: {title: '顽士多详情'}},
+  {name: 'ShopStoreRateList', component: ShopStoreRateList, options: {title: '评价'}},
+  {name: 'ShopStorePostList', component: ShopStorePostList, options: {title: '动态'}},
 ];
 
 const shopBrandRouter = [

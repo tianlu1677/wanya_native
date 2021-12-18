@@ -1,58 +1,65 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, StatusBar, Platform, Linking, Pressable} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {View, Text, StyleSheet, ScrollView, Pressable, Linking, Platform} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
-import CollapsibleHeader from '@/components/CollapsibleHeaders';
-import StickTopHeader from '@/components/StickTopHeader';
+import * as action from '@/redux/constants';
 import MapLinking from '@/components/MapLink';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
-import Toast from '@/components/Toast';
-import IconFont from '@/iconfont';
 import ActionSheet from '@/components/ActionSheet.android';
-import {BarHeight, SCREEN_WIDTH} from '@/utils/navbar';
-import SingleList from '@/components/List/single-list';
-import TopicList from '@/components/List/topic-list';
-import ArticleList from '@/components/List/article-list';
+import IconFont from '@/iconfont';
+import BaseTopic from '@/components/Item/base-topic';
 import {
+  Avator,
   JoinAccounts,
   JoinButton,
-  TopBack,
   BottomModal,
-  Avator,
   ModalInfo,
 } from '@/components/NodeComponents';
+import {RFValue} from '@/utils/response-fontsize';
 import {
   getShopStoreDetail,
   getShopStoreJoinAccounts,
   getShopStoreJoined,
   getShopStoreExit,
   getShopStorePosts,
-  getShopStoreTopics,
-  getShopStoreArticles,
 } from '@/api/shop_store_api';
-import {RFValue} from '@/utils/response-fontsize';
+import {SCREEN_WIDTH} from '@/utils/navbar';
+
 import PersonImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
 
-const HEADER_HEIGHT = Math.ceil((SCREEN_WIDTH * 230) / 750);
-const TOP_HEADER_HEIGHT =
-  BarHeight + HEADER_HEIGHT + RFValue(75 / 2) + RFValue(3) + RFValue(50) * 3;
-
-const RenderHeader = props => {
+const ShopStoreDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const {detail, joinAccounts, loadData} = props;
-  const [joined, setJoined] = useState(detail.joined);
+  const {shopStoreId} = route.params;
+
+  const savetopic = useSelector(state => state.home.savetopic);
+  const [detail, setDetail] = useState(null);
+  const [joinAccounts, setJoinAccounts] = useState([]);
+  const [rateList, setRateList] = useState([]);
+  const [postList, setPostList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [itemList, setItemList] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [itemList, setItemList] = useState([]);
+
   const [visible, setVisible] = useState(false);
 
-  const handleJoin = async () => {
-    joined ? await getShopStoreExit(detail.id) : await getShopStoreJoined(detail.id);
-    Toast.showError(joined ? '已取消收藏' : '已收藏');
-    setJoined(!joined);
-    loadData();
+  const loadAccounts = async () => {
+    const res = await getShopStoreJoinAccounts(shopStoreId);
+    setJoinAccounts(res.data.accounts.slice(0, 4));
+  };
+
+  const loadData = async () => {
+    loadAccounts();
+    const res = await getShopStoreDetail(shopStoreId);
+    setDetail(res.data.shop_store);
+  };
+
+  const loadList = async () => {
+    const res = await getShopStorePosts({id: shopStoreId, type: 'rate'});
+    setRateList(res.data.posts);
+    const ret = await getShopStorePosts({id: shopStoreId, type: 'no_rate'});
+    setPostList(ret.data.posts);
   };
 
   const onPreview = type => {
@@ -66,6 +73,14 @@ const RenderHeader = props => {
       dispatch(dispatchPreviewImage(data));
     }
   };
+
+  const handleFollowClick = async () => {
+    detail.joined ? await getShopStoreExit(shopStoreId) : await getShopStoreJoined(shopStoreId);
+    loadData();
+    loadAccounts();
+  };
+
+  const handleGet = value => setVisible(value);
 
   const goAddress = () => {
     if (detail.store_type === 'website') {
@@ -91,111 +106,164 @@ const RenderHeader = props => {
     }
   };
 
-  const handleGet = value => setVisible(value);
+  const handleGoRateList = () => {
+    navigation.navigate('ShopStoreRateList', {shopStoreId});
+  };
 
-  return (
-    <>
-      <View style={{height: BarHeight, backgroundColor: 'black'}} />
-      <TopBack top={BarHeight + RFValue(12)} />
-      <Pressable style={styles.header} onPress={() => onPreview('bg_cover')}>
-        <FastImg
-          source={{uri: detail.medias.length > 0 ? detail.medias[0].url : ''}}
-          style={styles.imageCover}
-        />
-        <View style={styles.coverOpacity} />
-        <Pressable onPress={() => onPreview('cover_url')}>
-          <FastImg source={{uri: detail.cover_url}} style={styles.cover_url} />
-        </Pressable>
+  const handleGoPostList = () => {
+    navigation.navigate('ShopStorePostList', {shopStoreId});
+  };
 
-        {detail.account ? (
-          <View style={styles.headerAccount}>
-            <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
-            <View style={styles.accountContent}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.accountName}>{detail.account.nickname}</Text>
-                {detail.account.settled_type === 'personal' && (
-                  <FastImg style={styles.settledIcon} source={PersonImg} />
-                )}
-                {detail.account.settled_type === 'brand' && (
-                  <FastImg style={styles.settledIcon} source={BrandImg} />
-                )}
+  const handelGoTopic = () => {
+    navigation.navigate('NewTopic');
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, shop_store_ids: [detail]}});
+  };
+
+  const handelGoRate = () => {
+    navigation.navigate('NewRate');
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, shop_store_ids: [detail]}});
+  };
+
+  useEffect(() => {
+    loadData();
+    loadList();
+  }, []);
+
+  return detail ? (
+    <View style={styles.wrapper}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.headerWrapper}>
+          <View style={styles.coverOpacity} />
+          <Pressable onPress={() => onPreview('bg_cover')}>
+            <FastImg source={{uri: detail.medias[0].url}} style={styles.imageCover} />
+          </Pressable>
+          {!detail.account ? (
+            <View style={styles.headerAccount}>
+              <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
+              <View style={styles.accountContent}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={styles.accountName}>{detail.account.nickname}</Text>
+                  {detail.account.settled_type === 'personal' && (
+                    <FastImg style={styles.settledIcon} source={PersonImg} />
+                  )}
+                  {detail.account.settled_type === 'brand' && (
+                    <FastImg style={styles.settledIcon} source={BrandImg} />
+                  )}
+                </View>
+                <Text style={styles.accountText}>已认领</Text>
               </View>
-              <Text style={styles.accountText}>已认领</Text>
+            </View>
+          ) : (
+            <Pressable style={[styles.headerAccount, {top: 35}]} onPress={() => handleGet(true)}>
+              <IconFont name="question" size={16} color={'#fff'} />
+              <Text style={styles.noAccount}>未认领</Text>
+            </Pressable>
+          )}
+
+          <View style={styles.headerContent}>
+            <View style={styles.headerInfo}>
+              <Pressable onPress={() => onPreview('cover_url')}>
+                <FastImg source={{uri: detail.cover_url}} style={styles.cover_url} />
+              </Pressable>
+
+              <View style={styles.nameContent}>
+                <Text style={styles.name} numberOfLines={1}>
+                  {detail.name}
+                </Text>
+                <Text style={styles.count}>
+                  {detail.publish_topics_count + detail.publish_articles_count}
+                  篇帖子 · {detail.join_accounts_count}位顽友收藏
+                </Text>
+              </View>
+              <View style={styles.refrence}>
+                <JoinButton
+                  join={detail.joined}
+                  text={detail.joined ? '已收藏' : '收藏'}
+                  onPress={handleFollowClick}
+                  borderRadius={12}
+                  joinedStyle={{color: '#BDBDBD', backgroundColor: '#fff'}}
+                  joinStyle={{color: '#000000', backgroundColor: '#fff'}}
+                />
+                <JoinAccounts
+                  accounts={joinAccounts}
+                  size={18}
+                  style={{marginBottom: RFValue(12), justifyContent: 'flex-end'}}
+                />
+              </View>
+            </View>
+            <View style={styles.slideWrapper}>
+              <Pressable style={styles.slide} onPress={goAddress}>
+                <IconFont name="space-point" size={16} color="#000" />
+                <Text style={styles.slideTitle}>所在位置</Text>
+                <Text style={styles.slideValue} numberOfLines={1}>
+                  {detail.store_type === 'entity' && detail.address}
+                  {detail.store_type === 'website' && '网店'}
+                </Text>
+                <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
+              </Pressable>
+
+              <View style={styles.slide}>
+                <IconFont name="calendar" size={16} color="#000" />
+                <Text style={styles.slideTitle}>营业时间</Text>
+                <Text style={styles.slideValue} numberOfLines={1}>
+                  {detail.open_time}
+                </Text>
+              </View>
+
+              <Pressable style={styles.slide} onPress={() => setShowModal(true)}>
+                <IconFont name="biaoqian" size={16} color="#000" />
+                <Text style={styles.slideTitle}>店铺标签</Text>
+                <View style={[styles.slideValue, styles.tagWrapper]}>
+                  {detail.tags.slice(0, 3).map(tag => (
+                    <Text style={styles.tag} key={tag.id}>
+                      {tag.name}
+                    </Text>
+                  ))}
+                </View>
+                <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
+              </Pressable>
             </View>
           </View>
-        ) : (
-          <Pressable style={[styles.headerAccount, {top: 35}]} onPress={() => handleGet(true)}>
-            <IconFont name="question" size={16} color={'#fff'} />
-            <Text style={styles.noAccount}>未认领</Text>
-          </Pressable>
-        )}
+        </View>
 
-        <View style={styles.nameContent}>
-          <Text style={styles.name} numberOfLines={1}>
-            {detail.name}
-          </Text>
-          <Text style={styles.count}>
-            {detail.publish_topics_count + detail.publish_articles_count}
-            篇帖子 · {detail.join_accounts_count}位顽友收藏
-          </Text>
-        </View>
-        <View style={styles.refrence}>
-          <View style={{marginTop: 3}}>
-            <JoinButton
-              join={joined}
-              text={joined ? '已收藏' : '收藏'}
-              onPress={handleJoin}
-              joinedStyle={{color: '#BDBDBD', backgroundColor: '#fff'}}
-              joinStyle={{color: '#000000', backgroundColor: '#fff'}}
-            />
-          </View>
-          <JoinAccounts
-            accounts={joinAccounts}
-            size={18}
-            style={{marginBottom: RFValue(12), justifyContent: 'flex-end'}}
-          />
-        </View>
-      </Pressable>
-      <View style={styles.slideWrapper}>
-        {/* 所在位置 */}
-        <Pressable style={styles.slide} onPress={goAddress}>
-          <IconFont name="space-point" size={16} color="#000" />
-          <Text style={styles.slideTitle}>所在位置</Text>
-          <Text style={styles.slideValue} numberOfLines={1}>
-            {detail.store_type === 'entity' && detail.address}
-            {detail.store_type === 'website' && '网店'}
-          </Text>
-          <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-        </Pressable>
-        {/* 营业时间 */}
-        <View style={styles.slide}>
-          <IconFont name="calendar" size={16} color="#000" />
-          <Text style={styles.slideTitle}>营业时间</Text>
-          <Text style={styles.slideValue} numberOfLines={1}>
-            {detail.open_time}
-          </Text>
-        </View>
-        {/* 店铺标签 */}
-        <Pressable style={styles.slide} onPress={() => setShowModal(true)}>
-          <IconFont name="biaoqian" size={16} color="#000" />
-          <Text style={styles.slideTitle}>店铺标签</Text>
-          <View style={[styles.slideValue, styles.tagWrapper]}>
-            {detail.tags.slice(0, 3).map(tag => (
-              <Text style={styles.tag} key={tag.id}>
-                {tag.name}
+        {rateList.length > 0 ? (
+          <View style={[styles.intro]}>
+            <View style={styles.introTitleInfo}>
+              <Text style={styles.introTitle}>评价</Text>
+              <Text style={styles.introTips} onPress={handleGoRateList}>
+                查看全部
               </Text>
-            ))}
+            </View>
+            <View style={styles.listWrapper}>
+              {rateList.slice(0, 3).map(item => (
+                <BaseTopic data={item.item} />
+              ))}
+            </View>
           </View>
-          <IconFont name="arrow-right" size={11} color="#c2cece" style={styles.slideRight} />
-        </Pressable>
-      </View>
+        ) : null}
 
-      {/* 店铺标签 */}
+        {postList.length > 0 ? (
+          <View style={[styles.intro]}>
+            <View style={styles.introTitleInfo}>
+              <Text style={styles.introTitle}>动态</Text>
+              <Text style={styles.introTips} onPress={handleGoPostList}>
+                查看全部
+              </Text>
+            </View>
+            <View style={styles.listWrapper}>
+              {postList.slice(0, 3).map(item => (
+                <BaseTopic data={item.item} />
+              ))}
+            </View>
+          </View>
+        ) : null}
+      </ScrollView>
+
       {detail.tags.length > 0 && (
         <BottomModal
           visible={showModal}
           cancleClick={() => setShowModal(false)}
-          title={'店铺标签'}
+          title="店铺标签"
           content={
             <View style={styles.tagWrapper}>
               {detail.tags.map(tag => (
@@ -221,72 +289,16 @@ const RenderHeader = props => {
         content="认领表示该店铺属于本人/机构所有，认领前需联系顽鸦小助手进行账号认证，认领后可获得编辑品牌信息等权益。"
         handleCancel={() => handleGet(false)}
       />
-    </>
-  );
-};
 
-const ShopStoreDetail = props => {
-  const {shopStoreId} = props.route.params;
-  const [currentKey, setCurrentKey] = useState('post');
-  const [detail, setDetail] = useState(null);
-  const [joinAccounts, setJoinAccounts] = useState([]);
-
-  const loadData = async () => {
-    const res = await getShopStoreDetail(shopStoreId);
-    const ret = await getShopStoreJoinAccounts(shopStoreId, {sort: 'publish_order'});
-    setJoinAccounts(ret.data.accounts.slice(0, 4));
-    setDetail(res.data.shop_store);
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const PostListPage = () => {
-    const params = {api: getShopStorePosts, params: {id: shopStoreId}};
-    return <SingleList request={params} enableRefresh={false} />;
-  };
-
-  const TopicListPage = () => {
-    const params = {api: getShopStoreTopics, params: {id: shopStoreId}};
-    return <TopicList request={params} enableRefresh={false} />;
-  };
-
-  const ArticleListPage = () => {
-    const params = {api: getShopStoreArticles, params: {id: shopStoreId}};
-    return <ArticleList request={params} enableRefresh={false} />;
-  };
-
-  return detail ? (
-    <View style={styles.wrapper}>
-      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <CollapsibleHeader
-          headerHeight={TOP_HEADER_HEIGHT}
-          currentKey={currentKey}
-          onKeyChange={key => setCurrentKey(key)}
-          tabData={[
-            {
-              key: 'post',
-              title: '动态',
-              component: PostListPage,
-            },
-            {
-              key: 'topic',
-              title: '帖子',
-              component: TopicListPage,
-            },
-            {
-              key: 'article',
-              title: '文章',
-              component: ArticleListPage,
-            },
-          ]}
-          renderTopHeader={<StickTopHeader title={detail.name} />}
-          renderHeader={
-            <RenderHeader detail={detail} joinAccounts={joinAccounts} loadData={loadData} />
-          }
-        />
+      <View style={[styles.btnWrap]}>
+        <Pressable style={[styles.btn, styles.punchBtn]} onPress={handelGoTopic}>
+          <IconFont name="takephoto" size={22} color="white" />
+          <Text style={styles.btnText}>去打卡</Text>
+        </Pressable>
+        <Pressable style={[styles.btn, styles.commentBtn]} onPress={handelGoRate}>
+          <IconFont name="ditu" size={22} color="white" />
+          <Text style={styles.btnText}>写评价</Text>
+        </Pressable>
       </View>
     </View>
   ) : (
@@ -294,25 +306,69 @@ const ShopStoreDetail = props => {
   );
 };
 
-const position = {width: SCREEN_WIDTH, height: HEADER_HEIGHT, position: 'absolute'};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#fafafa',
+  },
+  scrollView: {
+    marginBottom: RFValue(40) + 20,
+  },
+  headerWrapper: {
+    position: 'relative',
     backgroundColor: '#fff',
   },
   imageCover: {
+    width: SCREEN_WIDTH,
+    height: RFValue(115),
     zIndex: -1,
-    ...position,
   },
   coverOpacity: {
-    ...position,
+    width: SCREEN_WIDTH,
+    height: RFValue(115),
+    position: 'absolute',
+    top: 0,
     backgroundColor: '#000',
     opacity: 0.4,
   },
-  header: {
+  headerAccount: {
     flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 14,
+    top: 20,
+  },
+  accountContent: {
+    justifyContent: 'center',
+    marginLeft: 5,
+  },
+  accountName: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '500',
+  },
+  accountText: {
+    color: '#fff',
+    fontSize: 8,
+    fontWeight: '300',
+    marginTop: RFValue(4),
+  },
+  settledIcon: {
+    width: RFValue(8),
+    height: RFValue(8),
+    marginLeft: 3,
+  },
+  noAccount: {
+    fontSize: 11,
+    color: '#fff',
+    marginLeft: 5,
+  },
+  headerContent: {
+    marginTop: -RFValue(37),
     paddingHorizontal: 14,
-    paddingTop: HEADER_HEIGHT - RFValue(75 / 2),
+  },
+  headerInfo: {
+    flexDirection: 'row',
   },
   cover_url: {
     width: RFValue(75),
@@ -339,9 +395,9 @@ const styles = StyleSheet.create({
   refrence: {
     justifyContent: 'space-between',
     marginLeft: 'auto',
+    paddingTop: 3,
   },
   slideWrapper: {
-    paddingHorizontal: 14,
     marginTop: RFValue(3),
   },
   slide: {
@@ -382,66 +438,63 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginLeft: 7,
   },
-  headerAccount: {
-    height: RFValue(30),
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 'auto',
-    position: 'absolute',
-    right: 14,
-    top: 25,
-  },
-  accountContent: {
-    justifyContent: 'center',
-    marginLeft: 5,
-  },
-  accountName: {
-    color: '#fff',
-    fontSize: 11,
-    fontWeight: '500',
-  },
-  accountText: {
-    color: '#fff',
-    fontSize: 8,
-    fontWeight: '300',
-    marginTop: RFValue(4),
-  },
-  settledIcon: {
-    width: RFValue(8),
-    height: RFValue(8),
-    marginLeft: 3,
-  },
-  noAccount: {
-    fontSize: 11,
-    color: '#fff',
-    marginLeft: 5,
-  },
   intro: {
-    color: '#fff',
-    fontSize: 11,
-    lineHeight: 18,
-    marginTop: RFValue(16),
-    width: '80%',
+    marginTop: 15,
+    marginHorizontal: 14,
+    paddingVertical: 15,
+    paddingHorizontal: 14,
+    backgroundColor: '#fff',
+    borderRadius: 10,
   },
-  accountsWrapper: {
+  introTitleInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 13,
+  },
+  introTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  introTips: {
+    color: '#AAAAAA',
+    fontSize: 12,
+  },
+  listWrapper: {
+    marginHorizontal: -14,
+  },
+  btnWrap: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ebebeb',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 10,
     position: 'absolute',
-    left: 14,
-    right: 14,
-    bottom: RFValue(22),
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  accountsMain: {
-    height: RFValue(45),
+  btn: {
+    width: (SCREEN_WIDTH - 70) / 2,
+    height: RFValue(40),
+    borderRadius: 25,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    borderRadius: 2,
+    justifyContent: 'center',
   },
-  accountsCount: {
-    color: '#DBDBDB',
-    fontSize: 11,
-    marginRight: 'auto',
-    marginLeft: 7,
+  btnText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+    marginLeft: 13,
+  },
+  punchBtn: {
+    backgroundColor: '#000',
+  },
+  commentBtn: {
+    backgroundColor: '#FF2242',
+    marginLeft: 20,
   },
 });
 
