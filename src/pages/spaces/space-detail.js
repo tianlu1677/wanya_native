@@ -53,9 +53,9 @@ const SpaceDetail = ({navigation, route}) => {
   };
 
   const loadList = async () => {
-    const res = await getSpacePosts({id: spaceId, type: 'published_order'});
+    const res = await getSpacePosts({id: spaceId, type: 'no_rate'});
     setRateList(res.data.posts);
-    const ret = await getSpacePosts({id: spaceId, type: 'published_order'});
+    const ret = await getSpacePosts({id: spaceId, type: 'rate'});
     setPostList(ret.data.posts);
   };
 
@@ -91,6 +91,15 @@ const SpaceDetail = ({navigation, route}) => {
   const handelGoRate = () => {
     navigation.navigate('NewRate');
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, space: detail}});
+  };
+
+  const handlePhone = () => {
+    const phone = `'tel:${detail.phone}`;
+    Linking.canOpenURL(phone).then(supported => {
+      if (supported) {
+        return Linking.openURL(phone);
+      }
+    });
   };
 
   const handleChange = () => {
@@ -177,16 +186,16 @@ const SpaceDetail = ({navigation, route}) => {
           <View style={[styles.info, styles.addressInfo]}>
             <Text style={styles.addressText}>{detail.address}</Text>
             <View style={styles.addressRight}>
-              <View style={styles.addressIconWrap}>
+              <Pressable style={styles.addressIconWrap} onPress={handleChange}>
                 <IconFont name="ditu" size={16} />
-                <Text style={styles.addressIconText} onPress={handleChange}>
-                  地图
-                </Text>
-              </View>
-              <View style={styles.addressIconWrap}>
-                <IconFont name="dianhua" size={16} />
-                <Text style={styles.addressIconText}>电话</Text>
-              </View>
+                <Text style={styles.addressIconText}>地图</Text>
+              </Pressable>
+              {detail.phone ? (
+                <Pressable style={styles.addressIconWrap} onPress={handlePhone}>
+                  <IconFont name="dianhua" size={16} />
+                  <Text style={styles.addressIconText}>电话</Text>
+                </Pressable>
+              ) : null}
             </View>
           </View>
           <View style={[styles.info, styles.joinAccountsInfo]}>
@@ -289,7 +298,7 @@ const SpaceDetail = ({navigation, route}) => {
           <Text style={styles.btnText}>去打卡</Text>
         </Pressable>
         <Pressable style={[styles.btn, styles.commentBtn]} onPress={handelGoRate}>
-          <IconFont name="ditu" size={22} color="white" />
+          <IconFont name="xie" size={22} color="white" />
           <Text style={styles.btnText}>写评价</Text>
         </Pressable>
       </View>

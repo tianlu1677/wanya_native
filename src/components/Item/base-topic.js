@@ -130,8 +130,6 @@ const BaseTopic = props => {
     navigation.push('TopicDetail', {topicId: data.id});
   };
 
-  console.log(data);
-
   return content_style === 'video' && data.is_long_video ? (
     <BaseLongVideo data={props.data} />
   ) : (

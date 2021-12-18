@@ -6,11 +6,7 @@ import TabView from '@/components/TabView';
 import {Search} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {searchApi} from '@/api/search_api';
-
-// import RelatedList from '@/pages/topics/add-related/related-list';
 import RelatedScrollList from './related-scroll-list';
-
-// import ProductSingleList from '@/components/List/product-single-list';
 
 const AddRelated = props => {
   const {navigation, keys, page} = props;

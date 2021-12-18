@@ -296,7 +296,7 @@ const ShopStoreDetail = ({navigation, route}) => {
           <Text style={styles.btnText}>去打卡</Text>
         </Pressable>
         <Pressable style={[styles.btn, styles.commentBtn]} onPress={handelGoRate}>
-          <IconFont name="ditu" size={22} color="white" />
+          <IconFont name="xie" size={22} color="white" />
           <Text style={styles.btnText}>写评价</Text>
         </Pressable>
       </View>

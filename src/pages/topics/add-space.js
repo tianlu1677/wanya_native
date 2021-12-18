@@ -87,22 +87,10 @@ const AddSpace = props => {
     navigation.goBack();
   };
 
-  const SpaceListPage = () => (
-    <SpaceList
-      request={request}
-      enableRefresh={false}
-      pageFrom={type}
-      // type={props.route.params.type === 'topic' ? 'add-space' : 'add-node'}
-    />
-  );
+  const SpaceListPage = () => <SpaceList request={request} enableRefresh={false} pageFrom={type} />;
 
   const LocationListPage = () => (
-    <LocationList
-      request={request}
-      enableRefresh={false}
-      pageFrom={type}
-      // type={props.route.params.type === 'topic' ? 'add-location' : 'add-node'}
-    />
+    <LocationList request={request} enableRefresh={false} pageFrom={type} />
   );
 
   const onChangeText = text => {
