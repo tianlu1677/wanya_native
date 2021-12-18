@@ -59,6 +59,8 @@ import CreateProductType from '@/pages/products/create-product-type';
 // 场地
 import Space from '@/pages/spaces/space';
 import SpaceDetail from '@/pages/spaces/space-detail';
+import SpaceRateList from '@/pages/spaces/space-rate-list';
+import SpacePostList from '@/pages/spaces/space-post-list';
 
 // Location
 import LocationDetail from '@/pages/location/location-detail';
@@ -201,6 +203,8 @@ const nodeRouter = [
 const spaceRouter = [
   {name: 'Space', component: Space},
   {name: 'SpaceDetail', component: SpaceDetail, options: {title: '场地详情'}},
+  {name: 'SpaceRateList', component: SpaceRateList, options: {title: '评价'}},
+  {name: 'SpacePostList', component: SpacePostList, options: {title: '动态'}},
 ];
 
 const theoryRouter = [
@@ -240,7 +244,7 @@ const movementRouter = [
 
 const shopStoreRouter = [
   {name: 'ShopStore', component: ShopStore},
-  {name: 'ShopStoreDetail', component: ShopStoreDetail, options: {headerShown: false}},
+  {name: 'ShopStoreDetail', component: ShopStoreDetail, options: {title: '顽士多详情'}},
 ];
 
 const shopBrandRouter = [

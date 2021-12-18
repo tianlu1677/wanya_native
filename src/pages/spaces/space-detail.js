@@ -1,9 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Pressable, Linking, Platform} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {dispatchPreviewImage} from '@/redux/actions';
+import * as action from '@/redux/constants';
+import MapLinking from '@/components/MapLink';
 import Loading from '@/components/Loading';
 import FastImg from '@/components/FastImg';
+import ActionSheet from '@/components/ActionSheet.android';
 import IconFont from '@/iconfont';
-import SingleList from '@/components/List/single-list';
+import BaseTopic from '@/components/Item/base-topic';
 import {
   PlayScore,
   RateScore,
@@ -23,13 +28,18 @@ import {
 } from '@/api/space_api';
 
 import {SCREEN_WIDTH} from '@/utils/navbar';
-import {ScrollView} from 'react-native-gesture-handler';
 
 const SpaceDetail = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const {spaceId} = route.params;
+  const savetopic = useSelector(state => state.home.savetopic);
   const [detail, setDetail] = useState(null);
   const [joinAccounts, setJoinAccounts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
+  const [itemList, setItemList] = useState([]);
+  const [rateList, setRateList] = useState([]);
+  const [postList, setPostList] = useState([]);
 
   const loadAccounts = async () => {
     const res = await getSpacesJoinAccounts(spaceId);
@@ -42,21 +52,95 @@ const SpaceDetail = ({navigation, route}) => {
     setDetail(res.data.space);
   };
 
+  const loadList = async () => {
+    const res = await getSpacePosts({id: spaceId, type: 'published_order'});
+    setRateList(res.data.posts);
+    const ret = await getSpacePosts({id: spaceId, type: 'published_order'});
+    setPostList(ret.data.posts);
+  };
+
   const handleFollowClick = async () => {
     detail.joined ? await getSpacesExit(spaceId) : await getSpacesJoin(spaceId);
     loadData();
     loadAccounts();
   };
 
+  const handleClickImage = index => {
+    if (index === 0 || index === 2) {
+      const images = detail.medias.map(item => {
+        return {url: item.split('?')[0]};
+      });
+      const data = {index, visible: true, images};
+      dispatch(dispatchPreviewImage(data));
+    }
+  };
+
+  const handleGoRateList = () => {
+    navigation.navigate('SpaceRateList', {spaceId});
+  };
+
+  const handleGoPostList = () => {
+    navigation.navigate('SpacePostList', {spaceId});
+  };
+
+  const handelGoTopic = () => {
+    navigation.navigate('NewTopic');
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, space: detail}});
+  };
+
+  const handelGoRate = () => {
+    navigation.navigate('NewRate');
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, space: detail}});
+  };
+
+  const handleChange = () => {
+    // 起点坐标信息
+    const startLocation = {
+      lng: 106.534892,
+      lat: 29.551891,
+      title: '我的位置',
+    };
+
+    // 终点坐标信息
+    const destLocation = {
+      lng: detail.longitude,
+      lat: detail.latitude,
+      title: detail.name,
+    };
+    console.log(destLocation);
+    if (Platform.OS === 'ios') {
+      MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
+    } else {
+      setShowActionSheet(true);
+      const maps = MapLinking.openUrl({
+        startLocation,
+        destLocation,
+        mode: 'drive',
+        type: 'gcj02',
+        appName: 'MapLinking',
+      });
+      // console.log('maps', maps);
+      const list = maps.map((map, index) => ({
+        id: index,
+        label: map[0],
+        onPress: () => {
+          Linking.openURL(map[1]);
+        },
+      }));
+      setItemList(list);
+    }
+  };
+
   console.log(detail);
 
   useEffect(() => {
     loadData();
+    loadList();
   }, []);
 
   return detail ? (
     <View style={styles.wrapper}>
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.topContent}>
           <View style={styles.image}>
             <FastImg source={{uri: detail.cover_url}} style={styles.coverImage} />
@@ -70,7 +154,10 @@ const SpaceDetail = ({navigation, route}) => {
           </View>
           <Text style={styles.name}>{detail.name}</Text>
           <View style={styles.info}>
-            <RateScore score={2.5} size={14} />
+            <View style={styles.rateWrapper}>
+              <Text style={styles.rateText}>打分</Text>
+              <RateScore score={detail.rate_score} size={14} />
+            </View>
             <Text style={styles.infoCount}>{detail.publish_rate_topics_count}条评价</Text>
             <Text style={styles.infoCount}>{detail.publish_topics_count}条动态</Text>
           </View>
@@ -92,7 +179,9 @@ const SpaceDetail = ({navigation, route}) => {
             <View style={styles.addressRight}>
               <View style={styles.addressIconWrap}>
                 <IconFont name="ditu" size={16} />
-                <Text style={styles.addressIconText}>地图</Text>
+                <Text style={styles.addressIconText} onPress={handleChange}>
+                  地图
+                </Text>
               </View>
               <View style={styles.addressIconWrap}>
                 <IconFont name="dianhua" size={16} />
@@ -130,12 +219,15 @@ const SpaceDetail = ({navigation, route}) => {
           <View style={styles.introImageInfo}>
             {detail.medias.map((item, index) => {
               return (
-                <View style={styles.introImageWrapper} key={index}>
+                <Pressable
+                  style={styles.introImageWrapper}
+                  key={index}
+                  onPress={() => handleClickImage(index)}>
                   <FastImg source={{uri: detail.cover_url}} style={styles.introImage} />
                   {index === detail.medias.length - 1 ? (
                     <Text style={styles.introImageOpacity}>{detail.medias.length}张图片</Text>
                   ) : null}
-                </View>
+                </Pressable>
               );
             })}
             <Text style={styles.introText} numberOfLines={2} onPress={() => setShowModal(true)}>
@@ -143,17 +235,38 @@ const SpaceDetail = ({navigation, route}) => {
             </Text>
           </View>
         </View>
-        <View style={[styles.intro]}>
-          <View style={styles.introTitleInfo}>
-            <Text style={styles.introTitle}>评价</Text>
-            <Text style={styles.introTips}>查看全部</Text>
+
+        {rateList.length > 0 ? (
+          <View style={[styles.intro]}>
+            <View style={styles.introTitleInfo}>
+              <Text style={styles.introTitle}>评价</Text>
+              <Text style={styles.introTips} onPress={handleGoRateList}>
+                查看全部
+              </Text>
+            </View>
+            <View style={styles.listWrapper}>
+              {rateList.slice(0, 3).map(item => (
+                <BaseTopic data={item.item} />
+              ))}
+            </View>
           </View>
-          <View style={styles.listWrapper}>
-            <SingleList
-              request={{api: getSpacePosts, params: {id: spaceId, type: 'published_order'}}}
-            />
+        ) : null}
+
+        {postList.length > 0 ? (
+          <View style={[styles.intro]}>
+            <View style={styles.introTitleInfo}>
+              <Text style={styles.introTitle}>动态</Text>
+              <Text style={styles.introTips} onPress={handleGoPostList}>
+                查看全部
+              </Text>
+            </View>
+            <View style={styles.listWrapper}>
+              {postList.slice(0, 3).map(item => (
+                <BaseTopic data={item.item} />
+              ))}
+            </View>
           </View>
-        </View>
+        ) : null}
       </ScrollView>
 
       <BottomModal
@@ -162,16 +275,23 @@ const SpaceDetail = ({navigation, route}) => {
         title={detail.name}
         content={detail.intro}
       />
+      <ActionSheet
+        actionItems={itemList}
+        showActionSheet={showActionSheet}
+        changeModal={() => {
+          setShowActionSheet(false);
+        }}
+      />
 
       <View style={[styles.btnWrap]}>
-        <View style={[styles.btn, styles.punchBtn]}>
+        <Pressable style={[styles.btn, styles.punchBtn]} onPress={handelGoTopic}>
           <IconFont name="takephoto" size={22} color="white" />
           <Text style={styles.btnText}>去打卡</Text>
-        </View>
-        <View style={[styles.btn, styles.commentBtn]}>
+        </Pressable>
+        <Pressable style={[styles.btn, styles.commentBtn]} onPress={handelGoRate}>
           <IconFont name="ditu" size={22} color="white" />
           <Text style={styles.btnText}>写评价</Text>
-        </View>
+        </Pressable>
       </View>
     </View>
   ) : (
@@ -197,6 +317,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fafafa',
   },
+  scrollView: {
+    marginBottom: RFValue(40) + 20,
+  },
   topContent: {
     backgroundColor: '#fff',
     paddingHorizontal: 14,
@@ -213,6 +336,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     marginTop: 14,
+  },
+  rateWrapper: {
+    flexDirection: 'row',
+  },
+  rateText: {
+    marginRight: 5,
   },
   info: {
     flexDirection: 'row',
@@ -284,6 +413,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 13,
   },
   introTitle: {
     fontSize: 18,
@@ -318,7 +448,6 @@ const styles = StyleSheet.create({
   },
   listWrapper: {
     marginHorizontal: -14,
-    marginBottom: RFValue(40) + 20,
   },
   btnWrap: {
     backgroundColor: '#fff',

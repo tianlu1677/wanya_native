@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
 import {Header, Bottom, PlainContent, CommentBottom} from '@/components/Item/single-list-item';
 import LocationBar from '@/components/LocationBar';
+import {RateScore} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
 import IconFont from '@/iconfont';
 import {VWValue, RFValue} from '@/utils/response-fontsize';
@@ -119,7 +120,7 @@ export const TopicLinkContent = props => {
 
 const BaseTopic = props => {
   const {data, type, bottom = true, style} = props;
-  const {content_style} = data;
+  const {content_style, is_rate, rate_score} = data;
   const navigation = useNavigation();
   const goNodeDetail = () => {
     navigation.push('NodeDetail', {nodeId: data.node_id});
@@ -141,6 +142,14 @@ const BaseTopic = props => {
       ) : (
         <View />
       )}
+
+      {is_rate ? (
+        <View style={styles.rateWrapper}>
+          <Text style={styles.rateText}>打分</Text>
+          <RateScore score={rate_score} size={RFValue(14)} />
+        </View>
+      ) : null}
+
       {['img', 'video', 'link'].includes(content_style) ? (
         <View style={{marginTop: data.plain_content ? RFValue(5) : RFValue(13)}}>
           {content_style === 'img' && <TopicImageContent data={data} />}
@@ -265,6 +274,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     textAlign: 'justify',
     flex: 1,
+  },
+  rateWrapper: {
+    flexDirection: 'row',
+  },
+  rateText: {
+    marginRight: 5,
   },
 });
 

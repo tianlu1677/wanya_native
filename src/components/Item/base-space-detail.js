@@ -22,6 +22,7 @@ const BaseSpceDetail = props => {
       recent_join_accounts,
       publish_topics_count,
       publish_rate_topics_count,
+      rate_score,
     },
   } = props;
 
@@ -38,7 +39,10 @@ const BaseSpceDetail = props => {
         <Text style={styles.name}>{name}</Text>
 
         <View style={styles.infoData}>
-          <RateScore score={2.5} size={12} />
+          <View style={styles.rateWrapper}>
+            <RateScore score={rate_score} size={12} />
+            <Text style={styles.rateText}>{rate_score}</Text>
+          </View>
           <Text style={styles.infoCount}>{publish_rate_topics_count}条评价</Text>
           <Text style={styles.infoCount}>{publish_topics_count}条动态</Text>
         </View>
@@ -137,6 +141,12 @@ const styles = StyleSheet.create({
   },
   accountText: {
     fontSize: 11,
+  },
+  rateWrapper: {
+    flexDirection: 'row',
+  },
+  rateText: {
+    color: '#FF2242',
   },
 });
 
