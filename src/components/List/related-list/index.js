@@ -6,12 +6,17 @@ import TabView from '@/components/TabView';
 import {Search} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {searchApi} from '@/api/search_api';
+import {getSpaces} from '@/api/space_api';
+import {getShopStores} from '@/api/shop_store_api';
+
 import RelatedScrollList from './related-scroll-list';
 
 const AddRelated = props => {
   const {navigation, keys, page} = props;
-
-  const {savetopic} = useSelector(state => state.home);
+  const {
+    savetopic,
+    location: {positionCity = '', latitude = '', longitude = ''},
+  } = useSelector(state => state.home);
   const [searchKey, setSearchKey] = useState('');
 
   const defaultKey = () => {
@@ -28,37 +33,59 @@ const AddRelated = props => {
       : keys[0];
   };
 
-  const [currentKey, setCurrentKey] = useState(defaultKey);
+  const [currentKey, setCurrentKey] = useState(defaultKey());
 
-  const [request, setRequest] = useState({
-    api: searchApi,
-    params: {name: searchKey, type: currentKey, random: 1},
-  });
+  const ReturnApi = (activeKey, searchValue) => {
+    let api = {};
+    if (page === 'rate') {
+      if (searchValue) {
+        api = {api: searchApi, params: {name: searchValue, type: activeKey, random: 1}};
+      } else {
+        const params = {currentcity: positionCity, latitude, longitude, need_count: 50};
+        if (activeKey === 'space') {
+          api = {api: getSpaces, params};
+        }
 
-  const SpaceListPage = () => <RelatedScrollList request={request} type="space" page={page} />;
+        if (activeKey === 'shop_store') {
+          api = {api: getShopStores, params};
+        }
+      }
+    }
+
+    if (page === 'topic') {
+      api = {api: searchApi, params: {name: searchValue, type: currentKey, random: 1}};
+    }
+
+    return api;
+  };
+
+  const [request, setRequest] = useState(ReturnApi(defaultKey(), searchKey));
+
+  const SpaceListPage = () => <RelatedScrollList request={request} type="space" pageFrom={page} />;
 
   const MovementListPage = () => (
-    <RelatedScrollList request={request} type="movement" page={page} />
+    <RelatedScrollList request={request} type="movement" pageFrom={page} />
   );
 
   const ShopStoreListPage = () => (
-    <RelatedScrollList request={request} type="shop_store" page={page} />
+    <RelatedScrollList request={request} type="shop_store" pageFrom={page} />
   );
 
   const ShopBrandListPage = () => (
-    <RelatedScrollList request={request} type="shop_brand" page={page} />
+    <RelatedScrollList request={request} type="shop_brand" pageFrom={page} />
   );
 
-  const ProductListPage = () => <RelatedScrollList request={request} type="product" page={page} />;
+  const ProductListPage = () => (
+    <RelatedScrollList request={request} type="product" pageFrom={page} />
+  );
 
-  // 搜索(naem有值)一个接口 没值另一个接口
   const onChangeText = text => {
-    setRequest({api: searchApi, params: {name: text, type: currentKey, random: 1}});
+    setRequest(ReturnApi(currentKey, text));
     setSearchKey(text);
   };
 
   const onChangeKey = key => {
-    setRequest({api: searchApi, params: {name: searchKey, type: key, random: 1}});
+    setRequest(ReturnApi(key, searchKey));
     setCurrentKey(key);
   };
 

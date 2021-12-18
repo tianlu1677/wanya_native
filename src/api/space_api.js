@@ -55,6 +55,8 @@ export const getSpaces = async params => {
     method: 'GET',
     params,
   });
+  console.log(res);
+
   return res;
 };
 

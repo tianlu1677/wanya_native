@@ -25,12 +25,12 @@ export const BaseSpace = props => {
   const {savetopic} = useSelector(state => state.home);
 
   const {
-    page,
+    pageFrom,
     data: {name, cover_url, desc_tip},
   } = props;
 
   const handleClick = () => {
-    if (page === 'rate') {
+    if (pageFrom === 'rate') {
       navigation.navigate('NewRate');
     }
 
@@ -60,15 +60,15 @@ export const BaseMovement = props => {
   const {savetopic} = useSelector(state => state.home);
 
   const {
-    page,
+    pageFrom,
     data: {name, desc_tip},
   } = props;
 
   const handleClick = () => {
-    if (page === 'rate') {
+    if (pageFrom === 'rate') {
       navigation.navigate('NewRate');
     }
-    if (page === 'topic') {
+    if (pageFrom === 'topic') {
       navigation.goBack();
     }
 
@@ -94,16 +94,16 @@ export const BaseShopStore = props => {
   const {savetopic} = useSelector(state => state.home);
 
   const {
-    page,
+    pageFrom,
     data: {name, desc_tip},
   } = props;
 
   const handleClick = () => {
-    if (page === 'rate') {
+    if (pageFrom === 'rate') {
       navigation.navigate('NewRate');
     }
 
-    if (page === 'topic') {
+    if (pageFrom === 'topic') {
       navigation.goBack();
     }
 
@@ -129,16 +129,16 @@ export const BaseShopBrand = props => {
   const {savetopic} = useSelector(state => state.home);
 
   const {
-    page,
+    pageFrom,
     data: {name, desc_tip},
   } = props;
 
   const handleClick = () => {
-    if (page === 'rate') {
+    if (pageFrom === 'rate') {
       navigation.navigate('NewRate');
     }
 
-    if (page === 'topic') {
+    if (pageFrom === 'topic') {
       navigation.goBack();
     }
 
@@ -164,15 +164,15 @@ export const BaseProduct = props => {
   const {savetopic} = useSelector(state => state.home);
 
   const {
-    page,
+    pageFrom,
     data: {name, cover_url, category_name, category_brand_type},
   } = props;
 
   const handleClick = () => {
-    if (page === 'rate') {
+    if (pageFrom === 'rate') {
       navigation.navigate('NewRate');
     }
-    if (page === 'topic') {
+    if (pageFrom === 'topic') {
       navigation.goBack();
     }
 
