@@ -3,7 +3,6 @@ import {View, Text, TextInput, StyleSheet, Pressable, Dimensions, StatusBar} fro
 import {Platform, ScrollView, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {debounce} from 'lodash';
 import {useSelector, useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-picker';
 import Video from 'react-native-video';
@@ -30,7 +29,7 @@ const NewTopic = props => {
   const {navigation, route} = props;
   const {currentAccount} = useSelector(state => state.account);
   const {savetopic, location} = useSelector(state => state.home);
-  const {movement_ids, shop_store_ids, shop_brand_ids, tag_list, product} = savetopic;
+  const {movement_ids, shop_store_ids, shop_brand_ids, product_ids, tag_list, product} = savetopic;
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
   const [linkSource, setLinkSource] = useState(null);
@@ -180,14 +179,14 @@ const NewTopic = props => {
         : videoSource.length > 0
         ? '分享视频'
         : '',
-      mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
+      mention_ids: (savetopic.mention || []).map(v => v.id).join(),
       node_id: savetopic.node ? savetopic.node.id : '',
       space_id: savetopic.space ? savetopic.space.id : '',
       location_id: savetopic.location ? savetopic.location.id : '',
       movement_ids: (movement_ids || []).map(v => v.id).join(),
       shop_store_ids: (shop_store_ids || []).map(v => v.id).join(),
       shop_brand_ids: (shop_brand_ids || []).map(v => v.id).join(),
-      product_ids: product?.id || '',
+      product_ids: (product_ids || []).map(v => v.id).join(),
       tag_list: tag_list ? tag_list : [],
     };
 
@@ -209,7 +208,6 @@ const NewTopic = props => {
     }
 
     const data = getValidateForm();
-    console.log(data);
     if (videoSource.length > 0) {
       Toast.showLoading('正在发布中...', {duration: 3000});
       // 视频上传
@@ -230,7 +228,7 @@ const NewTopic = props => {
           index: 0,
           routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
         });
-      }, 200)
+      }, 200);
     } else {
       //other
       Toast.showLoading('正在发布中...');

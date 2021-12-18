@@ -12,39 +12,38 @@ const BaseLocation = props => {
   const {savetopic} = useSelector(state => state.home);
   const {createNode} = useSelector(state => state.node);
 
-  const {type, data} = props;
+  const {
+    pageFrom,
+    data: {id, name, district, address, location},
+  } = props;
 
   const goDetail = async () => {
-    let update = null;
-    if (data.id === 0) {
-      update = {location: null, space: null};
+    let params = null;
+    if (id === 0) {
+      params = {location: null, space: null};
     } else {
-      const params = {
-        name: data.name,
-        address: `${data.district}${data.address}`,
-        latitude: data.location.split(',')[1],
-        longitude: data.location.split(',')[0],
-      };
-      const res = await createLocations({location: params});
-      update = {location: res.data.location, space: null};
+      const [latitude, longitude] = location.split(',');
+      const query = {name, address: `${district}${address}`, latitude, longitude};
+      const res = await createLocations({location: query});
+      params = {location: res.data.location, space: null};
     }
 
-    if (type === 'add-location') {
-      dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...update}});
-      navigation.goBack();
+    if (pageFrom === 'topic') {
+      dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
     }
 
-    if (type === 'add-node') {
-      dispatch({type: action.CREATE_NODE, value: {...createNode, ...update}});
-      navigation.goBack();
+    if (pageFrom === 'node') {
+      dispatch({type: action.CREATE_NODE, value: {...createNode, ...params}});
     }
+
+    navigation.goBack();
   };
 
   return (
     <Pressable style={styles.spaceWrapper} onPress={goDetail}>
-      <Text style={styles.name}>{data.name}</Text>
-      {data.address || data.district ? (
-        <Text style={styles.address}>{data.address ? data.address : data.district}</Text>
+      <Text style={styles.name}>{name}</Text>
+      {address || district ? (
+        <Text style={styles.address}>{address ? address : district}</Text>
       ) : null}
     </Pressable>
   );

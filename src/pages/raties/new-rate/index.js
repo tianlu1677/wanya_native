@@ -12,7 +12,7 @@ import {RFValue, VWValue} from '@/utils/response-fontsize';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
 
-import PublishRateScore from './component/publish-rate-score';
+import PublishRateScore, {ReturnScoreText} from './component/publish-rate-score';
 import UploadMedia from './component/upload-media';
 
 const NewTopic = props => {
@@ -21,11 +21,13 @@ const NewTopic = props => {
   const {
     home: {savetopic},
   } = useSelector(state => state);
-  const {movement_ids, shop_store_ids, shop_brand_ids, tag_list, product} = savetopic;
+  const {space, shop_store_ids} = savetopic;
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
   const [score, setScore] = useState(0);
+
+  const currentTarget = space ? space : shop_store_ids.length > 0 ? shop_store_ids[0] : [];
 
   const handleGoHashTag = () => {
     navigation.navigate('AddHashTag');
@@ -41,32 +43,20 @@ const NewTopic = props => {
     dispatch({type: action.SAVE_NEW_TOPIC, value: topics});
   };
 
-  const isValidateForm = () => {
-    return content && score > 0 ? true : false;
-  };
+  const isValidateForm = () => (content && score > 0 ? true : false);
 
   const getValidateForm = () => {
     const data = {
       type: 'single',
-      medias: imageSource.map(v => v.url),
-      plain_content: savetopic.plan_content
-        ? savetopic.plan_content.trim()
-        : imageSource.length > 0
-        ? '分享图片'
-        : videoSource.length > 0
-        ? '分享视频'
-        : '',
-      mention_ids: savetopic.mention ? savetopic.mention.map(v => v.id).join() : '',
-      node_id: savetopic.node ? savetopic.node.id : '',
-      space_id: savetopic.space ? savetopic.space.id : '',
-      location_id: savetopic.location ? savetopic.location.id : '',
-      movement_ids: (movement_ids || []).map(v => v.id).join(),
+      node_id: '',
+      space_id: space ? space.id : '',
       shop_store_ids: (shop_store_ids || []).map(v => v.id).join(),
-      shop_brand_ids: (shop_brand_ids || []).map(v => v.id).join(),
-      product_ids: product?.id || '',
-      tag_list: tag_list ? tag_list : [],
+      plain_content: savetopic.plan_content,
+      mention_ids: (savetopic.mention || []).map(v => v.id).join(),
+      medias: imageSource.map(v => v.url),
+      is_rate: true,
+      rate_score: score,
     };
-
     return data;
   };
 
@@ -84,17 +74,18 @@ const NewTopic = props => {
       }
     }
 
+    Toast.showLoading('正在发布中...', {duration: 3000});
     const data = getValidateForm();
+    console.log(data);
 
     if (videoSource.length > 0) {
       // 先上传视频再发布
-      Toast.showLoading('正在发布中...', {duration: 3000});
       const params = {
         content: {video: {...videoSource[0]}, content: {...data}},
         upload: (file, cb) => uploadVideo(file, cb),
       };
       dispatch(changeUploadStatus({...params, status: 'upload', progress: 0}));
-      // 等待200ms再跳转，避免首页还没有拿到redux里面的值
+      // 等待200ms再跳转，避免首页还没有拿到redux里面的值 ｜｜ 应该不会存在拿不到值的情况（同步dispatch）
       setTimeout(() => {
         Toast.hide();
         navigation.reset({
@@ -105,9 +96,12 @@ const NewTopic = props => {
     } else {
       try {
         const res = await createTopic(data);
+        console.log(res);
         Toast.hide();
-        navigation.reset({index: 0, routes: [{name: 'TopicDetail', params: {topicId: res.id}}]});
-        dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Recommend', params: {activityKey: 'follow'}}],
+        });
       } catch (err) {
         Toast.hide();
       }
@@ -116,8 +110,8 @@ const NewTopic = props => {
 
   useEffect(() => {
     return () => {
-      dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
       removeAllPhoto();
+      dispatch({type: action.SAVE_NEW_TOPIC, value: {}});
     };
   }, []);
 
@@ -127,15 +121,6 @@ const NewTopic = props => {
 
   useLayoutEffect(() => {
     const hitSlop = {top: 10, bottom: 10, left: 5, right: 5};
-
-    const LeftBtn = () => {
-      const handleClose = () => navigation.goBack();
-      return (
-        <Pressable onPress={handleClose} style={{padding: 5}} hitSlop={hitSlop}>
-          <IconFont name="close" size={14} />
-        </Pressable>
-      );
-    };
 
     const RightBtn = () => {
       const style = {color: isValidateForm() ? '#000' : '#bdbdbd'};
@@ -148,7 +133,6 @@ const NewTopic = props => {
 
     navigation.setOptions({
       headerTitle: '评价',
-      headerLeft: () => <LeftBtn />,
       headerRight: () => <RightBtn />,
     });
   }, [navigation, imageSource, videoSource, savetopic]);
@@ -158,25 +142,21 @@ const NewTopic = props => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.wrapper}>
           <View style={styles.relatedWrapper}>
-            <FastImg
-              style={styles.relatedImage}
-              source={require('@/assets/images/add-video.png')}
-            />
+            <FastImg style={styles.relatedImage} source={{uri: currentTarget.cover_url}} />
             <View style={styles.relatedInfo}>
               <Text style={styles.relatedName} numberOfLines={1}>
-                {/* {movement_ids[0].name.trim()} */}
-                32323
+                {currentTarget.name}
               </Text>
               <Text style={styles.relatedText} numberOfLines={1}>
-                {/* {movement_ids[0].desc_tip} */}
-                32323
+                {currentTarget.desc_tip}
               </Text>
             </View>
           </View>
 
           <View style={styles.rateWrapper}>
-            <Text style={styles.rateText}>场地评价</Text>
+            <Text style={styles.rateTitle}>场地评价</Text>
             <PublishRateScore score={score} setScore={setScore} />
+            <Text style={styles.rateText}>{ReturnScoreText(score)}</Text>
           </View>
 
           <TextInput
@@ -229,14 +209,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: RFValue(22),
   },
-  rateText: {
+  rateTitle: {
     fontWeight: '500',
     marginRight: 10,
+  },
+  rateText: {
+    color: '#bdbdbd',
+    fontSize: 12,
   },
   content: {
     minHeight: RFValue(180),
     lineHeight: 20,
-    marginTop: 10,
+    marginTop: RFValue(10),
     textAlign: 'justify',
     letterSpacing: 1,
   },

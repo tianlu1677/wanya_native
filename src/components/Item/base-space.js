@@ -10,22 +10,22 @@ const BaseSpace = props => {
   const dispatch = useDispatch();
   const {savetopic} = useSelector(state => state.home);
   const {createNode} = useSelector(state => state.node);
-  const {type, data} = props;
+  const {pageFrom, data} = props;
 
   const goDetail = () => {
-    const update = {space: data.id === 0 ? null : data, location: null};
+    const params = {space: data.id === 0 ? null : data, location: null};
 
-    if (type === 'add-space') {
-      dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...update}});
+    if (pageFrom === 'topic') {
+      dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
       navigation.goBack();
     }
 
-    if (type === 'add-node') {
-      dispatch({type: action.CREATE_NODE, value: {...createNode, ...update}});
+    if (pageFrom === 'node') {
+      dispatch({type: action.CREATE_NODE, value: {...createNode, ...params}});
       navigation.goBack();
     }
 
-    if (type === 'list') {
+    if (pageFrom === 'list') {
       navigation.push('SpaceDetail', {spaceId: data.id});
     }
   };

@@ -5,7 +5,7 @@ import ScrollList from '@/components/ScrollList';
 import {BaseSpace, BaseMovement, BaseShopStore, BaseShopBrand, BaseProduct} from './related-item';
 
 const RelatedList = props => {
-  const {type, request} = props;
+  const {type, page, request} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
@@ -13,15 +13,15 @@ const RelatedList = props => {
   const renderItem = ({item}) => {
     switch (type) {
       case 'space':
-        return <BaseSpace data={item} />;
+        return <BaseSpace data={item} page={page} />;
       case 'movement':
-        return <BaseMovement data={item} />;
+        return <BaseMovement data={item} page={page} />;
       case 'shop_store':
-        return <BaseShopStore data={item} />;
+        return <BaseShopStore data={item} page={page} />;
       case 'shop_brand':
-        return <BaseShopBrand data={item} />;
+        return <BaseShopBrand data={item} page={page} />;
       case 'product':
-        return <BaseProduct data={item} />;
+        return <BaseProduct data={item} page={page} />;
       default:
         return <View />;
     }
@@ -57,6 +57,7 @@ const RelatedList = props => {
 RelatedList.propTypes = {
   request: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
+  page: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -43,7 +43,7 @@ const PublishModal = props => {
   };
 
   const onRate = () => {
-    navigation.navigate('NewRate');
+    navigation.navigate('AddRateRelated');
     onCancel();
   };
 

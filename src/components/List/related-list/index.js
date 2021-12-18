@@ -1,38 +1,35 @@
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  StatusBar,
-} from 'react-native';
+import {View, StyleSheet, SafeAreaView, Keyboard, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {debounce} from 'lodash';
-import {BarHeight} from '@/utils/navbar';
 import TabView from '@/components/TabView';
 import {Search} from '@/components/NodeComponents';
 import {RFValue} from '@/utils/response-fontsize';
 import {searchApi} from '@/api/search_api';
 
 // import RelatedList from '@/pages/topics/add-related/related-list';
-import RelatedList from './related-list';
+import RelatedScrollList from './related-scroll-list';
 
-import ProductSingleList from '@/components/List/product-single-list';
+// import ProductSingleList from '@/components/List/product-single-list';
 
 const AddRelated = props => {
-  const {navigation} = props;
+  const {navigation, keys, page} = props;
+
   const {savetopic} = useSelector(state => state.home);
   const [searchKey, setSearchKey] = useState('');
 
   const defaultKey = () => {
-    return (savetopic.movement_ids || []).length > 0
+    return (savetopic.space_id || []).length > 0
+      ? 'space'
+      : (savetopic.movement_ids || []).length > 0
       ? 'movement'
       : (savetopic.shop_store_ids || []).length > 0
       ? 'shop_store'
       : (savetopic.shop_brand_ids || []).length > 0
       ? 'shop_brand'
-      : 'movement';
+      : (savetopic.product_ids || []).length > 0
+      ? 'product'
+      : keys[0];
   };
 
   const [currentKey, setCurrentKey] = useState(defaultKey);
@@ -42,15 +39,21 @@ const AddRelated = props => {
     params: {name: searchKey, type: currentKey, random: 1},
   });
 
-  const SpaceListPage = () => <RelatedList request={request} type="space" />;
+  const SpaceListPage = () => <RelatedScrollList request={request} type="space" page={page} />;
 
-  const MovementListPage = () => <RelatedList request={request} type="movement" />;
+  const MovementListPage = () => (
+    <RelatedScrollList request={request} type="movement" page={page} />
+  );
 
-  const ShopStoreListPage = () => <RelatedList request={request} type="shop_store" />;
+  const ShopStoreListPage = () => (
+    <RelatedScrollList request={request} type="shop_store" page={page} />
+  );
 
-  const ShopBrandListPage = () => <RelatedList request={request} type="shop_brand" />;
+  const ShopBrandListPage = () => (
+    <RelatedScrollList request={request} type="shop_brand" page={page} />
+  );
 
-  const ProductListPage = () => <RelatedList request={request} type="product" />;
+  const ProductListPage = () => <RelatedScrollList request={request} type="product" page={page} />;
 
   // 搜索(naem有值)一个接口 没值另一个接口
   const onChangeText = text => {
@@ -62,8 +65,6 @@ const AddRelated = props => {
     setRequest({api: searchApi, params: {name: searchKey, type: key, random: 1}});
     setCurrentKey(key);
   };
-
-  // const keys = ['space', 'movement', 'movement'];
 
   return (
     <SafeAreaView onPress={Keyboard.dismiss} style={styles.wrapper}>
@@ -113,8 +114,7 @@ const AddRelated = props => {
                 title: '顽物',
                 component: ProductListPage,
               },
-            ]}
-            // .filter(item => keys.includes(item.key))}
+            ].filter(item => keys.includes(item.key))}
           />
         ) : null}
       </View>

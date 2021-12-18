@@ -8,16 +8,16 @@ import BaseLocation from '@/components/Item/base-location';
 const noLocation = {id: 0, name: '不选择位置'};
 
 const LocationList = props => {
+  const {pageFrom, request} = props;
+
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
   const {location} = useSelector(state => state.home);
   const {positionCity} = location;
 
-  const {type} = props;
-
   const renderItem = ({item}) => {
-    return <BaseLocation data={item} type={type} />;
+    return <BaseLocation data={item} pageFrom={pageFrom} />;
   };
 
   const renderSeparator = () => {
@@ -26,12 +26,12 @@ const LocationList = props => {
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    const {api, params} = props.request;
+    const {api, params} = request;
     const res = await api({...params, page});
 
     let data = res.data.answer.tips;
 
-    if (type === 'add-location' && data.length > 0) {
+    if (pageFrom === 'topic') {
       data = [
         noLocation,
         {
@@ -42,6 +42,11 @@ const LocationList = props => {
         ...data,
       ];
     }
+
+    if (pageFrom === 'node') {
+      data = [...data];
+    }
+
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -49,7 +54,7 @@ const LocationList = props => {
 
   useEffect(() => {
     loadData();
-  }, [props.request]);
+  }, [request]);
 
   return (
     <ScrollList

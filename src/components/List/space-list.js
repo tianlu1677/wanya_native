@@ -7,21 +7,28 @@ import BaseSpace from '@/components/Item/base-space';
 const noSpace = {id: 0, name: '不选择场地'};
 
 const SpaceList = props => {
-  const {type} = props;
+  const {pageFrom, request, dataKey} = props;
   const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState();
   const [listData, setListData] = useState([]);
 
-  const renderItem = ({item}) => <BaseSpace data={item} type={type} />;
+  const renderItem = ({item}) => <BaseSpace data={item} pageFrom={pageFrom} />;
 
   const renderSeparator = () => <View style={styles.separator} />;
 
   const loadData = async (page = 1) => {
     setLoading(true);
-    const {api, params} = props.request;
+    const {api, params} = request;
     const res = await api({...params, page});
-    let data = props.dataKey ? res.data[props.dataKey] : res.data.spaces;
-    data = type === 'add-space' && data.length > 0 ? [noSpace, ...data] : [...data];
+    let data = dataKey ? res.data[dataKey] : res.data.spaces;
+    if (pageFrom === 'topic') {
+      data = [noSpace, ...data];
+    }
+
+    if (pageFrom === 'node') {
+      data = [...data];
+    }
+
     setHeaders(res.headers);
     setListData(page === 1 ? data : [...listData, ...data]);
     setLoading(false);
@@ -29,7 +36,7 @@ const SpaceList = props => {
 
   useEffect(() => {
     loadData();
-  }, [props.request]);
+  }, [request]);
 
   return (
     <ScrollList

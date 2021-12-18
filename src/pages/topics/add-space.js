@@ -23,6 +23,8 @@ import {getSpacesList} from '@/api/space_api';
 import {createLocations, getLocationsList} from '@/api/location_api';
 
 const AddSpace = props => {
+  const {route} = props;
+  const {type} = route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {savetopic, location} = useSelector(state => state.home);
@@ -54,7 +56,7 @@ const AddSpace = props => {
   const [request, setRequest] = useState(returnParams('space', ''));
 
   const dispatchData = data => {
-    const {type} = props.route.params;
+    // const {type} = props.route.params;
     if (type === 'topic') {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...data}});
     }
@@ -76,11 +78,11 @@ const AddSpace = props => {
         const res = await createLocations({location: params});
         data = res.data.location;
       }
-      const update = {location: data.id === 0 ? null : data, space: null};
-      dispatchData(update);
+      const params = {location: data.id === 0 ? null : location, space: null};
+      dispatchData(params);
     } else {
-      const update = {space: item.id === 0 ? null : item, location: null};
-      dispatchData(update);
+      const params = {space: item.id === 0 ? null : item, location: null};
+      dispatchData(params);
     }
     navigation.goBack();
   };
@@ -89,7 +91,8 @@ const AddSpace = props => {
     <SpaceList
       request={request}
       enableRefresh={false}
-      type={props.route.params.type === 'topic' ? 'add-space' : 'add-node'}
+      pageFrom={type}
+      // type={props.route.params.type === 'topic' ? 'add-space' : 'add-node'}
     />
   );
 
@@ -97,7 +100,8 @@ const AddSpace = props => {
     <LocationList
       request={request}
       enableRefresh={false}
-      type={props.route.params.type === 'topic' ? 'add-location' : 'add-node'}
+      pageFrom={type}
+      // type={props.route.params.type === 'topic' ? 'add-location' : 'add-node'}
     />
   );
 

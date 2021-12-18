@@ -125,3 +125,44 @@ export const ShareWrapper = {
     marginLeft: 'auto',
   },
 };
+
+// common 左图又文案
+export const BaseRelatedStyle = {
+  relatedWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: RFValue(10),
+    backgroundColor: '#000',
+    borderRadius: 9,
+  },
+  relatedImage: {
+    width: RFValue(33),
+    height: RFValue(33),
+    marginRight: 8,
+    borderRadius: 6,
+  },
+  relatedInfo: {
+    flex: 1,
+  },
+  relatedName: {
+    color: '#fff',
+    fontWeight: '500',
+  },
+  relatedText: {
+    color: '#bdbdbd',
+    fontSize: RFValue(10),
+    fontWeight: '300',
+    marginTop: 4,
+  },
+  relatedBtn: {
+    paddingHorizontal: 15,
+    paddingVertical: 7,
+    textAlign: 'center',
+    borderRadius: 14,
+    overflow: 'hidden',
+    color: '#fff',
+    fontWeight: '500',
+    backgroundColor: '#ff2242',
+  },
+};

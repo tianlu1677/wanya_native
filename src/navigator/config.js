@@ -20,13 +20,16 @@ import AddMentionAccount from '@/pages/topics/add-mention-account';
 import AddHashTag from '@/pages/topics/add-hashtag';
 import AddSpace from '@/pages/topics/add-space';
 import AddNode from '@/pages/topics/add-node';
-import AddRelated from '@/pages/topics/add-related/add-related-index';
+// import AddRelated from '@/pages/topics/add-related/add-related-index';
+import AddTopicRelated from '@/pages/topics/add-topic-related';
+
 import AddLink from '@/pages/topics/add-link';
 import TopicDetail from '@/pages/topics/topic-detail';
 import TopicLinkDetail from '@/pages/topics/topic-link-detail';
 
 // 评价
 import NewRate from '@/pages/raties/new-rate/index';
+import AddRateRelated from '@/pages/raties/add-rate-related';
 
 // 文章
 import ArticleDetail from '@/pages/articles/article-detail';
@@ -152,7 +155,8 @@ const topicRouter = [
     options: {headerShown: false, title: '外链帖子展示页'},
   },
   {name: 'AddNode', component: AddNode, options: {title: '添加圈子页面'}},
-  {name: 'AddRelated', component: AddRelated, options: {headerShown: false, herderColor: '#fff'}},
+  {name: 'AddTopicRelated', component: AddTopicRelated, options: {headerShown: false}},
+  // {name: 'AddRelated', component: AddRelated, options: {headerShown: false, herderColor: '#fff'}},
   {name: 'AddLink', component: AddLink},
   {name: 'AddHashTag', component: AddHashTag, options: {headerShown: false, herderColor: '#fff'}},
   {name: 'AddSpace', component: AddSpace, options: {headerShown: false, herderColor: '#fff'}},
@@ -164,7 +168,10 @@ const topicRouter = [
   {name: 'NewTopic', component: NewTopic, options: {...forVerticalIOS}},
 ];
 
-const rateRouter = [{name: 'NewRate', component: NewRate, options: {...forVerticalIOS}}];
+const rateRouter = [
+  {name: 'NewRate', component: NewRate},
+  {name: 'AddRateRelated', component: AddRateRelated, options: {headerShown: false}},
+];
 
 const articleRouter = [{name: 'ArticleDetail', component: ArticleDetail, options: {title: ''}}];
 

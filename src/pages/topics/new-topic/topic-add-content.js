@@ -9,7 +9,7 @@ const RelatedImage = require('@/assets/images/topic-related.png');
 const TopicAddContent = props => {
   const {
     navigation,
-    savetopic: {node, movement_ids, shop_store_ids, shop_brand_ids, product},
+    savetopic: {node, movement_ids, shop_store_ids, shop_brand_ids, product_ids},
   } = props;
 
   return (
@@ -25,7 +25,7 @@ const TopicAddContent = props => {
           ) : null}
           <IconFont name="arrow-right" size={10} color="#c2c2c2" />
         </Pressable>
-        <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddRelated')}>
+        <Pressable style={styles.addSlide} onPress={() => navigation.navigate('AddTopicRelated')}>
           <Text style={styles.addText}>关联顽招/顽士多/品牌/顽物等</Text>
           <IconFont name="arrow-right" size={10} color="#c2c2c2" />
         </Pressable>
@@ -73,20 +73,26 @@ const TopicAddContent = props => {
         </View>
       ) : null}
 
-      {product ? (
+      {product_ids?.length > 0 ? (
         <View style={styles.relatedWrapper}>
           <FastImg
             style={styles.relatedImage}
-            source={{uri: product.cover_url ? product.cover_url : product.images_list[0]}}
+            source={{
+              uri: product_ids[0].cover_url
+                ? product_ids[0].cover_url
+                : product_ids[0].images_list[0],
+            }}
           />
           <View style={styles.relatedInfo}>
             <Text style={styles.relatedName} numberOfLines={1}>
-              {product.name}
+              {product_ids[0].name}
             </Text>
             <Text style={styles.relatedText} numberOfLines={1}>
-              {product.category_name}
-              {product.category_brand_type ? ' · ' : ''}
-              {product.category_brand_type ? product.category_brand_type.split(',').join('/') : ''}
+              {product_ids[0].category_name}
+              {product_ids[0].category_brand_type ? ' · ' : ''}
+              {product_ids[0].category_brand_type
+                ? product_ids[0].category_brand_type.split(',').join('/')
+                : ''}
             </Text>
           </View>
         </View>

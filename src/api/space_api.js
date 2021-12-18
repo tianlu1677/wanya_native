@@ -114,3 +114,11 @@ export async function getSpacesJoin(id) {
   });
   return res.data;
 }
+
+export async function getSpacesExit(id) {
+  const res = await request({
+    url: `/api/v1/spaces/${id}/exit`,
+    method: 'POST',
+  });
+  return res.data;
+}

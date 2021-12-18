@@ -28,6 +28,8 @@ const CreateNodeType = props => {
   const nodeId = createNode.id || null;
   const [visible, setVisible] = useState(false);
 
+  const currentSpace = createNode.space || createNode.location || null;
+
   const getValidateForm = () => {
     const data = {
       name: createNode.name,
@@ -137,14 +139,8 @@ const CreateNodeType = props => {
           <GetLocation
             style={[styles.slideView, {marginBottom: 0}]}
             handleClick={getCurrentLocation}>
-            <Text
-              style={[
-                styles.slidetext,
-                {color: createNode.space || createNode.location ? '#000' : '#bdbdbd'},
-              ]}>
-              {createNode.space || createNode.location
-                ? createNode.space?.name || createNode.location?.name
-                : '可选择圈子所在位置（选填）'}
+            <Text style={[styles.slidetext, {color: currentSpace ? '#000' : '#bdbdbd'}]}>
+              {currentSpace ? currentSpace.name : '可选择圈子所在位置（选填）'}
             </Text>
             <IconFont name={'arrow-right'} size={10} color={'#bdbdbd'} />
           </GetLocation>
