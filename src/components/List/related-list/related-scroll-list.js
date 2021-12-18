@@ -31,10 +31,9 @@ const RelatedList = props => {
     setLoading(true);
     const {api, params} = request;
     const res = await api({...params, page, per_page: 50});
-    console.log(pageFrom);
-
     setHeaders(res.headers);
-    setListData(page === 1 ? res.data.items : [...listData, ...res.data.items]);
+    const ReturnKey = res.data.items || res.data.spaces || res.data.shop_stores;
+    setListData(page === 1 ? ReturnKey : [...listData, ...ReturnKey]);
     setLoading(false);
   };
 
