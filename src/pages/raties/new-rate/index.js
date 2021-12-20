@@ -11,10 +11,8 @@ import FastImg from '@/components/FastImg';
 import {RFValue, VWValue} from '@/utils/response-fontsize';
 import MediasPicker from '@/components/MediasPicker';
 import {createTopic} from '@/api/topic_api';
-
 import PublishRateScore, {ReturnScoreText} from './component/publish-rate-score';
 import UploadMedia from './component/upload-media';
-
 import {BaseRelatedStyle as lstyles} from '@/styles/baseCommon';
 
 const NewTopic = props => {
@@ -31,7 +29,6 @@ const NewTopic = props => {
   const currentTarget = space ? space : shop_store_ids.length > 0 ? shop_store_ids[0] : null;
   const rateType = space ? 'space' : shop_store_ids.length > 0 ? 'shop_store' : '';
 
-  console.log(currentTarget);
   const handleGoHashTag = () => {
     navigation.navigate('AddHashTag');
   };
@@ -97,7 +94,7 @@ const NewTopic = props => {
       }, 200);
     } else {
       try {
-        const res = await createTopic(data);
+        await createTopic(data);
         Toast.hide();
         navigation.reset({
           index: 0,
@@ -136,7 +133,7 @@ const NewTopic = props => {
       headerTitle: '评价',
       headerRight: () => <RightBtn />,
     });
-  }, [navigation, imageSource, videoSource, savetopic]);
+  }, [navigation, imageSource, videoSource, savetopic, score]);
 
   return (
     <ScrollView style={styles.pageWrapper} onScroll={Keyboard.dismiss} scrollEventThrottle={16}>
@@ -160,7 +157,7 @@ const NewTopic = props => {
             <Text style={styles.rateTitle}>
               {rateType === 'space' ? '场地评价' : rateType === 'shop_store' ? '顽士多评价' : ''}
             </Text>
-            <PublishRateScore score={score} setScore={setScore} />
+            <PublishRateScore score={score} setScore={num => setScore(num)} />
             <Text style={styles.rateText}>{ReturnScoreText(score)}</Text>
           </View>
 

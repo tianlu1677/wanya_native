@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   rateText: {
     color: '#FF2242',
     fontSize: 11,
+    fontWeight: '500',
   },
   infoCount: {
     marginLeft: 5,

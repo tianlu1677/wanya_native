@@ -160,7 +160,10 @@ const SpaceDetail = ({navigation, route}) => {
           </View>
           <Text style={styles.name}>{detail.name}</Text>
           <View style={styles.info}>
-            <RateScore score={detail.rate_score} size={14} />
+            <View style={styles.rateWrapper}>
+              <RateScore score={detail.rate_score} size={12} />
+              <Text style={styles.rateText}>{detail.rate_score}</Text>
+            </View>
             <Text style={styles.infoCount}>{detail.publish_rate_topics_count}条评价</Text>
             <Text style={styles.infoCount}>{detail.publish_topics_count}条动态</Text>
           </View>
@@ -231,7 +234,7 @@ const SpaceDetail = ({navigation, route}) => {
                     style={styles.introImageWrapper}
                     key={index}
                     onPress={() => handleClickImage(index)}>
-                    <FastImg source={{uri: detail.cover_url}} style={styles.introImage} />
+                    <FastImg source={{uri: item}} style={styles.introImage} />
                     {index === 2 && detail.medias.length > 3 ? (
                       <Text style={styles.introImageOpacity}>{detail.medias.length}张图片</Text>
                     ) : null}
@@ -353,6 +356,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: RFValue(10),
   },
+  rateWrapper: {
+    flexDirection: 'row',
+  },
+  rateText: {
+    color: '#FF2242',
+    fontSize: 13,
+    fontWeight: '500',
+  },
   infoCount: {
     marginLeft: 9,
     fontSize: 13,
@@ -419,7 +430,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 13,
   },
   introTitle: {
     fontSize: 18,
