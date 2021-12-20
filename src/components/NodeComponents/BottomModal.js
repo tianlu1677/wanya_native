@@ -29,13 +29,6 @@ const BottomModalView = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'red',
-    zIndex: 1000,
-  },
   content: {
     paddingTop: 10,
     fontSize: 12,

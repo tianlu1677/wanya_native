@@ -83,8 +83,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   image: {
-    width: 110,
-    height: 85,
+    width: RFValue(110),
+    height: (RFValue(110) * 85) / 110,
+    borderRadius: RFValue(6),
   },
   infoWrapper: {
     flex: 1,
@@ -99,13 +100,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  rateWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rateText: {
+    color: '#FF2242',
+    fontSize: 11,
+  },
   infoCount: {
     marginLeft: 5,
     fontSize: 11,
   },
   addressWrapper: {
     flexDirection: 'row',
-    marginTop: RFValue(10),
+    marginTop: RFValue(7),
   },
   addressName: {
     fontSize: 12,
@@ -121,8 +130,8 @@ const styles = StyleSheet.create({
   tagWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: RFValue(10),
-    marginBottom: -10,
+    marginTop: RFValue(7),
+    marginBottom: -7,
   },
   tag: {
     paddingHorizontal: 6,
@@ -130,7 +139,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#FF6633',
     backgroundColor: '#FFF2E7',
-    borderRadius: 3,
+    borderRadius: 4,
+    overflow: 'hidden',
     marginRight: 7,
     marginBottom: 7,
   },
@@ -141,12 +151,6 @@ const styles = StyleSheet.create({
   },
   accountText: {
     fontSize: 11,
-  },
-  rateWrapper: {
-    flexDirection: 'row',
-  },
-  rateText: {
-    color: '#FF2242',
   },
 });
 

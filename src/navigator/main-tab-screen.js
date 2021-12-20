@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, Image, Pressable, Vibration, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, Image, Pressable, StyleSheet, Dimensions} from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector, useDispatch} from 'react-redux';
@@ -52,7 +51,7 @@ const PublishModal = props => {
       visible={visible}
       cancleClick={onCancel}
       overlayOpacity={0.2}
-      modalStyle={{height: 370 + BOTTOM_HEIGHT}}
+      modalStyle={{borderRadius: 20, height: 370 + BOTTOM_HEIGHT}}
       contentWrapStyle={styles.contentModal}>
       <Pressable style={imgStyle} onPress={onTopic}>
         <FastImg source={require('@/assets/create/topic.png')} style={imgStyle} />
@@ -239,9 +238,8 @@ const styles = StyleSheet.create({
   },
   contentModal: {
     backgroundColor: '#000000',
-    paddingTop: RFValue(25),
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingTop: RFValue(18),
+    paddingHorizontal: 30,
     alignItems: 'center',
     bottom: 0,
   },

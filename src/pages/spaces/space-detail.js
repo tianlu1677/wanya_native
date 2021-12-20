@@ -53,9 +53,9 @@ const SpaceDetail = ({navigation, route}) => {
   };
 
   const loadList = async () => {
-    const res = await getSpacePosts({id: spaceId, type: 'no_rate'});
+    const res = await getSpacePosts({id: spaceId, type: 'rate'});
     setRateList(res.data.posts);
-    const ret = await getSpacePosts({id: spaceId, type: 'rate'});
+    const ret = await getSpacePosts({id: spaceId, type: 'no_rate'});
     setPostList(ret.data.posts);
   };
 
@@ -66,13 +66,29 @@ const SpaceDetail = ({navigation, route}) => {
   };
 
   const handleClickImage = index => {
-    if (index === 0 || index === 2) {
+    if (index === 0 || index === 1) {
       const images = detail.medias.map(item => {
         return {url: item.split('?')[0]};
       });
       const data = {index, visible: true, images};
       dispatch(dispatchPreviewImage(data));
     }
+    if (index === 2) {
+      handleGoImageInfo();
+    }
+  };
+
+  const onPreview = () => {
+    const data = {index: 0, visible: true, images: [{url: detail.cover_url}]};
+    dispatch(dispatchPreviewImage(data));
+  };
+
+  const handelGoAccountDetail = () => {
+    navigation.navigate('AccountDetail', {accountId: detail.account.id});
+  };
+
+  const handleGoImageInfo = () => {
+    navigation.navigate('SpaceImageInfo', {medias: detail.medias});
   };
 
   const handleGoRateList = () => {
@@ -103,44 +119,23 @@ const SpaceDetail = ({navigation, route}) => {
   };
 
   const handleChange = () => {
-    // 起点坐标信息
-    const startLocation = {
-      lng: 106.534892,
-      lat: 29.551891,
-      title: '我的位置',
-    };
-
-    // 终点坐标信息
-    const destLocation = {
-      lng: detail.longitude,
-      lat: detail.latitude,
-      title: detail.name,
-    };
-    console.log(destLocation);
+    // 起点坐标信息 || 终点坐标信息
+    const startLocation = {lng: 106.534892, lat: 29.551891, title: '我的位置'};
+    const destLocation = {lng: detail.longitude, lat: detail.latitude, title: detail.name};
     if (Platform.OS === 'ios') {
       MapLinking.planRoute({startLocation, destLocation, mode: 'drive'});
     } else {
       setShowActionSheet(true);
-      const maps = MapLinking.openUrl({
-        startLocation,
-        destLocation,
-        mode: 'drive',
-        type: 'gcj02',
-        appName: 'MapLinking',
-      });
-      // console.log('maps', maps);
+      const options = {mode: 'drive', type: 'gcj02', appName: 'MapLinking'};
+      const maps = MapLinking.openUrl({...options, startLocation, destLocation});
       const list = maps.map((map, index) => ({
         id: index,
         label: map[0],
-        onPress: () => {
-          Linking.openURL(map[1]);
-        },
+        onPress: () => Linking.openURL(map[1]),
       }));
       setItemList(list);
     }
   };
-
-  console.log(detail);
 
   useEffect(() => {
     loadData();
@@ -152,7 +147,9 @@ const SpaceDetail = ({navigation, route}) => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.topContent}>
           <View style={styles.image}>
-            <FastImg source={{uri: detail.cover_url}} style={styles.coverImage} />
+            <Pressable onPress={onPreview}>
+              <FastImg source={{uri: detail.cover_url}} style={styles.coverImage} />
+            </Pressable>
             <View style={styles.scoreOpacity}>
               <PlayScore
                 score={detail.play_score}
@@ -163,17 +160,14 @@ const SpaceDetail = ({navigation, route}) => {
           </View>
           <Text style={styles.name}>{detail.name}</Text>
           <View style={styles.info}>
-            <View style={styles.rateWrapper}>
-              <Text style={styles.rateText}>打分</Text>
-              <RateScore score={detail.rate_score} size={14} />
-            </View>
+            <RateScore score={detail.rate_score} size={14} />
             <Text style={styles.infoCount}>{detail.publish_rate_topics_count}条评价</Text>
             <Text style={styles.infoCount}>{detail.publish_topics_count}条动态</Text>
           </View>
-          <View style={styles.info}>
+          <Pressable style={styles.info} onPress={handelGoAccountDetail}>
             <Avator account={detail.account} size={20} />
             <Text style={styles.accountText}>{detail.account.nickname} 创建</Text>
-          </View>
+          </Pressable>
           {detail.tag_list.length > 0 ? (
             <View style={[styles.info, styles.tagsInfo]}>
               {detail.tag_list.map((tag, index) => (
@@ -223,22 +217,29 @@ const SpaceDetail = ({navigation, route}) => {
         <View style={[styles.intro]}>
           <View style={styles.introTitleInfo}>
             <Text style={styles.introTitle}>简介</Text>
-            <Text style={styles.introTips}>查看全部</Text>
+            {detail.medias.length > 3 ? (
+              <Text style={styles.introTips} onPress={handleGoImageInfo}>
+                查看全部
+              </Text>
+            ) : null}
           </View>
           <View style={styles.introImageInfo}>
-            {detail.medias.map((item, index) => {
-              return (
-                <Pressable
-                  style={styles.introImageWrapper}
-                  key={index}
-                  onPress={() => handleClickImage(index)}>
-                  <FastImg source={{uri: detail.cover_url}} style={styles.introImage} />
-                  {index === detail.medias.length - 1 ? (
-                    <Text style={styles.introImageOpacity}>{detail.medias.length}张图片</Text>
-                  ) : null}
-                </Pressable>
-              );
-            })}
+            <View style={styles.imageInfo}>
+              {detail.medias.slice(0, 3).map((item, index) => {
+                return (
+                  <Pressable
+                    style={styles.introImageWrapper}
+                    key={index}
+                    onPress={() => handleClickImage(index)}>
+                    <FastImg source={{uri: detail.cover_url}} style={styles.introImage} />
+                    {index === 2 && detail.medias.length > 3 ? (
+                      <Text style={styles.introImageOpacity}>{detail.medias.length}张图片</Text>
+                    ) : null}
+                  </Pressable>
+                );
+              })}
+            </View>
+
             <Text style={styles.introText} numberOfLines={2} onPress={() => setShowModal(true)}>
               {detail.intro}
             </Text>
@@ -337,6 +338,7 @@ const styles = StyleSheet.create({
   coverImage: {
     width: SCREEN_WIDTH - 28,
     height: ((SCREEN_WIDTH - 28) * 390) / 690,
+    borderRadius: 8,
   },
   scoreOpacity: {
     ...opacity,
@@ -345,12 +347,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     marginTop: 14,
-  },
-  rateWrapper: {
-    flexDirection: 'row',
-  },
-  rateText: {
-    marginRight: 5,
   },
   info: {
     flexDirection: 'row',
@@ -375,7 +371,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#FF6633',
     backgroundColor: '#FFF2E7',
-    borderRadius: 3,
+    borderRadius: 4,
+    overflow: 'hidden',
     marginRight: 7,
     marginBottom: 7,
   },
@@ -434,6 +431,9 @@ const styles = StyleSheet.create({
   },
   introImageInfo: {
     marginTop: 16,
+  },
+  imageInfo: {
+    flexDirection: 'row',
   },
   introImageWrapper: {
     position: 'relative',

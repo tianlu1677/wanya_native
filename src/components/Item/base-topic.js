@@ -3,7 +3,13 @@ import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import FastImg from '@/components/FastImg';
-import {Header, Bottom, PlainContent, CommentBottom} from '@/components/Item/single-list-item';
+import {
+  Header,
+  Bottom,
+  PlainContent,
+  RateRelated,
+  CommentBottom,
+} from '@/components/Item/single-list-item';
 import LocationBar from '@/components/LocationBar';
 import {RateScore} from '@/components/NodeComponents';
 import {dispatchTopicDetail, dispatchPreviewImage} from '@/redux/actions';
@@ -136,7 +142,7 @@ const BaseTopic = props => {
     <Pressable style={[styles.postSlide, style]} onPress={goTopicDetail}>
       <Header data={data} type="topic" typeHeader={type} onRemove={props.onRemove} />
       {data.plain_content ? (
-        <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(13)}} />
+        <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(5)}} />
       ) : (
         <View />
       )}
@@ -180,6 +186,9 @@ const BaseTopic = props => {
           </Pressable>
         </View>
       )}
+
+      {/* 为评价时显示场地、顽士多列 */}
+      <RateRelated data={data} />
 
       {bottom ? (
         bottom === 'comment' ? (
