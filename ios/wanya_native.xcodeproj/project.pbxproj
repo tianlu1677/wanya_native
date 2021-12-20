@@ -356,6 +356,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = K7KF6RDWDW;
 						LastSwiftMigration = 1230;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -798,7 +799,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = icons;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 55;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 56;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -808,7 +811,7 @@
 				INFOPLIST_FILE = wanya_native/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.32;
+				MARKETING_VERSION = 0.0.33;
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -817,6 +820,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vanyah.ios;
 				PRODUCT_NAME = "顽鸦";
+				PROVISIONING_PROFILE_SPECIFIER = tttt;
 				SWIFT_OBJC_BRIDGING_HEADER = "wanya_native-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -833,15 +837,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = "SI_FhBaTYA5BDT8HPCIGnCPKg-0RoX_jntTlR";
 				CODE_SIGN_ENTITLEMENTS = wanya_native/wanya_nativeRelease.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 55;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 56;
 				DEVELOPMENT_TEAM = K7KF6RDWDW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = wanya_native/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.32;
+				MARKETING_VERSION = 0.0.33;
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -850,7 +854,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vanyah.ios;
 				PRODUCT_NAME = "顽鸦";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = tttt;
 				SWIFT_OBJC_BRIDGING_HEADER = "wanya_native-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
