@@ -95,7 +95,7 @@ export const BaseShopStore = props => {
 
   const {
     pageFrom,
-    data: {name, desc_tip},
+    data: {name, cover_url, desc_tip},
   } = props;
 
   const handleClick = () => {
@@ -111,7 +111,7 @@ export const BaseShopStore = props => {
     dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
   };
 
-  return (
+  return pageFrom === 'topic' ? (
     <Pressable style={styles.wrapper} onPress={handleClick}>
       <View style={styles.info}>
         <Text style={styles.name}>{name}</Text>
@@ -120,7 +120,20 @@ export const BaseShopStore = props => {
         </Text>
       </View>
     </Pressable>
-  );
+  ) : pageFrom === 'rate' ? (
+    <Pressable style={[lstyles.relatedWrapper, styles.baseWrapper]} onPress={handleClick}>
+      <FastImg style={lstyles.relatedImage} source={{uri: cover_url}} />
+      <View style={lstyles.relatedInfo}>
+        <Text style={lstyles.relatedName} numberOfLines={1}>
+          {name}
+        </Text>
+        <Text style={lstyles.relatedText} numberOfLines={1}>
+          {desc_tip}
+        </Text>
+      </View>
+      <Text style={lstyles.relatedBtn}>评价</Text>
+    </Pressable>
+  ) : null;
 };
 
 export const BaseShopBrand = props => {

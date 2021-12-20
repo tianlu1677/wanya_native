@@ -12,7 +12,7 @@ import {getShopStores} from '@/api/shop_store_api';
 import RelatedScrollList from './related-scroll-list';
 
 const AddRelated = props => {
-  const {navigation, keys, page} = props;
+  const {navigation, keys, page, placeholder} = props;
   const {
     savetopic,
     location: {positionCity = '', latitude = '', longitude = ''},
@@ -98,7 +98,7 @@ const AddRelated = props => {
           height={RFValue(36)}
           cancelWidth={RFValue(66)}
           placeholderTextColor="#7F7F81"
-          placeholder="搜索顽招/顽士多/品牌/顽物"
+          placeholder={placeholder}
           onChangeText={debounce(onChangeText, 500)}
           cancel={true}
           onCancel={() => navigation.goBack()}

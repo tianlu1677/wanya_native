@@ -61,6 +61,7 @@ import Space from '@/pages/spaces/space';
 import SpaceDetail from '@/pages/spaces/space-detail';
 import SpaceRateList from '@/pages/spaces/space-rate-list';
 import SpacePostList from '@/pages/spaces/space-post-list';
+import SpaceImageInfo from '@/pages/spaces/space-image-info';
 
 // Location
 import LocationDetail from '@/pages/location/location-detail';
@@ -207,6 +208,7 @@ const spaceRouter = [
   {name: 'SpaceDetail', component: SpaceDetail, options: {title: '场地详情'}},
   {name: 'SpaceRateList', component: SpaceRateList, options: {title: '评价'}},
   {name: 'SpacePostList', component: SpacePostList, options: {title: '动态'}},
+  {name: 'SpaceImageInfo', component: SpaceImageInfo, options: {title: '场地图片'}},
 ];
 
 const theoryRouter = [

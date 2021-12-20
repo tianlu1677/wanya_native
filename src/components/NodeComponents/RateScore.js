@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   star: {
-    marginRight: 4,
+    marginRight: 2,
   },
 });
 

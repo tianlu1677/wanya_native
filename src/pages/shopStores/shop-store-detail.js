@@ -98,9 +98,7 @@ const ShopStoreDetail = ({navigation, route}) => {
       const list = maps.map((map, index) => ({
         id: index,
         label: map[0],
-        onPress: () => {
-          Linking.openURL(map[1]);
-        },
+        onPress: () => Linking.openURL(map[1]),
       }));
       setItemList(list);
     }
@@ -435,7 +433,8 @@ const styles = StyleSheet.create({
     color: '#FF8D00',
     borderWidth: 1,
     borderColor: '#FF8D00',
-    borderRadius: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
     marginLeft: 7,
   },
   intro: {

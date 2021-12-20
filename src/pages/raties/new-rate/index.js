@@ -28,7 +28,9 @@ const NewTopic = props => {
   const [score, setScore] = useState(0);
 
   const currentTarget = space ? space : shop_store_ids.length > 0 ? shop_store_ids[0] : [];
+  const rateType = space ? 'space' : shop_store_ids.length > 0 ? 'shop_store' : '';
 
+  console.log(rateType);
   const handleGoHashTag = () => {
     navigation.navigate('AddHashTag');
   };
@@ -154,7 +156,9 @@ const NewTopic = props => {
           </View>
 
           <View style={styles.rateWrapper}>
-            <Text style={styles.rateTitle}>场地评价</Text>
+            <Text style={styles.rateTitle}>
+              {rateType === 'space' ? '场地评价' : rateType === 'shop_store' ? '顽士多评价' : ''}
+            </Text>
             <PublishRateScore score={score} setScore={setScore} />
             <Text style={styles.rateText}>{ReturnScoreText(score)}</Text>
           </View>

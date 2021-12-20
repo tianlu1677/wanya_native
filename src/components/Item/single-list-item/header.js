@@ -17,7 +17,7 @@ import {cancelAction, createAction} from '@/api/action_api';
 export const Header = props => {
   const {
     typeHeader,
-    data: {id, account, node_id, node_name, published_at_text, space, distance, location},
+    data: {id, account, node_id, node_name, published_at_text, is_rate, space, distance, location},
   } = props;
   const navigation = useNavigation();
   const currentAccount = useSelector(state => state.account.currentAccount);
@@ -137,7 +137,7 @@ export const Header = props => {
             <Text style={hstyles.nameText}>{account.nickname}</Text>
             <View style={hstyles.info}>
               <Text style={hstyles.timeText}>{published_at_text}</Text>
-              <LocationBar space={space} location={location} />
+              {is_rate ? null : <LocationBar space={space} location={location} />}
               {distance && distance > 0 && (
                 <Text style={hstyles.spaceText}>· {ScaleDistance(distance)}</Text>
               )}
