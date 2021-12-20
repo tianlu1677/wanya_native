@@ -4,15 +4,13 @@ import {useDispatch} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import {dispatchPreviewImage} from '@/redux/actions';
 import FastImg from '@/components/FastImg';
-import {PlainContent, RateRelated} from '@/components/Item/single-list-item';
+import {PlainContent, RateRelated, RateRelatedText} from '@/components/Item/single-list-item';
 import {PublishRelated, RelatedComponent} from '@/components/Item/single-detail-item';
-import {RateScore} from '@/components/NodeComponents';
 import {scaleDetailImage} from '@/utils/scale';
-import {RFValue} from '@/utils/response-fontsize';
 
 const RenderImage = props => {
   const dispatch = useDispatch();
-  const {media_images, excellent, plain_content, is_rate, rate_score} = props.detail;
+  const {media_images, excellent, plain_content} = props.detail;
   const mediaImages = scaleDetailImage(media_images);
 
   const onPreview = index => {
@@ -62,15 +60,11 @@ const RenderImage = props => {
         </View>
       ) : null}
 
-      {is_rate ? (
-        <View style={styles.rateWrapper}>
-          <Text style={styles.rateText}>打分</Text>
-          <RateScore score={rate_score} size={RFValue(14)} />
-        </View>
-      ) : null}
-
       {/* 为评价时显示场地、顽士多列 */}
-      <RateRelated data={props.detail} style={{marginHorizontal: 14}} />
+      <>
+        <RateRelatedText data={props.detail} />
+        <RateRelated data={props.detail} style={{marginHorizontal: 14}} />
+      </>
 
       <PublishRelated data={props.detail} type="topic" />
     </>
@@ -102,13 +96,6 @@ const styles = StyleSheet.create({
     left: 40,
     zIndex: 1,
     marginTop: 9,
-  },
-  rateWrapper: {
-    flexDirection: 'row',
-    marginLeft: 14,
-  },
-  rateText: {
-    marginRight: 5,
   },
 });
 

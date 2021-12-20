@@ -3,7 +3,11 @@ import * as constants from '../constants';
 const defaultState = {
   totalLabelList: [],
   channels: [],
-  savetopic: {},
+  savetopic: {
+    shop_store_ids: [],
+    shop_brand_ids: [],
+    product_ids: [],
+  },
   previewImageData: {
     images: [],
     index: 0,

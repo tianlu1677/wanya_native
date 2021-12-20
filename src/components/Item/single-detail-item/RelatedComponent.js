@@ -7,9 +7,10 @@ import {RFValue} from '@/utils/response-fontsize';
 const RelatedComponent = props => {
   const navigation = useNavigation();
   const {
-    data: {shop_brands, shop_stores, movements, products},
+    data: {is_rate, shop_brands, shop_stores, movements, products},
   } = props;
 
+  console.log(is_rate);
   const product = products && products.length > 0 ? products[0] : null;
 
   const handleMovementDetail = () => {
@@ -47,7 +48,7 @@ const RelatedComponent = props => {
         </Pressable>
       ) : null}
 
-      {shop_stores?.length > 0 ? (
+      {!is_rate && shop_stores?.length > 0 ? (
         <Pressable style={styles.relatedWrapper} onPress={handleStoreDetail}>
           <FastImg style={styles.relatedImage} source={{uri: shop_stores[0].cover_url}} />
           <View style={styles.relatedInfo}>

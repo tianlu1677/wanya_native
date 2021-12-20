@@ -52,7 +52,7 @@ const cstyles = StyleSheet.create({
     lineHeight: RFValue(21),
     color: '#3c3c3c',
     letterSpacing: 1,
-    textAlign: 'justify',
+    // textAlign: 'justify',
   },
   hashtagText: {
     color: '#1B5C79',

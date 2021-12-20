@@ -31,7 +31,7 @@ import RenderText from './common/render-text';
 const behavior = Platform.OS === 'ios' ? 'padding' : 'height';
 
 const HeaderTitle = ({detail}) => {
-  const {account, published_at_text, space, location} = detail;
+  const {account, published_at_text, space, location, is_rate} = detail;
   return (
     <View style={styles.headerTitle}>
       <Avator account={account} size={32} />
@@ -39,7 +39,9 @@ const HeaderTitle = ({detail}) => {
         <Text style={styles.nameText}>{account.nickname}</Text>
         <View style={styles.info}>
           <Text style={styles.timeText}>{published_at_text}</Text>
-          <LocationBar space={space} location={location} style={{marginLeft: 4}} />
+          {is_rate ? null : (
+            <LocationBar space={space} location={location} style={{marginLeft: 4}} />
+          )}
         </View>
       </Pressable>
     </View>

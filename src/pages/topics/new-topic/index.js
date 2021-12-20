@@ -208,6 +208,7 @@ const NewTopic = props => {
     }
 
     const data = getValidateForm();
+    console.log(data);
     if (videoSource.length > 0) {
       Toast.showLoading('正在发布中...', {duration: 3000});
       // 视频上传
@@ -330,7 +331,10 @@ const NewTopic = props => {
   }, [navigation, imageSource, videoSource, savetopic, linkSource]);
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+    <ScrollView
+      style={{flex: 1, backgroundColor: '#fff'}}
+      onScroll={Keyboard.dismiss}
+      scrollEventThrottle={16}>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.wrapper}>
