@@ -39,7 +39,7 @@ const SpaceListDetail = props => {
       ListHeaderComponent={
         <>
           {listData.length > 0 ? ListHeaderComponent : <View />}
-          {ListTopHeader}
+          {listData.length > 0 ? ListTopHeader : <View />}
         </>
       }
     />

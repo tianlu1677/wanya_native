@@ -2,7 +2,7 @@ import React, {useRef, useCallback} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import VideoPlayerContent from '@/components/react-native-video-player';
-import {PlainContent} from '@/components/Item/single-list-item';
+import {PlainContent, RateRelated, RateRelatedText} from '@/components/Item/single-list-item';
 import {PublishRelated, RelatedComponent} from '@/components/Item/single-detail-item';
 import {scaleDetailVideo} from '@/utils/scale';
 
@@ -10,6 +10,7 @@ const RenderVideo = props => {
   const videoRef = useRef(null);
   const {detail} = props;
   const {media_video, excellent, video_content_m3u8, plain_content, space, location} = detail;
+
   const {width, height} = scaleDetailVideo(media_video.width, media_video.height);
 
   useFocusEffect(
@@ -51,6 +52,13 @@ const RenderVideo = props => {
           <PlainContent data={detail} style={styles.multiLineText} numberOfLines={0} />
         </View>
       ) : null}
+
+      {/* 为评价时显示场地、顽士多列 */}
+      <>
+        <RateRelatedText data={props.detail} />
+        <RateRelated data={props.detail} style={{marginHorizontal: 14}} />
+      </>
+
       <PublishRelated data={detail} type="topic" space={space} location={location} />
     </>
   );

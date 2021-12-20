@@ -15,22 +15,23 @@ import {createTopic} from '@/api/topic_api';
 import PublishRateScore, {ReturnScoreText} from './component/publish-rate-score';
 import UploadMedia from './component/upload-media';
 
+import {BaseRelatedStyle as lstyles} from '@/styles/baseCommon';
+
 const NewTopic = props => {
   const dispatch = useDispatch();
   const {navigation, uploadVideo, removeAllPhoto} = props;
   const {
     home: {savetopic},
   } = useSelector(state => state);
-  const {space, shop_store_ids} = savetopic;
+  const {space, shop_store_ids = []} = savetopic;
   const [imageSource, setImageSource] = useState([]);
   const [videoSource, setVideoSource] = useState([]);
   const [content, setContent] = useState(savetopic.plan_content);
   const [score, setScore] = useState(0);
-
-  const currentTarget = space ? space : shop_store_ids.length > 0 ? shop_store_ids[0] : [];
+  const currentTarget = space ? space : shop_store_ids.length > 0 ? shop_store_ids[0] : null;
   const rateType = space ? 'space' : shop_store_ids.length > 0 ? 'shop_store' : '';
 
-  console.log(rateType);
+  console.log(currentTarget);
   const handleGoHashTag = () => {
     navigation.navigate('AddHashTag');
   };
@@ -78,7 +79,6 @@ const NewTopic = props => {
 
     Toast.showLoading('正在发布中...', {duration: 3000});
     const data = getValidateForm();
-    console.log(data);
 
     if (videoSource.length > 0) {
       // 先上传视频再发布
@@ -98,7 +98,6 @@ const NewTopic = props => {
     } else {
       try {
         const res = await createTopic(data);
-        console.log(res);
         Toast.hide();
         navigation.reset({
           index: 0,
@@ -140,20 +139,22 @@ const NewTopic = props => {
   }, [navigation, imageSource, videoSource, savetopic]);
 
   return (
-    <ScrollView style={styles.pageWrapper}>
+    <ScrollView style={styles.pageWrapper} onScroll={Keyboard.dismiss} scrollEventThrottle={16}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.wrapper}>
-          <View style={styles.relatedWrapper}>
-            <FastImg style={styles.relatedImage} source={{uri: currentTarget.cover_url}} />
-            <View style={styles.relatedInfo}>
-              <Text style={styles.relatedName} numberOfLines={1}>
-                {currentTarget.name}
-              </Text>
-              <Text style={styles.relatedText} numberOfLines={1}>
-                {currentTarget.desc_tip}
-              </Text>
+          {currentTarget ? (
+            <View style={lstyles.relatedWrapper}>
+              <FastImg style={lstyles.relatedImage} source={{uri: currentTarget.cover_url}} />
+              <View style={lstyles.relatedInfo}>
+                <Text style={lstyles.relatedName} numberOfLines={1}>
+                  {currentTarget.name}
+                </Text>
+                <Text style={lstyles.relatedText} numberOfLines={1}>
+                  {currentTarget.desc_tip}
+                </Text>
+              </View>
             </View>
-          </View>
+          ) : null}
 
           <View style={styles.rateWrapper}>
             <Text style={styles.rateTitle}>
@@ -253,33 +254,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: '#BDBDBD',
-  },
-  relatedWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: RFValue(10),
-    backgroundColor: '#000',
-    borderRadius: 9,
-  },
-  relatedImage: {
-    width: RFValue(33),
-    height: RFValue(33),
-    marginRight: 8,
-    borderRadius: 6,
-  },
-  relatedInfo: {
-    flex: 1,
-  },
-  relatedName: {
-    color: '#fff',
-    fontWeight: '500',
-  },
-  relatedText: {
-    color: '#bdbdbd',
-    fontSize: RFValue(10),
-    fontWeight: '300',
-    marginTop: 4,
   },
 });
 

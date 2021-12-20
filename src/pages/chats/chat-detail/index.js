@@ -1,5 +1,13 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {View, Text, Pressable, Platform, StatusBar, PermissionsAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Platform,
+  StatusBar,
+  SafeAreaView,
+  PermissionsAndroid,
+} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import {useHeaderHeight} from '@react-navigation/stack';
 import ImagePicker from 'react-native-image-picker';
@@ -144,7 +152,8 @@ const ChartDetail = props => {
     }
   };
 
-  const validateChat = () => getValidChat({target_account_id: targetAccountId, chat_group_uuid: uuid});
+  const validateChat = () =>
+    getValidChat({target_account_id: targetAccountId, chat_group_uuid: uuid});
 
   const sendMessage = async (type, content, isInverted) => {
     // Toast.showLoading('发送中...', {duration: 1000});
