@@ -507,7 +507,7 @@ const ChartDetail = props => {
         isIPhoneX={Boolean(isIphoneX())}
         inverted={messages.length > 12}
         headerHeight={useHeaderHeight()}
-        iphoneXBottomPadding={10}
+        iphoneXBottomPadding={20}
         pressAvatar={pressAvatar}
         flatListProps={{style: {marginTop: isIos ? RFValue(0) : 0}}}
         leftMessageTextStyle={styles.leftMessageText}

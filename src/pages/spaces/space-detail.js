@@ -162,7 +162,7 @@ const SpaceDetail = ({navigation, route}) => {
           <View style={styles.info}>
             <View style={styles.rateWrapper}>
               <RateScore score={detail.rate_score} size={12} />
-              <Text style={styles.rateText}>{detail.rate_score}</Text>
+              <Text style={styles.rateText}>{detail.rate_score.toFixed(1)}</Text>
             </View>
             <Text style={styles.infoCount}>{detail.publish_rate_topics_count}条评价</Text>
             <Text style={styles.infoCount}>{detail.publish_topics_count}条动态</Text>
