@@ -41,7 +41,7 @@ const BaseSpceDetail = props => {
         <View style={styles.infoData}>
           <View style={styles.rateWrapper}>
             <RateScore score={rate_score} size={12} />
-            <Text style={styles.rateText}>{rate_score}</Text>
+            <Text style={styles.rateText}>{rate_score.toFixed(1)}</Text>
           </View>
           <Text style={styles.infoCount}>{publish_rate_topics_count}条评价</Text>
           <Text style={styles.infoCount}>{publish_topics_count}条动态</Text>
