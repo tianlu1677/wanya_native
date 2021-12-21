@@ -123,7 +123,7 @@ const NewTopic = props => {
     const RightBtn = () => {
       const style = {color: isValidateForm() ? '#000' : '#bdbdbd'};
       return (
-        <Pressable onPress={debounce(onSubmit, 1000)} hitSlop={hitSlop}>
+        <Pressable onPress={debounce(onSubmit, 100)} hitSlop={hitSlop}>
           <Text style={[styles.finishBtn, style]}>发布</Text>
         </Pressable>
       );

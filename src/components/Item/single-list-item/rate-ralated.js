@@ -34,7 +34,7 @@ const RateRelated = props => {
     }
   };
 
-  console.log(current);
+  // console.log(current);
   return is_rate ? (
     <Pressable style={[lstyles.relatedWrapper, styles.baseWrapper, style]} onPress={handleClick}>
       <FastImg style={lstyles.relatedImage} source={{uri: current.cover_url}} />

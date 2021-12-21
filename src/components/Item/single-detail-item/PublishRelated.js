@@ -14,15 +14,15 @@ const PublishRelated = props => {
 
   return (
     <>
-      {data.tag_list.length > 0 && (
-        <View style={styles.tagsWrapper}>
-          {data.tag_list.map((v, index) => (
-            <Text style={styles.tagsText} key={index}>
-              {v}
-            </Text>
-          ))}
-        </View>
-      )}
+      {/*{data.tag_list.length > 0 && (*/}
+      {/*  <View style={styles.tagsWrapper}>*/}
+      {/*    {data.tag_list.map((v, index) => (*/}
+      {/*      <Text style={styles.tagsText} key={index}>*/}
+      {/*        {v}*/}
+      {/*      </Text>*/}
+      {/*    ))}*/}
+      {/*  </View>*/}
+      {/*)}*/}
       {data.node && (
         <Pressable style={styles.fromWrapper} onPress={goNodeDetail}>
           <View>

@@ -24,7 +24,7 @@ import {
   getShopStoreExit,
   getShopStorePosts,
 } from '@/api/shop_store_api';
-import {SCREEN_WIDTH} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 
 import PersonImg from '@/assets/images/personal.png';
 import BrandImg from '@/assets/images/brand.png';
@@ -133,7 +133,7 @@ const ShopStoreDetail = ({navigation, route}) => {
         <View style={styles.headerWrapper}>
           <View style={styles.coverOpacity} />
           <Pressable onPress={() => onPreview('bg_cover')}>
-            <FastImg source={{uri: detail.medias[0].url}} style={styles.imageCover} />
+            <FastImg mode={'center'} source={{uri: detail.medias.size > 0 ? detail.medias[0].url : detail.cover_url}} style={styles.imageCover} />
           </Pressable>
           {!detail.account ? (
             <View style={styles.headerAccount}>
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     position: 'absolute',
-    bottom: 0,
+    bottom: BOTTOM_HEIGHT / 2,
     left: 0,
     right: 0,
   },

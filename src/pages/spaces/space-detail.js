@@ -9,6 +9,7 @@ import FastImg from '@/components/FastImg';
 import ActionSheet from '@/components/ActionSheet.android';
 import IconFont from '@/iconfont';
 import BaseTopic from '@/components/Item/base-topic';
+
 import {
   PlayScore,
   RateScore,
@@ -27,7 +28,7 @@ import {
   getSpacePosts,
 } from '@/api/space_api';
 
-import {SCREEN_WIDTH} from '@/utils/navbar';
+import {BOTTOM_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 
 const SpaceDetail = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -234,7 +235,7 @@ const SpaceDetail = ({navigation, route}) => {
                     style={styles.introImageWrapper}
                     key={index}
                     onPress={() => handleClickImage(index)}>
-                    <FastImg source={{uri: item}} style={styles.introImage} />
+                    <FastImg mode={'cover'} source={{uri: item}} style={styles.introImage} />
                     {index === 2 && detail.medias.length > 3 ? (
                       <Text style={styles.introImageOpacity}>{detail.medias.length}张图片</Text>
                     ) : null}
@@ -470,13 +471,13 @@ const styles = StyleSheet.create({
   },
   btnWrap: {
     backgroundColor: '#fff',
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: '#ebebeb',
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 10,
     position: 'absolute',
-    bottom: 0,
+    bottom: BOTTOM_HEIGHT / 2,
     left: 0,
     right: 0,
   },

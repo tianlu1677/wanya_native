@@ -2,10 +2,10 @@ import React from 'react';
 import {View} from 'react-native';
 import SingleList from '@/components/List/single-list';
 import {JoinActivity} from '@/components/NodeComponents';
-import {getSpacePosts} from '@/api/space_api';
+import {getShopStorePosts} from '@/api/shop_store_api';
 
-const SpacePostList = ({navigation, route}) => {
-  const {spaceId} = route.params;
+const ShopStorePostList = ({navigation, route}) => {
+  const {shopStoreId} = route.params;
 
   const joinNewTopic = () => {
     navigation.navigate('NewTopic');
@@ -13,10 +13,10 @@ const SpacePostList = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
-      <SingleList request={{api: getSpacePosts, params: {id: spaceId, type: 'rate'}}} />
+      <SingleList request={{api: getShopStorePosts, params: {id: shopStoreId, type: 'no_rate'}}} />
       <JoinActivity type={'node'} text="去打卡" handleClick={joinNewTopic} />
     </View>
   );
 };
 
-export default SpacePostList;
+export default ShopStorePostList;

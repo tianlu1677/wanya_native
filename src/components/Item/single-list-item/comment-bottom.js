@@ -117,8 +117,9 @@ const bstyles = StyleSheet.create({
     flexDirection: 'row',
     // paddingBottom: 18,
     // paddingTop: 15,
+    // backgroundColor: 'red',
     alignItems: 'center',
-    height: 70,
+    height: 60,
   },
   commentText: {
     flex: 1,

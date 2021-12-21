@@ -14,7 +14,7 @@ const SpaceRateList = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <SingleList request={{api: getSpacePosts, params: {id: spaceId, type: 'rate'}}} />
-      <JoinActivity type={'node'} text="去打卡" handleClick={joinNewTopic} />
+      <JoinActivity type={'node'} text="去评价" handleClick={joinNewTopic} />
     </View>
   );
 };
