@@ -13,7 +13,7 @@ const SpacePostList = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
-      <SingleList request={{api: getSpacePosts, params: {id: spaceId, type: 'rate'}}} />
+      <SingleList request={{api: getSpacePosts, params: {id: spaceId, type: 'no_rate'}}} />
       <JoinActivity type={'node'} text="去打卡" handleClick={joinNewTopic} />
     </View>
   );

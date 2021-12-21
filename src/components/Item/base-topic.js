@@ -141,8 +141,9 @@ const BaseTopic = props => {
   ) : (
     <Pressable style={[styles.postSlide, style]} onPress={goTopicDetail}>
       <Header data={data} type="topic" typeHeader={type} onRemove={props.onRemove} />
+
       {data.plain_content ? (
-        <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(5)}} />
+        <PlainContent data={data} numberOfLines={5} style={{marginTop: RFValue(8)}} />
       ) : (
         <View />
       )}
