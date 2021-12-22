@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   separator: {
     backgroundColor: '#EBEBEB',
     height: StyleSheet.hairlineWidth,
-    marginLeft: 110 + 14 + 12,
+    marginLeft: RFValue(110) + 14 + 12,
   },
   emptyWrap: {
     alignItems: 'center',
