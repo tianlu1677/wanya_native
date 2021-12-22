@@ -135,12 +135,12 @@ const ShopStoreDetail = ({navigation, route}) => {
           <Pressable onPress={() => onPreview('bg_cover')}>
             <FastImg mode={'center'} source={{uri: detail.medias.size > 0 ? detail.medias[0].url : detail.cover_url}} style={styles.imageCover} />
           </Pressable>
-          {!detail.account ? (
+          {(detail.account && detail.account.id) ? (
             <View style={styles.headerAccount}>
               <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
               <View style={styles.accountContent}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={styles.accountName}>{detail.account.nickname}</Text>
+                  <Text style={styles.accountName}>{detail.account?.nickname}</Text>
                   {detail.account.settled_type === 'personal' && (
                     <FastImg style={styles.settledIcon} source={PersonImg} />
                   )}
