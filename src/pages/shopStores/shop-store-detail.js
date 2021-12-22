@@ -133,9 +133,13 @@ const ShopStoreDetail = ({navigation, route}) => {
         <View style={styles.headerWrapper}>
           <View style={styles.coverOpacity} />
           <Pressable onPress={() => onPreview('bg_cover')}>
-            <FastImg mode={'center'} source={{uri: detail.medias.size > 0 ? detail.medias[0].url : detail.cover_url}} style={styles.imageCover} />
+            <FastImg
+              mode={'center'}
+              source={{uri: detail.medias.size > 0 ? detail.medias[0].url : detail.cover_url}}
+              style={styles.imageCover}
+            />
           </Pressable>
-          {(detail.account && detail.account.id) ? (
+          {detail.account && detail.account.id ? (
             <View style={styles.headerAccount}>
               <Avator account={detail.account} size={RFValue(30)} isShowSettledIcon={false} />
               <View style={styles.accountContent}>
@@ -426,16 +430,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   tag: {
-    height: RFValue(20),
-    lineHeight: RFValue(20),
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
     fontSize: 10,
-    color: '#FF8D00',
-    borderWidth: 1,
-    borderColor: '#FF8D00',
+    color: '#FF6633',
+    backgroundColor: '#FFF2E7',
     borderRadius: 4,
     overflow: 'hidden',
-    marginLeft: 7,
+    marginRight: 7,
   },
   intro: {
     marginTop: 15,

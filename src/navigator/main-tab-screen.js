@@ -87,7 +87,7 @@ const MainTabScreen = props => {
       case 'Discovery':
         return <Text style={focused ? styles.tabActiveText : styles.tabText}>发现</Text>;
       case 'Recommend':
-        const style = {width: (500 * 24) / 351, height: 24};
+        const style = {width: (500 * 30) / 351, height: 30};
         return focused ? (
           <View style={style}>
             <Image source={indexImage} style={style} mode="cover" />

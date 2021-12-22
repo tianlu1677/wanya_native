@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
   },
   coverImageOpacity: {
-    height: COVER_HEIGHT - 10,
+    height: COVER_HEIGHT,
     width: SCREEN_WIDTH,
     position: 'absolute',
     zIndex: 1,
