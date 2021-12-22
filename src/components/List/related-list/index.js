@@ -53,7 +53,7 @@ const AddRelated = props => {
     }
 
     if (page === 'topic') {
-      api = {api: searchApi, params: {name: searchValue, type: currentKey, random: 1}};
+      api = {api: searchApi, params: {name: searchValue, type: activeKey, random: 1}};
     }
 
     return api;
