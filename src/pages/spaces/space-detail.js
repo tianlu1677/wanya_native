@@ -93,11 +93,11 @@ const SpaceDetail = ({navigation, route}) => {
   };
 
   const handleGoRateList = () => {
-    navigation.navigate('SpaceRateList', {spaceId});
+    navigation.navigate('SpaceRateList', {space: detail});
   };
 
   const handleGoPostList = () => {
-    navigation.navigate('SpacePostList', {spaceId});
+    navigation.navigate('SpacePostList', {space: detail});
   };
 
   const handelGoTopic = () => {

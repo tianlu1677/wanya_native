@@ -1,24 +1,27 @@
 import React from 'react';
 import {View, Pressable, Text, StyleSheet} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import SingleList from '@/components/List/single-list';
-import {JoinActivity} from '@/components/NodeComponents';
 import {getSpacePosts} from '@/api/space_api';
-import IconFont from "@/iconfont"
-import {RFValue} from "@/utils/response-fontsize"
-import {BOTTOM_HEIGHT, SCREEN_WIDTH} from "@/utils/navbar"
+import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
+import {BOTTOM_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 
 const SpaceRateList = ({navigation, route}) => {
-  const {spaceId} = route.params;
+  const dispatch = useDispatch();
+  const savetopic = useSelector(state => state.home.savetopic);
+  const {space} = route.params;
+  const spaceId = space.id;
 
   const joinNewTopic = () => {
-    navigation.navigate('NewTopic');
+    navigation.navigate('NewRate');
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, space}});
   };
 
   return (
     <View style={{flex: 1}}>
       <SingleList request={{api: getSpacePosts, params: {id: spaceId, type: 'rate'}}} />
-      {/*<JoinActivity type={'node'} text="去评价" handleClick={joinNewTopic} />*/}
-
       <View style={[styles.btnWrap]}>
         <Pressable style={[styles.btn, styles.commentBtn]} onPress={joinNewTopic}>
           <IconFont name="xie" size={22} color="white" />
@@ -64,7 +67,5 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 });
-
-
 
 export default SpaceRateList;

@@ -105,11 +105,11 @@ const ShopStoreDetail = ({navigation, route}) => {
   };
 
   const handleGoRateList = () => {
-    navigation.navigate('ShopStoreRateList', {shopStoreId});
+    navigation.navigate('ShopStoreRateList', {shopStore: detail});
   };
 
   const handleGoPostList = () => {
-    navigation.navigate('ShopStorePostList', {shopStoreId});
+    navigation.navigate('ShopStorePostList', {shopStore: detail});
   };
 
   const handelGoTopic = () => {

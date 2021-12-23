@@ -1,17 +1,22 @@
 import React from 'react';
 import {View, Pressable, StyleSheet, Text} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import * as action from '@/redux/constants';
 import SingleList from '@/components/List/single-list';
-import {JoinActivity} from '@/components/NodeComponents';
 import {getShopStorePosts} from '@/api/shop_store_api';
-import IconFont from "@/iconfont"
-import {RFValue} from "@/utils/response-fontsize"
-import {BOTTOM_HEIGHT, SCREEN_WIDTH} from "@/utils/navbar"
+import IconFont from '@/iconfont';
+import {RFValue} from '@/utils/response-fontsize';
+import {BOTTOM_HEIGHT, SCREEN_WIDTH} from '@/utils/navbar';
 
 const ShopStoreRateList = ({navigation, route}) => {
-  const {shopStoreId} = route.params;
+  const dispatch = useDispatch();
+  const savetopic = useSelector(state => state.home.savetopic);
+  const {shopStore} = route.params;
+  const shopStoreId = shopStore.id;
 
   const joinNewTopic = () => {
-    navigation.navigate('NewTopic');
+    navigation.navigate('NewRate');
+    dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, shop_store_ids: [shopStore]}});
   };
 
   return (
@@ -63,6 +68,5 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 });
-
 
 export default ShopStoreRateList;
