@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     overflow: 'hidden',
     position: 'absolute',
-    left: 40,
+    left: 20,
     top: SAFE_TOP,
     zIndex: 1,
     marginTop: 9,

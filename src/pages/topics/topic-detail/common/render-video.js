@@ -5,6 +5,7 @@ import VideoPlayerContent from '@/components/react-native-video-player';
 import {PlainContent, RateRelated, RateRelatedText} from '@/components/Item/single-list-item';
 import {PublishRelated, RelatedComponent} from '@/components/Item/single-detail-item';
 import {scaleDetailVideo} from '@/utils/scale';
+import {RFValue} from '@/utils/response-fontsize';
 
 const RenderVideo = props => {
   const videoRef = useRef(null);
@@ -76,17 +77,18 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   excellentLabel: {
-    width: 30,
-    height: 16,
-    lineHeight: 16,
+    width: RFValue(30),
+    height: RFValue(16),
+    lineHeight: RFValue(15),
     textAlign: 'center',
-    fontSize: 10,
+    fontSize: RFValue(10),
+    textAlign: 'center',
     color: 'white',
     backgroundColor: '#FF2242',
     borderRadius: 2,
     overflow: 'hidden',
     position: 'absolute',
-    left: 40,
+    left: 20,
     top: 0,
     zIndex: 1,
     marginTop: 9,

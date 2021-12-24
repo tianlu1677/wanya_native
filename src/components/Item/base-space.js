@@ -18,16 +18,20 @@ const BaseSpace = props => {
     if (pageFrom === 'topic') {
       dispatch({type: action.SAVE_NEW_TOPIC, value: {...savetopic, ...params}});
       navigation.goBack();
+      return
     }
 
     if (pageFrom === 'node') {
       dispatch({type: action.CREATE_NODE, value: {...createNode, ...params}});
       navigation.goBack();
+      return
     }
 
     if (pageFrom === 'list') {
       navigation.push('SpaceDetail', {spaceId: data.id});
+      return
     }
+    navigation.push('SpaceDetail', {spaceId: data.id});
   };
 
   return (

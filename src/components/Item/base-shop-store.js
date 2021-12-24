@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     fontSize: 10,
     color: '#FF6633',
+    height: 22,
     backgroundColor: '#FFF2E7',
     borderRadius: 4,
     overflow: 'hidden',

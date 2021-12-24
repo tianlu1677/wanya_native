@@ -4,6 +4,12 @@ implementation "androidx.appcompat:appcompat:1.1.0"
 
 
 作者GitHub更新4.3.1，虽然作者修改了gradle文件，但是AudioRecorderManager文件还是有问题，需要手动修改。
+
+
+vim node_modules/react-native-audio/android/src/main/java/com/rnim/rn/audio/AudioRecorderManager.java
+
+
+# find 30 行
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 手动修改一下：

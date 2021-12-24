@@ -34,7 +34,7 @@ const BaseSpceDetail = props => {
 
   return (
     <Pressable style={styles.wrapper} onPress={goDetail}>
-      <FastImg source={{uri: cover_url}} style={styles.image} />
+      <FastImg source={{uri: cover_url}} mode="center" style={styles.image} />
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{name}</Text>
 
@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 4,
     fontSize: 10,
+    height: 22,
     color: '#FF6633',
     backgroundColor: '#FFF2E7',
     borderRadius: 4,
