@@ -450,9 +450,9 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   introImage: {
-    width: 108,
-    height: 108,
-    marginRight: 3,
+    width: RFValue((SCREEN_WIDTH-80)/3),
+    height: RFValue((SCREEN_WIDTH-80)/3),
+    marginRight: RFValue(3),
   },
   introImageOpacity: {
     ...opacity,
