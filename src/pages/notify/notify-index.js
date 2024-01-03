@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, StatusBar, View, Text, Image, Pressable} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import JPush from 'jpush-react-native';
 import {syncAccountInfo} from '@/api/mine_api';
 import {BadgeMessage, Avator} from '@/components/NodeComponents';
@@ -14,10 +14,12 @@ import {
   SystemNoticeImg,
   MineMentionNoticeUserImg,
 } from '@/utils/default-image';
-var BadgeAndroid = require('react-native-android-badge');
 
-const NotifyIndex = ({navigation}) => {
+const BadgeAndroid = require('react-native-android-badge');
+
+const NotifyIndex = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {currentAccount} = useSelector(state => state.account);
   const {currentBaseInfo} = useSelector(state => state.account);
   const {
@@ -210,36 +212,33 @@ const styles = StyleSheet.create({
   },
   wrapView: {
     backgroundColor: '#fff',
-    paddingLeft: 14,
   },
   itemView: {
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     flexDirection: 'row',
-    paddingVertical: 17,
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   coverWrapView: {
     marginRight: 12,
   },
   notifyContent: {
     flex: 1,
-    justifyContent: 'center',
   },
   notifyContentTitle: {
-    height: 20,
-    lineHeight: 20,
-    fontSize: 16,
-    letterSpacing: 1,
+    fontSize: 15,
     fontWeight: '500',
   },
   notifyContentDesc: {
-    marginTop: 4,
     color: '#BDBDBD',
-    letterSpacing: 1,
-    fontSize: 13,
+    fontSize: 12,
+    marginTop: 5,
   },
   speator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#ebebeb',
-    marginLeft: 45 + 12,
+    marginLeft: 14 + 45 + 12,
   },
 });
 

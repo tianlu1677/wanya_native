@@ -1,32 +1,24 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Pressable, StatusBar} from 'react-native';
-import {useSelector} from 'react-redux';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {BarHeight, IsIos} from '@/utils/navbar';
-import {RFValue, VWValue} from '@/utils/response-fontsize';
-import FastImg from '@/components/FastImg';
+import {RFValue} from '@/utils/response-fontsize';
 import Search from './Search';
-import BadgeMessage from './BadgeMessage';
+import CurrentAvator from '@/pages/tabBar/current-avator';
 
-const RecommendSearch = () => {
+const RecommendSearch = props => {
   const navigation = useNavigation();
-  const [inputRef, setinputRef] = useState(null);
-  const {currentAccount, currentBaseInfo} = useSelector(state => state.account);
+  const {border, style} = props;
 
-  const UnreadMessageCount = () => {
-    if (!currentBaseInfo || currentBaseInfo.new_message_count === 0) {
-      return 0;
-    }
-    return currentBaseInfo.new_message_count;
-  };
+  const [inputRef, setinputRef] = useState(null);
 
   return (
-    <>
+    <View style={[border && styles.searchWrapper]}>
       <View style={{height: IsIos ? BarHeight : 0, backgroundColor: '#fff'}} />
-      <StatusBar barStyle="dark-content" translucent={false} />
+      <StatusBar barStyle="dark-content" translucent={false} backgroundColor="white" />
       <Search
         getRef={refs => setinputRef(refs)}
-        style={{backgroundColor: '#fff', paddingRight: 14, paddingBottom: 0}}
+        style={{...style, backgroundColor: '#fff', paddingRight: 14}}
         inputStyle={{borderRadius: RFValue(18), backgroundColor: '#f2f3f5'}}
         height={RFValue(36)}
         placeholderTextColor="#aaa"
@@ -37,45 +29,24 @@ const RecommendSearch = () => {
           navigation.push('SearchIndex');
         }}
         prefix={
-          <Pressable onPress={() => navigation.openDrawer()} style={styles.avatorWrap}>
-            <BadgeMessage
-              size={'middle'}
-              value={UnreadMessageCount()}
-              containerStyle={[
-                styles.badge,
-                {
-                  right:
-                    UnreadMessageCount() >= 1 && UnreadMessageCount() < 10
-                      ? -VWValue(-4)
-                      : UnreadMessageCount() > 99
-                      ? -VWValue(4) * 1.75
-                      : -VWValue(1) * 1.45,
-                },
-              ]}
-            />
-            <FastImg style={styles.avator} source={{uri: currentAccount.avatar_url}} />
-          </Pressable>
+          <View style={styles.avatorWrap}>
+            <CurrentAvator />
+          </View>
         }
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  searchWrapper: {
+    borderBottomColor: '#EBEBEB',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
   avatorWrap: {
     position: 'relative',
     zIndex: 2,
-  },
-  avator: {
-    width: RFValue(30),
-    height: RFValue(30),
-    borderRadius: RFValue(15),
     marginRight: 14,
-  },
-  badge: {
-    position: 'absolute',
-    top: -5,
-    zIndex: 1,
   },
 });
 

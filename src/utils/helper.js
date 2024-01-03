@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Clipboard from '@react-native-community/clipboard';
 
 import dayjs from 'dayjs';
+import {agentTrackEvents} from '@/api/settings_api';
 
 export default class Helper {
   static async setData(name, value) {
@@ -15,9 +16,7 @@ export default class Helper {
   static async getData(name) {
     try {
       let value = await AsyncStorage.getItem(name);
-      // console.log('store preve value', value)
       value = value === null || value === undefined ? '' : value;
-      // console.log('store value', value)
       return value;
     } catch (e) {
       return '';
@@ -38,6 +37,15 @@ export default class Helper {
   static async getAllKeys() {
     const keys = await AsyncStorage.getAllKeys();
     return keys;
+  }
+
+  static async recordVisit(data) {
+    try {
+      await agentTrackEvents(data);
+    } catch (e) {
+      console.log('AgentTrackEvents error', e);
+    }
+    return 'ok'
   }
 
   static async multiSet(data = []) {
@@ -73,7 +81,6 @@ export default class Helper {
   }
 
   static fromToNow(time) {
-    console.log('time', time);
     return dayjs(time).locale('zh-cn').format();
   }
 

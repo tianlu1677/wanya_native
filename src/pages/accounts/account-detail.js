@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, Pressable, StatusBar} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {dispatchPreviewImage} from '@/redux/actions';
 import CollapsibleHeader from '@/components/CollapsibleHeaders';
@@ -81,7 +82,7 @@ const AccountDetail = ({navigation, route}) => {
     const params = {receiver_id: account.id};
     const res = await getChatGroupsDetail(params);
     const {uuid} = res.data.chat_group;
-    navigation.navigate('ChatDetail', {uuid, targetAccount: account});
+    navigation.navigate('ChatDetail', {uuid, targetAccountId: account.id, targetAccountNickname: account.nickname});
   };
 
   const actionItems = [
@@ -129,9 +130,11 @@ const AccountDetail = ({navigation, route}) => {
     setAccount(res.data.account);
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   const Header = () => {
     const defaultImage = account.background_img_url || AccountDetailBgImg;
@@ -186,12 +189,12 @@ const AccountDetail = ({navigation, route}) => {
                 <IconFont name={account.gender} size={13} style={styles.maleIcon} />
               )}
               <Text style={styles.introtag}>{account.age || '18'}岁</Text>
-              <Text style={styles.introtag}>{account.city.replace(',', ' ') || '未知街区'}</Text>
+              <Text style={styles.introtag}>{account.city && account.city.replace(',', ' ') || '未知街区'}</Text>
             </View>
             <View style={styles.labelWrap}>
               {account.label_list.map((label, index) => (
                 <>
-                  <Text style={styles.label}>{label}</Text>
+                  <Text style={styles.label} key={label}>{label}</Text>
                   {account.label_list.length - 1 !== index && (
                     <Text style={styles.labelLine}>|</Text>
                   )}

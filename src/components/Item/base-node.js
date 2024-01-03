@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
@@ -8,10 +8,13 @@ import {JoinButton} from '@/components/NodeComponents';
 import {followItem, unfollowItem} from '@/api/mine_api';
 import FastImg from '@/components/FastImg';
 import Toast from '@/components/Toast';
+import {ScaleDistance} from '@/utils';
 
 // add-node  创建帖子圈子选择
 // mine-node 全部圈子 我创建
 // list      圈子列表
+// nearby      附近圈子列表
+
 const BaseNode = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -32,7 +35,7 @@ const BaseNode = props => {
   };
 
   const goNodeDetail = () => {
-    if (type === 'list') {
+    if (['list', 'nearby'].includes(type)) {
       navigation.push('NodeDetail', {nodeId: data.id});
     }
 
@@ -51,6 +54,10 @@ const BaseNode = props => {
     }
   };
 
+  useEffect(() => {
+    setFollowed(data.followed)
+  }, [data.followed])
+
   return (
     <Pressable style={[styles.dataItem, props.style]} onPress={goNodeDetail}>
       <FastImg style={styles.dataImg} source={{uri: data.cover_url}} />
@@ -59,14 +66,18 @@ const BaseNode = props => {
           <Text style={styles.dataName}>{data.name}</Text>
           <Text style={styles.dataDesc}>
             {data.topics_count}篇帖子 · {data.accounts_count}位{data.nickname || '圈友'}
+            {type === 'nearby' && data.distance > 0 ? ` · 距你${ScaleDistance(data.distance)}` : ''}
           </Text>
         </View>
 
-        {/* list */}
-        {type === 'list' && (
-          <View style={{marginRight: props.type === 'data-index' ? 20 : 0}}>
-            <JoinButton join={followed} text={followed ? '已加入' : '加入'} onPress={onFollow} />
-          </View>
+        {/* list || nearby */}
+        {['list', 'nearby'].includes(type) && (
+          <JoinButton
+            join={followed}
+            text={followed ? '已加入' : '加入'}
+            onPress={onFollow}
+            borderRadius
+          />
         )}
 
         {/* add-node */}
@@ -82,10 +93,14 @@ const BaseNode = props => {
         {/* mine-node */}
         {type === 'mine-node' && (
           <Pressable onPress={goNodeResult}>
-            {data.audit_status === 'new' && <JoinButton join={true} text="未审核" />}
-            {data.audit_status === 'auditing' && <JoinButton join={true} text="审核中" />}
-            {data.audit_status === 'failed' && <JoinButton join={true} text="未通过" />}
-            {data.audit_status === 'success' && <JoinButton join={true} text="管理" />}
+            {data.audit_status === 'new' && <JoinButton join={true} text="未审核" borderRadius />}
+            {data.audit_status === 'auditing' && (
+              <JoinButton join={true} text="审核中" borderRadius />
+            )}
+            {data.audit_status === 'failed' && (
+              <JoinButton join={true} text="未通过" borderRadius />
+            )}
+            {data.audit_status === 'success' && <JoinButton join={true} text="管理" borderRadius />}
           </Pressable>
         )}
       </View>
@@ -103,8 +118,6 @@ const styles = StyleSheet.create({
     width: 49,
     height: 49,
     borderRadius: 5,
-    borderWidth: 3,
-    borderColor: '#ffff00',
   },
   dataInfo: {
     flex: 1,

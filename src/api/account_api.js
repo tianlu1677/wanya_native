@@ -81,15 +81,6 @@ export const getAccountArticles = async params => {
   return res;
 };
 
-// export async function getAccountBaseInfo(nickname) {
-//   const res = await request({
-//     url: '/api/v1/accounts/base_info',
-//     method: 'GET',
-//     params: {name: nickname},
-//   });
-//   return res.data.account;
-// }
-
 // 发布的帖子 收藏，喜欢的帖子
 // type= publish, praise, star
 export async function getAccountTopics(id, type, params = {}) {
@@ -103,34 +94,6 @@ export async function getAccountTopics(id, type, params = {}) {
   });
   return res;
 }
-
-// 收藏，喜欢的动态
-// type= publish, praise, star
-// export async function getAccountPosts(id, type, params = {}) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${id}/posts`,
-//     method: 'GET',
-//     params: {
-//       type: type,
-//       ...params,
-//     },
-//   });
-//   return res;
-// }
-
-// 发布的帖子 收藏，喜欢的帖子
-// type= publish, praise, star
-// export async function getAccountArticles(id, type, params = {}) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${id}/articles`,
-//     method: 'GET',
-//     params: {
-//       type: type,
-//       ...params,
-//     },
-//   });
-//   return res;
-// }
 
 // 发布的课程, 学过的课程， 收藏的课程
 // type: publish, learn, star, praise, view
@@ -172,24 +135,6 @@ export async function getAccountCounts(id, opts = {types: ''}) {
   });
   return res.data;
 }
-
-// 关注用户
-// export async function followAccount(id) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${id}/follow`,
-//     method: 'POST',
-//   });
-//   return res.data;
-// }
-
-// // 取消关注用户
-// export async function unfollowAccount(id) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${id}/unfollow`,
-//     method: 'POST',
-//   });
-//   return res.data;
-// }
 
 // 我的评论
 export async function getReplyComments(params = {}) {
@@ -263,29 +208,6 @@ export async function isLearnCourse(account_id) {
 
   return res.data;
 }
-
-// // 用户的粉丝列表
-// export async function getAccountFollowers(account_id, params = {}) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${account_id}/followers`,
-//     method: 'GET',
-//     params: params,
-//   });
-
-//   return res;
-// }
-
-// 用户的粉丝列表
-
-// export async function getAccountFollowings(account_id, params = {}) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${account_id}/followings`,
-//     method: 'GET',
-//     params: params,
-//   });
-
-//   return res;
-// }
 
 export async function getAccountRecentFollowers(params = {}) {
   const res = await request({
@@ -375,16 +297,6 @@ export async function getAccountInviteList(data = {}) {
   return res.data;
 }
 
-// 用户的粉丝列表
-// export const getAccountFollowers = async params => {
-//   const res = await request({
-//     url: `/api/v1/accounts/${params.id}/followers`,
-//     method: 'GET',
-//     params,
-//   });
-//   return res;
-// };
-
 // 主页 动态publish 喜欢praise 视频publish_video
 export const getAccountPosts = async params => {
   const res = await request({
@@ -433,20 +345,12 @@ export const getAccountFollowers = async params => {
   return res;
 };
 
-// export async function getAccountFollowers(params) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${account_id}/followers`,
-//     method: 'GET',
-//     params
-//   })
-//   return res
-// }
-// export async function getAccountFollowings(account_id, params = {}) {
-//   const res = await request({
-//     url: `/api/v1/accounts/${account_id}/followings`,
-//     method: 'GET',
-//     params: params,
-//   });
-
-//   return res;
-// }
+// 用户互相关注
+export const getAccountFollowEeach = async params => {
+  const res = await request({
+    url: `/api/v1/accounts/${params.id}/follow_each`,
+    method: 'GET',
+    params,
+  });
+  return res;
+};

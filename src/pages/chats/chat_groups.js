@@ -2,7 +2,6 @@ import React, {useCallback, useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import {RecommendSearch} from '@/components/NodeComponents';
 import {dispatchCurrentAccount, dispatchBaseCurrentAccount} from '@/redux/actions';
 import {getChatGroups, deleteChatGroup} from '@/api/chat_api';
 import ScrollList from '@/components/ScrollList';
@@ -36,10 +35,7 @@ const ChatGroups = ({navigation}) => {
     );
   });
   const deleteChatgroup = (data = {}) => {
-    console.log('real delete', data);
     deleteChatGroup({uuid: data.uuid});
-    // console.log('new1', listData)
-    // console.log('new', newlist);
     setListData(m => m.filter(item => item.uuid !== data.uuid));
   };
 
@@ -48,7 +44,6 @@ const ChatGroups = ({navigation}) => {
   };
 
   const loadData = async (page = 1) => {
-    // setLoading(true);
     const res = await getChatGroups({page: page});
     setHeaders(res.headers);
     setListData(page === 1 ? res.data.chat_groups : [...listData, ...res.data.chat_groups]);
@@ -76,7 +71,6 @@ const ChatGroups = ({navigation}) => {
 
   return (
     <View style={styles.wrapper}>
-      <RecommendSearch />
       <ScrollList
         keyExtractor={useCallback(item => `${item.uuid}`, [])}
         data={listData}
@@ -88,8 +82,9 @@ const ChatGroups = ({navigation}) => {
         getItemLayout={(data, index) => ({length: 71, offset: 71 * index, index})}
         settings={{
           initialNumToRender: 10,
-          windowSize: 10
+          windowSize: 10,
         }}
+        style={{backgroundColor: '#fff'}}
       />
     </View>
   );
@@ -103,7 +98,7 @@ const styles = StyleSheet.create({
   speator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#ebebeb',
-    marginLeft: 45 + 12,
+    marginLeft: 14 + 45 + 12,
   },
 });
 

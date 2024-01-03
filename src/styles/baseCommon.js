@@ -70,7 +70,6 @@ export const ListEmpty = {
     alignItems: 'center',
   },
   emptyTextWrap: {
-    flexDirection: 'column',
     marginTop: RFValue(110),
   },
   emptyText: {
@@ -84,11 +83,12 @@ export const ListEmpty = {
     height: RFValue(45),
     lineHeight: RFValue(45),
     backgroundColor: '#000',
-    borderRadius: 6,
+    // borderRadius: 6,
     overflow: 'hidden',
     marginTop: RFValue(20),
     color: '#fff',
     textAlign: 'center',
+    borderRadius: 24,
   },
 };
 

@@ -53,6 +53,7 @@ const BaseAccount = props => {
           : `@${data.nickname} `,
         mention_ids: savecomment.mention_ids ? [...savecomment.mention_ids, data.id] : [data.id],
       };
+      console.log('comments', comments);
       dispatch({type: action.SAVE_COMMENT_CONTENT, value: comments});
       navigation.goBack();
     }

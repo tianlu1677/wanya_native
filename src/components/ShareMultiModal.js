@@ -140,7 +140,7 @@ const ShareMultiModal = () => {
 
   return (
     <BottomModal
-      height={IsIos ? 0.37 : 0.45}
+      height={IsIos ? 0.37 : 0.40}
       width={1}
       rounded
       useNativeDriver={true}
@@ -153,7 +153,7 @@ const ShareMultiModal = () => {
       modalTitle={
         <ModalTitle
           hasTitleBar={false}
-          title="分享到"
+          title={ shareContent.title ||  "分享到"}
           style={{backgroundColor: '#F8F8F8'}}
           textStyle={{fontSize: 13, fontWeight: '400', color: '#9C9C9C'}}
         />

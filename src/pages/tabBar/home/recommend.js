@@ -1,43 +1,48 @@
-import React, {useState, useMemo, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet, StatusBar} from 'react-native';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
+import {createConsumer} from '@rails/actioncable';
 import Video from 'react-native-video';
 import * as action from '@/redux/constants';
 import IconFont from '@/iconfont';
 import {RFValue} from '@/utils/response-fontsize';
+import deviceInfo from '@/utils/device_info';
+import {consumerWsUrl} from '@/utils/config';
 import {RecommendSearch} from '@/components/NodeComponents';
 import MediasPicker from '@/components/MediasPicker';
 import TabView from '@/components/TabView';
 import SingleList from '@/components/List/single-list';
 import DoubleList from '@/components/List/double-list';
 import {getChannelPosts} from '@/api/home_api';
-import {recordDeviceInfo, ahoyTrackEvents} from '@/api/settings_api';
+import {getLocationInfo, loadLocation} from '@/utils/get-location';
+import LongVideoList from '@/components/List/long-video-list';
+import FollowListPage from '@/pages/tabBar/home/follow-list-post';
+import RecommendListPage from '@/pages/tabBar/home/recommend-list-post';
+import NodeListPage from '@/pages/tabBar/home/node-list-page';
+import NearbyListPage from '@/pages/tabBar/home/nearby-list-post';
 import {syncDeviceToken} from '@/api/app_device_api';
-import {getLocationInfo, loadLocation} from './getLocation';
-import deviceInfo from '@/utils/device_info';
-import {consumerWsUrl} from '@/utils/config';
-import {createConsumer} from '@rails/actioncable';
+import {recordDeviceInfo} from '@/api/settings_api';
+
 import {
+  dispatchFetchUploadTopic,
+  changeUploadStatus,
   dispatchFetchCategoryList,
   dispatchFetchLabelList,
   dispatchBaseCurrentAccount,
   dispatchCurrentAccount,
-  dispatchFetchUploadTopic,
-  changeUploadStatus,
 } from '@/redux/actions';
-import LongVideoList from '@/components/List/long-video-list';
-import FollowListPage from './follow-list-post';
-import NodeListPage from './node-list-page';
-import RecommendListPage from './recommend-list-post';
-import NearbyListPage from './nearby-list-post';
 
 const Recommend = props => {
   const dispatch = useDispatch();
   const defaultKey = props.route.params && props.route.params.activityKey;
   const uploadStatus = useSelector(state => state.topic.uploadStatus);
-  const auth_token = useSelector(state => state.login.auth_token);
   const home = useSelector(state => state.home);
+
+  const {
+    login: {auth_token},
+  } = useSelector(state => state);
+
   const [currentKey, setCurrentKey] = useState(defaultKey || 'recommend');
 
   const MemoVideo = React.memo(() => {
@@ -52,56 +57,6 @@ const Recommend = props => {
     );
   });
 
-  const onlineChannel = useMemo(() => {
-    // const url = `wss://xinxue.meirixinxue.com//cable?auth_token=${auth_token}`;
-    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create(
-      {channel: 'OnlineChannel'},
-      {
-        // received(data) {},
-        initialized() {
-          // console.log('initialized');
-        },
-        connected() {
-          // console.log('connected');
-        },
-        disconnected() {
-          // console.log('disconnected');
-        },
-        rejected() {
-          console.log('rejected');
-        },
-        unsubscribe() {
-          // console.log('unsubscribe');
-        },
-        appear() {
-          // console.log('appear')
-          // this.perform('appear', {});
-        },
-      }
-    );
-  }, []);
-
-  // 同步用户是否在线
-  const appearOnline = () => {
-    setInterval(() => {
-      // console.log('appear');
-      onlineChannel.perform('appear');
-    }, 5000);
-  };
-
-  const onTouchStart = event => {
-    // console.log('event', event['_targetInst'])
-    // const memprops = event?._targetInst?.memoizedProps;
-    // if (memprops && memprops?.visit_key) {
-    //   const visit_key = memprops?.visit_key;
-    //   const visit_value = memprops?.visit_value;
-    //   ahoyTrackEvents({
-    //     name: visit_key,
-    //     properties: {...visit_value, page: 'recommend'},
-    //     page: 'recommend',
-    //   });
-    // }
-  };
   const CallBackVideo = useCallback(() => <MemoVideo />, []);
 
   const UploadTopic = () => {
@@ -127,7 +82,6 @@ const Recommend = props => {
     );
   };
 
-  // console.log(home.channels);
   const channels = home.channels.map(item => {
     const params = {channel_id: item.id, channel_name: item.name};
     return {
@@ -172,12 +126,6 @@ const Recommend = props => {
   });
 
   const onChange = async (key, title) => {
-    ahoyTrackEvents({
-      name: `click_${key}`,
-      properties: {title: title, page: 'recommend'},
-      page: 'recommend',
-    });
-
     const {location} = home;
     if (key === 'nearby' && (!location.latitude || !location.longitude)) {
       getLocationInfo(false, result => {
@@ -191,73 +139,78 @@ const Recommend = props => {
     }
   };
 
+  const onlineChannel = useMemo(() => {
+    return createConsumer(consumerWsUrl(auth_token)).subscriptions.create({
+      channel: 'OnlineChannel',
+    });
+  }, []);
+
+  const init = () => {
+    syncDeviceToken();
+    recordDeviceInfo(deviceInfo);
+    dispatch(dispatchCurrentAccount());
+    dispatch(dispatchFetchCategoryList());
+    dispatch(dispatchFetchLabelList());
+
+    // 同步用户是否在线
+    setInterval(() => {
+      onlineChannel.perform('appear');
+    }, 5000);
+  };
+
+  useEffect(() => {
+    init();
+    if (uploadStatus) {
+      const upload = (file, cb) => props.uploadVideo(file, cb);
+      dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
+      dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
+    }
+
+    setTimeout(() => {
+      loadLocation(dispatch);
+    }, 1000);
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       dispatch(dispatchBaseCurrentAccount());
     }, [])
   );
 
-  useEffect(() => {
-    syncDeviceToken();
-    recordDeviceInfo(deviceInfo);
-    appearOnline(); // 是否在线
-    dispatch(dispatchCurrentAccount());
-    dispatch(dispatchFetchCategoryList());
-    dispatch(dispatchFetchLabelList());
-
-    if (uploadStatus) {
-      const upload = (file, cb) => props.uploadVideo(file, cb);
-      dispatch(changeUploadStatus({...uploadStatus, status: 'upload', progress: 0, upload}));
-      dispatch(dispatchFetchUploadTopic({...uploadStatus, upload}));
-    }
-    setTimeout(() => {
-      // 如果在这里请求的话，必须要等待1s之后才可以
-      loadLocation(dispatch);
-    }, 1000);
-  }, []);
-
   return (
-    <>
-      <StatusBar barStyle="light-content" backgroundColor={'white'} translucent={false} />
-      <View style={{flex: 1, position: 'relative'}}>
-        <RecommendSearch />
-        {uploadStatus ? (
-          <View style={[styles.uploadWrap]}>
-            <UploadTopic />
-            <CallBackVideo />
-          </View>
-        ) : null}
-        {channels.length > 0 && (
-          <View style={styles.wrapper} onTouchStart={onTouchStart}>
-            <TabView
-              currentKey={currentKey}
-              onChange={onChange}
-              align="left"
-              bottomLine={true}
-              separator={false}
-              tabData={[
-                {
-                  key: 'follow',
-                  title: '关注',
-                  component: FollowListPage,
-                },
-                {
-                  key: 'recommend',
-                  title: '推荐',
-                  component: RecommendListPage,
-                },
-                {
-                  key: 'nodes',
-                  title: '圈子',
-                  component: NodeListPage,
-                },
-                ...channels,
-              ]}
-            />
-          </View>
-        )}
-      </View>
-    </>
+    <View style={{flex: 1, position: 'relative'}}>
+      <RecommendSearch style={{paddingBottom: 0}} />
+      {uploadStatus ? (
+        <View style={[styles.uploadWrap]}>
+          <UploadTopic />
+          <CallBackVideo />
+        </View>
+      ) : null}
+      {channels.length > 0 && (
+        <View style={styles.wrapper}>
+          <TabView
+            currentKey={currentKey}
+            onChange={onChange}
+            align="left"
+            bottomLine={true}
+            separator={false}
+            tabData={[
+              {
+                key: 'follow',
+                title: '关注',
+                component: FollowListPage,
+              },
+              {
+                key: 'recommend',
+                title: '推荐',
+                component: RecommendListPage,
+              },
+              ...channels,
+            ]}
+          />
+        </View>
+      )}
+    </View>
   );
 };
 

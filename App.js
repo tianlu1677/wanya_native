@@ -27,10 +27,12 @@ import {init, Geolocation} from 'react-native-amap-geolocation';
 import * as RootNavigation from '@/navigator/root-navigation';
 import * as action from '@/redux/constants';
 import {getChannels, getChannelPosts} from '@/api/home_api';
+import { BasePosthogKey} from "@/utils/config"
 import JPush from 'jpush-react-native';
 WeChat.registerApp('wx17b69998e914b8f0', 'https://app.meirixinxue.com/');
 import JVerification from 'jverification-react-native';
-import { RootSiblingParent } from 'react-native-root-siblings';
+import {RootSiblingParent} from 'react-native-root-siblings';
+import CommentInput from '@/components/comment-input';
 
 const queryString = require('query-string');
 const codePushOptions = {
@@ -62,6 +64,18 @@ class App extends Component {
       scale = 1.08;
     }
 
+    Text.defaultProps = Object.assign({}, Text.defaultProps, {
+      allowFontScaling: false,
+      adjustsFontSizeToFit: true,
+      minimumFontScale: scale,
+    });
+    Text.defaultProps.sytle = {color: 'black'};
+    TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
+      defaultProps: false,
+      allowFontScaling: false,
+      textBreakStrategy: 'simple',
+    });
+
     this.loadSplashImg();
     this.loadSettings();
     this.checkPermission();
@@ -75,19 +89,7 @@ class App extends Component {
 
     // this.saveToken(); //保存token
 
-    // console.log('scale', scale);
 
-    Text.defaultProps = Object.assign({}, Text.defaultProps, {
-      allowFontScaling: false,
-      adjustsFontSizeToFit: true,
-      minimumFontScale: scale,
-    });
-    Text.defaultProps.sytle = {color: 'black'};
-    TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
-      defaultProps: false,
-      allowFontScaling: false,
-      textBreakStrategy: 'simple',
-    });
   }
 
   loadSplashImg = () => {
@@ -114,8 +116,8 @@ class App extends Component {
     };
     JVerification.init(initParams, result => {
       console.log('JVerification init', result);
-    })
-  }
+    });
+  };
 
   checkPermission = () => {
     checkMultiple([PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]).then(statuses => {
@@ -249,6 +251,8 @@ class App extends Component {
               <ImagePreview />
               <ShareMultiModal />
               <ModalPortal />
+
+              <CommentInput navigation={RootNavigation} />
             </PersistGate>
           </Provider>
         </RootSiblingParent>

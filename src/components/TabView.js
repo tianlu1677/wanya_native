@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Dimensions, View, Text} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
+import Helper from '@/utils/helper';
+import * as RootNavigation from '@/navigator/root-navigation';
 import PropTypes from 'prop-types';
 import TabList from './TabList';
 
@@ -10,6 +12,7 @@ const initialLayout = {
 };
 
 const TabViewIndex = props => {
+  const [tab, setTab] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [scenes, setScenes] = useState([]);
   const [index, setIndex] = useState(0);
@@ -22,6 +25,13 @@ const TabViewIndex = props => {
 
   const tabChange = item => {
     props.onChange(item.key, item.title);
+    const data = RootNavigation.getCurrentPage();
+    Helper.recordVisit({
+      event: `tab_${item.key}_${data.name}`,
+      name: `${item.title}_${data.name}`,
+      project_name: 'tab点击',
+      meta: data,
+    });
   };
 
   const initScene = () => {
@@ -46,6 +56,11 @@ const TabViewIndex = props => {
     setIndex(i);
   }, [props.currentKey]);
 
+  useEffect(() => {
+    const data = props.tabData.map(v => ({key: v.key, title: v.title}));
+    setTab(data);
+  }, [props.tabData]);
+
   return (
     routes.length > 0 && (
       <TabView
@@ -56,7 +71,9 @@ const TabViewIndex = props => {
             separator={props.separator}
             align={props.align}
             tabChange={tabChange}
-            data={routes}
+            data={tab}
+            tabStyle={props.tabStyle}
+            tabScrollStyle={props.tabScrollStyle}
           />
         )}
         navigationState={{index, routes}}

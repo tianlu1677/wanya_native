@@ -17,6 +17,7 @@ const CategoryComponent = props => {
   const {
     navigation,
     currentKey,
+    category,
     category: {movement, space, activity, shop_store, shop_brand},
   } = props;
 
@@ -25,7 +26,7 @@ const CategoryComponent = props => {
       type: action.GET_LOCATION,
       value: {...location, chooseCity: location.positionCity || '全国'},
     });
-    navigation.navigate(name, {category: currentKey});
+    navigation.navigate(name, {category: category.category_name});
   };
 
   return (
@@ -37,7 +38,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {movement.count > 0 ? `${movement.count}个` : '还没有'}
-            {currentKey}技巧
+            {category.category_name}技巧
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -51,7 +52,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {space.count > 0 ? `${space.count}个` : '还没有'}
-            {currentKey}场地
+            {category.category_name}场地
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -65,7 +66,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {activity.count > 0 ? `${activity.count}个` : '还没有'}
-            {currentKey}活动
+            {category.category_name}活动
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -79,7 +80,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {shop_store.count > 0 ? `${shop_store.count}个` : '还没有'}
-            {currentKey}店
+            {category.category_name}店
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -93,7 +94,7 @@ const CategoryComponent = props => {
         <View style={styles.itemRight}>
           <Text style={styles.itemText}>
             {shop_brand.count > 0 ? `${shop_brand.count}个` : '还没有'}
-            {currentKey}品牌
+            {category.category_name}品牌
           </Text>
           <IconFont name="arrow-right" size={13} color={'#bdbdbd'} />
         </View>
@@ -109,12 +110,12 @@ const DiscoveryIndex = props => {
 
   const loadData = async () => {
     const res = await getAppCardList();
-    setCurrentKey(res.data.list[0].category_name);
+    setCurrentKey(res.data.list[0].category_key);
     setCoveryData(res.data.list);
   };
 
   const RenderCaCategory = () => {
-    const current = coveryData.find(item => item.category_name === currentKey);
+    const current = coveryData.find(item => item.category_key === currentKey);
     return <CategoryComponent {...props} category={current} currentKey={currentKey} />;
   };
 
@@ -124,7 +125,7 @@ const DiscoveryIndex = props => {
 
   return (
     <View style={styles.wrapper}>
-      <RecommendSearch />
+      <RecommendSearch style={{paddingBottom: 0}} />
       {coveryData.length > 0 ? (
         <TabView
           currentKey={currentKey}
@@ -135,7 +136,7 @@ const DiscoveryIndex = props => {
           separator={false}
           tabData={coveryData.map(category => {
             return {
-              key: category.category_name,
+              key: category.category_key,
               title: category.category_name,
               component: RenderCaCategory,
             };

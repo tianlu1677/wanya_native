@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {RFValue} from '@/utils/response-fontsize';
 import FastImg from '@/components/FastImg';
 import IconFont from '@/iconfont';
+import {ScaleDistance} from '@/utils';
 
 const BaseSpceDetail = props => {
   const navigation = useNavigation();
@@ -29,13 +30,7 @@ const BaseSpceDetail = props => {
           <Text style={styles.addressName} numberOfLines={2}>
             {address}
           </Text>
-          <Text style={styles.distance}>
-            {distance > 0
-              ? distance > 1000
-                ? `${(distance / 1000).toFixed(1)}km`
-                : `${distance}m`
-              : ''}
-          </Text>
+          {distance > 0 ? <Text style={styles.distance}>{ScaleDistance(distance)}</Text> : null}
         </View>
         <View style={styles.tagWrapper}>
           {tag_list.map((tag, index) => (

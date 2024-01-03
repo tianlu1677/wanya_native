@@ -110,7 +110,7 @@ const RenderHeader = props => {
               text={joined ? '已收藏' : '收藏'}
               onPress={handleJoin}
               joinedStyle={{color: '#BDBDBD', backgroundColor: '#fff'}}
-              joineStyle={{color: '#000000', backgroundColor: '#fff'}}
+              joinStyle={{color: '#000000', backgroundColor: '#fff'}}
             />
           </View>
           <JoinAccounts

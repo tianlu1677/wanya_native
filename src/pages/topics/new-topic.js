@@ -19,7 +19,7 @@ import Toast from '@/components/Toast';
 import GetLocation from '@/components/GetLocation';
 import FastImg from '@/components/FastImg';
 import {getLocation} from '@/api/space_api';
-import {loadLocation} from '@/pages/home/getLocation';
+import {loadLocation} from '@/utils/get-location';
 
 const {width: windowWidth} = Dimensions.get('window');
 const mediaSize = (windowWidth - 60 - 30) / 4; //图片尺寸
@@ -474,7 +474,7 @@ const NewTopic = props => {
             value={content}
             selectionColor={'#ff193a'}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Pressable
               style={styles.addTextNameWrap}
               onPress={() => navigation.navigate('AddHashTag')}

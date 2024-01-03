@@ -1,5 +1,4 @@
 import * as constants from '../constants';
-import {THEORY_VIDEO_LIST, THEORY_VIDEO_STATE} from '../constants';
 
 const defaultVideoList = {
   video_1: true,
@@ -9,12 +8,12 @@ const defaultVideoList = {
   video_5: true,
   video_6: true,
   video_7: true,
-}
+};
 
 const defaultState = {
   theory: {},
   theoryDetail: null,
-  videoList: defaultVideoList
+  videoList: defaultVideoList,
 };
 
 function theoryReducer(state = defaultState, action) {
@@ -30,12 +29,10 @@ function theoryReducer(state = defaultState, action) {
         theoryDetail: action.value,
       });
     case constants.THEORY_VIDEO_STATE:
-      // console.log('action', action)
-      const newVideoState = {...defaultVideoList, [action.videoId]: action.pause}
-      // console.log('action2', newVideoState)
+      const newVideoState = {...defaultVideoList, [action.videoId]: action.pause};
       return (state = {
         ...state,
-        videoList: newVideoState
+        videoList: newVideoState,
       });
     default:
       return state;

@@ -25,6 +25,7 @@ import {consumerWsUrl} from '@/utils/config';
 import Helper from '@/utils/helper';
 import {getAccount, followAccount, unfollowAccount} from '@/api/account_api';
 import {
+  deleteChatGroup,
   getChatGroupsConversations,
   getChatGroupsSendMessage,
   readSingleChatGroupMessage,
@@ -51,7 +52,7 @@ let timer = null;
 const ChartDetail = props => {
   const dispatch = useDispatch();
   const {navigation, route, imagePick, videoPick, uploadVideo, uploadAudio} = props;
-  const {uuid, targetAccount} = route.params;
+  const {uuid, targetAccountId, targetAccountNickname} = route.params;
   const {
     account: {currentAccount},
     login: {auth_token},
@@ -117,7 +118,6 @@ const ChartDetail = props => {
 
   const chatGroupSendMessage = async params => {
     try {
-      console.log('params', params);
       // 先直接本地发送，接收数据后再排除掉当前列表中有相同的uid的数据;
       const uid = Helper.generateUuid();
       if (params.conversation.category === 'text') {
@@ -135,7 +135,6 @@ const ChartDetail = props => {
           sendStatus: 1,
           time: new Date().getTime(),
         };
-        console.log('fakeData', fakeData);
         setMessages(m => m.concat(fakeData));
       }
 
@@ -143,7 +142,7 @@ const ChartDetail = props => {
       await getChatGroupsSendMessage(paramsData);
       Toast.hide();
     } catch (e) {
-      console.log('error', e);
+      // console.log('error', e);
       Toast.hide();
     }
   };
@@ -180,10 +179,8 @@ const ChartDetail = props => {
         {
           title: '删除',
           onPress: () => {
-            console.log('type', type, index, text);
             chatChannel.deleteMessage(message.id);
             messages.splice(index, 1);
-            console.log('message', messages);
             setMessages([...messages]);
           },
         },
@@ -203,7 +200,7 @@ const ChartDetail = props => {
       );
       setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -251,7 +248,7 @@ const ChartDetail = props => {
     try {
       await AudioRecorder.pauseRecording(); // Android 由于API问题无法使用此方法
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -259,7 +256,7 @@ const ChartDetail = props => {
     try {
       await AudioRecorder.resumeRecording(); // Android 由于API问题无法使用此方法
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -267,7 +264,7 @@ const ChartDetail = props => {
     try {
       await AudioRecorder.startRecording();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -276,7 +273,7 @@ const ChartDetail = props => {
       await AudioRecorder.stopRecording();
       timer && clearInterval(timer);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -406,13 +403,21 @@ const ChartDetail = props => {
     {
       id: 1,
       label: '个人主页',
-      onPress: () => navigation.navigate('AccountDetail', {accountId: targetAccount.id}),
+      onPress: () => navigation.navigate('AccountDetail', {accountId: targetAccountId}),
     },
     {
       id: 2,
       label: '举报',
       onPress: async () => {
-        navigation.navigate('Report', {report_type: 'Account', report_type_id: targetAccount.id});
+        navigation.navigate('Report', {report_type: 'Account', report_type_id: targetAccountId});
+      },
+    },
+    {
+      id: 3,
+      label: '删除',
+      onPress: async () => {
+        deleteChatGroup({uuid: uuid});
+        navigation.goBack();
       },
     },
   ];
@@ -432,7 +437,7 @@ const ChartDetail = props => {
   };
 
   const loadAccount = async () => {
-    const ret = await getAccount(targetAccount.id);
+    const ret = await getAccount(targetAccountId);
     setTargetAccountDetail(ret.data.account);
   };
 
@@ -453,7 +458,7 @@ const ChartDetail = props => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: targetAccount.nickname,
+      title: targetAccountNickname,
       headerStyle: {
         borderBottomWidth: 0,
         borderBottomColor: '#EBEBEB',

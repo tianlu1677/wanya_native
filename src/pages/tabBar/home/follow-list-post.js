@@ -1,11 +1,9 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {Platform, View, Text, Pressable, ScrollView, StyleSheet} from 'react-native';
+import {Platform, View, Text, Pressable, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import * as action from '@/redux/constants';
 import {throttle} from 'lodash';
-import Toast from '@/components/Toast';
-import {Avator} from '@/components/NodeComponents';
 import IconFont from '@/iconfont';
 import {BlurView} from '@/components/NodeComponents';
 import FastImg from '@/components/FastImg';
@@ -14,8 +12,6 @@ import BaseTopic from '@/components/Item/base-topic';
 import BaseArticle from '@/components/Item/base-article';
 import BaseTheory from '@/components/Item/base-theory';
 import {getFollowedPosts} from '@/api/home_api';
-import {recommendAccounts} from '@/api/mine_api';
-import {followAccount} from '@/api/account_api';
 import {RFValue} from '@/utils/response-fontsize';
 import {ShareWrapper as lstyles} from '@/styles/baseCommon';
 
@@ -57,71 +53,6 @@ export const FollowShareComponent = () => {
   ) : null;
 };
 
-const RelatedRecommend = () => {
-  const navigation = useNavigation();
-  const [account, setAccount] = useState([]);
-
-  const loadData = async () => {
-    const res = await recommendAccounts();
-    setAccount(res.data.accounts);
-  };
-
-  const onFollow = async (item, index) => {
-    if (item.followed === false) {
-      await followAccount(item.id);
-      Toast.showError('关注成功');
-      account[index].followed = true;
-      setAccount([...account]);
-    }
-
-    setTimeout(() => {
-      account.splice(index, 1);
-      setAccount([...account]);
-    }, 1000);
-  };
-
-  const goDetail = item => {
-    navigation.navigate('AccountDetail', {accountId: item.id});
-  };
-
-  const goRelatedDetail = () => {
-    navigation.navigate('RelatedAccounts');
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  return account.length > 0 ? (
-    <View style={styles.wrapper}>
-      <Pressable style={styles.title} onPress={goRelatedDetail}>
-        <Text>为您推荐</Text>
-        <View style={styles.right}>
-          <Text style={{marginRight: 2}}>相关推荐</Text>
-          <IconFont name="arrow-right" color={'#000'} size={RFValue(8)} />
-        </View>
-      </Pressable>
-      <View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {account.map((item, index) => (
-            <Pressable key={item.id} style={styles.card} onPress={() => goDetail(item)}>
-              <Avator account={{avatar_url: item.avatar_url, id: item.id}} size={70} />
-              <Text style={styles.cardtext} numberOfLines={1}>
-                {item.nickname}
-              </Text>
-              <Text
-                style={[styles.cardbtn, item.followed ? styles.hasfollow : styles.notfollow]}
-                onPress={() => onFollow(item, index)}>
-                {item.followed ? '已关注' : '关注'}
-              </Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-      </View>
-    </View>
-  ) : null;
-};
-
 const FollowListPost = () => {
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState();
@@ -137,29 +68,18 @@ const FollowListPost = () => {
     return useMemo(() => {
       switch (item.item_type) {
         case 'Topic':
-          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} />;
+          return <BaseTopic data={item.item} onRemove={() => onRemove(index)} bottom="comment" />;
         case 'Article':
           return <BaseArticle data={item.item} />;
         case 'Theory':
-          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} />;
+          return <BaseTheory data={item.item} onRemove={() => onRemove(index)} bottom="comment" />;
         default:
           return <View />;
       }
     }, [item.id]);
   });
 
-  const renderItemMemo = useCallback(
-    itemProps =>
-      itemProps.index === 1 ? (
-        <>
-          <RelatedRecommend />
-          <RenderItem {...itemProps} />
-        </>
-      ) : (
-        <RenderItem {...itemProps} />
-      ),
-    [listData]
-  );
+  const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
   const onRefresh = (page = 1) => {
     loadData(page);
@@ -191,10 +111,10 @@ const FollowListPost = () => {
       windowSize={Platform.OS === 'ios' ? 10 : 20}
       ListHeaderComponent={FollowShareComponent()}
       renderSeparator={() => <View style={styles.speator} />}
-      renderEmpty={RelatedRecommend()}
     />
   );
 };
+
 const styles = StyleSheet.create({
   wrapper: {
     paddingLeft: 14,

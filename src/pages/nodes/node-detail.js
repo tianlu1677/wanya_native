@@ -147,12 +147,9 @@ const NodeDetail = ({navigation, route}) => {
               <FastImg style={styles.cover} source={{uri: detail.cover_url}} />
               <View style={styles.nodewrap}>
                 <Text style={styles.nodeName}>{detail.name}</Text>
-                <View
-                  style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={styles.nodeView}>
                   <Text style={styles.nodeNum}>{detail.topics_count}篇动态</Text>
-                  {(detail.space || detail.location) && (
-                    <Text style={{color: 'white', marginTop: 12}}> · </Text>
-                  )}
+                  {(detail.space || detail.location) && <Text style={{color: 'white'}}> · </Text>}
                   <LocationBar location={detail.location} space={detail.space} />
                 </View>
               </View>
@@ -276,10 +273,15 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontWeight: '500',
   },
+  nodeView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
+  },
   nodeNum: {
     fontSize: 11,
     color: '#fff',
-    marginTop: 11,
   },
   descWrap: {
     marginTop: RFValue(20),

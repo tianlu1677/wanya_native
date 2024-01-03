@@ -96,7 +96,6 @@ import ChatDetail from '@/pages/chats/chat-detail/index';
 import ChatGroups from '@/pages/chats/chat_groups';
 
 // 公用页面
-import RelatedAccounts from '@/pages/home/related-account-list'; //关注页面相关推荐
 import ChooseCity from '@/components/List/choose-city'; //选择城市
 import JoinAccountsList from '@/components/List/join-accounts-list'; //最近加入好友
 import WebView from '@/pages/webview/webview'; //webview
@@ -135,9 +134,13 @@ const searchRouter = [
 ];
 
 const topicRouter = [
-  {name: 'TopicDetail', component: TopicDetail, options: {headerShown: false}},
-  {name: 'TopicLinkDetail', component: TopicLinkDetail, options: {headerShown: false}},
-  {name: 'AddNode', component: AddNode},
+  {name: 'TopicDetail', component: TopicDetail, options: {headerShown: false, title: '帖子详情页'}},
+  {
+    name: 'TopicLinkDetail',
+    component: TopicLinkDetail,
+    options: {headerShown: false, title: '外链帖子展示页'},
+  },
+  {name: 'AddNode', component: AddNode, options: {title: '添加圈子页面'}},
   {name: 'AddRelated', component: AddRelated, options: {headerShown: false, herderColor: '#fff'}},
   {name: 'AddLink', component: AddLink},
   {name: 'AddHashTag', component: AddHashTag, options: {headerShown: false, herderColor: '#fff'}},
@@ -251,12 +254,10 @@ const accountRouter = [
 ];
 
 const commonRouter = [
-  {name: 'RelatedAccounts', component: RelatedAccounts, options: {title: '相关推荐'}},
   {name: 'ChooseCity', component: ChooseCity, options: {title: '选择城市'}},
   {name: 'JoinAccountsList', component: JoinAccountsList, options: {title: '最近加入列表'}},
   {name: 'SharePage', component: SharePage, options: {title: '分享'}},
   {name: 'Report', component: Report, options: {title: '投诉'}},
-  // {name: 'OneLogin', component: OneLogin, options: {title: '一键登录'}},
 ];
 
 const LabRouter = [
@@ -296,8 +297,8 @@ const authRouter = [
   {name: 'LoginPasswordCode', component: LoginPasswordCode},
   {name: 'LoginPhoneCode', component: LoginPhoneCode},
   {name: 'LoginVerifyCode', component: LoginVerifyCode},
-  {name: 'BindPhone', component: BindPhone},
-  {name: 'WebView', component: WebView}
+  {name: 'BindPhone', component: BindPhone, options: {title: '绑定手机页面'}},
+  {name: 'WebView', component: WebView, options: {title: 'webview'}},
 ];
 
 export const MainRouters = [

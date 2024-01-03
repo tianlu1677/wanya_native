@@ -12,27 +12,26 @@ import {
 } from 'react-native';
 
 export const State = {
-  NORMAL: 0,//正常状态
-  REFRESHING: 1,//刷新中
-  LOADING: 2,//正在加载
-  LOAD_END: 3,//上拉加载完成
-  ERROR: 4,//上拉加载发生错误
-  NO_DATA: 5,//无数据情况
+  NORMAL: 0, //正常状态
+  REFRESHING: 1, //刷新中
+  LOADING: 2, //正在加载
+  LOAD_END: 3, //上拉加载完成
+  ERROR: 4, //上拉加载发生错误
+  NO_DATA: 5, //无数据情况
 };
 
 // https://github.com/liweijieok/ReactNativeDemo/blob/master/js/flatlist/FlatListDemoPage.js
 
-export function pagination (headers = {}){
-  // console.log('xxxxxxx', headers)
+export function pagination(headers = {}) {
   const currentPage = parseInt(headers['x-current-page']);
   const perPage = parseInt(headers['x-per-page'] || headers['X-Page-Items']);
   const total = parseInt(headers['x-total']);
   const hasMore = currentPage * perPage < total;
   const nextPage = hasMore ? currentPage + 1 : currentPage;
-  return { hasMore: hasMore, nextPage: nextPage, page: currentPage, total: total}
+  return {hasMore: hasMore, nextPage: nextPage, page: currentPage, total: total};
 }
 
-import EmptyData from './Empty'
+import EmptyData from './Empty';
 
 class Scroll extends Component {
   constructor(props) {
@@ -43,20 +42,18 @@ class Scroll extends Component {
     };
   }
 
-  static propTypes = {}
+  static propTypes = {};
   static defaultProps = {
-    loadingText: "数据加载中...",
-    loadErrorText: "点击重新加载...",
-    loadEndText: "已加载全部数据",
-    loadEmptyText: "暂时没有相关数据",
+    loadingText: '数据加载中...',
+    loadErrorText: '点击重新加载...',
+    loadEndText: '已加载全部数据',
+    loadEmptyText: '暂时没有相关数据',
     requestState: '',
     footerContainer: {},
     footerText: {},
     data: [],
-    id: "flat_list",
-    onRequest: (isRefresh) => {
-
-    },
+    id: 'flat_list',
+    onRequest: isRefresh => {},
   };
 
   /**
@@ -79,7 +76,6 @@ class Scroll extends Component {
     });
   }
 
-
   /**
    * 刷新触发
    * @private
@@ -95,7 +91,9 @@ class Scroll extends Component {
    * @returns {boolean}
    */
   _enableRefresh = () => {
-    return !(this.props.requestState === State.REFRESHING || this.props.requestState === State.LOADING);
+    return !(
+      this.props.requestState === State.REFRESHING || this.props.requestState === State.LOADING
+    );
   };
   _onEndReached = () => {
     if (this._enableLoad()) {
@@ -118,7 +116,7 @@ class Scroll extends Component {
    * @param isRefresh
    * @private
    */
-  _reRequest = (isRefresh) => {
+  _reRequest = isRefresh => {
     //回调外部方法
     this.props.onRequest && this.props.onRequest(isRefresh);
   };
@@ -135,14 +133,17 @@ class Scroll extends Component {
     if (separator) {
       return separator();
     }
-    return <View style={{
-      height: 1,
-      backgroundColor: "red",
-      marginLeft: 10,
-      marginRight: 10
-    }}/>;
+    return (
+      <View
+        style={{
+          height: 1,
+          backgroundColor: 'red',
+          marginLeft: 10,
+          marginRight: 10,
+        }}
+      />
+    );
   };
-
 
   /**
    * 渲染底部
@@ -156,7 +157,7 @@ class Scroll extends Component {
     const hasData = this.props.data && this.props.data.length > 0;
     switch (this.props.requestState) {
       case State.NORMAL:
-        footer = (<View style={footerContainerStyle}/>);
+        footer = <View style={footerContainerStyle} />;
         break;
       case State.ERROR: {
         //是否有数据
@@ -164,21 +165,22 @@ class Scroll extends Component {
           <TouchableOpacity
             activeOpacity={0.8}
             style={footerContainerStyle}
-            onPress={this._reRequest}
-          >
+            onPress={this._reRequest}>
             <Text style={footerTextStyle}>{loadErrorText}</Text>
           </TouchableOpacity>
-        ) : (<EmptyData onPress={this._reRequest} tips={loadErrorText}/>);
+        ) : (
+          <EmptyData onPress={this._reRequest} tips={loadErrorText} />
+        );
         break;
       }
       case State.NO_DATA: {
-        footer = <EmptyData onPress={this._reRequest} tips={loadEmptyText}/>;
+        footer = <EmptyData onPress={this._reRequest} tips={loadEmptyText} />;
         break;
       }
       case State.LOADING: {
         footer = (
           <View style={footerContainerStyle}>
-            <ActivityIndicator size="small" color="#888888"/>
+            <ActivityIndicator size="small" color="#888888" />
             <Text style={[footerTextStyle, {marginLeft: 7}]}>{loadingText}</Text>
           </View>
         );
@@ -196,28 +198,24 @@ class Scroll extends Component {
     return footer;
   };
 
-
   render() {
-    let {
-      renderItem = () => {
-      }
-    } = this.props;
+    let {renderItem = () => {}} = this.props;
 
-    // console.log('this.props', this.props)
-
-    return <View>
-      <FlatList
-        onEndReached={this._onEndReached}
-        onRefresh={this.state.enableRefresh ? this._onRefresh : null}
-        refreshing={this.state.enableRefresh && (this.props.requestState === State.REFRESHING)}
-        ListFooterComponent={this.state.enableLoadMore ? this._renderFooter : null}
-        onEndReachedThreshold={0.1}
-        renderItem={renderItem}
-        {...this.props}
-        ItemSeparatorComponent={this._separator}
-        keyExtractor={this._keyExtractor}
-      />
-    </View>
+    return (
+      <View>
+        <FlatList
+          onEndReached={this._onEndReached}
+          onRefresh={this.state.enableRefresh ? this._onRefresh : null}
+          refreshing={this.state.enableRefresh && this.props.requestState === State.REFRESHING}
+          ListFooterComponent={this.state.enableLoadMore ? this._renderFooter : null}
+          onEndReachedThreshold={0.1}
+          renderItem={renderItem}
+          {...this.props}
+          ItemSeparatorComponent={this._separator}
+          keyExtractor={this._keyExtractor}
+        />
+      </View>
+    );
   }
 }
 
@@ -225,17 +223,16 @@ const styles = StyleSheet.create({
   //底部默认样式
   footerContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 10,
     height: 44,
   },
   footerText: {
     fontSize: 14,
-    color: "red"
-  }
+    color: 'red',
+  },
 });
-
 
 export default Scroll;

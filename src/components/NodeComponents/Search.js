@@ -6,6 +6,7 @@ import {RFValue} from '@/utils/response-fontsize';
 
 const Search = props => {
   const {height, cancelWidth, placeholderTextColor} = props;
+
   return (
     <View style={[styles.wrapper, props.style]}>
       {props.prefix ? props.prefix : null}
@@ -26,16 +27,6 @@ const Search = props => {
           returnKeyType={'search'}
         />
       </View>
-
-      {/* {props.children ? (
-        props.children
-      ) : (
-        <Pressable onPress={props.onCancel}>
-          <Text style={[styles.cancel, {width: cancelWidth, height: height, lineHeight: height}]}>
-            取消
-          </Text>
-        </Pressable>
-      )} */}
 
       {props.cancel && (
         <Text
@@ -68,10 +59,11 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     paddingTop: RFValue(6),
     paddingBottom: RFValue(6),
     paddingLeft: 14,
+    backgroundColor: 'white',
   },
   inputContent: {
     flex: 1,

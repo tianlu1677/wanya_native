@@ -25,7 +25,7 @@ const PhoneLogin = ({navigation, route}) => {
 
   const downTimeRunner = () => {
     var timeo = 59;
-    var timeStop = setInterval(function () {
+    var timeStop = setInterval(function() {
       timeo--;
       if (timeo >= 1) {
         let text = `重新获取(${timeo}s)`;
@@ -84,12 +84,10 @@ const PhoneLogin = ({navigation, route}) => {
     let res = {};
 
     if (isRegister) {
-      console.log('data', data, isRegister);
       res = await phoneRegisterAccount(data);
     } else {
       res = await verifyPhoneCode(data);
     }
-    console.log('res', res);
     if (res.error) {
       Toast.showError(res.error, {});
     } else {

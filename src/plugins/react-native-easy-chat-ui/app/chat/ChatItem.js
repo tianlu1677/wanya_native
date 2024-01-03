@@ -477,7 +477,6 @@ const styles = StyleSheet.create({
   check: {
     width: 20,
     height: 20,
-    backgroundColor: 'green',
     borderRadius: 10,
     marginTop: 14,
     justifyContent: 'center',

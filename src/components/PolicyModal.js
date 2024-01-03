@@ -19,15 +19,12 @@ import {useFocusEffect} from '@react-navigation/native';
 const PolicyModal = ({navigation, route, canShowAgree, canShowAgreeFunc}) => {
   const [cancelText, setCancelText] = useState('拒绝');
   const agreePolicy = async () => {
-    console.log('cancel');
     Helper.setData('agree_policy', 'ok');
     canShowAgreeFunc(false);
-    // console.log('showModal', showModal);
   };
 
   const loadPolicy = async () => {
     const agree_policy_status = await Helper.getData('agree_policy');
-    // console.log('agree_policy_status', agree_policy_status)
     if (agree_policy_status !== 'ok') {
       canShowAgreeFunc(true);
     }
@@ -55,7 +52,6 @@ const PolicyModal = ({navigation, route, canShowAgree, canShowAgreeFunc}) => {
     if (cancelText === '拒绝') {
       setCancelText('拒绝并退出');
     } else {
-      console.log('exist');
       BackHandler.exitApp();
     }
   };
@@ -75,9 +71,7 @@ const PolicyModal = ({navigation, route, canShowAgree, canShowAgreeFunc}) => {
           visible={canShowAgree}
           statusBarTranslucent={true}
           // presentationStyle={'fillScreen'}
-          onRequestClose={() => {
-            console.log('Modal has been closed.');
-          }}>
+          onRequestClose={() => {}}>
           <View style={styles.tipBoxBg}>
             <View style={styles.tipBox}>
               <View style={styles.tipBoxTil}>

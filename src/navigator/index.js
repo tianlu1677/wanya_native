@@ -52,15 +52,25 @@ const Navigation = () => {
   const onStateChangeRecord = state => {
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current.getCurrentRoute().name;
+    const currentRouteParams = navigationRef.current.getCurrentRoute().params;
+    const currentRouteTitle = navigationRef.current.getCurrentOptions().title;
 
     if (previousRouteName !== currentRouteName) {
       AnalyticsUtil.onPageStart(currentRouteName);
     }
+    // console.log('navigationRef.current.getCurrentRoute()', navigationRef.current.getCurrentOptions());
+    const recordData = {
+      event: `page_visit_${currentRouteName}`,
+      name: `访问${currentRouteTitle || currentRouteName}`,
+      project_name: '页面访问',
+      meta: currentRouteParams,
+    };
+    Helper.recordVisit(recordData);
     AnalyticsUtil.onPageEnd(currentRouteName);
     routeNameRef.current = currentRouteName;
   };
 
-  console.log('login.auth_token', login.auth_token);
+  // console.log('login.auth_token', login.auth_token);
 
   return (
     <NavigationContainer

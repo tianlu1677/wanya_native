@@ -1,20 +1,22 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {View, Text, ScrollView, StyleSheet, Pressable, StatusBar} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {nodeAction} from '@/redux/actions';
+import {useFocusEffect} from '@react-navigation/native';
+import {nodeAction, dispatchFetchCategoryList} from '@/redux/actions';
 import Loading from '@/components/Loading';
 import BaseNode from '@/components/Item/base-node';
 import {RFValue} from '@/utils/response-fontsize';
 import {styles} from '@/components/NodeIndex';
 
-const NodeIndex = () => {
+const NodeIndex = props => {
+  const showAll = props.showAll ? true : false;
   const scrollRef = useRef(null);
   const dispatch = useDispatch();
   const currentAccount = useSelector(state => state.account.currentBaseInfo);
   const {nodes, followNodes, checkNodes} = useSelector(state => state.node);
   const {categoryList} = useSelector(state => state.home);
-  const categories = [{id: 0, name: '我的'}, ...categoryList];
-  const [layoutList, setLayoutList] = useState(Array(categoryList.length).fill({y: -1}));
+  const categories = props.showAll ? categoryList : [{id: 0, name: '我的'}, ...categoryList];
+  const [layoutList, setLayoutList] = useState([]);
   const [active, setActive] = useState(1);
   const [allNodes, setAllNodes] = useState([]);
 
@@ -39,11 +41,19 @@ const NodeIndex = () => {
   }, []);
 
   useEffect(() => {
-    if (layoutList.length === categories.length) {
-      const allTrue = layoutList.every(item => item.y >= 0);
-      if (allTrue) {
-        scrollRef.current.scrollTo({y: layoutList[1].y, animated: true});
-      }
+    if (layoutList.length === 0) {
+      setLayoutList(new Array(categories.length).fill({}));
+    }
+  }, [categories]);
+
+  useEffect(() => {
+    if (categories.length !== layoutList.length) {
+      return;
+    }
+
+    const allRender = layoutList.every(item => item.x >= 0);
+    if (allRender && !showAll) {
+      scrollRef.current.scrollTo({y: layoutList[1].y, animated: true});
     }
   }, [layoutList]);
 
@@ -55,7 +65,7 @@ const NodeIndex = () => {
     setAllNodes(allMineNodes.concat(nodes));
   }, [nodes, followNodes, checkNodes]);
 
-  return allNodes.length > 0 ? (
+  return allNodes.length > 0 && categories.length > 0 ? (
     <>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} />
       <View style={styles.wrapper}>

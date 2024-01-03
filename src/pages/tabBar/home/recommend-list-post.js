@@ -24,11 +24,11 @@ const RecommendListPost = () => {
     return useMemo(() => {
       switch (item.item_type) {
         case 'Topic':
-          return <BaseTopic data={data} onRemove={() => onRemove(index)} />;
+          return <BaseTopic data={data} onRemove={() => onRemove(index)} bottom="comment" />;
         case 'Article':
           return <BaseArticle data={data} />;
         case 'Theory':
-          return <BaseTheory data={data} onRemove={() => onRemove(index)} />;
+          return <BaseTheory data={data} onRemove={() => onRemove(index)} bottom="comment" />;
         default:
           return <View />;
       }
@@ -38,7 +38,7 @@ const RecommendListPost = () => {
   const renderItemMemo = useCallback(itemProps => <RenderItem {...itemProps} />, [listData]);
 
   const loadData = async (page = 1) => {
-    let itemList = []
+    let itemList = [];
     if (page === 1) {
       // 加载置顶
       setLoading(true);
@@ -65,10 +65,10 @@ const RecommendListPost = () => {
     // console.log('page', page)
     if (page === 1 || !page) {
       // console.log('a')
-      indexLoadData(pagination(headers).nextPage)
+      indexLoadData(pagination(headers).nextPage);
     } else {
       // console.log('b')
-      loadData(page)
+      loadData(page);
     }
   };
 
@@ -81,7 +81,7 @@ const RecommendListPost = () => {
       keyExtractor={useCallback(item => `${item.id}${item.item_type}`, [])}
       data={listData}
       loading={loading}
-      onRefresh={throttle(onRefresh, 300)}
+      onRefresh={throttle(onRefresh, 0)}
       headers={headers}
       renderItem={renderItemMemo}
       initialNumToRender={6}
